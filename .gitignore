@@ -117,3 +117,4 @@ cython_debug/
 # Local files
 .DS_Store
 .pickle
+sandbox.ipynb
