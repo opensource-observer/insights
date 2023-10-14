@@ -31,7 +31,7 @@ def read_query_from_file(filename):
     return query
 
 
-def execute_query(query, params=None, col_names=False):
+def execute_query(query, params=None, col_names=True    ):
     
     results = None
     connection = connect_to_database()
@@ -50,6 +50,15 @@ def execute_query(query, params=None, col_names=False):
             print("Error executing query:", e)    
         
         connection.close()
+
+    return results
+
+
+def execute_saved_query(query_name, params=None, col_names=True):
+    
+    query_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "queries", query_name + ".sql")
+    query = read_query_from_file(query_path)
+    results = execute_query(query, params=params, col_names=col_names)
 
     return results
 
