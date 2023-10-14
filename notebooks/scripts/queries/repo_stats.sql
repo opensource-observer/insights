@@ -15,13 +15,8 @@ WITH EventData AS (
         artifact a ON paa."artifactId" = a."id"
     JOIN
         event e ON a."id" = e."toId"
-    JOIN
-        collection_projects_project cpp ON p."id" = cpp."projectId"
-    JOIN
-        collection c ON cpp."collectionId" = c."id"
     WHERE
         a."namespace" = 'GITHUB'
-        AND c."slug" = %s --collection slug parameter
 )
 
 SELECT
