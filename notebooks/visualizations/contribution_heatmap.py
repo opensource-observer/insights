@@ -3,21 +3,24 @@ import seaborn as sns
 
 
 def contribution_heatmap(
-        dataframe, 
-        index_col='project_name', 
-        column_col='month_year', 
-        value_col='total_contributors', 
-        cmap='Greens', 
-        vmin=0, 
-        vmax=10, 
-        linewidths=1,
-        scaler=.2,
-        figsize=None,
-        sort_label_method='first',
-        dpi=300):
+    dataframe, 
+    index_col, 
+    column_col, 
+    value_col, 
+    apply_groupby=False,
+    cmap='Greens', 
+    vmin=0, 
+    vmax=10, 
+    linewidths=1,
+    figsize_scaler=.2,
+    figsize=None,
+    sort_label_method='first',
+    dpi=300):
     
-
+    if apply_groupby:
+        dataframe = dataframe.groupby([index_col, column_col])[value_col].count().reset_index()
     df = dataframe.pivot_table(index=index_col, columns=column_col, values=value_col)
+
     if sort_label_method == 'first':
         labels = dataframe.groupby(index_col)[column_col].first().sort_values().index
     if sort_label_method == 'sum':
@@ -26,9 +29,9 @@ def contribution_heatmap(
         labels = df.fillna(0).mean(axis=1).sort_values(ascending=False).index        
 
     if figsize is None:
-        figsize = (len(df.columns)*scaler, len(df)*scaler)
+        figsize = (len(df.columns)*figsize_scaler, len(df)*figsize_scaler)
+    
     fig, ax = plt.subplots(figsize=figsize, dpi=dpi, facecolor='white')
-
     sns.heatmap(
         df.reindex(labels), 
         cmap=cmap, 
