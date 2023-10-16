@@ -3,7 +3,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 
-BOTS = ['web-flow', 'dependabot', 'gitbook-bot', 'dependabot-support', 'snyk-bot', 'github-actions[bot]']
+BOTS = ['web-flow', 'dependabot', 'gitbook-bot', 'dependabot-support', 'snyk-bot', 'github-actions[bot]', 'github-actions', 'upptime-bot']
 
 
 def github_event_processor(result, forks=[]):
@@ -62,3 +62,45 @@ def github_active_developers(dataframe, freq='month', min_ratio=0.3, event_filte
         devs.loc['inactive', column] = before_specified_column.sum() - current_devs
         
     return devs
+
+
+def github_repos_analysis(dataframe, repo_col='github_repo', date_col='date', groupers = ['project_slug', 'project_name']):
+
+    df = dataframe.copy()
+    df[date_col] = pd.to_datetime(df[date_col])
+    repo_stats = df.groupby(groupers).agg(
+        num_repos=pd.NamedAgg(column=repo_col, aggfunc='nunique'),
+        first_date=pd.NamedAgg(column=date_col, aggfunc='min'),
+        last_date=pd.NamedAgg(column=date_col, aggfunc='max')
+    ).join(
+        df[df['event_type']=='STARRED'].groupby(groupers).agg(
+            stars_count=pd.NamedAgg(column='contributor_name', aggfunc='nunique')
+        )
+    )
+
+    end_date = df[date_col].max()
+    repo_stats['days_since_first_commit'] = (end_date - repo_stats['first_date']).apply(lambda x: x.days)
+    repo_stats['days_since_last_commit'] = (end_date - repo_stats['last_date']).apply(lambda x: x.days)
+
+    repo_stats['last_commit_category'] = pd.cut(
+        repo_stats['days_since_last_commit'],
+        bins=[-float('inf'), 30, 90, float('inf')],
+        labels=['active', 'dormant', 'inactive'],
+        right=False
+    )
+
+    repo_stats['stars_category'] = pd.cut(
+        repo_stats['stars_count'],
+        bins=[-float('inf'), 10, 1000, float('inf')],
+        labels=['less popular', 'more popular', 'very popular'],
+        right=False
+    )
+
+    repo_stats['project_age'] = pd.cut(
+        repo_stats['days_since_first_commit'],
+        bins=[-float('inf'), 365*2, 365*4, float('inf')],
+        labels=['< 2 years', '2-4 years old', '> 4 years old'],
+        right=False
+    )
+
+    return repo_stats
