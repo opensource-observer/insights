@@ -113,11 +113,11 @@ def github_repos_analysis(dataframe, repo_col='github_repo', date_col='date', gr
 
 def github_network_graph(dataframe, contributor_col='contributor_name', project_col='project_name'):
 
-    contribs_projects = dataframe.groupby('contributor_name')['project_name'].apply(lambda x: [p for p,c in x.value_counts().items() if c>1]).to_dict()
+    contribs_projects = dataframe.groupby(contributor_col)[project_col].apply(lambda x: [p for p,c in x.value_counts().items() if c>1]).to_dict()
     contribs_projects = {c:ps for c,ps in contribs_projects.items() if len(ps)>1}
     contribs_projects = {c: list(combinations(ps,2)) for c,ps in contribs_projects.items() if len(ps)>1}
 
-    nodes = list(dataframe['project_name'].unique())
+    nodes = list(dataframe[project_col].unique())
     edges = [edge for combo in contribs_projects.values() for edge in combo]
 
     return nodes, edges
