@@ -1,28 +1,33 @@
+from itertools import combinations
 import pandas as pd
 import warnings
 warnings.filterwarnings('ignore')
 
 
-BOTS = ['web-flow', 'dependabot', 'gitbook-bot', 'dependabot-support', 'snyk-bot', 'github-actions[bot]', 'github-actions', 'upptime-bot']
-
+BOTS = ['web-flow', 'dependabot', 'gitbook-bot', 'dependabot-support', 'snyk-bot', 'github-actions[bot]', 'github-actions', 'upptime-bot',        
+        'dependabot-preview', 'metamaskbot', 'semantic-release-bot', 'beefybot', 'hop-protocol-bot', 'mergify[bot]', 'action-bot@github.com', 
+        'renovate-bot', 'uploaderbot@pokt.network', 'snyk-bot-wld', 'cache-bot@aave.com', 'credbot', 'nbc-bump-bot', 'crowdin-bot',
+        'greenkeeper[bot]', 'cache-bot@bgd.com', 'axelar-cicd-bot', 'bot@worldcoin.org', 'traviscibot']
 
 def github_event_processor(result, forks=[]):
-
     df = pd.DataFrame(result[1:], columns=result[0])
     
-    # remove contributions from forked repos
-    df = df[(~df['artifact_name'].isin(forks))]
+    # Remove contributions from forked repos
+    df = df[~df['artifact_name'].isin(forks)]
+    
+    # Create a dictionary mapping PR event_time to contributor_name
+    pr_merged_mapping = df[df['event_type'] == 'PULL_REQUEST_MERGED'].set_index('event_time')[['artifact_name', 'contributor_name']].to_dict()
 
-    # handle commits merged by web-flow
-    pr_merged_mapping = df[df['event_type'] == 'PULL_REQUEST_MERGED'].set_index('event_time')['contributor_name'].to_dict()
+    # Update web_flow_commits based on matching PRs
     web_flow_commits = df[(df['event_type'] == 'COMMIT_CODE') & (df['contributor_name'] == 'web-flow')]
-    web_flow_commits['contributor_name'] = web_flow_commits['event_time'].map(pr_merged_mapping).fillna(web_flow_commits['contributor_name'])
-    df.update(web_flow_commits)
-
-    # remove contributions from bots
+    web_flow_commits['contributor_name'] = web_flow_commits.apply(
+        lambda row: pr_merged_mapping.get(row['event_time'], {}).get('contributor_name', row['contributor_name']), axis=1
+    )
+    
+    # Remove contributions from bots
     df = df[~df['contributor_name'].isin(BOTS)]
 
-    # transform dates
+    # Transform dates
     df['date'] = df['event_time'].apply(lambda x: x.date())
     df['month'] = pd.PeriodIndex(df.event_time, freq='M')
     df['quarter'] = pd.PeriodIndex(df.event_time, freq='Q')
@@ -104,3 +109,15 @@ def github_repos_analysis(dataframe, repo_col='github_repo', date_col='date', gr
     )
 
     return repo_stats
+
+
+def github_network_graph(dataframe, contributor_col='contributor_name', project_col='project_name'):
+
+    contribs_projects = dataframe.groupby('contributor_name')['project_name'].apply(lambda x: [p for p,c in x.value_counts().items() if c>1]).to_dict()
+    contribs_projects = {c:ps for c,ps in contribs_projects.items() if len(ps)>1}
+    contribs_projects = {c: list(combinations(ps,2)) for c,ps in contribs_projects.items() if len(ps)>1}
+
+    nodes = list(dataframe['project_name'].unique())
+    edges = [edge for combo in contribs_projects.values() for edge in combo]
+
+    return nodes, edges
