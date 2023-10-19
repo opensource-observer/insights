@@ -51,6 +51,7 @@ UserAnalysis AS (
 )
 SELECT
     c.project_slug,
+    
     COUNT(DISTINCT c.contract_id) AS contract_count,
     MAX(ei.transaction_count) AS transaction_count, -- TODO: fix this
     MAX(ei.fees) AS total_fees, -- TODO: fix this
