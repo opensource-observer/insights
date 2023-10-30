@@ -18,6 +18,3 @@ GROUP BY
     a.id,
     a.name,
     et.name
-
-
-
