@@ -17,4 +17,4 @@ GROUP BY
     p.slug,
     a.id,
     a.name,
-    et.name
+    et.name;
