@@ -107,8 +107,8 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [
-            "go-ethereum",
-            "openethereum"
+            "openethereum",
+            "go-ethereum"
         ],
         "Slug: Primary": null
     },
@@ -2517,7 +2517,7 @@
         ],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "attestation-station-interface-sbvegan"
     },
     {
         "Project ID": "0x12838f448486ff143c1689cf6ef263b07f316efbcb4d2819660479b8eada70c6",
@@ -2939,8 +2939,7 @@
         "Slugs: Contract Address": [],
         "Slugs: Github": [
             "upnodedev",
-            "roll-op-0xfableorg",
-            "op"
+            "roll-op-0xfableorg"
         ],
         "Slug: Primary": "upnodedev"
     },
@@ -3754,7 +3753,7 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "vyperlang"
     },
     {
         "Project ID": "0x1b243949f14790252d540489c7b9e41c5c0460da72f4fcd106125abfaace055c",
@@ -3959,7 +3958,7 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "dappradar"
     },
     {
         "Project ID": "0x1d0fd9b7e22d5104b7581d43eca15536106894dc0800877f624b2acac306f234",
@@ -4853,11 +4852,10 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [
-            "synpress-synthexio",
+            "snapshot-labs",
             "blocknative",
             "agoraxyz",
-            "snapshot-labs",
-            "op"
+            "synpress-synthexio"
         ],
         "Slug: Primary": "synpress-synthexio"
     },
@@ -5924,7 +5922,7 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "op"
     },
     {
         "Project ID": "0x29d3afbc071102437450eba3f716c07581e4daae53a3b50771169b0d791b44fc",
@@ -6749,7 +6747,7 @@
         ],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "hedgey-finance"
     },
     {
         "Project ID": "0x303538fa089b13b03aacc52279230fcf1e24139f90e28175594f63d8e075cb3e",
@@ -6814,7 +6812,7 @@
         ],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "opdelegate-michael-vander-meiden"
     },
     {
         "Project ID": "0x307febda7530cf58de21328592978957be0fc81bbf80d4feb4a42a61d6f39f6c",
@@ -6967,14 +6965,12 @@
         "Impact Metrics": [
             "https://dune.com/browse/dashboards?q=rollup&order=favorites&time_range=all"
         ],
-        "OSS Directory": "Github Found",
+        "OSS Directory": "Not Found",
         "Slugs: Payout Address": [],
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
-        "Slugs: Github": [
-            "spellbook-duneanalytics"
-        ],
-        "Slug: Primary": "spellbook-duneanalytics"
+        "Slugs: Github": [],
+        "Slug: Primary": null
     },
     {
         "Project ID": "0x31f4c20441b6b2e30e85c03e2aceee220d2e148af31f4b6fe94a69d22878d101",
@@ -7034,7 +7030,7 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "acrypto-s"
     },
     {
         "Project ID": "0x325bccfcb0ceacb4ecb809e67bebeba4209314c3d87b2d9c8003617c0e6b5545",
@@ -7381,9 +7377,9 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [
-            "arbiter-primitivefinance",
             "revm-bluealloy",
-            "reth-paradigmxyz"
+            "reth-paradigmxyz",
+            "arbiter-primitivefinance"
         ],
         "Slug: Primary": null
     },
@@ -7423,7 +7419,7 @@
             "cliqueofficial"
         ],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "cliqueofficial"
     },
     {
         "Project ID": "0x3450d07137638546a545333bc3bbc0d84ddfaec7cf9bc91ce8bf0e1657b4f9a4",
@@ -8050,7 +8046,7 @@
         ],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "edgeandnode"
     },
     {
         "Project ID": "0x37d155658e0376ebe886a0f29290b19ddbabee2cdc34c879663ce5a6820d1369",
@@ -8612,8 +8608,8 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [
-            "spearbit-portfolio",
-            "solady-vectorized"
+            "solady-vectorized",
+            "spearbit-portfolio"
         ],
         "Slug: Primary": "spearbit-portfolio"
     },
@@ -8906,7 +8902,7 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "polynomial-protocol"
     },
     {
         "Project ID": "0x3c5bf96d1ae3c4e995b0892b515cb837d877a11f6f63878bded9b5020598fd3f",
@@ -9053,7 +9049,7 @@
             "https://optimism.easscan.org/",
             "https://optimism.easscan.org/schema/view/0xfdcfdad2dbe7489e0ce56b260348b7f14e8365a8a325aef9834818c00d46b31b"
         ],
-        "OSS Directory": "Address & Github Found",
+        "OSS Directory": "Address Found",
         "Slugs: Payout Address": [
             "ethereum-attestation-service"
         ],
@@ -9061,10 +9057,8 @@
         "Slugs: Contract Address": [
             "ethereum-attestation-service"
         ],
-        "Slugs: Github": [
-            "op"
-        ],
-        "Slug: Primary": "op"
+        "Slugs: Github": [],
+        "Slug: Primary": "ethereum-attestation-service"
     },
     {
         "Project ID": "0x3d9296760b1f1bf762344822459aa22dcb66c72ca75d58fd2a13b2a51965eb54",
@@ -9279,7 +9273,7 @@
             "mesoreefdao"
         ],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "mesoreefdao"
     },
     {
         "Project ID": "0x3f414ca96d84352f4b9a9a5096bb750677a4328e1a9c56830cf3edea12cd4fcb",
@@ -10673,14 +10667,12 @@
         "Impact Metrics": [
             "https://github.com/GeneralMagicio/ux-audits"
         ],
-        "OSS Directory": "Github Found",
+        "OSS Directory": "Not Found",
         "Slugs: Payout Address": [],
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
-        "Slugs: Github": [
-            "op"
-        ],
-        "Slug: Primary": "op"
+        "Slugs: Github": [],
+        "Slug: Primary": null
     },
     {
         "Project ID": "0x4aa2191cde4ef94ed2bab5b0964b9fb219e7b306563ed809a7ec6aa3191e0618",
@@ -10761,7 +10753,7 @@
         ],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "l2planet"
     },
     {
         "Project ID": "0x4afa3f3679237d1a52cfd87f258f57d8de01d64a69182591807c471accdc0f16",
@@ -10955,8 +10947,7 @@
         ],
         "Slugs: Contract Address": [],
         "Slugs: Github": [
-            "understanding-optimism-codebase-joohhnnn",
-            "op"
+            "understanding-optimism-codebase-joohhnnn"
         ],
         "Slug: Primary": "understanding-optimism-codebase-joohhnnn"
     },
@@ -11750,14 +11741,12 @@
         "Impact Metrics": [
             "https://github.com/ethereum-optimism/op-analytics"
         ],
-        "OSS Directory": "Github Found",
+        "OSS Directory": "Not Found",
         "Slugs: Payout Address": [],
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
-        "Slugs: Github": [
-            "op"
-        ],
-        "Slug: Primary": "op"
+        "Slugs: Github": [],
+        "Slug: Primary": null
     },
     {
         "Project ID": "0x514a198204625b1f1b45b9a02b9e9d2a51d63ac0843c4a1c4c02ee97c5116de0",
@@ -12012,7 +12001,7 @@
             "nftearth"
         ],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "nftearth"
     },
     {
         "Project ID": "0x52f9b753731b07bcda65468c6183745a8a1a7032f840a201b3fb120d9391b435",
@@ -12545,7 +12534,7 @@
             "unlock-protocol"
         ],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "unlock-protocol"
     },
     {
         "Project ID": "0x575ad31b760ed82684b6f835e77a0df182e98a83a3795869129a8ef08a9fb9a4",
@@ -13238,8 +13227,7 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [
-            "testinprod-io",
-            "op"
+            "testinprod-io"
         ],
         "Slug: Primary": "testinprod-io"
     },
@@ -14516,7 +14504,7 @@
         ],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "infinitywallet"
     },
     {
         "Project ID": "0x63a5295135ccaf721e190743dc6e47f71ba76cd8bb5635d7049b27a8c3511d25",
@@ -15111,7 +15099,7 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "synthetix"
     },
     {
         "Project ID": "0x6671d4707ec78011001d8050d365645a69e1407600195a253b339d184a62c1d6",
@@ -15586,7 +15574,7 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "zora"
     },
     {
         "Project ID": "0x68cef3183236e7717d0fc1c7b18e0fa3c6d7f752d2803686712c8168fe21b400",
@@ -16045,7 +16033,7 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "givestation"
     },
     {
         "Project ID": "0x6b9d6e39051557b8a9aa6929187265ed910bc5f1bd56f1f25d2e3d79843dffb3",
@@ -17563,7 +17551,7 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "dforce-network"
     },
     {
         "Project ID": "0x76e296cd06773c36cf2614222cf086a2fbc54b76ebe92b1dd434e180d922ec2a",
@@ -17826,7 +17814,7 @@
         ],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "bankless-academy"
     },
     {
         "Project ID": "0x7845a5800ada712943143283ac88cc68dd6df27cbf8d94c633db6088e0fc3a01",
@@ -18467,14 +18455,12 @@
             "https://drive.google.com/drive/folders/1PYr8PKJe_pGR2sxXb0hfuuGp89NiDzGx?usp=drive_link",
             "https://gravitydao.org/en/online-courses/uncategorized/graviton-introductory-course/"
         ],
-        "OSS Directory": "Github Found",
+        "OSS Directory": "Not Found",
         "Slugs: Payout Address": [],
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
-        "Slugs: Github": [
-            "op"
-        ],
-        "Slug: Primary": "op"
+        "Slugs: Github": [],
+        "Slug: Primary": null
     },
     {
         "Project ID": "0x7bd56f9ffe42c4a911bf9f3d7ffa475e4766968ede0dd365dd848b2565d5c489",
@@ -18500,14 +18486,12 @@
         "Impact Metrics": [
             "https://twitter.com/GuillemontJ"
         ],
-        "OSS Directory": "Github Found",
+        "OSS Directory": "Not Found",
         "Slugs: Payout Address": [],
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
-        "Slugs: Github": [
-            "op"
-        ],
-        "Slug: Primary": "op"
+        "Slugs: Github": [],
+        "Slug: Primary": null
     },
     {
         "Project ID": "0x7bf938ff487eef67c41545ecf7c444ee530c76057d4f0136c8c36cd60c63ae88",
@@ -20837,7 +20821,7 @@
         ],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "decent"
     },
     {
         "Project ID": "0x8a952a834ff9186399c06935ffcdff482fb38b38808a7419fc415ad307a2e69b",
@@ -21013,7 +20997,7 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "ultrasoundmoney"
     },
     {
         "Project ID": "0x8c6ef03ae9da84c0fc10a72d404ac170d884ba0252512c08ee58f8fde8131079",
@@ -21275,7 +21259,7 @@
             "https://twitter.com/FilosofiaCodigo/status/1712225071941537985",
             "https://twitter.com/FilosofiaCodigo/status/1712225071941537985"
         ],
-        "OSS Directory": "Address & Github Found",
+        "OSS Directory": "Address Found",
         "Slugs: Payout Address": [
             "filosofiacodigo"
         ],
@@ -21285,10 +21269,8 @@
         "Slugs: Contract Address": [
             "filosofiacodigo"
         ],
-        "Slugs: Github": [
-            "op"
-        ],
-        "Slug: Primary": "op"
+        "Slugs: Github": [],
+        "Slug: Primary": "filosofiacodigo"
     },
     {
         "Project ID": "0x8d7a6decceefd3e113986c7835f89d09a5959904defce7f68044bcf4ba2ee3d2",
@@ -21769,7 +21751,7 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "polynomial-protocol"
     },
     {
         "Project ID": "0x90f028c683690bf4424143ef63748f787917505f3a500d20fcc7f4b0e6930b77",
@@ -22360,7 +22342,7 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "pairwise-general-magic"
     },
     {
         "Project ID": "0x93989177dc5a7ea77efeecaa5fee32c6ac78499eb445ddd8a9bdc0f9530b296c",
@@ -22784,7 +22766,7 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "gitcoin"
     },
     {
         "Project ID": "0x96460b8fb7aba9495c16539467a57e1872e18447e1bbbeb7f2901c374247f775",
@@ -22864,14 +22846,12 @@
         "Impact Metrics": [
             "https://github.com/ethereum-optimism/optimism/issues/4980"
         ],
-        "OSS Directory": "Github Found",
+        "OSS Directory": "Not Found",
         "Slugs: Payout Address": [],
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
-        "Slugs: Github": [
-            "op"
-        ],
-        "Slug: Primary": "op"
+        "Slugs: Github": [],
+        "Slug: Primary": null
     },
     {
         "Project ID": "0x97c886fb0d5a8bfab9a5fc21425872c711d020d8ba98d381b4d122301d2937ce",
@@ -22982,7 +22962,7 @@
         ],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "nodeguardians"
     },
     {
         "Project ID": "0x988e06983c68bd53f4e41a1acb21a31fd42e2ef519d0ccede3a979ae1199ce1a",
@@ -23609,8 +23589,7 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [
-            "bootnodedev",
-            "op"
+            "bootnodedev"
         ],
         "Slug: Primary": "bootnodedev"
     },
@@ -23855,7 +23834,7 @@
         ],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "commonsbuild"
     },
     {
         "Project ID": "0x9ee4a4f36ee067a0eed71b43b50b79b9a33f39677630de52d8016d268291f4b0",
@@ -23890,7 +23869,7 @@
             "kredeum"
         ],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "kredeum"
     },
     {
         "Project ID": "0x9eed24b6b3f93a8f34a2838229e7abbe710e3f0e2490eaf92e30e6a8a77f389c",
@@ -23988,14 +23967,12 @@
         "Impact Metrics": [
             "https://github.com/ethereum-optimism/optimism"
         ],
-        "OSS Directory": "Github Found",
+        "OSS Directory": "Not Found",
         "Slugs: Payout Address": [],
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
-        "Slugs: Github": [
-            "op"
-        ],
-        "Slug: Primary": "op"
+        "Slugs: Github": [],
+        "Slug: Primary": null
     },
     {
         "Project ID": "0x9f510c4ef96341ed9d8b567d40807095097c51cdc146723c6e34ce0a17ef2881",
@@ -24271,14 +24248,12 @@
         "Impact Metrics": [
             "https://github.com/ethereum-optimism/optimism"
         ],
-        "OSS Directory": "Github Found",
+        "OSS Directory": "Not Found",
         "Slugs: Payout Address": [],
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
-        "Slugs: Github": [
-            "op"
-        ],
-        "Slug: Primary": "op"
+        "Slugs: Github": [],
+        "Slug: Primary": null
     },
     {
         "Project ID": "0xa1a22d2fb5735459c54bf2861adb1f30ed77cca44536c06070587aced21d97d9",
@@ -24611,7 +24586,7 @@
         ],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "cryptozombieshq"
     },
     {
         "Project ID": "0xa4887579041502db7a9aad8ee2c4b440cafc059633549da8cd89374c4a7bf87e",
@@ -25621,7 +25596,7 @@
         ],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "zeroknowledgefm"
     },
     {
         "Project ID": "0xac1088fd7feb93b1577cb2328328d8b743261fe3bcc888657d53bb117846e966",
@@ -26163,14 +26138,12 @@
             "https://x.com/gregcardo/status/1713905266670903751?s=20",
             "https://x.com/gregcardo/status/1709870096284365272?s=20"
         ],
-        "OSS Directory": "Github Found",
+        "OSS Directory": "Not Found",
         "Slugs: Payout Address": [],
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
-        "Slugs: Github": [
-            "op"
-        ],
-        "Slug: Primary": "op"
+        "Slugs: Github": [],
+        "Slug: Primary": null
     },
     {
         "Project ID": "0xb04af6a6a336124fbf621ac380b23add5b6c53dee09dc19f2ad9caea8cdb5cdf",
@@ -28149,9 +28122,9 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [
-            "arbiter-primitivefinance",
             "revm-bluealloy",
-            "reth-paradigmxyz"
+            "reth-paradigmxyz",
+            "arbiter-primitivefinance"
         ],
         "Slug: Primary": null
     },
@@ -28183,7 +28156,7 @@
         ],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "mirror"
     },
     {
         "Project ID": "0xbe5c87794ca0822b4c390218f3d40f9ed33679285313a429b9027aa17760f6fe",
@@ -28303,14 +28276,12 @@
             "https://github.com/cowprotocol/dune-alerts",
             "https://github.com/duneanalytics/dune-client"
         ],
-        "OSS Directory": "Github Found",
+        "OSS Directory": "Not Found",
         "Slugs: Payout Address": [],
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
-        "Slugs: Github": [
-            "spellbook-duneanalytics"
-        ],
-        "Slug: Primary": "spellbook-duneanalytics"
+        "Slugs: Github": [],
+        "Slug: Primary": null
     },
     {
         "Project ID": "0xbf23d6a3855ebaaef4290b7f74d4a1e50aab2a805e96391144f768d9466dac35",
@@ -29067,7 +29038,7 @@
         ],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "bloomnetwork"
     },
     {
         "Project ID": "0xc6055ead2ae4e61dfba1ec5c8b547768f5842b047d9f60e912d68e4af2c38f03",
@@ -30215,7 +30186,7 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "limechain"
     },
     {
         "Project ID": "0xcc95ade24ed84718345bda285036f51bb6a3e224b162e4db51df6561c16d3f8c",
@@ -30758,7 +30729,7 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "learnweb3dao"
     },
     {
         "Project ID": "0xd0f85e82439cc4c58186702cec1e6ef21d07a3540799a5938dc54551bf7ce18b",
@@ -31263,7 +31234,7 @@
             "nacion-bankless"
         ],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "nacion-bankless"
     },
     {
         "Project ID": "0xd28e879c019aacabe65c062601000f9925e2f9686c8a6485d92d753132ba723b",
@@ -32174,8 +32145,7 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [
-            "go-ethereum-hdwallet-miguelmota",
-            "op"
+            "go-ethereum-hdwallet-miguelmota"
         ],
         "Slug: Primary": "go-ethereum-hdwallet-miguelmota"
     },
@@ -32457,7 +32427,7 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "vyperlang"
     },
     {
         "Project ID": "0xdba2bfeb993650822fb9acfc1361ef787858e75b10a2e989f2ca44355e7721f4",
@@ -32827,7 +32797,7 @@
             "revert-finance"
         ],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "revert-finance"
     },
     {
         "Project ID": "0xdde0142c304d61536a4b9973ce54a6bc4e4042068de0365d360061813fee34df",
@@ -33541,7 +33511,7 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "gashawk-corpus-io"
     },
     {
         "Project ID": "0xe1fbfa9141f2c53d44c1c08ad862c5dbd4406801defed44107c448e7ffeddd08",
@@ -34412,8 +34382,8 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [
-            "ethereum-cat-herders",
-            "pm-ethereum"
+            "pm-ethereum",
+            "ethereum-cat-herders"
         ],
         "Slug: Primary": "ethereum-cat-herders"
     },
@@ -36028,8 +35998,8 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [
-            "blobscan",
-            "ethpandaops"
+            "ethpandaops",
+            "blobscan"
         ],
         "Slug: Primary": "blobscan"
     },
@@ -36288,7 +36258,7 @@
         "Impact Metrics": [
             "https://dune.com/browse/wizards"
         ],
-        "OSS Directory": "Address & Github Found",
+        "OSS Directory": "Address Found",
         "Slugs: Payout Address": [
             "hildobby"
         ],
@@ -36296,10 +36266,8 @@
             "hildobby"
         ],
         "Slugs: Contract Address": [],
-        "Slugs: Github": [
-            "spellbook-duneanalytics"
-        ],
-        "Slug: Primary": "spellbook-duneanalytics"
+        "Slugs: Github": [],
+        "Slug: Primary": "hildobby"
     },
     {
         "Project ID": "0xf48254117b4554dc09ce48e9d258acffd66b4d2d6ec64d6266e22412e0c2c212",
@@ -36404,7 +36372,7 @@
             "1w3"
         ],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "1w3"
     },
     {
         "Project ID": "0xf515686a86c16e2e7f69dc8c818233fb3d036cab0a7482f49e49991ec85c1dab",
@@ -36917,7 +36885,7 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "waffle-truefieng"
     },
     {
         "Project ID": "0xf7e9a83b4d33466813b6c5d1e3cfe95f5f6476b0d8ec0b5cd012c774053aba84",
@@ -37288,14 +37256,12 @@
         "Impact Metrics": [
             "https://github.com/ethereum-optimism/ecosystem-contributions"
         ],
-        "OSS Directory": "Github Found",
+        "OSS Directory": "Not Found",
         "Slugs: Payout Address": [],
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
-        "Slugs: Github": [
-            "op"
-        ],
-        "Slug: Primary": "op"
+        "Slugs: Github": [],
+        "Slug: Primary": null
     },
     {
         "Project ID": "0xfa3462fae5e6305802212e022903900ed2b64c10481a8865898493e810903682",
@@ -37551,14 +37517,12 @@
             "https://github.com/ethereum-optimism/superchain-ops/tree/main/mainnet-rehearsals/",
             "about:blank"
         ],
-        "OSS Directory": "Github Found",
+        "OSS Directory": "Not Found",
         "Slugs: Payout Address": [],
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
-        "Slugs: Github": [
-            "op"
-        ],
-        "Slug: Primary": "op"
+        "Slugs: Github": [],
+        "Slug: Primary": null
     },
     {
         "Project ID": "0xfbe62709ce2a79103ff431df01529f9fa2dfd603ba21fb6a654666a497d759d9",
@@ -37681,10 +37645,10 @@
         ],
         "Slugs: Contract Address": [],
         "Slugs: Github": [
-            "reth-paradigmxyz",
-            "hardhat-nomicfoundation",
             "revm-bluealloy",
-            "foundry"
+            "foundry",
+            "reth-paradigmxyz",
+            "hardhat-nomicfoundation"
         ],
         "Slug: Primary": "revm-bluealloy"
     },
@@ -38502,7 +38466,7 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "ethernautdao"
     },
     {
         "Project ID": "0x40ae0d3ebfccbaa363638b6bc4ec1965757ba2b037abe66c1ebce7de48d477c2",
@@ -38677,7 +38641,7 @@
             "soulcial-discoverselab"
         ],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "soulcial-discoverselab"
     },
     {
         "Project ID": "0x74c9135b2ca59c277d93942e535f02777d2779f1fee5b88c9ff76ff20cdcd8b8",
@@ -39086,8 +39050,8 @@
         ],
         "Slugs: Contract Address": [],
         "Slugs: Github": [
-            "wagmi-dev",
-            "opti-domains"
+            "opti-domains",
+            "wagmi-dev"
         ],
         "Slug: Primary": "opti-domains"
     },
@@ -39465,7 +39429,7 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "tokenengineeringcommunity"
     },
     {
         "Project ID": "0x83bf88e9bcfd3145bc29b9e866863d9247d24df5ef5f1b66ab2c00c3171269cb",
@@ -42290,8 +42254,7 @@
         ],
         "Slugs: Contract Address": [],
         "Slugs: Github": [
-            "rainbow",
-            "op"
+            "rainbow"
         ],
         "Slug: Primary": "rainbow"
     },
@@ -42441,7 +42404,7 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "kairosresearch"
     },
     {
         "Project ID": "0x7c42ca7c12ac65ff9a5c59b469417fd842d79efb021600fb43f2c9a14ecb53b0",
@@ -43050,7 +43013,7 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "banklessdao"
     },
     {
         "Project ID": "0x94102ff78bd85aaf9f0e113720be12b18aff3a47f8bd313387c4a78d687ac330",
@@ -43741,7 +43704,6 @@
         ],
         "Slugs: Contract Address": [],
         "Slugs: Github": [
-            "op",
             "retropgf-hub-fwb-creators"
         ],
         "Slug: Primary": "retropgf-hub-fwb-creators"
@@ -44098,7 +44060,7 @@
         ],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "etherscore"
     },
     {
         "Project ID": "0xde345ebb3e0248733304d39e16ce8cd4a55ad26a809682449a7bc14b68375765",
@@ -44225,7 +44187,7 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "gelato"
     },
     {
         "Project ID": "0xe4fb6e52ad970ebb6ea9252ec6e9967e4b4b88d52e5067b980c68515cde43f29",
@@ -44457,7 +44419,7 @@
         ],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "definomics-labs"
     },
     {
         "Project ID": "0xf3754e2f022a88ffa5a845b5455703aab98797d4c0bb8d86181952fbc5655412",
@@ -45131,7 +45093,7 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "xkcp"
     },
     {
         "Project ID": "0x2e6f1f985989f200f569f8b01f817cc587f0c1c538c7d398a29ef682541f9018",
@@ -45882,7 +45844,7 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "curvegrid-multibaas"
     },
     {
         "Project ID": "0x9330b502f090d2dc537272984bc42d49cbc3f3d4f58b46244a140e3f3c92befb",
@@ -46078,8 +46040,8 @@
         ],
         "Slugs: Contract Address": [],
         "Slugs: Github": [
-            "crypto-fees-dmihal",
-            "crypto-stats"
+            "crypto-stats",
+            "crypto-fees-dmihal"
         ],
         "Slug: Primary": "crypto-stats"
     },
@@ -46272,8 +46234,8 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [
-            "status-im",
-            "nimbus-status-im"
+            "nimbus-status-im",
+            "status-im"
         ],
         "Slug: Primary": "nimbus-status-im"
     },
@@ -46561,7 +46523,7 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "concrete-geth-therealbytes"
     },
     {
         "Project ID": "0xe893bf41623c616cb372a2987e2cc4b7e82f5ad25249d22fc6d13de4a85dfe76",
@@ -47219,7 +47181,7 @@
         ],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "edgeandnode"
     },
     {
         "Project ID": "0x4cd4c0671a5d7bda3cd010d83ca26956c608eb0fc4350291acedb62596d3c03c",
@@ -47319,7 +47281,7 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "banklessdao"
     },
     {
         "Project ID": "0x5bbf78022ce285b2056b38bdb61680199f404bde2670396233f5793881a42110",
@@ -47762,7 +47724,7 @@
         ],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "jobstash"
     },
     {
         "Project ID": "0x928a305a9e35baee41f4f5000993cf5bf3c62342ae2f34e4e11146a0a0d4148a",
@@ -48018,14 +47980,12 @@
         "Impact Metrics": [
             "https://optimism.easscan.org/schema/view/0x8837fc21f84091c77433e172955da6f25fab7ce80f1489d8b36e215eec7f8e25"
         ],
-        "OSS Directory": "Github Found",
+        "OSS Directory": "Not Found",
         "Slugs: Payout Address": [],
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
-        "Slugs: Github": [
-            "op"
-        ],
-        "Slug: Primary": "op"
+        "Slugs: Github": [],
+        "Slug: Primary": null
     },
     {
         "Project ID": "0x9ed5d5fc438d8bb81db84be0d60f87ac870b4f96088de0e1e5e653c98f485a4a",
@@ -48448,7 +48408,7 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "banklessdao"
     },
     {
         "Project ID": "0xf3526ec21d5b1146008c629fe9837f2c5ab099b1590e28dfb7005c126234fb11",
@@ -48903,7 +48863,7 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "galxe"
     },
     {
         "Project ID": "0x16c1701d3f3053b966380d0ba120122b5aa85e58662eba445ab9894d16217ffa",
@@ -49946,7 +49906,7 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "boardroom-inc"
     },
     {
         "Project ID": "0x5effc6bf83d22623146bdd81e6bb55bc287b68aced8ad0d4be8cccbf5f408b19",
@@ -50145,7 +50105,7 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "yearn"
     },
     {
         "Project ID": "0x6659104bceabe31f50407a7388b91cec589be2012160990467a54d2733d8c0f2",
@@ -51795,7 +51755,7 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": null
+        "Slug: Primary": "optinames-optimismresolver"
     },
     {
         "Project ID": "0xdc8bca269e24055694c35853cc659acb2f7b0210ecb2d64c1f0f7cb6e6e69db1",
