@@ -37,7 +37,7 @@ class OsoData:
         dff = (
             self.df[self.df[self.SLUG_KEY].isin(to_review.index)]
             .sort_values(by=self.SLUG_KEY)
-            [['Project Name', self.SLUG_KEY, 'Payout Address']]
+            [[self.ID_KEY, 'Project Name', self.SLUG_KEY, 'Payout Address']]
         )
         return dff
 
