@@ -1,50 +1,43 @@
-WITH EventData AS (
-    SELECT
-        p."slug" AS project_slug,
-        p."name" AS project_name,
-        e."id" AS event_id,
-        a2."name" AS contributor_name,
-        e."type" AS event_type,
-        TO_CHAR(e."time", 'YYYY-MM') AS month_year
-    FROM
-        project p
-    JOIN
-        project_artifacts_artifact paa ON p."id" = paa."projectId"
-    JOIN
-        artifact a ON paa."artifactId" = a."id"
-    JOIN
-        event e ON a."id" = e."toId"
-    JOIN
-        artifact a2 ON e."fromId" = a2."id"        
-    JOIN
-        collection_projects_project cpp ON p."id" = cpp."projectId"
-    JOIN
-        collection c ON cpp."collectionId" = c."id"
+WITH Devs AS (
+    SELECT 
+        p."id" AS "projectId",
+        e."fromId" AS "fromId",
+        TO_CHAR(DATE_TRUNC('MONTH', e."time"), 'YYYY-MM-01') AS "bucketMonthly",
+        CASE 
+            WHEN COUNT(DISTINCT CASE WHEN e."typeId" = 4 THEN e."time" END) >= 10 THEN 'FULL_TIME_DEV'
+            WHEN COUNT(DISTINCT CASE WHEN e."typeId" = 4 THEN e."time" END) >= 1 THEN 'PART_TIME_DEV'
+            ELSE 'OTHER_CONTRIBUTOR'
+        END AS "devType",
+        1 AS amount
+    FROM 
+        event e
+    JOIN 
+        project_artifacts_artifact paa ON e."toId" = paa."artifactId"
+    JOIN 
+        project p ON paa."projectId" = p.id
+        
     WHERE
-        e."type" IN (
-            'COMMIT_CODE',
-            'PULL_REQUEST_CREATED',
-            'PULL_REQUEST_MERGED',
-            'PULL_REQUEST_CLOSED',
-            'PULL_REQUEST_APPROVED',
-            'ISSUE_CLOSED',
-            'ISSUE_CREATED'
+        e."typeId" IN (
+            2, -- PULL_REQUEST_CREATED
+            3, -- PULL_REQUEST_MERGED
+            4, -- COMMIT_CODE
+            6, -- ISSUE_CLOSED
+            18 -- ISSUE_CREATED
         )
+        -- AND e."toId" = 420126 -- uncomment for testing purposes
+    GROUP BY
+        p."id",
+        e."fromId",
+        TO_CHAR(DATE_TRUNC('MONTH', e."time"), 'YYYY-MM-01')
 )
 SELECT
-    project_slug,    
-    month_year,
-    contributor_name,
-    event_type,
-    COUNT(*) AS num_contributions
-FROM
-    EventData
+    Devs."projectId",
+    Devs."devType",
+    Devs."bucketMonthly",
+    SUM(Devs."amount") AS "amount"
+FROM 
+    Devs
 GROUP BY
-    project_slug,
-    month_year,
-    contributor_name,
-    event_type
-ORDER BY
-    project_slug,
-    month_year,
-    contributor_name;
+    Devs."projectId",
+    Devs."devType",
+    Devs."bucketMonthly";
