@@ -1006,6 +1006,39 @@
         "Slug: Primary": "upnodedev"
     },
     {
+        "Project ID": "0x15e84020afaeea9626e882207ad748006bbd2fbdc45b313af4cf2414ae657c90",
+        "Project Name": "Gadgeteer (nanobro)",
+        "Applicant Type": "INDIVIDUAL",
+        "Date": 1696533875,
+        "Attester Address": "0x22e2f326FE5A1d07E1214EB1C08346Fd816E8375",
+        "Payout Address": "0x22e2f326FE5A1d07E1214EB1C08346Fd816E8375",
+        "Link": "https://content.optimism.io/rpgf3Application/v0/metadata/10/0x22e2f326FE5A1d07E1214EB1C08346Fd816E8375.json",
+        "Tags": [
+            "COLLECTIVE_GOVERNANCE",
+            "END_USER_EXPERIENCE_AND_ADOPTION"
+        ],
+        "Contributions: Github": [],
+        "Contributions: Contracts": [],
+        "Contributions: Other": [
+            "https://bit.ly/nanobrocontent",
+            "https://twitter.com/0x_nanobro/status/1709548190884827477",
+            "https://discord.com/invite/Y5RdVcZ3GZ"
+        ],
+        "Impact Metrics": [
+            "https://bit.ly/nanobrocontent",
+            "https://twitter.com/0x_nanobro/status/1709548190884827477",
+            "https://discord.com/invite/Y5RdVcZ3GZ",
+            "https://vote.optimism.io/delegate/nanobro.eth",
+            "https://web3.gadgeteer.in.th/deploy-smart-contract-get-nft-from-base-speculate-other-airdrop"
+        ],
+        "OSS Directory": "Not Found",
+        "Slugs: Payout Address": [],
+        "Slugs: Attester Address": [],
+        "Slugs: Contract Address": [],
+        "Slugs: Github": [],
+        "Slug: Primary": null
+    },
+    {
         "Project ID": "0x169944e7e6d6a3cbfb72b9da9234e9f74b99111b00c1be854c8807fed8043397",
         "Project Name": "draper",
         "Applicant Type": "PROJECT",
@@ -1076,8 +1109,8 @@
         ],
         "Slugs: Contract Address": [],
         "Slugs: Github": [
-            "snekmate",
-            "curve"
+            "curve",
+            "snekmate"
         ],
         "Slug: Primary": "snekmate"
     },
@@ -1560,9 +1593,9 @@
         "Slugs: Contract Address": [],
         "Slugs: Github": [
             "synpress-synthexio",
-            "snapshot-labs",
+            "agoraxyz",
             "blocknative",
-            "agoraxyz"
+            "snapshot-labs"
         ],
         "Slug: Primary": "synpress-synthexio"
     },
@@ -1787,6 +1820,34 @@
             "https://drive.google.com/file/d/15_RQKVTA2F_Lsq3ok9OBA1DHBFYduXq6/view?usp=drive_link",
             "https://drive.google.com/file/d/1_7KCH7ZlUj5gqaN0S5_5AtLg0SFTyomn/view?usp=drive_link",
             "https://drive.google.com/file/d/1nxR8E_Je1luwl5-kA2dBNyfETOUpdMY8/view?usp=drive_link"
+        ],
+        "OSS Directory": "Not Found",
+        "Slugs: Payout Address": [],
+        "Slugs: Attester Address": [],
+        "Slugs: Contract Address": [],
+        "Slugs: Github": [],
+        "Slug: Primary": null
+    },
+    {
+        "Project ID": "0x278f45939b63b7b5c84fb0a81701aca4a1153fc8a6a7c35af87cebe1fad70d55",
+        "Project Name": "Subli",
+        "Applicant Type": "INDIVIDUAL",
+        "Date": 1696369141,
+        "Attester Address": "0x018C8a81cb02cA1a327BaefD400f75f57ea57ba2",
+        "Payout Address": "0x018c8a81cb02ca1a327baefd400f75f57ea57ba2",
+        "Link": "https://content.optimism.io/rpgf3Application/v0/metadata/10/0x018C8a81cb02cA1a327BaefD400f75f57ea57ba2.json",
+        "Tags": [
+            "END_USER_EXPERIENCE_AND_ADOPTION"
+        ],
+        "Contributions: Github": [],
+        "Contributions: Contracts": [],
+        "Contributions: Other": [
+            "https://docs.google.com/document/d/11hNPSbJX20LQHxdiXlRaZE-pr8oigFhaL96MvT5VtvA/edit?usp=drivesdk"
+        ],
+        "Impact Metrics": [
+            "https://docs.google.com/document/d/11hNPSbJX20LQHxdiXlRaZE-pr8oigFhaL96MvT5VtvA/edit?usp=drivesdk",
+            "https://drive.google.com/file/d/1ewuaR_9I2yNQZFGl7h5WOb2g4PoepiME/view?usp=drivesdk",
+            "https://drive.google.com/file/d/1yTG8szgMS9YkSxtTwLsbNEYxAXqfKxeA/view?usp=drivesdk"
         ],
         "OSS Directory": "Not Found",
         "Slugs: Payout Address": [],
@@ -2305,8 +2366,8 @@
         "Slugs: Contract Address": [],
         "Slugs: Github": [
             "arbiter-primitivefinance",
-            "revm-bluealloy",
-            "reth-paradigmxyz"
+            "reth-paradigmxyz",
+            "revm-bluealloy"
         ],
         "Slug: Primary": null
     },
@@ -2665,8 +2726,8 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [
-            "spearbit-portfolio",
-            "solady-vectorized"
+            "solady-vectorized",
+            "spearbit-portfolio"
         ],
         "Slug: Primary": "spearbit-portfolio"
     },
@@ -3240,6 +3301,92 @@
         ],
         "Impact Metrics": [
             "https://polygonscan.com/address/0x0D9ea891B4C30e17437D00151399990ED7965F00"
+        ],
+        "OSS Directory": "Not Found",
+        "Slugs: Payout Address": [],
+        "Slugs: Attester Address": [],
+        "Slugs: Contract Address": [],
+        "Slugs: Github": [],
+        "Slug: Primary": null
+    },
+    {
+        "Project ID": "0x4384f12001b8b7bcbf3abe9d0a354378851b34f68634ef0e9cec92152c18c1c2",
+        "Project Name": "Inbest Program",
+        "Applicant Type": "PROJECT",
+        "Date": 1695164352,
+        "Attester Address": "0x0263E43c0dE253a0fe354b60d35D2855c514a887",
+        "Payout Address": "0x0263E43c0dE253a0fe354b60d35D2855c514a887",
+        "Link": "https://content.optimism.io/rpgf3Application/v0/metadata/10/0x0263E43c0dE253a0fe354b60d35D2855c514a887.json",
+        "Tags": [
+            "COLLECTIVE_GOVERNANCE",
+            "END_USER_EXPERIENCE_AND_ADOPTION"
+        ],
+        "Contributions: Github": [],
+        "Contributions: Contracts": [],
+        "Contributions: Other": [
+            "https://youtu.be/NPpgLAZmEZY?si=OY7RV5GAtVlktLId",
+            "https://youtu.be/xEzsZl8mYz8?si=dezvjtfPiJFL6CdA",
+            "https://youtu.be/bqyT1G5KiDE?si=mxxyejxVrZCSiYIw",
+            "https://ethereum.cr/day"
+        ],
+        "Impact Metrics": [
+            "https://drive.google.com/file/d/1oslqvCZxy2m5DsfnpqZBCx4EJG3h7RnS/view?usp=drive_link",
+            "https://twitter.com/EthereumCR/status/1715012474595057789"
+        ],
+        "OSS Directory": "Not Found",
+        "Slugs: Payout Address": [],
+        "Slugs: Attester Address": [],
+        "Slugs: Contract Address": [],
+        "Slugs: Github": [],
+        "Slug: Primary": null
+    },
+    {
+        "Project ID": "0x43c2a0d6e5bebcd7eae364a99b53dbc985b05447350828bd6e15db92bc27a8ae",
+        "Project Name": "ZEFIRIUM",
+        "Applicant Type": "INDIVIDUAL",
+        "Date": 1697633382,
+        "Attester Address": "0x908cd00EEd3Cda9Cf4a5d4fBbAE7DA327AC5C3Dd",
+        "Payout Address": "0x908cd00EEd3Cda9Cf4a5d4fBbAE7DA327AC5C3Dd",
+        "Link": "https://content.optimism.io/rpgf3Application/v0/metadata/10/0x908cd00EEd3Cda9Cf4a5d4fBbAE7DA327AC5C3Dd.json",
+        "Tags": [
+            "END_USER_EXPERIENCE_AND_ADOPTION"
+        ],
+        "Contributions: Github": [],
+        "Contributions: Contracts": [],
+        "Contributions: Other": [
+            "https://t.me/ZEFIRIUM_CRYPTO/1353",
+            "https://t.me/ZEFIRIUM_CRYPTO/1352",
+            "https://t.me/ZEFIRIUM_CRYPTO/1331",
+            "https://t.me/ZEFIRIUM_CRYPTO/1318",
+            "https://t.me/ZEFIRIUM_CRYPTO/848",
+            "https://t.me/ZEFIRIUM_CRYPTO/1298",
+            "https://t.me/ZEFIRIUM_CRYPTO/931",
+            "https://t.me/ZEFIRIUM_CRYPTO/1204",
+            "https://t.me/ZEFIRIUM_CRYPTO/1128",
+            "https://t.me/ZEFIRIUM_CRYPTO/1116",
+            "https://t.me/ZEFIRIUM_CRYPTO/1048",
+            "https://t.me/ZEFIRIUM_CRYPTO/1043",
+            "https://t.me/ZEFIRIUM_CRYPTO/1016",
+            "https://t.me/ZEFIRIUM_CRYPTO/1014",
+            "https://t.me/ZEFIRIUM_CRYPTO/994",
+            "https://t.me/ZEFIRIUM_CRYPTO/986",
+            "https://t.me/ZEFIRIUM_CRYPTO/981",
+            "https://t.me/ZEFIRIUM_CRYPTO/977",
+            "https://t.me/ZEFIRIUM_CRYPTO/950",
+            "https://t.me/ZEFIRIUM_CRYPTO/813",
+            "https://t.me/ZEFIRIUM_CRYPTO/804",
+            "https://t.me/ZEFIRIUM_CRYPTO/778",
+            "https://t.me/ZEFIRIUM_CRYPTO/734",
+            "https://t.me/ZEFIRIUM_CRYPTO/723",
+            "https://t.me/ZEFIRIUM_CRYPTO/676",
+            "https://t.me/ZEFIRIUM_CRYPTO/575",
+            "https://t.me/ZEFIRIUM_CRYPTO/521",
+            "https://t.me/ZEFIRIUM_CRYPTO/438",
+            "https://www.youtube.com/watch?v=M2JOfyiaCSI&t=1521s",
+            "https://www.youtube.com/watch?v=cn9vYWDkN6M&t=637s"
+        ],
+        "Impact Metrics": [
+            "https://by.tgstat.com/channel/@ZEFIRIUM_CRYPTO/stat"
         ],
         "OSS Directory": "Not Found",
         "Slugs: Payout Address": [],
@@ -4104,8 +4251,8 @@
         ],
         "Slugs: Contract Address": [],
         "Slugs: Github": [
-            "wagmi-dev",
-            "solady-vectorized"
+            "solady-vectorized",
+            "wagmi-dev"
         ],
         "Slug: Primary": null
     },
@@ -4135,6 +4282,41 @@
             "https://drive.google.com/file/d/1pwNedGjdj7SCJ__iSCWacfwscxbsZctf/view?usp=sharing",
             "https://www.web3native.co/grants",
             "https://www.web3native.co/web3-vc"
+        ],
+        "OSS Directory": "Not Found",
+        "Slugs: Payout Address": [],
+        "Slugs: Attester Address": [],
+        "Slugs: Contract Address": [],
+        "Slugs: Github": [],
+        "Slug: Primary": null
+    },
+    {
+        "Project ID": "0x50eacddd935ff1aac3538b5e6d9ce744c136259b49521f9d02ca4c01d3c64fef",
+        "Project Name": "Hitasyurek",
+        "Applicant Type": "INDIVIDUAL",
+        "Date": 1697967410,
+        "Attester Address": "0x4830764Cb1252Fc7553231E2FBF5b09961a29c59",
+        "Payout Address": "0x4830764Cb1252Fc7553231E2FBF5b09961a29c59",
+        "Link": "https://content.optimism.io/rpgf3Application/v0/metadata/10/0x4830764Cb1252Fc7553231E2FBF5b09961a29c59.json",
+        "Tags": [
+            "END_USER_EXPERIENCE_AND_ADOPTION"
+        ],
+        "Contributions: Github": [],
+        "Contributions: Contracts": [],
+        "Contributions: Other": [
+            "https://twitter.com/hitasyurek/status/1700539495165374814",
+            "https://www.youtube.com/watch?v=HJdMHdSVXgM&t=2s",
+            "https://www.youtube.com/watch?v=3FH1zuljiMI",
+            "https://twitter.com/hitasyurek/status/1689610055459749889",
+            "https://twitter.com/hitasyurek/status/1563848203065298945",
+            "https://www.youtube.com/watch?v=5sO_JW_XzpE",
+            "https://www.youtube.com/watch?v=hDzmnddr-IM",
+            "https://www.youtube.com/watch?v=vTg7x-aaPWo",
+            "https://www.youtube.com/watch?v=FuN9Txhq0Bw&t=57s",
+            "https://www.youtube.com/watch?v=Un62h_umtUs&t=93s"
+        ],
+        "Impact Metrics": [
+            "https://docs.google.com/spreadsheets/d/1Fd9Vi2aMFLATKWD_SIK2oPoaR91Y8AkZeQSNUIHlgPs/edit?usp=sharing"
         ],
         "OSS Directory": "Not Found",
         "Slugs: Payout Address": [],
@@ -4181,6 +4363,40 @@
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
         "Slug: Primary": null
+    },
+    {
+        "Project ID": "0x52f7491efe1ee24db5a3d2f6a988d7f575e4818666e7c1e86133d6975de2a255",
+        "Project Name": "NFTEarth",
+        "Applicant Type": "PROJECT",
+        "Date": 1697763768,
+        "Attester Address": "0xD131F1BcDd547e067Af447dD3C36C99d6be9FdEB",
+        "Payout Address": "0xD131F1BcDd547e067Af447dD3C36C99d6be9FdEB",
+        "Link": "https://content.optimism.io/rpgf3Application/v0/metadata/10/0xD131F1BcDd547e067Af447dD3C36C99d6be9FdEB.json",
+        "Tags": [
+            "END_USER_EXPERIENCE_AND_ADOPTION"
+        ],
+        "Contributions: Github": [],
+        "Contributions: Contracts": [
+            "https://optimistic.etherscan.io/address/0xfa1c8cd6b3a5ead9499b8d09f9747c4068f88f37",
+            "https://optimistic.etherscan.io/address/0x90baa8714afc2089ed4c9afb21707fea6fc82157"
+        ],
+        "Contributions: Other": [],
+        "Impact Metrics": [
+            "https://optimistic.etherscan.io/address/0xfa1c8cd6b3a5ead9499b8d09f9747c4068f88f37",
+            "https://optimistic.etherscan.io/address/0x90baa8714afc2089ed4c9afb21707fea6fc82157"
+        ],
+        "OSS Directory": "Address Found",
+        "Slugs: Payout Address": [
+            "nftearth"
+        ],
+        "Slugs: Attester Address": [
+            "nftearth"
+        ],
+        "Slugs: Contract Address": [
+            "nftearth"
+        ],
+        "Slugs: Github": [],
+        "Slug: Primary": "nftearth"
     },
     {
         "Project ID": "0x53f97287b63b1620d39ee5ef5626f87d334796962c4a3b524a59d576ff130bb7",
@@ -7492,6 +7708,44 @@
         "Slug: Primary": "commons-stack"
     },
     {
+        "Project ID": "0x822a558257f7e4e88615addf9431ca06482ba23d105f82950408fd7f53bd13d8",
+        "Project Name": "Alpha Insiders",
+        "Applicant Type": "PROJECT",
+        "Date": 1695155960,
+        "Attester Address": "0x3D1846ea60001A3Bc21438d76f3958422fe89adB",
+        "Payout Address": "0x3d1846ea60001a3bc21438d76f3958422fe89adb",
+        "Link": "https://content.optimism.io/rpgf3Application/v0/metadata/10/0x3D1846ea60001A3Bc21438d76f3958422fe89adB.json",
+        "Tags": [
+            "COLLECTIVE_GOVERNANCE",
+            "END_USER_EXPERIENCE_AND_ADOPTION"
+        ],
+        "Contributions: Github": [],
+        "Contributions: Contracts": [
+            "https://ai.mirror.xyz/nft/0x1f3fb44dc2b40adb34f1a20317fb896cffe82a6a/0"
+        ],
+        "Contributions: Other": [
+            "https://twitter.com/AlphaInsiders/status/1667157508048207873",
+            "https://twitter.com/AlphaInsiders/status/1572292906244784133",
+            "https://twitter.com/AlphaInsiders/status/1623768937811918852",
+            "https://twitter.com/AlphaInsiders/status/1659544465923612672",
+            "https://twitter.com/AlphaInsiders/status/1577992012250357766",
+            "https://twitter.com/AlphaInsiders/status/1696188024831320430",
+            "https://twitter.com/AlphaInsiders/status/1588259604357844994",
+            "https://twitter.com/AlphaInsiders/status/1697664908169470081",
+            "https://twitter.com/AlphaInsiders"
+        ],
+        "Impact Metrics": [
+            "https://twitter.com/AlphaInsiders",
+            "https://ai.mirror.xyz/ng2r40bZ1Fv0-pvSf5igZ3qpXESlzn2Z17qrgJz5dt4"
+        ],
+        "OSS Directory": "Not Found",
+        "Slugs: Payout Address": [],
+        "Slugs: Attester Address": [],
+        "Slugs: Contract Address": [],
+        "Slugs: Github": [],
+        "Slug: Primary": null
+    },
+    {
         "Project ID": "0x830b1298ed3f8504a0b04b1a7371257b9a98c165e73d6cb557d82fcb7d5f25cc",
         "Project Name": "ReFi Medell\u00edn",
         "Applicant Type": "PROJECT",
@@ -7859,6 +8113,37 @@
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
         "Slug: Primary": "decent"
+    },
+    {
+        "Project ID": "0x8a952a834ff9186399c06935ffcdff482fb38b38808a7419fc415ad307a2e69b",
+        "Project Name": "AyohTunde",
+        "Applicant Type": "INDIVIDUAL",
+        "Date": 1697886507,
+        "Attester Address": "0xbA8D6600F02CD4Abd93eC63Eb99463a18aC75004",
+        "Payout Address": "0x7Fd303c53831f4a555bF419614Cb0BAb305c358c",
+        "Link": "https://content.optimism.io/rpgf3Application/v0/metadata/10/0xbA8D6600F02CD4Abd93eC63Eb99463a18aC75004.json",
+        "Tags": [
+            "END_USER_EXPERIENCE_AND_ADOPTION"
+        ],
+        "Contributions: Github": [],
+        "Contributions: Contracts": [],
+        "Contributions: Other": [
+            "https://mirror.xyz/ayohtunde.eth",
+            "https://docs.google.com/document/d/16RjnEsAFOM6JAWfrzvWBzHnyfRgmuv93n9AAnfEYU1w/edit?usp=sharing",
+            "https://docs.google.com/document/d/11jY9ZlRzj3tvxpArnNY_jOf8thJE7OMPjyDdDW9VXkU/edit?usp=sharing"
+        ],
+        "Impact Metrics": [
+            "https://mirror.xyz/ayohtunde.eth",
+            "https://docs.google.com/document/d/16RjnEsAFOM6JAWfrzvWBzHnyfRgmuv93n9AAnfEYU1w/edit?usp=sharing",
+            "https://docs.google.com/document/d/11jY9ZlRzj3tvxpArnNY_jOf8thJE7OMPjyDdDW9VXkU/edit?usp=sharing",
+            "https://t.me/OptimismAlphaHub"
+        ],
+        "OSS Directory": "Not Found",
+        "Slugs: Payout Address": [],
+        "Slugs: Attester Address": [],
+        "Slugs: Contract Address": [],
+        "Slugs: Github": [],
+        "Slug: Primary": null
     },
     {
         "Project ID": "0x8b7c072535aef80e3f2c2020327fb7975aaaf3a9aa39d843b947e8fd7fc70e64",
@@ -8234,6 +8519,77 @@
         "Slug: Primary": "buidlguidl"
     },
     {
+        "Project ID": "0x90a0df94274a3baadba6bad013350182cf13c31242fc318e25ff8e2ca84ae2a9",
+        "Project Name": "Covalent",
+        "Applicant Type": "PROJECT",
+        "Date": 1697835277,
+        "Attester Address": "0x58ba29F7b72B896c5F8faE603DaB7891106b1701",
+        "Payout Address": "0xE7bfc6f9a6D1be6B636Fb5062AcA836b56f0cc63",
+        "Link": "https://content.optimism.io/rpgf3Application/v0/metadata/10/0x58ba29F7b72B896c5F8faE603DaB7891106b1701.json",
+        "Tags": [
+            "DEVELOPER_ECOSYSTEM",
+            "END_USER_EXPERIENCE_AND_ADOPTION",
+            "OP_STACK"
+        ],
+        "Contributions: Github": [
+            "https://github.com/covalenthq"
+        ],
+        "Contributions: Contracts": [],
+        "Contributions: Other": [
+            "https://www.covalenthq.com/docs/api/",
+            "https://www.covalenthq.com/platform/increment/#/",
+            "https://www.covalenthq.com/platform/faucet/",
+            "https://www.covalenthq.com/docs/networks/optimism/",
+            "https://www.covalenthq.com/docs/networks/base/",
+            "https://www.covalenthq.com/docs/networks/zora/",
+            "https://www.covalenthq.com/docs/networks/public-goods-network/",
+            "https://www.covalenthq.com/docs/networks/mode-testnet/",
+            "https://www.covalenthq.com/docs/networks/opbnb/",
+            "https://www.covalenthq.com/docs/networks/mantle/",
+            "https://www.covalenthq.com/docs/networks/metis/",
+            "https://www.covalenthq.com/docs/networks/boba-ethereum/",
+            "https://www.covalenthq.com/docs/networks/kinto-testnet/",
+            "https://www.covalenthq.com/docs/networks/loot-chain/",
+            "https://www.covalenthq.com/blog/ethglobal-s-superhack-5k-in-prizes-and-32-unique-submissions/",
+            "https://twitter.com/optimismFND/status/1707830928825868519",
+            "https://www.covalenthq.com/blog/op/",
+            "https://youtu.be/t6xmgT40am8?si=qW85z_pNELBIFvYM",
+            "https://twitter.com/Covalent_HQ/status/1641487148913418241",
+            "https://www.covalenthq.com/blog/arbitrum-and-optimism/",
+            "https://youtu.be/cZbKm1G4LIo?si=bE-Rq0J_9v6gcfCA",
+            "https://twitter.com/BuildOnBase/status/1628759589243035648",
+            "https://twitter.com/davidtsocy/status/1701784836346617929",
+            "https://twitter.com/optimismFND/status/1667305591675691008",
+            "https://www.covalenthq.com/data-alchemist/"
+        ],
+        "Impact Metrics": [
+            "https://docs.google.com/spreadsheets/d/1kp97EGYaUUdyI_PyVaIeGaIbweVj-36ulqvcI_jA08k/edit#gid=2109951634",
+            "https://docs.google.com/spreadsheets/d/1kp97EGYaUUdyI_PyVaIeGaIbweVj-36ulqvcI_jA08k/edit#gid=2050757002",
+            "https://www.covalenthq.com/blog/ethglobal-s-superhack-5k-in-prizes-and-32-unique-submissions/",
+            "https://docs.google.com/spreadsheets/d/19ThLnjmWE-lEPmKu4DSjRZrzZIIlka2czVEbmng8qOk/edit#gid=168728065",
+            "https://docs.google.com/spreadsheets/d/116v4I5yR7M1DksuWgwPrhe9rlOUin1Jl9z_rECsH_ow/edit?usp=sharing",
+            "https://goerli-optimism.etherscan.io/txs?a=0x8fd7b6da245d25c45ec8d3822e507536141234e1&p=7",
+            "https://goerli.basescan.org/txs?a=0x8fd7b6da245d25c45ec8d3822e507536141234e1&p=0",
+            "https://optimistic.etherscan.io/",
+            "https://basescan.org/",
+            "https://explorer.zora.energy/",
+            "https://explorer.publicgoods.network/",
+            "https://sepolia.explorer.mode.network/",
+            "https://twitter.com/Covalent_HQ/status/1707449987414819075",
+            "https://twitter.com/Covalent_HQ/status/1641487148913418241"
+        ],
+        "OSS Directory": "Address & Github Found",
+        "Slugs: Payout Address": [
+            "covalenthq"
+        ],
+        "Slugs: Attester Address": [],
+        "Slugs: Contract Address": [],
+        "Slugs: Github": [
+            "covalenthq"
+        ],
+        "Slug: Primary": "covalenthq"
+    },
+    {
         "Project ID": "0x90e526cef4cd77bfe4db1564426afc54b633f47bb2a47cda7c5c99674d0a2183",
         "Project Name": "Mike-Alphaday",
         "Applicant Type": "PROJECT",
@@ -8564,8 +8920,8 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [
-            "itu-blockchain",
-            "go-ethereum"
+            "go-ethereum",
+            "itu-blockchain"
         ],
         "Slug: Primary": "itu-blockchain"
     },
@@ -9456,6 +9812,44 @@
         "Slug: Primary": null
     },
     {
+        "Project ID": "0xa6fd2210371758e071a147fc9bec7fe46854456c944996fade17c58eaa8c48a2",
+        "Project Name": "borderless",
+        "Applicant Type": "INDIVIDUAL",
+        "Date": 1697790287,
+        "Attester Address": "0xE53F4d44c45dBc16a20aB64f8a8B4404dDbBefEC",
+        "Payout Address": "0xe53f4d44c45dbc16a20ab64f8a8b4404ddbbefec",
+        "Link": "https://content.optimism.io/rpgf3Application/v0/metadata/10/0xE53F4d44c45dBc16a20aB64f8a8B4404dDbBefEC.json",
+        "Tags": [
+            "END_USER_EXPERIENCE_AND_ADOPTION"
+        ],
+        "Contributions: Github": [],
+        "Contributions: Contracts": [],
+        "Contributions: Other": [
+            "https://www.youtube.com/@in_habitants",
+            "https://www.bonfire.xyz/bord",
+            "https://inhabitants.zone",
+            "https://debank.com/profile/0xe53f4d44c45dbc16a20ab64f8a8b4404ddbbefec",
+            "https://mirror.xyz/inhabitants.eth/qfqAEIDovdsPosegLM7XTgZTAITIZwscrT-y0FVclDk",
+            "https://www.sound.xyz/inhabitants",
+            "https://globalcomix.com/browse/en/?sort=popular&sd=365",
+            "https://www.webtoons.com/en/canvas/inhabitants/list?title_no=782434",
+            "https://inhabitants.zone/chatAI",
+            "https://metaadastra.com/",
+            "https://www.amazon.com/stores/inhabitants-zone/author/B0BFNY31YZ?ref=ap_rdr&store_ref=ap_rdr&isDramIntegrated=true&shoppingPortalEnabled=true",
+            "https://borderl.substack.com/",
+            "https://layer3.xyz/bord.eth"
+        ],
+        "Impact Metrics": [
+            "https://www.figma.com/file/H14gR7fB9oxmq3N2yd2h6k/Optimism-path?type=whiteboard&node-id=0%3A1&t=1zgLvsH6ubvNCteb-1"
+        ],
+        "OSS Directory": "Not Found",
+        "Slugs: Payout Address": [],
+        "Slugs: Attester Address": [],
+        "Slugs: Contract Address": [],
+        "Slugs: Github": [],
+        "Slug: Primary": null
+    },
+    {
         "Project ID": "0xa97c448ca6377c5fa57fcfb2a4acf93b707164702f8cc3dc2b4ad8dfb5ecb9a8",
         "Project Name": "Verso",
         "Applicant Type": "PROJECT",
@@ -9615,6 +10009,50 @@
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
         "Slug: Primary": "zeroknowledgefm"
+    },
+    {
+        "Project ID": "0xad533925a428c7a85a0c69be650285c01feecc1d6eaa75ab47f96be1d8db811c",
+        "Project Name": "Cryptomind Research",
+        "Applicant Type": "PROJECT",
+        "Date": 1697519412,
+        "Attester Address": "0x20958ed81d32f79FCA6eda9A5364AE7908a60D5D",
+        "Payout Address": "0x20958ed81d32f79fca6eda9a5364ae7908a60d5d",
+        "Link": "https://content.optimism.io/rpgf3Application/v0/metadata/10/0x20958ed81d32f79FCA6eda9A5364AE7908a60D5D.json",
+        "Tags": [
+            "END_USER_EXPERIENCE_AND_ADOPTION"
+        ],
+        "Contributions: Github": [],
+        "Contributions: Contracts": [],
+        "Contributions: Other": [
+            "https://docs.google.com/presentation/d/1suinyrIsvO7-rhBIVGyVSbVzE7LeJ8gY1aEW5nTOGFU/edit?usp=sharing",
+            "https://cryptomind.group/research/an-introduction-to-the-optimism/",
+            "https://cryptomind.group/research/ethereum-layer-2/",
+            "https://cryptomind.group/research/synthetix-deepdive/",
+            "https://cryptomind.group/research/pendle-finance-deep-dive/",
+            "https://cryptomind.group/research/mantle-network-potential-disruptor-in-the-rollup-ecosystem-2/",
+            "https://twitter.com/CMResearchTeams/status/1658852543626203137",
+            "https://twitter.com/CMResearchTeams/status/1670978455394189312",
+            "https://www.youtube.com/watch?v=Z99YJLSCV4E",
+            "https://www.youtube.com/watch?v=52QERVJstcU",
+            "https://www.youtube.com/watch?v=HwH4f_ZoTTw&pp=ygUYY3J5cHRvbWluZCByZXNlYXJjaCB0YWxr",
+            "https://www.blockchain-th.com/",
+            "https://cryptomind.group/research/",
+            "https://www.youtube.com/@CryptomindGroup/featured",
+            "https://www.facebook.com/CryptomindResearch",
+            "https://twitter.com/CMResearchTeams"
+        ],
+        "Impact Metrics": [
+            "https://cryptomind.group/research/",
+            "https://twitter.com/CMResearchTeams",
+            "https://www.facebook.com/CryptomindResearch",
+            "https://www.youtube.com/@CryptomindGroup/featured"
+        ],
+        "OSS Directory": "Not Found",
+        "Slugs: Payout Address": [],
+        "Slugs: Attester Address": [],
+        "Slugs: Contract Address": [],
+        "Slugs: Github": [],
+        "Slug: Primary": null
     },
     {
         "Project ID": "0xad58a1e8a62acd6e69bb570e7dc3aa85b93712d01f881842c77bc78cc713b51a",
@@ -10861,8 +11299,8 @@
         ],
         "Slugs: Contract Address": [],
         "Slugs: Github": [
-            "curve",
-            "vyperlang"
+            "vyperlang",
+            "curve"
         ],
         "Slug: Primary": null
     },
@@ -13105,6 +13543,38 @@
         "Slug: Primary": "goerli-eth-clients"
     },
     {
+        "Project ID": "0xe5caec525a57cf728ac3c3bc5d00814e036b46d54863affd671ee9475aee3185",
+        "Project Name": "ruslanklinkov",
+        "Applicant Type": "INDIVIDUAL",
+        "Date": 1697906912,
+        "Attester Address": "0xC3e8aC233f02d13C1E299e47aE230C205E0177Ed",
+        "Payout Address": "0xC3e8aC233f02d13C1E299e47aE230C205E0177Ed",
+        "Link": "https://content.optimism.io/rpgf3Application/v0/metadata/10/0xC3e8aC233f02d13C1E299e47aE230C205E0177Ed.json",
+        "Tags": [
+            "COLLECTIVE_GOVERNANCE",
+            "END_USER_EXPERIENCE_AND_ADOPTION"
+        ],
+        "Contributions: Github": [],
+        "Contributions: Contracts": [],
+        "Contributions: Other": [
+            "https://app.thrivecoin.com/communities/thank-optimism",
+            "https://vote.optimism.io/delegate/suckmydiscoteque.eth"
+        ],
+        "Impact Metrics": [
+            "https://t.me/ruslan_klinkov/1166",
+            "https://t.me/ruslan_klinkov/1284",
+            "https://t.me/ruslan_klinkov/1130",
+            "https://t.me/ruslan_klinkov/1118",
+            "https://t.me/ruslan_klinkov/1170"
+        ],
+        "OSS Directory": "Not Found",
+        "Slugs: Payout Address": [],
+        "Slugs: Attester Address": [],
+        "Slugs: Contract Address": [],
+        "Slugs: Github": [],
+        "Slug: Primary": null
+    },
+    {
         "Project ID": "0xe6574c578f8b9716459501f43d66f1bb042f7cc52799cd12541cc38d1f198e95",
         "Project Name": "Bankless Japan",
         "Applicant Type": "PROJECT",
@@ -13428,8 +13898,8 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [
-            "defi-wonderland",
-            "smock-defi-wonderland"
+            "smock-defi-wonderland",
+            "defi-wonderland"
         ],
         "Slug: Primary": "defi-wonderland"
     },
@@ -14615,9 +15085,9 @@
         "Slugs: Contract Address": [],
         "Slugs: Github": [
             "revm-bluealloy",
-            "foundry",
+            "reth-paradigmxyz",
             "hardhat-nomicfoundation",
-            "reth-paradigmxyz"
+            "foundry"
         ],
         "Slug: Primary": "revm-bluealloy"
     },
@@ -15454,8 +15924,8 @@
         ],
         "Slugs: Contract Address": [],
         "Slugs: Github": [
-            "opti-domains",
-            "wagmi-dev"
+            "wagmi-dev",
+            "opti-domains"
         ],
         "Slug: Primary": "opti-domains"
     },
@@ -16760,6 +17230,39 @@
         ],
         "Impact Metrics": [
             "https://dune.com/masroor"
+        ],
+        "OSS Directory": "Not Found",
+        "Slugs: Payout Address": [],
+        "Slugs: Attester Address": [],
+        "Slugs: Contract Address": [],
+        "Slugs: Github": [],
+        "Slug: Primary": null
+    },
+    {
+        "Project ID": "0x429fdc971ff256533f64251d95766289867dd85973a54b52805c524b34e9643a",
+        "Project Name": "OPChainList",
+        "Applicant Type": "PROJECT",
+        "Date": 1698009943,
+        "Attester Address": "0xe50f414e24e4132Df617Bd74Ea5e04bb9364d181",
+        "Payout Address": "0x94761Ba9bE9C77F337Fd374f7b405a30A44723a7",
+        "Link": "https://content.optimism.io/rpgf3Application/v0/metadata/10/0xe50f414e24e4132Df617Bd74Ea5e04bb9364d181.json",
+        "Tags": [
+            "END_USER_EXPERIENCE_AND_ADOPTION",
+            "OP_STACK"
+        ],
+        "Contributions: Github": [],
+        "Contributions: Contracts": [],
+        "Contributions: Other": [
+            "https://opchainlist.com/1",
+            "https://opchainlist.com/2",
+            "https://opchainlist.com/interviews/15",
+            "https://docs.google.com/document/d/1AE60bzB0u4OgAl9mWVr8a8oZURWx-FOGsbS7nVPRgDo/edit?usp=sharing"
+        ],
+        "Impact Metrics": [
+            "https://docs.google.com/document/d/1K3R0rt2jl7__hQ8iEjl62B0Nft90QYz3hNU8MtDmabw/edit?usp=sharing",
+            "https://docs.google.com/document/d/1R78Bz1SLFpTe8z9BjHaWqpxDIHrv4MHh2fCeF3nuFA4/edit?usp=sharing",
+            "https://opchainlist.com/",
+            "https://docs.google.com/document/d/1D9sVJ_QMbFdOwEfeyPVeHPZoJVfNKMw2sf_0bOLRoMY/edit?usp=sharing"
         ],
         "OSS Directory": "Not Found",
         "Slugs: Payout Address": [],
@@ -18882,8 +19385,8 @@
         ],
         "Slugs: Contract Address": [],
         "Slugs: Github": [
-            "crypto-fees-dmihal",
-            "crypto-stats"
+            "crypto-stats",
+            "crypto-fees-dmihal"
         ],
         "Slug: Primary": "crypto-stats"
     },
@@ -18980,8 +19483,8 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [
-            "nimbus-status-im",
-            "status-im"
+            "status-im",
+            "nimbus-status-im"
         ],
         "Slug: Primary": "nimbus-status-im"
     },
@@ -19590,6 +20093,74 @@
         "Slug: Primary": "kwenta"
     },
     {
+        "Project ID": "0x58e1ffb5f013ddd4e2115550c407e0e4bebc2a797273f6582f49d6ba755aaa48",
+        "Project Name": "International Media Nodes (IMN)",
+        "Applicant Type": "PROJECT",
+        "Date": 1698080776,
+        "Attester Address": "0xACEdF0B670DB56Da6731E52841CEa7666D02Ec41",
+        "Payout Address": "0x918cEB96DeEaBa2Db06b18d7FC8F52FE0a206040",
+        "Link": "https://content.optimism.io/rpgf3Application/v0/metadata/10/0xACEdF0B670DB56Da6731E52841CEa7666D02Ec41.json",
+        "Tags": [
+            "COLLECTIVE_GOVERNANCE",
+            "OP_STACK"
+        ],
+        "Contributions: Github": [],
+        "Contributions: Contracts": [],
+        "Contributions: Other": [
+            "https://twitter.com/IMNbankless",
+            "https://twitter.com/BanklessCN",
+            "https://www.instagram.com/bankless_tamil/"
+        ],
+        "Impact Metrics": [
+            "https://www.instagram.com/reel/CwZy_1IPURK/?utm_source=ig_web_copy_link&igshid=MzRlODBiNWFlZA==",
+            "https://youtu.be/_P3EwudPdRs?si=bpbk-_DhSRhKhsX1",
+            "https://www.instagram.com/reel/CwRhDGRriyB/?utm_source=ig_web_copy_link&igshid=MzRlODBiNWFlZA==",
+            "https://www.youtube.com/watch?v=cUjr-BmmQTg",
+            "https://www.instagram.com/reel/Cv4EW-Yp-qd/?utm_source=ig_web_copy_link&igshid=MzRlODBiNWFlZA==",
+            "https://youtu.be/cpfp8CZWE88",
+            "https://youtu.be/A2y5MEcCnuQ?si=ThhuhfGVGuBa9A7a",
+            "https://twitter.com/Bankless_Tamil/status/1694972533127463060",
+            "https://www.instagram.com/reel/CwdcoEvvufH/?utm_source=ig_web_copy_link&igshid=MzRlODBiNWFlZA== ",
+            "https://twitter.com/Bankless_Tamil/status/1695465618416574872?s=20",
+            "https://youtu.be/GaIpWQJAIAg",
+            "https://www.instagram.com/reel/CxDjPuor0MP/?utm_source=ig_web_copy_link&igshid=MzRlODBiNWFlZA==",
+            "https://youtu.be/Jb0OOVKaIiE?si=ZDF2Ye0YDkE5HPOx",
+            "https://twitter.com/Bankless_Tamil/status/1704273878468706805?t=O0mn2yhyb9j0TOVKCRgHjw&s=19",
+            "https://youtu.be/1jRU0imVMkM",
+            "https://x.com/Bankless_Tamil/status/1706736392867660105?s=20",
+            "https://x.com/Bankless_Tamil/status/1706581658001195015?s=20",
+            "https://twitter.com/Bankless_Tamil/status/1692537475431010329",
+            "https://twitter.com/Bankless_Tamil/status/1694429304837566748",
+            "https://x.com/Bankless_Tamil/status/1694429609826353643?s=20",
+            "https://twitter.com/Bankless_Tamil/status/1694430091030532441",
+            "https://youtu.be/ZU7vgp9Ygv0?si=JUHTyJnN_Eq3pH7N",
+            "https://twitter.com/BanklessCN/status/1684457667182440449",
+            "https://0xbanklesscn.substack.com/p/l2?sd=pf",
+            "https://twitter.com/BanklessCN/status/1687002805327085568",
+            "https://0xbanklesscn.substack.com/p/optimism-b29",
+            "https://twitter.com/BanklessCN/status/1682257112741855232",
+            "https://0xbanklesscn.substack.com/p/optimism-l2",
+            "https://0xbanklesscn.substack.com/p/law-of-chains",
+            "https://twitter.com/BanklessCN/status/1696074733333450757",
+            "https://twitter.com/BanklessCN/status/1704309611837407590",
+            "https://0xbanklesscn.substack.com/p/op-l2",
+            "https://twitter.com/BanklessCN/status/1706913639134081152",
+            "https://0xbanklesscn.substack.com/p/optimism-retropgf-l2",
+            "https://twitter.com/BanklessCN/status/1708760079535939743",
+            "https://0xbanklesscn.substack.com/p/optimism-dao",
+            "https://twitter.com/BanklessCN/status/1710142852360208521",
+            "https://twitter.com/BanklessCN/status/1710141511084699682"
+        ],
+        "OSS Directory": "Address Found",
+        "Slugs: Payout Address": [
+            "banklessdao"
+        ],
+        "Slugs: Attester Address": [],
+        "Slugs: Contract Address": [],
+        "Slugs: Github": [],
+        "Slug: Primary": "banklessdao"
+    },
+    {
         "Project ID": "0x5c6601dfaab3603567d35888988d2588444d2f4d009ee16f1ba5ce1ad8036c9c",
         "Project Name": "Crypto Fundraising",
         "Applicant Type": "PROJECT",
@@ -20152,6 +20723,87 @@
             "socket"
         ],
         "Slug: Primary": "socket"
+    },
+    {
+        "Project ID": "0xcc6eced5cb10ded4e141ba2cb6a4d73a9392ff57123e8f3f5e0ffdebd4f7177b",
+        "Project Name": "Blue Norva",
+        "Applicant Type": "PROJECT",
+        "Date": 1698082012,
+        "Attester Address": "0xb1c290787c03142E4696B67dA31606e2482a6559",
+        "Payout Address": "0xb1c290787c03142E4696B67dA31606e2482a6559",
+        "Link": "https://content.optimism.io/rpgf3Application/v0/metadata/10/0xb1c290787c03142E4696B67dA31606e2482a6559.json",
+        "Tags": [
+            "END_USER_EXPERIENCE_AND_ADOPTION"
+        ],
+        "Contributions: Github": [],
+        "Contributions: Contracts": [
+            "https://optimistic.etherscan.io/address/0x2e1d6149dbeb8b4c4cd4f18e744568a2244f0332"
+        ],
+        "Contributions: Other": [
+            "https://medium.com/@bluenorva/blue-norva-a-new-way-for-gamers-to-earn-b85f9ae7e0bf"
+        ],
+        "Impact Metrics": [
+            "https://optimistic.etherscan.io/token/0xa50b23cdfb2ec7c590e84f403256f67ce6dffb84",
+            "https://optimistic.etherscan.io/token/0xa50b23cdfb2ec7c590e84f403256f67ce6dffb84",
+            "https://optimistic.etherscan.io/token/0xac16e8e35874dc3ec4bcc5b3d8b3762a7107f326"
+        ],
+        "OSS Directory": "Not Found",
+        "Slugs: Payout Address": [],
+        "Slugs: Attester Address": [],
+        "Slugs: Contract Address": [],
+        "Slugs: Github": [],
+        "Slug: Primary": null
+    },
+    {
+        "Project ID": "0xefe128594155a47fd209ddfb9340d0bfb9aa72f7214be78febb9deb80307038d",
+        "Project Name": "Bankless DAO",
+        "Applicant Type": "PROJECT",
+        "Date": 1698084253,
+        "Attester Address": "0x1e3a41F770219e03649b434b4c1E07850DfCFf66",
+        "Payout Address": "0x918cEB96DeEaBa2Db06b18d7FC8F52FE0a206040",
+        "Link": "https://content.optimism.io/rpgf3Application/v0/metadata/10/0x1e3a41F770219e03649b434b4c1E07850DfCFf66.json",
+        "Tags": [
+            "COLLECTIVE_GOVERNANCE",
+            "DEVELOPER_ECOSYSTEM",
+            "END_USER_EXPERIENCE_AND_ADOPTION",
+            "OP_STACK"
+        ],
+        "Contributions: Github": [],
+        "Contributions: Contracts": [],
+        "Contributions: Other": [
+            "https://www.notion.so/Optimism-d34d8bfb42c54c79b469971c4a3383f9",
+            "https://youtube.com/playlist?list=PLxKM96XfN8gBvreQNnmshwobNk9RT8hF2&si=KDSToORKOZInZyEY",
+            "https://www.notion.so/bankless/Bankless-DAO-Inspires-Campaign-592fedf815544935a7861206e1936fc8?pvs=4"
+        ],
+        "Impact Metrics": [
+            "https://twitter.com/banklessDAO/status/1663558864317612042",
+            "https://twitter.com/banklessdao/status/1685944912720621568",
+            "https://twitter.com/banklessDAO/status/1692863882275033219",
+            "https://twitter.com/banklessDAO/status/1697547706753773720?s=20",
+            "https://twitter.com/banklessdao/status/1705142276761022954?s=46&t=FgJsl0WAirv66NuEbPd3OQ",
+            "https://twitter.com/banklessDAO/status/1681015306695655424?t=tu52KErU-nkBd0RRsG3v-A&s=19",
+            "https://twitter.com/banklessDAO/status/1705235083550941685",
+            " https://x.com/banklessDAO/status/1670116160376049665?s=20",
+            " https://x.com/banklessDAO/status/1676480306646519809?s=20",
+            "https://x.com/banklessDAO/status/1702297049465761836?s=20",
+            "https://www.linkedin.com/pulse/from-retropgf-1-retropgf-3-evolving-journey-rich-learnings%3FtrackingId=OvSRtVadQVGTF1l2GeuHeA%253D%",
+            "https://www.linkedin.com/pulse/banklessdaos-global-campaign-spreading-optimism-vision-bankless-dao/",
+            " https://www.instagram.com/reel/Cs_E3rjNvAG/?igshid=MmU2YjMzNjRlOQ==",
+            "https://www.instagram.com/reel/CuXOuU-MR4A/?igshid=MmU2YjMzNjRlOQ==",
+            " https://www.instagram.com/reel/Cu2rHfsRbJT/?igshid=MmU2YjMzNjRlOQ==",
+            "https://www.instagram.com/p/Cs-_WW7AtCf/?igshid=MmU2YjMzNjRlOQ==",
+            "https://www.instagram.com/reel/Cw2xoQvrp7Z/?igshid=YTUzYTFiZDMwYg==",
+            "https://www.instagram.com/p/CujMZn4ADvz/?igshid=MmU2YjMzNjRlOQ==",
+            "https://www.instagram.com/p/CxbjwT1Pf-t/?igshid=MmU2YjMzNjRlOQ=="
+        ],
+        "OSS Directory": "Address Found",
+        "Slugs: Payout Address": [
+            "banklessdao"
+        ],
+        "Slugs: Attester Address": [],
+        "Slugs: Contract Address": [],
+        "Slugs: Github": [],
+        "Slug: Primary": "banklessdao"
     },
     {
         "Project ID": "0xf3526ec21d5b1146008c629fe9837f2c5ab099b1590e28dfb7005c126234fb11",
@@ -22626,6 +23278,32 @@
             "idriss-crypto"
         ],
         "Slug: Primary": "idriss-crypto"
+    },
+    {
+        "Project ID": "0xed15cd4ad689bdda412a7b835ab519c2ce975d1b3b4a59142fb620d6996188f0",
+        "Project Name": "OptimismCIS",
+        "Applicant Type": "PROJECT",
+        "Date": 1698118228,
+        "Attester Address": "0xB5759de539114751CA6dB8D967Ad21913Df25eCF",
+        "Payout Address": "0xB5759de539114751CA6dB8D967Ad21913Df25eCF",
+        "Link": "https://content.optimism.io/rpgf3Application/v0/metadata/10/0xB5759de539114751CA6dB8D967Ad21913Df25eCF.json",
+        "Tags": [
+            "END_USER_EXPERIENCE_AND_ADOPTION"
+        ],
+        "Contributions: Github": [],
+        "Contributions: Contracts": [],
+        "Contributions: Other": [
+            "https://twitter.com/optimismcis"
+        ],
+        "Impact Metrics": [
+            "https://docs.google.com/spreadsheets/d/1Xd3KgDeeN18OmO17fATwOmSxmiLKkEfSupPfJIQc8Ig/edit?usp=sharing"
+        ],
+        "OSS Directory": "Not Found",
+        "Slugs: Payout Address": [],
+        "Slugs: Attester Address": [],
+        "Slugs: Contract Address": [],
+        "Slugs: Github": [],
+        "Slug: Primary": null
     },
     {
         "Project ID": "0xf2fa6ac688020b373c3b7a0342f89986ef1fe95003abb826cfcef3a842bbcb9a",
