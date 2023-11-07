@@ -63,7 +63,7 @@ def create_eas_json(allocation_dict, list_name, list_link, list_descr, list_cate
     }
 
 
-def print_project_list_by_tag(data_path, ):
+def print_project_list_by_tag(data_path):
 
     oso = OsoData(data_path)
     tags = set([y for x in oso.df['Tags'] for y in x])
