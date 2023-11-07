@@ -61,3 +61,14 @@ def create_eas_json(allocation_dict, list_name, list_link, list_descr, list_cate
             {'RPGF3_Application_UID': k, 'OPAmount': v} for k,v in allocation_dict.items()
         ]
     }
+
+
+def print_project_list_by_tag(data_path, ):
+
+    oso = OsoData(data_path)
+    tags = set([y for x in oso.df['Tags'] for y in x])
+    for tag in tags:
+        print(tag)
+        for _,row in oso.df.sort_values(by='Slug: Primary').iterrows():
+            if tag in row['Tags']:
+                print("-",row['Slug: Primary'])
