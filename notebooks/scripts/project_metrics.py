@@ -59,13 +59,13 @@ def timing_decorator(func):
 
 
 @timing_decorator
-def get_rpgf3_slugs():
-    query = """
+def get_slugs_by_collection(collection):
+    query = f"""
         SELECT DISTINCT p.slug
         FROM collection c
         JOIN collection_projects_project cpp ON c."id" = cpp."collectionId"
         JOIN project p on cpp."projectId" = p."id"
-        WHERE c.slug = 'op-rpgf3'
+        WHERE c.slug = '{collection}'
         ORDER BY p.slug;
     """
     return [row[0] for row in execute_query(query, col_names=False)]
@@ -141,8 +141,8 @@ def get_project_stats(slugs_param, start_date):
 
 def generate_snapshot():
 
-    slugs = get_rpgf3_slugs()
-    slugs_param = "'" + "','".join(slugs) + "'"
+    rpgf3_slugs = get_slugs_by_collection('op-rpgf3')
+    slugs_param = "'" + "','".join(rpgf3_slugs) + "'"
 
     start_date = '2023-05-01'
     active_devs_results = get_active_devs(slugs_param, start_date)
@@ -156,8 +156,11 @@ def generate_snapshot():
         project_stats_results[1:], 
         columns=project_stats_results[0]
     ).join(monthly_active_devs, on='slug')
+    date_cols = ['Date First Commit', 'Date First Txn', 'Date First Download']
+    for col in date_cols:
+        df[col] = pd.to_datetime(df[col]).apply(lambda x: x.date())
 
-    df.to_csv(CSV_OUTPATH)
+    df.to_csv(CSV_OUTPATH, index=False)
 
 
 if __name__ == "__main__":

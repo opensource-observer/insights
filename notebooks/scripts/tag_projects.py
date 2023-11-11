@@ -28,6 +28,13 @@ IMPACT_CATEGORIES = {
     'END_USER_EXPERIENCE_AND_ADOPTION': 'End User Experience and Adoption', 
     'OP_STACK': 'OP Stack'
 }
+FUNDING_CATEGORIES = {
+    'RETROPGF_2': 'RPGF2',
+    'RETROPGF_1': 'RPGF1',
+    'PARTNER_FUND': 'Partner Fund',
+    'GOVERNANCE_FUND': 'Governance Fund',
+    'REVENUE': 'Revenue'
+}
 BIGRAMS = {
     ('base', 'chain'): "Base",
     ('base', 'mainnet'): "Base"
@@ -85,11 +92,13 @@ def process_project(project):
         
     narrative = " ".join([project["Bio"], project["Contribution Description"], project["Impact Description"]])
     tags.extend(evaluate_text(narrative, 'Keywords'))
-            
+
+    tags.extend([f"Funding: {FUNDING_CATEGORIES.get(k, 'Other')}" for k in project['Funding Sources']])
+
     project['Tags'] = sorted(list(set(tags)))
 
 
-def main():
+def tag_projects(join_csv=None):
 
     with open(JSON_INPATH) as f:
         data = json.load(f)
@@ -103,8 +112,12 @@ def main():
     df = pd.concat([df[cols], dummies], axis=1)
     df.rename(columns={"Slug: Primary": "OSO Slug"}, inplace=True)
 
+    if join_csv:
+        df2 = pd.read_csv(join_csv)
+        df = df.join(df2.set_index('slug'), on='OSO Slug')
+
     df.to_csv(CSV_OUTPATH, index=False)
     
 
 if __name__ == "__main__":
-    main()    
+    tag_projects(join_csv="data/RPGF3/RPGF3_OSO_project_stats_DRAFT.csv")    
