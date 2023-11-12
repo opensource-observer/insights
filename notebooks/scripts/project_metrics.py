@@ -150,7 +150,8 @@ def generate_snapshot():
 
     months_back = 6
     df_devs = pd.DataFrame(active_devs_results[1:], columns=active_devs_results[0])
-    monthly_active_devs = (df_devs.groupby('slug')['sum'].sum()/months_back).rename('Avg Monthly Active Devs')
+    mads_col_name = 'Avg Monthly Active Devs Last 6 Months'
+    monthly_active_devs = (df_devs.groupby('slug')['sum'].sum()/months_back).rename(mads_col_name)
 
     df = pd.DataFrame(
         project_stats_results[1:], 
@@ -159,6 +160,9 @@ def generate_snapshot():
     date_cols = ['Date First Commit', 'Date First Txn', 'Date First Download']
     for col in date_cols:
         df[col] = pd.to_datetime(df[col]).apply(lambda x: x.date())
+
+    last_github_col_num = df.columns.get_loc('Contributors Last 6 Months')
+    df.insert(last_github_col_num + 1, mads_col_name, df.pop(mads_col_name))
 
     df.to_csv(CSV_OUTPATH, index=False)
 

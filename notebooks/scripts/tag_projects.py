@@ -108,7 +108,7 @@ def tag_projects(join_csv=None):
 
     df = pd.DataFrame(data)
     dummies = df['Tags'].apply(lambda x: ','.join(x)).str.get_dummies(sep=',')
-    cols = ['Project ID', 'Project Name', 'Applicant Type', 'Payout Address', 'Slug: Primary']
+    cols = ['Project ID', 'Project Name', 'Applicant Type', 'Website', 'Bio', 'Payout Address', 'Slug: Primary']
     df = pd.concat([df[cols], dummies], axis=1)
     df.rename(columns={"Slug: Primary": "OSO Slug"}, inplace=True)
 
@@ -116,6 +116,9 @@ def tag_projects(join_csv=None):
         df2 = pd.read_csv(join_csv)
         df = df.join(df2.set_index('slug'), on='OSO Slug')
 
+    df['sort'] = df['Project Name'].apply(lambda x: x.lower().strip())
+    df.sort_values(by='sort', inplace=True)
+    df.drop(columns=['sort'], inplace=True)
     df.to_csv(CSV_OUTPATH, index=False)
     
 
