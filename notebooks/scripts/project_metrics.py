@@ -121,8 +121,8 @@ def get_project_stats(slugs_param, start_date):
             COUNT(DISTINCT CASE WHEN e."typeId" = 25 THEN e."fromId" END) AS "Total Onchain Users",
             COUNT(DISTINCT CASE WHEN e."typeId" = 25 AND e."time" >= '{start_date}' THEN e."fromId" END) AS "Onchain Users Last 6 Months",        
             SUM(CASE WHEN e."typeId" = 25 THEN e."amount"  END) AS "Total Txns",
-            SUM(CASE WHEN e."typeId" = 26 THEN e."amount" / 10e18 END) AS "Total Txn Fees (ETH)",
-            SUM(CASE WHEN e."typeId" = 26 AND e."time" >= '{start_date}' THEN e."amount" / 10e18 END) AS "Txn Fees Last 6 Months (ETH)",
+            SUM(CASE WHEN e."typeId" = 26 THEN e."amount" / 10e17 END) AS "Total Txn Fees (ETH)",
+            SUM(CASE WHEN e."typeId" = 26 AND e."time" >= '{start_date}' THEN e."amount" / 10e17 END) AS "Txn Fees Last 6 Months (ETH)",
 
             COUNT(DISTINCT CASE WHEN a."type" = 'NPM_PACKAGE' THEN a."id" END) AS "# NPM Packages",
             MIN(CASE WHEN e."typeId" = 9 AND e."amount" > 0 THEN e."time" END) AS "Date First Download",
