@@ -31,8 +31,8 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [
-            "go-ethereum",
-            "openethereum"
+            "openethereum",
+            "go-ethereum"
         ],
         "Slug: Primary": null
     },
@@ -1206,8 +1206,8 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [
-            "upnodedev",
-            "roll-op-0xfableorg"
+            "roll-op-0xfableorg",
+            "upnodedev"
         ],
         "Slug: Primary": "upnodedev"
     },
@@ -1334,8 +1334,8 @@
         ],
         "Slugs: Contract Address": [],
         "Slugs: Github": [
-            "snekmate",
-            "curve"
+            "curve",
+            "snekmate"
         ],
         "Slug: Primary": "snekmate"
     },
@@ -1906,11 +1906,11 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [
-            "blocknative",
-            "synpress-synthexio",
             "agoraxyz",
+            "blocknative",
+            "snapshot-labs",
             "lit-protocol",
-            "snapshot-labs"
+            "synpress-synthexio"
         ],
         "Slug: Primary": "synpress-synthexio"
     },
@@ -2820,9 +2820,9 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [
+            "arbiter-primitivefinance",
             "revm-bluealloy",
-            "reth-paradigmxyz",
-            "arbiter-primitivefinance"
+            "reth-paradigmxyz"
         ],
         "Slug: Primary": null
     },
@@ -5041,8 +5041,8 @@
         ],
         "Slugs: Contract Address": [],
         "Slugs: Github": [
-            "solady-vectorized",
-            "wagmi-dev"
+            "wagmi-dev",
+            "solady-vectorized"
         ],
         "Slug: Primary": null
     },
@@ -10599,8 +10599,8 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [
-            "go-ethereum",
-            "itu-blockchain"
+            "itu-blockchain",
+            "go-ethereum"
         ],
         "Slug: Primary": "itu-blockchain"
     },
@@ -10642,7 +10642,7 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [],
-        "Slug: Primary": "gitcoin"
+        "Slug: Primary": null
     },
     {
         "Project ID": "0x8c7bfa1af3e8e0a16c688a3304b534cdc1926b27841623ea3b1990775b09a0fb",
@@ -11124,7 +11124,7 @@
         "Slugs: Github": [
             "gitcoin"
         ],
-        "Slug: Primary": null
+        "Slug: Primary": "gitcoin"
     },
     {
         "Project ID": "0xfa0bb32edc38f3704e38dfa2af33310fed14f3a90928143c688643342b7f3466",
@@ -13436,8 +13436,8 @@
         ],
         "Slugs: Contract Address": [],
         "Slugs: Github": [
-            "vyperlang",
-            "curve"
+            "curve",
+            "vyperlang"
         ],
         "Slug: Primary": null
     },
@@ -16320,8 +16320,8 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [
-            "ethereum-cat-herders",
-            "pm-ethereum"
+            "pm-ethereum",
+            "ethereum-cat-herders"
         ],
         "Slug: Primary": "ethereum-cat-herders"
     },
@@ -17132,8 +17132,8 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [
-            "blobscan",
-            "ethpandaops"
+            "ethpandaops",
+            "blobscan"
         ],
         "Slug: Primary": "blobscan"
     },
@@ -17940,8 +17940,8 @@
         ],
         "Slugs: Contract Address": [],
         "Slugs: Github": [
-            "hardhat-nomicfoundation",
             "foundry",
+            "hardhat-nomicfoundation",
             "revm-bluealloy",
             "reth-paradigmxyz"
         ],
@@ -23167,8 +23167,8 @@
         "Slugs: Attester Address": [],
         "Slugs: Contract Address": [],
         "Slugs: Github": [
-            "status-im",
-            "nimbus-status-im"
+            "nimbus-status-im",
+            "status-im"
         ],
         "Slug: Primary": "nimbus-status-im"
     },
