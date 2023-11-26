@@ -119,3 +119,4 @@ cython_debug/
 .pickle
 notebooks/sandbox/
 notebooks/data/temp/
+.pkgx.yaml
