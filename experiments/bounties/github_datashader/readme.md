@@ -12,6 +12,6 @@ Bounty details: https://www.bountycaster.xyz/bounty/0xd933e626dd268c2e444e800948
    
 3. Experiment with different modulations of the START_DATE and CMAP variables. You can see a complete list of colormaps [here](https://cmasher.readthedocs.io/user/usage.html). Feel free to experiment in other ways too!
 
-4. Submit your best image as in [this warpcast]([url](https://warpcast.com/cerv1/0xd933e626)). Include the START_DATE and CMAP settings you used to generate it.
+4. Submit your best image as in [this warpcast](https://warpcast.com/cerv1/0xd933e626). Include the START_DATE and CMAP settings you used to generate it.
 
 Any questions, dm me on [farcaster](https://warpcast.com/cerv1)
