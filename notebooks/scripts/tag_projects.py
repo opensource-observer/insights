@@ -7,7 +7,7 @@ import pandas as pd
 from parse_links import Parser
 
 
-JSON_INPATH = "data/RPGF3/2023-11-20_RPGF3_cleaned_applicant_data.json"
+JSON_INPATH = "data/RPGF3/RPGF3_cleaned_applicant_data_final.json"
 CSV_OUTPATH = "data/RPGF3/RPGF3_tagged_projects.csv"
 
 
