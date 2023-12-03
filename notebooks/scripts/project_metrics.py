@@ -72,7 +72,7 @@ def get_slugs_by_collection(collection):
 
 
 @timing_decorator
-def get_active_devs(slugs_param, start_date):
+def get_active_devs(slugs_param, start_date, end_date):
     query = f"""
         WITH Devs AS (
             SELECT 
@@ -87,6 +87,7 @@ def get_active_devs(slugs_param, start_date):
                 e."typeId" = 4 -- COMMIT CODE EVENTS ONLY
                 AND p.slug IN ({slugs_param})
                 AND e.time >= '{start_date}'
+                AND e.time <= '{end_date}'
             GROUP BY
                 p."slug",
                 e."fromId",
@@ -103,7 +104,7 @@ def get_active_devs(slugs_param, start_date):
 
 
 @timing_decorator
-def get_project_stats(slugs_param, start_date):
+def get_project_stats(slugs_param, start_date, end_date):
     query = f"""
         SELECT 
 
@@ -133,7 +134,7 @@ def get_project_stats(slugs_param, start_date):
         JOIN project_artifacts_artifact paa ON p."id" = paa."projectId"
         LEFT JOIN artifact a ON paa."artifactId" = a."id"
         LEFT JOIN event e ON e."toId" = paa."artifactId" 
-        WHERE p.slug IN ({slugs_param})
+        WHERE p.slug IN ({slugs_param}) AND e.time <= '{end_date}'
         GROUP BY p.slug;
     """
     return execute_query(query, col_names=True)
@@ -145,8 +146,9 @@ def generate_snapshot():
     slugs_param = "'" + "','".join(rpgf3_slugs) + "'"
 
     start_date = '2023-05-01'
-    active_devs_results = get_active_devs(slugs_param, start_date)
-    project_stats_results = get_project_stats(slugs_param, start_date)
+    end_date = '2023-12-03'
+    active_devs_results = get_active_devs(slugs_param, start_date, end_date)
+    project_stats_results = get_project_stats(slugs_param, start_date, end_date)
 
     months_back = 6
     df_devs = pd.DataFrame(active_devs_results[1:], columns=active_devs_results[0])
