@@ -14,7 +14,9 @@ def make_sankey_graph(
     title,
     width=1000, 
     height=800, 
-    size=12):
+    size=12,
+    decimals=True,
+    hide_label_cols=[]):
 
     # build the title info
     total = df[value_col].sum()
@@ -23,11 +25,16 @@ def make_sankey_graph(
 
     # make the Sankey
     labelList = []
+    nodeLabelList = []
     colorNumList = []
     for catCol in cat_cols:
-        labelListTemp = list(set(df[catCol].values))
+        labelListTemp = list(set(df[catCol].values))        
         colorNumList.append(len(labelListTemp))
         labelList = labelList + labelListTemp
+        if catCol in hide_label_cols:
+            nodeLabelList = nodeLabelList + [""] * len(labelListTemp)
+        else:
+            nodeLabelList = nodeLabelList + labelListTemp
 
     # remove duplicates from labelList
     labelList = list(dict.fromkeys(labelList))
@@ -71,11 +78,11 @@ def make_sankey_graph(
         node=dict(
           thickness=node_thickness,
           line=dict(color=MAIN_COLOR, width=line_width),
-          label=labelList,
+          label=nodeLabelList,
           color=colorList,
           customdata=linkLabels,
           hovertemplate="<br>".join([
-                "<b>%{value:,.1f}</b>",
+                "<b>%{value:,.1f}</b>" if decimals else "<b>%{value:,.0f}</b>",
                 "%{customdata}: %{label}",
                 "<extra></extra>"
             ])
@@ -85,7 +92,7 @@ def make_sankey_graph(
           target=sourceTargetDf['targetID'],
           value=sourceTargetDf['value'],
           hovertemplate="<br>".join([
-                "<b>%{value:,.1f}</b>",
+                "<b>%{value:,.1f}</b>" if decimals else "<b>%{value:,.0f}</b>",
                 "%{source.customdata}: %{source.label}",
                 "%{target.customdata}: %{target.label}",
                 "<extra></extra>"
@@ -105,7 +112,7 @@ def make_sankey_graph(
             dict(
                 text=f"<br><b>{cat}</b>",
                 x=xpos[i], xref='paper', xanchor='center',                 
-                y=-0.02, yref='paper', yanchor='top',                 
+                y=1, yref='paper', yanchor='bottom',                 
                 font=dict(color=MAIN_COLOR, size=size+2),
                 align='center', showarrow=False
             )
