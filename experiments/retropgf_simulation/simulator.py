@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 
 class Project:
@@ -27,24 +28,13 @@ class Project:
         self.votes.append(vote)
         votes = self.get_votes()
         self.num_votes = len(votes)
-        if len(votes):
-            self.mean = sum(votes) / len(votes)
+
+    def add_zeroes(self, num_zeroes):
+        for _ in range(num_zeroes):
+            self.add_vote(Vote(None, self, 0))
 
     def get_votes(self):
-        return [
-            vote.amount 
-            for vote in self.votes 
-            if vote.amount is not None
-        ]
-    
-    def score_project(self, agg_func):
-        # TODO: add handling and support for different scoring options
-        valid_votes = self.get_votes()
-        if agg_func == 'QF':
-            self.score = sum([np.sqrt(x) for x in valid_votes])
-        else:
-            self.score = pd.Series(valid_votes).agg(agg_func)
-        return self.score
+        return [vote.amount for vote in self.votes if vote.amount is not None]
     
     def show_results(self):
         return {
@@ -53,7 +43,6 @@ class Project:
             'rating': self.rating,
             'num_votes': self.num_votes,
             'score': self.score,
-            'mean': self.mean,
             'token_amount': self.token_amount
         }
     
@@ -85,7 +74,7 @@ class Voter:
     def cast_vote(self, project, amount):
         if self.voter_id == project.owner_id:
             amount = None
-        if amount is not None and self.balance_op >= amount:
+        if amount:
             self.balance_op -= amount
         vote = Vote(self, project, amount)
         self.votes.append(vote)
@@ -98,12 +87,8 @@ class Voter:
         ]
 
 class Round:
-    def __init__(self, max_funding, min_funding, quorum, scoring_method):
+    def __init__(self, max_funding):
         self.max_funding = max_funding
-        self.min_funding = min_funding
-        self.quorum = quorum        
-        self.scoring_method = scoring_method
-        
         self.projects = []
         self.voters = []
         self.num_voters = 0
@@ -117,35 +102,51 @@ class Round:
         self.voters.extend(voters)
         self.num_voters += len(voters)
 
-    def calculate_allocations(self):
-        # convert votes into a list of scores
+    def calculate_allocations(self, scoring_method, quorum, min_amount, normalize=True):        
         scores = []
         for project in self.projects:
-            score = project.score_project(self.scoring_method)
-            if project.num_votes >= self.quorum and project.score >= self.min_funding:
-                scores.append(score)
+            votes = project.get_votes()
+            if len(votes) < quorum:
+                score = 0
             else:
-                scores.append(0)
-        # allocate tokens pro rata based on the score distribution
+                if scoring_method == 'median':
+                    score = np.median(votes)
+                elif scoring_method == 'mean':
+                    score = np.mean(votes)
+                elif scoring_method == 'quadratic':
+                    score = sum(np.sqrt(votes))
+                elif scoring_method == 'outliers':
+                    lo = np.quantile(votes, .25)
+                    hi = np.quantile(votes, .75)
+                    score = np.mean([v for v in votes if lo <= v <= hi])
+                else:
+                    score = sum(votes)            
+                if score < min_amount:
+                    score = 0            
+            project.score = score
+            scores.append(score)
+        
         total_score = sum(scores)
+        allocations = []
         for i, project in enumerate(self.projects):
-            project.token_amount = np.round(scores[i] / total_score * self.max_funding,2)
+            if normalize:
+                allocation = np.round(scores[i] / total_score * self.max_funding, 2)
+            else:
+                allocation = scores[i]
+            project.token_amount = allocation
+            allocations.append(allocation)
+        return allocations
+
 
 class Simulation:
     def __init__(self):
         self.round = None
     
-    def initialize_round(self, max_funding, min_funding, quorum, scoring_method):
-        self.round = Round(max_funding, min_funding, quorum, scoring_method)
+    def initialize_round(self, max_funding):
+        self.round = Round(max_funding)
 
-    def reset_round(self, min_funding=None, quorum=None, scoring_method=None):
-        # reset the voting simulation, but keep some of the other settings intact
-        if min_funding:
-            self.round.min_funding = min_funding
-        if quorum:
-            self.round.quorum = quorum
-        if scoring_method:
-            self.round.scoring_method = scoring_method
+    def reset_round(self):
+        # reset the voting simulation
         if self.round.num_projects:
             for project in self.round.projects:
                 project.reset_project()
@@ -189,44 +190,54 @@ class Simulation:
     def get_project_data(self):
         return [p.show_results() for p in self.round.projects]
 
-    def simulate_voting(self, abstains_are_zeroes=False):
-        min_vote_per_project = self.round.min_funding
-        num_projects = self.round.num_projects
+    def simulate_voting(self):
 
+        num_projects = self.round.num_projects
         for voter in self.round.voters:
             ballot_size = int((1 - voter.laziness_factor) * num_projects)
 
             # Create an array for subjectivity scores and personal ratings
             subjectivity_scores = np.random.uniform(voter.expertise_factor, 2 - voter.expertise_factor, num_projects)
             personal_ratings = np.array([project.rating for project in self.round.projects]) * subjectivity_scores
-
-            # Sort the projects by personal rating and get the top 'ballot_size' projects
-            sorted_project_indices = np.argsort(-personal_ratings)[:ballot_size]
-
+            
+            sorted_project_indices = np.argsort(-personal_ratings)
             for idx, project_idx in enumerate(sorted_project_indices):
                 project = self.round.projects[project_idx]
-
-                # Calculate max vote for this project based on remaining balance and ballot position
-                max_vote_per_project = voter.balance_op / np.sqrt(ballot_size - idx)
-
-                if voter.balance_op < min_vote_per_project:
-                    amount = 0 if abstains_are_zeroes else None
-                else:
-                    amount = np.random.uniform(min_vote_per_project, max_vote_per_project)
-
+                if idx >= ballot_size:
+                    amount = None
+                else:                
+                    max_vote_per_project = (voter.balance_op * voter.laziness_factor) / np.sqrt(ballot_size - idx)
+                    
+                    if max_vote_per_project < 1:
+                        amount = None
+                    else:
+                        amount = np.random.uniform(0, max_vote_per_project)
                 voter.cast_vote(project, amount)
 
-        self.round.calculate_allocations()
+    def allocate_votes(self, scoring_method, quorum=1, min_amount=1, normalize=True):
+        allocations = self.round.calculate_allocations(scoring_method, quorum, min_amount, normalize)
+        payouts = [a for a in allocations if a > 0]
+        return {
+            'scoring_method': scoring_method,
+            'vote_quorum': quorum,
+            'min_amount': min_amount,
+            'num_projects_above_quorum': len(payouts),
+            'avg_payout': np.mean(payouts),
+            'median_payout': np.median(payouts),
+            'max_payout': np.max(payouts)
+        }
 
 
 def test():
 
     simulation = Simulation()
-    simulation.initialize_round(30_000_000, 1500, 17, 'median')
+    simulation.initialize_round(30_000_000)
     simulation.randomize_voters(150, willingness_to_spend=1, laziness_factor=0.6, expertise_factor=0.7)
     simulation.randomize_projects(600, coi_factor=0)
-    simulation.simulate_voting(abstains_are_zeroes=False)    
+    simulation.simulate_voting()    
+    results = simulation.allocate_votes('median', quorum=17, min_amount=1500)
+    print(results)
     data = simulation.get_project_data()
     
 
-#test()    
+# test()    
