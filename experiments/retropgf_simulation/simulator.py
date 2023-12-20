@@ -213,7 +213,8 @@ class Simulation:
                         amount = np.random.uniform(0, max_vote_per_project)
                 voter.cast_vote(project, amount)
 
-    def allocate_votes(self, scoring_method, quorum=1, min_amount=1, normalize=True):
+    
+    def allocate_votes(self, scoring_method='median', quorum=1, min_amount=1, normalize=True):
         allocations = self.round.calculate_allocations(scoring_method, quorum, min_amount, normalize)
         payouts = [a for a in allocations if a > 0]
         return {
@@ -226,6 +227,44 @@ class Simulation:
             'max_payout': np.max(payouts)
         }
 
+
+    def simulate_voting_and_scoring(self, n=1, scoring_method='median', quorum=17, min_amount=1500, normalize=True):
+        results = []
+        for i in range(n):            
+            self.simulate_voting()            
+            allocations = self.round.calculate_allocations(scoring_method, quorum, min_amount, normalize)
+            payouts = [a for a in allocations if a > 0]
+            data = self.get_project_data()
+            results.append({
+                'num_projects_above_quorum': len(payouts),
+                'avg_payout': np.mean(payouts),
+                'median_payout': np.median(payouts),
+                'max_payout': np.max(payouts),
+                'data': data
+            })
+            self.reset_round()
+        
+        return {
+            'scoring_method': scoring_method,
+            'vote_quorum': quorum,
+            'min_amount': min_amount,
+            'normalize': normalize,
+            'num_projects_above_quorum': np.mean([r['num_projects_above_quorum'] for r in results]),
+            'avg_payout': np.mean([r['avg_payout'] for r in results]),
+            'median_payout': np.mean([r['median_payout'] for r in results]),
+            'max_payout': np.mean([r['max_payout'] for r in results]),
+            'data': [
+                {
+                    'project_id': d['project_id'],
+                    'owner_id': d['owner_id'],
+                    'rating': d['rating'],
+                    'num_votes': np.mean([r['data'][i]['num_votes'] for r in results]),
+                    'token_amount': np.mean([r['data'][i]['token_amount'] for r in results])
+                }
+                for i, d in enumerate(results[0]['data'])
+            ]
+        }
+    
 
 def test():
 
