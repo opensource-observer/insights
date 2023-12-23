@@ -1,0 +1,286 @@
+{
+    "listDescription": "This list applies a page rank algorithm to the graph of OSS contributors for all RetroPGF projects. This list is powered by Open Source Observer.",
+    "impactEvaluationLink": "https://github.com/opensource-observer/insights/blob/main/notebooks/2023-11-14_RPGF3_ContributorPageRank.ipynb",
+    "impactEvaluationDescription": "This is an experimental list format that uses the page rank algorithm to allocate OP tokens to OSS projects that are represented on https://opensource.observer. The algorithm considers all contributions to all non-forked repos listed by RPGF3 projects (as well as contributions to core Optimism repos). The algorithm excludes Protocol Guild to prevent double-counting of contributors to the Ethereum org space; if you use this list for voting, you should consider adding Protocol Guild back to your ballot. Always remember to DYOR before voting: project data is never complete and never tells the full story!",
+    "impactCategory": [
+        "COLLECTIVE_GOVERNANCE"
+    ],
+    "listContent": [
+        {
+            "RPGF3_Application_UID": "0x5b5cb12df644ca17fabd91825886b5491d1526befaec2924315b8e5971d26cf8",
+            "OPAmount": 400000
+        },
+        {
+            "RPGF3_Application_UID": "0x4ee85a3d39e87cfd1f59d5067668bcacfaf111b74bbd3d1fcbe6da166395f372",
+            "OPAmount": 350000
+        },
+        {
+            "RPGF3_Application_UID": "0xda04cebe79ec8547116a948edfbdb87e48dcb0543b29b7276df53df579170f74",
+            "OPAmount": 350000
+        },
+        {
+            "RPGF3_Application_UID": "0x912e6971c43c3a46dbb82d1358af205530663ef01c2fb0691d843a9f72293689",
+            "OPAmount": 300000
+        },
+        {
+            "RPGF3_Application_UID": "0x995fc63a5a0c6388a57c586d8fa75ec8f3bb29b6bdc065fe93358ae848092f9e",
+            "OPAmount": 300000
+        },
+        {
+            "RPGF3_Application_UID": "0xfadf25227cc176c7ede5ca6453f663bf57947c42664768e00de9f71c1a907c41",
+            "OPAmount": 300000
+        },
+        {
+            "RPGF3_Application_UID": "0xef65b1e277e1c7398bbd8a10c623d53dbbb64474ea68b6484e9ccf5c9c0cc494",
+            "OPAmount": 300000
+        },
+        {
+            "RPGF3_Application_UID": "0x60085a98f5c48d97a28d7b45d193f9a734d1704e257df91827459b09565e0e47",
+            "OPAmount": 250000
+        },
+        {
+            "RPGF3_Application_UID": "0x32ee121e0dbcef2fe2b7a8e668f9a53ddc6d43e16c423fe8b4595b0120ac08d8",
+            "OPAmount": 250000
+        },
+        {
+            "RPGF3_Application_UID": "0x9d1718c287c5d346ddcdaba1ea67709d8c86fb86736fc38b0be12b118e938f47",
+            "OPAmount": 250000
+        },
+        {
+            "RPGF3_Application_UID": "0xc6c2fa66bbe46ab4a041463f0414883b2c12bd4399355aa62d48b2e1b2669940",
+            "OPAmount": 250000
+        },
+        {
+            "RPGF3_Application_UID": "0x86fdabe5c2a67af3c291ce7acb008088e21f99f3f6f1d464b28e9a8c2034455b",
+            "OPAmount": 250000
+        },
+        {
+            "RPGF3_Application_UID": "0x31588517386990050541aed3f6d4d5a370e30fcd5bf622886c1955ffc9565f52",
+            "OPAmount": 250000
+        },
+        {
+            "RPGF3_Application_UID": "0xfcc4798ccc9e2f578ce316278aa40da3fcee3c3f0b92c265062cf31906f2e815",
+            "OPAmount": 250000
+        },
+        {
+            "RPGF3_Application_UID": "0x610c90e43f00306d50b676c4b9f3c02612c121ba42137f9eac49dccc8d2d1d07",
+            "OPAmount": 200000
+        },
+        {
+            "RPGF3_Application_UID": "0x75c17ab86592588357ebe8f116dab73c6a531ec20a5b23a1f57ae7d85dbb3549",
+            "OPAmount": 200000
+        },
+        {
+            "RPGF3_Application_UID": "0x0bcd7e1f59a78a15a8c481244aaba93b7f690aaece04ffc6e4a55e282afa309c",
+            "OPAmount": 200000
+        },
+        {
+            "RPGF3_Application_UID": "0xe9140c31f3a448f0f52124b3f9782f7947d698a686ceb20f77f60366670f3f8e",
+            "OPAmount": 200000
+        },
+        {
+            "RPGF3_Application_UID": "0x6171948a78c9c005648ef034be5ae3b2dec2535cdf437b2cf1f67d66f72e5073",
+            "OPAmount": 200000
+        },
+        {
+            "RPGF3_Application_UID": "0xfc31f53ebad145efbb22244d8bb6a7a34b226353b89675f46d04ed0089dd931b",
+            "OPAmount": 200000
+        },
+        {
+            "RPGF3_Application_UID": "0x63506f0d71ed13eb435d76d593ad9d466dec78e7e19417538e8abde6e4d8ffe6",
+            "OPAmount": 200000
+        },
+        {
+            "RPGF3_Application_UID": "0x43a3dfdedf7dc7ba761c2c6c39f1ff92749ec592bdaa818dd15faf42f53d0401",
+            "OPAmount": 200000
+        },
+        {
+            "RPGF3_Application_UID": "0x5bd75a998f0c4564449fadff6ad602fd73df5d02e836d5d5369f3d6a10e567df",
+            "OPAmount": 200000
+        },
+        {
+            "RPGF3_Application_UID": "0x9ff4d4ff2ba7e77917b04ec98c645535a0ff29f0584a67c92201e34757d57b2e",
+            "OPAmount": 150000
+        },
+        {
+            "RPGF3_Application_UID": "0x4b73a8f4d2e3bf2f6cff7ae014b13fdf8a85d0b33064127e53b81b2b7d365652",
+            "OPAmount": 150000
+        },
+        {
+            "RPGF3_Application_UID": "0xfeba07d541bf93651d4278ab2fb91f89b147e6c5d743ea29fe797958997644cf",
+            "OPAmount": 150000
+        },
+        {
+            "RPGF3_Application_UID": "0x6ae2bf87fcbddb4d715add72ea987fcb9537ec19e3f859befeebeed533144e73",
+            "OPAmount": 150000
+        },
+        {
+            "RPGF3_Application_UID": "0xdc83083060482b77d672b1ce442d426f9c9843bd5f6bd2b994a3bdc70489e3d0",
+            "OPAmount": 150000
+        },
+        {
+            "RPGF3_Application_UID": "0xd37644d60f063de12786ccd1bb192bdca7ead7aaed1707161943e0ce8bfb72ff",
+            "OPAmount": 150000
+        },
+        {
+            "RPGF3_Application_UID": "0x0a70938874b0558c1ce25ba50bb3cf18125b55a92b22171205d41a79a2680974",
+            "OPAmount": 150000
+        },
+        {
+            "RPGF3_Application_UID": "0x176d93beb29316e51b21e42cc1d49ef0867b37bda258b06ba410a3043fee7df5",
+            "OPAmount": 150000
+        },
+        {
+            "RPGF3_Application_UID": "0xf307abb7638c184e3836beb422abf8cd36b7fd2bbb4fbd0fdeadf7ab7047a8c8",
+            "OPAmount": 150000
+        },
+        {
+            "RPGF3_Application_UID": "0x023dfdedcfb50385c8c24fd86489a7f016633219c66583c71f154d7af99c6b51",
+            "OPAmount": 150000
+        },
+        {
+            "RPGF3_Application_UID": "0xea51114ddd4cd331be77a9318748c5e276a2b3c34c5e220558e6fb88483bec5c",
+            "OPAmount": 150000
+        },
+        {
+            "RPGF3_Application_UID": "0x7d1e13db1b852828f7072e10fcfc179751c624f6a93929a3b5a4a6795d5bdec4",
+            "OPAmount": 150000
+        },
+        {
+            "RPGF3_Application_UID": "0x2b665cd3ae32a16f5cdbecc55f61abc071ed32b13398ac741c81a7d372771bad",
+            "OPAmount": 150000
+        },
+        {
+            "RPGF3_Application_UID": "0x17cfb81d50a65a6ef3e7ecfdf8e4ca428514d77e74ca3c650d4ba9926f9e67ac",
+            "OPAmount": 150000
+        },
+        {
+            "RPGF3_Application_UID": "0x55de5c33ffd56e471340bf62a199c25f84f0c5564e7a6f2d6e8b3a4aaabeb8f7",
+            "OPAmount": 150000
+        },
+        {
+            "RPGF3_Application_UID": "0x356900a8a5aa893d522dfcd67cc89f6472f8793ea8cf41088b47833ff1c16b5f",
+            "OPAmount": 150000
+        },
+        {
+            "RPGF3_Application_UID": "0xa0498cfa249bc5a542fa793407d47f31e0d090e1edf767bd1d72f7869bbbe534",
+            "OPAmount": 150000
+        },
+        {
+            "RPGF3_Application_UID": "0xa41c1671630bb1c1474b3ec7fecf4fc13f3bb292d29620a83878dfcd66ed4006",
+            "OPAmount": 150000
+        },
+        {
+            "RPGF3_Application_UID": "0x8bf38219babafdfd18899b481056e6b9dfdf5aed56e5b91a6490cbbc72ac70b0",
+            "OPAmount": 150000
+        },
+        {
+            "RPGF3_Application_UID": "0x6af5473e4db0dd86a69cb40bb73784f078e1dd2c242bad094331cde932c54daf",
+            "OPAmount": 150000
+        },
+        {
+            "RPGF3_Application_UID": "0xbac29b5be9a91892eae39f804c408fe66bf8b4772710f35a475eae07d1967a6b",
+            "OPAmount": 150000
+        },
+        {
+            "RPGF3_Application_UID": "0x5a18e693d79904be1b43af93354e08bf21c1e6322d29cfd03fd235e27bb6e815",
+            "OPAmount": 100000
+        },
+        {
+            "RPGF3_Application_UID": "0xde2cdac6214cb7c5ebabfbf74f0038b416910f207f41be680680db18e477a820",
+            "OPAmount": 100000
+        },
+        {
+            "RPGF3_Application_UID": "0xc77e8caea0ff6aa3bfcb546234f651f9c7b2486d42a326a64b0d847fe3f84afc",
+            "OPAmount": 100000
+        },
+        {
+            "RPGF3_Application_UID": "0xe74dbae19350be6155c66a28b65be982bf7b1a4db210695dde5ed2f53782a315",
+            "OPAmount": 100000
+        },
+        {
+            "RPGF3_Application_UID": "0x9e1829323c35d18c3b5366b75922da2d966c39abf4472b29f763cf09e150a09d",
+            "OPAmount": 100000
+        },
+        {
+            "RPGF3_Application_UID": "0x1053c5fc1597ff030c267d4667898095ca3a42cc370fe9b8d156880b8a2b455e",
+            "OPAmount": 100000
+        },
+        {
+            "RPGF3_Application_UID": "0x013249f25537a8abdd06d367538d0eab0c9e5e8e36dde210abe1e7da8dd89c9e",
+            "OPAmount": 100000
+        },
+        {
+            "RPGF3_Application_UID": "0x5673d6a413d360de74d262487bdb4e70cb357c4d890af9cd62a369b1d858416b",
+            "OPAmount": 100000
+        },
+        {
+            "RPGF3_Application_UID": "0x2133357c7f4da64fbf24b6edde526190e6f2396e9b2b7d5f0dde12ff9799867d",
+            "OPAmount": 100000
+        },
+        {
+            "RPGF3_Application_UID": "0x29a3d9a092906a2b2cbe6e979b3d56f3a88047a9b2b5647ed8f8d40783cd5edf",
+            "OPAmount": 100000
+        },
+        {
+            "RPGF3_Application_UID": "0x67ced2fcb164fe4806d9f1e10cb7a6ba4862530cd9d60a188e3dd3d5c6ce162d",
+            "OPAmount": 100000
+        },
+        {
+            "RPGF3_Application_UID": "0x6f845346e36b53a2fadd37486b709d088aa4278cc5b3b0e3e9488b85ff450822",
+            "OPAmount": 100000
+        },
+        {
+            "RPGF3_Application_UID": "0xc754e70f8d64d1923e4fb7591e0cad3790d4e164b3b11a8db1c1356714037792",
+            "OPAmount": 100000
+        },
+        {
+            "RPGF3_Application_UID": "0x877ded44fae0833c412ef1b802419a7d6d9e668c6f92f1fb439dbbd40ca12b2d",
+            "OPAmount": 100000
+        },
+        {
+            "RPGF3_Application_UID": "0x49fdb9c842a1295fd27af6adfca0941414c3b7f6e69aa056bb9418a9a629c2eb",
+            "OPAmount": 100000
+        },
+        {
+            "RPGF3_Application_UID": "0xdb768783fabfa13b0755542de7af4cb1d4a0c3e0b52ba68069c5d06b3718b7d5",
+            "OPAmount": 100000
+        },
+        {
+            "RPGF3_Application_UID": "0xba60fee29d573acf227ffb4dd7bc8f44371cf226b37ce28efe413a082f23e53b",
+            "OPAmount": 100000
+        },
+        {
+            "RPGF3_Application_UID": "0xde75c1d79d53e7864eca485bd594741b745f36cdafdc272cc7809407acb409db",
+            "OPAmount": 100000
+        },
+        {
+            "RPGF3_Application_UID": "0x2c95b50db5da51867c96da2c76773472d2aad9a63f473a3e8096e9b4cbf3f29b",
+            "OPAmount": 100000
+        },
+        {
+            "RPGF3_Application_UID": "0xd7678550d5092dc6163c97666248ff136eae59c82e3bfd21905be13024d0662e",
+            "OPAmount": 100000
+        },
+        {
+            "RPGF3_Application_UID": "0xcab1256cd3698caa9028d2bd357d50587a5876530cc310b890051df99f626a76",
+            "OPAmount": 100000
+        },
+        {
+            "RPGF3_Application_UID": "0x44e382b0845c4bbe3695f5bc8218c1cf75e5c44d1868a08f10571871295ad042",
+            "OPAmount": 100000
+        },
+        {
+            "RPGF3_Application_UID": "0xf780b4a39ea9529b9e7af1638c816801ce89cf06e93dd6d66ea383fb3ed263f0",
+            "OPAmount": 100000
+        },
+        {
+            "RPGF3_Application_UID": "0x7992f31ac0db3aad3dc7edead1a3670a6be071703212129f3a396c043cb23e84",
+            "OPAmount": 100000
+        },
+        {
+            "RPGF3_Application_UID": "0x1fd47d4e1eb48f9423464b8fe00c9b2c490705e138082ac5c3b8ee7aa2258d3b",
+            "OPAmount": 100000
+        }
+    ]
+}

@@ -1,0 +1,27 @@
+{
+    "listDescription": "DownstreamUsers",
+    "impactEvaluationLink": "https://github.com/opensource-observer/insights/blob/main/notebooks/2023-11-05_DownstreamUsers.ipynb",
+    "impactEvaluationDescription": "This list only considers projects with libraries published to npm and at least 100 weekly downloads. The list other projects in the OP ecosystem that include those libraries as dependencies and measures the total onchain users of those projects. It awards OP Tokens in proportion to the square root of a library's downstream users.",
+    "impactCategory": [
+        "DEVELOPER_ECOSYSTEM",
+        "END_USER_EXPERIENCE_AND_ADOPTION"
+    ],
+    "listContent": [
+        {
+            "RPGF3_Application_UID": "0x32ee121e0dbcef2fe2b7a8e668f9a53ddc6d43e16c423fe8b4595b0120ac08d8",
+            "OPAmount": 1572.2502726983384
+        },
+        {
+            "RPGF3_Application_UID": "0x912e6971c43c3a46dbb82d1358af205530663ef01c2fb0691d843a9f72293689",
+            "OPAmount": 1481.8536061298362
+        },
+        {
+            "RPGF3_Application_UID": "0x9d1718c287c5d346ddcdaba1ea67709d8c86fb86736fc38b0be12b118e938f47",
+            "OPAmount": 574.0270464011256
+        },
+        {
+            "RPGF3_Application_UID": "0xc593432238cfdcaf9bb9c5d5b87e447f2b6a42d59a91135e0119cccc0d15aa32",
+            "OPAmount": 51.3023391279579
+        }
+    ]
+}

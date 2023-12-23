@@ -117,6 +117,5 @@ cython_debug/
 # Local files
 .DS_Store
 .pickle
-notebooks/sandbox/
-notebooks/data/temp/
+sandbox/
 .pkgx.yaml
