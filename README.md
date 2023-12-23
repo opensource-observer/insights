@@ -37,11 +37,11 @@ The analysis folder contains the bulk of the analysis and insights, mostly in th
 
 ### Community 
 
-The community folder contains datasets and notebook templates that may be useful to new contributors. These provide sample queries and visualization tools, as well as steps for reproducing analysis that goes into the ecosystem reports
+The community folder contains datasets and notebook templates that may be useful to new contributors. These provide sample queries and visualization tools, as well as steps for reproducing analysis that goes into the ecosystem reports. This is also the home for bounties we host.
 
 ### Experiments
 
-The experiments folder contains experimental analysis and insights that are not yet ready for production. This is also the home for some of the bounties we've hosted to push exploration of new ideas.
+The experiments folder contains experimental analysis and insights that are not yet ready for production. 
 
 ### Scripts
 
