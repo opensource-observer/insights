@@ -54,3 +54,13 @@ The visualizations folder contains visualizations that are used in many of the r
 # Contributing
 
 We welcome contributions to this repository. Please see the [contributing guide](https://docs.opensource.observer/docs/category/data-science) for more information about the types of contributions we're looking for. If you are an analyst or data scientist interested in becoming a regular contributor, please apply to join to the Kariba Data Collective [here](https://www.opensource.observer/data-collective).
+
+In order to use OSO the data warehouse, you will need to request an API key. Include the following in your environmental variables to make sure you can access the data warehouse using the `oso_db` script:
+
+```
+DB_HOST=
+DB_PORT=
+DB_NAME=
+DB_USER=
+DB_PASSWORD=
+```
