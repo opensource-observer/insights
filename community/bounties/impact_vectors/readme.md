@@ -1,6 +1,6 @@
 # RetroPGF3 Impact Vectors
 
-Bounty details: https://www.bountycaster.xyz/bounty/
+Bounty details: https://www.bountycaster.xyz/bounty/0x0edbab5a1bd66355eb5c648598793ade9e019c21
 
 ## Objective
 
