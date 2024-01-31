@@ -2,16 +2,14 @@ import plotly.express as px
 import pandas as pd
 import numpy as np
 
-MAIN_COLOR = "#FF0420"
-MED_COLOR = "#FF6969"
-LIGHT_COLOR = "#FFCCDD"
-
-
 def make_sankey_graph(
     df, 
     cat_cols, 
     value_col,
     title,
+    main_color="#FF0420",
+    med_color="#FF6969",
+    light_color="#FFCCDD",
     width=1000, 
     height=800, 
     size=12,
@@ -40,7 +38,7 @@ def make_sankey_graph(
     labelList = list(dict.fromkeys(labelList))
 
     # define colors based on number of categories
-    colorPalette = [MAIN_COLOR, MED_COLOR, LIGHT_COLOR]
+    colorPalette = [main_color, med_color, light_color]
     colorList = []
     for idx, colorNum in enumerate(colorNumList):
         colorList = colorList + [colorPalette[idx]]*colorNum
@@ -54,14 +52,11 @@ def make_sankey_graph(
             tempDf = df[[cat_cols[i],cat_cols[i+1],value_col]]
             tempDf.columns = ['source','target','value']
             sourceTargetDf = pd.concat([sourceTargetDf,tempDf])
-        sourceTargetDf = sourceTargetDf.groupby(['source','target']
-            ).agg({'value':'sum'}).reset_index()
+        sourceTargetDf = sourceTargetDf.groupby(['source','target']).agg({'value':'sum'}).reset_index()
 
     # add index for source-target pair
-    sourceTargetDf['sourceID'] = sourceTargetDf['source'].apply(
-        lambda x: labelList.index(x))
-    sourceTargetDf['targetID'] = sourceTargetDf['target'].apply(
-        lambda x: labelList.index(x))
+    sourceTargetDf['sourceID'] = sourceTargetDf['source'].apply(lambda x: labelList.index(x))
+    sourceTargetDf['targetID'] = sourceTargetDf['target'].apply(lambda x: labelList.index(x))
 
     linkLabels = []
     for c in cat_cols:
@@ -74,10 +69,10 @@ def make_sankey_graph(
         type='sankey',
         orientation='h',
         domain=dict(x=[0,1], y=[0,1]),
-        arrangement='freeform', #'snap',
+        arrangement='freeform',
         node=dict(
           thickness=node_thickness,
-          line=dict(color=MAIN_COLOR, width=line_width),
+          line=dict(color=main_color, width=line_width), 
           label=nodeLabelList,
           color=colorList,
           customdata=linkLabels,
@@ -105,7 +100,7 @@ def make_sankey_graph(
 
     layout = dict(
         title=dict(text=title, x=0, xref='paper', xanchor = "left"),
-        font=dict(color=MAIN_COLOR, size=size), #family="Arial"
+        font=dict(color=main_color, size=size), 
         autosize=True,
         height=height,
         annotations=[
@@ -113,7 +108,7 @@ def make_sankey_graph(
                 text=f"<br><b>{cat}</b>",
                 x=xpos[i], xref='paper', xanchor='center',                 
                 y=1, yref='paper', yanchor='bottom',                 
-                font=dict(color=MAIN_COLOR, size=size+2),
+                font=dict(color=main_color, size=size+2),
                 align='center', showarrow=False
             )
             for i, cat in enumerate(cat_cols)
