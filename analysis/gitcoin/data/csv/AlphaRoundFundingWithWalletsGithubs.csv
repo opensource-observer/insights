@@ -1,0 +1,154 @@
+round_num,title,total_unique_contributors,total_contributions,total_crowdfund_amount,total_match_amount,total_funding,themes,address,github,org_name
+16,$Earth - Solarpunk Dao,339,354,2375.77,7186.79,9562.56,['climate'],0xd6b97e042d03edbdc100eb55fbe43eb75f2e3036,https://github.com/peacefulprogress25/SolarpunkDao,peacefulprogress25
+16,0xDeadList,379,392,810.82,1316.55,2127.37,['oss'],0x799b774204a348e1182fe01074c51444ba70a149,https://github.com/0xDeadList,0xDeadList
+16,1Hive Gardens,403,412,1073.85,1755.14,2828.99,['oss'],0x1b8c7f06f537711a7caf6770051a43b4f3e69a7e,https://github.com/1Hive/gardens,1Hive
+16,Act Now Climate Change Bundle,196,212,898.72,5514.99,6413.71,['climate'],0x221966004b2001a0da1274024d67cd09febd0b94,,
+16,AgroforestDAO,223,242,840.97,4321.45,5162.42,['climate'],0xdd866169dbcf639ed57f0020c5c9f4f4e1aab263,https://github.com/DiogoJorg3/csff/blob/main/README.md,DiogoJorg3
+16,Ape Framework,658,674,1927.56,7048.53,8976.09,['ethinfra'],0x187089b65520d2208ab93fb471c4970c29eaf929,https://github.com/ApeWorX,ApeWorX
+16,Astral Protocol,654,684,2842.33,25923.18,28765.51,['climate'],0x41dde2dc7f718d5f764fc97e8d122864587642d4,https://github.com/AstralProtocol,AstralProtocol
+16,Atlantis,460,479,3343.08,15332.9,18675.98,['climate'],0xfbca78474a09e2bf3543f4fc1037152ea2c6c32d,https://github.com/Dropchain-Atlantis,Dropchain-Atlantis
+16,Atlantis,460,479,3343.08,15332.9,18675.98,['climate'],0xfbca78474a09e2bf3543f4fc1037152ea2c6c32d,,
+16,Avano,184,195,357.99,814.14,1172.13,['climate'],0x3c8281c8786ab29bcab5b33566968f8011ea6a59,https://github.com/Avanoio,Avanoio
+16,BanklessDAO Projects,1189,1207,3480.17,2518.73,5998.9,['oss'],0xf26d1bb347a59f6c283c53156519cc1b1abaca51,,
+16,Barichara Regeneration Fund – Prototyping a Bioregional Regenerative Economy,199,215,1255.85,4476.02,1255.85,['climate'],0xfd9f8a0f4bdeac72f08af1c708023cc31dd2e3be,,
+16,.basin - perpetual place-based climate & nature finance,184,199,942.73,3972.52,4915.25,['climate'],0xd2584c1cf7e3ff11957195732d380dc886f5f05b,,
+16,beaconcha.in,706,724,2918.48,16127.31,19045.79,['ethinfra'],0x9d4e94db689bc471e45b0a18b7bda36fccec9c3b,https://github.com/gobitfly,gobitfly
+16,BETTER,376,396,2100.42,11089,13189.42,['climate'],0x0f7272f8873b68b2a2f52685311822d831afc8b4,,
+16,Blaine Bublitz - ETH/ZK Infrastructure & Ecosystem developer,147,152,489.1,423.83,912.93,['oss'],0x0e4d2ec48f03a9ed9068eea2926de34b6ab8646b,https://github.com/phated,phated
+16,Blockscout 2.0 - Premium Open-Source Block Explorer,844,865,2893.65,14918.4,17812.05,['ethinfra'],0x242ba6d68ffeb4a098b591b32d370f973ff882b7,https://github.com/blockscout,blockscout
+16,Bloom Network,490,514,1498.49,8030.02,9528.51,['climate'],0xf64bbc221f89cc882fba507908bbe4ae3ad2f470,https://github.com/BloomNetwork,BloomNetwork
+16,BrightID 🔆 Universal Proof of Uniqueness,4029,4115,9981.67,9822.7,9981.67,['oss'],0x4b8810b079eb22ecf2d1f75e08e0abbd6fd87dbf,https://github.com/BrightID,BrightID
+16,BuidlGuidl,687,707,2545.47,11747.23,14292.7,['ethinfra'],0x97843608a00e2bbc75ab0c1911387e002565dede,https://github.com/austintgriffith/scaffold-eth/tree/buidl-guidl-round-two,austintgriffith
+16,"Bundle #3: Verification Infrastructure (Impact Certs, Measurement, Reporting & Verification (MRV) and Oracles)",218,229,1189.88,7118.54,8308.42,['climate'],0xb0b0c51d98d3c49f7a5e61735db4f084d62954a1,,
+16,Bundle: Agriculture,309,330,1924.44,10516.01,12440.45,['climate'],0x78dc08c6f14e26b2c91edae9a6e03eed7ae5218b,,
+16,Bundle: Carbon Markets,246,258,1363.56,4874.18,6237.74,['climate'],0xe07b0f3c2a669b656476e4d6a054f4922d539d3d,,
+16,Bundle: Climate Research Alpha Round,309,334,1713.02,6189.62,7902.64,['climate'],0x29c40842a76b0aa28865ebf7c916ec820233b7bb,,
+16,Bundle: Creative Works,189,202,637.64,1743.01,2380.65,['climate'],0x2129fcc2bad30a0c7a448fe802265a14643092df,,
+16,Bundle: Emerging Economies and Indigenous Communities,209,231,1349.54,4159.14,5508.68,['climate'],0x4574e76cbb9891a90d46b0788cc4094b9275b61e,,
+16,Bundle: Oceans & Forests,272,291,1226.96,6359.57,7586.53,['climate'],0x48f2696fb6fab7ac0956175b2e25b456e61b3fcf,,
+16,Bundle ⚡️♻️Renewable Energy,245,258,813.05,2570.5,813.05,['climate'],0xfc148c92062ae30d788d48031b89b45237f27af7,,
+16,Carbon DAO,378,396,1232.67,4847.88,6080.55,['climate'],0x035a1f3419dd223293e5411133d9c786f5885425,,
+16,Chaineye,2698,2752,6286.48,7906.6,14193.08,['oss'],0xe6d7b9fb31b93e542f57c7b6bfa0a5a48efc9d0f,https://github.com/DeFiEye,DeFiEye
+16,Chainlist,2750,2878,16168.59,33333.33,49501.92,['ethinfra'],0x08a3c2a819e3de7aca384c798269b3ce1cd0e437,https://github.com/DefiLlama/chainlist,DefiLlama
+16,CirclesUBI,563,577,1489.07,2486.19,3975.26,['oss'],0xd525ff26f45f3b7d20cfef170e2cb9e601a0b4da,,
+16,Commons Stack,505,514,2950.39,2469.69,5420.08,['oss'],0x8110d1d04ac316fdcace8f24fd60c86b810ab15a,https://github.com/commons-stack/iteration0,commons-stack
+16,Community Engagement - Bundle 6,189,198,602.68,3383.3,3985.98,['climate'],0x315e6c37077cc5772709bb7fecd6d7606b4443c4,,
+16,CryptoStats,187,194,7157.97,1334.62,8492.59,['oss'],0x69aa21403244889832609963b0028e337a834953,https://github.com/crypto-stats,crypto-stats
+16,CyberBox ReFi NFT Marketplace,406,425,986.14,2889.17,3875.31,['climate'],0x65ed9a7cd4890e23ac5bc8d51498ae955af00724,,
+16,Dapp-Learning,124,128,390.38,646.1,1036.48,['oss'],0x35c6d9117f66943c881e8354138434b8a0727988,https://github.com/https://github.com/Dapp-Learning-DAO,https:
+16,datalatte,125,130,361.58,483.36,844.94,['oss'],0x690315449efad5f8b06a356f16eecfc41f475f70,https://github.com/datalatte-ai,datalatte-ai
+16,DefiLab.xyz,846,871,1869.13,2099.09,3968.22,['oss'],0x9fe6764778db6ad5c5ed86242485d1a868a8c52a,https://github.com/DefiLab-xyz,DefiLab-xyz
+16,DefiLlama,13576,13931,72238.3,16666.67,88904.97,['oss'],0x08a3c2a819e3de7aca384c798269b3ce1cd0e437,https://github.com/DefiLlama,DefiLlama
+16,devpill,667,679,1429.61,1046.03,2475.64,['oss'],0xeee718c1e522ecb4b609265db7a83ab48ea0b06f,,
+16,dMeter,149,157,748.43,1896.07,2644.5,['climate'],0x788bd114c3f625600b547d5a08ec38e0ee90a06e,,
+16,Dweb Movement,103,108,394.99,716.57,1111.56,['oss'],0x81bbc5e83901ca95bb85e3d1916d04d434e7f2bd,,
+16,Earthist - Decentralize Hemp Seeds,141,154,749.09,2955.42,3704.51,['climate'],0xc2d706398a978b8c5aa4efcd824b57e978841107,https://github.com/earthist,earthist
+16,ECHO,1559,1595,3600.49,4527.29,8127.78,['oss'],0xb67fd6f4b908d702c2cf0e2b9d30d52d4ea5b2bc,https://github.com/0x-echo,0x-echo
+16,Electronic Frontier Foundation,227,230,1112.17,433.08,1545.25,['oss'],0x640c28441f9e73537c63576a0d6f44643a577e32,https://github.com/EFForg,EFForg
+16,Endangered Tokens: Endangered Trees as ReFi Biodiversity Assets,170,180,821.84,4301.96,5123.8,['climate'],0xce849efc35a0a0a046e67c76b477c5432e4ba58b,https://github.com/EndangeredTokens,EndangeredTokens
+16,ENS Spoofing Bot,798,852,1818.12,2754.34,4572.46,['oss'],0x7b736fe138775d1fcd2cfe4e1d6158bff3a2f28e,,
+16,Esteroids - a community .eth websites search engine,134,139,911.96,442.16,1354.12,['oss'],0x71c7252cc1afc181704ff7fded27486f5ccd9205,https://github.com/esteroids,esteroids
+16,Ethereum Magicians,638,655,2322.09,10582.78,12904.87,['ethinfra'],0xb35cd25e91b376eafba79abe71d78814dec3401a,,
+16,Ethereum on ARM,815,840,3235.15,13173.17,16408.32,['ethinfra'],0x7f06ac71366631157551d97559b82975c293fdba,https://github.com/diglos/ethereumonarm,diglos
+16,ethers.js,888,906,5358.86,15998.1,21356.96,['ethinfra'],0x8ba1f109551bd432803012645ac136ddd64dba72,https://github.com/ethers-io,ethers-io
+16,ETH Leaderboard,971,996,1435.91,1242.24,2678.15,['oss'],0xd0aea65bb96b823cb30724ee0a6b7588c77de486,https://github.com/gskril/eth-leaderboard/,gskril
+16,eth.limo,2296,2337,6188.41,8863.78,15052.19,['oss'],0xb352bb4e2a4f27683435f153a259f1b207218b1b,https://github.com/ethlimo,ethlimo
+16,ETHRank - The open source achievement system for every Ethereum address,701,716,1535.85,1627.1,3162.95,['oss'],0x0d538d6253eb5cebaef94a873a7d3df22d6f936c,https://github.com/Examp-LLC,Examp-LLC
+16,EthStaker,1306,1353,5991.25,33333.33,39324.58,['ethinfra'],0xd165df4296c85e780509fa1eace0150d945d49fd,https://github.com/eth-educators,eth-educators
+16,Faster API for resolving ENS names and avatars for web3 projects,163,167,386.72,449.24,835.96,['oss'],0xc9c022fcfebe730710ae93ca9247c5ec9d9236d0,https://github.com/holic/ens-ideas,holic
+16,Fileverse - file sharing & collaboration between addresses,812,821,2009.04,3203.28,5212.32,['oss'],0x4af147188bfe1c02d18d752ed5e473d8394f2300,https://github.com/Fileverse,Fileverse
+16,Friends of Pooly,553,566,2328.32,1906.24,4234.56,['oss'],0xc876bec4e02eacc92df0f7b6eeee90c2ad794e50,,
+16,Geo Web,272,277,662.55,693.93,1356.48,['oss'],0xde798cd9c53f4806b9cc7dd27adf7c641540167c,https://github.com/Geo-Web-Project,Geo-Web-Project
+16,Gitcoin China Ecosystem Development,654,668,1274.89,1706.66,2981.55,['oss'],0x521aacb43d89e1b8ffd64d9ef76b0a1074dedaf8,https://github.com/gitcoincn,gitcoincn
+16,Hibiscus DAO,267,283,1000.73,5595.82,6596.55,['climate'],0x1a6ef6cc28cf60aa0504cfb21cdffa48cfe3a8fb,https://github.com/permetsystems,permetsystems
+16,IDENA,1331,1358,2860.91,3227.78,6088.69,['oss'],0x8917418abe36e6e788068e96ef5a47d7484c06b1,https://github.com/idena-network,idena-network
+16,IDriss - A more usable web3 for everyone 💚,3345,3402,7063.88,8905.26,7063.88,['oss'],0x531eb60b2dde9a841ba358ee033533aaf90d1fea,https://github.com/idriss-crypto,idriss-crypto
+16,Impact DAOs Research + Podcast + Book : Impact DAO Media Season 2,189,202,480.52,1690.06,2170.58,['climate'],0xb6e780438882f2daa11da0972807f4d12166af8b,,
+16,ITU Blockchain,300,306,894.26,1564.03,2458.29,['oss'],0xbec643bd5b7f5e9190617ca4187ef0455950c51c,https://github.com/itublockchain,itublockchain
+16,JediSwap,12749,13096,41380.85,16666.67,58047.52,['oss'],0x18aa467e40e1defb1956708830a343c1d01d3d7c,https://github.com/jediswaplabs,jediswaplabs
+16,Jolly Roger,515,523,904.5,933.67,1838.17,['oss'],0xf0d7a8198d75e10517f035cf11b928e9e2ab20f4,https://github.com/wighawag/jolly-roger,wighawag
+16,Jolocom,130,133,320.36,902.21,1222.57,['oss'],0xf3cf346db5dab30d73d272499cbae6e6c0ee2c60,,
+16,Kokonut Network,347,358,1362.12,5850.18,7212.3,['climate'],0x0ea26051f7657d59418da186137141cea90d0652,,
+16,Krebit,727,744,1526.87,2840.5,4367.37,['oss'],0xd6eef6a4ceb9270776d6b388cfaba62f5bc3357f,,
+16,Kredeum NFTs Factory,179,184,345.98,552.95,898.93,['oss'],0xbc0b437c95c7165f7d1f7c966cb2227da52a27d7,https://github.com/Kredeum,Kredeum
+16,L2BEAT,1864,1955,9293.19,33333.33,42626.52,['ethinfra'],0x6c5a2688c83c806150ca9dd0b2f10f16f8f1c33e,https://github.com/l2beat,l2beat
+16,Lenster,16109,16572,67141.33,16666.67,83808,['oss'],0x3a5bd1e37b099ae3386d13947b6a90d97675e5e3,https://github.com/lensterxyz/lenster,lensterxyz
+16,Lenstube,8875,9097,23039.24,16666.67,39705.91,['oss'],0x01d79bceaeaadfb8fd2f2f53005289cfcf483464,https://github.com/lenstube-xyz/lenstube,lenstube-xyz
+16,LexDAO,586,593,1724.17,1315.97,3040.14,['oss'],0x5a741ab878bb65f6ae5506455fb555eaf3094b3f,https://github.com/lexDAO,lexDAO
+16,Lighthouse,972,992,1967.56,3346.4,5313.96,['oss'],0x29b1d432a40f40f5418da2d4abf740e5e491629b,,
+16,Lighthouse by Sigma Prime,813,831,3168.08,14029.69,17197.77,['ethinfra'],0xc9a872868afa68ba937f65a1c5b4b252dab15d85,https://github.com/sigp,sigp
+16,LOA Labs : ReFi by South,210,230,2884.9,9901.52,12786.42,['climate'],0xd2993e8217063c72bbe8c736404c7fc02adc9761,,
+16,Loanshark,3216,3272,9077.92,11953.58,21031.5,['oss'],0x7d658841f8ba93299970f6e765c2ce205f1e70dd,https://github.com/loansharktech/loanshark,loansharktech
+16,Lodestar,805,831,2359.61,10710.32,13069.93,['ethinfra'],0xc8f9f8c913d6ff031c65e3bf7c7a51ad1f3a86e5,https://github.com/ChainSafe,ChainSafe
+16,Lume Web,213,218,417.2,618.64,1035.84,['oss'],0x63cd2c691632720ff2abdd0b6aaba2466d3fe468,https://github.com/LumeWeb,LumeWeb
+16,LunCo: accelerating Lunar Colonization with opensource,117,124,1847.96,651.49,2499.45,['oss'],0xa64f2228ccec96076c82abb903021c33859082f8,https://github.com/LunCoSim,LunCoSim
+16,Malicious Contract Detector,296,300,1104.52,872.5,1977.02,['oss'],0xa3c2e3d65206dee0456416f8189de7cf4fccbb22,https://github.com/venglov/Malicious-Contract-Detector,venglov
+16,MetaMail,3709,3785,7000.81,7330.27,14331.08,['oss'],0x3806a85d9b8e017d2714b5a240f3e7737279a3ba,https://github.com/MetaMail/metamail-fe,MetaMail
+16,minipent by pentacle,229,236,530.2,376.71,906.91,['oss'],0x8efef51d19ef3844c00076ab9d02847b9c70f94a,https://github.com/pentaclexyz,pentaclexyz
+16,MintBot | Polygon NFT Minter + ENS SubDomains (no gas),4330,4818,11519.59,0,11519.59,[],0x1208a26faa0f4ac65b42098419eb4daa5e580ac6,https://github.com/stevegachau/MintBot,stevegachau
+16,MRV Foundation (previously MRV101),154,161,743.62,3233.12,3976.74,['climate'],0x1b4463971582f485138879f0e509c160beb8d5e6,,
+16,Myseelia 🍄,127,135,332.54,1068.04,332.54,['climate'],0x16d46098e455a04cf7f3e43c3b2706614fdbec85,https://github.com/Myseelia,Myseelia
+16,Natives in Tech,127,137,735.33,2241.48,2976.81,['climate'],0x2dee5d7e77a1212b21139bc1d98b249dcc52055d,https://github.com/nativesintech,nativesintech
+16,NiceNode: Run a node — just press start,877,902,2979.99,15049.53,2979.99,['ethinfra'],0x9cce47e9cf12c6147c9844adbb81fe85880c4df4,https://github.com/NiceNode,NiceNode
+16,Nimi.eth,674,686,1575.45,2479.38,4054.83,['oss'],0xde81d67af572ec0f22841da702c1edc25608dbbb,https://github.com/nimi-app/,nimi-app
+16,OpSci Society: The Open Science DAO,175,178,603.66,543.01,1146.67,['oss'],0x33359285f30e7b3386de70ca500f4fe27853765b,https://github.com/opscientia,opscientia
+16,Optimism DAppNode Package (Mainnet),1324,1373,6806.74,33333.33,6806.74,['ethinfra'],0xa47669cbc53985333423e4d3d00188f4049fb695,,
+16,Optinames | ENS on Optimism,4330,4818,11519.59,12932.12,11519.59,['oss'],0x1208a26faa0f4ac65b42098419eb4daa5e580ac6,https://github.com/Wildcards-Protocol,Wildcards-Protocol
+16,Otterscan,723,754,3927.57,10669.13,14596.7,['ethinfra'],0xb7081fd06e7039d198d10a8b72b824e60c1b1e16,https://github.com/wmitsuda/otterscan,wmitsuda
+16,Pepemon: Degen Battleground,387,394,824.5,955.05,824.5,['oss'],0xb614b1464c561eb2fd0d7d3475feb52b5a34dec0,https://github.com/pepem00n,pepem00n
+16,Plants And Pillars,177,187,641.37,3559.4,4200.77,['climate'],0x1c4a70eadecc48e436efd0e997445d71df57a4ed,https://github.com/Plants-And-Pillars,Plants-And-Pillars
+16,"PLUME: Pseudonymously Linked Unique Message Entities, aka Verifiably Deterministic Signatures on Ethereum",511,525,1311.98,5103.52,6415.5,['ethinfra'],0x23ada6e6a9e9d4ecddd185e3ec353163bceebf2a,https://github.com/plume-sig,plume-sig
+16,POAPin,2686,2734,6633.01,7349.63,13982.64,['oss'],0x5afc7720b161788f9d833555b7ebc3274fd98da1,https://github.com/glorylab,glorylab
+16,Punk Domains - Modular Web3 Names Protocol,991,1004,1797.6,2720.69,4518.29,['oss'],0x12e838f846ffdade34b2e006f84117a370d71687,https://github.com/punk-domains,punk-domains
+16,ReCommon,191,198,573.44,1305.85,1879.29,['climate'],0xd704c5f9826191f3bd06cae867d0f20cafa8aeba,,
+16,ReFi Spring,443,465,12023.99,33333.33,45357.32,['climate'],0x14cb60f6aca2b2a68d975743bacb33f01f587da5,,
+16,Regens Unite: building public goods and a community to support all regens from web3 and beyond,191,205,943.36,5927.28,6870.64,['climate'],0x371ca2c8f1d02864c7306e5e5ed5dc6edf2dd19c,,
+16,Relay,797,817,1901.94,2415.79,4317.73,['oss'],0x0cb27e883e207905ad2a94f9b6ef0c7a99223c37,,
+16,ReSci Network,235,249,821.73,3732.67,4554.4,['climate'],0x9d120bee68ed792884d340f911d8434306b28605,,
+16,Revoke.cash - Helping you stay safe in web3,7496,7644,20504.1,16666.67,20504.1,['oss'],0xe126b3e5d052f1f575828f61feba4f4f2603652a,https://github.com/RevokeCash,RevokeCash
+16,Rings Network,360,366,750.65,995.24,1745.89,['oss'],0xf7fea1722f9b27b0666919a5664bab486a4b18d3,https://github.com/RingsNetwork/rings-node,RingsNetwork
+16,Rouge Ticket,712,720,1812.92,1581.5,3394.42,['oss'],0xeb439eed5642641968f9d8b52f2788e0f19b443b,https://github.com/TheRougeProject,TheRougeProject
+16,Saving forests in Colombia with KOKO DAO,175,184,955.34,3771.14,4726.48,['climate'],0x7f722b8b013ac7bd654b3b102acc7573a32db9bc,https://gitcoin.co/anamariamb16,
+16,Scaling Grassroots Commons for Local Regeneration in E. Africa and S. E. Asia,110,118,599.54,1223.26,1822.8,['climate'],0xd68e5b216fc2af2854152eac501f9e00807d8c1d,,
+16,Seedle,690,706,1191.89,1002.53,2194.42,['oss'],0x5c34386552091744717b1c0154b9d48d35f5f435,https://github.com/SeedleFinance,SeedleFinance
+16,Shamba Ecological Oracle and DMRV Network,263,286,953.12,7857.95,8811.07,['climate'],0x86579ebce57605929da73d8ce17f40960c3b052a,https://github.com/shambadynamic,shambadynamic
+16,Silvi,195,205,637.79,1737.85,2375.64,['climate'],0xa7ca400d49bba87eb606ee05af93689bd21fab99,,
+16,smol-evm,431,444,1481.97,5209.78,6691.75,['ethinfra'],0xd41bdbd4101e02057b7f621f681540ef3ac81e55,,
+16,Solarpunk Nomads: building the first two Public Goods adventure vehicles,414,439,1893.24,13262.91,15156.15,['climate'],0x474716e617fea8898d4fa9d891aa67b5bedd6c4b,,
+16,Somer Esat Ethereum Staking Guides (Ubuntu),538,555,2102.08,7691.52,9793.6,['ethinfra'],0x32b74b90407309f6637245292cd90347de658a37,https://github.com/SomerEsatGuides,SomerEsatGuides
+16,Soul Wallet,3051,3102,6461.27,9036.87,15498.14,['oss'],0xfe97e32a873aa2f926fbfc560abeef01f753c128,https://github.com/proofofsoulprotocol/smart-contract-wallet-4337,proofofsoulprotocol
+16,Spect,104,111,452.45,866.59,1319.04,['oss'],0x55b23ed53fe13060183b92979c737a8ef9a73b73,https://github.com/spect-ai/circles.v1,spect-ai
+16,StarkDeFi,11330,11643,33462.41,16666.67,50129.08,['oss'],0x9d100f017095e53b24d81296bca1d26742f1800f,,
+16,Starksheet,621,637,1285.49,1384.01,2669.5,['oss'],0x7a0857d314f62d383341b4ed8fe380e7c98fb978,https://github.com/the-candy-shop,the-candy-shop
+16,Stereum - Ethereum Node Setup,559,580,1942.26,6979.11,8921.37,['ethinfra'],0x6e41fe2f8303b89c9dbccabe59a7f7f8f4312ca9,https://github.com/stereum-dev,stereum-dev
+16,Tally Ho! - Open Source and Community Owned Wallet,12619,12922,40598.35,16666.67,40598.35,['oss'],0x99b36fdbc582d113af36a21eba06bfeab7b9be12,https://github.com/tahowallet,tahowallet
+16,TaterDAO,361,383,1116.97,3508.16,4625.13,['climate'],0xcbbd18d3ac27ab0fffd04bccd091b2802c92e0ca,,
+16,The Angry Teenagers - democratising investment in reforestation projects,136,145,528.56,2851.79,3380.35,['climate'],0x3460bf837b6741035d20ea2d894a4423a859af12,https://github.com/eco-mint,eco-mint
+16,The CM Guild,160,171,434.94,954.06,1389,['climate'],0x18ddbb6e344b11eedff5a49fa0c0f1a03cc1097e,,
+16,The Future of Work is Decentralized,151,156,777.5,622.1,1399.6,['oss'],0x0406bf2dae6a42d567b4e3dba6ada99069622ff1,https://github.com/talentDAO,talentDAO
+16,The Impact App + Eco Labs,137,146,699.69,1877.21,2576.9,['climate'],0x59490c362c54c1b60158f19ce499c82aa3669820,https://github.com/Eco-Labs,Eco-Labs
+16,The MoonMath Manual to zk-SNARKs,352,363,724.41,954.5,1678.91,['oss'],0xa8a4912938549d50ef3e7c698c890e18d73408ee,https://github.com/LeastAuthority,LeastAuthority
+16,The Science Commons Initiative,81,86,599.92,1550.3,2150.22,['oss'],0x3ecb9640ea6cc9bd9d5040713f854634fd0fcf8a,https://github.com/TheSCInitiative,TheSCInitiative
+16,The Solar Foundation,448,477,2216.56,10809.79,13026.35,['climate'],0x5b625088ee2e0e9e3d0bd8ab6ba3839d68886d2d,,
+16,Treejer Protocol,212,220,1581.39,8581.38,10162.77,['climate'],0x81c776d0d7f7d9d3699851993ecaa88a46187f11,https://github.com/treejer,treejer
+16,TrueBlocks and the Unchained Index,682,704,2361.52,6590.47,8951.99,['ethinfra'],0xf503017d7baf7fbc0fff7492b751025c6a78179b,https://github.com/TrueBlocks,TrueBlocks
+16,UBI,681,695,2333.7,1666.83,4000.53,['oss'],0x1d6cb99ff20223d730ae5d4680ec5154b7fdaefe,,
+16,Umbra,5651,5769,16248.61,16609.22,32857.83,['oss'],0x57ea12a3a8e441f5fe7b1f3af1121097b7d3b6a8,https://github.com/ScopeLift,ScopeLift
+16,Upala 🤖 Price-of-forgery digital identity,393,405,851.6,1360.93,851.6,['oss'],0x0230c6dd5db1d3f871386a3ce1a5a836b2590044,,
+16,vfat.tools,674,680,1743.63,1402.72,3146.35,['oss'],0xef0ca09fbf9a5f61e657fb208b46b8685c1d4766,,
+16,Vocdoni,373,384,941.14,1591.32,2532.46,['oss'],0x74d8967e812de34702ecd3d453a44bf37440b10b,,
+16,Voting Contracts,77,79,237.73,312.73,550.46,['oss'],0x5514f4a2bc7194664b12a48e238876aa53140350,https://github.com/co-vo-co,co-vo-co
+16,Vyper Smart Contract Language,372,378,823.76,958.97,1782.73,['oss'],0x70ccbe10f980d80b7ebaab7d2e3a73e87d67b775,https://github.com/vyperlang/vyper,vyperlang
+16,W3.work,207,214,445.73,575.37,1021.1,['oss'],0x70b20209c83ec8d01e3c7f2ec77bde7c40cdf2f6,https://github.com/LabOriginWeb3,LabOriginWeb3
+16,wagmi,987,1016,3770.49,17019.35,20789.84,['ethinfra'],0x4557b18e779944bfe9d78a672452331c186a9f48,https://github.com/wagmi-dev,wagmi-dev
+16,WaterDAO,602,625,2731.84,12498.4,15230.24,['climate'],0xf427ebbeb0aee1b06c99333001009188b5086934,,
+16,Web3beach,264,279,959.89,3161.95,4121.84,['climate'],0xefedaf9c07e6eb56bb8f82f30018e4461b1c5f4c,,
+16,Web3MQ,202,209,453.08,598.4,1051.48,['oss'],0xa126f99e0defc3bfa963064314c4b1d54c872dcc,,
+16,Web3 OSS Libraries by DePay,177,183,551.02,826.01,1377.03,['oss'],0x4e260bb2b25ec6f3a59b478fcde5ed5b8d783b02,https://github.com/DePayFi,DePayFi
+16,web3swift,506,529,1842.99,1925.58,3768.57,['oss'],0x6a3738c6299f45c31697acea647d49edcc9c28a4,,
+16,White Hat DAO,388,398,1168.54,1154.2,2322.74,['oss'],0x7bd7de26ebd064465bb9c272513bb3bcbddb1e93,https://github.com/WhiteHatDAO,WhiteHatDAO
+16,word block,82,86,211.51,470.73,682.24,['oss'],0x65a0af703047dfdd270361659d02f4f0e8547202,https://github.com/lg565245594,lg565245594
+16,WTF Academy,382,393,1193.89,1420.16,2614.05,['oss'],0x25df6da2f4e5c178ddff45038378c0b08e0bce54,https://github.com/WTFAcademy,WTFAcademy
+16,Zero Knowledge Podcast,677,688,1448.55,1551.77,3000.32,['oss'],0x0b0e6486648fbbb8e9ab33e3ae9d0b44b6faa701,https://github.com/ZeroKnowledgefm,ZeroKnowledgefm
+16,ZeroPool,1315,1338,2982,4324.04,7306.04,['oss'],0x947f8a49640b4770a8c7fe3c1e69ffc974295448,https://github.com/zeropoolnetwork,zeropoolnetwork
+16,zkREPL,1133,1165,2181.87,1922.67,4104.54,['oss'],0x5b3920527cfe207100312f4685e048ee032fa391,https://github.com/eponymous-labs,eponymous-labs
