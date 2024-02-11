@@ -1,0 +1,240 @@
+[
+  {
+    "slug": "4everland",
+    "name": "4EVERLAND"
+  }, {
+    "slug": "astralprotocol",
+    "name": "Astral Protocol"
+  }, {
+    "slug": "banklessdao",
+    "name": "Bankless DAO"
+  }, {
+    "slug": "beacon-chain",
+    "name": "Beacon Chain"
+  }, {
+    "slug": "blockhead-darryl-yeo",
+    "name": "Blockhead"
+  }, {
+    "slug": "blockscout",
+    "name": "Blockscout"
+  }, {
+    "slug": "bloomnetwork",
+    "name": "Bloom Network"
+  }, {
+    "slug": "brightid",
+    "name": "BrightID"
+  }, {
+    "slug": "buidlguidl",
+    "name": "Buidl Guidl"
+  }, {
+    "slug": "chainlist-defillama",
+    "name": "Chainlist"
+  }, {
+    "slug": "commons-stack",
+    "name": "Commons Stack"
+  }, {
+    "slug": "crypto-fees-dmihal",
+    "name": "CryptoFees.info"
+  }, {
+    "slug": "dappnode",
+    "name": "DAppNode"
+  }, {
+    "slug": "dapp-learning-dao",
+    "name": "Dapp-Learning"
+  }, {
+    "slug": "dataverse-os",
+    "name": "DataverseOS"
+  }, {
+    "slug": "defieye",
+    "name": "DeFiEye"
+  }, {
+    "slug": "defi-llama",
+    "name": "DefiLlama"
+  }, {
+    "slug": "gaia-os",
+    "name": "Digital Gaia"
+  }, {
+    "slug": "edendao",
+    "name": "Eden DAO"
+  }, {
+    "slug": "ethhub-io",
+    "name": "EthHub"
+  }, {
+    "slug": "ethstaker",
+    "name": "EthStaker"
+  }, {
+    "slug": "fileverse",
+    "name": "Fileverse"
+  }, {
+    "slug": "frame-floating",
+    "name": "Frame"
+  }, {
+    "slug": "freedom-of-the-press-foundation",
+    "name": "Freedom of the Press"
+  }, {
+    "slug": "gainforest",
+    "name": "GainForest"
+  }, {
+    "slug": "geo-web",
+    "name": "Geo Web"
+  }, {
+    "slug": "gitcoin",
+    "name": "Gitcoin"
+  }, {
+    "slug": "giveth",
+    "name": "Giveth"
+  }, {
+    "slug": "hardhat-nomicfoundation",
+    "name": "Hardhat"
+  }, {
+    "slug": "idena-network",
+    "name": "IDENA"
+  }, {
+    "slug": "jedi-swap",
+    "name": "JediSwap"
+  }, {
+    "slug": "wighawag",
+    "name": "Jolly Roger"
+  }, {
+    "slug": "dna-seq",
+    "name": "Just DNA-Seq"
+  }, {
+    "slug": "krebitdao",
+    "name": "KrebitDAO"
+  }, {
+    "slug": "kredeum",
+    "name": "Kredeum NFTs Factory"
+  }, {
+    "slug": "l2beat",
+    "name": "L2BEAT"
+  }, {
+    "slug": "lifinance",
+    "name": "LI.FI"
+  }, {
+    "slug": "leastauthority",
+    "name": "LeastAuthority"
+  }, {
+    "slug": "lenstube-xyz",
+    "name": "Lenstube"
+  }, {
+    "slug": "lexdao",
+    "name": "LexDAO"
+  }, {
+    "slug": "lighthouse-sigp",
+    "name": "Lighthouse"
+  }, {
+    "slug": "loanshark",
+    "name": "Loanshark"
+  }, {
+    "slug": "metamail",
+    "name": "MetaMail"
+  }, {
+    "slug": "minerva-wallet-lab10-coop",
+    "name": "Minerva Wallet"
+  }, {
+    "slug": "nft-pricefloor",
+    "name": "NFT-PriceFloor"
+  }, {
+    "slug": "nethermindeth",
+    "name": "Nethermind"
+  }, {
+    "slug": "nicenode",
+    "name": "NiceNode"
+  }, {
+    "slug": "optinames-optimismresolver",
+    "name": "Optinames"
+  }, {
+    "slug": "poapin-glory-lab",
+    "name": "POAPin"
+  }, {
+    "slug": "pepemon-dao",
+    "name": "Pepemon"
+  }, {
+    "slug": "proof-of-humanity",
+    "name": "Proof of Humanity"
+  }, {
+    "slug": "protocol-guild",
+    "name": "Protocol Guild"
+  }, {
+    "slug": "prysmaticlabs",
+    "name": "Prysm"
+  }, {
+    "slug": "punk-domains",
+    "name": "Punk Domains"
+  }, {
+    "slug": "rekthq",
+    "name": "RektHQ"
+  }, {
+    "slug": "revert-finance",
+    "name": "Revert Finance"
+  }, {
+    "slug": "revoke-cash",
+    "name": "Revoke"
+  }, {
+    "slug": "scope-lift",
+    "name": "ScopeLift"
+  }, {
+    "slug": "shambadynamic",
+    "name": "Shamba DMRV"
+  }, {
+    "slug": "snapshot-labs",
+    "name": "Snapshot"
+  }, {
+    "slug": "someresatguides",
+    "name": "Somer Esat"
+  }, {
+    "slug": "spect-ai",
+    "name": "Spect"
+  }, {
+    "slug": "tor-project",
+    "name": "Tor Project"
+  }, {
+    "slug": "treejer",
+    "name": "Treejer Protocol"
+  }, {
+    "slug": "trueblocks",
+    "name": "TrueBlocks"
+  }, {
+    "slug": "urbanika",
+    "name": "Urbanika"
+  }, {
+    "slug": "via-protocol",
+    "name": "Via Protocol"
+  }, {
+    "slug": "walletconnect",
+    "name": "Wallet Connect"
+  }, {
+    "slug": "weekinethnews",
+    "name": "Week in Ethereum News"
+  }, {
+    "slug": "zeropoolnetwork",
+    "name": "ZeroPool"
+  }, {
+    "slug": "zk-block-elefria-labs",
+    "name": "Zk Block"
+  }, {
+    "slug": "clrfund",
+    "name": "clr.fund"
+  }, {
+    "slug": "eth-wizard-stake-house",
+    "name": "eth-wizard"
+  }, {
+    "slug": "eth-limo",
+    "name": "eth.limo"
+  }, {
+    "slug": "ethers-io",
+    "name": "ethers.js"
+  }, {
+    "slug": "rotki",
+    "name": "rotki"
+  }, {
+    "slug": "stake-house",
+    "name": "stake-house"
+  }, {
+    "slug": "tapexyz",
+    "name": "tapexyz"
+  }, {
+    "slug": "wagmi-dev",
+    "name": "wagmi"
+  }
+]
