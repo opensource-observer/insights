@@ -1,0 +1,6 @@
+,round,project name,eth,address,start_date,oso_slug,dune_deployer_mapping
+3,Octant Epoch 1,Hypercerts,27.72,0x2DCDF80f439843D7E0aD1fEF9E7a439B7917eAc9,10/19/2023,hypercerts,Hypercerts
+7,Octant Epoch 2,Hypercerts,16.3803,0x2DCDF80f439843D7E0aD1fEF9E7a439B7917eAc9,1/17/2024,hypercerts,Hypercerts
+19,Octant Epoch 1,Gitcoin,8.1771,0xde21F729137C5Af1b01d73aF1dC21eFfa2B8a0d6,10/19/2023,gitcoin,"Gitcoin, Gitcoin Passport, Allo Protocol (Gitcoin)"
+33,Octant Epoch 2,Gitcoin,5.6457,0xde21F729137C5Af1b01d73aF1dC21eFfa2B8a0d6,1/17/2024,gitcoin,"Gitcoin, Gitcoin Passport, Allo Protocol (Gitcoin)"
+44,Octant Epoch 1,Bankless DAO,0.0042,0xCf3efCE169acEC1B281C05E863F78acCF62BD944,10/19/2023,banklessdao,Bankless DAO
