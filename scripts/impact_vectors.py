@@ -16,7 +16,11 @@ def apply_transform(dataframe, column, transform_func, threshold):
 
 def standardize_series(series):
     """Standardize series (z-score normalization)."""
-    return (series - series.mean()) / series.std()
+    norm_series = (series - series.mean()) / series.std()
+    xmin = norm_series.min()
+    xmax = norm_series.max()
+    norm_series = (norm_series - xmin) / (xmax - xmin)
+    return norm_series
 
 def calculate_weighted_impacts(dataframe, impact_vectors, threshold=0):
     """Calculate weighted impacts for specified vectors."""
@@ -37,4 +41,4 @@ def create_impact_pool(dataframe, impact_vectors, name_col='project_name'):
     cols = [name_col] + list(impact_vectors.keys())
     new_df = dataframe[cols].join(weighted_impacts)
     new_df.sort_values(by='pool_score', ascending=False, inplace=True)
-    return new_df
+    return new_df.dropna()
