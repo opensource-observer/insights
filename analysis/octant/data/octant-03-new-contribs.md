@@ -1,0 +1,9 @@
+| Project                      |   Total Contributors - All Time |   New Contributors - Last 6 Months |   Full-time Developers - Avg Last 6 Months |   Total Developers - Avg Last 6 Months |
+|:-----------------------------|--------------------------------:|-----------------------------------:|-------------------------------------------:|---------------------------------------:|
+| 1Hive Gardens                |                             326 |                                  2 |                                        0   |                                    2.2 |
+| StateOfEth (by Ether Alpha)  |                              35 |                                  3 |                                        1.3 |                                    2.2 |
+| Ethereum Attestation Service |                              82 |                                 43 |                                        0   |                                    2   |
+| growthepie                   |                               8 |                                  2 |                                        1.2 |                                    4   |
+| MetaGov                      |                              65 |                                  3 |                                        0   |                                    5.2 |
+| web3.js                      |                            2308 |                                112 |                                        0.2 |                                    5.2 |
+| web3.py                      |                             949 |                                 56 |                                        0   |                                    4.2 |
