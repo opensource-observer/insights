@@ -1,0 +1,1274 @@
+[
+  {
+    "artifact": "brianai",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No repo provided and owner is a User not an Organization."
+    }
+  },
+  {
+    "artifact": "0xl10n",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=0)."
+    }
+  },
+  {
+    "artifact": "aastarcommunity",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "abundanceprotocol",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No repo provided and owner is a User not an Organization."
+    }
+  },
+  {
+    "artifact": "adcommune",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "agentswbenefits",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "agroforestdao",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "aiswarm",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "alcueca",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No repo provided and owner is a User not an Organization."
+    }
+  },
+  {
+    "artifact": "amet-finance",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "angaz",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No repo provided and owner is a User not an Organization."
+    }
+  },
+  {
+    "artifact": "aratta-labs",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=5)."
+    }
+  },
+  {
+    "artifact": "arbitrumhub/arbitrumdao_hub",
+    "type": "repo",
+    "outcome": {
+      "Approved": false,
+      "Reason": "Repositories must have a commit older than 2024-03-01."
+    }
+  },
+  {
+    "artifact": "armitage-labs",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "astxlabs",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=0)."
+    }
+  },
+  {
+    "artifact": "atletz",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=0)."
+    }
+  },
+  {
+    "artifact": "australopitech",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "ayowecca uganda",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No repo provided and owner is a User not an Organization."
+    }
+  },
+  {
+    "artifact": "azosfinance",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "base-fundy",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=2)."
+    }
+  },
+  {
+    "artifact": "bcdevs",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=10)."
+    }
+  },
+  {
+    "artifact": "bcharity-net",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=10)."
+    }
+  },
+  {
+    "artifact": "bitbeckers",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No repo provided and owner is a User not an Organization."
+    }
+  },
+  {
+    "artifact": "block-star-logic",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=10)."
+    }
+  },
+  {
+    "artifact": "blockchain-kami",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "blockchain-lab-um",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "blocktrendtw",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=0)."
+    }
+  },
+  {
+    "artifact": "bonadocs",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "builders-garden",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "c-atts",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=4)."
+    }
+  },
+  {
+    "artifact": "carbon-counting-club",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=1)."
+    }
+  },
+  {
+    "artifact": "change-code-io",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "chatafisha",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "choraclub",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "circuitscan",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=2)."
+    }
+  },
+  {
+    "artifact": "citizenlab-tech",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=0)."
+    }
+  },
+  {
+    "artifact": "coincashewcom",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=0)."
+    }
+  },
+  {
+    "artifact": "college-dao",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=4)."
+    }
+  },
+  {
+    "artifact": "coordination-play",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "cronian-tech",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "cryptoconexion",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=1)."
+    }
+  },
+  {
+    "artifact": "dannybess1",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No repo provided and owner is a User not an Organization."
+    }
+  },
+  {
+    "artifact": "dao-driven",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "daocoa",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=0)."
+    }
+  },
+  {
+    "artifact": "dcarbon-renaissance-hackathon",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "decentraschool",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=0)."
+    }
+  },
+  {
+    "artifact": "detechies",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "dfmlab",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No repo provided and owner is a User not an Organization."
+    }
+  },
+  {
+    "artifact": "dig-dao",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "dm3-org",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "dtrials",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "dynos-95",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=1)."
+    }
+  },
+  {
+    "artifact": "earth-coin",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=0)."
+    }
+  },
+  {
+    "artifact": "eco-labs",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=0)."
+    }
+  },
+  {
+    "artifact": "elfork_eth",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No repo provided and owner is a User not an Organization."
+    }
+  },
+  {
+    "artifact": "energiasonora",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=0)."
+    }
+  },
+  {
+    "artifact": "eth-bucharest",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=0)."
+    }
+  },
+  {
+    "artifact": "eth-pkg",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "ethdailyhub",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=0)."
+    }
+  },
+  {
+    "artifact": "ethereum-mex",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=0)."
+    }
+  },
+  {
+    "artifact": "ethereum-tag-service",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=1)."
+    }
+  },
+  {
+    "artifact": "ethui",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "euterpehq",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=1)."
+    }
+  },
+  {
+    "artifact": "filemarket-xyz",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=2)."
+    }
+  },
+  {
+    "artifact": "flashtrader-eth",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=1)."
+    }
+  },
+  {
+    "artifact": "fluidkey",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "framelib",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=0)."
+    }
+  },
+  {
+    "artifact": "getwalletx",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "gifmebeer",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No repo provided and owner is a User not an Organization."
+    }
+  },
+  {
+    "artifact": "gigsgogreen",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=0)."
+    }
+  },
+  {
+    "artifact": "goalzapp",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=0)."
+    }
+  },
+  {
+    "artifact": "gov-score",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No repo provided and owner is a User not an Organization."
+    }
+  },
+  {
+    "artifact": "grantsscope",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "greenpill-dev-guild",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "greenpill-nigeria",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=0)."
+    }
+  },
+  {
+    "artifact": "helios-dao",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "helpers social development foundation",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No repo provided and owner is a User not an Organization."
+    }
+  },
+  {
+    "artifact": "honorcodedao",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=1)."
+    }
+  },
+  {
+    "artifact": "hoprnet",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=10)."
+    }
+  },
+  {
+    "artifact": "hvax",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "hyperfiles-org",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "hyperion-team",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=2)."
+    }
+  },
+  {
+    "artifact": "icdevsorg",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=10)."
+    }
+  },
+  {
+    "artifact": "jellycuts",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "joshua-and",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "lemonadesocial",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "lenspost-labs",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "lifespanio",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=1)."
+    }
+  },
+  {
+    "artifact": "lunardao",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No repo provided and owner is a User not an Organization."
+    }
+  },
+  {
+    "artifact": "mark3labs",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "menthol protocol",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No repo provided and owner is a User not an Organization."
+    }
+  },
+  {
+    "artifact": "metrics-garden-labs",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "moos-garden",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No repo provided and owner is a User not an Organization."
+    }
+  },
+  {
+    "artifact": "mycelia-uni",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=0)."
+    }
+  },
+  {
+    "artifact": "nacdbdatabase",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=0)."
+    }
+  },
+  {
+    "artifact": "namehash",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "network-of-trust",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=0)."
+    }
+  },
+  {
+    "artifact": "ninjahome",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "oakchain",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No repo provided and owner is a User not an Organization."
+    }
+  },
+  {
+    "artifact": "onchaintrust",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "one-three-three-seven-ethereum",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "oneskycollective",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No repo provided and owner is a User not an Organization."
+    }
+  },
+  {
+    "artifact": "onthisxyz",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=5)."
+    }
+  },
+  {
+    "artifact": "opentothepublic",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "optionhq",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "orbitdb",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "patientanalyticszkp",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "perpetualorganizationarchitect",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "persona-art",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=0)."
+    }
+  },
+  {
+    "artifact": "pinsavedao",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "polysport",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=3)."
+    }
+  },
+  {
+    "artifact": "porters-xyz",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "poscidondao",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "privatefolio",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=0)."
+    }
+  },
+  {
+    "artifact": "protocol-explorer",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "protspec",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "pyra-marketplace",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "qortal",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "quantum3-labs",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "quic-go",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "rankify-it",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "refi tulum",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No repo provided and owner is a User not an Organization."
+    }
+  },
+  {
+    "artifact": "refi-phangan",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=2)."
+    }
+  },
+  {
+    "artifact": "refimexico",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No repo provided and owner is a User not an Organization."
+    }
+  },
+  {
+    "artifact": "regen-atlas",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "regenbuild",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No repo provided and owner is a User not an Organization."
+    }
+  },
+  {
+    "artifact": "rentality-xyz",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "rolod0x",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "rootedlabs",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No repo provided and owner is a User not an Organization."
+    }
+  },
+  {
+    "artifact": "rubyscoreio",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=3)."
+    }
+  },
+  {
+    "artifact": "salva-terra-foundation",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=0)."
+    }
+  },
+  {
+    "artifact": "silius-rs",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "softwarefoundationgroupatkyotou",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=10)."
+    }
+  },
+  {
+    "artifact": "solide-project",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "sovereign-nature",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "stallionstake",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "stogramhq",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=0)."
+    }
+  },
+  {
+    "artifact": "streaming-funding",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=3)."
+    }
+  },
+  {
+    "artifact": "super-dca-tech",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=1)."
+    }
+  },
+  {
+    "artifact": "superchaineco",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=0)."
+    }
+  },
+  {
+    "artifact": "swiss-knife-xyz",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "symp0iesis",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=3)."
+    }
+  },
+  {
+    "artifact": "taigalabs",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=2)."
+    }
+  },
+  {
+    "artifact": "tetration-lab",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=10)."
+    }
+  },
+  {
+    "artifact": "the-network-society-forum",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "the-web3-cr34tive-agency",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=0)."
+    }
+  },
+  {
+    "artifact": "tokenguardio",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "tonspay",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "truenetworkio",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "turtleshell-xyz",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=3)."
+    }
+  },
+  {
+    "artifact": "ultimatedigits",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "vaariance",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "vacp2p",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "web3-gpt",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "web3atl",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=2)."
+    }
+  },
+  {
+    "artifact": "web3labs",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=10)."
+    }
+  },
+  {
+    "artifact": "wizard-bridge-evm",
+    "type": "owner",
+    "outcome": {
+      "Approved": false,
+      "Reason": "No valid repositories found (n=2)."
+    }
+  },
+  {
+    "artifact": "zk-passport",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  },
+  {
+    "artifact": "zktlabs",
+    "type": "owner",
+    "outcome": {
+      "Approved": true,
+      "Reason": null
+    }
+  }
+]

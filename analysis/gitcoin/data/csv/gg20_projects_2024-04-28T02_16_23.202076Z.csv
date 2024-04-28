@@ -1,0 +1,524 @@
+chain_id,round_id,round_name,project_name,project_github,payout_address,status
+10,9,Token Engineering QF Grants Round: Spring 2024,"Pairwise: Simplifying Choices, Amplifying Voices",GeneralMagicio,0xd1b8db70ded72db850713b2ce7e1a4ffafad95d1,APPROVED
+10,9,Token Engineering QF Grants Round: Spring 2024,Bonding Curve Research Group (BCRG),bonding-curves,0x29567BdBcC92aCF37AC6B56B69180857bB69f7D1,APPROVED
+10,9,Token Engineering QF Grants Round: Spring 2024,Crypto Commons Association,,0xb013701563Fe41358c9308C3020B8DDD71225CB8,APPROVED
+10,9,Token Engineering QF Grants Round: Spring 2024,$EARTH - OSS,earth-coin ,0xd6b97e042d03EdBDc100Eb55fbE43Eb75f2e3036,APPROVED
+10,9,Token Engineering QF Grants Round: Spring 2024,1Hive Gardens,1Hive,0x1B8C7f06F537711A7CAf6770051A43B4F3E69A7e,APPROVED
+10,9,Token Engineering QF Grants Round: Spring 2024,SymVal,,0x97d25ce39d27fBaFc60C3Bf50f2675C0EED71b5C,APPROVED
+10,9,Token Engineering QF Grants Round: Spring 2024,Breadchain Cooperative,BreadchainCoop,0xc2fB4B3EA53E10c88D193E709A81C4dc7aEC902e,APPROVED
+10,9,Token Engineering QF Grants Round: Spring 2024,Trusted Seed: A value-driven community advancing Regen Economies,,0xb604cda24cca1838428Be7D40Fcd830451C23a0E,APPROVED
+10,9,Token Engineering QF Grants Round: Spring 2024,Turtleshell,turtleshell-xyz,0xD478230AC12b747d9796222B8Ac9989ABEDf5B00,APPROVED
+10,9,Token Engineering QF Grants Round: Spring 2024,ProtocolGuard：AI-Driven Exploring Potential Malicious Strategies in PAMMs & SAMMs,,0x2744d3088e3C2c273D3E845FC96C875fbAC0C052,APPROVED
+10,9,Token Engineering QF Grants Round: Spring 2024,Metrics Garden Labs,Metrics-Garden-Labs,0xc8C3a753eb4ebea74b724d6509c30e419b6B0f23,APPROVED
+10,9,Token Engineering QF Grants Round: Spring 2024,Casually Looped,,0x6b37dA5Ed689C74c57E245A911d6bAd8565188d7,APPROVED
+10,9,Token Engineering QF Grants Round: Spring 2024,Armitage,armitage-labs,0xB5E5559C6b85e8e867405bFFf3D15f59693eBE2f,APPROVED
+10,9,Token Engineering QF Grants Round: Spring 2024,EVMcrispr,EVMcrispr,0x0035cC37599241D007D0AbA1Fb931C5FA757f7A1,APPROVED
+10,9,Token Engineering QF Grants Round: Spring 2024,Commons Stack,commons-stack,0x8110d1D04ac316fdCACe8f24fD60C86b810AB15A,APPROVED
+10,9,Token Engineering QF Grants Round: Spring 2024,Token Engineering Dialogues,,0x539Bf564BFA8bBf73a0C5bF130746149986eacA1,APPROVED
+10,9,Token Engineering QF Grants Round: Spring 2024,$REGEN Tokenomics DAO,,0x96EDE46D5302E53DE4BA9bD2dea1BA4546410eF7,APPROVED
+10,9,Token Engineering QF Grants Round: Spring 2024,Network of Trust,,0x0922c198e06365936D5b564c84ED1FEC61aFeb45,APPROVED
+10,9,Token Engineering QF Grants Round: Spring 2024,Moos Modular Money Framework ,Moos-Garden,0x533fb569aa9f442F7acb4756e4Fb69E4Da9e71A4,APPROVED
+10,9,Token Engineering QF Grants Round: Spring 2024,NERD DAO: Decentralized Science and Web3 Innovation,NERDDAO,0x11de816f60cB82Af2c1BEa5AA7507c8cEcE0B3F1,APPROVED
+10,9,Token Engineering QF Grants Round: Spring 2024,Index Wallets,optionhq,0x4BD87f86824a1577e705489780376DA5AD309180,APPROVED
+10,9,Token Engineering QF Grants Round: Spring 2024,Super DCA: Innovating Decentralized Finance with Time-Weighted Average Market Making,Super-DCA-Tech,0xC07E21c78d6Ad0917cfCBDe8931325C392958892,APPROVED
+10,9,Token Engineering QF Grants Round: Spring 2024,Lived experience-based Weighted Voting Mechanism Design,,0xa1F01E5cC9562ed061B0e3ddDd3e82Ef69A1CebD,APPROVED
+10,9,Token Engineering QF Grants Round: Spring 2024,Tokenization for Inflation-Alleviation,,0xE8082fFf7d65EFB95b97a3B42b7e8A0C2D218cC1,APPROVED
+10,9,Token Engineering QF Grants Round: Spring 2024,The cadCAD Foundation,cadCAD-org,0x5041A1C1DCC760337e99B03DB60FeAF5f6f6c802,APPROVED
+10,9,Token Engineering QF Grants Round: Spring 2024,Streaming Quadratic Funding,streaming-funding,0xB3f2b4a0b5F2f99e6B6bfc71D5E18a59B92D5606,APPROVED
+10,9,Token Engineering QF Grants Round: Spring 2024,DeFinomics Labs,Definomics-Labs,0xE351625D4E07D185880fdcc3a8FA6E2558d2F470,APPROVED
+10,9,Token Engineering QF Grants Round: Spring 2024,Kairos Research,KairosResearch,0x13257e783dc8ded7e227a28edb0428c42d31202e,APPROVED
+42161,26,Web3 Infrastructure,Rantom,rantomdotapp,0x254b42CaCf7290e72e2C84c0337E36E645784Ce1,APPROVED
+42161,26,Web3 Infrastructure,eth-wizard: An Ethereum validator installation wizard,stake-house,0xdbB16c68aA373229Db9f37D85087264361691AB9,APPROVED
+42161,26,Web3 Infrastructure,beaconcha.in,gobitfly,0x9d4E94dB689Bc471E45b0a18B7BdA36FcCeC9c3b,APPROVED
+42161,26,Web3 Infrastructure,EthStaker,eth-educators,0xa83a92297B3d80A70cC396bf74424971A9890704,APPROVED
+42161,26,Web3 Infrastructure,Proof of Philanthropy: A Verifiable Giving Pledge for the Modern Age,lifespanio,0xb927D6cddc3E545Fc5ed3cB9d2dd9Ac52Addde17,APPROVED
+42161,26,Web3 Infrastructure,DefiLlama,DefiLlama,0x08a3c2A819E3de7ACa384c798269B3Ce1CD0e437,APPROVED
+42161,26,Web3 Infrastructure,Lakat 📜,Lakat-OS,0x458e250303B030B2d2E4f84025B53731415B0124,APPROVED
+42161,26,Web3 Infrastructure,NiceNode,NiceNode,0x9cce47E9cF12C6147c9844adBB81fE85880c4df4,APPROVED
+42161,26,Web3 Infrastructure,IPC Explorer,cronian-tech,0x59A56819A33B63A6e4331206204c2B4411B54eF6,APPROVED
+42161,26,Web3 Infrastructure,Proof of passport,zk-passport,0x46cD811EE975510e51Ba197FD7D83e87be1Dd09d,APPROVED
+42161,26,Web3 Infrastructure,ZKT Network,ZKTLabs,0xBB80eADb6Ccc27484125f92a6ceb16fBDdc23851,APPROVED
+42161,26,Web3 Infrastructure,Circuitscan,circuitscan,0xa48c718AE6dE6599c5A46Fd6caBff54Def39473a,APPROVED
+42161,26,Web3 Infrastructure,quic-go,quic-go,0x713A213708104FC9a9dfA4f9A26A1da288e5e59b,APPROVED
+42161,26,Web3 Infrastructure,The Tor Project,torproject,0xe3d34daC159f88Fd2CD38b1380B998000a9C0880,APPROVED
+42161,26,Web3 Infrastructure,FileMarket,Filemarket-xyz,0xB61AF010Af20e22493773157A3D0e5FB35031281,APPROVED
+42161,26,Web3 Infrastructure,MiniBridge,DeFiEye,0xE6D7b9Fb31B93E542f57c7B6bfa0a5a48EfC9D0f,APPROVED
+42161,26,Web3 Infrastructure,ICDevs.org,icdevsorg,0x4A7C969110f7358bF334b49A2FF1a2585ac372B8,APPROVED
+42161,26,Web3 Infrastructure,Bonding Curve Research Group (BCRG),bonding-curves,0x29567BdBcC92aCF37AC6B56B69180857bB69f7D1,APPROVED
+42161,26,Web3 Infrastructure,Abundance Protocol,AbundanceProtocol,0xc6FD734790E83820e311211B6d9A682BCa4ac97b,APPROVED
+42161,26,Web3 Infrastructure,Ethereum on ARM,EOA-Blockchain-Labs,0x1bCDB2226ee2b023e3886Dd2027c4eE95457699f,APPROVED
+42161,26,Web3 Infrastructure,IDENA,idena-network,0x8917418aBe36E6E788068E96EF5A47d7484C06b1,APPROVED
+42161,26,Web3 Infrastructure,Ethereum Staking Guides by CoinCashew,coincashewcom,0xCF83d0c22dd54475cC0C52721B0ef07d9756E8C0,APPROVED
+42161,26,Web3 Infrastructure,eth-pkg,eth-pkg,0x1304c00FddAb442B1A6862De159914f20450dbAB,APPROVED
+42161,26,Web3 Infrastructure,EIP-7265 Alliance - securing the future of ethereum,ikigai-labs-xyz,0xD478230AC12b747d9796222B8Ac9989ABEDf5B00,APPROVED
+42161,26,Web3 Infrastructure,Lodestar,chainsafe,0xc8F9f8C913d6fF031c65e3bF7c7a51Ad1f3a86E5,APPROVED
+42161,26,Web3 Infrastructure,Node Crawler - Ethernets.io,angaz,0x1da1A606f1EE536D501a6B731e43e318DbC71368,APPROVED
+42161,26,Web3 Infrastructure,ETHPaymaster,AAStarCommunity,0x1A236bA5f90CC02B735eB7a4591937cF9137357A,APPROVED
+42161,26,Web3 Infrastructure,Ethereum Attestation Service (EAS),ethereum-attestation-service,0x532Ff53DCf3740832Dc6D0AdE9084Fa2deDd1269,APPROVED
+42161,26,Web3 Infrastructure,Epoch Protocol,epochprotocol,0xe223Af979BFf3397Ce02b6741B5D43566B2f3F38,APPROVED
+42161,26,Web3 Infrastructure,Ephemery Testnet,ephemery-testnet,0x8d3809951C7F1D18227251B0Cb047735dbf8f8fC,APPROVED
+42161,26,Web3 Infrastructure,Candide,candidelabs,0xc52FbF3769056cA421656b9C98b14A453A251a28,APPROVED
+42161,26,Web3 Infrastructure,Commons Stack,commons-stack,0x8110d1D04ac316fdCACe8f24fD60C86b810AB15A,APPROVED
+42161,26,Web3 Infrastructure,Dappnode,dappnode,0x53390590476dC98860316e4B46Bb9842AF55efc4,APPROVED
+42161,26,Web3 Infrastructure,AuditDB,auditdbio,0x9069f28B797eCA9D6a75BB3Fad9EC4F2a701Cf49,APPROVED
+42161,26,Web3 Infrastructure,Ethscriptions,ethscriptions-protocol,0xC2172a6315c1D7f6855768F843c420EbB36eDa97,APPROVED
+42161,26,Web3 Infrastructure,Ethereum Tag Service,ethereum-tag-service,0x8eD2BD43b9769eBc22873474ED347D2799d241F0,APPROVED
+42161,26,Web3 Infrastructure,Stereum - Ethereum Node Installer & Manager,stereum-dev,0x81D30BF2047cC5Ee5f903CC00594edC8D5018D31,APPROVED
+42161,26,Web3 Infrastructure,DAOstar,metagov,0x539bDe90Cc8005727a7f2dd5dEA5F6D83e82BbA2,APPROVED
+42161,26,Web3 Infrastructure,True Network,TrueNetworkIO,0x5B77b8B2f10f52f53b6fF732568790CbaAf0b5eF,APPROVED
+42161,26,Web3 Infrastructure,Seed Protocol by JournoDAO,journodao,0xec8E47e050A122970CBB4bAf44413f3f070b543D,APPROVED
+42161,26,Web3 Infrastructure,LunarDAO,lunardao,0x325c9d212E4718330800b29eF2BdC18dE0AAD351,APPROVED
+42161,26,Web3 Infrastructure,PORTERS,porters-xyz,0xC2B18B24175b274d52f609c1Bcd44f801262B895,APPROVED
+42161,26,Web3 Infrastructure,Wizard Bridge EVM,Wizard-Bridge-EVM,0x35648519a2a89532aB534b9F08C5f180D48F1b4B,APPROVED
+42161,26,Web3 Infrastructure,Inverter Network,InverterNetwork,0x8Bc82aa112d6f0Bc666146dF3Ee97CaA98dc1a4F,APPROVED
+42161,26,Web3 Infrastructure,Shielded Voting by Shutter Network,shutter-network,0xB476Ee7D610DAe7B23B671EBC7Bd6112E9772969,APPROVED
+42161,26,Web3 Infrastructure,BrightID 🔆 Universal Proof of Uniqueness,BrightID,0x4B8810b079eb22ecF2D1f75E08E0AbbD6fD87dbF,APPROVED
+42161,26,Web3 Infrastructure,"Blockhead: portfolio tracker, block explorer and web3 browser",blockhead-info,0x048669c431230A9A8298b7Ec045f1E1137827cCA,APPROVED
+42161,26,Web3 Infrastructure,L2BEAT,l2beat,0x07631B9e7b017e60809C35D556d5BFDf64401D4d,APPROVED
+42161,26,Web3 Infrastructure,Umbra,ScopeLift,0x57ea12a3a8e441f5fe7b1f3af1121097b7d3b6a8,APPROVED
+42161,26,Web3 Infrastructure,Flexible Voting,ScopeLift,0xF138f8e006947d4482458510AB701299F46c12a3,APPROVED
+42161,26,Web3 Infrastructure,Lighthouse by Sigma Prime,sigp,0xC9a872868afA68BA937f65A1c5b4B252dAB15D85,APPROVED
+42161,26,Web3 Infrastructure,Louper - The Ethereum Diamond Inspector,mark3labs,0x4DBBe712CDbdc63D7B2b374Bb3Ad143BEC1EecBb,APPROVED
+42161,26,Web3 Infrastructure,ArbitrumHub - The Gateway to Seamless Navigation and Exploration in the ArbitrumDAO Ecosystem ,arbitrumhub/arbitrumdao_hub,0xB1b1dEbB6C65258d05842a1CFc9CCb5D8B868286,APPROVED
+42161,26,Web3 Infrastructure,nim-libp2p,vacp2p,0x5F1e9C43cF04477B48934EAAb43E207d46595735,APPROVED
+42161,26,Web3 Infrastructure,Silius  - ERC-4337 bundler,silius-rs,0x7cB801446AC4f5EA8f7333EFc58ab787eB611558,APPROVED
+42161,26,Web3 Infrastructure,Zerokit,vacp2p,0x5F1e9C43cF04477B48934EAAb43E207d46595735,APPROVED
+42161,26,Web3 Infrastructure,Gitcoin Grants Data Portal,datonic,0xb9ecee9a0e273d8A1857F3B8EeA30e5dD3cb6335,APPROVED
+42161,26,Web3 Infrastructure,Open to the Public,opentothepublic,0xfCbCceed1eAFcA6198e23585550f4eB76838Cf4D,APPROVED
+42161,26,Web3 Infrastructure,RPCh,hoprnet,0x8f7a2AbbC8741572427e3426538cD516A41102f3,APPROVED
+42161,26,Web3 Infrastructure,Pheasant Network,Pheasant-Network,0x0CdeF21714e12A518B818C9a70c7AA39D4A69974,APPROVED
+42161,26,Web3 Infrastructure,Supermajority.info,one-three-three-seven-ethereum,0xc794Bf32661C50f9A975856589E7666519ff52d8,APPROVED
+42161,26,Web3 Infrastructure,Opti.Domains | Scale ENS to OP,Opti-domains,0x8b6c27ec466923fad66Ada94c78AA320eA876969,APPROVED
+42161,26,Web3 Infrastructure,Dessage,ninjahome,0x87F90842A66cfdaa9Fea9169838d583B16F5Af73,APPROVED
+42161,26,Web3 Infrastructure,OnChainTrust,OnChainTrust,0x96De47Ffd3eCE4ef87fF07BB99c66eCa96aFE151,APPROVED
+42161,26,Web3 Infrastructure,NFT.Storage,nftstorage,0x8366aDcAdBc63B2C22cc3F48979c837D890054d0,APPROVED
+42161,26,Web3 Infrastructure,Ultimate Digits,UltimateDigits,0xb44bfDC2a7a1E753a58241Ec101159a20a111fF8,APPROVED
+42161,26,Web3 Infrastructure,eth.limo,ethlimo,0xB352bB4E2A4f27683435f153A259f1B207218b1b,APPROVED
+42161,31,OpenCivics Consortium Round 02,AgroforestDAO april 2024,,0x9Cc3eF719D354592f63A838a8A121C55012762b7,APPROVED
+42161,31,OpenCivics Consortium Round 02,Crossroads,,0x161d926469e99cdf72d60829754e48aab29257a3,APPROVED
+42161,31,OpenCivics Consortium Round 02,VoiceDeck: A Marketplace for Journalism Impact Certificates,VoiceDeck,0xd1825Dd9a5e49791FB7961AC3c4170DeeD5710b4,APPROVED
+42161,31,OpenCivics Consortium Round 02,Common Agency,,0xFa6a4b001229D684c6cdCd31A213cD0c9Aa18EA3,APPROVED
+42161,31,OpenCivics Consortium Round 02,Ethereal Forest,,0xE0fBc583bbc90fD3529833817A03604e136C010C,APPROVED
+42161,31,OpenCivics Consortium Round 02,Urbánika's bus: Circular Economy + Urban Governance,Urbanika,0x0442A9aBbc93058a873c371F21CC366338254A88,APPROVED
+42161,31,OpenCivics Consortium Round 02,Bloom Network,BloomNetwork,0x5219ffb88175588510e9752A1ecaA3cd217ca783,APPROVED
+42161,31,OpenCivics Consortium Round 02,Exploring Post-Capitalist Crypto Pathways,,0x9c66B74744A886779FE4436831e2aB47c0b73f5f,APPROVED
+42161,31,OpenCivics Consortium Round 02,CitizenLab,citizenlab-tech,0x135232a8a430C022A83f032DfDeB535711E60795,APPROVED
+42161,31,OpenCivics Consortium Round 02,The River Dôn Project,,0x4AFCFA229160ADFdDfF23e1aB34fDF2B7BB06BED,APPROVED
+42161,31,OpenCivics Consortium Round 02,Metagov,metagov,0xc38B9fBB57b0c33f85Cb0A03669a9D6127538369,APPROVED
+42161,31,OpenCivics Consortium Round 02,Moos: A Berlin hub for reimagining our cities,moos-garden,0xf8a4AbA83028F25D93888AC4c20ed6bbfc034fF9,APPROVED
+42161,31,OpenCivics Consortium Round 02,Collaborative Evolutionary Protocol for the Design Science Studio,,0xb1e110783a01d650110565b28dddbf19063a0003,APPROVED
+42161,31,OpenCivics Consortium Round 02,Self-Governance Commons,,0x5E80E8E79F7c06b1d40a47588fea3eA81BC8a22b,APPROVED
+42161,31,OpenCivics Consortium Round 02,Protopian Civic Futures - Tales from regen·era,,0x910AB9DF8FBF03F47c47564309729571F9F7C780,APPROVED
+42161,31,OpenCivics Consortium Round 02,Mycelial Civic Knowledge Networks,Myseelia,0x16d46098e455A04Cf7F3e43c3b2706614fDbEC85,APPROVED
+42161,25,dApps & Apps ,Tape (formerly Lenstube),tapexyz,0x01d79BcEaEaaDfb8fD2F2f53005289CFcF483464,APPROVED
+42161,25,dApps & Apps ,Hey.xyz (formerly Lenster),heyxyz,0x03Ba34f6Ea1496fa316873CF8350A3f7eaD317EF,APPROVED
+42161,25,dApps & Apps ,Toaster Finance,toaster-finance,0x30CAEb399186E087668e85F4424ea39Baf4981aD,APPROVED
+42161,25,dApps & Apps ,ENS Wayback Machine,BlossomLabs,0x6ea869B6870dd98552B0C7e47dA90702a436358b,APPROVED
+42161,25,dApps & Apps ,Bloom Network,BloomNetwork,0x5219ffb88175588510e9752A1ecaA3cd217ca783,APPROVED
+42161,25,dApps & Apps ,Event Horizon,HVAX,0xE67192302E444a8D28F60F6737a8bc7c672b8aC6,APPROVED
+42161,25,dApps & Apps ,Rankify,rankify-it,0x8F29e5660d967c9e7308BE3697b9C7D5Ebd853aE,APPROVED
+42161,25,dApps & Apps ,Bankless Academy,bankless-academy,0xe1887fF140BfA9D3b45D0B2077b7471124acD242,APPROVED
+42161,25,dApps & Apps ,LexDAO,lexDAO,0x966a4b9d5D2E01799170a0865C2D1cBBc1904163,APPROVED
+42161,25,dApps & Apps ,Tonspay,Tonspay,0x6B9939E7E970a4158Aa0a11e9B243B4A6b1106f2,APPROVED
+42161,25,dApps & Apps ,Tokenguard - dApp Conversion Analytics,tokenguardio,0x4CB4593567075889cba9f71B23AD6c3D54698117,APPROVED
+42161,25,dApps & Apps ,NERD DAO: Decentralized Science and Web3 Innovation,NERDDAO,0x7AEE7e0e5240E835090E23D2Beb556cB54fa6D0D,APPROVED
+42161,25,dApps & Apps ,Dapp Agroforestry Toolkit,AgroforestDAO,0x317aF17f8B8e6D5C29318261c0CEb059C3Ef70CE,APPROVED
+42161,25,dApps & Apps ,Streaming Quadratic Funding,streaming-funding,0xB3f2b4a0b5F2f99e6B6bfc71D5E18a59B92D5606,APPROVED
+42161,25,dApps & Apps ,Metagov,metagov,0xc38B9fBB57b0c33f85Cb0A03669a9D6127538369,APPROVED
+42161,25,dApps & Apps ,GovScore,gov-score,0x66D9640783719C13d6A106924000bC6153661a97,APPROVED
+42161,25,dApps & Apps ,Citizen Wallet,citizenwallet,0x20451461D5b609C5a3256d78F64c4Afee860Dc32,APPROVED
+42161,25,dApps & Apps ,JobStash,jobstash,0xf071e75C56eD5B162B5cb5e9D30d752BcD663f2D,APPROVED
+42161,25,dApps & Apps ,GifmeBeer,Gifmebeer,0x974a548B29012AF6762fc31cD64027BA39cC7196,APPROVED
+42161,25,dApps & Apps ,The Network Society Forum,The-Network-Society-Forum,0x846E2FE068d33CE621375580Ce144F4F3377294C,APPROVED
+42161,25,dApps & Apps ,Her Nation ,lemonadesocial,0x622667af000Be4125d833AB36d86c8a4C1f726e9,APPROVED
+42161,25,dApps & Apps ,Carmine Finance,CarmineOptions,0xa4ad2Ee4f67C3C83a0081060b6AeA2c88dFc36f3,APPROVED
+42161,25,dApps & Apps ,Hypercerts Foundation,hypercerts-org,0x627D54B88b519A2915B6A5A76fA9530FD085cE26,APPROVED
+42161,25,dApps & Apps ,Venn Protocol,australopitech,0x1FF256A1b3d20a93925ebf43DaBFC29d4353447a,APPROVED
+42161,25,dApps & Apps ,AikiSend,aikilabs,0x2e2316088c015F4BF27D86A1458A707af536A324,APPROVED
+42161,25,dApps & Apps ,RWA x Public Goods | BASIN,basin-global,0xEAF9830bB7a38A3CEbcaCa3Ff9F626C424F3fB55,APPROVED
+42161,25,dApps & Apps ,Kiwi News,attestate,0x1337E2624ffEC537087c6774e9A18031CFEAf0a9,APPROVED
+42161,25,dApps & Apps ,OpenCann Network,Open-Cann,0x4fB544dEdD9583B156A60e8AfE9afb45DCc3be56,APPROVED
+42161,25,dApps & Apps ,BCard,bankless-card,0xd281c47d59dC3d7275e16Dbef94a995077596F7b,APPROVED
+42161,25,dApps & Apps ,Quack,lenspost-labs,0x77fAD8D0FcfD481dAf98D0D156970A281e66761b,APPROVED
+42161,25,dApps & Apps ,Spark | Deresy & Hyperminter,ImpactScribe,0x02165CFB4260D0afA1f4809702C5979D9e0cD420,APPROVED
+42161,25,dApps & Apps ,Chora Club,ChoraClub,0xA2D590FEe197C0b614Fe7c3E10303327F38C0dc3,APPROVED
+42161,25,dApps & Apps ,wagmi fund,wagmifund,0x191A02b27C288B52c7906F3D751D9a158e24040A,APPROVED
+42161,25,dApps & Apps ,Using ZK for game optimization in Dark Forest,dfarchon,0xf0dBDe527c63B63178576578777f0b7E24755ABb,APPROVED
+42161,25,dApps & Apps ,GrantsScope - Grantee Discovery Using LLMs,grantsscope,0x2dd2036C9Db2ADA2739509AF0047c00C8b9291EF,APPROVED
+42161,25,dApps & Apps ,The Ecofrontiers Regen Atlas 🌱,Regen-Atlas,0x56769249e1461434836646417138F0AC7bBc2DD6,APPROVED
+42161,25,dApps & Apps ,Amet Finance,Amet-Finance,0xE0d3523Bf2351dE8a24D56C7255FbC3b20a3D7dc,APPROVED
+42161,25,dApps & Apps ,ShapeShift DAO,shapeshift,0x38276553F8fbf2A027D901F8be45f00373d8Dd48,APPROVED
+42161,25,dApps & Apps ,UNIT,toknowwhy,0xA3E3e7277d4eba425EB4e51bc2a2DD50F853EC9c,APPROVED
+42161,25,dApps & Apps ,Dig DAO,dig-dao,0x6681722aD4CFC003A536Ac541DafFAE381aa8e03,APPROVED
+42161,25,dApps & Apps ,College DAO,College-DAO,0xD71CE72ECe24dd5733D7C920ACBfE32163f8d91e,APPROVED
+42161,25,dApps & Apps ,deTechies,deTechies,0xfFf09621F09CAa2C939386b688e62e5BE19D2D56,APPROVED
+42161,25,dApps & Apps ,Masca,blockchain-lab-um,0x8333537bE79a24eC3012Bc99c87Cd8978F48E02f,APPROVED
+42161,25,dApps & Apps ,Rentality,Rentality-xyz,0x32a1171296E7633027A091a2d4Ad9b908620B6ED,APPROVED
+42161,25,dApps & Apps ,Social Layer,sociallayer-im,0xF2486FBec513e94d703aC7D92a712c1a8b77d710,APPROVED
+42161,25,dApps & Apps ,Bcharity,BCharity-Net,0xE564faB50EAf98A287C27c6a58d3A2997242EC82,APPROVED
+42161,25,dApps & Apps ,WTF Academy,WTFAcademy,0x25df6da2f4e5c178ddff45038378c0b08e0bce54,APPROVED
+42161,25,dApps & Apps ,Ethereum Localization Service,0xl10n,0xbb307Fa79a4Ebee900a93F594aa50b8C190e4177,APPROVED
+42161,25,dApps & Apps ,CryptoConexión - Onchain Lotería,cryptoconexion,0x7e0b8F682f82Ee3b9b41c34a2964061a4B6cf97a,APPROVED
+42161,25,dApps & Apps ,ERC7399 - Unified Flash Loan Layer,alcueca,0x888C40580375F93e1aeb2f64C1D529271b797e10,APPROVED
+42161,25,dApps & Apps ,Protocol Explorer,Protocol-Explorer,0x729B2C13D33E35281f326822f7e5015d2d44C07D,APPROVED
+42161,25,dApps & Apps ,Oakchain,oakchain,0x2E96a8Ecc0c64f2F5703E2634253e799A95CFb45,APPROVED
+42161,25,dApps & Apps ,Hyperfiles,hyperfiles-org,0x66CD14267fb5a1609496CdC37eB55E6FE3f59C75,APPROVED
+42161,25,dApps & Apps ,Tally Zero,withtally,0x50Db58E1774CB7922d1bF96a267b52e8bb41c0ce,APPROVED
+42161,25,dApps & Apps ,Greenpill Dev Guild,greenpill-dev-guild,0x992A3a242D6471d24783b4C2C6AF3EC7df871761,APPROVED
+42161,25,dApps & Apps ,GreenPill Nigeria: Impact=Profit,Greenpill-Nigeria,0xC83685cDbB4150477bCeB620d43b74C350a95cD9,APPROVED
+42161,25,dApps & Apps ,Tradao,tradao-xyz,0x9aAb7A39e7e022666283454fbd0769F93D1e1d4e,APPROVED
+42161,25,dApps & Apps ,Superchain Eco dApps,Superchaineco,0xfd92E1244f703ae3d4D1A7F5dCCeD8D8D6b364A5,APPROVED
+42161,25,dApps & Apps ,Blockchain Of Things,BCDevs,0x7348943C8d263ea253c0541656c36b88becD77B9,APPROVED
+42161,25,dApps & Apps ,Qortal,Qortal,0x0EDCc0a01B28Cb977F90710d94D08692D4411bD2,APPROVED
+42161,25,dApps & Apps ,ZKP2P Fiat On Ramp,zkp2p,0x43737376755b1549a086e9b218057d1DBdC139cC,APPROVED
+42161,25,dApps & Apps ,growthepie.xyz 🥧📏 - Usage Data and Analytics for Ethereum Scaling Solutions,growthepie,0x18f79D6d2166997c9A237C25c4692647CD4faf59,APPROVED
+42161,25,dApps & Apps ,Eppie: Web3 native email,Eppie-io,0x26938B1A8f0B70e78a9FE03810eddeb03E4D1fE3,APPROVED
+42161,25,dApps & Apps ,Stratagems,etherplay,0xAdDbc936aB952B6dC5C5Fe090c55269a1174D173,APPROVED
+42161,25,dApps & Apps ,Revoke.cash,RevokeCash,0xe126b3E5d052f1F575828f61fEBA4f4f2603652a,APPROVED
+42161,25,dApps & Apps ,Yoki Finance,yokifinance,0xd9d0aa3FC1616Ee96Fe38F3EBaf9EAc3862a9d4e,APPROVED
+42161,25,dApps & Apps ,Armitage,armitage-labs,0xB5E5559C6b85e8e867405bFFf3D15f59693eBE2f,APPROVED
+42161,25,dApps & Apps ,PoSciDonDAO,PoSciDonDAO,0x681237e285d8630e992D2DbbDd8F2FAf1435bD36,APPROVED
+42161,25,dApps & Apps ,viaPrize,viaprize,0x1f00DD750aD3A6463F174eD7d63ebE1a7a930d0c,APPROVED
+42161,25,dApps & Apps ,dm3 protocol - the interoperability initiative ,corpus-io,0x11Ee133A1408FE2d7c62296D7eB33F234b774503,APPROVED
+42161,25,dApps & Apps ,Grateful,Grateful-protocol,0xfF284BADB6f6030C726782767fe45770570Ca381,APPROVED
+42161,25,dApps & Apps ,Stormbit,Quantum3-Labs,0xF99aF52Ab7bbd7535797538946aBa7958a2DAD8c,APPROVED
+42161,25,dApps & Apps ,Revolte,irruptionlab,0x9743f723C8cBd9eEA522e9feb2656a0DB8457497,APPROVED
+42161,25,dApps & Apps ,DexKit,DexKit,0x5265Bde27F57E738bE6c1F6AB3544e82cdc92a8f,APPROVED
+42161,25,dApps & Apps ,Mirror,zaratanDotWorld,0x93333D14011cAF8911b00E0bF882F26676Df28d1,APPROVED
+42161,25,dApps & Apps ,Starksheet,the-candy-shop,0x7a1c6F616E39575db4581875c9E3E95405D46015,APPROVED
+42161,25,dApps & Apps ,"C–ATTS, Composite Attestations",c-atts,0xdC81d807F0e1A638DDd5CBF37f1320D86D0dE30C,APPROVED
+42161,25,dApps & Apps ,Decentraclasses,DecentraSchool,0x72FdC25331Cd34579c5Dd8DbbABe0a38cdCcb97F,APPROVED
+42161,25,dApps & Apps ,Mississippi,Mississippi-Labs,0x31ea6CBF52D92720997322A2620844e91d169694,APPROVED
+42161,25,dApps & Apps ,Nextme,0xNextLabs,0xE0964682F12385abCC8AFD2C8eA90e50eA9594F6,APPROVED
+42161,25,dApps & Apps ,WUW Whatever Fi,WUW-WhateverYouWant,0x26d27D784aed2a6d1b4C24f63846a17be899ef2d,APPROVED
+42161,25,dApps & Apps ,M3tering Protocol,M3tering,0xACd46d2988C44613b4EF9909b6E3D736C8Bce945,APPROVED
+42161,25,dApps & Apps ,DefiLab.xyz,DefiLab-xyz,0x9fe6764778db6AD5c5ED86242485d1a868a8c52A,APPROVED
+42161,25,dApps & Apps ,ScoreFront,Nomis-cc,0xD587404cd28Bf4eE059ac84a6B7C0219d05EA6CF,APPROVED
+42161,25,dApps & Apps ,Impact Markets,arm0ry,0x4744cda32bE7b3e75b9334001da9ED21789d4c0d,APPROVED
+42161,25,dApps & Apps ,Dragverse,Dragverse,0x3ee8E4DF7dB055a877B54cB06f9265f6aFaC2435,APPROVED
+42161,25,dApps & Apps ,Glo Dollar,Glo-Foundation,0x1b8E025BAC207e4ED55442Dc75578050D00a10bf,APPROVED
+42161,25,dApps & Apps ,Kleo Network,Kleo-Network,0x86B06319b906e61631f7edbe5A3fe2Edb95A3faE,APPROVED
+42161,25,dApps & Apps ,POAPin,glorylab,0x5Afc7720b161788f9D833555b7EbC3274FD98Da1,APPROVED
+42161,25,dApps & Apps ,Geo Web,Geo-Web-Project,0xDE798cD9C53F4806B9Cc7dD27aDf7c641540167c,APPROVED
+42161,25,dApps & Apps ,Giveth,Giveth,0x4D9339dd97db55e3B9bCBE65dE39fF9c04d1C2cd,APPROVED
+42161,25,dApps & Apps ,RubyScore,Rubyscoreio,0x0d0D5Ff3cFeF8B7B2b1cAC6B6C27Fd0846c09361,APPROVED
+42161,25,dApps & Apps ,Privatefolio,privatefolio,0xB6e32891033D8578ebC79Dd8D202310bF6b7FEcC,APPROVED
+42161,25,dApps & Apps ,"Pairwise: Simplifying Choices, Amplifying Voices",GeneralMagicio,0xd1b8db70ded72db850713b2ce7e1a4ffafad95d1,APPROVED
+42161,25,dApps & Apps ,Pyra: create share market ,pyra-marketplace,0x5Ed224b8e5B8372cfa65368243F1F4D6Cc5E9a58,APPROVED
+42161,25,dApps & Apps ,MetaMail,MetaMail,0xA9b9168d8eaBFF9B02F0EA396Dd34A14E2Dc1Da7,APPROVED
+42161,25,dApps & Apps ,Militereum,Militereum,0xd7095B0618609feF9e542D5A1D320502C8544D10,APPROVED
+42161,25,dApps & Apps ,VoiceDeck: A Marketplace for Journalism Impact Certificates,VoiceDeck,0xd1825Dd9a5e49791FB7961AC3c4170DeeD5710b4,APPROVED
+42161,25,dApps & Apps ,1Hive Gardens,1Hive,0x1B8C7f06F537711A7CAf6770051A43B4F3E69A7e,APPROVED
+42161,25,dApps & Apps ,datalatte,datalatte-ai,0xB969Fa79a3937F2569228Ad2276a2CE67721d285,APPROVED
+42161,25,dApps & Apps ,The Forus,TheForus,0x96Cd565AAaB2e55Ffe4Bb9BF64CD234A96c7Ff45,APPROVED
+42161,25,dApps & Apps ,GiveStation,givestation,0xf5bc8280403B198FeccC35F3e7f8C7f4919EeB53,APPROVED
+42161,25,dApps & Apps ,Ancient Beast,FreezingMoon,0x21f53DB4D2eAcde70a2E4F0407D073C971eC1A33,APPROVED
+42161,25,dApps & Apps ,Polysport,Polysport,0x4DcbFEC2bd337a9e863318898cd97539986a27f6,APPROVED
+42161,25,dApps & Apps ,Unitap,UnitapApp,0x88888931Fbe186C8f513a1289dF2639096Bf7518,APPROVED
+42161,25,dApps & Apps ,ethstaker.tax,serenita-org,0xf33cA377c8f0Bb3358Fe7675cAaE19f4c90143AD,APPROVED
+42161,25,dApps & Apps ,MetaGame,MetaFam,0xdc550bf9Cd9CA1549d818e04c6c0AC2E33f61E17,APPROVED
+42161,25,dApps & Apps ,Smoothly ,Smoothly-Protocol,0x82a90B0E2cA64f6a4FfaE9e52b301851A859fbf2,APPROVED
+42161,25,dApps & Apps ,Helios - High Impact Solar in Emerging Markets,helios-dao,0xDC2a4bF46Ef158f86274C02Bd7f027f31Da9EbC1,APPROVED
+42161,25,dApps & Apps ,rotki,rotki,0x9531C059098e3d194fF87FebB587aB07B30B1306,APPROVED
+42161,25,dApps & Apps ,Grant Ships,DAOmasons,0x52774016ea6bd161a4BB6E232019C4bd704BB151,APPROVED
+42161,25,dApps & Apps ,Shy,taigalabs,0xaD0082cC8e15FDc3Dad9374dEa71c8097CC53A52,APPROVED
+42161,25,dApps & Apps ,Karma GAP,show-karma,0xC98786D5A7a03C1e74AffCb97fF7eF8a710DA09B,APPROVED
+42161,25,dApps & Apps ,Praise,GivePraise,0x0B7246eF74Ca7b37Fdc3D15be4f0b49876622F95,APPROVED
+42161,25,dApps & Apps ,Smold.app,SmolDapp,0x10001192576E8079f12d6695b0948C2F41320040,APPROVED
+42161,25,dApps & Apps ,FundPG,fundpg,0x12a5dcABbFaF963db743377937b3Ca00308600f2,APPROVED
+42161,25,dApps & Apps ,rolod0x,rolod0x,0x06357397d8078C19195f4555db7A407b1b1f5FB3,APPROVED
+42161,25,dApps & Apps ,Pin Save EVM,PinSaveDAO,0x48294a067D1bC5a58BCbAB4b3bE329d078D9E1Af,APPROVED
+42161,25,dApps & Apps ,IDriss - A more usable web3 for everyone,idriss-crypto,0xF8cBA242A9f35896CC8E0cde7A3D1b1Acb75b4bb,APPROVED
+42161,25,dApps & Apps ,Denota Protocol,denotalabs,0xd20E342dB297646a500A980088723C9E8af9810d,APPROVED
+42161,25,dApps & Apps ,Funding the Commons,fundingthecommons,0x576edCed7475D8F64a5e2D5227c93Ca57d7f5d20,APPROVED
+42161,25,dApps & Apps ,JediSwap,jediswaplabs,0x18aa467E40E1deFB1956708830A343c1D01d3D7C,APPROVED
+42161,25,dApps & Apps ,Token Heist,vu3th,0x72B277a3FEe8DA1A9bfb1B3bbfA071f4a524EC63,APPROVED
+42161,28,Hypercerts Ecosystem Round,AgroforestDAO in GG20,,0x9Cc3eF719D354592f63A838a8A121C55012762b7,APPROVED
+42161,28,Hypercerts Ecosystem Round,HYPERCHANGE,,0x2d17A81De45539539BB184828CFd148c45344A6A,APPROVED
+42161,28,Hypercerts Ecosystem Round,LiquiCert,,0xE0B40C6f61C92223e77Fae0e6A85435d221A5Cd9,APPROVED
+42161,28,Hypercerts Ecosystem Round,Drivyx ESG,,0x7037ee1766A94931392EC378Cd0b15abBA721651,APPROVED
+42161,28,Hypercerts Ecosystem Round,HPGF Ecosystem Support Machine,,0x025f9B5801C94615380500C91Fa99Ea8Da4BbE91,APPROVED
+42161,28,Hypercerts Ecosystem Round,LexDAO,lexDAO,0x966a4b9d5D2E01799170a0865C2D1cBBc1904163,APPROVED
+42161,28,Hypercerts Ecosystem Round,"SOLARPUNK GUILD, gamifying hypercerts for Guild Members impact assessment ",,0xEB75220aFa0423Cc82b68A8Ec0102aDa6eE7B9D0,APPROVED
+42161,28,Hypercerts Ecosystem Round,Public Optimism,,0xDB87FA75652342aaC07414d249d723C1B93f7670,APPROVED
+42161,28,Hypercerts Ecosystem Round,DeepVenture.io,,0xAe90CeC6d54633C8fFb5F55C69DB296775A2B4F0,APPROVED
+42161,28,Hypercerts Ecosystem Round,GreenPill Network x GPN Dev Guild ,,0x992A3a242D6471d24783b4C2C6AF3EC7df871761,APPROVED
+42161,28,Hypercerts Ecosystem Round,NERD DAO: Decentralized Science and Web3 Innovation,NERDDAO,0x7AEE7e0e5240E835090E23D2Beb556cB54fa6D0D,APPROVED
+42161,28,Hypercerts Ecosystem Round,Sovereign Nature Initiative & Hypercerts – Catalysing Biodiversity Restoration through Proof of Ecological Contribution,sovereign-nature,0x569FaBB24D7191154F34188510629fE4d1eA8252,APPROVED
+42161,28,Hypercerts Ecosystem Round,PGF Ethereum México ,Ethereum-Mex,0x013B7686D531c5B604D5484294c85EEf3c897966,APPROVED
+42161,28,Hypercerts Ecosystem Round,gainforest,gainforest,0xD1554f3b43ad8274Ef5A550F17d6579daE16c5B6,APPROVED
+42161,28,Hypercerts Ecosystem Round,Change Code,change-code-io,0x831F4ED6c49557318f06Bfb7Bce8488090cd9eCC,APPROVED
+42161,28,Hypercerts Ecosystem Round,RWA x Public Goods | BASIN,basin-global,0xEAF9830bB7a38A3CEbcaCa3Ff9F626C424F3fB55,APPROVED
+42161,28,Hypercerts Ecosystem Round,viaPrize,viaprize,0x1f00DD750aD3A6463F174eD7d63ebE1a7a930d0c,APPROVED
+42161,28,Hypercerts Ecosystem Round,Spark | Deresy & Hyperminter,ImpactScribe,0x02165CFB4260D0afA1f4809702C5979D9e0cD420,APPROVED
+42161,28,Hypercerts Ecosystem Round,Blocktrend（區塊勢）,Blocktrendtw,0x36F322fC85B24aB13263CFE9217B28f8E2b38381,APPROVED
+42161,28,Hypercerts Ecosystem Round,Hyperstaker,ZeroBoundLabs,0x0c2227c06624954FdB0bd7F379A3D697B49C1cFc,APPROVED
+42161,28,Hypercerts Ecosystem Round,dMeter,dmeter4dmrv,0xdAbfe7fcfC45549eb5CA56a1686F18c11520eE34,APPROVED
+42161,28,Hypercerts Ecosystem Round,Funding the Commons,fundingthecommons,0x576edCed7475D8F64a5e2D5227c93Ca57d7f5d20,APPROVED
+42161,28,Hypercerts Ecosystem Round,Silvi,,0xa7CA400d49BBa87EB606ee05af93689BD21FaB99,APPROVED
+42161,28,Hypercerts Ecosystem Round,ReFi DAO - Pioneering Hypercerts in Regenerative Finance,,0x7340F1a1e4e38F43d2FCC85cdb2b764de36B40c0,APPROVED
+42161,28,Hypercerts Ecosystem Round,Armitage,armitage-labs,0xB5E5559C6b85e8e867405bFFf3D15f59693eBE2f,APPROVED
+42161,28,Hypercerts Ecosystem Round,Atlantis,,0xfbCA78474A09E2BF3543f4Fc1037152ea2c6C32d,APPROVED
+42161,28,Hypercerts Ecosystem Round,DWeb Camp 2024,,0x9f255d96B81Ded025FC80C4c25fEAB7F65B3d549,APPROVED
+42161,28,Hypercerts Ecosystem Round,Hyperfiles,hyperfiles-org,0x66CD14267fb5a1609496CdC37eB55E6FE3f59C75,APPROVED
+42161,28,Hypercerts Ecosystem Round,Hypercert DevRel & Product Contributor Support,,0x79e23EaCd27b1706D8C0Ce5dF45904177Fa64bA6,APPROVED
+42161,28,Hypercerts Ecosystem Round,Bootstrapping hypercerts ecosystem dev | bitbeckers,bitbeckers,0xCad4aaF4B882b82665595969c44d30267C67b7D5,APPROVED
+42161,28,Hypercerts Ecosystem Round,Formosa Guide of Hypercerts 《台灣超證指南》,FABDAOtw,0x8D2c159f6aE11900caAd46CBFE46674629EF3A4b,APPROVED
+42161,28,Hypercerts Ecosystem Round,Proof of Philanthropy: A Verifiable Giving Pledge for the Modern Age,lifespanio,0xb927D6cddc3E545Fc5ed3cB9d2dd9Ac52Addde17,APPROVED
+42161,28,Hypercerts Ecosystem Round,MesoReefDAO - Regenerating Reef Conservation with DeSci Web3 tools,MesoReefDAO,0x526647287A54A9E83998ED748115Dc6bCBBadBf3,APPROVED
+42161,28,Hypercerts Ecosystem Round,VoiceDeck: A Marketplace for Journalism Impact Certificates,VoiceDeck,0xd1825Dd9a5e49791FB7961AC3c4170DeeD5710b4,APPROVED
+42161,28,Hypercerts Ecosystem Round,$EARTH - Hypercerts,,0xd6b97e042d03EdBDc100Eb55fbE43Eb75f2e3036,APPROVED
+42161,24,ENS Identity,Onthis,onthisxyz,0x090295882A6C69a79D9B293124fDd7dC9e181013,APPROVED
+42161,24,ENS Identity,ENS Road Around Brazil – by blockful,blockful-io,0x000ee9A6Bcec9AadCc883bD52B2c9A75FB098991,APPROVED
+42161,24,ENS Identity,Eppie: Web3 native email,Eppie-io,0x26938B1A8f0B70e78a9FE03810eddeb03E4D1fE3,APPROVED
+42161,24,ENS Identity,Fluidkey,fluidkey,0xB9800F0c6f6DaEA52f8eFe215134f066FD2e3598,APPROVED
+42161,24,ENS Identity,ETH Daily,ethdailyhub,0x6Cc567128e8Cae88dBE162E712cD0985D78b0F33,APPROVED
+42161,24,ENS Identity,Byte Onchain (by B<>rder/ess),CryptoSmartNow,0x9DCbA70B2dfe5807e2A847E065EBb666791F8b8A,APPROVED
+42161,24,ENS Identity,dm3 protocol - we make web3 messaging a public good. ,dm3-org/,0x11Ee133A1408FE2d7c62296D7eB33F234b774503,APPROVED
+42161,24,ENS Identity,rotki,rotki,0x9531C059098e3d194fF87FebB587aB07B30B1306,APPROVED
+42161,24,ENS Identity,Loop <3 ENS,,0x16be8cFbeD38582AAD0EAa6e8f2adB199152fB6A,APPROVED
+42161,24,ENS Identity,Web3Domains.com,,0x459EFD5F53b4Bb04b278925754Fd427783831bc5,APPROVED
+42161,24,ENS Identity,Heavens Tools,HeavensToolsLLC,0xa74fc66E75f883Ee8e60E287335436ca8E6a303C,APPROVED
+42161,24,ENS Identity,Brianknowsai, BrianAI,0x129B480AD625bcD1A5c3A1C10d708114726Fa467,APPROVED
+42161,24,ENS Identity,Huddle01,Huddle01,0x905040585A59C5B0E83Be2b247fC15a81FF4E533,APPROVED
+42161,24,ENS Identity,Nextme,0xNextLabs,0xE0964682F12385abCC8AFD2C8eA90e50eA9594F6,APPROVED
+42161,24,ENS Identity,Si Her ENS,,0x50Db4A9fDC9fAb79Df51Fa7AEcDB68acDb219A29,APPROVED
+42161,24,ENS Identity,ENS Data,,0xE4B23bd52CcB8596E7354f4aE79647095140502b,APPROVED
+42161,24,ENS Identity,Opti.Domains | Scale ENS to OP,Opti-domains,0x8b6c27ec466923fad66Ada94c78AA320eA876969,APPROVED
+42161,24,ENS Identity,GeoCities,,0x7083A674A75ffB449a02d48713C4b636ec0579FD,APPROVED
+42161,24,ENS Identity,MetaMail,MetaMail,0xA9b9168d8eaBFF9B02F0EA396Dd34A14E2Dc1Da7,APPROVED
+42161,24,ENS Identity,Persona,persona-art,0xEe810863D3652A41fba42F76C49013af651b3139,APPROVED
+42161,24,ENS Identity,Operator,,0x6494973f4B27744b060E864396d320532912ec8F,APPROVED
+42161,24,ENS Identity,Pin Save EVM,PinSaveDAO,0x48294a067D1bC5a58BCbAB4b3bE329d078D9E1Af,APPROVED
+42161,24,ENS Identity,Faster API for resolving ENS names and avatars for web3 projects,,0xC9C022FCFebE730710aE93CA9247c5Ec9d9236d0,APPROVED
+42161,24,ENS Identity,Unruggable,unruggable-labs,0x54FC3A658970d750B082392F2b135282644BBA7b,APPROVED
+42161,24,ENS Identity,EAS Attestation Explorer,ethereum-attestation-service,0xAff73b6283537E3a15e7420EA91A1F714E8d8638,APPROVED
+42161,24,ENS Identity,ENS Wayback Machine,BlossomLabs,0x6ea869B6870dd98552B0C7e47dA90702a436358b,APPROVED
+42161,24,ENS Identity,Renew ENS farcaster frame,,0x8d25687829D6b85d9e0020B8c89e3Ca24dE20a89,APPROVED
+42161,24,ENS Identity,Bankless Academy,bankless-academy,0xe1887fF140BfA9D3b45D0B2077b7471124acD242,APPROVED
+42161,24,ENS Identity,WebHash,1w3io,0x898b2500C4Fed262D7cc564dD892A34B33DA0a41,APPROVED
+42161,24,ENS Identity,Blocktrend（區塊勢）,Blocktrendtw,0x36F322fC85B24aB13263CFE9217B28f8E2b38381,APPROVED
+42161,24,ENS Identity,Prutopia,,0xaa7B0ccb69E2Be14a2b19c3D265E5Cc2F18b1200,APPROVED
+42161,24,ENS Identity,Ethereum Tag Service X ENS,ethereum-tag-service,0x8eD2BD43b9769eBc22873474ED347D2799d241F0,APPROVED
+42161,24,ENS Identity,blocksmith.js,,0x51050ec063d393217B436747617aD1C2285Aeeee,APPROVED
+42161,24,ENS Identity,zK-ENS Credentials: Proof of Learning,,0x17e4285BeE986aE686504131D3D5ABE0009f297A,APPROVED
+42161,24,ENS Identity,Lemonade- SSI,lemonadesocial,0x365659242D26c4BE14378056f2D55EbC0F7C90ee,APPROVED
+42161,24,ENS Identity,Formo,,0x9CC3cB28cd94eB4423B15cdA73346e204f59a407,APPROVED
+42161,24,ENS Identity,NameHash Labs,namehash,0x1a199654959140E5c1A2F4135fAA7Ba2748939C5,APPROVED
+42161,24,ENS Identity,eth.limo,ethlimo,0xB352bB4E2A4f27683435f153A259f1B207218b1b,APPROVED
+42161,24,ENS Identity,beaconcha.in,gobitfly,0x9d4E94dB689Bc471E45b0a18B7BdA36FcCeC9c3b,APPROVED
+42161,27,Developer Tooling and Libraries,NacDB Distributed Database,NacDBDatabase,0x36A0356d43EE4168ED24EFA1CAe3198708667ac0,APPROVED
+42161,27,Developer Tooling and Libraries,DappReader,DappReader,0xb0eE1755460DdDb01F73104dF2E61a89b0464885,APPROVED
+42161,27,Developer Tooling and Libraries,Iggy - Web3 Social Framework,iggy-social,0x12e838F846FFDAdE34B2E006F84117A370d71687,APPROVED
+42161,27,Developer Tooling and Libraries,"Blockscout Block Explorer - Decentralized, Open-Source, Transparent Block Explorer for All Chains",blockscout,0x242ba6d68FfEb4a098B591B32d370F973FF882B7,APPROVED
+42161,27,Developer Tooling and Libraries,Otterscan,otterscan,0xb9eb4e2eca1aec7ecaec61e8257386e437a355d3,APPROVED
+42161,27,Developer Tooling and Libraries,Ape Framework,ApeWorX,0x070143e489aa791C10b3b39c7CAdf45c36BA9e60,APPROVED
+42161,27,Developer Tooling and Libraries,Unlock Protocol,unlock-protocol,0xF5C28ce24Acf47849988f147d5C75787c0103534,APPROVED
+42161,27,Developer Tooling and Libraries,Zk- Block | Tools for Zk & Web3 Dapps,Elefria-Labs,0x1574344b35391f271871b92CB1f3a13F9eae46CC,APPROVED
+42161,27,Developer Tooling and Libraries,Vue Dapp,vu3th,0x9D75F4EbcB8e7669E59dcc27CBadC698E0F77187,APPROVED
+42161,27,Developer Tooling and Libraries,Viem,wevm,0xd2135CfB216b74109775236E36d4b433F1DF507B,APPROVED
+42161,27,Developer Tooling and Libraries,Blocknative,Blocknative ,0x74a253393db1df9316941ff1e2819ae98b533806,APPROVED
+42161,27,Developer Tooling and Libraries,Bonadocs,bonadocs,0x9d55D24105cd246115705A58CF92a5161A90B1fF,APPROVED
+42161,27,Developer Tooling and Libraries,Open Source Observer,opensource-observer,0x87fEEd6162CB7dFe6B62F64366742349bF4D1B05,APPROVED
+42161,27,Developer Tooling and Libraries,EVMcrispr,EVMcrispr,0x0035cC37599241D007D0AbA1Fb931C5FA757f7A1,APPROVED
+42161,27,Developer Tooling and Libraries,Astral,AstralProtocol,0x75B4D9DAB72045B953e9aE8dD648996f77802847,APPROVED
+42161,27,Developer Tooling and Libraries,framelib,framelib,0xA4A0898C091574a8ea4Fa7d7B06493b524dB025a,APPROVED
+42161,27,Developer Tooling and Libraries,ethers.js,ethers-io,0x8ba1f109551bD432803012645Ac136ddd64DBA72,APPROVED
+42161,27,Developer Tooling and Libraries,Wagmi,wevm,0xd2135CfB216b74109775236E36d4b433F1DF507B,APPROVED
+42161,27,Developer Tooling and Libraries,Synpress,Synthetixio,0x7b57c388e6149b5c197B925037602d5B6bafFbCc,APPROVED
+42161,27,Developer Tooling and Libraries,lazy-etherscan,SoftwareFoundationGroupAtKyotoU,0xF551e30Ad3cB4767A40Ef3b3C4B3D590eC0bCBe5,APPROVED
+42161,27,Developer Tooling and Libraries,Swiss-Knife.xyz,swiss-knife-xyz,0xf90e6125C8918F1ADAc31f85D80728dB62F17d9B,APPROVED
+42161,27,Developer Tooling and Libraries,Pentacle,pentaclexyz,0xABE27D3e9c163363768A248725F34f24A8D8BAbA,APPROVED
+42161,27,Developer Tooling and Libraries,web3.py,ethereum,0x5597cD8d55D2Db56b10FF4F8fe69C8922BF6C537,APPROVED
+42161,27,Developer Tooling and Libraries,Gaslite,poppunkllc,0x924F5821f991F366DF954536E9a408867f962637,APPROVED
+42161,27,Developer Tooling and Libraries,OpenZeppelin Contracts,OpenZeppelin,0x8A03d1DCc66bEc452AB359Cd387C95be886B856A,APPROVED
+42161,27,Developer Tooling and Libraries,Web3.js,web3,0xA98dE5Ce2EA0997f8396255092843275d3cFc257,APPROVED
+42161,27,Developer Tooling and Libraries,Scaffold-ETH2,scaffold-eth/scaffold-eth-2,0x8cD78a945c6D209fe8C7ed8Ee1712F43bec17781,APPROVED
+42161,27,Developer Tooling and Libraries,PLUME: Enabling Private Voting on Ethereum via ERC 7524,plume-sig,0x23aDa6E6A9E9D4EcDDd185e3ec353163BCeeBF2a,APPROVED
+42161,27,Developer Tooling and Libraries,W3GPT,web3-gpt,0x42e9c498135431a48796B5fFe2CBC3d7A1811927,APPROVED
+42161,27,Developer Tooling and Libraries,OrbitDB,orbitdb,0x7d8d6519c81de8017d473247b4374fafb42996f5,APPROVED
+42161,27,Developer Tooling and Libraries,Morpheus,dannybess1,0xF437ED305372681013a277B5a76826cC26d31C7B,APPROVED
+42161,27,Developer Tooling and Libraries,Solide Smart Contract Knowledge Hub,solide-project,0x0225d43b588e69154Ec98f710249D9ff2AED4527,APPROVED
+42161,27,Developer Tooling and Libraries,Ronan/wighawag and Etherplay,etherplay,0xAdDbc936aB952B6dC5C5Fe090c55269a1174D173,APPROVED
+42161,27,Developer Tooling and Libraries,RoutineHub Web3 Services,Jellycuts,0xb2AB79891035724367fB8e5765d8E0Dbd72E1930,APPROVED
+42161,27,Developer Tooling and Libraries,Nexth - A Next.js + Ethereum starter kit,wslyvh,0x8289432acd5eb0214b1c2526a5edb480aa06a9ab,APPROVED
+42161,27,Developer Tooling and Libraries,⚡ TurboETH,turbo-eth,0x1272c8a36441fa3518fac2a4665a60b1d5bef547,APPROVED
+42161,27,Developer Tooling and Libraries,Hyperledger Web3j,web3labs,0xD8a50a7AB452c0C9E5581bAC5Ff15558E6f671A1,APPROVED
+42161,27,Developer Tooling and Libraries,Solady,astxlabs,0x1F5D295778796a8b9f29600A585Ab73D452AcB1c,APPROVED
+42161,27,Developer Tooling and Libraries,The cadCAD Foundation,cadCAD-org,0x5041A1C1DCC760337e99B03DB60FeAF5f6f6c802,APPROVED
+42161,27,Developer Tooling and Libraries,ZK Email,zkemail,0x35292bbd442373046a6fb4bF7e2529FA9A8D5Bb0,APPROVED
+42161,27,Developer Tooling and Libraries,Kredeum NFTs Factory,Kredeum,0xBC0b437C95c7165F7d1F7C966cb2227DA52a27d7,APPROVED
+42161,27,Developer Tooling and Libraries,variance,vaariance,0xe1baa8f32ac4aa03031bbd6b6a970ab1892195ee,APPROVED
+42161,27,Developer Tooling and Libraries,ethui,ethui,0x0063A660Fb166E9deF01C7B4fd0303B054Ed1B9e,APPROVED
+42161,29,Climate Round,Pollen Buzz Initiative,,0x28770db2aC7e4009b0e1aaA57Db2AbaD86a96266,APPROVED
+42161,29,Climate Round,La Madriguera,,0x23C0C5e0D894d006E4fE4520B6c3d91b7F9EF7Ab,APPROVED
+42161,29,Climate Round,Carbon Counting Club ,Carbon-Counting-Club ,0x0780b1456D5E60CF26C8Cd6541b85E805C8c05F2,APPROVED
+42161,29,Climate Round,♻️ #GigsGoGreen - a movement for Gig Workers (initially Uber / Lyft / rideshare app drivers),GigsGoGreen,0xFFCae9e894446334705aaEaaFa90424c00B7c1Ad,APPROVED
+42161,29,Climate Round,Sovereign Nature Initiative — Triggering Nature-Positive Funding One Asset at a Time,sovereign-nature,0x569FaBB24D7191154F34188510629fE4d1eA8252,APPROVED
+42161,29,Climate Round,gainforest,gainforest,0xD1554f3b43ad8274Ef5A550F17d6579daE16c5B6,APPROVED
+42161,29,Climate Round,"Tulum’s Tomorrow, Accelerating the Regenaissance with ReFi Tulum",ReFi Tulum,0xA147Aad523C7dAe953bf24306757Df91d7a0854C,APPROVED
+42161,29,Climate Round,EarthRevive | Sustainable Communities,,0x37fbf6535ca0d6d35c9077df3322e586c1462ac5,APPROVED
+42161,29,Climate Round,Greenpill Kenya Climate Round.,,0x44770D93e1a426DDAf5923a738eaCe3D2FB65BC1,APPROVED
+42161,29,Climate Round,ALTERNUN,,0x3f4224e134EAdB9EAD94490D50Ac3a34E897C4eD,APPROVED
+42161,29,Climate Round,Change Code,change-code-io,0x831F4ED6c49557318f06Bfb7Bce8488090cd9eCC,APPROVED
+42161,29,Climate Round,ReFi Medellín - First Colombian Node of ReFiDAO responsible for promoting ReFi projects in Medellín.,ReFiMedellin,0xd4AC6c14B4C96F7e66049210F56cb07468028d4e,APPROVED
+42161,29,Climate Round,Azos Labs,AzosFinance,0x60924601E73EBc5C2Bd9244c788d93e0710a6c93,APPROVED
+42161,29,Climate Round,ReFi Generation Podcast,,0x6af616630EC99a65050416e89e0360eA6D7dBec7,APPROVED
+42161,29,Climate Round,Towards Symbiocracy,symp0iesis,0x435CD42591cC503a909085c3d3d2899d17032F77,APPROVED
+42161,29,Climate Round,ReFi Lagos (#projectOlókun),,0xe0150c1c32a0b4f137b32a79376053da3f96ff70,APPROVED
+42161,29,Climate Round,Kokonut Network; Perpetual Value Ecosystem,,0x0ea26051F7657d59418da186137141CeA90D0652,APPROVED
+42161,29,Climate Round,RWA x Public Goods | BASIN,basin-global,0xEAF9830bB7a38A3CEbcaCa3Ff9F626C424F3fB55,APPROVED
+42161,29,Climate Round,Sustainable Heating with Compute Power,,0xc3afeB93ae73f160347BCaE82097c1f8f3daC75c,APPROVED
+42161,29,Climate Round,Aluxes 🌴,,0x40636c38F9114B89A89F06c7377aA26C79800577,APPROVED
+42161,29,Climate Round,"PROJECT FOR ECO – RESTORATION AND WOMEN EMPOWERMENT  THROUGH SUSTAINABLE AGRICULTURAL DEVELOPMENT   (A project for Climate Solution, Sustainable environmental protection  and Women empowerment through Self-Help groups )",,0xB57b4F94E48981D22034f52Ee074E97d263ABBA3,APPROVED
+42161,29,Climate Round,Oxygenchain,,0x99241E58B4c5835Fcd5963549A7a6D6852A57b5E,APPROVED
+42161,29,Climate Round,Comrades to Youths Africa: E-shule Project,,0xd50B50ABA70dDFfC9361ef1313c4323Fc3A43229,APPROVED
+42161,29,Climate Round,Ethereum Bolivia's Climate Impact Initiative: Driving Sustainable Change,,0x96e4608Fb36D7Fd17b64D69cCBdD44Abd61eE232,APPROVED
+42161,29,Climate Round,Sunrise Stake,sunrise-stake,0xa36B9BF19a2e809c8C02E982844E9cf77279Cda5,APPROVED
+42161,29,Climate Round,Ogallala Life,,0x8dE13373365160680c706ba0da5Cd9Cac229c307,APPROVED
+42161,29,Climate Round,Landia,,0x0e763409f3A84d32588b90115af703aC6e640f7c,APPROVED
+42161,29,Climate Round,$REGEN Tokenomics DAO,,0x96EDE46D5302E53DE4BA9bD2dea1BA4546410eF7,APPROVED
+42161,29,Climate Round,ECOTA Web3 Carbon Dashboard,PositiveBlockchain,0xac60E4721d2fa8088a72B56a649f924d2d3fEeeA,APPROVED
+42161,29,Climate Round,Regenerative Living Immersion Camp for Youth at Tryon Life Community Farm in Portland,,0xcb5D1Fe6FDe280193A05034b7Ae36022C0c8EDF6,APPROVED
+42161,29,Climate Round,River Cleanup,,0x0668436E9DF80FC46dA9916aA7d636eB9AD1Ea49,APPROVED
+42161,29,Climate Round,DCarbon,DCarbon-Renaissance-Hackathon,0x5B6B3d8Bd644E7DB7a3C355334A58Cc5d72fe6d9,APPROVED
+42161,29,Climate Round,Indigenous Bio-cultural Ecocredit Development,,0xd68e5b216FC2AF2854152EAC501F9E00807d8C1d,APPROVED
+42161,29,Climate Round,Raitha Mithra,,0xe385e1C4799f4cc5812AF4686b5147fd2CA341d6,APPROVED
+42161,29,Climate Round,SeaBrick by Kelp Island,,0xdD68f046Bc59Fa9BED992F1348267DDCf3af1e40,APPROVED
+42161,29,Climate Round,Universal One International Academy x GreenPill Mexico: Restoring The Yucatec Mayan Jungle,,0xE92aBA109Bd23f1F0342A671Ae1fEcC654D53308,APPROVED
+42161,29,Climate Round,Grassroots Economics,grassrootseconomics,0xba0FEE8490118FC4f46Bd0974D7BF93d0e2f1064,APPROVED
+42161,29,Climate Round,Solarpunk Nomads: new vehicles and first land based project in Italy,,0x474716e617FEa8898D4fa9D891AA67B5BEDd6C4b,APPROVED
+42161,29,Climate Round,Blockchain CO2e Emissions Calculator,Menthol Protocol,0x61BcB366ce09760669D091D38827879055f1B362,APPROVED
+42161,29,Climate Round,EcoVision - Honduras ,,0xE6EFCEE5eF2Ac5BF99693a587770Cc1238c36a08,APPROVED
+42161,29,Climate Round,WEB3BEACH - BRINGING ENVIRONMENTAL IMPACT ONCHAIN,,0xEFEdaf9c07E6eB56BB8F82f30018e4461B1c5F4c,APPROVED
+42161,29,Climate Round,Green Planet Conservation Initiative,,0x8efE51753dEfd7A1A82458731fbc05Fa04Cb2d1e,APPROVED
+42161,29,Climate Round,ReFiTanzania,,0xB2b8C08a9AEB0E22242e6fC9cD78FC2402cBC503,APPROVED
+42161,29,Climate Round,The Carbon Games: CurbCO2,,0x2B9411d697cf235886f5801ceEB72ac7bbA93B50,APPROVED
+42161,29,Climate Round,GreenChain,,0xBB82B040D51DAdFAD63DB35B702490da5EDD5FA6,APPROVED
+42161,29,Climate Round,Vivero: Nurturing Land Stewardship Projects through Community Directed Giving,,0x61d9744f1bA7d11503410d4f351ef4eC6cADea24,APPROVED
+42161,29,Climate Round,Ecothailand Foundation.,,0x35D46A6781D6e71b187786fAAA98ADcb331D4581,APPROVED
+42161,29,Climate Round,ReFi Phangan,ReFi-Phangan,0x05f1377c3cf18fe7972ce177b9aa2d2f8026f494,APPROVED
+42161,29,Climate Round,The Clean Wave,,0x2c0d9D0C822C14505034fDB9eFF0790E050b68BC,APPROVED
+42161,29,Climate Round,Climate Emergency Centers,,0x6bE87D97a2D046d6f7135B7f09c31e84764BD7e1,APPROVED
+42161,29,Climate Round,DeCO2Risk,,0x9597af8b6f6366a45f53310b81a9f0dF0f44b2F4,APPROVED
+42161,29,Climate Round,ReCommon,,0xd704C5F9826191F3Bd06caE867d0f20CAfA8AeBA,APPROVED
+42161,29,Climate Round,Barichara Regeneration Fund – Prototyping a Bioregional Regenerative Economy,,0xFd9F8A0f4bdEaC72F08AF1c708023cC31dD2E3BE,APPROVED
+42161,29,Climate Round,Rifai Sicilia,,0x228C7E64F107d4c468E0f744FDd73DEc2bf6DF51,APPROVED
+42161,29,Climate Round,AgroforestDAO april 2024,,0x9Cc3eF719D354592f63A838a8A121C55012762b7,APPROVED
+42161,29,Climate Round,NGO Cosmos for Humanity | C4H,CosmosForHumanity,0x65ad2BF7E09af2597C140dF6386a3003d0F5f8Ee,APPROVED
+42161,29,Climate Round,Ekonavi,Ekonavi,0x934cA93d9380f7d72b84304b1b00ac192488590d,APPROVED
+42161,29,Climate Round,"Ayowecca Uganda: Training rural farmers & indigenous communities on regenerative agriculture, providing women & girls with new skills for economic empowerment, and planting fruit trees in schools, health centers & churches.",AYOWECCA UGANDA,0x0d0c0941e2578da2b9E2Ad03619615f7EeBc48f7,APPROVED
+42161,29,Climate Round,DeFood: Decentralized Food Security Network (DFSN),,0x4Be737B450754BC75f1ef0271D3C5dA525173F6b,APPROVED
+42161,29,Climate Round,Solarpunkverse,,0x6cED8114ab9099677887a794b8418eCBd1eb94EA,APPROVED
+42161,29,Climate Round,"GreenPill Ottawa x RootedLABs : Climate, Agriculture, Open Source Tooling",rootedlabs,0x02541CFE8Dd4Afe35c5A9B20396E5C23e72EA987,APPROVED
+42161,29,Climate Round,The Ecofrontiers Regen Atlas 🌱,Regen-Atlas,0x56769249e1461434836646417138F0AC7bBc2DD6,APPROVED
+42161,29,Climate Round,Traditional Dream Factory - the first web3 powered regenerative village - is investing in biochar-producing infrastructure,,0xf905c05a274b4775432b43D1b651e26039ec6354,APPROVED
+42161,29,Climate Round,Geltonas.tech || Automated eco-label powered by satellite data,,0x466D8Aee8e31f9dd6D308b3F6f694Be055B620Ab,APPROVED
+42161,29,Climate Round,ReFi Mexico - Climate Action Marketplace🌱,ReFiMexico,0x59b5672281547AD4005dF3d0716a24638bd5a351,APPROVED
+42161,29,Climate Round,Monthly Earth Day by Crypto Whales/Highly Artistic,,0x6aD87d0b36d3449d7c844051d92115f087867D85,APPROVED
+42161,29,Climate Round,Krishi Unnati,,0xcc71E110D0044E0A0a2661C759a8a8f592734F55,APPROVED
+42161,29,Climate Round,regrò,,0x1bb962A02401b4a9f3d6d54B0EA1394E1FA59025,APPROVED
+42161,29,Climate Round,Earthist Seeds for Regeneration,,0x42181165DC604eC239F7EA8091Dd9c5763d8A842,APPROVED
+42161,29,Climate Round,🌻 Sunflower EcoTech 🌻,Eco-Labs,0x59490C362C54C1b60158F19CE499C82aa3669820,APPROVED
+42161,29,Climate Round,MesoReefDAO - Regenerating Reef Conservation with DeSci Web3 tools,MesoReefDAO,0x526647287A54A9E83998ED748115Dc6bCBBadBf3,APPROVED
+42161,29,Climate Round,Education and climate change initiative,Helpers Social Development Foundation,0x8270a0FEBBA70899419E76A98bF2B5DC15Fe2Ff4,APPROVED
+42161,29,Climate Round,Senda Verde Animal Refuge:  On a Mission to Rewild or Perish,,0x48E206Fd64DDbb9714Be058Ca6Ea6f1479515624,APPROVED
+42161,29,Climate Round,Silvi,,0xa7CA400d49BBa87EB606ee05af93689BD21FaB99,APPROVED
+42161,29,Climate Round,Elephant in the Room Strategic Climate Solutions ,,0x0ff1bAA6c90480d8627B922A1E81393EB9C7eA08,APPROVED
+42161,29,Climate Round,FORK FOREST,elfork_eth,0xB3C58fFa0BBC48138776fD9cc174e89f51397e65,APPROVED
+42161,29,Climate Round,Beyond Fossil Fuels - Supporting Indigenous legal efforts to STOP fossil fuel infrastructure,,0xcbF3c13e05Aa9C18Ab8ecbb3302EDad21C23c688,APPROVED
+42161,29,Climate Round,Adopt a Tree,,0x8be1CF753Db9A714063bc774fA39e5E2BC9B247D,APPROVED
+42161,29,Climate Round,VinQ: Decentralized co-creation community for regenerative viticulture,,0x834f240B6dEdc7a0Cf6ae908115B5f0054fC81a4,APPROVED
+42161,29,Climate Round,GreenPill Brasil,,0x28163a8B79eA1E046E5a7c0A95516A13Dc457CB4,APPROVED
+42161,29,Climate Round,Mycelia : Indigenous & Web3,mycelia-uni,0xE5cEe03405929A5340f26A4AC6ce2a526065FA66,APPROVED
+42161,29,Climate Round,Switch Electric,WhyNotSwitch,0x82Fcf75bF44120E40eBb71eDaC96f1bc7F601e6e,APPROVED
+42161,29,Climate Round,Kolektivo Network,,0x03dBDD3F452Fa96e310D6c05CD523F4cCA6b7E5a,APPROVED
+42161,29,Climate Round,R3WILD,,0x61F67995bd9E1ce55bb93E462d9EC26d2412BEf6,APPROVED
+42161,29,Climate Round,That Weird Plant Guy,,0x45A2707cB04d64C84afE481034D76c56351Afa2F,APPROVED
+42161,29,Climate Round,Drivyx ESG,,0x7037ee1766A94931392EC378Cd0b15abBA721651,APPROVED
+42161,29,Climate Round,xParametric,xParametric,0x5d3C1D640Ed1e3C9fA131Ac21c0972Ad4a328621,APPROVED
+42161,29,Climate Round,One Sky Collective,OneSkyCollective,0xD755E3cb285e2Ed1999076fe4450aC9DF25BB91f,APPROVED
+42161,29,Climate Round,"Ocean Sole Beach Clean Ups, Turtle Protection, Tree Planting & Youth Education",,0x6643E1BE8e4Eb01CDb4b3C63FdE4B1020804CE1D,APPROVED
+42161,29,Climate Round,Fundación Salva Terra,Salva-Terra-Foundation,0x175EE991A52Ce577bAC0d39B94221a6c835974c3,APPROVED
+42161,29,Climate Round,♻️ Litter Token ($LTK) - We pay people to pick up litter 🚮,,0x4AFC0c9a5C4060DF2345C5b8C73e8eDBA2DE8E47,APPROVED
+42161,29,Climate Round,Trusted Seed: A value-driven community advancing Regen Economies,,0xb604cda24cca1838428Be7D40Fcd830451C23a0E,APPROVED
+42161,29,Climate Round,Helios - High Impact Solar in Emerging Markets,,0xDC2a4bF46Ef158f86274C02Bd7f027f31Da9EbC1,APPROVED
+42161,29,Climate Round,KOKO DAO saving forests in Colombia,,0x7f722b8b013Ac7Bd654B3B102Acc7573A32DB9bc,APPROVED
+42161,29,Climate Round,GoodDollar,GoodDollar,0x15512f77bFe1d6aC44Bee26135978c8D27Ba521b,APPROVED
+42161,29,Climate Round,Ama Earth Group — 🪶 Indigenous Climate Action Company + 💻 Climate Tech Platform to fight Climate Change,,0x4AFC0c9a5C4060DF2345C5b8C73e8eDBA2DE8E47,APPROVED
+42161,29,Climate Round,Bangalore Microgreens,,0xc97EcC5038E83F053Ab92D3093a0AABff85FC8A3,APPROVED
+42161,29,Climate Round,Kawagumba Village Community Farming project ,,0x4AFC3a3dbD47BF02e9D6eD0c85FB60d85a7d2335,APPROVED
+42161,29,Climate Round,RegenBuild 🏡,regenbuild,0xaFEd18c1aFD1fBaD36dBcEf8B3f0488CFbB57FB9,APPROVED
+42161,29,Climate Round,RefiBogota,,0x7f1FBD21dd9D64D0D34fA65dc8C0211CdD4aAa09,APPROVED
+42161,29,Climate Round,Digital Green Bonds with Aetlas Protocol,,0x00bFdB6Dd18B84Bf279c16E327C9Ee9cdAC21e64,APPROVED
+42161,29,Climate Round,Tokyo River Friends,,0x0a723E490f9Fb8937F628bf5d6101b420FF8372b,APPROVED
+42161,29,Climate Round,Earth Commons,,0x0dE65210d4D8B5fDe907861530e681cc11edDeE8,APPROVED
+42161,29,Climate Round,Bloom Network,BloomNetwork,0x5219ffb88175588510e9752A1ecaA3cd217ca783,APPROVED
+42161,29,Climate Round,El chico de las plantas,,0x406c59a797bCc41827AebDFb954Ec66328ABecd0,APPROVED
+42161,29,Climate Round,The Aquapurge Project,,0xbeF17A39cd780Fe90415b3B4c8a371ABEE143024,APPROVED
+42161,29,Climate Round,ReFi Atlántico 🌊 | Incubation 🌱🌴,,0x79647956e0558f8c65844B714d10Db7b730Cb0eD,APPROVED
+42161,29,Climate Round,dMeter,dmeter4dmrv,0xdAbfe7fcfC45549eb5CA56a1686F18c11520eE34,APPROVED
+42161,29,Climate Round,Coral Connect🪸,,0xFad96031f28BCcE112Fbf71f207a9302d64D937E,APPROVED
+42161,29,Climate Round,The LEAF Charity,,0x8f7f67D6b44D521D80F132de08d09833Fc3F12C6,APPROVED
+42161,29,Climate Round,"Mi Costa De Oro, Autonomous and Regenerative Community Rooted in Action (Venezuela)",,0x7CA809C9f505FB3F5A42383c4B07fFC27B8A19C8,APPROVED
+42161,29,Climate Round,ReFi DAO - A Network Society to Regenerate Earth. ✨ 🌱,,0x7340F1a1e4e38F43d2FCC85cdb2b764de36B40c0,APPROVED
+42161,29,Climate Round,Bigfoot Beach Clean Ups and Turtle Nest Care ,,0x66ef348cf302E8F892c2B3b4c749b800e801f7Ec,APPROVED
+42161,29,Climate Round,Bionomix,,0xd5357ceb1144c372ab377301e715bb6a73006303,APPROVED
+42161,29,Climate Round,Wasset,DFMlab,0xfEEb6D07edF3017b9fb6A3743e3a6B7fe818EC34,APPROVED
+42161,29,Climate Round,Astral,AstralProtocol,0x75B4D9DAB72045B953e9aE8dD648996f77802847,APPROVED
+42161,29,Climate Round,Endangered Tokens: NRWA Tokenization - Invest in nature's scarcest resources,EndangeredTokens,0xCe849efC35A0a0a046E67c76B477c5432E4BA58b,APPROVED
+42161,29,Climate Round,LexDAO,lexDAO,0x966a4b9d5D2E01799170a0865C2D1cBBc1904163,APPROVED
+42161,29,Climate Round,Atlantis,,0xfbCA78474A09E2BF3543f4Fc1037152ea2c6C32d,APPROVED
+42161,29,Climate Round,$EARTH ,,0xd6b97e042d03EdBDc100Eb55fbE43Eb75f2e3036,APPROVED
+42161,29,Climate Round,RegenerateDRC: Revitalizing the Congo Basin and Empowering Communities for Environmental Restoration,,0x2c2F97F9f8cBB96A17e82A72CE58E6312A00a2E0,APPROVED
+42161,29,Climate Round,Public Optimism,,0xDB87FA75652342aaC07414d249d723C1B93f7670,APPROVED
+42161,29,Climate Round,The Solar Foundation ☀️ Decentralized solar energy for underserved communities ☀️,,0xB936d993379e5f52b6b8fdcDFA380508F037A420,APPROVED
+42161,29,Climate Round,Regens Unite - Bridging Climate Solutions with Events & Media,,0xc9526E6381A0a33161C654C4e187AdE8E15F44cE,APPROVED
+42161,23,Hackathon Alumni,WalletX | A Gasless Smart Wallet,getwalletx,0x06c9aD27cA815d6e8370580c6397b70f87c4FFA5,APPROVED
+42161,23,Hackathon Alumni,Goalz: Decentralized Savings Goals App 🏦💡,GoalzApp,0xa7979BF6Ce644E4e36da2Ee65Db73c3f5A0dF895,APPROVED
+42161,23,Hackathon Alumni,DAO Driven,DAO-Driven,0x01Ae8d6d0F137CF946e354eA707B698E8CaE6485,APPROVED
+42161,23,Hackathon Alumni,UPstore,Aratta-Labs,0x20e229667Cec8A0e9D3C6Fb89693B2a44ec2C50e,APPROVED
+42161,23,Hackathon Alumni,Chatafisha,chatafisha,0x7584FabA8b9320f14523671B4e86A1600EE79c2f,APPROVED
+42161,23,Hackathon Alumni,Stogram,StogramHQ,0x4976e41e2f43169B9a4330805aA1E004840Fd69a,APPROVED
+42161,23,Hackathon Alumni,chatWallet,energiasonora,0xe14F241B23AC40487FAEDf68fFf2a6c693780f82,APPROVED
+42161,23,Hackathon Alumni,Bulwark,Protspec,0xC9a26917494d490377aDED7f4f26F0B2fBC536Ad,APPROVED
+42161,23,Hackathon Alumni,A Bank for DAOs,joshua-and,0x977841f226482F7938e179f6Fc6F45c175252114,APPROVED
+42161,23,Hackathon Alumni,LensView,Blockchain-Kami,0x92506959f5df5C7474B22a6D46A2af324593907a,APPROVED
+42161,23,Hackathon Alumni,Margari,Block-Star-Logic,0x087fb0335b14062bbd88Bbb9B11893a96f1E333A,APPROVED
+42161,23,Hackathon Alumni,Breadchain Cooperative,BreadchainCoop,0xc2fB4B3EA53E10c88D193E709A81C4dc7aEC902e,APPROVED
+42161,23,Hackathon Alumni,Dspyt-CodeVerse,dspytdao,0x4C11BA2ed1D936d769d0cce34CbC7Ea1E85182d0,APPROVED
+42161,23,Hackathon Alumni,dTrials,dTrials,0xe4b6cd734a204f435807501aa0fe5bd3865f210e,APPROVED
+42161,23,Hackathon Alumni,DAO Coalition,daocoa,0x4fc257FBAe841107FEC8917EE6dCf1231b404055,APPROVED
+42161,23,Hackathon Alumni,Astral,AstralProtocol,0x75B4D9DAB72045B953e9aE8dD648996f77802847,APPROVED
+42161,23,Hackathon Alumni,Fluidpay,builders-garden,0x08b69a579165527B34aaa59058196A940f27e5Ca,APPROVED
+42161,23,Hackathon Alumni,EVM Trace,Tetration-Lab,0x8D644E141083bDbdc4d0d88301B2b5EE1427BEE3,APPROVED
+42161,23,Hackathon Alumni,Safe2Link,zenguardxyz,0x31b7232F2f7f21a030444E2b570d18d264e4bFb7,APPROVED
+42161,23,Hackathon Alumni,Patient Analytics ZKP,PatientAnalyticsZKP,0xAc125aFdE60343f43067DD073d9Db46eded78c2f,APPROVED
+42161,23,Hackathon Alumni,Stallion Stake,stallionStake,0x52Fea4Dd6277e183e6d1A79aA305F5e6FEF90DC0,APPROVED
+42161,23,Hackathon Alumni,Yap Bay,Panmoni,0xDD304336Cf878dF7d2647435D5f57C2345B140C1,APPROVED
+42161,23,Hackathon Alumni,RejuvenateAI,web3atl,0xf2AE83B2194bB4BF57Fb55c9c71Ad3BDbc21F3C8,APPROVED
+42161,23,Hackathon Alumni,Sadaiv,sadaiv-ci,0x5B77b8B2f10f52f53b6fF732568790CbaAf0b5eF,APPROVED
+42161,23,Hackathon Alumni,DeStealth,DeezStealth,0x9B2FB7a8d227cDaA8002f80e8c8A99a19Bb1b969,APPROVED
+42161,23,Hackathon Alumni,DynOS 95,DynOS-95,0x22aA68ce286D01aD112C09480C11403A6C781dc7,APPROVED
+42161,23,Hackathon Alumni,NFC wallet,citizenwallet,0x10B651F374A98de2Bb8EeD3286ad8c05C2B5c53F,APPROVED
+42161,23,Hackathon Alumni,Universal Bluecheck ,AFYAPP,0x3750b9ae71CEf5d29BeF9e43486de91D78B7fE35,APPROVED
+42161,23,Hackathon Alumni,web3.js Faucet Plugin for Testnets,The-Web3-Cr34tive-Agency,0x41dF6C9CF03BFfF77a6a4df16048915e9b44Bf28,APPROVED
+42161,23,Hackathon Alumni,Network of Trust,Network-Of-Trust,0x6B93CC473ceC4A394413a8a97B31f9F8ea535708,APPROVED
+42161,23,Hackathon Alumni,Mosaic: Earn rewards for using your favorite web3 apps and protocols,MosaicFun,0x095C33946136C08BC19790BCc7143c87c03c43ce,APPROVED
+42161,23,Hackathon Alumni,"Blockhead: portfolio tracker, block explorer and web3 browser",blockhead-info,0x048669c431230A9A8298b7Ec045f1E1137827cCA,APPROVED
+42161,23,Hackathon Alumni,Agents With Benefits,agentswbenefits,0x42e9c498135431a48796B5fFe2CBC3d7A1811927,APPROVED
+42161,23,Hackathon Alumni,Atletz,Atletz,0xb47Ae7d21eB888E3380a7828253DFdeDB736F1D3,APPROVED
+42161,23,Hackathon Alumni,CamelotV2 Adapter,eth-bucharest,0xaC83cB1b95249BAD4F75D68d8Fc863F9A2048B80,APPROVED
+42161,23,Hackathon Alumni,HonorCode,HonorCodeDAO,0x97a4abcFC3C99E42fb621Da62153bE5eCDf16677,APPROVED
+42161,23,Hackathon Alumni,hashlists,yearone-io,0xc72f946a5e495c79CAc0135890738a7192D6b5eB,APPROVED
+42161,23,Hackathon Alumni,Gnomish,base-fundy,0x00208372f9059BCC63c2b7D6557997118D1B5FA2,APPROVED
+42161,23,Hackathon Alumni,Perpetual Organization Architect,PerpetualOrganizationArchitect,0xA6F4D9f44Dd980b7168D829d5f74c2b00a46b2c9,APPROVED
+42161,23,Hackathon Alumni,Euterpe,EuterpeHQ,0x42D1513E2a8d68FEF8De49e662a29DEc57EE5bD3,APPROVED
+42161,23,Hackathon Alumni,Bitsave Protocol,CryptoSmartNow,0x72578e136E72A18A832be6762230a820f514d180,APPROVED
+42161,23,Hackathon Alumni,Hyperion Team: Gitcoin Donation Frame,Hyperion-Team,0xD164572B07a7a022FAcD4b0a63A72C9280Ad78e2,APPROVED
+42161,23,Hackathon Alumni,FlashTrader,flashtrader-eth,0xFFf6a812685f045acE23A65312ca9B1F506cC67d,APPROVED
+42161,23,Hackathon Alumni,Dspyt- into CodeVerse,dspytdao,0x4C11BA2ed1D936d769d0cce34CbC7Ea1E85182d0,APPROVED
+42161,23,Hackathon Alumni,Coordination-Play,coordination-play,0x955Af1c1637Facf4dD5d9D2428e073573dAD5699,APPROVED
+42161,23,Hackathon Alumni,AI Swarm,aiswarm,0x52ea367e1C074409e841a559dFfA321BDB12b3bE,APPROVED
+42161,23,Hackathon Alumni,FundIt,ecoland-world,0xc8f0bae52D42f42d1Aed7b4af00CA3EF6C516c23,APPROVED
+42161,23,Hackathon Alumni,AdLand,adcommune,0x26bBec292e5080ecFD36F38FF1619FF35826b113,APPROVED
