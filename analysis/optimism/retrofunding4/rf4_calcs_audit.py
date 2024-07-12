@@ -8,12 +8,10 @@ PRIVATE_DIR = "data/private"
 BALLOTS_CSV_PATH = f"{PRIVATE_DIR}/ballots final - export.csv"
 DESTINATION_CSV_PATH = f"{PRIVATE_DIR}/rf4_results.csv"
 
-# load the impact metrics
+# create the Impact Metrics Share dataframe
 METRICS_CSV_PATH = "data/op_rf4_impact_metrics_by_project.csv"
 DF_METRICS = pd.read_csv(METRICS_CSV_PATH, index_col=1)
-# get the metric ids from the column names
 METRIC_IDS = DF_METRICS.columns[-16:]
-# normalize the metrics
 DF_METRICS[METRIC_IDS] = DF_METRICS[METRIC_IDS].div(DF_METRICS[METRIC_IDS].sum(axis=0), axis=1)
 
 
@@ -88,14 +86,16 @@ def main():
 
     # normalize and cap the funding again
     df_results['rf4_allocation'] = allocate_funding(df_results['median'])
-
-    # set projects below the minimum cap to zero
+    
+    # set the funding for projects below the minimum cap to 0
     df_results.loc[df_results['rf4_allocation'] < MIN_CAP, 'rf4_allocation'] = 0
+    
+    # determine how much funding below the max cap is available
+    filtered_projects = df_results[df_results['rf4_allocation']<MAX_CAP]
+    remaining_funding = TOTAL_FUNDING - df_results[df_results['rf4_allocation']==MAX_CAP]['rf4_allocation'].sum()
 
     # allocate the funding for projects between the minimum and maximum cap
-    df_filtered = df_results[(df_results['median']>=MIN_CAP) & (df_results['rf4_allocation']>=MAX_CAP)]
-    remaining_funding = TOTAL_FUNDING - df_filtered['rf4_allocation'].sum()
-    df_results['rf4_allocation'].update(allocate_funding(df_filtered['rf4_allocation'], remaining_funding))
+    df_results['rf4_allocation'].update(allocate_funding(filtered_projects['rf4_allocation'], remaining_funding))
     
     # save the results
     df_consolidated = DF_METRICS.join(df_results).sort_values(by='rf4_allocation', ascending=False)
