@@ -18,99 +18,83 @@ METRIC_IDS = DF_METRICS.columns[-16:]
 
 
 def parse_payload(json_payload):
-
-    # parse the payload into a dictionary
+    """
+    Parse the JSON payload into a dictionary with allocations and OS multiplier.
+    """
     ballot = json.loads(json_payload)
-    return {
-        'allocations': {
-            metric_id: weight
-            for metric_dict in ballot['allocations']
-            for metric_id, weight in metric_dict.items()
-        },
-        'os_multiplier': ballot['os_multiplier']
+    allocations = {
+        metric_id: weight
+        for metric_dict in ballot['allocations']
+        for metric_id, weight in metric_dict.items()
     }
+    return {'allocations': allocations, 'os_multiplier': ballot['os_multiplier']}
 
 
 def score_projects(ballot):
-    
-    # get the OS multiplier for each project
+    """
+    Score projects based on the ballot's allocations and the OS multiplier.
+    """
     os_multiplier = DF_METRICS['is_oss'].apply(lambda x: ballot['os_multiplier'] if x else 1)
-    
-    # iterate through each metric and apply the scoring formula
     scores = DF_METRICS[METRIC_IDS].copy()
+
     for metric in METRIC_IDS:
-
-        # first, apply the OS multiplier
-        scores[metric] = scores[metric] * os_multiplier
-
-        # then, normalize the score for each metric
-        scores[metric] = scores[metric] / scores[metric].sum()
-
-        # finally, apply the metric's weight from the ballot
-        weight = ballot['allocations'].get(metric,0) / 100.
+        scores[metric] *= os_multiplier
+        scores[metric] /= scores[metric].sum()
+        weight = ballot['allocations'].get(metric, 0) / 100.0
         scores[metric] *= weight
 
-    # sum the score for each project across all metrics
-    project_scores = scores.sum(axis=1)
-    return project_scores
+    return scores.sum(axis=1)
 
 
 def allocate_funding(project_scores, funding_balance=TOTAL_FUNDING):
-
+    """
+    Allocate funding to projects based on their scores.
+    """
     allocations = {}
     score_balance = project_scores.sum()
-    
-    # iterate through the projects in descending order of score
+
     for project_id, score in project_scores.sort_values(ascending=False).items():
-        
-        # determine the scaled, capped funding allocation for the project
         uncapped_funding_alloc = score / score_balance * funding_balance
-        alloc = min(uncapped_funding_alloc, MAX_CAP)
-
-        # allocate funding to the project
-        allocations.update({project_id: alloc})
-
-        # update the funding and score balances
-        funding_balance -= alloc
+        capped_funding_alloc = min(uncapped_funding_alloc, MAX_CAP)
+        allocations[project_id] = capped_funding_alloc
+        funding_balance -= capped_funding_alloc
         score_balance -= score
 
-    project_allocations = pd.Series(allocations)
-    return project_allocations
+    return pd.Series(allocations)
 
 
 def main():
 
-    # load the ballots
+    # 0. load the ballots
     df_ballots_raw = (
         pd.read_csv(BALLOTS_CSV_PATH)
         .query("Badgeholder == True & Status == 'SUBMITTED'")
         .set_index('Address')
     )
 
-    # score the projects for each ballot
+    # 1. score each ballot
     df_ballots = df_ballots_raw['Payload'].apply(parse_payload)
     df_scores = df_ballots.apply(score_projects)
 
-    # allocate funding for each badgeholder
+    # 2. allocate funding for each badgeholder
     df_results = df_scores.apply(allocate_funding, axis=1).T
 
-    # get the median funding for each project
+    # 3. get the median funding for each project
     df_results['median'] = df_results.median(axis=1)
 
-    # allocate funding based on the median badgeholder allocation
+    # 4. allocate funding based on the median badgeholder allocation
     df_results['rf4_allocation'] = allocate_funding(df_results['median'])
     
-    # set the funding for projects below the minimum cap to 0
+    # 5. set the funding for projects below the minimum cap to 0
     df_results.loc[df_results['rf4_allocation'] < MIN_CAP, 'rf4_allocation'] = 0
     
-    # determine how much funding below the max cap is available
-    filtered_projects = df_results[df_results['rf4_allocation']<MAX_CAP]
-    remaining_funding = TOTAL_FUNDING - df_results[df_results['rf4_allocation']==MAX_CAP]['rf4_allocation'].sum()
-
-    # allocate funding for projects between the minimum and maximum cap
-    df_results['rf4_allocation'].update(allocate_funding(filtered_projects['rf4_allocation'], remaining_funding))
+    # 6. allocate the remaining funding to projects below the maximum cap
+    max_cap_funding = df_results[df_results['rf4_allocation']==MAX_CAP]['rf4_allocation'].sum()
+    remaining_funding = TOTAL_FUNDING - max_cap_funding
+    df_remaining = df_results[df_results['rf4_allocation']<MAX_CAP]
+    df_results['rf4_allocation'].update(allocate_funding(df_remaining['rf4_allocation'], remaining_funding))
     
-    # save the results
+    # 7. dump the results
     df_consolidated = DF_METRICS.join(df_results).sort_values(by='rf4_allocation', ascending=False)
     df_consolidated['rf4_allocation'].fillna(0)
     df_consolidated.to_csv(DESTINATION_CSV_PATH)
