@@ -8,7 +8,7 @@ MIN_CAP = 1000
 
 # private data paths (hidden from git)
 PRIVATE_DIR = "data/private"
-BALLOTS_CSV_PATH = f"{PRIVATE_DIR}/EarlyBallotData.csv"
+BALLOTS_CSV_PATH = f"{PRIVATE_DIR}/Voting data export final.csv"
 DESTINATION_CSV_PATH = f"{PRIVATE_DIR}/rf4_results.csv"
 
 # load the Impact Metrics as a global dataframe
