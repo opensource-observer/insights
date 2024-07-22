@@ -63,17 +63,12 @@ def allocate_funding(project_scores, funding_balance=TOTAL_FUNDING):
     return pd.Series(allocations)
 
 
-def main():
-
-    # 0. load the ballots
-    df_ballots_raw = (
-        pd.read_csv(BALLOTS_CSV_PATH)
-        .query("Badgeholder == True & Status == 'SUBMITTED'")
-        .set_index('Address')
-    )
+def determine_results(df_ballots):
+    """
+    Determine the results of the Retro Funding 4 round.
+    """
 
     # 1. score each ballot
-    df_ballots = df_ballots_raw['Payload'].apply(parse_payload)
     df_scores = df_ballots.apply(score_projects)
 
     # 2. allocate funding for each badgeholder
@@ -93,8 +88,20 @@ def main():
     remaining_funding = TOTAL_FUNDING - max_cap_funding
     df_remaining = df_results[df_results['rf4_allocation']<MAX_CAP]
     df_results['rf4_allocation'].update(allocate_funding(df_remaining['rf4_allocation'], remaining_funding))
+
+    return df_results
+
+def main():
+
+    df_ballots_raw = (
+        pd.read_csv(BALLOTS_CSV_PATH)
+        .query("Badgeholder == True & Status == 'SUBMITTED'")
+        .set_index('Address')
+    )
+
+    df_ballots = df_ballots_raw['Payload'].apply(parse_payload)
+    df_results = determine_results(df_ballots)
     
-    # 7. dump the results
     df_consolidated = DF_METRICS.join(df_results).sort_values(by='rf4_allocation', ascending=False)
     df_consolidated['rf4_allocation'].fillna(0)
     df_consolidated.to_csv(DESTINATION_CSV_PATH)
