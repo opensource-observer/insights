@@ -1,3 +1,4 @@
+flipside
 python-dotenv
 pandas
 requests
