@@ -26307,6 +26307,60 @@
     "status": "pending"
   },
   {
+    "id": "0x5ff43b456f66114363fab2a2fe00020ce99c3f62b10a6c9b19c52736e0a1a727",
+    "refUID": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "attester": "0x8Bc704386DCE0C4f004194684AdC44Edf6e85f07",
+    "recipient": "0xF40479CAd328803c418084f9E6f7407C2810c795",
+    "revoked": false,
+    "schemaId": "0xf8757b1e38ff1b0c1893e47f7d815367332bec28fea4b4abdcdfda3b1d1b9061",
+    "time": 1726597423,
+    "name": "EVM Builder's Challenge",
+    "metadataPtr": "https://cdn.charmverse.io/attestations/0xf8757b1e38ff1b0c1893e47f7d815367332bec28fea4b4abdcdfda3b1d1b9061/project-faf04b5f-abdb-463b-af10-138a6ca5d589/metadata.json",
+    "metadataType": {
+      "type": "BigNumber",
+      "hex": "0x00"
+    },
+    "type": "0x6170706c69636174696f6e000000000000000000000000000000000000000000",
+    "round": "0x636d30617975733335303030357a777962347674757265753100000000000000",
+    "uuid": "faf04b5f-abdb-463b-af10-138a6ca5d589",
+    "profile": {
+      "name": "nekodex",
+      "profileImageUrl": "https://imagedelivery.net/BXluQx4ige9GuW0Ia56BHw/cdaccf10-70d8-4934-be47-8ab709a1ff00/rectcrop3",
+      "bannerImageUrl": "https://cdn.charmverse.io/user-content/dd38e1c3-4d98-4da3-acd0-553f8a688b7b/77c84049-625b-4a97-a39b-983a5d454c16/IMG_8023.webp"
+    },
+    "metadata": {
+      "name": "EVM Builder's Challenge",
+      "bio": "Welcome to the Builders house! We can grow big all together.\n Challenge for best app\u2019s ! \niOS or Android \nBrowser & dapp ! Rewards $1.000.000 for the first wining spot. \nSecond $200.000 3rd spot $100.000\nFor the all others we distribute on vesting contract all community members!",
+      "websiteUrl": "https://dub.sh/nekodex",
+      "contributionLinks": [
+        {
+          "description": "Website",
+          "type": "Other",
+          "url": "https://dub.sh/nekodex"
+        }
+      ],
+      "sunnyAwards": {
+        "projectType": "app",
+        "category": "DEX",
+        "categoryDetails": "Frame, Payment's, Staking",
+        "contracts": [
+          {
+            "chainId": 8453,
+            "address": "0xfEcFbc1Da8fB941C6838c470b8d4a10B3a16c10E"
+          }
+        ],
+        "mintingWalletAddress": "",
+        "projectReferences": {
+          "charmverseId": "faf04b5f-abdb-463b-af10-138a6ca5d589",
+          "agoraProjectRefUID": "0x69be2290746a200127f1a9f4135d33f7aeaa61d32674453c331c3343f38ff855"
+        },
+        "avatarUrl": "https://cdn.charmverse.io/user-content/dd38e1c3-4d98-4da3-acd0-553f8a688b7b/0392623c-0fa0-4265-bdb9-0ecf8c8267b1/IMG_7594.png",
+        "coverImageUrl": "https://cdn.charmverse.io/user-content/dd38e1c3-4d98-4da3-acd0-553f8a688b7b/77c84049-625b-4a97-a39b-983a5d454c16/IMG_8023.webp"
+      }
+    },
+    "status": "pending"
+  },
+  {
     "id": "0x8384cf7acd95c5a000c2e5b50f8dae580d7a6dfcd85fa32744d1d90b11229efa",
     "refUID": "0x0000000000000000000000000000000000000000000000000000000000000000",
     "attester": "0x8Bc704386DCE0C4f004194684AdC44Edf6e85f07",
@@ -31817,6 +31871,70 @@
       }
     },
     "status": "approved"
+  },
+  {
+    "id": "0x9669547927613b0bff9a5db7738bc0ddb80d3deaebaef01cf75f67798ca61551",
+    "refUID": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "attester": "0x8Bc704386DCE0C4f004194684AdC44Edf6e85f07",
+    "recipient": "0x073f0DC58e9989C827bA5b7b35570B7315652e63",
+    "revoked": false,
+    "schemaId": "0xf8757b1e38ff1b0c1893e47f7d815367332bec28fea4b4abdcdfda3b1d1b9061",
+    "time": 1726709835,
+    "name": "Gloom",
+    "metadataPtr": "https://cdn.charmverse.io/attestations/0xf8757b1e38ff1b0c1893e47f7d815367332bec28fea4b4abdcdfda3b1d1b9061/project-b7e11cb2-d643-4f5f-99ce-803f396b31a5/metadata.json",
+    "metadataType": {
+      "type": "BigNumber",
+      "hex": "0x00"
+    },
+    "type": "0x6170706c69636174696f6e000000000000000000000000000000000000000000",
+    "round": "0x636d30617975733335303030357a777962347674757265753100000000000000",
+    "uuid": "b7e11cb2-d643-4f5f-99ce-803f396b31a5",
+    "profile": {
+      "name": "bixbite",
+      "profileImageUrl": "https://s3.amazonaws.com/charm.public/user-content/31360376-9196-467f-a3bc-17c4473fe4e1/7de0c358-132c-4d6f-b21e-8af26d63c4ec/rectcrop3",
+      "bannerImageUrl": "https://cdn.charmverse.io/user-content/31360376-9196-467f-a3bc-17c4473fe4e1/30c2a588-222b-40e1-8328-738dfdad2337/Gloomers-Banner.png"
+    },
+    "metadata": {
+      "name": "Gloom",
+      "bio": "Gloom is creating an expansive ecosystem known as the Gloomiverse, beginning with our ERC20 token, $GLOOM, and our ERC721a NFT collection, GLOOMERS. The $GLOOM token serves as a governance and utility token, while GLOOMERS function as digital membership passes to access and participate in the Gloomiverse.",
+      "websiteUrl": "https://www.gloomtoken.com/",
+      "contributionLinks": [
+        {
+          "description": "Github Repository",
+          "type": "Github repo",
+          "url": "https://github.com/Gloom-Labs/contracts"
+        },
+        {
+          "description": "Twitter Profile",
+          "type": "Other",
+          "url": "https://x.com/gloomtoken"
+        },
+        {
+          "description": "Website",
+          "type": "Other",
+          "url": "https://www.gloomtoken.com/"
+        }
+      ],
+      "sunnyAwards": {
+        "projectType": "app",
+        "category": "Meme Community",
+        "categoryDetails": "",
+        "contracts": [
+          {
+            "chainId": 8453,
+            "address": "0x4Ff77748E723f0d7B161f90B4bc505187226ED0D"
+          }
+        ],
+        "mintingWalletAddress": "",
+        "projectReferences": {
+          "charmverseId": "b7e11cb2-d643-4f5f-99ce-803f396b31a5",
+          "agoraProjectRefUID": ""
+        },
+        "avatarUrl": "https://cdn.charmverse.io/user-content/31360376-9196-467f-a3bc-17c4473fe4e1/cdad34f1-5839-4716-9d34-03b182ef60db/Gloom-Token.png",
+        "coverImageUrl": "https://cdn.charmverse.io/user-content/31360376-9196-467f-a3bc-17c4473fe4e1/30c2a588-222b-40e1-8328-738dfdad2337/Gloomers-Banner.png"
+      }
+    },
+    "status": "pending"
   },
   {
     "id": "0xcbe520a3705f4a2023dda3ce89be3c1c03f28343c3e54f21d4b3aaa3a9d2dd66",
@@ -53599,6 +53717,80 @@
     "status": "pending"
   },
   {
+    "id": "0xf5a7d6bc6d5cb1ad009a7832f9a770d241a52a3cf9e566f8542167e18e275a79",
+    "refUID": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "attester": "0x8Bc704386DCE0C4f004194684AdC44Edf6e85f07",
+    "recipient": "0x68E08371d1D0311b7c81961c431D71F71a94dd1a",
+    "revoked": false,
+    "schemaId": "0xf8757b1e38ff1b0c1893e47f7d815367332bec28fea4b4abdcdfda3b1d1b9061",
+    "time": 1726689733,
+    "name": "Onchain Affiliates",
+    "metadataPtr": "https://cdn.charmverse.io/attestations/0xf8757b1e38ff1b0c1893e47f7d815367332bec28fea4b4abdcdfda3b1d1b9061/project-67209e62-be17-43ad-9259-b8cd4a8ae1b2/metadata.json",
+    "metadataType": {
+      "type": "BigNumber",
+      "hex": "0x00"
+    },
+    "type": "0x6170706c69636174696f6e000000000000000000000000000000000000000000",
+    "round": "0x636d30617975733335303030357a777962347674757265753100000000000000",
+    "uuid": "67209e62-be17-43ad-9259-b8cd4a8ae1b2",
+    "profile": {
+      "name": "soko.eth",
+      "profileImageUrl": "https://i.imgur.com/PNaumro.jpg",
+      "bannerImageUrl": "https://cdn.charmverse.io/user-content/7ac35658-6881-465e-a51c-840947ad0028/392a278d-d78d-4f0b-a111-66e18b85678c/gloomers-banner-2.avif"
+    },
+    "metadata": {
+      "name": "Onchain Affiliates",
+      "bio": "Onchain Affiliates is a blockchain-based affiliate marketing program that allows users to earn cryptocurrency and engagement points through social media activities. The project focuses on three main aspects:\n\nRegister: Users can easily join the program by connecting their Ethereum-based wallet.\nCast: Participants share affiliate mint frames on social media platforms.\nEarn: Users receive ETH commissions for referred mints and points for engagement with their affiliate frames.\n\nThe project's roadmap includes four phases:\n\nLaunch of the Affiliate Frame & Points System with the Based Gloomers Collection\nAddition of features like mint notification bots\nOnboarding of other projects and creators\nExpansion to integrate other social media platforms\n\nOnchain Affiliates aims to provide a seamless way for influencers and content creators to monetize their engagement and unlock their influence in the blockchain space.",
+      "websiteUrl": "https://www.gloomtoken.com/onchain-affiliates",
+      "contributionLinks": [
+        {
+          "description": "Github Repository",
+          "type": "Github repo",
+          "url": "https://github.com/Gloom-Labs/contracts"
+        },
+        {
+          "description": "Twitter Profile",
+          "type": "Other",
+          "url": "https://x.com/gloomtoken"
+        },
+        {
+          "description": "Website",
+          "type": "Other",
+          "url": "https://www.gloomtoken.com/onchain-affiliates"
+        },
+        {
+          "description": "Website",
+          "type": "Other",
+          "url": "https://onchainaffiliates.com"
+        },
+        {
+          "description": "Website",
+          "type": "Other",
+          "url": "https://warpcast.com/~/channel/onchainaffiliate"
+        }
+      ],
+      "sunnyAwards": {
+        "projectType": "app",
+        "category": "Frames",
+        "categoryDetails": "Onchain Affiliate Marketing",
+        "contracts": [
+          {
+            "chainId": 8453,
+            "address": "0xceb5f8c24e1ac27d116dc7d6789b20e981a36866"
+          }
+        ],
+        "mintingWalletAddress": "",
+        "projectReferences": {
+          "charmverseId": "67209e62-be17-43ad-9259-b8cd4a8ae1b2",
+          "agoraProjectRefUID": ""
+        },
+        "avatarUrl": "https://cdn.charmverse.io/user-content/7ac35658-6881-465e-a51c-840947ad0028/d20f0fad-1a17-4246-b197-515461d20529/gloomers-preview-titled.gif",
+        "coverImageUrl": "https://cdn.charmverse.io/user-content/7ac35658-6881-465e-a51c-840947ad0028/392a278d-d78d-4f0b-a111-66e18b85678c/gloomers-banner-2.avif"
+      }
+    },
+    "status": "pending"
+  },
+  {
     "id": "0x348b4e37ed74cc6a5fcb7fdd58fdc84e115a74e1f9ebb1ddc334bb155dd2443a",
     "refUID": "0x0000000000000000000000000000000000000000000000000000000000000000",
     "attester": "0x8Bc704386DCE0C4f004194684AdC44Edf6e85f07",
@@ -71843,7 +72035,7 @@
         {
           "description": "Twitter Profile",
           "type": "Other",
-          "url": "Clokdhd"
+          "url": "https://x.com/clokdhd"
         },
         {
           "description": "Website",
