@@ -1,138 +1,135 @@
 artifact_url,project_name,project_category_id,num_contributors,num_trusted_contributors,num_contributors_last_6_months,num_stars,num_trusted_stars,trust_weighted_stars,num_forks,num_trusted_forks,trust_weighted_forks,trust_rank_for_repo_in_category,age_of_project_years,license(s),application_id
 https://github.com/eth-infinitism/account-abstraction,Account Abstraction - ERC-4337,1,128.0,6.0,34.0,1510,17.0,0.0178113151305927,624,9.0,0.0050682607321391,20.0,2.4166666666667425,GPL-3.0,41923142-8520-43d2-9a97-1a9f895644ee
-https://github.com/ethereum/act,Act,1,16.0,1.0,4.0,215,13.0,0.0636500533645902,36,0.0,0.0002698784777922,22.0,5.0,AGPL-3.0,c9b60136-216c-424b-aa79-52bcb81285da
-https://github.com/dappnode/dappnode,Dappnode,1,137.0,5.0,11.0,583,10.0,0.031962673257205,100,1.0,0.0011423894171834,15.0,6.5833333333332575,GPL-3.0,03c24056-2795-45f8-963b-b675a616e1ac
+https://github.com/ethereum/act,Act,1,16.0,1.0,4.0,215,13.0,0.0636500533645902,36,0.0,0.0002698784777922,22.0,5.0,AGPL-3.0,44d67f72-8a9a-42a7-bbda-8a285b76b28b
+https://github.com/dappnode/dappnode,Dappnode,1,137.0,5.0,11.0,583,10.0,0.031962673257205,100,1.0,0.0011423894171834,15.0,6.5833333333332575,GPL-3.0,d6f252a5-69bc-4c50-9570-9462cf98e194
 https://github.com/erigontech/erigon,Erigon,1,1019.0,54.0,220.0,3106,52.0,0.0029877799165986,1095,34.0,0.0002445808341515,12.0,5.3333333333332575,LGPL-3.0,85dd5d93-d1b6-47d0-ac10-012618d999cf
 https://github.com/rzmahmood/ethereum-pos-testnet,Ethereum POS Testnet,1,8.0,0.0,3.0,41,1.0,0.0030473465945442,18,0.0,6.050351862865525e-06,28.0,1.0,MIT,82c49ee5-985f-48f2-8a28-c4cd8db34105
-https://github.com/ethpandaops/pectra-devnets,Ethereum devnets and testing tools,1,9.0,8.0,9.0,11,2.0,0.0020108590243076,4,2.0,0.0025613213910293,24.0,0.33333333333325754,,ca3395d5-a728-43a8-a0d4-fd5ce5471e89
+https://github.com/ethpandaops/pectra-devnets,Ethereum devnets and testing tools,1,9.0,8.0,9.0,11,2.0,0.0020108590243076,4,2.0,0.0025613213910293,24.0,0.33333333333325754,,9e5001d0-5b25-4244-916a-785d0393a2cd
 https://github.com/eoa-blockchain-labs/ethereumonarm,Ethereum on ARM,1,47.0,0.0,5.0,144,4.0,0.0011712258656859,36,0.0,8.736268780800851e-06,37.0,3.6666666666667425,GPL-3.0,9596d323-17be-436e-9dc6-81b69fea169c
 https://github.com/ethereum/fe,Fe Language,1,69.0,6.0,12.0,1601,25.0,0.0272802081061011,182,5.0,0.0088903794265862,18.0,5.0833333333332575,Custom,dcec8ff2-6c8f-4912-9221-0dd084e67367
 https://github.com/grandinetech/grandine,Grandine,1,11.0,2.0,10.0,160,19.0,0.0486694230512345,17,1.0,0.0021663128066441,17.0,3.25,GPL-3.0,0c257bf5-d3a1-40f7-b28a-261f77522d0c
-https://github.com/probe-lab/hermes,Hermes - a GossipSub listener and tracer for libp2p-based networks.,1,11.0,3.0,10.0,15,2.0,0.0045140655475526,5,1.0,0.0012790210212184,14.0,0.75,Custom,2a890a1d-c403-4df3-a1f0-98b315186f98
+https://github.com/probe-lab/hermes,Hermes - a GossipSub listener and tracer for libp2p-based networks.,1,11.0,3.0,10.0,15,2.0,0.0045140655475526,5,1.0,0.0012790210212184,14.0,0.75,Custom,349407fa-9504-4b8e-9a44-ffdf520a2001
 https://github.com/lexdao/lexcorpus,LexDAO,1,19.0,0.0,1.0,164,1.0,0.0002846511947025,43,0.0,4.7894317673900246e-05,36.0,4.0833333333332575,GPL-3.0,5e30020b-fcbc-4273-8ab1-f6926a0ce887
-https://github.com/sigp/lighthouse,Lighthouse,1,585.0,46.0,101.0,2882,47.0,0.2323798728905557,725,36.0,0.1255988958080959,5.0,6.1666666666667425,Apache-2.0,df14f6e6-d4d2-426a-b246-60dd10564601
+https://github.com/sigp/lighthouse,Lighthouse,1,585.0,46.0,101.0,2882,47.0,0.2323798728905557,725,36.0,0.1255988958080959,5.0,6.1666666666667425,Apache-2.0,30379152-e0f5-4a59-837d-7ab869598c7f
 https://github.com/chainsafe/lodestar,Lodestar,1,204.0,26.0,37.0,1142,26.0,0.0134911555979237,282,17.0,0.0432673604074934,10.0,6.25,Apache-2.0,f56d6b00-71ad-4023-ad5a-ab60d010753c
-https://github.com/nethermindeth/nethermind,Nethermind Ethereum Execution Client,1,436.0,22.0,88.0,1229,16.0,0.0973921555072856,428,11.0,0.0068281590656072,6.0,6.6666666666667425,GPL-3.0,54fbb32f-a57f-4334-9944-9f1691b92fb8
+https://github.com/nethermindeth/nethermind,Nethermind Ethereum Execution Client,1,436.0,22.0,88.0,1229,16.0,0.0973921555072856,428,11.0,0.0068281590656072,6.0,6.6666666666667425,GPL-3.0,efdc84ff-ad99-441f-a825-d42d06bed649
 https://github.com/status-im/nimbus-eth2,Nimbus,1,243.0,19.0,41.0,523,13.0,0.003973609230969,226,15.0,0.0042632590962597,16.0,6.1666666666667425,Custom,f84b1f45-0dd4-4b41-a9e7-a55857cccae5
 https://github.com/paradigmxyz/reth,OP Reth,1,618.0,83.0,305.0,3826,69.0,0.3635137675470326,1077,70.0,0.2551734313296674,1.0,1.75,Apache-2.0,dd8d7a7e-5f95-4523-8f6d-c3a64ee7754b
-https://github.com/protocolguild/documentation,Protocol Guild,1,78.0,36.0,68.0,24,1.0,0.0006096921987868,88,35.0,0.0138813779640195,21.0,0.9166666666667425,,12c97212-6a77-40b7-afd6-653c375f7bda
-https://github.com/bluealloy/revm,Revm,1,187.0,40.0,88.0,1601,50.0,0.1994104708835467,528,49.0,0.2743719776048538,3.0,3.0,MIT,756070d5-5697-474b-a706-d9858c9b0b7a
+https://github.com/protocolguild/documentation,Protocol Guild,1,78.0,36.0,68.0,24,1.0,0.0006096921987868,88,35.0,0.0138813779640195,21.0,0.9166666666667425,,ecfe2bb2-ae9f-4812-bbe1-3703d1f31a7e
+https://github.com/bluealloy/revm,Revm,1,187.0,40.0,88.0,1601,50.0,0.1994104708835467,528,49.0,0.2743719776048538,3.0,3.0,MIT,23f59da6-f8b7-4ea1-a947-325fb52f5043
 https://github.com/rubyscoreio/main_contracts,RubyScore,1,2.0,0.0,2.0,0,0.0,0.0,0,0.0,0.0,44.0,0.5,MIT,918820b0-28c7-4534-97a4-8ab4d1c9144f
 https://github.com/grandinetech/rust-kzg,Rust KZG,1,29.0,0.0,3.0,109,15.0,0.0008541866238519,41,1.0,0.0019358724359268,29.0,3.0,Apache-2.0,38ec7de7-13f4-4202-8b69-3a3965197e71
 https://github.com/libp2p/rust-libp2p,Rust Libp2p,1,488.0,11.0,70.0,4485,26.0,0.0992574554824743,930,13.0,0.0233092255921537,13.0,6.8333333333332575,MIT,4eee1576-c6aa-42c5-ae48-73d72bbbd82c
-https://github.com/rdubois-crypto/freshcryptolib,Smoo.th Cryptolib,1,13.0,2.0,4.0,124,9.0,0.0054374519451637,22,2.0,0.0011412079032045,27.0,1.5,MIT,8f5efbbe-57fd-4337-8350-7e5d9d98f06f
-https://github.com/get-smooth/crypto-lib,Smoo.th Cryptolib,1,3.0,1.0,3.0,40,1.0,0.0004201146837294,2,0.0,2.130994210434059e-06,35.0,0.33333333333325754,,8f5efbbe-57fd-4337-8350-7e5d9d98f06f
-https://github.com/ethereum/solidity,Solidity,1,1938.0,60.0,136.0,23083,52.0,0.1452666606457593,5717,41.0,0.2564965651147046,4.0,9.083333333333258,GPL-3.0,d951efb8-7417-4fec-b9ff-5df5f6a5318a
+https://github.com/rdubois-crypto/freshcryptolib,Smoo.th Cryptolib,1,13.0,2.0,4.0,124,9.0,0.0054374519451637,22,2.0,0.0011412079032045,27.0,1.5,MIT,83ee7a4f-7de2-4265-8fcc-e322d755d678
+https://github.com/get-smooth/crypto-lib,Smoo.th Cryptolib,1,3.0,1.0,3.0,40,1.0,0.0004201146837294,2,0.0,2.130994210434059e-06,35.0,0.33333333333325754,,83ee7a4f-7de2-4265-8fcc-e322d755d678
+https://github.com/ethereum/solidity,Solidity,1,1938.0,60.0,136.0,23083,52.0,0.1452666606457593,5717,41.0,0.2564965651147046,4.0,9.083333333333258,GPL-3.0,1732e47f-c6fa-4ab2-b116-18d33347c3e9
 https://github.com/vyperlang/vyper,Vyper,1,458.0,28.0,33.0,4842,38.0,0.178651750044745,789,20.0,0.0519802285559191,8.0,7.8333333333332575,Custom,22b0cb07-4fd1-48e9-800c-3114e6d41d7c
+https://github.com/consortium-wide/wide-contract,WID3 - Web3 Identity for DAOs and Education,1,,,,0,,0.0,0,,0.0,42.0,,EUPL-1.2,353f74f1-ca54-4c62-8d93-a7a8f3121d09
 https://github.com/consortium-wide/wide-client,WID3 - Web3 Identity for DAOs and Education,1,,,,0,,0.0,0,,0.0,43.0,,EUPL-1.2,353f74f1-ca54-4c62-8d93-a7a8f3121d09
 https://github.com/consortium-wide/wide-server,WID3 - Web3 Identity for DAOs and Education,1,,,,0,,0.0,0,,0.0,41.0,,EUPL-1.2,353f74f1-ca54-4c62-8d93-a7a8f3121d09
-https://github.com/consortium-wide/wide-contract,WID3 - Web3 Identity for DAOs and Education,1,,,,0,,0.0,0,,0.0,42.0,,EUPL-1.2,353f74f1-ca54-4c62-8d93-a7a8f3121d09
 https://github.com/ethereumjs/ethereumjs-monorepo,ethereumjs-monorepo,1,332.0,23.0,34.0,2579,27.0,0.0857082831509924,750,19.0,0.1009886655396115,9.0,9.166666666666742,,cb21abb9-47c4-4a3d-b770-8fbb504cfd8e
 https://github.com/ethereum/go-ethereum,go-ethereum,1,5483.0,113.0,477.0,47226,88.0,0.2834147599653312,19994,119.0,0.4645677910698876,2.0,9.666666666666742,LGPL-3.0,06bceb66-8644-4704-8a73-e1b3feb328cf
-https://github.com/libp2p/go-libp2p,go-libp2p,1,450.0,16.0,55.0,6001,20.0,0.1296236659955704,1057,14.0,0.0124372130620051,11.0,9.0,MIT,c7845f9f-d120-4d80-ae86-f1122fd488c5
+https://github.com/libp2p/go-libp2p,go-libp2p,1,450.0,16.0,55.0,6001,20.0,0.1296236659955704,1057,14.0,0.0124372130620051,11.0,9.0,MIT,87f05139-80ff-4335-ac20-7935e435213d
 https://github.com/ethereum/hevm,hevm,1,35.0,2.0,19.0,227,13.0,0.0107888958114171,46,2.0,0.0011979582433935,19.0,2.0833333333332575,AGPL-3.0,c5986f92-7329-409f-b48c-a052fdd9efdc
-https://github.com/libp2p/js-libp2p,js-libp2p,1,312.0,5.0,30.0,2298,11.0,0.0831795917174051,439,4.0,0.0024057617689529,25.0,9.0,Custom,9ac973e7-9dc4-4cc5-8426-a8844ce9a5a4
-https://github.com/libp2p/jvm-libp2p,jvm-libp2p,1,49.0,11.0,4.0,265,4.0,0.0053531981651191,75,9.0,0.0663162577887542,7.0,5.3333333333332575,Apache-2.0,d8158429-f7d8-4b18-8795-a13057a21a08
-https://github.com/libp2p/libp2p,libp2p Ecosystem,1,72.0,2.0,8.0,2609,3.0,0.0035578705910145,256,0.0,0.0002603272092335,32.0,8.25,MIT,a276575f-a3b5-423d-bf87-7aabc1766a43
-https://github.com/libp2p/test-plans,libp2p Ecosystem,1,34.0,2.0,5.0,51,1.0,0.0015488528724965,43,0.0,0.0003327147405401,30.0,4.4166666666667425,Custom,a276575f-a3b5-423d-bf87-7aabc1766a43
-https://github.com/libp2p/specs,libp2p Ecosystem,1,188.0,10.0,22.0,1553,17.0,0.0744464474575837,273,6.0,0.0340307219817926,23.0,8.0,,a276575f-a3b5-423d-bf87-7aabc1766a43
-https://github.com/libp2p/docs,libp2p Ecosystem,1,128.0,5.0,10.0,60,0.0,0.0001090720190735,88,2.0,0.0018758202228701,31.0,5.9166666666667425,Custom,a276575f-a3b5-423d-bf87-7aabc1766a43
-https://github.com/libp2p/website-new,libp2p Ecosystem,1,4.0,0.0,4.0,1,0.0,5.22855473974589e-07,2,0.0,1.8835034843442237e-05,38.0,0.5833333333332575,,a276575f-a3b5-423d-bf87-7aabc1766a43
-https://github.com/libp2p/blog,libp2p Ecosystem,1,25.0,2.0,4.0,9,1.0,0.000908693905781,7,0.0,0.0006094084153999,33.0,1.8333333333332575,MIT,a276575f-a3b5-423d-bf87-7aabc1766a43
+https://github.com/libp2p/js-libp2p,js-libp2p,1,312.0,5.0,30.0,2298,11.0,0.0831795917174051,439,4.0,0.0024057617689529,25.0,9.0,Custom,d3ecb932-8bbe-4a7c-b8ab-946334cc54fb
+https://github.com/libp2p/jvm-libp2p,jvm-libp2p,1,49.0,11.0,4.0,265,4.0,0.0053531981651191,75,9.0,0.0663162577887542,7.0,5.3333333333332575,Apache-2.0,709f2b74-fd6e-4ad3-bb75-71b44fc34367
+https://github.com/libp2p/specs,libp2p Ecosystem,1,188.0,10.0,22.0,1553,17.0,0.0744464474575837,273,6.0,0.0340307219817926,23.0,8.0,,10b8aaed-f117-4436-a479-123667419088
+https://github.com/libp2p/test-plans,libp2p Ecosystem,1,34.0,2.0,5.0,51,1.0,0.0015488528724965,43,0.0,0.0003327147405401,30.0,4.4166666666667425,Custom,10b8aaed-f117-4436-a479-123667419088
+https://github.com/libp2p/libp2p,libp2p Ecosystem,1,72.0,2.0,8.0,2609,3.0,0.0035578705910145,256,0.0,0.0002603272092335,32.0,8.25,MIT,10b8aaed-f117-4436-a479-123667419088
+https://github.com/libp2p/blog,libp2p Ecosystem,1,25.0,2.0,4.0,9,1.0,0.000908693905781,7,0.0,0.0006094084153999,33.0,1.8333333333332575,MIT,10b8aaed-f117-4436-a479-123667419088
+https://github.com/libp2p/website-new,libp2p Ecosystem,1,4.0,0.0,4.0,1,0.0,5.22855473974589e-07,2,0.0,1.8835034843442237e-05,38.0,0.5833333333332575,,10b8aaed-f117-4436-a479-123667419088
+https://github.com/libp2p/docs,libp2p Ecosystem,1,128.0,5.0,10.0,60,0.0,0.0001090720190735,88,2.0,0.0018758202228701,31.0,5.9166666666667425,Custom,10b8aaed-f117-4436-a479-123667419088
 https://github.com/vacp2p/nim-libp2p,nim-libp2p,1,64.0,1.0,14.0,248,2.0,4.9402827135020596e-08,54,1.0,0.000587396447835,34.0,5.8333333333332575,MIT,7cd5214b-1d0a-4ac2-a1ff-ac0e5869a9a1
 https://github.com/quic-go/quic-go,quic-go,1,639.0,4.0,71.0,9983,12.0,0.0004139584447415,1301,4.0,0.000277873476353,26.0,8.416666666666742,MIT,8c865cc8-be94-488c-9d8c-f262f6e52991
 https://github.com/rhinofi/contracts_public,rhinofi,1,6.0,0.0,2.0,19,0.0,4.911451322735785e-06,11,0.0,9.170445299478912e-07,40.0,2.25,GPL-3.0,0208d7b0-0be3-4fb2-9432-5c92760b39ca
 https://github.com/buidlguidl/buidlguidl-client,🏰 BuidlGuidl Client,1,5.0,0.0,5.0,7,0.0,8.437987266108903e-05,4,0.0,7.521512113473007e-05,39.0,0.33333333333325754,MIT,1db17912-c980-4a31-9356-6e068ceb9ca6
-https://github.com/gelatodigital/gelato-native-oracle-periphery,1-Click Price Oracle,2,,,,0,,0.0,0,,0.0,43.0,,,a906875a-ba8b-46a1-b4a8-3a1c04cbe47e
-https://github.com/gelatodigital/gelato-native-oracle-sdk,1-Click Price Oracle,2,,,,0,,0.0,0,,0.0,42.0,,,a906875a-ba8b-46a1-b4a8-3a1c04cbe47e
-https://github.com/gelatodigital/gelato-native-oracle-nft-example,1-Click Price Oracle,2,,,,1,,0.0,0,,0.0,41.0,,,a906875a-ba8b-46a1-b4a8-3a1c04cbe47e
-https://github.com/gelatodigital/optimism,1-Click Price Oracle,2,1.0,0.0,1.0,0,0.0,0.0,0,0.0,0.0,21.0,1.5,MIT,a906875a-ba8b-46a1-b4a8-3a1c04cbe47e
-https://github.com/upnodedev/op-alt-da-contract,Alt-DA Server & Translation Hub,2,,,,0,,0.0,0,,0.0,31.0,,MIT,95e49910-f579-4b5f-9938-263b0ca65935
-https://github.com/upnodedev/op-alt-da,Alt-DA Server & Translation Hub,2,,,,0,,0.0,0,,0.0,36.0,,MIT,95e49910-f579-4b5f-9938-263b0ca65935
-https://github.com/ethereum-optimism/asterisc,Asterisc,2,13.0,11.0,9.0,98,25.0,0.0429618752848958,14,4.0,0.0367033437392652,2.0,1.6666666666667425,MIT,946c73a2-8263-4849-9db0-e550782ee23b
-https://github.com/guidovranken/cryptofuzz,Cryptofuzz,2,36.0,0.0,9.0,672,7.0,0.0054817173514752,77,2.0,0.0008610847369124,19.0,5.5,GPL-3.0,82387f3f-0878-4e29-a995-55b1b626c116
-https://github.com/testinprod-io/span-batch-research,Delta Network Upgrade,2,1.0,1.0,0.0,1,1.0,0.041778163383742,0,0.0,0.0,14.0,1.0,MIT,fc083f75-5165-4ce9-b516-18cfb0311a22
-https://github.com/shutter-network/op-geth,Deployment of the Shutterized Optimism (SHOP) testnet.,2,1.0,0.0,1.0,2,1.0,0.0008502677910489,1,0.0,3.551377554236211e-07,34.0,0.6666666666667425,LGPL-3.0,09fa7ea5-e93a-4b84-b6b8-d17ec573f00f
-https://github.com/shutter-network/contracts,Deployment of the Shutterized Optimism (SHOP) testnet.,2,,,,0,,0.0,0,,0.0,40.0,,,09fa7ea5-e93a-4b84-b6b8-d17ec573f00f
-https://github.com/shutter-network/shopdemo,Deployment of the Shutterized Optimism (SHOP) testnet.,2,3.0,0.0,3.0,1,0.0,0.0,2,0.0,1.31261011176496e-05,32.0,0.5833333333332575,,09fa7ea5-e93a-4b84-b6b8-d17ec573f00f
-https://github.com/ethereum-attestation-service/eas-contracts,Ethereum Attestation Service (EAS),2,27.0,4.0,9.0,246,10.0,0.009277411101288,74,4.0,0.0156623342324458,15.0,3.1666666666667425,MIT,8f1d0175-4eaf-4bd0-9438-a776d8e1d8c1
-https://github.com/shutter-network/shutter,Feasibility study for Front-running protection via shielded mempool for the OP Stack using threshold encryption,2,8.0,0.0,3.0,61,1.0,0.0010424537632956,14,0.0,0.0005135256497709,27.0,3.4166666666667425,MIT,c679cc76-6db8-4e91-bb09-12c490614d79
-https://github.com/runtimeverification/_audits_ethereum-optimism_pausability,Formal Verification of Optimism's L1 pausability mechanism,2,3.0,2.0,2.0,0,0.0,0.0,0,0.0,0.0,8.0,0.8333333333332575,MIT,00e481fe-952b-45e1-ad91-70a335d5a6cb
-https://github.com/runtimeverification/optimism-ci,Formal Verification of Optimism's L1 pausability mechanism,2,1.0,1.0,1.0,2,1.0,0.0001931693406687,2,1.0,0.0134913606948306,11.0,0.25,,00e481fe-952b-45e1-ad91-70a335d5a6cb
-https://github.com/kroma-network/rip7560-bundler,Native Account Abstraction on OP Stack,2,2.0,1.0,2.0,1,0.0,8.955722768512512e-06,1,1.0,0.0002304233305905,26.0,0.25,GPL-3.0,403618f2-5607-4252-8ed3-9efba5721196
-https://github.com/kroma-network/rip7560-scripts,Native Account Abstraction on OP Stack,2,,,,1,,0.002591415215901,0,,0.0,22.0,,,403618f2-5607-4252-8ed3-9efba5721196
-https://github.com/kroma-network/7560-optimism,Native Account Abstraction on OP Stack,2,2.0,0.0,2.0,0,0.0,0.0,0,0.0,0.0,37.0,0.33333333333325754,MIT,403618f2-5607-4252-8ed3-9efba5721196
-https://github.com/kroma-network/7560-geth,Native Account Abstraction on OP Stack,2,3.0,1.0,3.0,1,1.0,1.037344808870498e-05,2,1.0,0.0,33.0,0.33333333333325754,LGPL-3.0,403618f2-5607-4252-8ed3-9efba5721196
-https://github.com/opti-domains/dispute-game-lookup,OP ENS Gateway by Opti.Domains,2,1.0,1.0,1.0,0,0.0,0.0,0,0.0,0.0,20.0,0.25,MIT,6c94acc0-29ea-4923-93b1-7f729886ca80
-https://github.com/opti-domains/ens-diamond-resolver-v1,OP ENS Gateway by Opti.Domains,2,1.0,1.0,1.0,0,0.0,0.0,0,0.0,0.0,28.0,0.33333333333325754,MIT,6c94acc0-29ea-4923-93b1-7f729886ca80
-https://github.com/opti-domains/optidomains-ens-contracts,OP ENS Gateway by Opti.Domains,2,1.0,1.0,1.0,0,0.0,0.0,0,0.0,0.0,29.0,1.4166666666667425,MIT,6c94acc0-29ea-4923-93b1-7f729886ca80
-https://github.com/opti-domains/evmgateway,OP ENS Gateway by Opti.Domains,2,,,,0,,0.0,0,,0.0,30.0,,MIT,6c94acc0-29ea-4923-93b1-7f729886ca80
-https://github.com/opti-domains/modular-ens-contracts,OP ENS Gateway by Opti.Domains,2,1.0,1.0,1.0,1,0.0,0.0,0,0.0,0.0,24.0,0.6666666666667425,MIT,6c94acc0-29ea-4923-93b1-7f729886ca80
-https://github.com/testinprod-io/op-erigon,OP Erigon,2,27.0,9.0,19.0,86,18.0,0.3446439870918796,14,2.0,0.0076808340809625,1.0,1.5833333333332575,LGPL-3.0,eed6e638-92b6-47d5-884b-d09f1043ca66
-https://github.com/succinctlabs/sp1,OP Succinct: Full ZK Validity Proving of OP Stack Rollups with SP1,2,110.0,11.0,110.0,927,34.0,0.0845123591716126,277,7.0,0.0079171228112408,5.0,0.5833333333332575,Apache-2.0,6994c0ee-f495-43f9-be0a-8c831ea789fc
-https://github.com/succinctlabs/op-succinct,OP Succinct: Full ZK Validity Proving of OP Stack Rollups with SP1,2,2.0,2.0,2.0,71,1.0,0.0856842894796554,7,0.0,1.5261274547957256e-05,6.0,0.16666666666674246,Apache-2.0,6994c0ee-f495-43f9-be0a-8c831ea789fc
-https://github.com/zenbiteth/opcity,OPcity stack,2,3.0,0.0,3.0,1,0.0,3.2430034570961643e-06,2,0.0,8.110243656003485e-06,35.0,0.41666666666674246,MIT,55de7193-36b9-4edc-9f76-5beacf800650
-https://github.com/orderlynetwork/contract-evm,Orderly Network,2,5.0,0.0,5.0,2,0.0,5.24043198594798e-07,6,0.0,6.124677144326253e-07,39.0,0.75,Apache-2.0,3c8fa11a-654b-4042-9517-5eaefc5808cd
-https://github.com/kroma-network/kona,Permissionless ZK Fault Proof System,2,1.0,1.0,1.0,0,0.0,0.0,0,0.0,0.0,18.0,0.16666666666674246,MIT,f29a9466-c088-4314-9f78-0be7034caba2
-https://github.com/kroma-network/sp1,Permissionless ZK Fault Proof System,2,3.0,2.0,3.0,1,0.0,0.0,1,0.0,7.529166644729719e-05,17.0,0.25,Apache-2.0,f29a9466-c088-4314-9f78-0be7034caba2
-https://github.com/kroma-network/tachyon,Permissionless ZK Fault Proof System,2,21.0,2.0,15.0,7777,6.0,0.0047531936200016,231,1.0,0.0004808060844387,12.0,1.0,MIT,f29a9466-c088-4314-9f78-0be7034caba2
-https://github.com/kroma-network/kroma,Permissionless ZK Fault Proof System,2,30.0,5.0,19.0,160,4.0,0.002911723448129,82,2.0,0.0010933083718579,16.0,1.5,Custom,f29a9466-c088-4314-9f78-0be7034caba2
-https://github.com/kroma-network/go-ethereum,Permissionless ZK Fault Proof System,2,15.0,3.0,9.0,44,1.0,0.0002277310258398,23,1.0,0.0002977787760603,23.0,1.75,LGPL-3.0,f29a9466-c088-4314-9f78-0be7034caba2
-https://github.com/rentality-xyz/rentality-demo-contracts,Rentality,2,1.0,0.0,1.0,1,0.0,0.0,1,0.0,0.0,44.0,1.3333333333332575,MIT,c7614a2b-c559-47b6-a1e6-567aea3c30c4
-https://github.com/ethstorage/optimism,Research and development on multi-section fault dispute game,2,8.0,4.0,6.0,2,1.0,0.005443923887763,2,0.0,0.0001263660485679,13.0,1.0833333333332575,MIT,1565fd59-16c3-4dfa-8be6-88017a586ba9
-https://github.com/sherlock-protocol/sherlock-v2-core,Sherlock,2,5.0,0.0,0.0,19,2.0,0.0188817993906774,5,0.0,7.62297090234072e-07,25.0,2.75,,e210c931-00d8-4eb4-b7c2-f481c7b087e5
-https://github.com/vectorized/solady,Solady,2,101.0,13.0,36.0,2504,41.0,0.1005367766227584,337,9.0,0.0111880259188421,10.0,2.1666666666667425,MIT,d53f8df1-c9dd-49a9-a446-945072af1f6f
-https://github.com/optimism-java/blob-archiver-rs,blob-archiver-rs,2,1.0,1.0,1.0,1,1.0,0.002809440366321,1,0.0,0.0,9.0,0.16666666666674246,MIT,f3e20ba9-2bf9-4256-8d0b-928f2c604d2b
-https://github.com/optimism-java/hildr,hildr,2,5.0,4.0,4.0,39,10.0,0.1520300397381267,12,2.0,0.0045330337549973,3.0,1.3333333333332575,MIT,b8b27809-233e-4c8b-aa74-32a1399b8b4e
-https://github.com/optimism-java/op-besu,op-besu,2,2.0,2.0,1.0,6,2.0,0.0080739326271605,0,0.0,0.0,7.0,0.8333333333332575,Apache-2.0,32042ec0-0c74-469a-8384-7b1e999db039
-https://github.com/defi-wonderland/opusdc,opUSDC,2,,,,7,,0.0034807984519642,6,,0.0013738314110962,4.0,,MIT,ccc3a538-739e-4c56-a8cd-cc753e48a68c
-https://github.com/xuwinnie/reports,xuwinnie.review,2,1.0,0.0,1.0,1,0.0,0.0001841705869458,0,0.0,0.0,38.0,0.5833333333332575,MIT,71a67a8e-7710-49e3-b32a-a233813f3f58
-https://github.com/upnodedev/signer-proxy,AWS KMS and YubiHSM signer for OP Stack,3,,,,0,,0.0,0,,0.0,25.0,,MIT,84f89c38-17d1-415c-bdd0-50b929fddcbe
-https://github.com/decentraplace/artgridz-superhack,ArtGridz,3,,,,0,,0.0,0,,0.0,46.0,,MIT,63d81436-2352-4d5d-a8f6-cb285b4e1ab3
+https://github.com/gelatodigital/gelato-native-oracle-periphery,1-Click Price Oracle,2,,,,0,,0.0,0,,0.0,42.0,,,a906875a-ba8b-46a1-b4a8-3a1c04cbe47e
+https://github.com/gelatodigital/optimism,1-Click Price Oracle,2,1.0,0.0,1.0,0,0.0,0.0,0,0.0,0.0,19.0,1.5,MIT,a906875a-ba8b-46a1-b4a8-3a1c04cbe47e
+https://github.com/gelatodigital/gelato-native-oracle-nft-example,1-Click Price Oracle,2,,,,1,,0.0,0,,0.0,40.0,,,a906875a-ba8b-46a1-b4a8-3a1c04cbe47e
+https://github.com/gelatodigital/gelato-native-oracle-sdk,1-Click Price Oracle,2,,,,0,,0.0,0,,0.0,41.0,,,a906875a-ba8b-46a1-b4a8-3a1c04cbe47e
+https://github.com/upnodedev/op-alt-da,Alt-DA Server & Translation Hub,2,,,,0,,0.0,0,,0.0,35.0,,MIT,0ff2d643-a02d-4770-b4d5-91d2f6a7bb9e
+https://github.com/upnodedev/op-alt-da-contract,Alt-DA Server & Translation Hub,2,,,,0,,0.0,0,,0.0,30.0,,MIT,0ff2d643-a02d-4770-b4d5-91d2f6a7bb9e
+https://github.com/ethereum-optimism/asterisc,Asterisc,2,13.0,11.0,9.0,98,25.0,0.0429618752848958,14,4.0,0.0367033437392652,2.0,1.6666666666667425,MIT,12ee508a-38e2-499d-a932-87a22c85be72
+https://github.com/guidovranken/cryptofuzz,Cryptofuzz,2,36.0,0.0,9.0,672,7.0,0.0054817173514752,77,2.0,0.0008610847369124,17.0,5.5,GPL-3.0,82387f3f-0878-4e29-a995-55b1b626c116
+https://github.com/testinprod-io/span-batch-research,Delta Network Upgrade,2,1.0,1.0,0.0,1,1.0,0.041778163383742,0,0.0,0.0,12.0,1.0,MIT,716e98fc-2ed1-4b90-8fce-f47acb94d922
+https://github.com/shutter-network/contracts,Deployment of the Shutterized Optimism (SHOP) testnet with the SHOP SDK.,2,,,,0,,0.0,0,,0.0,39.0,,,ea0191c1-eeec-431d-a4a0-7d033708c1e5
+https://github.com/shutter-network/shop-sdk,Deployment of the Shutterized Optimism (SHOP) testnet with the SHOP SDK.,2,2.0,0.0,2.0,2,1.0,0.0008502677910489,1,0.0,0.0,29.0,0.5833333333332575,,ea0191c1-eeec-431d-a4a0-7d033708c1e5
+https://github.com/shutter-network/shopdemo,Deployment of the Shutterized Optimism (SHOP) testnet with the SHOP SDK.,2,3.0,0.0,3.0,1,0.0,0.0,2,0.0,1.31261011176496e-05,31.0,0.5833333333332575,,ea0191c1-eeec-431d-a4a0-7d033708c1e5
+https://github.com/shutter-network/op-geth,Deployment of the Shutterized Optimism (SHOP) testnet with the SHOP SDK.,2,1.0,0.0,1.0,2,1.0,0.0008502677910489,1,0.0,3.551377554236211e-07,33.0,0.6666666666667425,LGPL-3.0,ea0191c1-eeec-431d-a4a0-7d033708c1e5
+https://github.com/ethereum-attestation-service/eas-contracts,Ethereum Attestation Service (EAS),2,27.0,4.0,9.0,246,10.0,0.009277411101288,74,4.0,0.0156623342324458,13.0,3.1666666666667425,MIT,8f1d0175-4eaf-4bd0-9438-a776d8e1d8c1
+https://github.com/shutter-network/shutter,Feasibility study for Front-running protection via shielded mempool for the OP Stack using threshold encryption,2,8.0,0.0,3.0,61,1.0,0.0010424537632956,14,0.0,0.0005135256497709,25.0,3.4166666666667425,MIT,87375f80-344f-44d8-895d-b9029357b2ee
+https://github.com/kroma-network/rip7560-scripts,Native Account Abstraction on OP Stack,2,,,,1,,0.002591415215901,0,,0.0,20.0,,,4070fa39-df82-4dff-9185-5fb47220ece9
+https://github.com/kroma-network/7560-optimism,Native Account Abstraction on OP Stack,2,2.0,0.0,2.0,0,0.0,0.0,0,0.0,0.0,36.0,0.33333333333325754,MIT,4070fa39-df82-4dff-9185-5fb47220ece9
+https://github.com/kroma-network/rip7560-bundler,Native Account Abstraction on OP Stack,2,2.0,1.0,2.0,1,0.0,8.955722768512512e-06,1,1.0,0.0002304233305905,24.0,0.25,GPL-3.0,4070fa39-df82-4dff-9185-5fb47220ece9
+https://github.com/kroma-network/7560-geth,Native Account Abstraction on OP Stack,2,3.0,1.0,3.0,1,1.0,1.037344808870498e-05,2,1.0,0.0,32.0,0.33333333333325754,LGPL-3.0,4070fa39-df82-4dff-9185-5fb47220ece9
+https://github.com/opti-domains/modular-ens-contracts,OP ENS Gateway by Opti.Domains,2,1.0,1.0,1.0,1,0.0,0.0,0,0.0,0.0,22.0,0.6666666666667425,MIT,6c94acc0-29ea-4923-93b1-7f729886ca80
+https://github.com/opti-domains/evmgateway,OP ENS Gateway by Opti.Domains,2,,,,0,,0.0,0,,0.0,28.0,,MIT,6c94acc0-29ea-4923-93b1-7f729886ca80
+https://github.com/opti-domains/dispute-game-lookup,OP ENS Gateway by Opti.Domains,2,1.0,1.0,1.0,0,0.0,0.0,0,0.0,0.0,18.0,0.25,MIT,6c94acc0-29ea-4923-93b1-7f729886ca80
+https://github.com/opti-domains/optidomains-ens-contracts,OP ENS Gateway by Opti.Domains,2,1.0,1.0,1.0,0,0.0,0.0,0,0.0,0.0,27.0,1.4166666666667425,MIT,6c94acc0-29ea-4923-93b1-7f729886ca80
+https://github.com/opti-domains/ens-diamond-resolver-v1,OP ENS Gateway by Opti.Domains,2,1.0,1.0,1.0,0,0.0,0.0,0,0.0,0.0,26.0,0.33333333333325754,MIT,6c94acc0-29ea-4923-93b1-7f729886ca80
+https://github.com/testinprod-io/op-erigon,OP Erigon,2,27.0,9.0,19.0,86,18.0,0.3446439870918796,14,2.0,0.0076808340809625,1.0,1.5833333333332575,LGPL-3.0,103819d5-61d6-4797-b363-cde63d15d203
+https://github.com/succinctlabs/sp1,OP Succinct: Full ZK Validity Proving of OP Stack Rollups with SP1,2,110.0,11.0,110.0,927,34.0,0.0845123591716126,277,7.0,0.0079171228112408,5.0,0.5833333333332575,Apache-2.0,859e370c-eb5e-40d5-85a9-1e809aef0021
+https://github.com/succinctlabs/op-succinct,OP Succinct: Full ZK Validity Proving of OP Stack Rollups with SP1,2,2.0,2.0,2.0,71,1.0,0.0856842894796554,7,0.0,1.5261274547957256e-05,6.0,0.16666666666674246,Apache-2.0,859e370c-eb5e-40d5-85a9-1e809aef0021
+https://github.com/zenbiteth/opcity,OPcity stack,2,3.0,0.0,3.0,1,0.0,3.2430034570961643e-06,2,0.0,8.110243656003485e-06,34.0,0.41666666666674246,MIT,f4353454-6261-4d5b-9f17-409e3b7fc618
+https://github.com/orderlynetwork/contract-evm,Orderly Network,2,5.0,0.0,5.0,2,0.0,5.24043198594798e-07,6,0.0,6.124677144326253e-07,38.0,0.75,Apache-2.0,3c8fa11a-654b-4042-9517-5eaefc5808cd
+https://github.com/kroma-network/go-ethereum,Permissionless ZK Fault Proof System,2,15.0,3.0,9.0,44,1.0,0.0002277310258398,23,1.0,0.0002977787760603,21.0,1.75,LGPL-3.0,f29a9466-c088-4314-9f78-0be7034caba2
+https://github.com/kroma-network/tachyon,Permissionless ZK Fault Proof System,2,21.0,2.0,15.0,7777,6.0,0.0047531936200016,231,1.0,0.0004808060844387,10.0,1.0,MIT,f29a9466-c088-4314-9f78-0be7034caba2
+https://github.com/kroma-network/sp1,Permissionless ZK Fault Proof System,2,3.0,2.0,3.0,1,0.0,0.0,1,0.0,7.529166644729719e-05,15.0,0.25,Apache-2.0,f29a9466-c088-4314-9f78-0be7034caba2
+https://github.com/kroma-network/kona,Permissionless ZK Fault Proof System,2,1.0,1.0,1.0,0,0.0,0.0,0,0.0,0.0,16.0,0.16666666666674246,MIT,f29a9466-c088-4314-9f78-0be7034caba2
+https://github.com/kroma-network/kroma,Permissionless ZK Fault Proof System,2,30.0,5.0,19.0,160,4.0,0.002911723448129,82,2.0,0.0010933083718579,14.0,1.5,Custom,f29a9466-c088-4314-9f78-0be7034caba2
+https://github.com/rentality-xyz/rentality-demo-contracts,Rentality,2,1.0,0.0,1.0,1,0.0,0.0,1,0.0,0.0,43.0,1.3333333333332575,MIT,c7614a2b-c559-47b6-a1e6-567aea3c30c4
+https://github.com/ethstorage/optimism,Research and development on multi-section fault dispute game,2,8.0,4.0,6.0,2,1.0,0.005443923887763,2,0.0,0.0001263660485679,11.0,1.0833333333332575,MIT,164a3304-d440-4103-99c7-30cf85e8fe8f
+https://github.com/sherlock-protocol/sherlock-v2-core,Sherlock,2,5.0,0.0,0.0,19,2.0,0.0188817993906774,5,0.0,7.62297090234072e-07,23.0,2.75,,e210c931-00d8-4eb4-b7c2-f481c7b087e5
+https://github.com/vectorized/solady,Solady,2,101.0,13.0,36.0,2504,41.0,0.1005367766227584,337,9.0,0.0111880259188421,9.0,2.1666666666667425,MIT,d53f8df1-c9dd-49a9-a446-945072af1f6f
+https://github.com/optimism-java/blob-archiver-rs,blob-archiver-rs,2,1.0,1.0,1.0,1,1.0,0.002809440366321,1,0.0,0.0,8.0,0.16666666666674246,MIT,55863ba8-b73e-41c5-960a-2777010865c9
+https://github.com/optimism-java/hildr,hildr,2,5.0,4.0,4.0,39,10.0,0.1520300397381267,12,2.0,0.0045330337549973,3.0,1.3333333333332575,MIT,7e3ad315-cf98-488a-b7a0-4910d5cf873a
+https://github.com/optimism-java/op-besu,op-besu,2,2.0,2.0,1.0,6,2.0,0.0080739326271605,0,0.0,0.0,7.0,0.8333333333332575,Apache-2.0,89d2ec44-6340-4711-9ceb-9d744262ed13
+https://github.com/defi-wonderland/opusdc,opUSDC,2,,,,7,,0.0034807984519642,6,,0.0013738314110962,4.0,,MIT,51247394-7b99-4ae1-9e46-84c09299c541
+https://github.com/xuwinnie/reports,xuwinnie.review,2,1.0,0.0,1.0,1,0.0,0.0001841705869458,0,0.0,0.0,37.0,0.5833333333332575,MIT,cce5591e-80ff-4239-8890-df682b5b9d80
+https://github.com/upnodedev/signer-proxy,AWS KMS and YubiHSM signer for OP Stack,3,,,,0,,0.0,0,,0.0,24.0,,MIT,033c8cdc-3d09-4c97-91d6-9447755aeffc
+https://github.com/decentraplace/artgridz-superhack,ArtGridz,3,,,,0,,0.0,0,,0.0,44.0,,MIT,63d81436-2352-4d5d-a8f6-cb285b4e1ab3
 https://github.com/rabbitprincess/builderism,Builderism,3,3.0,1.0,3.0,24,3.0,0.0818649170714003,4,0.0,1.358970728049718e-05,1.0,0.5,MIT,883bb82a-d6a9-45f5-9c57-e264ac20fa61
-https://github.com/citizenwallet/pos,Citizen Wallet Core development,3,2.0,0.0,2.0,0,0.0,0.0,1,0.0,0.0,39.0,0.41666666666674246,,fe796291-557d-4a9c-810d-d64ac71a8a28
-https://github.com/citizenwallet/app,Citizen Wallet Core development,3,7.0,0.0,6.0,13,0.0,8.37211023791848e-06,5,0.0,1.124630854643365e-07,35.0,1.4166666666667425,MIT,fe796291-557d-4a9c-810d-d64ac71a8a28
-https://github.com/citizenwallet/nfcwallet,Citizen Wallet Core development,3,3.0,0.0,3.0,1,0.0,5.148229520968271e-10,0,0.0,0.0,38.0,0.5,MIT,fe796291-557d-4a9c-810d-d64ac71a8a28
-https://github.com/citizenwallet/smartcontracts,Citizen Wallet Core development,3,4.0,0.0,3.0,2,0.0,0.0,1,0.0,9.891541986008213e-08,37.0,1.3333333333332575,,fe796291-557d-4a9c-810d-d64ac71a8a28
-https://github.com/andrei0x309/clear-wallet,Clear Wallet,3,2.0,0.0,1.0,16,0.0,2.0390423871655975e-05,10,0.0,8.456548317663487e-08,30.0,1.9166666666667425,MIT,e33a8355-7bca-4b94-8d9c-8096aff2d583
-https://github.com/cryptozombieshq/cryptozombie-lessons,CryptoZombies,3,378.0,2.0,8.0,1058,2.0,3.026801296914209e-05,544,3.0,0.0005158233818338,9.0,6.6666666666667425,Custom,a28938da-b516-458d-9b4b-d0ad93c6a368
-https://github.com/jefetoken/jefe-compass,JEFE TOKEN,3,1.0,0.0,1.0,1,0.0,0.0,0,0.0,0.0,46.0,0.41666666666674246,MIT,8a66f3b3-5e3e-4ff5-a88f-8c5045fb5579
-https://github.com/jefetoken/jefe-optimism,JEFE TOKEN,3,1.0,0.0,1.0,1,0.0,0.0,0,0.0,0.0,46.0,0.9166666666667425,MIT,8a66f3b3-5e3e-4ff5-a88f-8c5045fb5579
-https://github.com/jefetoken/jefe-opstack,JEFE TOKEN,3,2.0,0.0,2.0,1,0.0,0.0,0,0.0,0.0,46.0,0.6666666666667425,MIT,8a66f3b3-5e3e-4ff5-a88f-8c5045fb5579
-https://github.com/jefetoken/rewards,JEFE TOKEN,3,2.0,0.0,2.0,0,0.0,0.0,1,0.0,0.0,46.0,0.33333333333325754,MIT,8a66f3b3-5e3e-4ff5-a88f-8c5045fb5579
-https://github.com/runtimeverification/kontrol,Kontrol - formal verification tool based on Foundry and KEVM,3,29.0,4.0,21.0,47,3.0,0.0523463407515648,5,0.0,5.359978055788232e-06,7.0,1.0833333333332575,BSD-3-Clause,e72c6848-a615-41fc-8942-5b4c9909ad02
-https://github.com/ethpandaops/optimism-package,Kurtosis optimism package,3,9.0,6.0,9.0,33,15.0,0.1168107143631238,19,1.0,0.054854098627922,3.0,0.25,,8f0f3e31-d4bf-413d-9e95-3a127f62d8e3
-https://github.com/smartcontracts/simple-optimism-node,Maintaining simple-optimism-node,3,67.0,6.0,16.0,323,20.0,0.1456263529024574,112,8.0,0.1530122620307166,5.0,2.3333333333332575,MIT,47a1b4d9-034e-4064-90f8-c434e56e12c0
-https://github.com/syndicateprotocol/mirror,Mirror,3,1.0,0.0,1.0,0,0.0,0.0,0,0.0,0.0,41.0,0.25,,94ee6dd4-43bc-4afb-b4a7-a9514b23f00c
-https://github.com/nodeguardians/optimism,Node Guardians,3,,,,0,,0.0,0,,0.0,40.0,,,f507f7d9-1d5d-45b6-8858-ce1ba403f739
-https://github.com/aymen-tirchi/op-stack-deployer,OP STACK DEPLOYER,3,1.0,0.0,0.0,13,2.0,0.0035008440151628,0,0.0,0.0,21.0,1.1666666666667425,MIT,fd48aadb-9ed6-4d5d-b82c-8d2c35d484ee
-https://github.com/omnihub-xyz/blockchain,OmniHub,3,,,,0,,0.0,0,,0.0,46.0,,,666956fd-2d57-42b9-ac6e-1f6a3acfd28a
-https://github.com/owlto-finance/owlto,Owlto Finance,3,6.0,0.0,4.0,31,0.0,5.9060464283801066e-08,17,0.0,2.68158880701486e-07,42.0,0.6666666666667425,GPL-3.0,2137ca03-2214-4584-8607-e0966131f229
-https://github.com/porters-xyz/gateway-demo,PORTERS,3,5.0,0.0,5.0,1,0.0,0.0,1,0.0,0.0,32.0,0.6666666666667425,MIT,b6961192-a331-4f37-8c1f-3f824193a1a8
-https://github.com/alt-research/mach-avs,RaaS and Restaking for OP Stack rollups,3,4.0,1.0,4.0,11,2.0,0.0010320810971375,9,0.0,2.251166563150245e-05,18.0,0.41666666666674246,Custom,dd332698-cac4-4649-9512-ca1e120f82d1
-https://github.com/redstone-finance/redstone-app,RedStone Oracles for OP-stack chains,3,14.0,0.0,6.0,15,0.0,1.5334763839606084e-05,16,0.0,1.253696661695838e-05,33.0,3.25,MIT,27fa9534-ad7a-445f-aa8c-9d91612cd50f
-https://github.com/ratimon/redprint-forge,Redprint,3,1.0,1.0,1.0,38,1.0,0.0007453303510275,2,0.0,0.0004829495835478,19.0,0.33333333333325754,MIT,ad547a68-b4e9-43f0-90a2-9b07f8055040
-https://github.com/ratimon/redprint-wizard,Redprint,3,1.0,1.0,1.0,39,1.0,0.0008283860068603,2,0.0,0.0,11.0,0.33333333333325754,MIT,ad547a68-b4e9-43f0-90a2-9b07f8055040
-https://github.com/nethermindeth/sedge,Sedge ,3,46.0,1.0,12.0,151,7.0,0.0043334416967834,42,1.0,0.0008061999028692,16.0,2.6666666666667425,Apache-2.0,d2eaabe6-edfb-4f21-9e1a-7c075ccc7759
-https://github.com/shutter-network/shop-sdk,Shutterize Optimism SDK (SHOP SDK),3,2.0,0.0,2.0,2,1.0,0.0008502677910489,1,0.0,0.0,31.0,0.5833333333332575,,959b8253-e6e0-4308-82eb-fdd77b06fa2c
-https://github.com/ethereum/sourcify,Sourcify,3,214.0,14.0,50.0,775,10.0,0.0060275569404352,389,8.0,0.0067579976292991,12.0,5.4166666666667425,MIT,4c25dd7a-9cde-4ad2-9caa-8e9d3cdad020
-https://github.com/ethereum-optimism/developers,TechNERDs Program,3,44.0,5.0,31.0,68,3.0,0.0039563212310944,43,3.0,0.0023728745481357,2.0,0.9166666666667425,CC0-1.0,5c475627-a2e6-4ded-911a-7aa2f0716d27
-https://github.com/joohhnnn/the-book-of-optimism-fault-proof-cn,The book of optimism fault proof,3,1.0,1.0,1.0,10,0.0,0.0019608059079969,1,0.0,0.0001014684672217,15.0,0.16666666666674246,,706b6f74-16b5-446a-a562-62069deec5aa
-https://github.com/joohhnnn/the-book-of-optimism-fault-proof,The book of optimism fault proof,3,1.0,1.0,1.0,20,1.0,0.0233953137043795,2,0.0,0.0001526990138809,14.0,0.16666666666674246,,706b6f74-16b5-446a-a562-62069deec5aa
-https://github.com/wakeuplabs/rfg1-optimism,Token Historical Balance,3,4.0,0.0,3.0,2,0.0,2.2453964400940297e-07,1,0.0,2.0749084942822378e-08,36.0,0.75,MIT,620e4cc4-0e5f-498c-875f-97ef802d5e33
-https://github.com/joohhnnn/understanding-optimism-codebase-cn,Understanding-Optimism-Codebase ,3,1.0,1.0,1.0,42,0.0,0.0014661321157873,4,0.0,0.0005642549472079,13.0,1.0,,75574086-cd55-4ed3-888d-6fd94f3e50cf
-https://github.com/joohhnnn/understanding-optimism-codebase,Understanding-Optimism-Codebase ,3,3.0,2.0,1.0,42,5.0,0.076741004521197,6,0.0,0.000156147965534,8.0,1.0,,75574086-cd55-4ed3-888d-6fd94f3e50cf
-https://github.com/unruggable-labs/unruggable-gateways-examples,Unruggable ,3,,,,4,,0.0,0,,0.0,46.0,,,b9d4e972-bad7-4275-b693-b765dec31e64
-https://github.com/unruggable-labs/unruggable-gateways,Unruggable ,3,2.0,0.0,2.0,12,0.0,0.0,1,0.0,0.0,24.0,0.33333333333325754,MIT,b9d4e972-bad7-4275-b693-b765dec31e64
-https://github.com/upnodedev/evm-faucet,Upnode Deploy,3,1.0,0.0,1.0,0,0.0,0.0,0,0.0,0.0,34.0,0.16666666666674246,MIT,fa1f9829-449c-46eb-9aa9-b4e0f57b9410
-https://github.com/upnodedev/opstack-bridge-ui,Upnode Deploy,3,2.0,0.0,2.0,0,0.0,0.0008502677910489,0,0.0,0.0,26.0,0.5,Apache-2.0,fa1f9829-449c-46eb-9aa9-b4e0f57b9410
-https://github.com/upnodedev/opstack-compose,Upnode Deploy,3,2.0,0.0,1.0,5,2.0,0.0034572736340997,1,0.0,8.30556558328267e-05,17.0,1.0833333333332575,MIT,fa1f9829-449c-46eb-9aa9-b4e0f57b9410
-https://github.com/upnodedev/opstack-bridge-indexer-v2,Upnode Deploy,3,,,,0,,0.0,0,,0.0,29.0,,Apache-2.0,fa1f9829-449c-46eb-9aa9-b4e0f57b9410
-https://github.com/upnodedev/opstack-bridge-indexer,Upnode Deploy,3,2.0,0.0,2.0,1,1.0,0.002591415215901,0,0.0,0.0,23.0,0.33333333333325754,Apache-2.0,fa1f9829-449c-46eb-9aa9-b4e0f57b9410
-https://github.com/upnodedev/opstack-bridge-ui-v2,Upnode Deploy,3,,,,0,,0.0,0,,0.0,28.0,,Apache-2.0,fa1f9829-449c-46eb-9aa9-b4e0f57b9410
-https://github.com/upnodedev/upnode-deploy-ui,Upnode Deploy,3,2.0,1.0,2.0,0,0.0,0.0,0,0.0,0.0,27.0,0.16666666666674246,Apache-2.0,fa1f9829-449c-46eb-9aa9-b4e0f57b9410
+https://github.com/citizenwallet/nfcwallet,Citizen Wallet Core development,3,3.0,0.0,3.0,1,0.0,5.148229520968271e-10,0,0.0,0.0,36.0,0.5,MIT,fe796291-557d-4a9c-810d-d64ac71a8a28
+https://github.com/citizenwallet/app,Citizen Wallet Core development,3,7.0,0.0,6.0,13,0.0,8.37211023791848e-06,5,0.0,1.124630854643365e-07,33.0,1.4166666666667425,MIT,fe796291-557d-4a9c-810d-d64ac71a8a28
+https://github.com/citizenwallet/smartcontracts,Citizen Wallet Core development,3,4.0,0.0,3.0,2,0.0,0.0,1,0.0,9.891541986008213e-08,35.0,1.3333333333332575,,fe796291-557d-4a9c-810d-d64ac71a8a28
+https://github.com/citizenwallet/pos,Citizen Wallet Core development,3,2.0,0.0,2.0,0,0.0,0.0,1,0.0,0.0,37.0,0.41666666666674246,,fe796291-557d-4a9c-810d-d64ac71a8a28
+https://github.com/andrei0x309/clear-wallet,Clear Wallet,3,2.0,0.0,1.0,16,0.0,2.0390423871655975e-05,10,0.0,8.456548317663487e-08,29.0,1.9166666666667425,MIT,e33a8355-7bca-4b94-8d9c-8096aff2d583
+https://github.com/cryptozombieshq/cryptozombie-lessons,CryptoZombies,3,378.0,2.0,8.0,1058,2.0,3.026801296914209e-05,544,3.0,0.0005158233818338,8.0,6.6666666666667425,Custom,f4434709-820d-4141-b351-20b90f62c964
+https://github.com/jefetoken/jefe-compass,JEFE TOKEN,3,1.0,0.0,1.0,1,0.0,0.0,0,0.0,0.0,44.0,0.41666666666674246,MIT,e31e64c7-41b6-43a8-934e-4a00496d20a6
+https://github.com/jefetoken/jefe-optimism,JEFE TOKEN,3,1.0,0.0,1.0,1,0.0,0.0,0,0.0,0.0,44.0,0.9166666666667425,MIT,e31e64c7-41b6-43a8-934e-4a00496d20a6
+https://github.com/jefetoken/rewards,JEFE TOKEN,3,2.0,0.0,2.0,0,0.0,0.0,1,0.0,0.0,44.0,0.33333333333325754,MIT,e31e64c7-41b6-43a8-934e-4a00496d20a6
+https://github.com/jefetoken/jefe-opstack,JEFE TOKEN,3,2.0,0.0,2.0,1,0.0,0.0,0,0.0,0.0,44.0,0.6666666666667425,MIT,e31e64c7-41b6-43a8-934e-4a00496d20a6
+https://github.com/ethpandaops/optimism-package,Kurtosis optimism package,3,9.0,6.0,9.0,33,15.0,0.1168107143631238,19,1.0,0.054854098627922,3.0,0.25,,f0c639c0-a761-4f0d-b652-8967b182b865
+https://github.com/smartcontracts/simple-optimism-node,Maintaining simple-optimism-node,3,67.0,6.0,16.0,323,20.0,0.1456263529024574,112,8.0,0.1530122620307166,5.0,2.3333333333332575,MIT,e4547438-eadd-43af-bc57-9f093c0f8072
+https://github.com/syndicateprotocol/mirror,Mirror,3,1.0,0.0,1.0,0,0.0,0.0,0,0.0,0.0,39.0,0.25,,94ee6dd4-43bc-4afb-b4a7-a9514b23f00c
+https://github.com/nodeguardians/optimism,Node Guardians,3,,,,0,,0.0,0,,0.0,38.0,,,f507f7d9-1d5d-45b6-8858-ce1ba403f739
+https://github.com/aymen-tirchi/op-stack-deployer,OP STACK DEPLOYER,3,1.0,0.0,0.0,13,2.0,0.0035008440151628,0,0.0,0.0,20.0,1.1666666666667425,MIT,fd48aadb-9ed6-4d5d-b82c-8d2c35d484ee
+https://github.com/omnihub-xyz/blockchain,OmniHub,3,,,,0,,0.0,0,,0.0,44.0,,,666956fd-2d57-42b9-ac6e-1f6a3acfd28a
+https://github.com/owlto-finance/owlto,Owlto Finance,3,6.0,0.0,4.0,31,0.0,5.9060464283801066e-08,17,0.0,2.68158880701486e-07,40.0,0.6666666666667425,GPL-3.0,2137ca03-2214-4584-8607-e0966131f229
+https://github.com/porters-xyz/gateway-demo,PORTERS,3,5.0,0.0,5.0,1,0.0,0.0,1,0.0,0.0,30.0,0.6666666666667425,MIT,b6961192-a331-4f37-8c1f-3f824193a1a8
+https://github.com/alt-research/mach-avs,RaaS and Restaking for OP Stack rollups,3,4.0,1.0,4.0,11,2.0,0.0010320810971375,9,0.0,2.251166563150245e-05,17.0,0.41666666666674246,Custom,dd332698-cac4-4649-9512-ca1e120f82d1
+https://github.com/redstone-finance/redstone-app,RedStone Oracles for OP-stack chains,3,14.0,0.0,6.0,15,0.0,1.5334763839606084e-05,16,0.0,1.253696661695838e-05,31.0,3.25,MIT,27fa9534-ad7a-445f-aa8c-9d91612cd50f
+https://github.com/ratimon/redprint-forge,Redprint,3,1.0,1.0,1.0,38,1.0,0.0007453303510275,2,0.0,0.0004829495835478,18.0,0.33333333333325754,MIT,bc61b7a6-70c3-43b8-a5e8-98e160cc1973
+https://github.com/ratimon/redprint-wizard,Redprint,3,1.0,1.0,1.0,39,1.0,0.0008283860068603,2,0.0,0.0,10.0,0.33333333333325754,MIT,bc61b7a6-70c3-43b8-a5e8-98e160cc1973
+https://github.com/nethermindeth/sedge,Sedge ,3,46.0,1.0,12.0,151,7.0,0.0043334416967834,42,1.0,0.0008061999028692,15.0,2.6666666666667425,Apache-2.0,51097619-fa99-4e08-b774-b4ce852505bd
+https://github.com/ethereum/sourcify,Sourcify,3,214.0,14.0,50.0,775,10.0,0.0060275569404352,389,8.0,0.0067579976292991,11.0,5.4166666666667425,MIT,4c25dd7a-9cde-4ad2-9caa-8e9d3cdad020
+https://github.com/ethereum-optimism/developers,TechNERDs Program,3,44.0,5.0,31.0,68,3.0,0.0039563212310944,43,3.0,0.0023728745481357,2.0,0.9166666666667425,CC0-1.0,b42cf1de-5246-4890-9043-791f93159447
+https://github.com/joohhnnn/the-book-of-optimism-fault-proof,The book of optimism fault proof,3,1.0,1.0,1.0,20,1.0,0.0233953137043795,2,0.0,0.0001526990138809,13.0,0.16666666666674246,,bf03d123-b25b-46c9-82d9-7cd396f9b8ed
+https://github.com/joohhnnn/the-book-of-optimism-fault-proof-cn,The book of optimism fault proof,3,1.0,1.0,1.0,10,0.0,0.0019608059079969,1,0.0,0.0001014684672217,14.0,0.16666666666674246,,bf03d123-b25b-46c9-82d9-7cd396f9b8ed
+https://github.com/wakeuplabs/rfg1-optimism,Token Historical Balance,3,4.0,0.0,3.0,2,0.0,2.2453964400940297e-07,1,0.0,2.0749084942822378e-08,34.0,0.75,MIT,14a2795d-66ac-41af-9f5d-cbe1fa45c236
+https://github.com/joohhnnn/understanding-optimism-codebase,Understanding-Optimism-Codebase ,3,3.0,2.0,1.0,42,5.0,0.076741004521197,6,0.0,0.000156147965534,7.0,1.0,,875e5aab-d6a0-4ab7-a317-c5ebad3349a5
+https://github.com/joohhnnn/understanding-optimism-codebase-cn,Understanding-Optimism-Codebase ,3,1.0,1.0,1.0,42,0.0,0.0014661321157873,4,0.0,0.0005642549472079,12.0,1.0,,875e5aab-d6a0-4ab7-a317-c5ebad3349a5
+https://github.com/unruggable-labs/unruggable-gateways,Unruggable ,3,2.0,0.0,2.0,12,0.0,0.0,1,0.0,0.0,23.0,0.33333333333325754,MIT,b9d4e972-bad7-4275-b693-b765dec31e64
+https://github.com/unruggable-labs/unruggable-gateways-examples,Unruggable ,3,,,,4,,0.0,0,,0.0,44.0,,,b9d4e972-bad7-4275-b693-b765dec31e64
+https://github.com/upnodedev/opstack-bridge-indexer-v2,Upnode Deploy,3,,,,0,,0.0,0,,0.0,28.0,,Apache-2.0,f5f96d2a-c8fb-4643-8e25-7f5c48ef6551
+https://github.com/upnodedev/upnode-deploy-ui,Upnode Deploy,3,2.0,1.0,2.0,0,0.0,0.0,0,0.0,0.0,26.0,0.16666666666674246,Apache-2.0,f5f96d2a-c8fb-4643-8e25-7f5c48ef6551
+https://github.com/upnodedev/opstack-bridge-ui,Upnode Deploy,3,2.0,0.0,2.0,0,0.0,0.0008502677910489,0,0.0,0.0,25.0,0.5,Apache-2.0,f5f96d2a-c8fb-4643-8e25-7f5c48ef6551
+https://github.com/upnodedev/opstack-bridge-indexer,Upnode Deploy,3,2.0,0.0,2.0,1,1.0,0.002591415215901,0,0.0,0.0,22.0,0.33333333333325754,Apache-2.0,f5f96d2a-c8fb-4643-8e25-7f5c48ef6551
+https://github.com/upnodedev/opstack-compose,Upnode Deploy,3,2.0,0.0,1.0,5,2.0,0.0034572736340997,1,0.0,8.30556558328267e-05,16.0,1.0833333333332575,MIT,f5f96d2a-c8fb-4643-8e25-7f5c48ef6551
+https://github.com/upnodedev/opstack-bridge-ui-v2,Upnode Deploy,3,,,,0,,0.0,0,,0.0,27.0,,Apache-2.0,f5f96d2a-c8fb-4643-8e25-7f5c48ef6551
+https://github.com/upnodedev/evm-faucet,Upnode Deploy,3,1.0,0.0,1.0,0,0.0,0.0,0,0.0,0.0,32.0,0.16666666666674246,MIT,f5f96d2a-c8fb-4643-8e25-7f5c48ef6551
 https://github.com/wevm/viem,Viem: TypeScript Tooling for OP Stack,3,675.0,28.0,312.0,2466,28.0,0.0061517839072916,746,20.0,0.017511121808606,4.0,1.5,Custom,a62680b3-1a97-4585-8201-193dc5cb7abf
-https://github.com/dapp-learning-dao/dapp-learning,[DappLearning] Web3 Development Tutorial,3,229.0,3.0,41.0,5094,9.0,0.0074332045858679,1291,3.0,0.001201072933997,10.0,3.25,MIT,eb59793e-ec56-47fc-969c-4bb34c5d7647
+https://github.com/dapp-learning-dao/dapp-learning,[DappLearning] Web3 Development Tutorial,3,229.0,3.0,41.0,5094,9.0,0.0074332045858679,1291,3.0,0.001201072933997,9.0,3.25,MIT,eb59793e-ec56-47fc-969c-4bb34c5d7647
 https://github.com/0xfableorg/roll-op,roll-op,3,11.0,4.0,4.0,89,16.0,0.0741089189739731,25,4.0,0.0039797642113282,6.0,1.25,BSD-3-Clause-Clear,44cefdfb-c91d-440d-8128-f02ba7426865
-https://github.com/optimism-java/dispute-explorer,superproof,3,1.0,0.0,1.0,0,0.0,0.0,0,0.0,0.0,20.0,0.25,MIT,0e20af70-ef20-4ef7-aec5-ee747d971fbb
-https://github.com/optimism-java/dispute-explorer-frontend,superproof,3,2.0,0.0,2.0,0,0.0,0.0,0,0.0,0.0,22.0,0.16666666666674246,,0e20af70-ef20-4ef7-aec5-ee747d971fbb
+https://github.com/optimism-java/dispute-explorer,superproof,3,1.0,0.0,1.0,0,0.0,0.0,0,0.0,0.0,19.0,0.25,MIT,0e20af70-ef20-4ef7-aec5-ee747d971fbb
+https://github.com/optimism-java/dispute-explorer-frontend,superproof,3,2.0,0.0,2.0,0,0.0,0.0,0,0.0,0.0,21.0,0.16666666666674246,,0e20af70-ef20-4ef7-aec5-ee747d971fbb
