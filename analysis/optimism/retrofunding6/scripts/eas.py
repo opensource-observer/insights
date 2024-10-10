@@ -9,10 +9,10 @@ from urllib.parse import urlparse
 SCHEMAS = [
     ("0xfdcfdad2dbe7489e0ce56b260348b7f14e8365a8a325aef9834818c00d46b31b", "RetroFunding_BadgeholderAttestations"),
     ("0xc9bc703e3c48be23c1c09e2f58b2b6657e42d8794d2008e3738b4ab0e2a3a8b6", "MGL_ImpactAttestations"),
-    # ("0x88b62595c76fbcd261710d0930b5f1cc2e56758e155dea537f82bf0baadd9a32", "RetroFunding_ApplicationAttestations"),
-    # ("0x7ae9f4adabd9214049df72f58eceffc48c4a69e920882f5b06a6c69a3157e5bd", "RetroFunding_ProjectAttestations"),
-    # ("0xe035e3fe27a64c8d7291ae54c6e85676addcbc2d179224fe7fc1f7f05a8c6eac", "RetroFunding_ProjectMetadataAttestations"),
-    # ("0x3743be2afa818ee40304516c153427be55931f238d961af5d98653a93192cdb3", "RetroFunding_ContributionAttestations"),
+    ("0x88b62595c76fbcd261710d0930b5f1cc2e56758e155dea537f82bf0baadd9a32", "RetroFunding_ApplicationAttestations"),
+    ("0x7ae9f4adabd9214049df72f58eceffc48c4a69e920882f5b06a6c69a3157e5bd", "RetroFunding_ProjectAttestations"),
+    ("0xe035e3fe27a64c8d7291ae54c6e85676addcbc2d179224fe7fc1f7f05a8c6eac", "RetroFunding_ProjectMetadataAttestations"),
+    ("0x3743be2afa818ee40304516c153427be55931f238d961af5d98653a93192cdb3", "RetroFunding_ContributionAttestations"),
     ("0xef874554718a2afc254b064e5ce9c58c9082fb9f770250499bf406fc112bd315", "Governance_CouncilAttestations")
 ]
 
@@ -82,7 +82,11 @@ class EASSchema:
 
         response = requests.get(uri, headers=headers)
         if response.status_code == 200:
-            return response.json()
+            try:
+                return response.json()
+            except:
+                print("No json at:", uri)
+                return None
         
         if response.status_code == 429:
             time.sleep(sleep)
@@ -95,6 +99,8 @@ class EASSchema:
 
     @staticmethod
     def is_valid_uri(uri: str) -> bool:
+        if uri[:4] != 'http':
+            return False
         try:
             result = urlparse(uri)
             return all([result.scheme, result.netloc])
@@ -114,7 +120,7 @@ class EASSchema:
             obj_name = obj['name']
             obj_value = obj['value']['value']
             attestation_data[obj_name] = obj_value
-            if self.is_valid_uri(obj_value):
+            if isinstance(obj_value, str) and self.is_valid_uri(obj_value):
                 print(f"Found URI in field '{obj_name}': {obj_value}")
                 metadata = self.get_metadata(obj_value)
                 if metadata:
