@@ -1,582 +1,492 @@
 [
   {
     "name": "count_total_attestations",
-    "description": "Number of Attestations (only want the count from Citizens and Top Delegates)",
+    "description": "Number of Attestations",
     "data": {
-      "0x004593c0fe300be66ae4a00fa4a57563e409f3c03d63e2e8a0c174982e250a6a": 19,
-      "0x016795c3f6b9f3dbe279c946f1742aff2220dca7a7c088fad736d3251e9a4c57": 24,
-      "0x07c796e6fff4cfa8ee57e2befd31acf18830712d1259b56d9945b99b8694f9f3": 31,
-      "0x0e375c62ca595d40413014f65d1837d897aff4b7d14564074f078300035cb7e3": 23,
-      "0x1befe2ddc278afb9ef09c1a9406c3c5133401986b1ff3439eedf5dbf1a21f008": 19,
-      "0x28c683020737da361313906247e172679e74afc30f0c3c73627d36c598818756": 19,
-      "0x2c9c66379e3e92073edfd55ec87418d56001d78242a2458f39fa6066518ce777": 24,
-      "0x47b7920820c035911188672b5f9ba62c7e1556128baa43b8f9a09be9e90b4131": 28,
-      "0x4a031460b1d4b58de243354f12c6297efb20037010d9873c6ead54268505f8ea": 25,
-      "0x4b98d51cc27ce2193e56daee736db569992c35776260977bd7367ab18425e3a6": 27,
-      "0x5459ffc1139c419e509c777c138d2e00706bc87b0d790f880383bf02a92e124d": 32,
-      "0x567e056e4625adc70c807da2462f7e85e4512c8c3c173d0fa1b8f5465080253e": 22,
-      "0x582bf420cf64fd4622228677e7e7e1bcf0a3671f525257e71965456a2a68d3ae": 25,
-      "0x59a32b3e185952552f4169baa7ab71e9e12e49e07efc0b2c1f044c81019c54d3": 21,
-      "0x5b3865c643ed6d9f1898c28c02deab6dc9f1e5020885028b4adb47ba7f02bd02": 22,
-      "0x68c248ebfcb490cf3198ea6e34942de3758fdb5e3a0d5f8cd6d6365084f9e6be": 18,
-      "0x6993fa3a6ba1358df8575113677ff7876ccd66bfe3a486674fd3f32b63c8016c": 30,
-      "0x6a46035a1172798996f06c1c10b21bd3664c1d57e694c153ba6987d89299620f": 29,
-      "0x7b7ed15a0f43a3cb2d0ade81d8ec1ece5803068be0dae63b9864b9b8be884b31": 23,
-      "0x7cfc1d4c5d0e7a08f73a1961ef7c54ce191a615fa5217b04fa4b599a3dae0040": 23,
-      "0x9b920ed42d186fb5c152fc8c392e597ad6d69b3614a6e30c4a5f74b65310bea7": 21,
-      "0xa550a4512ee2040e97a988cbb1818c9951ccf09799c33934b3403c6f07e07962": 17,
-      "0xaba412aa5661e42f0cfee18cd88ff808089ac99442b7f492d642c7c774a5f71d": 20,
-      "0xac7889f0ea40537723a2120ff73c6d421e21b547029fe0799d16a9e66db5cc7e": 21,
-      "0xc70a8f8d7f717898a20ca2e2e2d322896671ad3d0bbd4507a3542271d215ef1c": 24,
-      "0xd521c405c413f6194f67cee177551d31d80dcbd7958680012feea3b382d1db91": 24,
-      "0xe255d75ace41a285ae9236851721878df4aafba5cbd8cf2c1fcaf84ed6795ab1": 23,
-      "0xe6e0e0d55b8b48bc48340d7da1432a6ce6b86465c717c70dcfcf330c8a548625": 27,
-      "0xe7fc966daad38f989aceb04eddf14af1dee47cdda33c26d2fbdf9602ab7bfa09": 22,
-      "0xebf6b760fade46fada00b8b262472612485042d8a45f23487e429ba9c995b532": 31
+      "0x09875cfe708f0c3acaca3d8af6b1ca2bd45b43c4a268a55c5d2b50ec9bdeef75": 33,
+      "0x1335476de5a24573f3fa1297827fbeb02921948d678b399c7367fb956d08a6cc": 46,
+      "0x1480383a90f1ab95cfedee6ea130dca700e5236eceb7dcf3f08a0e96b43c90aa": 31,
+      "0x1c0db0217d2aafd77b89d864fb87ef9d52bca0a2fc05e6faabe22ac81ec49503": 41,
+      "0x334fa6de0243cd1509870ea95f400fd524bd9c8f909e7f629d5457e4ca52e6fc": 36,
+      "0x53499d3243b2c26b1f09d49f911a9d9300d29b2196576d417cf852ac9e8dfe4c": 41,
+      "0x66a3f6245dc3ac966d3ed9dd8c076a723cfc3aaaf5ea3721c634d46c3be46331": 41,
+      "0x6bd057da522918a4675396313ae33a2f2788a1ceeb3bd7ae228015e3eb317a7d": 53,
+      "0x6d30328dd0e058bdd4c55c51d5f785268770040a66edbd2830902c4d87efee9c": 42,
+      "0x7161c183e6d6f3f44499ffb4e28ed03c569089437778961f5b5544fb54791d4c": 47,
+      "0x7333cac46b20999de07f4d7be5146c10a30f19586907bd2ce986b81af340cb97": 35,
+      "0x7d69da70e6453a7abb641a770cad602c0a7893186cb20f990efe22c0cb248115": 38,
+      "0x7f1256b007e1156494e43b58d5e85e6ec20f4fcf1e5cac6ebb17b702e9c0b5fb": 43,
+      "0x81af86360a8e964cc907a5689a62e94231c7e42e05f49c0586716975d72e2e2e": 41,
+      "0x83b46efce8ff1937a49883b323b22d3483d1843522f614ab4f20cc20545067bb": 38,
+      "0x8c76c13d8d0e63a7de499d47b9da5a4495d1151c0b2003c92379f41f14e404c0": 26,
+      "0xb2d109759fe14e11ac5cc100ab6006321ebdd7ffdefbd2efac93a002105f8e92": 46,
+      "0xbc6524eaed9585ebbca313f8112c3d8ed4a4ac7ff9b5bd6ef92eff715d0d2a58": 30,
+      "0xbd7efe4f47254e152bc1193b095dbad6711748577df2cd8f6a55c125ea58a376": 34,
+      "0xc49d46c5606148617c4202a6a0f745ce194418ca81f1c27d1ff75ea84e32a0cc": 46,
+      "0xc71faa1bcb4ceb785816c3f22823377e9e5e7c48649badd9f0a0ce491f20d4b3": 40,
+      "0xcd9dfcace81ae28b29b10c4ddf36bcb8db6d705cbb92e7d885e5b946a9f77910": 48,
+      "0xd7a8e115b2b3772d7d5656d7798e349dcdedf2463302c78528c9e9686ab4efe3": 35,
+      "0xdbc21abd2657c839060753eada61f93a6d835a0a2f3bdfb530339a2c85f23516": 34,
+      "0xdd8b2e68cad9afa0701c8f27bf085302b152dbca3393083d3c664e3fc75945ab": 55
     }
   },
   {
     "name": "count_citizen_attestations",
     "description": "Number of Attestations by Citizens",
     "data": {
-      "0x004593c0fe300be66ae4a00fa4a57563e409f3c03d63e2e8a0c174982e250a6a": 19,
-      "0x016795c3f6b9f3dbe279c946f1742aff2220dca7a7c088fad736d3251e9a4c57": 18,
-      "0x07c796e6fff4cfa8ee57e2befd31acf18830712d1259b56d9945b99b8694f9f3": 29,
-      "0x0e375c62ca595d40413014f65d1837d897aff4b7d14564074f078300035cb7e3": 18,
-      "0x1befe2ddc278afb9ef09c1a9406c3c5133401986b1ff3439eedf5dbf1a21f008": 17,
-      "0x28c683020737da361313906247e172679e74afc30f0c3c73627d36c598818756": 19,
-      "0x2c9c66379e3e92073edfd55ec87418d56001d78242a2458f39fa6066518ce777": 22,
-      "0x47b7920820c035911188672b5f9ba62c7e1556128baa43b8f9a09be9e90b4131": 26,
-      "0x4a031460b1d4b58de243354f12c6297efb20037010d9873c6ead54268505f8ea": 22,
-      "0x4b98d51cc27ce2193e56daee736db569992c35776260977bd7367ab18425e3a6": 25,
-      "0x5459ffc1139c419e509c777c138d2e00706bc87b0d790f880383bf02a92e124d": 30,
-      "0x567e056e4625adc70c807da2462f7e85e4512c8c3c173d0fa1b8f5465080253e": 21,
-      "0x582bf420cf64fd4622228677e7e7e1bcf0a3671f525257e71965456a2a68d3ae": 24,
-      "0x59a32b3e185952552f4169baa7ab71e9e12e49e07efc0b2c1f044c81019c54d3": 18,
-      "0x5b3865c643ed6d9f1898c28c02deab6dc9f1e5020885028b4adb47ba7f02bd02": 22,
-      "0x68c248ebfcb490cf3198ea6e34942de3758fdb5e3a0d5f8cd6d6365084f9e6be": 18,
-      "0x6993fa3a6ba1358df8575113677ff7876ccd66bfe3a486674fd3f32b63c8016c": 26,
-      "0x6a46035a1172798996f06c1c10b21bd3664c1d57e694c153ba6987d89299620f": 27,
-      "0x7b7ed15a0f43a3cb2d0ade81d8ec1ece5803068be0dae63b9864b9b8be884b31": 19,
-      "0x7cfc1d4c5d0e7a08f73a1961ef7c54ce191a615fa5217b04fa4b599a3dae0040": 23,
-      "0x9b920ed42d186fb5c152fc8c392e597ad6d69b3614a6e30c4a5f74b65310bea7": 19,
-      "0xa550a4512ee2040e97a988cbb1818c9951ccf09799c33934b3403c6f07e07962": 15,
-      "0xaba412aa5661e42f0cfee18cd88ff808089ac99442b7f492d642c7c774a5f71d": 20,
-      "0xac7889f0ea40537723a2120ff73c6d421e21b547029fe0799d16a9e66db5cc7e": 18,
-      "0xc70a8f8d7f717898a20ca2e2e2d322896671ad3d0bbd4507a3542271d215ef1c": 22,
-      "0xd521c405c413f6194f67cee177551d31d80dcbd7958680012feea3b382d1db91": 22,
-      "0xe255d75ace41a285ae9236851721878df4aafba5cbd8cf2c1fcaf84ed6795ab1": 20,
-      "0xe6e0e0d55b8b48bc48340d7da1432a6ce6b86465c717c70dcfcf330c8a548625": 22,
-      "0xe7fc966daad38f989aceb04eddf14af1dee47cdda33c26d2fbdf9602ab7bfa09": 19,
-      "0xebf6b760fade46fada00b8b262472612485042d8a45f23487e429ba9c995b532": 27
+      "0x09875cfe708f0c3acaca3d8af6b1ca2bd45b43c4a268a55c5d2b50ec9bdeef75": 29,
+      "0x1335476de5a24573f3fa1297827fbeb02921948d678b399c7367fb956d08a6cc": 39,
+      "0x1480383a90f1ab95cfedee6ea130dca700e5236eceb7dcf3f08a0e96b43c90aa": 26,
+      "0x1c0db0217d2aafd77b89d864fb87ef9d52bca0a2fc05e6faabe22ac81ec49503": 36,
+      "0x334fa6de0243cd1509870ea95f400fd524bd9c8f909e7f629d5457e4ca52e6fc": 30,
+      "0x53499d3243b2c26b1f09d49f911a9d9300d29b2196576d417cf852ac9e8dfe4c": 34,
+      "0x66a3f6245dc3ac966d3ed9dd8c076a723cfc3aaaf5ea3721c634d46c3be46331": 38,
+      "0x6bd057da522918a4675396313ae33a2f2788a1ceeb3bd7ae228015e3eb317a7d": 47,
+      "0x6d30328dd0e058bdd4c55c51d5f785268770040a66edbd2830902c4d87efee9c": 37,
+      "0x7161c183e6d6f3f44499ffb4e28ed03c569089437778961f5b5544fb54791d4c": 44,
+      "0x7333cac46b20999de07f4d7be5146c10a30f19586907bd2ce986b81af340cb97": 31,
+      "0x7d69da70e6453a7abb641a770cad602c0a7893186cb20f990efe22c0cb248115": 32,
+      "0x7f1256b007e1156494e43b58d5e85e6ec20f4fcf1e5cac6ebb17b702e9c0b5fb": 39,
+      "0x81af86360a8e964cc907a5689a62e94231c7e42e05f49c0586716975d72e2e2e": 38,
+      "0x83b46efce8ff1937a49883b323b22d3483d1843522f614ab4f20cc20545067bb": 33,
+      "0x8c76c13d8d0e63a7de499d47b9da5a4495d1151c0b2003c92379f41f14e404c0": 22,
+      "0xb2d109759fe14e11ac5cc100ab6006321ebdd7ffdefbd2efac93a002105f8e92": 42,
+      "0xbc6524eaed9585ebbca313f8112c3d8ed4a4ac7ff9b5bd6ef92eff715d0d2a58": 24,
+      "0xbd7efe4f47254e152bc1193b095dbad6711748577df2cd8f6a55c125ea58a376": 34,
+      "0xc49d46c5606148617c4202a6a0f745ce194418ca81f1c27d1ff75ea84e32a0cc": 40,
+      "0xc71faa1bcb4ceb785816c3f22823377e9e5e7c48649badd9f0a0ce491f20d4b3": 31,
+      "0xcd9dfcace81ae28b29b10c4ddf36bcb8db6d705cbb92e7d885e5b946a9f77910": 42,
+      "0xd7a8e115b2b3772d7d5656d7798e349dcdedf2463302c78528c9e9686ab4efe3": 31,
+      "0xdbc21abd2657c839060753eada61f93a6d835a0a2f3bdfb530339a2c85f23516": 32,
+      "0xdd8b2e68cad9afa0701c8f27bf085302b152dbca3393083d3c664e3fc75945ab": 46
     }
   },
   {
     "name": "count_delegate_attestations",
-    "description": "Number of Attestations by Top delegates",
+    "description": "Number of Attestations by Top Delegates",
     "data": {
-      "0x004593c0fe300be66ae4a00fa4a57563e409f3c03d63e2e8a0c174982e250a6a": 8,
-      "0x016795c3f6b9f3dbe279c946f1742aff2220dca7a7c088fad736d3251e9a4c57": 12,
-      "0x07c796e6fff4cfa8ee57e2befd31acf18830712d1259b56d9945b99b8694f9f3": 10,
-      "0x0e375c62ca595d40413014f65d1837d897aff4b7d14564074f078300035cb7e3": 10,
-      "0x1befe2ddc278afb9ef09c1a9406c3c5133401986b1ff3439eedf5dbf1a21f008": 7,
-      "0x28c683020737da361313906247e172679e74afc30f0c3c73627d36c598818756": 8,
-      "0x2c9c66379e3e92073edfd55ec87418d56001d78242a2458f39fa6066518ce777": 8,
-      "0x47b7920820c035911188672b5f9ba62c7e1556128baa43b8f9a09be9e90b4131": 9,
-      "0x4a031460b1d4b58de243354f12c6297efb20037010d9873c6ead54268505f8ea": 13,
-      "0x4b98d51cc27ce2193e56daee736db569992c35776260977bd7367ab18425e3a6": 9,
-      "0x5459ffc1139c419e509c777c138d2e00706bc87b0d790f880383bf02a92e124d": 14,
-      "0x567e056e4625adc70c807da2462f7e85e4512c8c3c173d0fa1b8f5465080253e": 11,
-      "0x582bf420cf64fd4622228677e7e7e1bcf0a3671f525257e71965456a2a68d3ae": 11,
-      "0x59a32b3e185952552f4169baa7ab71e9e12e49e07efc0b2c1f044c81019c54d3": 9,
-      "0x5b3865c643ed6d9f1898c28c02deab6dc9f1e5020885028b4adb47ba7f02bd02": 1,
-      "0x68c248ebfcb490cf3198ea6e34942de3758fdb5e3a0d5f8cd6d6365084f9e6be": 4,
-      "0x6993fa3a6ba1358df8575113677ff7876ccd66bfe3a486674fd3f32b63c8016c": 16,
-      "0x6a46035a1172798996f06c1c10b21bd3664c1d57e694c153ba6987d89299620f": 10,
-      "0x7b7ed15a0f43a3cb2d0ade81d8ec1ece5803068be0dae63b9864b9b8be884b31": 14,
-      "0x7cfc1d4c5d0e7a08f73a1961ef7c54ce191a615fa5217b04fa4b599a3dae0040": 6,
-      "0x9b920ed42d186fb5c152fc8c392e597ad6d69b3614a6e30c4a5f74b65310bea7": 6,
-      "0xa550a4512ee2040e97a988cbb1818c9951ccf09799c33934b3403c6f07e07962": 7,
-      "0xaba412aa5661e42f0cfee18cd88ff808089ac99442b7f492d642c7c774a5f71d": 4,
-      "0xac7889f0ea40537723a2120ff73c6d421e21b547029fe0799d16a9e66db5cc7e": 7,
-      "0xc70a8f8d7f717898a20ca2e2e2d322896671ad3d0bbd4507a3542271d215ef1c": 9,
-      "0xd521c405c413f6194f67cee177551d31d80dcbd7958680012feea3b382d1db91": 7,
-      "0xe255d75ace41a285ae9236851721878df4aafba5cbd8cf2c1fcaf84ed6795ab1": 10,
-      "0xe6e0e0d55b8b48bc48340d7da1432a6ce6b86465c717c70dcfcf330c8a548625": 6,
-      "0xe7fc966daad38f989aceb04eddf14af1dee47cdda33c26d2fbdf9602ab7bfa09": 8,
-      "0xebf6b760fade46fada00b8b262472612485042d8a45f23487e429ba9c995b532": 17
+      "0x09875cfe708f0c3acaca3d8af6b1ca2bd45b43c4a268a55c5d2b50ec9bdeef75": 6,
+      "0x1335476de5a24573f3fa1297827fbeb02921948d678b399c7367fb956d08a6cc": 17,
+      "0x1480383a90f1ab95cfedee6ea130dca700e5236eceb7dcf3f08a0e96b43c90aa": 7,
+      "0x1c0db0217d2aafd77b89d864fb87ef9d52bca0a2fc05e6faabe22ac81ec49503": 10,
+      "0x334fa6de0243cd1509870ea95f400fd524bd9c8f909e7f629d5457e4ca52e6fc": 9,
+      "0x53499d3243b2c26b1f09d49f911a9d9300d29b2196576d417cf852ac9e8dfe4c": 11,
+      "0x66a3f6245dc3ac966d3ed9dd8c076a723cfc3aaaf5ea3721c634d46c3be46331": 7,
+      "0x6bd057da522918a4675396313ae33a2f2788a1ceeb3bd7ae228015e3eb317a7d": 12,
+      "0x6d30328dd0e058bdd4c55c51d5f785268770040a66edbd2830902c4d87efee9c": 12,
+      "0x7161c183e6d6f3f44499ffb4e28ed03c569089437778961f5b5544fb54791d4c": 4,
+      "0x7333cac46b20999de07f4d7be5146c10a30f19586907bd2ce986b81af340cb97": 7,
+      "0x7d69da70e6453a7abb641a770cad602c0a7893186cb20f990efe22c0cb248115": 11,
+      "0x7f1256b007e1156494e43b58d5e85e6ec20f4fcf1e5cac6ebb17b702e9c0b5fb": 10,
+      "0x81af86360a8e964cc907a5689a62e94231c7e42e05f49c0586716975d72e2e2e": 4,
+      "0x83b46efce8ff1937a49883b323b22d3483d1843522f614ab4f20cc20545067bb": 9,
+      "0x8c76c13d8d0e63a7de499d47b9da5a4495d1151c0b2003c92379f41f14e404c0": 6,
+      "0xb2d109759fe14e11ac5cc100ab6006321ebdd7ffdefbd2efac93a002105f8e92": 11,
+      "0xbc6524eaed9585ebbca313f8112c3d8ed4a4ac7ff9b5bd6ef92eff715d0d2a58": 12,
+      "0xbd7efe4f47254e152bc1193b095dbad6711748577df2cd8f6a55c125ea58a376": 1,
+      "0xc49d46c5606148617c4202a6a0f745ce194418ca81f1c27d1ff75ea84e32a0cc": 10,
+      "0xc71faa1bcb4ceb785816c3f22823377e9e5e7c48649badd9f0a0ce491f20d4b3": 14,
+      "0xcd9dfcace81ae28b29b10c4ddf36bcb8db6d705cbb92e7d885e5b946a9f77910": 10,
+      "0xd7a8e115b2b3772d7d5656d7798e349dcdedf2463302c78528c9e9686ab4efe3": 7,
+      "0xdbc21abd2657c839060753eada61f93a6d835a0a2f3bdfb530339a2c85f23516": 4,
+      "0xdd8b2e68cad9afa0701c8f27bf085302b152dbca3393083d3c664e3fc75945ab": 16
     }
   },
   {
     "name": "avg_nps_score",
-    "description": "Average NPS score of Citizens and Top delegates",
+    "description": "Average NPS score of Citizens and Top Delegates",
     "data": {
-      "0x004593c0fe300be66ae4a00fa4a57563e409f3c03d63e2e8a0c174982e250a6a": 7.368421052631579,
-      "0x016795c3f6b9f3dbe279c946f1742aff2220dca7a7c088fad736d3251e9a4c57": 7.208333333333333,
-      "0x07c796e6fff4cfa8ee57e2befd31acf18830712d1259b56d9945b99b8694f9f3": 5.870967741935484,
-      "0x0e375c62ca595d40413014f65d1837d897aff4b7d14564074f078300035cb7e3": 7.391304347826087,
-      "0x1befe2ddc278afb9ef09c1a9406c3c5133401986b1ff3439eedf5dbf1a21f008": 7.2105263157894735,
-      "0x28c683020737da361313906247e172679e74afc30f0c3c73627d36c598818756": 9.0,
-      "0x2c9c66379e3e92073edfd55ec87418d56001d78242a2458f39fa6066518ce777": 9.041666666666666,
-      "0x47b7920820c035911188672b5f9ba62c7e1556128baa43b8f9a09be9e90b4131": 9.5,
-      "0x4a031460b1d4b58de243354f12c6297efb20037010d9873c6ead54268505f8ea": 9.48,
-      "0x4b98d51cc27ce2193e56daee736db569992c35776260977bd7367ab18425e3a6": 7.296296296296297,
-      "0x5459ffc1139c419e509c777c138d2e00706bc87b0d790f880383bf02a92e124d": 5.65625,
-      "0x567e056e4625adc70c807da2462f7e85e4512c8c3c173d0fa1b8f5465080253e": 8.590909090909092,
-      "0x582bf420cf64fd4622228677e7e7e1bcf0a3671f525257e71965456a2a68d3ae": 5.84,
-      "0x59a32b3e185952552f4169baa7ab71e9e12e49e07efc0b2c1f044c81019c54d3": 6.0,
-      "0x5b3865c643ed6d9f1898c28c02deab6dc9f1e5020885028b4adb47ba7f02bd02": 6.181818181818182,
-      "0x68c248ebfcb490cf3198ea6e34942de3758fdb5e3a0d5f8cd6d6365084f9e6be": 8.61111111111111,
-      "0x6993fa3a6ba1358df8575113677ff7876ccd66bfe3a486674fd3f32b63c8016c": 6.733333333333333,
-      "0x6a46035a1172798996f06c1c10b21bd3664c1d57e694c153ba6987d89299620f": 6.482758620689655,
-      "0x7b7ed15a0f43a3cb2d0ade81d8ec1ece5803068be0dae63b9864b9b8be884b31": 8.130434782608695,
-      "0x7cfc1d4c5d0e7a08f73a1961ef7c54ce191a615fa5217b04fa4b599a3dae0040": 6.913043478260869,
-      "0x9b920ed42d186fb5c152fc8c392e597ad6d69b3614a6e30c4a5f74b65310bea7": 8.80952380952381,
-      "0xa550a4512ee2040e97a988cbb1818c9951ccf09799c33934b3403c6f07e07962": 5.882352941176471,
-      "0xaba412aa5661e42f0cfee18cd88ff808089ac99442b7f492d642c7c774a5f71d": 8.1,
-      "0xac7889f0ea40537723a2120ff73c6d421e21b547029fe0799d16a9e66db5cc7e": 8.238095238095237,
-      "0xc70a8f8d7f717898a20ca2e2e2d322896671ad3d0bbd4507a3542271d215ef1c": 5.208333333333333,
-      "0xd521c405c413f6194f67cee177551d31d80dcbd7958680012feea3b382d1db91": 6.458333333333333,
-      "0xe255d75ace41a285ae9236851721878df4aafba5cbd8cf2c1fcaf84ed6795ab1": 8.130434782608695,
-      "0xe6e0e0d55b8b48bc48340d7da1432a6ce6b86465c717c70dcfcf330c8a548625": 7.814814814814815,
-      "0xe7fc966daad38f989aceb04eddf14af1dee47cdda33c26d2fbdf9602ab7bfa09": 7.090909090909091,
-      "0xebf6b760fade46fada00b8b262472612485042d8a45f23487e429ba9c995b532": 9.193548387096774
+      "0x09875cfe708f0c3acaca3d8af6b1ca2bd45b43c4a268a55c5d2b50ec9bdeef75": 6.666666666666667,
+      "0x1335476de5a24573f3fa1297827fbeb02921948d678b399c7367fb956d08a6cc": 4.869565217391305,
+      "0x1480383a90f1ab95cfedee6ea130dca700e5236eceb7dcf3f08a0e96b43c90aa": 9.451612903225806,
+      "0x1c0db0217d2aafd77b89d864fb87ef9d52bca0a2fc05e6faabe22ac81ec49503": 6.024390243902439,
+      "0x334fa6de0243cd1509870ea95f400fd524bd9c8f909e7f629d5457e4ca52e6fc": 6.5,
+      "0x53499d3243b2c26b1f09d49f911a9d9300d29b2196576d417cf852ac9e8dfe4c": 5.512195121951219,
+      "0x66a3f6245dc3ac966d3ed9dd8c076a723cfc3aaaf5ea3721c634d46c3be46331": 6.512195121951219,
+      "0x6bd057da522918a4675396313ae33a2f2788a1ceeb3bd7ae228015e3eb317a7d": 4.679245283018868,
+      "0x6d30328dd0e058bdd4c55c51d5f785268770040a66edbd2830902c4d87efee9c": 7.880952380952381,
+      "0x7161c183e6d6f3f44499ffb4e28ed03c569089437778961f5b5544fb54791d4c": 6.957446808510638,
+      "0x7333cac46b20999de07f4d7be5146c10a30f19586907bd2ce986b81af340cb97": 4.9714285714285715,
+      "0x7d69da70e6453a7abb641a770cad602c0a7893186cb20f990efe22c0cb248115": 9.552631578947368,
+      "0x7f1256b007e1156494e43b58d5e85e6ec20f4fcf1e5cac6ebb17b702e9c0b5fb": 8.604651162790697,
+      "0x81af86360a8e964cc907a5689a62e94231c7e42e05f49c0586716975d72e2e2e": 9.0,
+      "0x83b46efce8ff1937a49883b323b22d3483d1843522f614ab4f20cc20545067bb": 8.921052631578947,
+      "0x8c76c13d8d0e63a7de499d47b9da5a4495d1151c0b2003c92379f41f14e404c0": 8.846153846153847,
+      "0xb2d109759fe14e11ac5cc100ab6006321ebdd7ffdefbd2efac93a002105f8e92": 8.152173913043478,
+      "0xbc6524eaed9585ebbca313f8112c3d8ed4a4ac7ff9b5bd6ef92eff715d0d2a58": 4.533333333333333,
+      "0xbd7efe4f47254e152bc1193b095dbad6711748577df2cd8f6a55c125ea58a376": 5.5,
+      "0xc49d46c5606148617c4202a6a0f745ce194418ca81f1c27d1ff75ea84e32a0cc": 6.130434782608695,
+      "0xc71faa1bcb4ceb785816c3f22823377e9e5e7c48649badd9f0a0ce491f20d4b3": 6.175,
+      "0xcd9dfcace81ae28b29b10c4ddf36bcb8db6d705cbb92e7d885e5b946a9f77910": 9.645833333333334,
+      "0xd7a8e115b2b3772d7d5656d7798e349dcdedf2463302c78528c9e9686ab4efe3": 9.6,
+      "0xdbc21abd2657c839060753eada61f93a6d835a0a2f3bdfb530339a2c85f23516": 7.382352941176471,
+      "0xdd8b2e68cad9afa0701c8f27bf085302b152dbca3393083d3c664e3fc75945ab": 8.181818181818182
     }
   },
   {
     "name": "most_positive_superlative",
     "description": "Most positive superlative (20 reviews, 95% high PMF and 95% high NPS)",
     "data": {
-      "0xac7889f0ea40537723a2120ff73c6d421e21b547029fe0799d16a9e66db5cc7e": "False",
-      "0xe7fc966daad38f989aceb04eddf14af1dee47cdda33c26d2fbdf9602ab7bfa09": "False",
-      "0x4b98d51cc27ce2193e56daee736db569992c35776260977bd7367ab18425e3a6": "False",
-      "0xe255d75ace41a285ae9236851721878df4aafba5cbd8cf2c1fcaf84ed6795ab1": "False",
-      "0x582bf420cf64fd4622228677e7e7e1bcf0a3671f525257e71965456a2a68d3ae": "False",
-      "0x07c796e6fff4cfa8ee57e2befd31acf18830712d1259b56d9945b99b8694f9f3": "False",
-      "0x016795c3f6b9f3dbe279c946f1742aff2220dca7a7c088fad736d3251e9a4c57": "False",
-      "0x47b7920820c035911188672b5f9ba62c7e1556128baa43b8f9a09be9e90b4131": "False",
-      "0x567e056e4625adc70c807da2462f7e85e4512c8c3c173d0fa1b8f5465080253e": "False",
-      "0x7b7ed15a0f43a3cb2d0ade81d8ec1ece5803068be0dae63b9864b9b8be884b31": "False",
-      "0x28c683020737da361313906247e172679e74afc30f0c3c73627d36c598818756": "False",
-      "0x9b920ed42d186fb5c152fc8c392e597ad6d69b3614a6e30c4a5f74b65310bea7": "True",
-      "0xe6e0e0d55b8b48bc48340d7da1432a6ce6b86465c717c70dcfcf330c8a548625": "False",
-      "0x68c248ebfcb490cf3198ea6e34942de3758fdb5e3a0d5f8cd6d6365084f9e6be": "False",
-      "0xd521c405c413f6194f67cee177551d31d80dcbd7958680012feea3b382d1db91": "False",
-      "0x59a32b3e185952552f4169baa7ab71e9e12e49e07efc0b2c1f044c81019c54d3": "False",
-      "0x0e375c62ca595d40413014f65d1837d897aff4b7d14564074f078300035cb7e3": "False",
-      "0x6a46035a1172798996f06c1c10b21bd3664c1d57e694c153ba6987d89299620f": "False",
-      "0xc70a8f8d7f717898a20ca2e2e2d322896671ad3d0bbd4507a3542271d215ef1c": "False",
-      "0x6993fa3a6ba1358df8575113677ff7876ccd66bfe3a486674fd3f32b63c8016c": "False",
-      "0x5b3865c643ed6d9f1898c28c02deab6dc9f1e5020885028b4adb47ba7f02bd02": "False",
-      "0x4a031460b1d4b58de243354f12c6297efb20037010d9873c6ead54268505f8ea": "False",
-      "0x1befe2ddc278afb9ef09c1a9406c3c5133401986b1ff3439eedf5dbf1a21f008": "False",
-      "0x7cfc1d4c5d0e7a08f73a1961ef7c54ce191a615fa5217b04fa4b599a3dae0040": "False",
-      "0xaba412aa5661e42f0cfee18cd88ff808089ac99442b7f492d642c7c774a5f71d": "False",
-      "0xebf6b760fade46fada00b8b262472612485042d8a45f23487e429ba9c995b532": "True",
-      "0x2c9c66379e3e92073edfd55ec87418d56001d78242a2458f39fa6066518ce777": "False",
-      "0x5459ffc1139c419e509c777c138d2e00706bc87b0d790f880383bf02a92e124d": "False",
-      "0x004593c0fe300be66ae4a00fa4a57563e409f3c03d63e2e8a0c174982e250a6a": "False",
-      "0xa550a4512ee2040e97a988cbb1818c9951ccf09799c33934b3403c6f07e07962": "False"
+      "0x7333cac46b20999de07f4d7be5146c10a30f19586907bd2ce986b81af340cb97": "False",
+      "0xd7a8e115b2b3772d7d5656d7798e349dcdedf2463302c78528c9e9686ab4efe3": "False",
+      "0x6d30328dd0e058bdd4c55c51d5f785268770040a66edbd2830902c4d87efee9c": "False",
+      "0x7f1256b007e1156494e43b58d5e85e6ec20f4fcf1e5cac6ebb17b702e9c0b5fb": "False",
+      "0x66a3f6245dc3ac966d3ed9dd8c076a723cfc3aaaf5ea3721c634d46c3be46331": "False",
+      "0xc49d46c5606148617c4202a6a0f745ce194418ca81f1c27d1ff75ea84e32a0cc": "False",
+      "0x81af86360a8e964cc907a5689a62e94231c7e42e05f49c0586716975d72e2e2e": "True",
+      "0x7d69da70e6453a7abb641a770cad602c0a7893186cb20f990efe22c0cb248115": "True",
+      "0x1335476de5a24573f3fa1297827fbeb02921948d678b399c7367fb956d08a6cc": "False",
+      "0x09875cfe708f0c3acaca3d8af6b1ca2bd45b43c4a268a55c5d2b50ec9bdeef75": "False",
+      "0xc71faa1bcb4ceb785816c3f22823377e9e5e7c48649badd9f0a0ce491f20d4b3": "False",
+      "0x334fa6de0243cd1509870ea95f400fd524bd9c8f909e7f629d5457e4ca52e6fc": "False",
+      "0xbd7efe4f47254e152bc1193b095dbad6711748577df2cd8f6a55c125ea58a376": "False",
+      "0xb2d109759fe14e11ac5cc100ab6006321ebdd7ffdefbd2efac93a002105f8e92": "False",
+      "0x1480383a90f1ab95cfedee6ea130dca700e5236eceb7dcf3f08a0e96b43c90aa": "True",
+      "0xdd8b2e68cad9afa0701c8f27bf085302b152dbca3393083d3c664e3fc75945ab": "False",
+      "0x1c0db0217d2aafd77b89d864fb87ef9d52bca0a2fc05e6faabe22ac81ec49503": "False",
+      "0x6bd057da522918a4675396313ae33a2f2788a1ceeb3bd7ae228015e3eb317a7d": "False",
+      "0xcd9dfcace81ae28b29b10c4ddf36bcb8db6d705cbb92e7d885e5b946a9f77910": "True",
+      "0x53499d3243b2c26b1f09d49f911a9d9300d29b2196576d417cf852ac9e8dfe4c": "False",
+      "0xdbc21abd2657c839060753eada61f93a6d835a0a2f3bdfb530339a2c85f23516": "False",
+      "0x8c76c13d8d0e63a7de499d47b9da5a4495d1151c0b2003c92379f41f14e404c0": "False",
+      "0x7161c183e6d6f3f44499ffb4e28ed03c569089437778961f5b5544fb54791d4c": "False",
+      "0xbc6524eaed9585ebbca313f8112c3d8ed4a4ac7ff9b5bd6ef92eff715d0d2a58": "False",
+      "0x83b46efce8ff1937a49883b323b22d3483d1843522f614ab4f20cc20545067bb": "True"
     }
   },
   {
     "name": "cant_live_without_superlative",
     "description": "Can't live without superlative (20 reviews, 90% high PMF)",
     "data": {
-      "0xac7889f0ea40537723a2120ff73c6d421e21b547029fe0799d16a9e66db5cc7e": "False",
-      "0xe7fc966daad38f989aceb04eddf14af1dee47cdda33c26d2fbdf9602ab7bfa09": "False",
-      "0x4b98d51cc27ce2193e56daee736db569992c35776260977bd7367ab18425e3a6": "False",
-      "0xe255d75ace41a285ae9236851721878df4aafba5cbd8cf2c1fcaf84ed6795ab1": "False",
-      "0x582bf420cf64fd4622228677e7e7e1bcf0a3671f525257e71965456a2a68d3ae": "False",
-      "0x07c796e6fff4cfa8ee57e2befd31acf18830712d1259b56d9945b99b8694f9f3": "False",
-      "0x016795c3f6b9f3dbe279c946f1742aff2220dca7a7c088fad736d3251e9a4c57": "False",
-      "0x47b7920820c035911188672b5f9ba62c7e1556128baa43b8f9a09be9e90b4131": "False",
-      "0x567e056e4625adc70c807da2462f7e85e4512c8c3c173d0fa1b8f5465080253e": "False",
-      "0x7b7ed15a0f43a3cb2d0ade81d8ec1ece5803068be0dae63b9864b9b8be884b31": "False",
-      "0x28c683020737da361313906247e172679e74afc30f0c3c73627d36c598818756": "False",
-      "0x9b920ed42d186fb5c152fc8c392e597ad6d69b3614a6e30c4a5f74b65310bea7": "True",
-      "0xe6e0e0d55b8b48bc48340d7da1432a6ce6b86465c717c70dcfcf330c8a548625": "False",
-      "0x68c248ebfcb490cf3198ea6e34942de3758fdb5e3a0d5f8cd6d6365084f9e6be": "False",
-      "0xd521c405c413f6194f67cee177551d31d80dcbd7958680012feea3b382d1db91": "False",
-      "0x59a32b3e185952552f4169baa7ab71e9e12e49e07efc0b2c1f044c81019c54d3": "False",
-      "0x0e375c62ca595d40413014f65d1837d897aff4b7d14564074f078300035cb7e3": "False",
-      "0x6a46035a1172798996f06c1c10b21bd3664c1d57e694c153ba6987d89299620f": "False",
-      "0xc70a8f8d7f717898a20ca2e2e2d322896671ad3d0bbd4507a3542271d215ef1c": "False",
-      "0x6993fa3a6ba1358df8575113677ff7876ccd66bfe3a486674fd3f32b63c8016c": "False",
-      "0x5b3865c643ed6d9f1898c28c02deab6dc9f1e5020885028b4adb47ba7f02bd02": "False",
-      "0x4a031460b1d4b58de243354f12c6297efb20037010d9873c6ead54268505f8ea": "False",
-      "0x1befe2ddc278afb9ef09c1a9406c3c5133401986b1ff3439eedf5dbf1a21f008": "False",
-      "0x7cfc1d4c5d0e7a08f73a1961ef7c54ce191a615fa5217b04fa4b599a3dae0040": "False",
-      "0xaba412aa5661e42f0cfee18cd88ff808089ac99442b7f492d642c7c774a5f71d": "False",
-      "0xebf6b760fade46fada00b8b262472612485042d8a45f23487e429ba9c995b532": "True",
-      "0x2c9c66379e3e92073edfd55ec87418d56001d78242a2458f39fa6066518ce777": "False",
-      "0x5459ffc1139c419e509c777c138d2e00706bc87b0d790f880383bf02a92e124d": "False",
-      "0x004593c0fe300be66ae4a00fa4a57563e409f3c03d63e2e8a0c174982e250a6a": "False",
-      "0xa550a4512ee2040e97a988cbb1818c9951ccf09799c33934b3403c6f07e07962": "False"
+      "0x7333cac46b20999de07f4d7be5146c10a30f19586907bd2ce986b81af340cb97": "False",
+      "0xd7a8e115b2b3772d7d5656d7798e349dcdedf2463302c78528c9e9686ab4efe3": "False",
+      "0x6d30328dd0e058bdd4c55c51d5f785268770040a66edbd2830902c4d87efee9c": "False",
+      "0x7f1256b007e1156494e43b58d5e85e6ec20f4fcf1e5cac6ebb17b702e9c0b5fb": "False",
+      "0x66a3f6245dc3ac966d3ed9dd8c076a723cfc3aaaf5ea3721c634d46c3be46331": "False",
+      "0xc49d46c5606148617c4202a6a0f745ce194418ca81f1c27d1ff75ea84e32a0cc": "False",
+      "0x81af86360a8e964cc907a5689a62e94231c7e42e05f49c0586716975d72e2e2e": "True",
+      "0x7d69da70e6453a7abb641a770cad602c0a7893186cb20f990efe22c0cb248115": "True",
+      "0x1335476de5a24573f3fa1297827fbeb02921948d678b399c7367fb956d08a6cc": "False",
+      "0x09875cfe708f0c3acaca3d8af6b1ca2bd45b43c4a268a55c5d2b50ec9bdeef75": "False",
+      "0xc71faa1bcb4ceb785816c3f22823377e9e5e7c48649badd9f0a0ce491f20d4b3": "False",
+      "0x334fa6de0243cd1509870ea95f400fd524bd9c8f909e7f629d5457e4ca52e6fc": "False",
+      "0xbd7efe4f47254e152bc1193b095dbad6711748577df2cd8f6a55c125ea58a376": "False",
+      "0xb2d109759fe14e11ac5cc100ab6006321ebdd7ffdefbd2efac93a002105f8e92": "False",
+      "0x1480383a90f1ab95cfedee6ea130dca700e5236eceb7dcf3f08a0e96b43c90aa": "True",
+      "0xdd8b2e68cad9afa0701c8f27bf085302b152dbca3393083d3c664e3fc75945ab": "False",
+      "0x1c0db0217d2aafd77b89d864fb87ef9d52bca0a2fc05e6faabe22ac81ec49503": "False",
+      "0x6bd057da522918a4675396313ae33a2f2788a1ceeb3bd7ae228015e3eb317a7d": "False",
+      "0xcd9dfcace81ae28b29b10c4ddf36bcb8db6d705cbb92e7d885e5b946a9f77910": "True",
+      "0x53499d3243b2c26b1f09d49f911a9d9300d29b2196576d417cf852ac9e8dfe4c": "False",
+      "0xdbc21abd2657c839060753eada61f93a6d835a0a2f3bdfb530339a2c85f23516": "False",
+      "0x8c76c13d8d0e63a7de499d47b9da5a4495d1151c0b2003c92379f41f14e404c0": "False",
+      "0x7161c183e6d6f3f44499ffb4e28ed03c569089437778961f5b5544fb54791d4c": "False",
+      "0xbc6524eaed9585ebbca313f8112c3d8ed4a4ac7ff9b5bd6ef92eff715d0d2a58": "False",
+      "0x83b46efce8ff1937a49883b323b22d3483d1843522f614ab4f20cc20545067bb": "True"
     }
   },
   {
     "name": "percentage_distributions",
     "description": "Percentage distribution of different ratings by citizens and top delegates",
     "data": {
-      "0xac7889f0ea40537723a2120ff73c6d421e21b547029fe0799d16a9e66db5cc7e": {
+      "0x7333cac46b20999de07f4d7be5146c10a30f19586907bd2ce986b81af340cb97": {
         "citizens": {
-          "extremely_upset": 0.4444444444444444,
-          "somewhat_upset": 0.2222222222222222,
-          "neutral": 0.3333333333333333
+          "extremely_upset": 0.12903225806451613,
+          "somewhat_upset": 0.16129032258064516,
+          "neutral": 0.1935483870967742
+        },
+        "top_delegates": {
+          "extremely_upset": 0.14285714285714285,
+          "somewhat_upset": 0.14285714285714285,
+          "neutral": 0.14285714285714285
+        }
+      },
+      "0xd7a8e115b2b3772d7d5656d7798e349dcdedf2463302c78528c9e9686ab4efe3": {
+        "citizens": {
+          "extremely_upset": 0.41935483870967744,
+          "somewhat_upset": 0.5806451612903226,
+          "neutral": 0.0
         },
         "top_delegates": {
           "extremely_upset": 0.42857142857142855,
-          "somewhat_upset": 0.2857142857142857,
-          "neutral": 0.2857142857142857
+          "somewhat_upset": 0.5714285714285714,
+          "neutral": 0.0
         }
       },
-      "0xe7fc966daad38f989aceb04eddf14af1dee47cdda33c26d2fbdf9602ab7bfa09": {
+      "0x6d30328dd0e058bdd4c55c51d5f785268770040a66edbd2830902c4d87efee9c": {
         "citizens": {
-          "extremely_upset": 0.10526315789473684,
-          "somewhat_upset": 0.05263157894736842,
-          "neutral": 0.5789473684210527
+          "extremely_upset": 0.2702702702702703,
+          "somewhat_upset": 0.40540540540540543,
+          "neutral": 0.32432432432432434
         },
         "top_delegates": {
-          "extremely_upset": 0.0,
-          "somewhat_upset": 0.125,
-          "neutral": 0.375
+          "extremely_upset": 0.25,
+          "somewhat_upset": 0.5,
+          "neutral": 0.25
         }
       },
-      "0x4b98d51cc27ce2193e56daee736db569992c35776260977bd7367ab18425e3a6": {
+      "0x7f1256b007e1156494e43b58d5e85e6ec20f4fcf1e5cac6ebb17b702e9c0b5fb": {
         "citizens": {
-          "extremely_upset": 0.2,
-          "somewhat_upset": 0.08,
-          "neutral": 0.2
+          "extremely_upset": 0.38461538461538464,
+          "somewhat_upset": 0.2564102564102564,
+          "neutral": 0.358974358974359
         },
         "top_delegates": {
-          "extremely_upset": 0.2222222222222222,
+          "extremely_upset": 0.7,
+          "somewhat_upset": 0.2,
+          "neutral": 0.1
+        }
+      },
+      "0x66a3f6245dc3ac966d3ed9dd8c076a723cfc3aaaf5ea3721c634d46c3be46331": {
+        "citizens": {
+          "extremely_upset": 0.15789473684210525,
+          "somewhat_upset": 0.23684210526315788,
+          "neutral": 0.05263157894736842
+        },
+        "top_delegates": {
+          "extremely_upset": 0.42857142857142855,
           "somewhat_upset": 0.0,
-          "neutral": 0.2222222222222222
+          "neutral": 0.0
         }
       },
-      "0xe255d75ace41a285ae9236851721878df4aafba5cbd8cf2c1fcaf84ed6795ab1": {
+      "0xc49d46c5606148617c4202a6a0f745ce194418ca81f1c27d1ff75ea84e32a0cc": {
         "citizens": {
-          "extremely_upset": 0.3,
-          "somewhat_upset": 0.4,
-          "neutral": 0.3
+          "extremely_upset": 0.1,
+          "somewhat_upset": 0.3,
+          "neutral": 0.2
         },
         "top_delegates": {
           "extremely_upset": 0.3,
           "somewhat_upset": 0.3,
-          "neutral": 0.4
-        }
-      },
-      "0x582bf420cf64fd4622228677e7e7e1bcf0a3671f525257e71965456a2a68d3ae": {
-        "citizens": {
-          "extremely_upset": 0.20833333333333334,
-          "somewhat_upset": 0.125,
-          "neutral": 0.20833333333333334
-        },
-        "top_delegates": {
-          "extremely_upset": 0.09090909090909091,
-          "somewhat_upset": 0.09090909090909091,
-          "neutral": 0.2727272727272727
-        }
-      },
-      "0x07c796e6fff4cfa8ee57e2befd31acf18830712d1259b56d9945b99b8694f9f3": {
-        "citizens": {
-          "extremely_upset": 0.10344827586206896,
-          "somewhat_upset": 0.06896551724137931,
-          "neutral": 0.20689655172413793
-        },
-        "top_delegates": {
-          "extremely_upset": 0.2,
-          "somewhat_upset": 0.0,
           "neutral": 0.3
         }
       },
-      "0x016795c3f6b9f3dbe279c946f1742aff2220dca7a7c088fad736d3251e9a4c57": {
+      "0x81af86360a8e964cc907a5689a62e94231c7e42e05f49c0586716975d72e2e2e": {
         "citizens": {
-          "extremely_upset": 0.2222222222222222,
-          "somewhat_upset": 0.16666666666666666,
-          "neutral": 0.3888888888888889
-        },
-        "top_delegates": {
-          "extremely_upset": 0.16666666666666666,
-          "somewhat_upset": 0.3333333333333333,
-          "neutral": 0.25
-        }
-      },
-      "0x47b7920820c035911188672b5f9ba62c7e1556128baa43b8f9a09be9e90b4131": {
-        "citizens": {
-          "extremely_upset": 0.4230769230769231,
-          "somewhat_upset": 0.5769230769230769,
+          "extremely_upset": 0.6052631578947368,
+          "somewhat_upset": 0.39473684210526316,
           "neutral": 0.0
         },
         "top_delegates": {
-          "extremely_upset": 0.4444444444444444,
-          "somewhat_upset": 0.5555555555555556,
+          "extremely_upset": 0.75,
+          "somewhat_upset": 0.25,
           "neutral": 0.0
         }
       },
-      "0x567e056e4625adc70c807da2462f7e85e4512c8c3c173d0fa1b8f5465080253e": {
+      "0x7d69da70e6453a7abb641a770cad602c0a7893186cb20f990efe22c0cb248115": {
         "citizens": {
-          "extremely_upset": 0.3333333333333333,
-          "somewhat_upset": 0.38095238095238093,
-          "neutral": 0.2857142857142857
+          "extremely_upset": 0.5625,
+          "somewhat_upset": 0.4375,
+          "neutral": 0.0
         },
         "top_delegates": {
-          "extremely_upset": 0.36363636363636365,
+          "extremely_upset": 0.6363636363636364,
           "somewhat_upset": 0.36363636363636365,
-          "neutral": 0.2727272727272727
+          "neutral": 0.0
         }
       },
-      "0x7b7ed15a0f43a3cb2d0ade81d8ec1ece5803068be0dae63b9864b9b8be884b31": {
+      "0x1335476de5a24573f3fa1297827fbeb02921948d678b399c7367fb956d08a6cc": {
         "citizens": {
-          "extremely_upset": 0.3684210526315789,
-          "somewhat_upset": 0.42105263157894735,
-          "neutral": 0.21052631578947367
+          "extremely_upset": 0.1794871794871795,
+          "somewhat_upset": 0.15384615384615385,
+          "neutral": 0.23076923076923078
+        },
+        "top_delegates": {
+          "extremely_upset": 0.11764705882352941,
+          "somewhat_upset": 0.11764705882352941,
+          "neutral": 0.17647058823529413
+        }
+      },
+      "0x09875cfe708f0c3acaca3d8af6b1ca2bd45b43c4a268a55c5d2b50ec9bdeef75": {
+        "citizens": {
+          "extremely_upset": 0.10344827586206896,
+          "somewhat_upset": 0.27586206896551724,
+          "neutral": 0.3793103448275862
+        },
+        "top_delegates": {
+          "extremely_upset": 0.0,
+          "somewhat_upset": 0.5,
+          "neutral": 0.0
+        }
+      },
+      "0xc71faa1bcb4ceb785816c3f22823377e9e5e7c48649badd9f0a0ce491f20d4b3": {
+        "citizens": {
+          "extremely_upset": 0.2903225806451613,
+          "somewhat_upset": 0.22580645161290322,
+          "neutral": 0.22580645161290322
         },
         "top_delegates": {
           "extremely_upset": 0.2857142857142857,
-          "somewhat_upset": 0.35714285714285715,
-          "neutral": 0.35714285714285715
-        }
-      },
-      "0x28c683020737da361313906247e172679e74afc30f0c3c73627d36c598818756": {
-        "citizens": {
-          "extremely_upset": 0.631578947368421,
-          "somewhat_upset": 0.3684210526315789,
-          "neutral": 0.0
-        },
-        "top_delegates": {
-          "extremely_upset": 0.625,
-          "somewhat_upset": 0.375,
-          "neutral": 0.0
-        }
-      },
-      "0x9b920ed42d186fb5c152fc8c392e597ad6d69b3614a6e30c4a5f74b65310bea7": {
-        "citizens": {
-          "extremely_upset": 0.6842105263157895,
-          "somewhat_upset": 0.3157894736842105,
-          "neutral": 0.0
-        },
-        "top_delegates": {
-          "extremely_upset": 0.5,
-          "somewhat_upset": 0.5,
-          "neutral": 0.0
-        }
-      },
-      "0xe6e0e0d55b8b48bc48340d7da1432a6ce6b86465c717c70dcfcf330c8a548625": {
-        "citizens": {
-          "extremely_upset": 0.4090909090909091,
-          "somewhat_upset": 0.22727272727272727,
-          "neutral": 0.36363636363636365
-        },
-        "top_delegates": {
-          "extremely_upset": 0.16666666666666666,
-          "somewhat_upset": 0.5,
-          "neutral": 0.3333333333333333
-        }
-      },
-      "0x68c248ebfcb490cf3198ea6e34942de3758fdb5e3a0d5f8cd6d6365084f9e6be": {
-        "citizens": {
-          "extremely_upset": 0.3888888888888889,
-          "somewhat_upset": 0.3333333333333333,
-          "neutral": 0.2777777777777778
-        },
-        "top_delegates": {
-          "extremely_upset": 0.0,
-          "somewhat_upset": 0.5,
-          "neutral": 0.5
-        }
-      },
-      "0xd521c405c413f6194f67cee177551d31d80dcbd7958680012feea3b382d1db91": {
-        "citizens": {
-          "extremely_upset": 0.22727272727272727,
-          "somewhat_upset": 0.09090909090909091,
-          "neutral": 0.22727272727272727
-        },
-        "top_delegates": {
-          "extremely_upset": 0.42857142857142855,
-          "somewhat_upset": 0.14285714285714285,
-          "neutral": 0.0
-        }
-      },
-      "0x59a32b3e185952552f4169baa7ab71e9e12e49e07efc0b2c1f044c81019c54d3": {
-        "citizens": {
-          "extremely_upset": 0.2777777777777778,
-          "somewhat_upset": 0.2222222222222222,
-          "neutral": 0.16666666666666666
-        },
-        "top_delegates": {
-          "extremely_upset": 0.2222222222222222,
-          "somewhat_upset": 0.2222222222222222,
-          "neutral": 0.2222222222222222
-        }
-      },
-      "0x0e375c62ca595d40413014f65d1837d897aff4b7d14564074f078300035cb7e3": {
-        "citizens": {
-          "extremely_upset": 0.2222222222222222,
-          "somewhat_upset": 0.4444444444444444,
-          "neutral": 0.2222222222222222
-        },
-        "top_delegates": {
-          "extremely_upset": 0.1,
-          "somewhat_upset": 0.6,
-          "neutral": 0.1
-        }
-      },
-      "0x6a46035a1172798996f06c1c10b21bd3664c1d57e694c153ba6987d89299620f": {
-        "citizens": {
-          "extremely_upset": 0.2222222222222222,
-          "somewhat_upset": 0.25925925925925924,
-          "neutral": 0.25925925925925924
-        },
-        "top_delegates": {
-          "extremely_upset": 0.3,
-          "somewhat_upset": 0.0,
-          "neutral": 0.3
-        }
-      },
-      "0xc70a8f8d7f717898a20ca2e2e2d322896671ad3d0bbd4507a3542271d215ef1c": {
-        "citizens": {
-          "extremely_upset": 0.2727272727272727,
-          "somewhat_upset": 0.18181818181818182,
-          "neutral": 0.13636363636363635
-        },
-        "top_delegates": {
-          "extremely_upset": 0.1111111111111111,
-          "somewhat_upset": 0.3333333333333333,
-          "neutral": 0.2222222222222222
-        }
-      },
-      "0x6993fa3a6ba1358df8575113677ff7876ccd66bfe3a486674fd3f32b63c8016c": {
-        "citizens": {
-          "extremely_upset": 0.15384615384615385,
-          "somewhat_upset": 0.19230769230769232,
-          "neutral": 0.11538461538461539
-        },
-        "top_delegates": {
-          "extremely_upset": 0.1875,
-          "somewhat_upset": 0.1875,
-          "neutral": 0.1875
-        }
-      },
-      "0x5b3865c643ed6d9f1898c28c02deab6dc9f1e5020885028b4adb47ba7f02bd02": {
-        "citizens": {
-          "extremely_upset": 0.09090909090909091,
-          "somewhat_upset": 0.18181818181818182,
-          "neutral": 0.09090909090909091
-        },
-        "top_delegates": {
-          "extremely_upset": 0.0,
-          "somewhat_upset": 0.0,
-          "neutral": 0.0
-        }
-      },
-      "0x4a031460b1d4b58de243354f12c6297efb20037010d9873c6ead54268505f8ea": {
-        "citizens": {
-          "extremely_upset": 0.4090909090909091,
-          "somewhat_upset": 0.5909090909090909,
-          "neutral": 0.0
-        },
-        "top_delegates": {
-          "extremely_upset": 0.3076923076923077,
-          "somewhat_upset": 0.6923076923076923,
-          "neutral": 0.0
-        }
-      },
-      "0x1befe2ddc278afb9ef09c1a9406c3c5133401986b1ff3439eedf5dbf1a21f008": {
-        "citizens": {
-          "extremely_upset": 0.29411764705882354,
-          "somewhat_upset": 0.29411764705882354,
-          "neutral": 0.23529411764705882
-        },
-        "top_delegates": {
-          "extremely_upset": 0.42857142857142855,
           "somewhat_upset": 0.14285714285714285,
           "neutral": 0.2857142857142857
         }
       },
-      "0x7cfc1d4c5d0e7a08f73a1961ef7c54ce191a615fa5217b04fa4b599a3dae0040": {
+      "0x334fa6de0243cd1509870ea95f400fd524bd9c8f909e7f629d5457e4ca52e6fc": {
         "citizens": {
-          "extremely_upset": 0.08695652173913043,
-          "somewhat_upset": 0.34782608695652173,
-          "neutral": 0.21739130434782608
+          "extremely_upset": 0.16666666666666666,
+          "somewhat_upset": 0.13333333333333333,
+          "neutral": 0.2
         },
         "top_delegates": {
-          "extremely_upset": 0.0,
-          "somewhat_upset": 0.3333333333333333,
+          "extremely_upset": 0.1111111111111111,
+          "somewhat_upset": 0.2222222222222222,
           "neutral": 0.3333333333333333
         }
       },
-      "0xaba412aa5661e42f0cfee18cd88ff808089ac99442b7f492d642c7c774a5f71d": {
+      "0xbd7efe4f47254e152bc1193b095dbad6711748577df2cd8f6a55c125ea58a376": {
         "citizens": {
+          "extremely_upset": 0.17647058823529413,
+          "somewhat_upset": 0.20588235294117646,
+          "neutral": 0.14705882352941177
+        },
+        "top_delegates": {
+          "extremely_upset": 0.0,
+          "somewhat_upset": 0.0,
+          "neutral": 0.0
+        }
+      },
+      "0xb2d109759fe14e11ac5cc100ab6006321ebdd7ffdefbd2efac93a002105f8e92": {
+        "citizens": {
+          "extremely_upset": 0.35714285714285715,
+          "somewhat_upset": 0.23809523809523808,
+          "neutral": 0.40476190476190477
+        },
+        "top_delegates": {
+          "extremely_upset": 0.5454545454545454,
+          "somewhat_upset": 0.2727272727272727,
+          "neutral": 0.18181818181818182
+        }
+      },
+      "0x1480383a90f1ab95cfedee6ea130dca700e5236eceb7dcf3f08a0e96b43c90aa": {
+        "citizens": {
+          "extremely_upset": 0.5769230769230769,
+          "somewhat_upset": 0.4230769230769231,
+          "neutral": 0.0
+        },
+        "top_delegates": {
+          "extremely_upset": 0.42857142857142855,
+          "somewhat_upset": 0.5714285714285714,
+          "neutral": 0.0
+        }
+      },
+      "0xdd8b2e68cad9afa0701c8f27bf085302b152dbca3393083d3c664e3fc75945ab": {
+        "citizens": {
+          "extremely_upset": 0.391304347826087,
+          "somewhat_upset": 0.2391304347826087,
+          "neutral": 0.3695652173913043
+        },
+        "top_delegates": {
+          "extremely_upset": 0.3125,
+          "somewhat_upset": 0.375,
+          "neutral": 0.3125
+        }
+      },
+      "0x1c0db0217d2aafd77b89d864fb87ef9d52bca0a2fc05e6faabe22ac81ec49503": {
+        "citizens": {
+          "extremely_upset": 0.3055555555555556,
+          "somewhat_upset": 0.1388888888888889,
+          "neutral": 0.19444444444444445
+        },
+        "top_delegates": {
           "extremely_upset": 0.2,
-          "somewhat_upset": 0.45,
-          "neutral": 0.35
+          "somewhat_upset": 0.1,
+          "neutral": 0.0
+        }
+      },
+      "0x6bd057da522918a4675396313ae33a2f2788a1ceeb3bd7ae228015e3eb317a7d": {
+        "citizens": {
+          "extremely_upset": 0.10638297872340426,
+          "somewhat_upset": 0.23404255319148937,
+          "neutral": 0.23404255319148937
+        },
+        "top_delegates": {
+          "extremely_upset": 0.08333333333333333,
+          "somewhat_upset": 0.08333333333333333,
+          "neutral": 0.16666666666666666
+        }
+      },
+      "0xcd9dfcace81ae28b29b10c4ddf36bcb8db6d705cbb92e7d885e5b946a9f77910": {
+        "citizens": {
+          "extremely_upset": 0.5238095238095238,
+          "somewhat_upset": 0.47619047619047616,
+          "neutral": 0.0
+        },
+        "top_delegates": {
+          "extremely_upset": 0.4,
+          "somewhat_upset": 0.6,
+          "neutral": 0.0
+        }
+      },
+      "0x53499d3243b2c26b1f09d49f911a9d9300d29b2196576d417cf852ac9e8dfe4c": {
+        "citizens": {
+          "extremely_upset": 0.23529411764705882,
+          "somewhat_upset": 0.14705882352941177,
+          "neutral": 0.20588235294117646
+        },
+        "top_delegates": {
+          "extremely_upset": 0.18181818181818182,
+          "somewhat_upset": 0.09090909090909091,
+          "neutral": 0.18181818181818182
+        }
+      },
+      "0xdbc21abd2657c839060753eada61f93a6d835a0a2f3bdfb530339a2c85f23516": {
+        "citizens": {
+          "extremely_upset": 0.3125,
+          "somewhat_upset": 0.28125,
+          "neutral": 0.25
         },
         "top_delegates": {
           "extremely_upset": 0.5,
-          "somewhat_upset": 0.5,
+          "somewhat_upset": 0.25,
           "neutral": 0.0
         }
       },
-      "0xebf6b760fade46fada00b8b262472612485042d8a45f23487e429ba9c995b532": {
-        "citizens": {
-          "extremely_upset": 0.7407407407407407,
-          "somewhat_upset": 0.25925925925925924,
-          "neutral": 0.0
-        },
-        "top_delegates": {
-          "extremely_upset": 0.6470588235294118,
-          "somewhat_upset": 0.35294117647058826,
-          "neutral": 0.0
-        }
-      },
-      "0x2c9c66379e3e92073edfd55ec87418d56001d78242a2458f39fa6066518ce777": {
+      "0x8c76c13d8d0e63a7de499d47b9da5a4495d1151c0b2003c92379f41f14e404c0": {
         "citizens": {
           "extremely_upset": 0.3181818181818182,
           "somewhat_upset": 0.6818181818181818,
           "neutral": 0.0
         },
         "top_delegates": {
-          "extremely_upset": 0.375,
-          "somewhat_upset": 0.625,
+          "extremely_upset": 0.16666666666666666,
+          "somewhat_upset": 0.8333333333333334,
           "neutral": 0.0
         }
       },
-      "0x5459ffc1139c419e509c777c138d2e00706bc87b0d790f880383bf02a92e124d": {
+      "0x7161c183e6d6f3f44499ffb4e28ed03c569089437778961f5b5544fb54791d4c": {
         "citizens": {
-          "extremely_upset": 0.26666666666666666,
-          "somewhat_upset": 0.03333333333333333,
-          "neutral": 0.23333333333333334
+          "extremely_upset": 0.1590909090909091,
+          "somewhat_upset": 0.3181818181818182,
+          "neutral": 0.3181818181818182
         },
         "top_delegates": {
-          "extremely_upset": 0.35714285714285715,
-          "somewhat_upset": 0.21428571428571427,
-          "neutral": 0.07142857142857142
+          "extremely_upset": 0.25,
+          "somewhat_upset": 0.25,
+          "neutral": 0.0
         }
       },
-      "0x004593c0fe300be66ae4a00fa4a57563e409f3c03d63e2e8a0c174982e250a6a": {
+      "0xbc6524eaed9585ebbca313f8112c3d8ed4a4ac7ff9b5bd6ef92eff715d0d2a58": {
         "citizens": {
-          "extremely_upset": 0.05263157894736842,
-          "somewhat_upset": 0.3157894736842105,
-          "neutral": 0.15789473684210525
+          "extremely_upset": 0.16666666666666666,
+          "somewhat_upset": 0.25,
+          "neutral": 0.16666666666666666
         },
         "top_delegates": {
-          "extremely_upset": 0.0,
-          "somewhat_upset": 0.5,
+          "extremely_upset": 0.08333333333333333,
+          "somewhat_upset": 0.08333333333333333,
           "neutral": 0.25
         }
       },
-      "0xa550a4512ee2040e97a988cbb1818c9951ccf09799c33934b3403c6f07e07962": {
+      "0x83b46efce8ff1937a49883b323b22d3483d1843522f614ab4f20cc20545067bb": {
         "citizens": {
-          "extremely_upset": 0.13333333333333333,
-          "somewhat_upset": 0.13333333333333333,
-          "neutral": 0.3333333333333333
+          "extremely_upset": 0.48484848484848486,
+          "somewhat_upset": 0.5151515151515151,
+          "neutral": 0.0
         },
         "top_delegates": {
-          "extremely_upset": 0.2857142857142857,
-          "somewhat_upset": 0.0,
-          "neutral": 0.2857142857142857
+          "extremely_upset": 0.6666666666666666,
+          "somewhat_upset": 0.3333333333333333,
+          "neutral": 0.0
         }
       }
     }
@@ -585,964 +495,584 @@
     "name": "elected_governance_reviews",
     "description": "Reviews from elected governance members",
     "data": {
-      "0xac7889f0ea40537723a2120ff73c6d421e21b547029fe0799d16a9e66db5cc7e": {
-        "anticapture_commission": {
-          "count_attestations": 4,
-          "avg_pmf_score": 4.0,
-          "avg_nps_score": 8.5
-        },
-        "code_of_conduct_council": {
-          "count_attestations": 5,
-          "avg_pmf_score": 4.2,
-          "avg_nps_score": 8.4
-        },
-        "collective_feedback_committee": {
+      "0x7333cac46b20999de07f4d7be5146c10a30f19586907bd2ce986b81af340cb97": {
+        "optimism_grants_council_member": {
           "count_attestations": 2,
-          "avg_pmf_score": 4.0,
-          "avg_nps_score": 8.0
-        },
-        "developer_advisory_board": {
-          "count_attestations": 6,
-          "avg_pmf_score": 4.666666666666667,
-          "avg_nps_score": 8.5
-        },
-        "grants_council": {
-          "count_attestations": 1,
-          "avg_pmf_score": 4.0,
-          "avg_nps_score": 10.0
-        },
-        "security_council": {
-          "count_attestations": 4,
-          "avg_pmf_score": 4.25,
-          "avg_nps_score": 8.0
-        }
-      },
-      "0xe7fc966daad38f989aceb04eddf14af1dee47cdda33c26d2fbdf9602ab7bfa09": {
-        "anticapture_commission": {
-          "count_attestations": 1,
-          "avg_pmf_score": 4.0,
-          "avg_nps_score": 9.0
-        },
-        "code_of_conduct_council": {
-          "count_attestations": 8,
-          "avg_pmf_score": 3.125,
-          "avg_nps_score": 7.25
-        },
-        "collective_feedback_committee": {
-          "count_attestations": 6,
-          "avg_pmf_score": 3.1666666666666665,
-          "avg_nps_score": 7.333333333333333
-        },
-        "developer_advisory_board": {
-          "count_attestations": 2,
-          "avg_pmf_score": 3.0,
-          "avg_nps_score": 6.0
-        },
-        "grants_council": {
-          "count_attestations": 4,
-          "avg_pmf_score": 2.75,
-          "avg_nps_score": 8.25
-        },
-        "security_council": {
-          "count_attestations": 6,
-          "avg_pmf_score": 3.0,
-          "avg_nps_score": 6.166666666666667
-        }
-      },
-      "0x4b98d51cc27ce2193e56daee736db569992c35776260977bd7367ab18425e3a6": {
-        "anticapture_commission": {
-          "count_attestations": 3,
-          "avg_pmf_score": 2.0,
-          "avg_nps_score": 6.666666666666667
-        },
-        "code_of_conduct_council": {
-          "count_attestations": 5,
-          "avg_pmf_score": 2.4,
-          "avg_nps_score": 6.6
-        },
-        "collective_feedback_committee": {
-          "count_attestations": 3,
-          "avg_pmf_score": 2.6666666666666665,
-          "avg_nps_score": 7.0
-        },
-        "developer_advisory_board": {
-          "count_attestations": 6,
           "avg_pmf_score": 2.5,
-          "avg_nps_score": 7.333333333333333
-        },
-        "grants_council": {
-          "count_attestations": 2,
-          "avg_pmf_score": 4.0,
           "avg_nps_score": 6.5
         },
-        "security_council": {
+        "anticapture_commission_member": {
           "count_attestations": 7,
-          "avg_pmf_score": 3.4285714285714284,
-          "avg_nps_score": 8.285714285714286
-        }
-      },
-      "0xe255d75ace41a285ae9236851721878df4aafba5cbd8cf2c1fcaf84ed6795ab1": {
-        "anticapture_commission": {
-          "count_attestations": 5,
-          "avg_pmf_score": 4.2,
-          "avg_nps_score": 8.0
+          "avg_pmf_score": 2.5714285714285716,
+          "avg_nps_score": 5.714285714285714
         },
-        "code_of_conduct_council": {
-          "count_attestations": 4,
-          "avg_pmf_score": 4.0,
-          "avg_nps_score": 8.25
-        },
-        "collective_feedback_committee": {
-          "count_attestations": 5,
-          "avg_pmf_score": 3.8,
-          "avg_nps_score": 8.0
-        },
-        "developer_advisory_board": {
-          "count_attestations": 7,
-          "avg_pmf_score": 4.0,
-          "avg_nps_score": 8.285714285714286
-        },
-        "grants_council": {
-          "count_attestations": 3,
-          "avg_pmf_score": 4.333333333333333,
-          "avg_nps_score": 7.333333333333333
-        },
-        "security_council": {
-          "count_attestations": 3,
-          "avg_pmf_score": 3.6666666666666665,
-          "avg_nps_score": 8.333333333333334
-        }
-      },
-      "0x582bf420cf64fd4622228677e7e7e1bcf0a3671f525257e71965456a2a68d3ae": {
-        "anticapture_commission": {
-          "count_attestations": 3,
-          "avg_pmf_score": 2.6666666666666665,
-          "avg_nps_score": 4.333333333333333
-        },
-        "code_of_conduct_council": {
-          "count_attestations": 6,
-          "avg_pmf_score": 3.1666666666666665,
-          "avg_nps_score": 5.833333333333333
-        },
-        "collective_feedback_committee": {
-          "count_attestations": 3,
-          "avg_pmf_score": 4.666666666666667,
-          "avg_nps_score": 8.0
-        },
-        "developer_advisory_board": {
-          "count_attestations": 5,
-          "avg_pmf_score": 3.0,
-          "avg_nps_score": 6.0
-        },
-        "grants_council": {
+        "code_of_conduct_council_member": {
           "count_attestations": 2,
-          "avg_pmf_score": 3.0,
-          "avg_nps_score": 4.5
-        },
-        "security_council": {
-          "count_attestations": 12,
-          "avg_pmf_score": 2.1666666666666665,
-          "avg_nps_score": 4.833333333333333
+          "avg_pmf_score": 2.5,
+          "avg_nps_score": 6.0
         }
       },
-      "0x07c796e6fff4cfa8ee57e2befd31acf18830712d1259b56d9945b99b8694f9f3": {
-        "anticapture_commission": {
-          "count_attestations": 8,
-          "avg_pmf_score": 1.875,
-          "avg_nps_score": 4.5
-        },
-        "code_of_conduct_council": {
-          "count_attestations": 6,
-          "avg_pmf_score": 2.6666666666666665,
-          "avg_nps_score": 7.0
-        },
-        "collective_feedback_committee": {
-          "count_attestations": 4,
-          "avg_pmf_score": 2.25,
-          "avg_nps_score": 7.75
-        },
-        "developer_advisory_board": {
-          "count_attestations": 8,
-          "avg_pmf_score": 2.25,
-          "avg_nps_score": 6.125
-        },
-        "grants_council": {
-          "count_attestations": 5,
-          "avg_pmf_score": 1.4,
-          "avg_nps_score": 6.8
-        },
-        "security_council": {
-          "count_attestations": 6,
-          "avg_pmf_score": 2.1666666666666665,
-          "avg_nps_score": 3.6666666666666665
-        }
-      },
-      "0x016795c3f6b9f3dbe279c946f1742aff2220dca7a7c088fad736d3251e9a4c57": {
-        "anticapture_commission": {
-          "count_attestations": 1,
-          "avg_pmf_score": 2.0,
-          "avg_nps_score": 8.0
-        },
-        "code_of_conduct_council": {
-          "count_attestations": 8,
-          "avg_pmf_score": 2.75,
-          "avg_nps_score": 7.75
-        },
-        "collective_feedback_committee": {
+      "0xd7a8e115b2b3772d7d5656d7798e349dcdedf2463302c78528c9e9686ab4efe3": {
+        "optimism_grants_council_member": {
           "count_attestations": 2,
           "avg_pmf_score": 4.5,
-          "avg_nps_score": 7.0
+          "avg_nps_score": 9.5
         },
-        "developer_advisory_board": {
-          "count_attestations": 4,
-          "avg_pmf_score": 3.25,
-          "avg_nps_score": 8.5
-        },
-        "grants_council": {
-          "count_attestations": 7,
-          "avg_pmf_score": 3.5714285714285716,
-          "avg_nps_score": 7.0
-        },
-        "security_council": {
-          "count_attestations": 7,
-          "avg_pmf_score": 3.857142857142857,
-          "avg_nps_score": 6.142857142857143
-        }
-      },
-      "0x47b7920820c035911188672b5f9ba62c7e1556128baa43b8f9a09be9e90b4131": {
-        "anticapture_commission": {
+        "anticapture_commission_member": {
           "count_attestations": 6,
-          "avg_pmf_score": 4.166666666666667,
-          "avg_nps_score": 9.666666666666666
+          "avg_pmf_score": 4.5,
+          "avg_nps_score": 9.5
         },
         "code_of_conduct_council": {
-          "count_attestations": 4,
-          "avg_pmf_score": 4.75,
-          "avg_nps_score": 9.5
-        },
-        "collective_feedback_committee": {
-          "count_attestations": 6,
-          "avg_pmf_score": 4.333333333333333,
-          "avg_nps_score": 9.5
-        },
-        "developer_advisory_board": {
-          "count_attestations": 3,
-          "avg_pmf_score": 4.666666666666667,
-          "avg_nps_score": 9.666666666666666
-        },
-        "grants_council": {
-          "count_attestations": 2,
-          "avg_pmf_score": 4.0,
-          "avg_nps_score": 9.5
-        },
-        "security_council": {
-          "count_attestations": 7,
-          "avg_pmf_score": 4.571428571428571,
-          "avg_nps_score": 9.571428571428571
-        }
-      },
-      "0x567e056e4625adc70c807da2462f7e85e4512c8c3c173d0fa1b8f5465080253e": {
-        "anticapture_commission": {
-          "count_attestations": 6,
-          "avg_pmf_score": 4.333333333333333,
-          "avg_nps_score": 9.166666666666666
-        },
-        "code_of_conduct_council": {
-          "count_attestations": 5,
-          "avg_pmf_score": 3.8,
-          "avg_nps_score": 7.8
-        },
-        "collective_feedback_committee": {
-          "count_attestations": 2,
-          "avg_pmf_score": 3.5,
-          "avg_nps_score": 9.0
-        },
-        "developer_advisory_board": {
-          "count_attestations": 2,
+          "count_attestations": 1,
           "avg_pmf_score": 4.0,
           "avg_nps_score": 10.0
         },
-        "grants_council": {
-          "count_attestations": 4,
+        "acc_(second_half)": {
+          "count_attestations": 1,
           "avg_pmf_score": 4.0,
-          "avg_nps_score": 7.5
-        },
-        "security_council": {
-          "count_attestations": 9,
-          "avg_pmf_score": 4.333333333333333,
-          "avg_nps_score": 8.444444444444445
+          "avg_nps_score": 10.0
         }
       },
-      "0x7b7ed15a0f43a3cb2d0ade81d8ec1ece5803068be0dae63b9864b9b8be884b31": {
-        "anticapture_commission": {
-          "count_attestations": 7,
-          "avg_pmf_score": 4.285714285714286,
-          "avg_nps_score": 8.428571428571429
-        },
-        "code_of_conduct_council": {
-          "count_attestations": 7,
-          "avg_pmf_score": 4.0,
-          "avg_nps_score": 8.285714285714286
-        },
-        "collective_feedback_committee": {
-          "count_attestations": 2,
-          "avg_pmf_score": 4.0,
-          "avg_nps_score": 8.5
-        },
-        "developer_advisory_board": {
-          "count_attestations": 2,
-          "avg_pmf_score": 4.0,
-          "avg_nps_score": 8.0
-        },
-        "grants_council": {
-          "count_attestations": 5,
-          "avg_pmf_score": 4.4,
-          "avg_nps_score": 8.2
-        },
-        "security_council": {
+      "0x6d30328dd0e058bdd4c55c51d5f785268770040a66edbd2830902c4d87efee9c": {
+        "optimism_grants_council_member": {
           "count_attestations": 8,
-          "avg_pmf_score": 4.25,
-          "avg_nps_score": 7.25
+          "avg_pmf_score": 4.125,
+          "avg_nps_score": 7.75
+        },
+        "anticapture_commission_member": {
+          "count_attestations": 9,
+          "avg_pmf_score": 4.0,
+          "avg_nps_score": 7.777777777777778
+        },
+        "developer_advisory_board_member": {
+          "count_attestations": 3,
+          "avg_pmf_score": 4.0,
+          "avg_nps_score": 9.0
         }
       },
-      "0x28c683020737da361313906247e172679e74afc30f0c3c73627d36c598818756": {
-        "anticapture_commission": {
-          "count_attestations": 2,
-          "avg_pmf_score": 4.5,
-          "avg_nps_score": 9.5
+      "0x7f1256b007e1156494e43b58d5e85e6ec20f4fcf1e5cac6ebb17b702e9c0b5fb": {
+        "optimism_grants_council_member": {
+          "count_attestations": 4,
+          "avg_pmf_score": 5.0,
+          "avg_nps_score": 8.25
         },
-        "code_of_conduct_council": {
-          "count_attestations": 7,
-          "avg_pmf_score": 4.714285714285714,
-          "avg_nps_score": 8.857142857142858
-        },
-        "collective_feedback_committee": {
+        "anticapture_commission_member": {
           "count_attestations": 6,
           "avg_pmf_score": 4.666666666666667,
-          "avg_nps_score": 9.0
+          "avg_nps_score": 8.833333333333334
         },
-        "developer_advisory_board": {
+        "developer_advisory_board_member": {
+          "count_attestations": 1,
+          "avg_pmf_score": 5.0,
+          "avg_nps_score": 10.0
+        },
+        "code_of_conduct_council_member": {
           "count_attestations": 2,
           "avg_pmf_score": 4.5,
-          "avg_nps_score": 9.0
+          "avg_nps_score": 8.5
         },
-        "grants_council": {
-          "count_attestations": 3,
-          "avg_pmf_score": 4.666666666666667,
-          "avg_nps_score": 8.666666666666666
-        },
-        "security_council": {
+        "code_of_conduct_council": {
+          "count_attestations": 1,
+          "avg_pmf_score": 4.0,
+          "avg_nps_score": 7.0
+        }
+      },
+      "0x66a3f6245dc3ac966d3ed9dd8c076a723cfc3aaaf5ea3721c634d46c3be46331": {
+        "optimism_grants_council_member": {
           "count_attestations": 2,
+          "avg_pmf_score": 1.5,
+          "avg_nps_score": 6.5
+        },
+        "anticapture_commission_member": {
+          "count_attestations": 6,
+          "avg_pmf_score": 3.1666666666666665,
+          "avg_nps_score": 6.0
+        },
+        "code_of_conduct_council": {
+          "count_attestations": 2,
+          "avg_pmf_score": 3.0,
+          "avg_nps_score": 7.0
+        },
+        "acc_(second_half)": {
+          "count_attestations": 1,
           "avg_pmf_score": 5.0,
           "avg_nps_score": 9.0
         }
       },
-      "0x9b920ed42d186fb5c152fc8c392e597ad6d69b3614a6e30c4a5f74b65310bea7": {
-        "anticapture_commission": {
+      "0xc49d46c5606148617c4202a6a0f745ce194418ca81f1c27d1ff75ea84e32a0cc": {
+        "optimism_grants_council_member": {
+          "count_attestations": 3,
+          "avg_pmf_score": 3.0,
+          "avg_nps_score": 6.666666666666667
+        },
+        "anticapture_commission_member": {
+          "count_attestations": 7,
+          "avg_pmf_score": 3.857142857142857,
+          "avg_nps_score": 6.285714285714286
+        },
+        "developer_advisory_board_member": {
+          "count_attestations": 1,
+          "avg_pmf_score": 5.0,
+          "avg_nps_score": 7.0
+        },
+        "code_of_conduct_council_member": {
+          "count_attestations": 1,
+          "avg_pmf_score": 5.0,
+          "avg_nps_score": 3.0
+        },
+        "code_of_conduct_council": {
+          "count_attestations": 2,
+          "avg_pmf_score": 3.5,
+          "avg_nps_score": 6.5
+        },
+        "acc_(second_half)": {
+          "count_attestations": 1,
+          "avg_pmf_score": 3.0,
+          "avg_nps_score": 7.0
+        }
+      },
+      "0x81af86360a8e964cc907a5689a62e94231c7e42e05f49c0586716975d72e2e2e": {
+        "optimism_grants_council_member": {
+          "count_attestations": 1,
+          "avg_pmf_score": 5.0,
+          "avg_nps_score": 10.0
+        },
+        "anticapture_commission_member": {
+          "count_attestations": 4,
+          "avg_pmf_score": 4.75,
+          "avg_nps_score": 8.75
+        },
+        "code_of_conduct_council": {
+          "count_attestations": 1,
+          "avg_pmf_score": 4.0,
+          "avg_nps_score": 8.0
+        },
+        "acc_(second_half)": {
+          "count_attestations": 1,
+          "avg_pmf_score": 4.0,
+          "avg_nps_score": 8.0
+        }
+      },
+      "0x7d69da70e6453a7abb641a770cad602c0a7893186cb20f990efe22c0cb248115": {
+        "optimism_grants_council_member": {
+          "count_attestations": 4,
+          "avg_pmf_score": 4.75,
+          "avg_nps_score": 9.5
+        },
+        "anticapture_commission_member": {
+          "count_attestations": 8,
+          "avg_pmf_score": 4.625,
+          "avg_nps_score": 9.5
+        },
+        "developer_advisory_board_member": {
+          "count_attestations": 2,
+          "avg_pmf_score": 4.5,
+          "avg_nps_score": 10.0
+        },
+        "code_of_conduct_council": {
+          "count_attestations": 2,
+          "avg_pmf_score": 5.0,
+          "avg_nps_score": 9.0
+        },
+        "acc_(second_half)": {
+          "count_attestations": 1,
+          "avg_pmf_score": 5.0,
+          "avg_nps_score": 9.0
+        }
+      },
+      "0x1335476de5a24573f3fa1297827fbeb02921948d678b399c7367fb956d08a6cc": {
+        "optimism_grants_council_member": {
+          "count_attestations": 4,
+          "avg_pmf_score": 2.5,
+          "avg_nps_score": 5.75
+        },
+        "anticapture_commission_member": {
+          "count_attestations": 16,
+          "avg_pmf_score": 2.375,
+          "avg_nps_score": 5.0
+        },
+        "code_of_conduct_council_member": {
+          "count_attestations": 1,
+          "avg_pmf_score": 5.0,
+          "avg_nps_score": 1.0
+        },
+        "code_of_conduct_council": {
+          "count_attestations": 1,
+          "avg_pmf_score": 1.0,
+          "avg_nps_score": 9.0
+        }
+      },
+      "0x09875cfe708f0c3acaca3d8af6b1ca2bd45b43c4a268a55c5d2b50ec9bdeef75": {
+        "optimism_grants_council_member": {
+          "count_attestations": 1,
+          "avg_pmf_score": 2.0,
+          "avg_nps_score": 6.0
+        },
+        "anticapture_commission_member": {
+          "count_attestations": 5,
+          "avg_pmf_score": 2.8,
+          "avg_nps_score": 7.2
+        },
+        "code_of_conduct_council_member": {
+          "count_attestations": 2,
+          "avg_pmf_score": 3.0,
+          "avg_nps_score": 4.5
+        },
+        "code_of_conduct_council": {
+          "count_attestations": 1,
+          "avg_pmf_score": 4.0,
+          "avg_nps_score": 8.0
+        },
+        "acc_(second_half)": {
+          "count_attestations": 1,
+          "avg_pmf_score": 4.0,
+          "avg_nps_score": 8.0
+        }
+      },
+      "0xc71faa1bcb4ceb785816c3f22823377e9e5e7c48649badd9f0a0ce491f20d4b3": {
+        "optimism_grants_council_member": {
+          "count_attestations": 4,
+          "avg_pmf_score": 3.25,
+          "avg_nps_score": 4.25
+        },
+        "anticapture_commission_member": {
+          "count_attestations": 9,
+          "avg_pmf_score": 3.5555555555555554,
+          "avg_nps_score": 4.666666666666667
+        },
+        "developer_advisory_board_member": {
+          "count_attestations": 1,
+          "avg_pmf_score": 3.0,
+          "avg_nps_score": 9.0
+        },
+        "code_of_conduct_council_member": {
+          "count_attestations": 1,
+          "avg_pmf_score": 5.0,
+          "avg_nps_score": 8.0
+        },
+        "code_of_conduct_council": {
+          "count_attestations": 3,
+          "avg_pmf_score": 2.6666666666666665,
+          "avg_nps_score": 7.666666666666667
+        }
+      },
+      "0x334fa6de0243cd1509870ea95f400fd524bd9c8f909e7f629d5457e4ca52e6fc": {
+        "optimism_grants_council_member": {
+          "count_attestations": 1,
+          "avg_pmf_score": 2.0,
+          "avg_nps_score": 5.0
+        },
+        "anticapture_commission_member": {
+          "count_attestations": 8,
+          "avg_pmf_score": 3.0,
+          "avg_nps_score": 6.625
+        },
+        "developer_advisory_board_member": {
+          "count_attestations": 1,
+          "avg_pmf_score": 3.0,
+          "avg_nps_score": 3.0
+        },
+        "code_of_conduct_council_member": {
+          "count_attestations": 1,
+          "avg_pmf_score": 5.0,
+          "avg_nps_score": 5.0
+        }
+      },
+      "0xbd7efe4f47254e152bc1193b095dbad6711748577df2cd8f6a55c125ea58a376": {
+        "optimism_grants_council_member": {
+          "count_attestations": 1,
+          "avg_pmf_score": 1.0,
+          "avg_nps_score": 7.0
+        }
+      },
+      "0xb2d109759fe14e11ac5cc100ab6006321ebdd7ffdefbd2efac93a002105f8e92": {
+        "optimism_grants_council_member": {
+          "count_attestations": 4,
+          "avg_pmf_score": 4.75,
+          "avg_nps_score": 8.0
+        },
+        "anticapture_commission_member": {
+          "count_attestations": 7,
+          "avg_pmf_score": 4.428571428571429,
+          "avg_nps_score": 7.857142857142857
+        },
+        "developer_advisory_board_member": {
+          "count_attestations": 1,
+          "avg_pmf_score": 4.0,
+          "avg_nps_score": 10.0
+        },
+        "code_of_conduct_council_member": {
+          "count_attestations": 2,
+          "avg_pmf_score": 3.5,
+          "avg_nps_score": 6.5
+        },
+        "code_of_conduct_council": {
+          "count_attestations": 1,
+          "avg_pmf_score": 3.0,
+          "avg_nps_score": 6.0
+        },
+        "acc_(second_half)": {
+          "count_attestations": 1,
+          "avg_pmf_score": 3.0,
+          "avg_nps_score": 6.0
+        }
+      },
+      "0x1480383a90f1ab95cfedee6ea130dca700e5236eceb7dcf3f08a0e96b43c90aa": {
+        "optimism_grants_council_member": {
+          "count_attestations": 1,
+          "avg_pmf_score": 4.0,
+          "avg_nps_score": 9.0
+        },
+        "anticapture_commission_member": {
+          "count_attestations": 6,
+          "avg_pmf_score": 4.5,
+          "avg_nps_score": 9.333333333333334
+        },
+        "code_of_conduct_council_member": {
           "count_attestations": 2,
           "avg_pmf_score": 4.5,
           "avg_nps_score": 9.0
-        },
-        "code_of_conduct_council": {
+        }
+      },
+      "0xdd8b2e68cad9afa0701c8f27bf085302b152dbca3393083d3c664e3fc75945ab": {
+        "optimism_grants_council_member": {
           "count_attestations": 5,
           "avg_pmf_score": 4.6,
           "avg_nps_score": 8.6
         },
-        "collective_feedback_committee": {
-          "count_attestations": 4,
-          "avg_pmf_score": 4.75,
+        "anticapture_commission_member": {
+          "count_attestations": 14,
+          "avg_pmf_score": 4.071428571428571,
+          "avg_nps_score": 8.071428571428571
+        },
+        "developer_advisory_board_member": {
+          "count_attestations": 1,
+          "avg_pmf_score": 4.0,
+          "avg_nps_score": 9.0
+        },
+        "code_of_conduct_council_member": {
+          "count_attestations": 2,
+          "avg_pmf_score": 3.5,
           "avg_nps_score": 8.5
         },
-        "developer_advisory_board": {
-          "count_attestations": 2,
-          "avg_pmf_score": 5.0,
-          "avg_nps_score": 9.0
-        },
-        "grants_council": {
-          "count_attestations": 2,
-          "avg_pmf_score": 5.0,
-          "avg_nps_score": 8.0
-        },
-        "security_council": {
-          "count_attestations": 10,
-          "avg_pmf_score": 4.7,
-          "avg_nps_score": 8.9
-        }
-      },
-      "0xe6e0e0d55b8b48bc48340d7da1432a6ce6b86465c717c70dcfcf330c8a548625": {
-        "anticapture_commission": {
-          "count_attestations": 4,
-          "avg_pmf_score": 4.25,
-          "avg_nps_score": 7.0
-        },
-        "code_of_conduct_council": {
-          "count_attestations": 7,
-          "avg_pmf_score": 4.0,
-          "avg_nps_score": 9.0
-        },
-        "collective_feedback_committee": {
-          "count_attestations": 4,
-          "avg_pmf_score": 4.5,
-          "avg_nps_score": 7.25
-        },
-        "developer_advisory_board": {
-          "count_attestations": 5,
-          "avg_pmf_score": 3.6,
-          "avg_nps_score": 6.8
-        },
-        "grants_council": {
-          "count_attestations": 3,
-          "avg_pmf_score": 4.666666666666667,
-          "avg_nps_score": 6.666666666666667
-        },
-        "security_council": {
-          "count_attestations": 5,
-          "avg_pmf_score": 4.0,
-          "avg_nps_score": 8.4
-        }
-      },
-      "0x68c248ebfcb490cf3198ea6e34942de3758fdb5e3a0d5f8cd6d6365084f9e6be": {
-        "anticapture_commission": {
-          "count_attestations": 3,
-          "avg_pmf_score": 3.6666666666666665,
-          "avg_nps_score": 8.666666666666666
-        },
         "code_of_conduct_council": {
           "count_attestations": 4,
-          "avg_pmf_score": 4.75,
-          "avg_nps_score": 8.0
+          "avg_pmf_score": 3.75,
+          "avg_nps_score": 6.25
         },
-        "collective_feedback_committee": {
-          "count_attestations": 2,
-          "avg_pmf_score": 4.0,
-          "avg_nps_score": 9.0
-        },
-        "developer_advisory_board": {
-          "count_attestations": 5,
-          "avg_pmf_score": 3.8,
-          "avg_nps_score": 8.6
-        },
-        "grants_council": {
-          "count_attestations": 2,
-          "avg_pmf_score": 3.5,
-          "avg_nps_score": 9.5
-        },
-        "security_council": {
-          "count_attestations": 8,
-          "avg_pmf_score": 4.0,
-          "avg_nps_score": 8.125
+        "acc_(second_half)": {
+          "count_attestations": 4,
+          "avg_pmf_score": 3.75,
+          "avg_nps_score": 6.25
         }
       },
-      "0xd521c405c413f6194f67cee177551d31d80dcbd7958680012feea3b382d1db91": {
-        "anticapture_commission": {
-          "count_attestations": 3,
-          "avg_pmf_score": 2.6666666666666665,
-          "avg_nps_score": 8.0
-        },
-        "code_of_conduct_council": {
-          "count_attestations": 4,
-          "avg_pmf_score": 3.25,
-          "avg_nps_score": 5.75
-        },
-        "collective_feedback_committee": {
-          "count_attestations": 9,
-          "avg_pmf_score": 3.3333333333333335,
-          "avg_nps_score": 6.555555555555555
-        },
-        "developer_advisory_board": {
-          "count_attestations": 4,
-          "avg_pmf_score": 3.0,
-          "avg_nps_score": 6.5
-        },
-        "grants_council": {
-          "count_attestations": 6,
-          "avg_pmf_score": 2.6666666666666665,
-          "avg_nps_score": 7.0
-        },
-        "security_council": {
-          "count_attestations": 7,
-          "avg_pmf_score": 2.7142857142857144,
-          "avg_nps_score": 6.428571428571429
-        }
-      },
-      "0x59a32b3e185952552f4169baa7ab71e9e12e49e07efc0b2c1f044c81019c54d3": {
-        "anticapture_commission": {
-          "count_attestations": 5,
-          "avg_pmf_score": 3.2,
-          "avg_nps_score": 5.4
-        },
-        "code_of_conduct_council": {
-          "count_attestations": 2,
-          "avg_pmf_score": 3.5,
-          "avg_nps_score": 5.5
-        },
-        "collective_feedback_committee": {
-          "count_attestations": 2,
-          "avg_pmf_score": 3.5,
-          "avg_nps_score": 8.0
-        },
-        "developer_advisory_board": {
-          "count_attestations": 2,
-          "avg_pmf_score": 3.0,
-          "avg_nps_score": 4.5
-        },
-        "grants_council": {
-          "count_attestations": 5,
-          "avg_pmf_score": 3.8,
-          "avg_nps_score": 6.4
-        },
-        "security_council": {
-          "count_attestations": 4,
-          "avg_pmf_score": 3.0,
-          "avg_nps_score": 7.0
-        }
-      },
-      "0x0e375c62ca595d40413014f65d1837d897aff4b7d14564074f078300035cb7e3": {
-        "anticapture_commission": {
-          "count_attestations": 3,
-          "avg_pmf_score": 4.333333333333333,
-          "avg_nps_score": 7.333333333333333
-        },
-        "code_of_conduct_council": {
-          "count_attestations": 5,
-          "avg_pmf_score": 3.4,
-          "avg_nps_score": 7.4
-        },
-        "collective_feedback_committee": {
-          "count_attestations": 3,
-          "avg_pmf_score": 3.3333333333333335,
-          "avg_nps_score": 8.0
-        },
-        "developer_advisory_board": {
-          "count_attestations": 5,
-          "avg_pmf_score": 3.8,
-          "avg_nps_score": 6.6
-        },
-        "grants_council": {
-          "count_attestations": 3,
-          "avg_pmf_score": 3.0,
-          "avg_nps_score": 7.666666666666667
-        },
-        "security_council": {
-          "count_attestations": 7,
-          "avg_pmf_score": 3.857142857142857,
-          "avg_nps_score": 7.571428571428571
-        }
-      },
-      "0x6a46035a1172798996f06c1c10b21bd3664c1d57e694c153ba6987d89299620f": {
-        "anticapture_commission": {
-          "count_attestations": 5,
-          "avg_pmf_score": 3.2,
-          "avg_nps_score": 5.8
-        },
-        "code_of_conduct_council": {
-          "count_attestations": 4,
-          "avg_pmf_score": 3.25,
-          "avg_nps_score": 6.75
-        },
-        "collective_feedback_committee": {
-          "count_attestations": 4,
-          "avg_pmf_score": 2.75,
-          "avg_nps_score": 8.25
-        },
-        "developer_advisory_board": {
-          "count_attestations": 7,
-          "avg_pmf_score": 4.285714285714286,
-          "avg_nps_score": 5.714285714285714
-        },
-        "grants_council": {
-          "count_attestations": 4,
-          "avg_pmf_score": 1.75,
-          "avg_nps_score": 8.0
-        },
-        "security_council": {
-          "count_attestations": 11,
-          "avg_pmf_score": 3.4545454545454546,
-          "avg_nps_score": 6.090909090909091
-        }
-      },
-      "0xc70a8f8d7f717898a20ca2e2e2d322896671ad3d0bbd4507a3542271d215ef1c": {
-        "anticapture_commission": {
-          "count_attestations": 5,
-          "avg_pmf_score": 2.0,
-          "avg_nps_score": 5.8
-        },
-        "code_of_conduct_council": {
-          "count_attestations": 4,
-          "avg_pmf_score": 3.5,
-          "avg_nps_score": 5.5
-        },
-        "collective_feedback_committee": {
-          "count_attestations": 4,
-          "avg_pmf_score": 3.5,
-          "avg_nps_score": 6.0
-        },
-        "developer_advisory_board": {
-          "count_attestations": 7,
-          "avg_pmf_score": 3.7142857142857144,
-          "avg_nps_score": 6.571428571428571
-        },
-        "grants_council": {
+      "0x1c0db0217d2aafd77b89d864fb87ef9d52bca0a2fc05e6faabe22ac81ec49503": {
+        "optimism_grants_council_member": {
           "count_attestations": 1,
-          "avg_pmf_score": 1.0,
+          "avg_pmf_score": 5.0,
           "avg_nps_score": 9.0
         },
-        "security_council": {
-          "count_attestations": 8,
-          "avg_pmf_score": 3.375,
+        "anticapture_commission_member": {
+          "count_attestations": 7,
+          "avg_pmf_score": 2.5714285714285716,
+          "avg_nps_score": 5.571428571428571
+        },
+        "developer_advisory_board_member": {
+          "count_attestations": 1,
+          "avg_pmf_score": 2.0,
+          "avg_nps_score": 8.0
+        },
+        "code_of_conduct_council": {
+          "count_attestations": 3,
+          "avg_pmf_score": 2.6666666666666665,
+          "avg_nps_score": 7.0
+        },
+        "acc_(second_half)": {
+          "count_attestations": 1,
+          "avg_pmf_score": 2.0,
           "avg_nps_score": 5.0
         }
       },
-      "0x6993fa3a6ba1358df8575113677ff7876ccd66bfe3a486674fd3f32b63c8016c": {
-        "anticapture_commission": {
-          "count_attestations": 6,
-          "avg_pmf_score": 3.3333333333333335,
-          "avg_nps_score": 6.833333333333333
-        },
-        "code_of_conduct_council": {
-          "count_attestations": 4,
-          "avg_pmf_score": 2.0,
-          "avg_nps_score": 6.75
-        },
-        "collective_feedback_committee": {
-          "count_attestations": 5,
-          "avg_pmf_score": 2.8,
-          "avg_nps_score": 6.0
-        },
-        "developer_advisory_board": {
-          "count_attestations": 4,
-          "avg_pmf_score": 2.25,
-          "avg_nps_score": 6.75
-        },
-        "grants_council": {
-          "count_attestations": 5,
-          "avg_pmf_score": 3.0,
-          "avg_nps_score": 8.6
-        },
-        "security_council": {
-          "count_attestations": 12,
-          "avg_pmf_score": 2.4166666666666665,
-          "avg_nps_score": 7.5
-        }
-      },
-      "0x5b3865c643ed6d9f1898c28c02deab6dc9f1e5020885028b4adb47ba7f02bd02": {
-        "anticapture_commission": {
-          "count_attestations": 1,
-          "avg_pmf_score": 2.0,
-          "avg_nps_score": 1.0
-        },
-        "code_of_conduct_council": {
-          "count_attestations": 8,
-          "avg_pmf_score": 1.875,
-          "avg_nps_score": 6.875
-        },
-        "collective_feedback_committee": {
+      "0x6bd057da522918a4675396313ae33a2f2788a1ceeb3bd7ae228015e3eb317a7d": {
+        "optimism_grants_council_member": {
           "count_attestations": 3,
-          "avg_pmf_score": 3.3333333333333335,
-          "avg_nps_score": 5.666666666666667
+          "avg_pmf_score": 2.6666666666666665,
+          "avg_nps_score": 4.0
         },
-        "developer_advisory_board": {
-          "count_attestations": 4,
-          "avg_pmf_score": 2.0,
-          "avg_nps_score": 7.25
+        "anticapture_commission_member": {
+          "count_attestations": 9,
+          "avg_pmf_score": 1.6666666666666667,
+          "avg_nps_score": 3.6666666666666665
         },
-        "grants_council": {
+        "developer_advisory_board_member": {
           "count_attestations": 1,
           "avg_pmf_score": 4.0,
           "avg_nps_score": 9.0
         },
-        "security_council": {
-          "count_attestations": 6,
+        "code_of_conduct_council_member": {
+          "count_attestations": 3,
           "avg_pmf_score": 2.0,
-          "avg_nps_score": 6.833333333333333
-        }
-      },
-      "0x4a031460b1d4b58de243354f12c6297efb20037010d9873c6ead54268505f8ea": {
-        "anticapture_commission": {
-          "count_attestations": 5,
-          "avg_pmf_score": 4.4,
-          "avg_nps_score": 9.6
+          "avg_nps_score": 5.333333333333333
         },
         "code_of_conduct_council": {
-          "count_attestations": 3,
-          "avg_pmf_score": 4.666666666666667,
+          "count_attestations": 1,
+          "avg_pmf_score": 1.0,
+          "avg_nps_score": 2.0
+        },
+        "acc_(second_half)": {
+          "count_attestations": 1,
+          "avg_pmf_score": 1.0,
+          "avg_nps_score": 2.0
+        }
+      },
+      "0xcd9dfcace81ae28b29b10c4ddf36bcb8db6d705cbb92e7d885e5b946a9f77910": {
+        "optimism_grants_council_member": {
+          "count_attestations": 1,
+          "avg_pmf_score": 4.0,
+          "avg_nps_score": 10.0
+        },
+        "anticapture_commission_member": {
+          "count_attestations": 6,
+          "avg_pmf_score": 4.333333333333333,
+          "avg_nps_score": 9.833333333333334
+        },
+        "developer_advisory_board_member": {
+          "count_attestations": 1,
+          "avg_pmf_score": 4.0,
           "avg_nps_score": 9.0
         },
-        "collective_feedback_committee": {
+        "code_of_conduct_council_member": {
           "count_attestations": 4,
-          "avg_pmf_score": 4.75,
-          "avg_nps_score": 9.25
+          "avg_pmf_score": 4.5,
+          "avg_nps_score": 9.75
+        }
+      },
+      "0x53499d3243b2c26b1f09d49f911a9d9300d29b2196576d417cf852ac9e8dfe4c": {
+        "optimism_grants_council_member": {
+          "count_attestations": 1,
+          "avg_pmf_score": 2.0,
+          "avg_nps_score": 2.0
         },
-        "developer_advisory_board": {
+        "anticapture_commission_member": {
+          "count_attestations": 7,
+          "avg_pmf_score": 3.0,
+          "avg_nps_score": 6.428571428571429
+        },
+        "developer_advisory_board_member": {
+          "count_attestations": 2,
+          "avg_pmf_score": 2.0,
+          "avg_nps_score": 3.0
+        },
+        "code_of_conduct_council_member": {
+          "count_attestations": 1,
+          "avg_pmf_score": 3.0,
+          "avg_nps_score": 2.0
+        },
+        "code_of_conduct_council": {
+          "count_attestations": 2,
+          "avg_pmf_score": 1.5,
+          "avg_nps_score": 7.0
+        },
+        "acc_(second_half)": {
+          "count_attestations": 1,
+          "avg_pmf_score": 2.0,
+          "avg_nps_score": 10.0
+        }
+      },
+      "0xdbc21abd2657c839060753eada61f93a6d835a0a2f3bdfb530339a2c85f23516": {
+        "optimism_grants_council_member": {
+          "count_attestations": 1,
+          "avg_pmf_score": 5.0,
+          "avg_nps_score": 5.0
+        },
+        "anticapture_commission_member": {
+          "count_attestations": 4,
+          "avg_pmf_score": 4.0,
+          "avg_nps_score": 7.0
+        }
+      },
+      "0x8c76c13d8d0e63a7de499d47b9da5a4495d1151c0b2003c92379f41f14e404c0": {
+        "optimism_grants_council_member": {
           "count_attestations": 2,
           "avg_pmf_score": 4.0,
           "avg_nps_score": 9.5
         },
-        "grants_council": {
-          "count_attestations": 3,
-          "avg_pmf_score": 4.333333333333333,
-          "avg_nps_score": 9.333333333333334
-        },
-        "security_council": {
-          "count_attestations": 8,
+        "anticapture_commission_member": {
+          "count_attestations": 4,
           "avg_pmf_score": 4.25,
-          "avg_nps_score": 9.375
-        }
-      },
-      "0x1befe2ddc278afb9ef09c1a9406c3c5133401986b1ff3439eedf5dbf1a21f008": {
-        "anticapture_commission": {
-          "count_attestations": 3,
-          "avg_pmf_score": 3.3333333333333335,
-          "avg_nps_score": 7.666666666666667
-        },
-        "code_of_conduct_council": {
-          "count_attestations": 1,
-          "avg_pmf_score": 3.0,
           "avg_nps_score": 9.0
         },
-        "collective_feedback_committee": {
-          "count_attestations": 6,
-          "avg_pmf_score": 4.0,
-          "avg_nps_score": 7.333333333333333
-        },
-        "developer_advisory_board": {
-          "count_attestations": 6,
-          "avg_pmf_score": 3.8333333333333335,
-          "avg_nps_score": 7.666666666666667
-        },
-        "grants_council": {
-          "count_attestations": 5,
-          "avg_pmf_score": 3.8,
-          "avg_nps_score": 6.2
-        },
-        "security_council": {
-          "count_attestations": 4,
-          "avg_pmf_score": 4.0,
-          "avg_nps_score": 7.5
-        }
-      },
-      "0x7cfc1d4c5d0e7a08f73a1961ef7c54ce191a615fa5217b04fa4b599a3dae0040": {
-        "anticapture_commission": {
-          "count_attestations": 7,
-          "avg_pmf_score": 2.142857142857143,
-          "avg_nps_score": 7.142857142857143
-        },
-        "code_of_conduct_council": {
-          "count_attestations": 5,
-          "avg_pmf_score": 3.2,
-          "avg_nps_score": 6.4
-        },
-        "collective_feedback_committee": {
-          "count_attestations": 3,
-          "avg_pmf_score": 3.0,
-          "avg_nps_score": 7.333333333333333
-        },
-        "developer_advisory_board": {
-          "count_attestations": 2,
-          "avg_pmf_score": 4.5,
-          "avg_nps_score": 6.5
-        },
-        "grants_council": {
-          "count_attestations": 5,
-          "avg_pmf_score": 3.4,
-          "avg_nps_score": 7.0
-        },
-        "security_council": {
-          "count_attestations": 6,
-          "avg_pmf_score": 4.0,
-          "avg_nps_score": 6.0
-        }
-      },
-      "0xaba412aa5661e42f0cfee18cd88ff808089ac99442b7f492d642c7c774a5f71d": {
-        "anticapture_commission": {
+        "developer_advisory_board_member": {
           "count_attestations": 1,
-          "avg_pmf_score": 3.0,
+          "avg_pmf_score": 4.0,
           "avg_nps_score": 10.0
         },
         "code_of_conduct_council": {
-          "count_attestations": 6,
-          "avg_pmf_score": 3.8333333333333335,
-          "avg_nps_score": 8.166666666666666
-        },
-        "collective_feedback_committee": {
-          "count_attestations": 5,
-          "avg_pmf_score": 4.2,
-          "avg_nps_score": 8.8
-        },
-        "developer_advisory_board": {
-          "count_attestations": 3,
+          "count_attestations": 1,
           "avg_pmf_score": 4.0,
-          "avg_nps_score": 8.333333333333334
-        },
-        "grants_council": {
+          "avg_nps_score": 10.0
+        }
+      },
+      "0x7161c183e6d6f3f44499ffb4e28ed03c569089437778961f5b5544fb54791d4c": {
+        "optimism_grants_council_member": {
           "count_attestations": 1,
           "avg_pmf_score": 4.0,
           "avg_nps_score": 7.0
         },
-        "security_council": {
-          "count_attestations": 6,
-          "avg_pmf_score": 3.6666666666666665,
-          "avg_nps_score": 8.333333333333334
-        }
-      },
-      "0xebf6b760fade46fada00b8b262472612485042d8a45f23487e429ba9c995b532": {
-        "anticapture_commission": {
-          "count_attestations": 5,
-          "avg_pmf_score": 4.4,
-          "avg_nps_score": 9.4
-        },
-        "code_of_conduct_council": {
-          "count_attestations": 2,
-          "avg_pmf_score": 4.5,
-          "avg_nps_score": 8.5
-        },
-        "collective_feedback_committee": {
-          "count_attestations": 4,
-          "avg_pmf_score": 5.0,
-          "avg_nps_score": 9.0
-        },
-        "developer_advisory_board": {
-          "count_attestations": 9,
-          "avg_pmf_score": 4.333333333333333,
-          "avg_nps_score": 9.11111111111111
-        },
-        "grants_council": {
-          "count_attestations": 4,
-          "avg_pmf_score": 4.75,
-          "avg_nps_score": 9.25
-        },
-        "security_council": {
-          "count_attestations": 8,
-          "avg_pmf_score": 4.625,
-          "avg_nps_score": 9.0
-        }
-      },
-      "0x2c9c66379e3e92073edfd55ec87418d56001d78242a2458f39fa6066518ce777": {
-        "anticapture_commission": {
-          "count_attestations": 3,
-          "avg_pmf_score": 4.0,
-          "avg_nps_score": 9.333333333333334
-        },
-        "code_of_conduct_council": {
-          "count_attestations": 6,
-          "avg_pmf_score": 4.5,
-          "avg_nps_score": 9.333333333333334
-        },
-        "collective_feedback_committee": {
-          "count_attestations": 4,
-          "avg_pmf_score": 4.25,
-          "avg_nps_score": 8.75
-        },
-        "developer_advisory_board": {
-          "count_attestations": 3,
-          "avg_pmf_score": 4.666666666666667,
-          "avg_nps_score": 9.333333333333334
-        },
-        "grants_council": {
-          "count_attestations": 4,
-          "avg_pmf_score": 4.25,
-          "avg_nps_score": 8.75
-        },
-        "security_council": {
-          "count_attestations": 6,
-          "avg_pmf_score": 4.166666666666667,
-          "avg_nps_score": 9.166666666666666
-        }
-      },
-      "0x5459ffc1139c419e509c777c138d2e00706bc87b0d790f880383bf02a92e124d": {
-        "anticapture_commission": {
-          "count_attestations": 4,
-          "avg_pmf_score": 4.25,
-          "avg_nps_score": 4.25
-        },
-        "code_of_conduct_council": {
-          "count_attestations": 3,
-          "avg_pmf_score": 2.3333333333333335,
-          "avg_nps_score": 5.0
-        },
-        "collective_feedback_committee": {
-          "count_attestations": 5,
-          "avg_pmf_score": 3.0,
-          "avg_nps_score": 4.8
-        },
-        "developer_advisory_board": {
-          "count_attestations": 10,
-          "avg_pmf_score": 2.9,
-          "avg_nps_score": 6.3
-        },
-        "grants_council": {
-          "count_attestations": 3,
-          "avg_pmf_score": 4.333333333333333,
-          "avg_nps_score": 5.0
-        },
-        "security_council": {
-          "count_attestations": 10,
-          "avg_pmf_score": 3.4,
-          "avg_nps_score": 6.1
-        }
-      },
-      "0x004593c0fe300be66ae4a00fa4a57563e409f3c03d63e2e8a0c174982e250a6a": {
-        "anticapture_commission": {
+        "anticapture_commission_member": {
           "count_attestations": 2,
           "avg_pmf_score": 3.5,
           "avg_nps_score": 8.5
         },
         "code_of_conduct_council": {
-          "count_attestations": 4,
-          "avg_pmf_score": 2.5,
+          "count_attestations": 2,
+          "avg_pmf_score": 3.5,
           "avg_nps_score": 7.5
         },
-        "collective_feedback_committee": {
-          "count_attestations": 6,
-          "avg_pmf_score": 3.3333333333333335,
-          "avg_nps_score": 6.666666666666667
-        },
-        "developer_advisory_board": {
-          "count_attestations": 3,
-          "avg_pmf_score": 2.6666666666666665,
-          "avg_nps_score": 5.666666666666667
-        },
-        "grants_council": {
-          "count_attestations": 5,
-          "avg_pmf_score": 2.8,
-          "avg_nps_score": 7.8
-        },
-        "security_council": {
-          "count_attestations": 5,
-          "avg_pmf_score": 2.4,
-          "avg_nps_score": 7.8
+        "acc_(second_half)": {
+          "count_attestations": 1,
+          "avg_pmf_score": 5.0,
+          "avg_nps_score": 9.0
         }
       },
-      "0xa550a4512ee2040e97a988cbb1818c9951ccf09799c33934b3403c6f07e07962": {
-        "anticapture_commission": {
-          "count_attestations": 3,
-          "avg_pmf_score": 2.6666666666666665,
-          "avg_nps_score": 5.666666666666667
+      "0xbc6524eaed9585ebbca313f8112c3d8ed4a4ac7ff9b5bd6ef92eff715d0d2a58": {
+        "optimism_grants_council_member": {
+          "count_attestations": 4,
+          "avg_pmf_score": 2.25,
+          "avg_nps_score": 4.0
         },
-        "code_of_conduct_council": {
-          "count_attestations": 5,
-          "avg_pmf_score": 2.8,
-          "avg_nps_score": 7.8
+        "anticapture_commission_member": {
+          "count_attestations": 9,
+          "avg_pmf_score": 2.111111111111111,
+          "avg_nps_score": 4.111111111111111
         },
-        "collective_feedback_committee": {
+        "developer_advisory_board_member": {
           "count_attestations": 1,
           "avg_pmf_score": 4.0,
-          "avg_nps_score": 8.0
+          "avg_nps_score": 1.0
         },
-        "developer_advisory_board": {
-          "count_attestations": 3,
-          "avg_pmf_score": 3.0,
-          "avg_nps_score": 3.0
-        },
-        "grants_council": {
+        "code_of_conduct_council_member": {
           "count_attestations": 2,
           "avg_pmf_score": 1.0,
-          "avg_nps_score": 7.5
+          "avg_nps_score": 3.0
+        }
+      },
+      "0x83b46efce8ff1937a49883b323b22d3483d1843522f614ab4f20cc20545067bb": {
+        "optimism_grants_council_member": {
+          "count_attestations": 2,
+          "avg_pmf_score": 4.5,
+          "avg_nps_score": 8.5
         },
-        "security_council": {
-          "count_attestations": 5,
-          "avg_pmf_score": 2.6,
-          "avg_nps_score": 5.2
+        "anticapture_commission_member": {
+          "count_attestations": 7,
+          "avg_pmf_score": 4.714285714285714,
+          "avg_nps_score": 8.571428571428571
+        },
+        "developer_advisory_board_member": {
+          "count_attestations": 2,
+          "avg_pmf_score": 4.5,
+          "avg_nps_score": 9.0
         }
       }
     }
