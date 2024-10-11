@@ -1,3 +1,4 @@
 data/applications.json
 data/openrank/*
 data/rf5_events.parquet
+data/_local/*
