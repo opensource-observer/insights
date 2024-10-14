@@ -1,5 +1,10 @@
 {
     "opRetro": {
         "projectId": "0x77cc2b19e794565ceacafa96ad5fdc27964b605296e0a2303acc93d12659891d"
+    },
+    "drips": {
+      "ethereum": {
+        "ownedBy": "0x87fEEd6162CB7dFe6B62F64366742349bF4D1B05"
+      }
     }
 }
