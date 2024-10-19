@@ -1,11 +1,32 @@
+from dotenv import load_dotenv
 import json
 import os
 import pandas as pd
+import requests
 
 
 CURRENT_DIR = os.path.dirname(__file__)
 LOCALDATA_DIR = os.path.join(CURRENT_DIR, '../data/_local/')
 APPLICATIONS_PATH = os.path.join(LOCALDATA_DIR, 'applications.json')
+
+load_dotenv()
+AGORA_API_KEY = os.environ['AGORA_API_KEY']
+
+
+def fetch_delegates():
+    url = 'https://vote.optimism.io/api/v1/delegates'
+    params = {'limit': 100, 'offset': 0, 'sort': 'most_delegators'}
+    headers = {
+        'accept': 'application/json',
+        'Authorization': f'Bearer {AGORA_API_KEY}'
+    }
+    response = requests.get(url, params=params, headers=headers)
+    if response.status_code == 200:
+        agora_data = response.json()
+    else:
+        print(f"Request failed with status code: {response.status_code}")
+        print(response.text)
+    return agora_data
 
 
 def load_json(json_path):
