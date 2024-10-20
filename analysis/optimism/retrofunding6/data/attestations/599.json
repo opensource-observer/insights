@@ -4254,5 +4254,19 @@
     "voterType": "Guest",
     "votingGroup": "C",
     "selectionMethod": "3.2"
+  },
+  {
+    "id": "0x47bce32815e138de601f34e5f4d17116fe0f22d866cc5acc271c7aabc7dcf9e9",
+    "attester": "0xE4553b743E74dA3424Ac51f8C1E586fd43aE226F",
+    "recipient": "0x29B840bc5Bc889C6F7b12210aB689CFBc00dA478",
+    "timeCreated": 1729290784,
+    "farcasterID": {
+      "type": "BigNumber",
+      "hex": "0x1782"
+    },
+    "round": "5",
+    "voterType": "Guest",
+    "votingGroup": "A",
+    "selectionMethod": "2.1"
   }
 ]

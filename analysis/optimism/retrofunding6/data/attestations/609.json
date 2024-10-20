@@ -12856,5 +12856,360 @@
         }
       ]
     }
+  },
+  {
+    "id": "0x0176ac7bcd9e5f6f9ac3b8d3cbeae9055d9d0ec651f2e151734e15444c95c0cc",
+    "attester": "0xF6872D315CC2E1AfF6abae5dd814fd54755fE97C",
+    "recipient": "0x0000000000000000000000000000000000000000",
+    "timeCreated": 1729115687,
+    "round": "6",
+    "farcasterID": {
+      "type": "BigNumber",
+      "hex": "0x46da"
+    },
+    "metadataSnapshotRefUID": "0xe0b2133d3f1c9de209bf7b2a8fef0f566ad1c4fe859d2be59cb998ad3a114461",
+    "metadataType": 0,
+    "metadataUrl": "https://storage.retrofunding.optimism.io/ipfs/QmT9Vh8c2wm5DNZKYg1fNg1xMpMEzY9Yzka49e41LpKMWo",
+    "metadata": {
+      "round": 6,
+      "category": "Governance Infra & Tooling",
+      "subcategory": [
+        "Governance Infrastructure::Technical infrastructure which powers the voting process within Optimism Governance"
+      ],
+      "impactStatement": [
+        {
+          "question": "How did your infrastructure or tooling support Optimism Governance?",
+          "answer": "30 top contributors to OP stack were identified and selected as expert voters for Retro 5 round - OP Stack, through this selection mechanism, which made it possible to scientifically quantify the expertise and contribution of developers into reputation scores. The scoring and ranking was also designed in the particular context relevant to OP Stack code base. \n\nWe also provided further iteration and flexibility for adaptation for this mechanism to evolve in the future. "
+        },
+        {
+          "question": "Who has benefited most from your infrastructure and tooling?",
+          "answer": "The mechanism made it possible for Citizens House to experiment on expanding the governance body of the collective to include more voters with particular relevant domain expertise. These domain expertise are crucial for certain decision-making in the collective. \n\nWe would say that the most important beneficiary is the Optimism governance collective itself. "
+        }
+      ]
+    }
+  },
+  {
+    "id": "0x02801e8c789e9e80b518e06306062db04812dce557c961cfa0ff25928b7154af",
+    "attester": "0xF6872D315CC2E1AfF6abae5dd814fd54755fE97C",
+    "recipient": "0x0000000000000000000000000000000000000000",
+    "timeCreated": 1729115703,
+    "round": "6",
+    "farcasterID": {
+      "type": "BigNumber",
+      "hex": "0x46da"
+    },
+    "metadataSnapshotRefUID": "0x273ee779ee06a47beb94bed03ae9ba5db9084ff2d1b7dad2babd48550bbbd14b",
+    "metadataType": 0,
+    "metadataUrl": "https://storage.retrofunding.optimism.io/ipfs/Qma3TsJtx71oESsXKiyqPEVg95XVcnap95QyhryokHi7nv",
+    "metadata": {
+      "round": 6,
+      "category": "Governance Infra & Tooling",
+      "subcategory": [
+        "Governance Tooling::Tools which are used by Delegates or Citizens participate in Optimism Governance  tools which are used by Delegates and/or Citizens asuch as voting clients. Tools which support delegates and citizens insights into governance performance and history"
+      ],
+      "impactStatement": [
+        {
+          "question": "How did your infrastructure or tooling support Optimism Governance?",
+          "answer": "This is an additional tool to provide transparency and early verifiability of the reputation scores that OpenRank has generated for repos and developers in Retro 5, using Github activity data. \n\nThe web app made it possible to generate client-side compute results, and replicate the same computation used in Retro 5, therefore it also serves as an educational and accountability tool for Optimism collective to better understand the governance metrics and algos used in a verifiable and transparent way. "
+        },
+        {
+          "question": "Who has benefited most from your infrastructure and tooling?",
+          "answer": "We would say the direct beneficiaries are governance participants and community members, because they can access transparency and accountability using this tool. And the ultimate beneficiary is Optimism governance collective itself. \n\nAlso as an variant usage of this tool, any project community can use this tool to create custom rankings of developers and repos in their own context, therefore this tool is also a public good for the whole Optimism community. "
+        }
+      ]
+    }
+  },
+  {
+    "id": "0x32e7213faa7fb7919426ae3e3445d47d252677d00a772641c5e4f1626134dd75",
+    "attester": "0xF6872D315CC2E1AfF6abae5dd814fd54755fE97C",
+    "recipient": "0x0000000000000000000000000000000000000000",
+    "timeCreated": 1729179927,
+    "round": "6",
+    "farcasterID": {
+      "type": "BigNumber",
+      "hex": "0x06adaf"
+    },
+    "metadataSnapshotRefUID": "0xdef68b0eaf527954764a987d415ba91617006a8c3f9f660ca08f788bfab2fd6e",
+    "metadataType": 0,
+    "metadataUrl": "https://storage.retrofunding.optimism.io/ipfs/QmSTxETgqsUkjNr5E7vu8QpxBafWrXDnhK7pe9cvKKHZMk",
+    "metadata": {
+      "round": 6,
+      "category": "Governance Infra & Tooling",
+      "subcategory": [
+        "Governance Tooling::Tools which are used by Delegates or Citizens participate in Optimism Governance  tools which are used by Delegates and/or Citizens asuch as voting clients. Tools which support delegates and citizens insights into governance performance and history",
+        "Grants Tooling::Tools which support the Token House mission process, including the operation of the grants council. Tools which power or support the Retro Funding process."
+      ],
+      "impactStatement": [
+        {
+          "question": "How did your infrastructure or tooling support Optimism Governance?",
+          "answer": "Since Giveth\u2019s launch of DeVouch in June until Sep 18th, there were over 700 attestations made, with over 150 being for projects in Retro Funding 4 & 5. Our modular tool allows anyone to lend their credibility to projects that are applying for RetroFunding rounds, as well as fundraising on Gitcoin & Giveth. \n\nDeVouch is built in a modular way that allows any grant program to add their projects & any attestor groups to add their reputation. Our default UI allows badgeholders to see in a glance how many people of relevant reputation vouch for the project; e.g. you can quickly see that 2 RF4 Badgeholders, 3 OP Delegates, 11 Gitcoin Passport Holders, 1 RF5 Voter, & 1 Giveth Verifier all [vouched for EAS](https://devouch.xyz/?source=rf5).\n\nEvery project that applied to RF4 & RF5, even those that were rejected, were able to be vouched for, or flagged during the review period. Many of the rejected projects were accurately flagged by the community on DeVouch. \n"
+        },
+        {
+          "question": "Who has benefited most from your infrastructure and tooling?",
+          "answer": "The OP community (esp. delegates) can support projects that are adding value to the Superchain Community. While unable to participate in Retro Funding directly, through DeVouch, they can lend their credibility to them, and leave a comment about the project using our extremely easy to use UX. [Try it out!](https://devouch.xyz/?source=rf6)\n\nVoters & reviewers in Retro Funding programs are able to incorporate the wisdom of the crowds. \n\nWe helped the Foundation prevent imposters. DeVouch made tweets tagging every project that applied in RF5. If impersonation occurred, the project would have seen the tweet, flagged it on DeVouch and reported it.\n\nProjects have a simple way to prove their legitimacy in an industry ripe with scams. Giveth also ran 9 QF rounds (7 hosted on Superchain networks), raising over [$865k for projects](https://giveth.io/qf-archive) like EAS, Pairwise & growthepie alongside projects that are making irl impact like Palestine Children's Relief Fund or the EFF."
+        }
+      ]
+    }
+  },
+  {
+    "id": "0x3793348de3c2d43782234f8bed581d2948b3379f60a510e1ebc5b46c3050a860",
+    "attester": "0xF6872D315CC2E1AfF6abae5dd814fd54755fE97C",
+    "recipient": "0x0000000000000000000000000000000000000000",
+    "timeCreated": 1729102944,
+    "round": "6",
+    "farcasterID": {
+      "type": "BigNumber",
+      "hex": "0x65"
+    },
+    "metadataSnapshotRefUID": "0xe89302ebd22f1b00cf0d6438d72c36b58c993b750ed5663f1b11f80a6a80eb55",
+    "metadataType": 0,
+    "metadataUrl": "https://storage.retrofunding.optimism.io/ipfs/Qmbxb6aKU8zJsETJ3y531aYbKh2LF5n5DzvGETPkjVBLwC",
+    "metadata": {
+      "round": 6,
+      "category": "Governance Infra & Tooling",
+      "subcategory": [
+        "Governance Infrastructure::Technical infrastructure which powers the voting process within Optimism Governance",
+        "Governance Tooling::Tools which are used by Delegates or Citizens participate in Optimism Governance  tools which are used by Delegates and/or Citizens asuch as voting clients. Tools which support delegates and citizens insights into governance performance and history",
+        "Grants Tooling::Tools which support the Token House mission process, including the operation of the grants council. Tools which power or support the Retro Funding process."
+      ],
+      "impactStatement": [
+        {
+          "question": "How did your infrastructure or tooling support Optimism Governance?",
+          "answer": "The Retrofunding & Token House API (https://vote.optimism.io/api_v1) powers the R4 and R5 official voting interfaces (https://round5.optimism.io/). It serves the data that powers the voting app, receives ballot submissions, and manages the updates to EAS.\n\nOn top of powering the main voting UI of retrofunding, this API is also used by a plethora of community applications such as: Retrolist, RetroPGFHub, Delegatematch.xyz, IDriss, opdelegate.com, Tally, Curia, 3dns, Metric Garden, Open Source Observer, and more."
+        },
+        {
+          "question": "Who has benefited most from your infrastructure and tooling?",
+          "answer": "Voting app builders: this API is used by the teams who build the voting UI for each round,\n\nCitizens who vote on RF: when citizens vote with the voting UI, they are leverage this API.\n\nCommunity app builders: community builders use this API to pull data on both Retro Funding, and the Token House."
+        }
+      ]
+    }
+  },
+  {
+    "id": "0x49fc537384bf71ec1ed6f45b8d628f76f1f5c892fe487401f86c2584b1472666",
+    "attester": "0xF6872D315CC2E1AfF6abae5dd814fd54755fE97C",
+    "recipient": "0x0000000000000000000000000000000000000000",
+    "timeCreated": 1729102928,
+    "round": "6",
+    "farcasterID": {
+      "type": "BigNumber",
+      "hex": "0x65"
+    },
+    "metadataSnapshotRefUID": "0xd59c095e565c0f106c1312bda7482c01c11d224702dae90c9f664db6b03b18ed",
+    "metadataType": 0,
+    "metadataUrl": "https://storage.retrofunding.optimism.io/ipfs/QmVQP9qHwzbutKP5X4jdRJmkeY2M9HfvVe8RSKyNuDHBQu",
+    "metadata": {
+      "round": 6,
+      "category": "Governance Infra & Tooling",
+      "subcategory": [
+        "Governance Tooling::Tools which are used by Delegates or Citizens participate in Optimism Governance  tools which are used by Delegates and/or Citizens asuch as voting clients. Tools which support delegates and citizens insights into governance performance and history",
+        "Grants Tooling::Tools which support the Token House mission process, including the operation of the grants council. Tools which power or support the Retro Funding process.",
+        "Governance Infrastructure::Technical infrastructure which powers the voting process within Optimism Governance"
+      ],
+      "impactStatement": [
+        {
+          "question": "How did your infrastructure or tooling support Optimism Governance?",
+          "answer": "The Retro Funding Sign up and Identity App (retrofunding.optimism.io) is the home of Retro Funding, and isused by all projects and individuals who apply to Retro Funding starting from round 4 and beyond.\n\nThis app provides functionality for organization creation, project creation, round application, and claiming functionality for Retro Funding.\n\nOn top of that, it also manages the underlying data structure for the Citizen\u2019s House\u2019 identity model, and interacts with EAS  to write the data onchain.\n\nThis application enables the Retro Funding program to transition from infrequent monolithic rounds to many targeted and specific rounds.\n\n"
+        },
+        {
+          "question": "Who has benefited most from your infrastructure and tooling?",
+          "answer": "Retro Funding applicants: applicants use this app to sign up, manage, and claim.\n\nRetro Funding admins: admins use this app to create and manage rounds, accelerating the number and specificity of rounds"
+        }
+      ]
+    }
+  },
+  {
+    "id": "0x565c0d3fa78d5952f578158607bbcaa3ad6dbd50901b2ac68153185344a5403c",
+    "attester": "0xF6872D315CC2E1AfF6abae5dd814fd54755fE97C",
+    "recipient": "0x0000000000000000000000000000000000000000",
+    "timeCreated": 1729115679,
+    "round": "6",
+    "farcasterID": {
+      "type": "BigNumber",
+      "hex": "0x46da"
+    },
+    "metadataSnapshotRefUID": "0x609618872196629d66db0152d99c506880dbe70fc1883c2d2362f6ed49d46a8e",
+    "metadataType": 0,
+    "metadataUrl": "https://storage.retrofunding.optimism.io/ipfs/QmY8dCWRkdKDtBqn6NJiAy1Dk7Zh9eEjCP5PowLRr8h2a8",
+    "metadata": {
+      "round": 6,
+      "category": "Governance Infra & Tooling",
+      "subcategory": [
+        "Governance Infrastructure::Technical infrastructure which powers the voting process within Optimism Governance",
+        "Governance Tooling::Tools which are used by Delegates or Citizens participate in Optimism Governance  tools which are used by Delegates and/or Citizens asuch as voting clients. Tools which support delegates and citizens insights into governance performance and history"
+      ],
+      "impactStatement": [
+        {
+          "question": "How did your infrastructure or tooling support Optimism Governance?",
+          "answer": "We made possible 5 impact metrics in Retro 5 to give additional information on the repo reputation, or quality indication for voters to make informed decisions.\n\nUsing a web-of-trust approach, the metrics were generated from a reputation graph created on Github activities. These metrics are trust-weighted, and have served voters in Retro round 5 to better understand the quality and reputation of a given repo, beyond just traditional stars/forks/contributors numbers, which are not Sybil-resistant.  "
+        },
+        {
+          "question": "Who has benefited most from your infrastructure and tooling?",
+          "answer": "Upon early feedbacks, these metrics are good predictors of repo impact towards OP Stack. We would say that the direct beneficiaries are voters, as they can make better decisions easier, and the indirect but most important beneficiary is the Optimism governance collective itself. "
+        }
+      ]
+    }
+  },
+  {
+    "id": "0x7ebd785a295d691be7045ee2cb3b12e8fa6175bac58a8f285ede6221f8a4e906",
+    "attester": "0xF6872D315CC2E1AfF6abae5dd814fd54755fE97C",
+    "recipient": "0x0000000000000000000000000000000000000000",
+    "timeCreated": 1729102916,
+    "round": "6",
+    "farcasterID": {
+      "type": "BigNumber",
+      "hex": "0x65"
+    },
+    "metadataSnapshotRefUID": "0xbbf876e3e5440f1614461654be1bac5eb8e12b44ca69ba0793c21d17a4d2a91a",
+    "metadataType": 0,
+    "metadataUrl": "https://storage.retrofunding.optimism.io/ipfs/QmVgJjvgE4mFgUHxkxvwUUrXMN7YF9JtyYoMAp5o877eLb",
+    "metadata": {
+      "round": 6,
+      "category": "Governance Infra & Tooling",
+      "subcategory": [
+        "Governance Infrastructure::Technical infrastructure which powers the voting process within Optimism Governance",
+        "Governance Tooling::Tools which are used by Delegates or Citizens participate in Optimism Governance  tools which are used by Delegates and/or Citizens asuch as voting clients. Tools which support delegates and citizens insights into governance performance and history",
+        "Grants Tooling::Tools which support the Token House mission process, including the operation of the grants council. Tools which power or support the Retro Funding process."
+      ],
+      "impactStatement": [
+        {
+          "question": "How did your infrastructure or tooling support Optimism Governance?",
+          "answer": "The OP governance app (vote.optimism.io) is how users interact with the contracts powering the core logic of Token House voting. From Oct 1, 2023 - September 18th 2024, around 50 proposals were created and voted on by an average of 8.7k voters each. \n\nThese proposals have ranged from critical protocol upgrades for OP like Fault Proofs to mission requests allocating millions of OP to fund the Collective's intents.\n\nDuring this period, we've also introduced several major innovations to the voting app that's made the OP token house UX better, such as:\n\n1. Improving the approval voting experience to reduce the error rate\n2. Improving the proposal creation flow to make the process easier to manage"
+        },
+        {
+          "question": "Who has benefited most from your infrastructure and tooling?",
+          "answer": "Token House voters: delegates vote on proposals on the app\n\nOP foundation: the foundation manage creates proposals on the app\n\nMission request recipients: all intents and mission requests are funded using an approval vote.\n\nGrant council, Security Council, Developer advisory board: all committees on Optimism are appointed through the use of an approval vote."
+        }
+      ]
+    }
+  },
+  {
+    "id": "0x86173cbdc988173862ad9e1318ae29a177082a2e075b9bcab2fd3dc9d3571e5b",
+    "attester": "0xF6872D315CC2E1AfF6abae5dd814fd54755fE97C",
+    "recipient": "0x0000000000000000000000000000000000000000",
+    "timeCreated": 1729115695,
+    "round": "6",
+    "farcasterID": {
+      "type": "BigNumber",
+      "hex": "0x46da"
+    },
+    "metadataSnapshotRefUID": "0xc32e4ed5673ac418af61a2c4487a348fd58188e1f7821cade5f9d6ebd3eb3cd1",
+    "metadataType": 0,
+    "metadataUrl": "https://storage.retrofunding.optimism.io/ipfs/QmbDmYmKBLbL8bk8GtSnUCZMVzm58s6SnLAwiiRaxLHUxE",
+    "metadata": {
+      "round": 6,
+      "category": "Governance Infra & Tooling",
+      "subcategory": [
+        "Governance Infrastructure::Technical infrastructure which powers the voting process within Optimism Governance",
+        "Governance Tooling::Tools which are used by Delegates or Citizens participate in Optimism Governance  tools which are used by Delegates and/or Citizens asuch as voting clients. Tools which support delegates and citizens insights into governance performance and history"
+      ],
+      "impactStatement": [
+        {
+          "question": "How did your infrastructure or tooling support Optimism Governance?",
+          "answer": "We made possible 2 metrics in Retro 4 round for onchain builders. \n\nThe key idea is to count users for onchain applications in a meaningful way, which has a high interest in getting users who are not likely spam and Sybils but reputable real users. \n\nOpenRank's user reputation via Farcaster engagement graph was employed in two different ways that generate two trusted user metrics. The highly ranked Farcaster users according to OpenRank, are highly regarded as reputable real users by Farcaster developer community."
+        },
+        {
+          "question": "Who has benefited most from your infrastructure and tooling?",
+          "answer": "We would say that the direct beneficiaries are voters, as they can make better decisions easier, and the indirect but most important beneficiary is the Optimism governance collective itself. \n\nThis first iteration also opens further avenues to improve the Trusted User Model in the near future."
+        }
+      ]
+    }
+  },
+  {
+    "id": "0x8922c80674df0e50e56cd703e5073ca21073d7fb518b0a3f35fe0f97327d5d43",
+    "attester": "0xF6872D315CC2E1AfF6abae5dd814fd54755fE97C",
+    "recipient": "0x0000000000000000000000000000000000000000",
+    "timeCreated": 1729102912,
+    "round": "6",
+    "farcasterID": {
+      "type": "BigNumber",
+      "hex": "0x65"
+    },
+    "metadataSnapshotRefUID": "0xc97b9e7c372b9fbcc0a89469239d10d6a2daffd36379ebdfc860324b4c2ba177",
+    "metadataType": 0,
+    "metadataUrl": "https://storage.retrofunding.optimism.io/ipfs/QmfGyrW6z9VUSJkQt3WbC2SHDxYVD8jNyQb5ZiNCpPVc4q",
+    "metadata": {
+      "round": 6,
+      "category": "Governance Infra & Tooling",
+      "subcategory": [
+        "Governance Infrastructure::Technical infrastructure which powers the voting process within Optimism Governance",
+        "Governance Tooling::Tools which are used by Delegates or Citizens participate in Optimism Governance  tools which are used by Delegates and/or Citizens asuch as voting clients. Tools which support delegates and citizens insights into governance performance and history",
+        "Grants Tooling::Tools which support the Token House mission process, including the operation of the grants council. Tools which power or support the Retro Funding process."
+      ],
+      "impactStatement": [
+        {
+          "question": "How did your infrastructure or tooling support Optimism Governance?",
+          "answer": "The OP governance contracts power the core logic of Token House voting. From Oct 1, 2023 - September 18th 2024, around 50 proposals were created and voted on by an average of 8.7k voters each. \n\nThese proposals have ranged from critical protocol upgrades for OP like Fault Proofs to mission requests allocating millions of OP to fund the Collective's intents.\n\nDuring this period, we've also introduced several major innovations to the governor that's made the OP token house uniquely capable, such as:\n\n1. Approval voting\n2. Optimistic voting\n3. Proposal types to differentiate standard and supermajority votes"
+        },
+        {
+          "question": "Who has benefited most from your infrastructure and tooling?",
+          "answer": "Token House voters: delegates vote on proposals on the governor\n\nOP foundation: the foundation manage creates proposals on the governor\n\nMission request recipients: all intents and mission requests are funded using an approval vote.\n\nGrant council, Security Council, Developer advisory board: all committees on Optimism are appointed through the use of an approval vote."
+        }
+      ]
+    }
+  },
+  {
+    "id": "0xd584cebedccfbb017f6cd9ab61d007a2aee9587b6923aee0d133ee9048973f7c",
+    "attester": "0xF6872D315CC2E1AfF6abae5dd814fd54755fE97C",
+    "recipient": "0x0000000000000000000000000000000000000000",
+    "timeCreated": 1729102932,
+    "round": "6",
+    "farcasterID": {
+      "type": "BigNumber",
+      "hex": "0x65"
+    },
+    "metadataSnapshotRefUID": "0x113df21dcbdfb6a05b55612fa372a6c9c7420cc91969a4c15b956b175a64df4e",
+    "metadataType": 0,
+    "metadataUrl": "https://storage.retrofunding.optimism.io/ipfs/QmbJ4oMZvcJoHU3TVBgkPNrarTP9AfWdCwfLNvyz2KrhkR",
+    "metadata": {
+      "round": 6,
+      "category": "Governance Infra & Tooling",
+      "subcategory": [
+        "Governance Infrastructure::Technical infrastructure which powers the voting process within Optimism Governance",
+        "Governance Tooling::Tools which are used by Delegates or Citizens participate in Optimism Governance  tools which are used by Delegates and/or Citizens asuch as voting clients. Tools which support delegates and citizens insights into governance performance and history",
+        "Grants Tooling::Tools which support the Token House mission process, including the operation of the grants council. Tools which power or support the Retro Funding process."
+      ],
+      "impactStatement": [
+        {
+          "question": "How did your infrastructure or tooling support Optimism Governance?",
+          "answer": "The Retro Funding 3 Voting App (https://vote.optimism.io/retropgf/3) provided the voting interface for Retro Funding 3. It displayed 600+ projects who applied for the round, and let citizens peruse profits and create and submit their ballot. It was one of the two official voting UIs for this round.\n\nRetro Funding 3 was the largest ever single round in terms of both funding allocation and number of applicants. This round was uniquely enabled by transitioning from spreadsheets to this application. \n\nMany voters spend days filling their ballot with hundreds of projects using this app due to the sheer scale of this round."
+        },
+        {
+          "question": "Who has benefited most from your infrastructure and tooling?",
+          "answer": "Citizens who voted on Round 3: citizens filled their ballots with projects they wanted to receive funding using this app.\n\nApplicants of Round 3: applicants shared their project\u2019s impact by linking to their profile on this app."
+        }
+      ]
+    }
+  },
+  {
+    "id": "0xe60bd6a0c94ac919257442319d3cd8941b5581b69c7c5affa51387a254f28510",
+    "attester": "0xF6872D315CC2E1AfF6abae5dd814fd54755fE97C",
+    "recipient": "0x0000000000000000000000000000000000000000",
+    "timeCreated": 1729092354,
+    "round": "6",
+    "farcasterID": {
+      "type": "BigNumber",
+      "hex": "0x51c0"
+    },
+    "metadataSnapshotRefUID": "0xc9efcaebdbab3851e0d481f28abafe6dda329e4ff765e6f8032542ec23f18620",
+    "metadataType": 0,
+    "metadataUrl": "https://storage.retrofunding.optimism.io/ipfs/Qmc6LykwuS6DGHz8YL4ZDrdi5bYuV8dsWQvAXWo3BvG5jm",
+    "metadata": {
+      "round": 6,
+      "category": "Governance Infra & Tooling",
+      "subcategory": [
+        "Governance Infrastructure::Technical infrastructure which powers the voting process within Optimism Governance",
+        "Governance Tooling::Tools which are used by Delegates or Citizens participate in Optimism Governance  tools which are used by Delegates and/or Citizens asuch as voting clients. Tools which support delegates and citizens insights into governance performance and history"
+      ],
+      "impactStatement": [
+        {
+          "question": "How did your infrastructure or tooling support Optimism Governance?",
+          "answer": "The Party Protocol is an open-source protocol for on-chain group coordination. It lets anyone form a group via a smart contract. The group can crowdfund ETH and then coordinate via on-chain governance.\n\nEvery Party in the Party Protocol is a smart contract that can do anything onchain: send tokens or ETH, swap tokens via DEX, buy and sell NFTs, use apps via WalletConnect, and distribute tokens to members.\n\nParty Protocol / Party.app is not used directly in Optimism's governance, but we think the protocol shows what a more modern, next-gen governance protocol could look like. It's meant to me both more versatile and more consumer-friendly than Compound Governor Bravo."
+        },
+        {
+          "question": "Who has benefited most from your infrastructure and tooling?",
+          "answer": "Users of OP Stack chains, and developers running projects on OP Stack chains. Over 100,000 unique users have used the Party Protocol across all chains, coordinating millions of dollars of funds and passings thousands of proposals within groups.\n\nMany companies and groups that have won RPGF grants in prior rounds have actually used Party to fund and organize their own work through various initiatives. Whether they need to crowdfund resources or coordinate with their own supporters to decide on how funds are used, this is the most useful tool for spinning up a user-friendly DAO."
+        }
+      ]
+    }
   }
 ]

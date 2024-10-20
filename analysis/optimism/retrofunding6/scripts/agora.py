@@ -13,6 +13,40 @@ load_dotenv()
 AGORA_API_KEY = os.environ['AGORA_API_KEY']
 
 
+def agora_api(endpoint, params=None):
+    url = f'https://vote.optimism.io/api/v1/{endpoint}'
+    headers = {
+        'accept': 'application/json',
+        'Authorization': f'Bearer {AGORA_API_KEY}'
+    }
+    agora_data = []
+    
+    has_params = params is not None
+    if not has_params:
+        offset = 0
+        limit = 100
+        params = {'limit': limit, 'offset': offset}
+
+    while True:
+        response = requests.get(url, params=params, headers=headers)
+        if response.status_code == 200:
+            json_data = response.json()
+            new_data = json_data.get('data', [])
+            agora_data.extend(new_data)
+            
+            if has_params or len(new_data) < limit:
+                break
+            
+            params['offset'] += limit
+            print(f"Fetched {len(new_data)} items, offset now at {params['offset']}")
+        else:
+            print(f"Request failed with status code: {response.status_code}")
+            print(response.text)
+            break
+
+    print(f"Fetched a total of {len(agora_data)} items from {endpoint}.")
+    return agora_data
+
 def fetch_delegates():
     url = 'https://vote.optimism.io/api/v1/delegates'
     params = {'limit': 100, 'offset': 0, 'sort': 'most_delegators'}
