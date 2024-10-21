@@ -66,7 +66,7 @@ def most_positive_superlative(df, ref_uid):
     nps_pos_reviews = (dff['nps_score'] > 8).sum() / num_reviews
     
     result = (num_reviews >= 20) and (pmf_pos_reviews >= .95) and (nps_pos_reviews >= .95)
-    return result
+    return bool(result)
 
 def cant_live_without_superlative(df, ref_uid):
     """Determine if a project has 20 reviews and 90% positive PMF."""
@@ -74,7 +74,7 @@ def cant_live_without_superlative(df, ref_uid):
     num_reviews = len(dff)
     pmf_pos_reviews = (dff['pmf_score'] > 2).sum() / num_reviews
     result = (num_reviews >= 20) and (pmf_pos_reviews >= .90)
-    return result
+    return bool(result)
 
 def ratings_distribution(df, ref_uid):
     """Calculate distribution of ratings by citizens and top delegates."""
