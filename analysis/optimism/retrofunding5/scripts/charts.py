@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 import seaborn as sns
 
 # Color definitions
@@ -13,6 +14,7 @@ FONT_SIZE = 14
 SMALLER_FONT_SIZE = 10
 
 IMAGE_WIDTH = 10
+IMAGE_HEIGHT = 3
 
 # Matplotlib configuration
 plt.rcParams.update({
@@ -33,6 +35,10 @@ plt.rcParams.update({
 })
 
 
+def get_plot(data, **kwargs):
+    fig, ax = plt.subplots(figsize=(IMAGE_WIDTH, IMAGE_HEIGHT))
+    data.plot(ax=ax, **kwargs)
+    return fig, ax
 
 
 def distributions_barchart(series, title, xstep=5, ystep=100, ymax=400):
@@ -117,7 +123,7 @@ def format_axis(
             xtick_labels = [str(tick) for tick in xticks]
 
         if xpost:
-            xtick_labels[-1] += f" {xpost}"
+            xtick_labels[-1] += f"{xpost}"
         ax.set_xticklabels(xtick_labels)
     if xpost is not None and not ax.get_xlabel():
         ax.set_xlabel(xpost)
@@ -140,3 +146,168 @@ def format_axis(
         ax.set_ylabel(ypost)
 
     return ax
+
+
+def plot_ballots_by_project_category(
+    unstacked_votes,
+    xcol,
+    ycol='project_name',
+    subtitle=''):
+    
+    if xcol == 'project_percentage':
+        xmax = 12.5
+        scale_factor = 100
+        xpost = '%'
+        xstep = 2.5
+        round_func = lambda x: round(x,1)
+    else:
+        xmax = 200
+        scale_factor = 1/1000.
+        xpost = 'K'
+        xstep = 40
+        round_func = lambda x: round(x,0)
+    
+    n = unstacked_votes[ycol].nunique()
+    v = unstacked_votes['voter_address'].nunique()
+
+    median = unstacked_votes.groupby(ycol)[xcol].median() * scale_factor
+    stdev = unstacked_votes.groupby(ycol)[xcol].std() * scale_factor
+    
+    clipped_votes = unstacked_votes.copy()
+    clipped_votes[xcol] = np.clip(clipped_votes[xcol] * scale_factor, 0, xmax)
+    
+    sorted_median = median.sort_values(ascending=False)
+    clipped_votes[ycol] = pd.Categorical(clipped_votes[ycol], categories=sorted_median.index, ordered=True)
+    clipped_votes = clipped_votes.sort_values(by=ycol)
+    
+    fig, ax = stripplot(
+        unstacked_df=clipped_votes,
+        x=xcol,
+        y=ycol,
+        hue=xcol,
+        row_div=4,
+        hue_norm=(0, xmax),
+        palette="flare",
+        alpha=.25,
+        linewidth=0,
+        size=10,
+        legend=False
+    )
+    ax.set_xlabel(" ")
+    format_axis(ax, xmin=0, xmax=xmax, xstep=xstep, xpost=f"{xpost}+")
+    ax.set_xlim(-xmax*.02, xmax*1.02)
+    
+    yticks = []
+    for lbl in ax.get_yticklabels():
+        p = lbl.get_text()
+        y = lbl.get_position()[1]
+        m = round_func(median.get(p))
+        s = round_func(stdev.get(p))
+        txt = f"Median: {m}{xpost}, Std: {s}{xpost}"
+        ax.text(s=txt, x=xmax*1.03, y=y, ha='left', va='center')
+
+    ax.set_title(f"{subtitle} ({n} projects, {v} voters)\n", loc='left', weight='bold')
+    
+    fig.tight_layout()
+    return fig
+
+
+def plot_medians_by_voter_group(
+    unstacked_votes,
+    xcol,
+    ycol='project_name',
+    group_col='expertise_group',
+    subtitle=''):
+    
+
+    order = list(sorted(unstacked_votes[group_col].unique()))
+    colors = ['black', '#DDD']
+    palette = dict(zip(order,colors))
+    
+    if xcol == 'project_percentage':
+        xmax = 10
+        scale_factor = 100
+        xpost = '%'
+        xstep = 2
+        round_func = lambda x: round(x,1)
+    else:
+        xmax = 200
+        scale_factor = 1/1000.
+        xpost = 'K'
+        xstep = 40
+        round_func = lambda x: round(x,0)
+    
+    n = unstacked_votes[ycol].nunique()
+    v = unstacked_votes['voter_address'].nunique()
+    median = unstacked_votes.groupby(ycol)[xcol].median() * scale_factor
+    sorted_median = median.sort_values(ascending=False)
+    
+    grouped_votes_series = (
+        unstacked_votes.groupby([group_col, ycol])[xcol].median() * scale_factor
+    )
+    
+    grouped_votes = grouped_votes_series.reset_index()
+    grouped_votes[ycol] = pd.Categorical(grouped_votes[ycol], categories=sorted_median.index, ordered=True)
+    grouped_votes = grouped_votes.sort_values(by=ycol)
+    
+    fig, ax = stripplot(
+        unstacked_df=grouped_votes,
+        x=xcol,
+        y=ycol,
+        hue=group_col,
+        row_div=3,
+        hue_order=order,
+        palette=palette,
+        linewidth=1,
+        edgecolor='black',
+        size=8,
+        legend=True
+    )
+    ax.set_xlabel(" ")
+    format_axis(ax, xmin=0, xmax=xmax, xstep=xstep, xpost=f"{xpost}")
+    ax.set_xlim(-xmax*.02, xmax*1.02)
+    
+    for lbl in ax.get_yticklabels():
+        p = lbl.get_text()
+        y = lbl.get_position()[1]
+        
+        x1 = grouped_votes_series.loc[(order[0], p)]
+        x2 = grouped_votes_series.loc[(order[1], p)]
+        if (xcol == 'project_percentage' and abs(x1-x2) > 1) or (xcol == 'project_amount' and abs(x1-x2) > 12.5):
+            facecolor = 'white' if x1 > x2 else "#FFCCDD"
+            txt = f"{round_func(x1-x2):+}{xpost}"
+            ax.text(
+                s=txt, x=(x1+x2)/2, y=y, ha='center', va='center', #fontsize=SMALLER_FONT_SIZE, 
+                bbox=dict(facecolor=facecolor, alpha=1, edgecolor='black', lw=.5)
+            )
+        ax.plot([x1, x2], [y, y], color='black', linewidth=0.8)
+
+    ax.legend(loc='upper left')
+    ax.set_title(f"{subtitle} ({n} projects, {v} voters)\n", loc='left', weight='bold')
+    fig.tight_layout()
+
+
+def category_kde_plots(df_category_votes, category):
+
+    fig, ax = plt.subplots(figsize=(IMAGE_WIDTH, 3), dpi=300)
+    dff = df_category_votes.copy()
+    dff['Category Assignment'] = dff['category_assignment'].apply(lambda x: category if x == category else 'Other')
+    palette = {category: COLOR1, 'Other': "#DDD"}
+    sns.kdeplot(
+        data=dff,
+        x=category,
+        hue='Category Assignment',
+        hue_order=[category, 'Other'],
+        palette=palette,
+        fill=True,
+        common_norm=False,
+        bw_adjust=0.5,
+        ax=ax
+    )
+    format_axis(ax, xmin=0, xmax=100, xpost='%')
+    ax.set_ylabel("")
+    ax.set_xlabel("")
+    ax.spines['left'].set_visible(False)
+    ax.set_yticks([])
+    ax.set_title(f"Share of total budget that should go to {category}\n", loc='left', weight='bold')
+    return fig, ax
