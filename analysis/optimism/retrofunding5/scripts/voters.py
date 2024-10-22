@@ -17,12 +17,12 @@ PAIRWISE_VOTER_LIST = [
 def process_voters(csv_path):
     
     df_voters = pd.read_csv(csv_path)
-    
-    df_voters = df_voters.iloc[:,[6,8,10,11,13]]
+
     df_voters.columns = [c.lower().replace(' ','_') for c in df_voters.columns]
+    df_voters = df_voters[['wallet','op_stack_category','expertise_score','expertise_group','voter_type']]
     
-    df_voters['wallet'] = df_voters['wallet'].str.lower()
     df_voters.rename(columns={'wallet':'voter_address'}, inplace=True)
+    df_voters['voter_address'] = df_voters['voter_address'].str.lower()
 
     df_voters['op_stack_category'] = df_voters['op_stack_category'].apply(lambda x: x.split(' - ')[1])
     df_voters['expertise_score'] = pd.to_numeric(df_voters['expertise_score'], errors='coerce')
@@ -39,11 +39,10 @@ def process_voters(csv_path):
 def process_voter_survey(csv_path):
 
     df_surveys = pd.read_csv(csv_path)
-    df_surveys = df_surveys.drop_duplicates(subset='Wallet Address', keep='last')
-    df_surveys = df_surveys.iloc[:,[2,3,4,6,8,10]]
+    df_surveys = df_surveys.iloc[:,[1,3,4,5,7,9]]
     df_surveys.columns = [
-        'survey_hours_spent', 'survey_rate_voting_ux', 'survey_rate_worry_results',
-        'survey_rate_confidence_results', 'survey_rate_funding_influence', 'voter_address'
+        'voter_address', 'survey_hours_spent', 'survey_rate_voting_ux', 'survey_rate_worry_results',
+        'survey_rate_confidence_results', 'survey_rate_funding_influence'
     ]
     df_surveys['voter_address'] = df_surveys['voter_address'].str.lower()
     df_surveys.set_index('voter_address', inplace=True)

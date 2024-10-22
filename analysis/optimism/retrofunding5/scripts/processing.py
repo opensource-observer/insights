@@ -42,9 +42,17 @@ def process_datasets(
     normalized_voting_dataframe.to_csv(f'{output_dir}/{NORMALIZED_VOTING_DATA_PATH}', index=False)
     
     voters_dataframe = process_voters(voters_csv_path)
+    print(f"Voters dataframe length: {len(voters_dataframe)}")
+
     actual_voters = normalized_voting_dataframe['voter_address'].unique()
+    print(f"Actual voters length: {len(actual_voters)}")
+
     voters_dataframe = voters_dataframe[voters_dataframe.index.isin(actual_voters)]
+    print(f"Voters dataframe length after filtering: {len(voters_dataframe)}")
+
     voters_dataframe = voters_dataframe.join(process_voter_survey(voter_survey_csv_path))
+    print(f"Voters dataframe length after joining survey data: {len(voters_dataframe)}")
+
     voters_dataframe.to_csv(f'{output_dir}/{VOTERS_DATA_PATH}')
 
     projects_dataframe = process_projects(projects_csv_path, project_categories)
