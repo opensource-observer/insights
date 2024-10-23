@@ -6,6 +6,7 @@ import requests
 load_dotenv()
 TOKEN = os.getenv("GITHUB_API_KEY")
 HEADERS = {"Authorization": f"Bearer {TOKEN}"}
+BASE_URL = 'https://api.github.com'
 URL = "https://api.github.com/graphql"
 
 def send_graphql_request(query, variables):
@@ -223,6 +224,22 @@ def validate_github_artifact(artifact):
             "Approved": False,
             "Reason": "No repo provided and owner is a User not an Organization."
         }
+
+
+
+def get_contributors(owner, repo):
+    url = f'{BASE_URL}/repos/{owner}/{repo}/contributors'
+    headers = {'Authorization': f'token {TOKEN}'}
+
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        contributors = response.json()
+        return [(owner, repo, contributor['login'], contributor['contributions']) for contributor in contributors]
+    else:
+        print(f"Error: Unable to fetch contributors (Status Code: {response.status_code})")
+        return []
+
 
 
 if __name__ == "__main__":
