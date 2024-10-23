@@ -10,35 +10,29 @@ GCP_PROJECT = 'opensource-observer'
 
 
 def refresh_farcaster():
-    client = bigquery.Client()
+    client = bigquery.Client(project=GCP_PROJECT)
     os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = CREDENTIALS_PATH
     query = f"""
-        WITH
-        profiles AS (
+        WITH profiles AS(
             SELECT
-            v.fid,
-            v.address,
-            p.custody_address
-            FROM `{GCP_PROJECT}.farcaster.verifications` v
-            JOIN `{GCP_PROJECT}.farcaster.profiles` p ON v.fid = p.fid
-            WHERE v.deleted_at IS NULL
-        ),
-        eth_addresses AS (
-            SELECT
-                fid,
-                address
-            FROM profiles
-            WHERE LENGTH(address) = 42
+                CAST(p.farcaster_id AS int64) as fid,
+                p.custody_address as address,
+                p.username
+            from `{GCP_PROJECT}.oso.stg_farcaster__profiles` p
             UNION ALL
             SELECT
-                fid,
-                custody_address AS address
-            FROM profiles
-        )
-        SELECT DISTINCT
-            fid,
-            address
-        FROM eth_addresses
+                v.fid,
+                v.address,
+                p.username
+            FROM `{GCP_PROJECT}.farcaster.verifications` v
+            JOIN `{GCP_PROJECT}.oso.stg_farcaster__profiles` p
+                ON v.fid = CAST(p.farcaster_id AS int64)
+            WHERE
+                LENGTH(v.address) = 42
+                AND v.deleted_at IS NULL
+            )
+        SELECT DISTINCT *
+        FROM profiles
     """
 
     result = client.query(query)
