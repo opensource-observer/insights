@@ -13,37 +13,26 @@ def refresh_farcaster():
     client = bigquery.Client(project=GCP_PROJECT)
     os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = CREDENTIALS_PATH
     query = f"""
-        WITH
-        profiles AS (
+        WITH profiles AS(
+            SELECT
+                CAST(p.farcaster_id AS int64) as fid,
+                p.custody_address as address,
+                p.username
+            from `{GCP_PROJECT}.oso.stg_farcaster__profiles` p
+            UNION ALL
             SELECT
                 v.fid,
                 v.address,
-                p.custody_address,
                 p.username
             FROM `{GCP_PROJECT}.farcaster.verifications` v
             JOIN `{GCP_PROJECT}.oso.stg_farcaster__profiles` p
                 ON v.fid = CAST(p.farcaster_id AS int64)
-            WHERE v.deleted_at IS NULL
-        ),
-        eth_addresses AS (
-            SELECT
-                fid,
-                address,
-                username
-            FROM profiles
-            WHERE LENGTH(address) = 42
-            UNION ALL
-            SELECT
-                fid,
-                custody_address AS address,
-                username
-            FROM profiles
-        )
-        SELECT DISTINCT
-            fid,
-            address,
-            username
-        FROM eth_addresses
+            WHERE
+                LENGTH(v.address) = 42
+                AND v.deleted_at IS NULL
+            )
+        SELECT DISTINCT *
+        FROM profiles
     """
 
     result = client.query(query)

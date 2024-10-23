@@ -107,7 +107,7 @@ def councils_distribution(df, ref_uid):
     result = {}
     councils = ['Anticapture Commission', 'Code of Conduct', 'Grants Council', 'Security Council']
     for council in councils:
-        dff_council = dff[dff['governance_membership'].apply(lambda x: council in x)]
+        dff_council = dff[dff['governance_membership'].apply(lambda x: isinstance(council, set) and council in x)]
         if dff_council.empty:
             continue
         result.update({
