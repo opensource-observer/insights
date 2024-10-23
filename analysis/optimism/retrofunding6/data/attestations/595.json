@@ -19432,6 +19432,79 @@
     }
   },
   {
+    "id": "0x02d479aefc13a4e3c480955bc50e76decb08066f607b10ca66fe4ab5fa5a74a0",
+    "attester": "0xF6872D315CC2E1AfF6abae5dd814fd54755fE97C",
+    "recipient": "0x0000000000000000000000000000000000000000",
+    "timeCreated": 1729692549,
+    "refUID": "0x0c58b1ec907918773fd6b01d1e5d84601808c3260064568a0285c4d8789b5ea9",
+    "farcasterID": {
+      "type": "BigNumber",
+      "hex": "0x2d7b"
+    },
+    "name": "web3.py",
+    "parentOrgUID": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "projects": [
+      "0xebe03c3d6d33cad60124b9b05ef6e2ff056293a1de3c5fa51dfbb90c86c14bf7"
+    ],
+    "metadataType": 0,
+    "metadataUrl": "https://storage.retrofunding.optimism.io/ipfs/QmRAScmDgKTdaZLZUc9zzGCVXpunEdDwan8Gkp5R6nZCst",
+    "metadata": {
+      "name": "web3.py",
+      "description": "web3.py is an open source library that connects Python developers to Ethereum. The team also maintains a dozen additional lower level Python libraries including py-evm, eth-account, and eth-utils.",
+      "organizationAvatarUrl": "https://storage.googleapis.com/op-atlas/2cf0826a-2629-4f19-bd03-b6a0708fc9b0.png",
+      "organizationCoverImageUrl": "https://storage.googleapis.com/op-atlas/91cff353-7a18-40d5-a8d5-8d4ffcb301c6.png",
+      "socialLinks": {
+        "website": [
+          "https://github.com/ethereum/web3.py",
+          "https://snakecharmers.ethereum.org/"
+        ],
+        "farcaster": [],
+        "twitter": "https://x.com/EthereumPython",
+        "mirror": null
+      },
+      "team": [
+        "11643",
+        "840652"
+      ]
+    }
+  },
+  {
+    "id": "0x1164685db28fa924fbe88c98c1d2a79b5175b2ef819609bc845b0d6488ca22e3",
+    "attester": "0xF6872D315CC2E1AfF6abae5dd814fd54755fE97C",
+    "recipient": "0x0000000000000000000000000000000000000000",
+    "timeCreated": 1729637204,
+    "refUID": "0x61bcab3b44225c1e074a7ab86122f21b1ff98a6811494b847d72ed0e3bafe167",
+    "farcasterID": {
+      "type": "BigNumber",
+      "hex": "0x27ce"
+    },
+    "name": "Collective DAO Catalog",
+    "parentOrgUID": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "projects": [],
+    "metadataType": 0,
+    "metadataUrl": "https://storage.retrofunding.optimism.io/ipfs/QmWpjWzuLd9MrUQFLhBKvqfhaWW3UKF18BxTmr7UbBWW3N",
+    "metadata": {
+      "name": "Collective DAO Catalog",
+      "description": "The Collective DAO Catalog is an open source database that captures, indexes, and archives various events from existing DAOs. Individuals can query across all DAOs, bringing qualitative information of DAO Events into one searchable, source of truth. It was seeded with data from the Original Collective Archives by lavande!",
+      "organizationAvatarUrl": "https://storage.googleapis.com/op-atlas/0c7c0a3b-fe5a-473e-b9f1-dba6f5d38430.png",
+      "organizationCoverImageUrl": "https://storage.googleapis.com/op-atlas/b874a2dd-5937-4684-90c3-c9a2a5cf500b.png",
+      "socialLinks": {
+        "website": [
+          "https://www.daocatalog.xyz/",
+          "https://github.com/amy-jung/collectivedaoarchives.catalog"
+        ],
+        "farcaster": [],
+        "twitter": "https://x.com/itsamyjung/status/1759596645799334238",
+        "mirror": "https://mirror.xyz/amyjung.eth/rTJqs6I7p2AI-98GIcGS70RMQT0HI_hqKdsfFf46nOM"
+      },
+      "team": [
+        "281509",
+        "343051",
+        "10190"
+      ]
+    }
+  },
+  {
     "id": "0x193b14ba38c11318e3739296f4887120cd127712cfc8f6c652af271c21990208",
     "attester": "0xF6872D315CC2E1AfF6abae5dd814fd54755fE97C",
     "recipient": "0x0000000000000000000000000000000000000000",
@@ -19580,6 +19653,111 @@
     }
   },
   {
+    "id": "0x762036a573223bd3b61b09eeca1a32a521efb8614f9693eeeeabea5a875b0789",
+    "attester": "0xF6872D315CC2E1AfF6abae5dd814fd54755fE97C",
+    "recipient": "0x0000000000000000000000000000000000000000",
+    "timeCreated": 1729693567,
+    "refUID": "0xb671a949d30d29956ab3a340b1a0f1df0bf6a5c08b1494102ab081227a00a80a",
+    "farcasterID": {
+      "type": "BigNumber",
+      "hex": "0x06a8df"
+    },
+    "name": "Txtx",
+    "parentOrgUID": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "projects": [
+      "0xbe7cf7c7984c42b76d91b0ad109f013820194b6abf783872f14564dd964c03dc"
+    ],
+    "metadataType": 0,
+    "metadataUrl": "https://storage.retrofunding.optimism.io/ipfs/QmNmzaJ8RSG3L4ZGKPrTKqtAfWkGvoRGvW6JgwcQa4YzBD",
+    "metadata": {
+      "name": "Txtx",
+      "description": "Txtx turns the stress, pain and complexity of Smart Contract Infrastructure management into a secure, reproducible and collaborative developer experience. ",
+      "organizationAvatarUrl": "https://storage.googleapis.com/op-atlas/19cb36d0-ccd6-4872-9d97-5b8d555e37ae.png",
+      "organizationCoverImageUrl": "https://storage.googleapis.com/op-atlas/6d0b7243-72dc-4ffc-aece-b4916b730407.png",
+      "socialLinks": {
+        "website": [
+          "https://txtx.sh"
+        ],
+        "farcaster": [],
+        "twitter": null,
+        "mirror": null
+      },
+      "team": [
+        "436447"
+      ]
+    }
+  },
+  {
+    "id": "0x953fa09b6b3950e43f7010cb85cdb5f916a745fdd677f76cbe28696079e0d3c3",
+    "attester": "0xF6872D315CC2E1AfF6abae5dd814fd54755fE97C",
+    "recipient": "0x0000000000000000000000000000000000000000",
+    "timeCreated": 1729700784,
+    "refUID": "0x5f2ae07a60f6d01728fd62e75d6f75db068d08eb984b66b18db286f341f02bbd",
+    "farcasterID": {
+      "type": "BigNumber",
+      "hex": "0x0460cc"
+    },
+    "name": "Mental Wealth Academy",
+    "parentOrgUID": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "projects": [
+      "0x4140053e8fb4a2dd1017ab794cf6242cee78c664af8fad74d39744aa3b6e7708"
+    ],
+    "metadataType": 0,
+    "metadataUrl": "https://storage.retrofunding.optimism.io/ipfs/QmNrPZDB5n3xeqyip3MmmPfmyuhStXzcwAWjT4WkQ3TaoK",
+    "metadata": {
+      "name": "Mental Wealth Academy",
+      "description": ":// Mental Wealth Academy is a Celebration of Information. Access The Next Generation Of Learning. Books, & Resources Available Online. \u263d\u2606\u2604\u263c\u2728\u2727\u2726\u2604\u263e",
+      "organizationAvatarUrl": "https://storage.googleapis.com/op-atlas/a906cafe-fcb5-49c1-8912-bf4a272f0cc6.png",
+      "organizationCoverImageUrl": "https://storage.googleapis.com/op-atlas/ccf6a50b-7e91-4bcb-bfde-d588c427f156.png",
+      "socialLinks": {
+        "website": [
+          "mentalwealthacademy.net"
+        ],
+        "farcaster": [
+          "https://warpcast.com/metawavestudio"
+        ],
+        "twitter": "https://x.com/GodsFavoriteQ",
+        "mirror": "https://paragraph.xyz/@mentalwealthacademy"
+      },
+      "team": [
+        "286924"
+      ]
+    }
+  },
+  {
+    "id": "0xcfb826aafe9d2d2cb8175043f064a190a33927caceab535bebc3c16d139a62df",
+    "attester": "0xF6872D315CC2E1AfF6abae5dd814fd54755fE97C",
+    "recipient": "0x0000000000000000000000000000000000000000",
+    "timeCreated": 1729637084,
+    "refUID": "0x61bcab3b44225c1e074a7ab86122f21b1ff98a6811494b847d72ed0e3bafe167",
+    "farcasterID": {
+      "type": "BigNumber",
+      "hex": "0x27ce"
+    },
+    "name": "Collective DAO Catalog",
+    "parentOrgUID": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "projects": [],
+    "metadataType": 0,
+    "metadataUrl": "https://storage.retrofunding.optimism.io/ipfs/QmQzZASJTk92RokdWHZ14sTAyc2NqfjuffdsA93mVqr1ky",
+    "metadata": {
+      "name": "Collective DAO Catalog",
+      "description": "The Collective DAO Catalog is an open source database that captures, indexes, and archives various events from existing DAOs. It was seed with data from the Original Collective Archives by lavande. ",
+      "organizationAvatarUrl": "https://storage.googleapis.com/op-atlas/0c7c0a3b-fe5a-473e-b9f1-dba6f5d38430.png",
+      "organizationCoverImageUrl": "https://storage.googleapis.com/op-atlas/26e17643-511b-467b-a3bf-c3ff13e71c3a.png",
+      "socialLinks": {
+        "website": [
+          "https://www.daocatalog.xyz/"
+        ],
+        "farcaster": [],
+        "twitter": "https://x.com/itsamyjung/status/1759596645799334238",
+        "mirror": "https://mirror.xyz/amyjung.eth/rTJqs6I7p2AI-98GIcGS70RMQT0HI_hqKdsfFf46nOM"
+      },
+      "team": [
+        "10190"
+      ]
+    }
+  },
+  {
     "id": "0xd3c16e2c8c576a281db5d59f1de2b92001ecd1a69fcb8cfa81704d39087a3991",
     "attester": "0xF6872D315CC2E1AfF6abae5dd814fd54755fE97C",
     "recipient": "0x0000000000000000000000000000000000000000",
@@ -19645,75 +19823,6 @@
       },
       "team": [
         "218282"
-      ]
-    }
-  },
-  {
-    "id": "0x1164685db28fa924fbe88c98c1d2a79b5175b2ef819609bc845b0d6488ca22e3",
-    "attester": "0xF6872D315CC2E1AfF6abae5dd814fd54755fE97C",
-    "recipient": "0x0000000000000000000000000000000000000000",
-    "timeCreated": 1729637204,
-    "refUID": "0x61bcab3b44225c1e074a7ab86122f21b1ff98a6811494b847d72ed0e3bafe167",
-    "farcasterID": {
-      "type": "BigNumber",
-      "hex": "0x27ce"
-    },
-    "name": "Collective DAO Catalog",
-    "parentOrgUID": "0x0000000000000000000000000000000000000000000000000000000000000000",
-    "projects": [],
-    "metadataType": 0,
-    "metadataUrl": "https://storage.retrofunding.optimism.io/ipfs/QmWpjWzuLd9MrUQFLhBKvqfhaWW3UKF18BxTmr7UbBWW3N",
-    "metadata": {
-      "name": "Collective DAO Catalog",
-      "description": "The Collective DAO Catalog is an open source database that captures, indexes, and archives various events from existing DAOs. Individuals can query across all DAOs, bringing qualitative information of DAO Events into one searchable, source of truth. It was seeded with data from the Original Collective Archives by lavande!",
-      "organizationAvatarUrl": "https://storage.googleapis.com/op-atlas/0c7c0a3b-fe5a-473e-b9f1-dba6f5d38430.png",
-      "organizationCoverImageUrl": "https://storage.googleapis.com/op-atlas/b874a2dd-5937-4684-90c3-c9a2a5cf500b.png",
-      "socialLinks": {
-        "website": [
-          "https://www.daocatalog.xyz/",
-          "https://github.com/amy-jung/collectivedaoarchives.catalog"
-        ],
-        "farcaster": [],
-        "twitter": "https://x.com/itsamyjung/status/1759596645799334238",
-        "mirror": "https://mirror.xyz/amyjung.eth/rTJqs6I7p2AI-98GIcGS70RMQT0HI_hqKdsfFf46nOM"
-      },
-      "team": [
-        "281509",
-        "343051",
-        "10190"
-      ]
-    }
-  },
-  {
-    "id": "0xcfb826aafe9d2d2cb8175043f064a190a33927caceab535bebc3c16d139a62df",
-    "attester": "0xF6872D315CC2E1AfF6abae5dd814fd54755fE97C",
-    "recipient": "0x0000000000000000000000000000000000000000",
-    "timeCreated": 1729637084,
-    "refUID": "0x61bcab3b44225c1e074a7ab86122f21b1ff98a6811494b847d72ed0e3bafe167",
-    "farcasterID": {
-      "type": "BigNumber",
-      "hex": "0x27ce"
-    },
-    "name": "Collective DAO Catalog",
-    "parentOrgUID": "0x0000000000000000000000000000000000000000000000000000000000000000",
-    "projects": [],
-    "metadataType": 0,
-    "metadataUrl": "https://storage.retrofunding.optimism.io/ipfs/QmQzZASJTk92RokdWHZ14sTAyc2NqfjuffdsA93mVqr1ky",
-    "metadata": {
-      "name": "Collective DAO Catalog",
-      "description": "The Collective DAO Catalog is an open source database that captures, indexes, and archives various events from existing DAOs. It was seed with data from the Original Collective Archives by lavande. ",
-      "organizationAvatarUrl": "https://storage.googleapis.com/op-atlas/0c7c0a3b-fe5a-473e-b9f1-dba6f5d38430.png",
-      "organizationCoverImageUrl": "https://storage.googleapis.com/op-atlas/26e17643-511b-467b-a3bf-c3ff13e71c3a.png",
-      "socialLinks": {
-        "website": [
-          "https://www.daocatalog.xyz/"
-        ],
-        "farcaster": [],
-        "twitter": "https://x.com/itsamyjung/status/1759596645799334238",
-        "mirror": "https://mirror.xyz/amyjung.eth/rTJqs6I7p2AI-98GIcGS70RMQT0HI_hqKdsfFf46nOM"
-      },
-      "team": [
-        "10190"
       ]
     }
   }
