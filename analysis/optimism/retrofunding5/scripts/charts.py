@@ -165,7 +165,7 @@ def plot_ballots_by_project_category(
         scale_factor = 1/1000.
         xpost = 'K'
         xstep = 40
-        round_func = lambda x: round(x,0)
+        round_func = lambda x: int(round(x,0))
     
     n = unstacked_votes[ycol].nunique()
     v = unstacked_votes['voter_address'].nunique()
@@ -215,6 +215,8 @@ def plot_ballots_by_project_category(
 def plot_medians_by_voter_group(
     unstacked_votes,
     xcol,
+    xmax=None,
+    xstep=None,
     ycol='project_name',
     group_col='expertise_group',
     subtitle=''):
@@ -225,20 +227,18 @@ def plot_medians_by_voter_group(
     palette = dict(zip(order,colors))
     
     if xcol == 'project_percentage':
-        xmax = 10
+        xmax = 10 if xmax is None else xmax
         scale_factor = 100
         xpost = '%'
-        xstep = 2
+        xstep = 2 if xstep is None else xstep
         round_func = lambda x: round(x,1)
     else:
-        xmax = 200
+        xmax = 200 if xmax is None else xmax
         scale_factor = 1/1000.
         xpost = 'K'
-        xstep = 40
-        round_func = lambda x: round(x,0)
+        xstep = 40 if xstep is None else xstep
+        round_func = lambda x: int(round(x,0))
     
-    n = unstacked_votes[ycol].nunique()
-    v = unstacked_votes['voter_address'].nunique()
     median = unstacked_votes.groupby(ycol)[xcol].median() * scale_factor
     sorted_median = median.sort_values(ascending=False)
     
@@ -283,7 +283,7 @@ def plot_medians_by_voter_group(
         ax.plot([x1, x2], [y, y], color='black', linewidth=0.8)
 
     ax.legend(loc='upper left')
-    ax.set_title(f"{subtitle} ({n} projects, {v} voters)\n", loc='left', weight='bold')
+    ax.set_title(f"{subtitle}\n", loc='left', weight='bold')
     fig.tight_layout()
 
 
