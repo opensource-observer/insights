@@ -1734,5 +1734,45 @@
     "timeCreated": 1728939672,
     "govSeason": "5",
     "govRole": "Badgeholder Reviewer"
+  },
+  {
+    "id": "0x7cf6494abf35e48dd68252e66db40e8a85cd04a3280836233965906eafb34938",
+    "attester": "0xE4553b743E74dA3424Ac51f8C1E586fd43aE226F",
+    "recipient": "0xf346100e892553DcEb41A927Fb668DA7B0b7C964",
+    "timeCreated": 1729791005,
+    "govSeason": "6",
+    "govRole": "Developer Advisory Board Lead"
+  },
+  {
+    "id": "0xae86855cee97c728dae3919df2d428eb3fec8112523fee407c9c836aaee34056",
+    "attester": "0xE4553b743E74dA3424Ac51f8C1E586fd43aE226F",
+    "recipient": "0x7d547666209755FB833f9B37EebEa38eBF513Abb",
+    "timeCreated": 1729791005,
+    "govSeason": "6",
+    "govRole": "Code of Conduct Council Lead"
+  },
+  {
+    "id": "0xc38acc52c3d8128b82cae7ca2e0ba6c930019833cd7e5b9e65b1853f491b7d07",
+    "attester": "0xE4553b743E74dA3424Ac51f8C1E586fd43aE226F",
+    "recipient": "0xDCF7bE2ff93E1a7671724598b1526F3A33B1eC25",
+    "timeCreated": 1729791005,
+    "govSeason": "6",
+    "govRole": "Optimism Grants Council Lead"
+  },
+  {
+    "id": "0xd41e8a93bcc526b918cc40c3190e1da44542e9dbc5e12945ead463f95be807dd",
+    "attester": "0xE4553b743E74dA3424Ac51f8C1E586fd43aE226F",
+    "recipient": "0xA02E54E65d6B3F119eA72Fc251FeFf8d08f9297D",
+    "timeCreated": 1729791005,
+    "govSeason": "6",
+    "govRole": "Security Council Lead"
+  },
+  {
+    "id": "0xf27d96482d2793385d9a94bac099d7e4d50fca20b8aa1d2215a40dfad6b96d2b",
+    "attester": "0xE4553b743E74dA3424Ac51f8C1E586fd43aE226F",
+    "recipient": "0x8c580556Fdb1f57853e49F409Ae9b89f7658e7A2",
+    "timeCreated": 1729791005,
+    "govSeason": "6",
+    "govRole": "Anticapture Commission Lead"
   }
 ]
