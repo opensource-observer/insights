@@ -1,5 +1,5 @@
 {
-    "retro_grants": [
+    "retro_grant": [
         {
             "name": "rf_2",
             "collection_name": "op-rpgf2",
@@ -26,12 +26,19 @@
                 {"name": "Signup Opens", "date": "2024-05-23"},
                 {"name": "Voting Ends", "date": "2024-07-11"}
             ]
+        },
+        {
+            "name": "arb_stip_1",
+            "collection_name": "arb-stip-1",
+            "date": "2023-11-13",
+            "other_key_dates": []
         }
     ],
-    "airdrops": [
+    "airdrop": [
         {
-            "name": "airdrop_1_claims",
-            "date": "2022-05-15",
+            "name": "airdrop_1",
+            "date": "2022-05-22",
+            "amount": 214748364.80,
             "other_key_dates": [
                 {"name": "Snapshot Taken", "date": "2022-03-25"}
             ],
@@ -39,14 +46,9 @@
             "table_col": "address"
         },
         {
-            "name": "airdrop_1_direct_transfers",
-            "date": "2023-09-15",
-            "table": "static_data_sources.op_airdrop1_addresses_detailed_list",
-            "table_col": "address"        
-        },
-        {
             "name": "airdrop_2",
-            "date": "2023-02-23",
+            "date": "2023-02-09",
+            "amount": 11742277.10,
             "other_key_dates": [
                 {"name": "Snapshot Taken", "date": "2023-01-20"}
             ],
@@ -56,6 +58,7 @@
         {
             "name": "airdrop_3",
             "date": "2023-09-18",
+            "amount": 19411313.29,
             "other_key_dates": [
                 {"name": "Snapshot Taken", "date": "2023-07-20"}
             ],
@@ -65,10 +68,21 @@
         {
             "name": "airdrop_4",
             "date": "2024-02-20",
+            "amount": 10343757.81,
             "other_key_dates": [
                 {"name": "Snapshot Taken", "date": "2024-01-10"}
             ],
             "table": "static_data_sources.op_airdrop4_addresses_detailed_list",
+            "table_col": "address"
+        },
+        {
+            "name": "arb_airdrop_1",
+            "date": "2023-03-23",
+            "amount": 1162166000,
+            "other_key_dates": [
+                {"name": "Snapshot Taken", "date": "2023-02-06"}
+            ],
+            "table": "static_data_sources.arb_airdrop1_addresses",
             "table_col": "address"
         }
     ]
