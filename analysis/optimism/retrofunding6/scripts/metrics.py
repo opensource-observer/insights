@@ -105,9 +105,10 @@ def councils_distribution(df, ref_uid):
     """Calculate distribution of reviews by governance members."""
     dff = df[df[PROJECT_UID] == ref_uid]
     result = {}
-    councils = ['Anticapture Commission', 'Code of Conduct', 'Grants Council', 'Security Council']
+    councils = ['Anticapture Commission', 'Code of Conduct', 'Grants Council', 
+                'Security Council', 'Developer Advisory Board', 'Feedback Commission']
     for council in councils:
-        dff_council = dff[dff['governance_membership'].apply(lambda x: isinstance(council, set) and council in x)]
+        dff_council = dff[dff['governance_membership'].apply(lambda x: isinstance(x, set) and council in x)]
         if dff_council.empty:
             continue
         result.update({
