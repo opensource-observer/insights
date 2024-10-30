@@ -13,6 +13,7 @@
       "0x2e32e115776c29c86d4f82f20109d78964f8886ee735e86a3a049ede6c822099": 3,
       "0x32942ffa0d751769bb55b53d9c32085463e9bfe668ae8aa5d4a736c46b4130c5": 11,
       "0x3d7a2f24e671dc213e741a3e485ae306fdeabc488222496566a93491df40fbf6": 1,
+      "0x3ecbf66c1b21342b26acb0f7d4c6b8bbbef168ffafff3f425de3503fd8dfa535": 14,
       "0x4a4f522807b32a1e1362a37c868d107f63407947d4efdc4e9ecc94c0fa77db0c": 7,
       "0x4d7ac580e10414ef62d024b14ad94ebd1434efacd1fd3f453560b2916f2606d2": 4,
       "0x4d840826049258b3895326fd67680cca25df9543d67859df49b9ff5635b62598": 11,
@@ -30,6 +31,7 @@
       "0x8d7569742539aab697bd8825e7c49883743778b38b6090660fbdf84ec2c3938f": 6,
       "0x941a54c065d6e191d7816a63c83648764e6d219db0a2fe804706576a957fcc4d": 1,
       "0x98877a3c5f3d5eee496386ae93a23b17f0f51b70b3041b3c8226f98fbeca09ec": 15,
+      "0xa20ade372da3150ca8720c7dc096768f273c60d5d9fddd5c82bd0954126009df": 3,
       "0xa48910be16b303051d04ee3b002a0c5e5b6b362d68723234df46fae3e987e40d": 2,
       "0xaa4cf223915387f8e0cd66640f86f4f770d0c1edfc4303ce1d596a735747e673": 3,
       "0xb6ec40384dd32ac1b251c84c572afc016d1eec222e6c5a4070f75a29965558bc": 2,
@@ -62,6 +64,7 @@
       "0x2e32e115776c29c86d4f82f20109d78964f8886ee735e86a3a049ede6c822099": 3,
       "0x32942ffa0d751769bb55b53d9c32085463e9bfe668ae8aa5d4a736c46b4130c5": 10,
       "0x3d7a2f24e671dc213e741a3e485ae306fdeabc488222496566a93491df40fbf6": 1,
+      "0x3ecbf66c1b21342b26acb0f7d4c6b8bbbef168ffafff3f425de3503fd8dfa535": 12,
       "0x4a4f522807b32a1e1362a37c868d107f63407947d4efdc4e9ecc94c0fa77db0c": 5,
       "0x4d7ac580e10414ef62d024b14ad94ebd1434efacd1fd3f453560b2916f2606d2": 4,
       "0x4d840826049258b3895326fd67680cca25df9543d67859df49b9ff5635b62598": 9,
@@ -79,6 +82,7 @@
       "0x8d7569742539aab697bd8825e7c49883743778b38b6090660fbdf84ec2c3938f": 6,
       "0x941a54c065d6e191d7816a63c83648764e6d219db0a2fe804706576a957fcc4d": 1,
       "0x98877a3c5f3d5eee496386ae93a23b17f0f51b70b3041b3c8226f98fbeca09ec": 13,
+      "0xa20ade372da3150ca8720c7dc096768f273c60d5d9fddd5c82bd0954126009df": 3,
       "0xa48910be16b303051d04ee3b002a0c5e5b6b362d68723234df46fae3e987e40d": 2,
       "0xaa4cf223915387f8e0cd66640f86f4f770d0c1edfc4303ce1d596a735747e673": 3,
       "0xb6ec40384dd32ac1b251c84c572afc016d1eec222e6c5a4070f75a29965558bc": 2,
@@ -107,6 +111,7 @@
       "0x1e08897960cdb18df87f253f4e0f047b2edba189ea7403e5448ed2ba443f0013": 4,
       "0x21baeb053d557821f9ad4050e665332b3f086ecb320aa64f5191eab2fcb0bafa": 1,
       "0x32942ffa0d751769bb55b53d9c32085463e9bfe668ae8aa5d4a736c46b4130c5": 3,
+      "0x3ecbf66c1b21342b26acb0f7d4c6b8bbbef168ffafff3f425de3503fd8dfa535": 3,
       "0x4a4f522807b32a1e1362a37c868d107f63407947d4efdc4e9ecc94c0fa77db0c": 2,
       "0x4d840826049258b3895326fd67680cca25df9543d67859df49b9ff5635b62598": 3,
       "0x5decc7c7bb5ac6448be3408fd18e5c75738725d739711985e2c55026d2fa1391": 1,
@@ -120,6 +125,7 @@
       "0x8baac027df9c78c3dbda664c8f0190391e6b4bdabf240da9ccc4f0837933d8f2": 5,
       "0x8d7569742539aab697bd8825e7c49883743778b38b6090660fbdf84ec2c3938f": 1,
       "0x98877a3c5f3d5eee496386ae93a23b17f0f51b70b3041b3c8226f98fbeca09ec": 4,
+      "0xa20ade372da3150ca8720c7dc096768f273c60d5d9fddd5c82bd0954126009df": 1,
       "0xa48910be16b303051d04ee3b002a0c5e5b6b362d68723234df46fae3e987e40d": 1,
       "0xbb1e4aadda991e93d4ba4630582f222b2c57c0b0d729e29247cf2a3873936808": 3,
       "0xc4780d63f80531d1ba1ea9b05697b9288da5598fb1f6f8b78afd91c007c97b1b": 3,
@@ -147,6 +153,7 @@
       "0x2e32e115776c29c86d4f82f20109d78964f8886ee735e86a3a049ede6c822099": 7.0,
       "0x32942ffa0d751769bb55b53d9c32085463e9bfe668ae8aa5d4a736c46b4130c5": 8.909090909090908,
       "0x3d7a2f24e671dc213e741a3e485ae306fdeabc488222496566a93491df40fbf6": 2.0,
+      "0x3ecbf66c1b21342b26acb0f7d4c6b8bbbef168ffafff3f425de3503fd8dfa535": 8.357142857142858,
       "0x4a4f522807b32a1e1362a37c868d107f63407947d4efdc4e9ecc94c0fa77db0c": 6.428571428571429,
       "0x4d7ac580e10414ef62d024b14ad94ebd1434efacd1fd3f453560b2916f2606d2": 8.75,
       "0x4d840826049258b3895326fd67680cca25df9543d67859df49b9ff5635b62598": 8.181818181818182,
@@ -164,6 +171,7 @@
       "0x8d7569742539aab697bd8825e7c49883743778b38b6090660fbdf84ec2c3938f": 8.5,
       "0x941a54c065d6e191d7816a63c83648764e6d219db0a2fe804706576a957fcc4d": 5.0,
       "0x98877a3c5f3d5eee496386ae93a23b17f0f51b70b3041b3c8226f98fbeca09ec": 7.6,
+      "0xa20ade372da3150ca8720c7dc096768f273c60d5d9fddd5c82bd0954126009df": 7.666666666666667,
       "0xa48910be16b303051d04ee3b002a0c5e5b6b362d68723234df46fae3e987e40d": 8.5,
       "0xaa4cf223915387f8e0cd66640f86f4f770d0c1edfc4303ce1d596a735747e673": 7.666666666666667,
       "0xb6ec40384dd32ac1b251c84c572afc016d1eec222e6c5a4070f75a29965558bc": 7.5,
@@ -186,6 +194,7 @@
     "name": "most_positive_superlative",
     "description": "Most positive superlative (20 reviews, 95% high PMF and 95% high NPS)",
     "data": {
+      "0x3ecbf66c1b21342b26acb0f7d4c6b8bbbef168ffafff3f425de3503fd8dfa535": false,
       "0x8baac027df9c78c3dbda664c8f0190391e6b4bdabf240da9ccc4f0837933d8f2": false,
       "0x5e6c436e48e56d6d9622ba5d0be0035c314e2b29d2afc8f5f1ee8ac75cd42532": false,
       "0x6aa80764b6082947c3b2de86fe12804eb475b0afb719de50b9eed60b86f20535": false,
@@ -204,6 +213,7 @@
       "0x5decc7c7bb5ac6448be3408fd18e5c75738725d739711985e2c55026d2fa1391": false,
       "0xdff778291bf6893ac1c67540cb7b552781721138767dbf59dd1d1ba132a4c377": false,
       "0x008875f970469e090a5a843c68e3f8444e110a741990f03938e4ea42df8d11a2": false,
+      "0xa20ade372da3150ca8720c7dc096768f273c60d5d9fddd5c82bd0954126009df": false,
       "0x1e08897960cdb18df87f253f4e0f047b2edba189ea7403e5448ed2ba443f0013": false,
       "0xbb1e4aadda991e93d4ba4630582f222b2c57c0b0d729e29247cf2a3873936808": false,
       "0xf718cb944a663318db4e425bfb8aeed45b3718e6cf9f665d17962e9d2cb71ef5": false,
@@ -235,6 +245,7 @@
     "name": "cant_live_without_superlative",
     "description": "Can't live without superlative (20 reviews, 90% high PMF)",
     "data": {
+      "0x3ecbf66c1b21342b26acb0f7d4c6b8bbbef168ffafff3f425de3503fd8dfa535": false,
       "0x8baac027df9c78c3dbda664c8f0190391e6b4bdabf240da9ccc4f0837933d8f2": false,
       "0x5e6c436e48e56d6d9622ba5d0be0035c314e2b29d2afc8f5f1ee8ac75cd42532": false,
       "0x6aa80764b6082947c3b2de86fe12804eb475b0afb719de50b9eed60b86f20535": false,
@@ -253,6 +264,7 @@
       "0x5decc7c7bb5ac6448be3408fd18e5c75738725d739711985e2c55026d2fa1391": false,
       "0xdff778291bf6893ac1c67540cb7b552781721138767dbf59dd1d1ba132a4c377": false,
       "0x008875f970469e090a5a843c68e3f8444e110a741990f03938e4ea42df8d11a2": false,
+      "0xa20ade372da3150ca8720c7dc096768f273c60d5d9fddd5c82bd0954126009df": false,
       "0x1e08897960cdb18df87f253f4e0f047b2edba189ea7403e5448ed2ba443f0013": false,
       "0xbb1e4aadda991e93d4ba4630582f222b2c57c0b0d729e29247cf2a3873936808": false,
       "0xf718cb944a663318db4e425bfb8aeed45b3718e6cf9f665d17962e9d2cb71ef5": false,
@@ -284,6 +296,18 @@
     "name": "percentage_distributions",
     "description": "Percentage distribution of different ratings by citizens and top delegates",
     "data": {
+      "0x3ecbf66c1b21342b26acb0f7d4c6b8bbbef168ffafff3f425de3503fd8dfa535": {
+        "citizens": {
+          "extremely_upset": 0.3333333333333333,
+          "somewhat_upset": 0.3333333333333333,
+          "neutral": 0.3333333333333333
+        },
+        "top_delegates": {
+          "extremely_upset": 0.0,
+          "somewhat_upset": 0.6666666666666666,
+          "neutral": 0.3333333333333333
+        }
+      },
       "0x8baac027df9c78c3dbda664c8f0190391e6b4bdabf240da9ccc4f0837933d8f2": {
         "citizens": {
           "extremely_upset": 0.3076923076923077,
@@ -497,6 +521,18 @@
         "top_delegates": {
           "extremely_upset": 0.0,
           "somewhat_upset": 1.0,
+          "neutral": 0.0
+        }
+      },
+      "0xa20ade372da3150ca8720c7dc096768f273c60d5d9fddd5c82bd0954126009df": {
+        "citizens": {
+          "extremely_upset": 0.6666666666666666,
+          "somewhat_upset": 0.3333333333333333,
+          "neutral": 0.0
+        },
+        "top_delegates": {
+          "extremely_upset": 1.0,
+          "somewhat_upset": 0.0,
           "neutral": 0.0
         }
       },
@@ -806,6 +842,18 @@
     "name": "elected_governance_reviews",
     "description": "Reviews from elected governance members",
     "data": {
+      "0x3ecbf66c1b21342b26acb0f7d4c6b8bbbef168ffafff3f425de3503fd8dfa535": {
+        "anticapture_commission": {
+          "count_attestations": 2,
+          "avg_pmf_score": 1.5,
+          "avg_nps_score": 7.0
+        },
+        "grants_council": {
+          "count_attestations": 2,
+          "avg_pmf_score": 2.0,
+          "avg_nps_score": 8.5
+        }
+      },
       "0x8baac027df9c78c3dbda664c8f0190391e6b4bdabf240da9ccc4f0837933d8f2": {
         "anticapture_commission": {
           "count_attestations": 4,
@@ -926,6 +974,7 @@
       "0x5decc7c7bb5ac6448be3408fd18e5c75738725d739711985e2c55026d2fa1391": {},
       "0xdff778291bf6893ac1c67540cb7b552781721138767dbf59dd1d1ba132a4c377": {},
       "0x008875f970469e090a5a843c68e3f8444e110a741990f03938e4ea42df8d11a2": {},
+      "0xa20ade372da3150ca8720c7dc096768f273c60d5d9fddd5c82bd0954126009df": {},
       "0x1e08897960cdb18df87f253f4e0f047b2edba189ea7403e5448ed2ba443f0013": {
         "anticapture_commission": {
           "count_attestations": 1,
