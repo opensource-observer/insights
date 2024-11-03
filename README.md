@@ -5,7 +5,7 @@
 
 This repository contains insights and exploratory data analysis on the health of open source software ecosystems. 
 
-Juypter Notebooks are included so others can get inspiration and understand/improve upon our analysis. Where practical, copies of data used to generate insights has been saved in CSV or JSON format. However, many of the notebooks rely on direct queries to the data warehouse and therefore will not run locally without API access. These notebooks are not actively maintained and links will go stale over time.
+Juypter Notebooks are included so others can get inspiration and understand/improve upon our analysis. Where practical, copies of data used to generate insights has been saved in CSV or JSON format. However, many of the notebooks rely on direct queries to the data warehouse and therefore will not run locally without a live connection. Note: not all of these notebooks are actively maintained, so some queries may go stale over time.
 
 ## Repository Structure
 
@@ -53,14 +53,6 @@ The visualizations folder contains visualizations that are used in many of the r
 
 # Contributing
 
-We welcome contributions to this repository. Please see the [contributing guide](https://docs.opensource.observer/docs/category/data-science) for more information about the types of contributions we're looking for. If you are an analyst or data scientist interested in becoming a regular contributor, please apply to join to the Kariba Data Collective [here](https://www.opensource.observer/data-collective).
+We welcome contributions to this repository. Please see the [contributing guide](https://docs.opensource.observer/docs/contribute/) for more information about the types of contributions we're looking for. If you are an analyst or data scientist interested in becoming a regular contributor, please apply to join to the Kariba Data Collective [here](https://www.opensource.observer/data-collective).
 
-In order to use OSO the data warehouse, you will need to request an API key. Include the following in your environmental variables to make sure you can access the data warehouse using the `oso_db` script:
-
-```
-DB_HOST=
-DB_PORT=
-DB_NAME=
-DB_USER=
-DB_PASSWORD=
-```
+In order to query large amounts of OSO data, you will need to subscribe to one or more of our public datasets on BigQuery. See here for [documentation](https://docs.opensource.observer/docs/integrate/) on how to do this.
