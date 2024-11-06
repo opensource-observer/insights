@@ -32,6 +32,7 @@ plt.rcParams.update({
     'xtick.labelsize': FONT_SIZE,
     'ytick.labelsize': FONT_SIZE,
     'text.color': WHITE,
+    'axes.edgecolor': WHITE,
     'axes.labelcolor': WHITE,
     'xtick.color': WHITE,
     'ytick.color': WHITE,
@@ -49,7 +50,7 @@ def get_plot(data, **kwargs):
 
 
 def distributions_barchart(series, title, xstep=5, ystep=100, ymax=400):
-    fig, ax = plt.subplots(figsize=(IMAGE_WIDTH, 3))
+    fig, ax = plt.subplots(figsize=(IMAGE_WIDTH, 5))
     series = series.sort_values(ascending=False) / 1000
     series.plot(kind='bar', color=COLOR1, alpha=.5, ax=ax, width=1)
     xmax = len(series)
