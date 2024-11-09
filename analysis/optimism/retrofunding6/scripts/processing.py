@@ -12,8 +12,6 @@ PROJECTS_DATA_PATH = 'projects.csv'
 
 def set_categories(categories_path):
     project_categories = json.load(open(categories_path))
-    for old_cat,new_cat in CATEGORY_MAPPINGS.items():
-        project_categories[new_cat] = project_categories.pop(old_cat)
     return project_categories
 
 
@@ -28,16 +26,16 @@ def load_datasets(input_dir):
 
 
 def process_datasets(
-    categories_path,
     ballots_csv_path,
     voters_csv_path,
-    voter_survey_csv_path,
     projects_csv_path,
     output_dir
 ):
     
-    project_categories = set_categories(categories_path)
-    
+    projects_dataframe = process_projects(projects_csv_path)
+    project_categories = projects_dataframe.reset_index().groupby('category')['project_id'].apply(list).to_dict()
+    projects_dataframe.to_csv(f'{output_dir}/{PROJECTS_DATA_PATH}')
+
     clean_voting_data = process_csv_ballots(ballots_csv_path, project_categories)
     with open(f'{output_dir}/{CLEAN_VOTING_DATA_PATH}', 'w') as f:
         json.dump(clean_voting_data, f, indent=2)
@@ -55,13 +53,7 @@ def process_datasets(
     voters_dataframe = voters_dataframe[voters_dataframe.index.isin(actual_voters)]
     print(f"Voters dataframe length after filtering: {len(voters_dataframe)}")
 
-    voters_dataframe = voters_dataframe.join(process_voter_survey(voter_survey_csv_path))
-    print(f"Voters dataframe length after joining survey data: {len(voters_dataframe)}")
-
     voters_dataframe.to_csv(f'{output_dir}/{VOTERS_DATA_PATH}')
-
-    projects_dataframe = process_projects(projects_csv_path, project_categories)
-    projects_dataframe.to_csv(f'{output_dir}/{PROJECTS_DATA_PATH}')
 
     print("Processing complete.")
 
