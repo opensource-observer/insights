@@ -1,7 +1,15 @@
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-def make_linechart(df, title, treatment_label='Treatment', events=[]):
+def make_linechart(
+        df, 
+        title, 
+        treatment_label='Treatment', 
+        events=[], 
+        event_line_color='rgba(0, 0, 0, 0.5)',
+        shade_color='rgba(255, 4, 32, 0.1)',
+        layout_kwargs={}
+        ):
 
     fig = go.Figure()
     fig.add_trace(
@@ -42,7 +50,7 @@ def make_linechart(df, title, treatment_label='Treatment', events=[]):
             fill='tonexty',
             mode='lines',
             line=dict(width=0),
-            fillcolor='rgba(255, 4, 32, 0.1)',  # Very light red
+            fillcolor=shade_color,
             showlegend=False
         )
     )
@@ -51,7 +59,7 @@ def make_linechart(df, title, treatment_label='Treatment', events=[]):
         fig.add_vline(
             x=event['date'],
             line_dash="dash",
-            line_color="rgba(0, 0, 0, 0.5)",
+            line_color=event_line_color,
             line_width=1
         )
         
@@ -96,5 +104,6 @@ def make_linechart(df, title, treatment_label='Treatment', events=[]):
     
         margin=dict(t=100)
     )
+    fig.update_layout(layout_kwargs)
 
     fig.show()
