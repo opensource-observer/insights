@@ -1,0 +1,85 @@
+project_name,application_name,project_label
+protocol-guild,Protocol Guild,Protocol Guild
+protocol-guild,Protocol Guild,Protocol Guild
+protocol-guild,Protocol Guild,Protocol Guild
+go-ethereum,geth,Geth
+go-ethereum,go-ethereum,Geth
+go-ethereum,go-ethereum,Geth
+solidity-ethereum,Solidity,Solidity
+solidity-ethereum,Solidity,Solidity
+solidity-ethereum,Solidity,Solidity
+nethermindeth,Sedge,Nethermind
+nethermindeth,Nethermind,Nethermind
+nethermindeth,Nethermind Ethereum Execution Client,Nethermind
+nethermindeth,OP Nethermind,Nethermind
+nethermindeth,Nethermind,Nethermind
+eth-infinitism-account-abstraction,Account Abstraction - ERC-4337,ERC-4337
+eth-infinitism-account-abstraction,Infinitism (ERC-4337) - Account Abstraction,ERC-4337
+eth-infinitism-account-abstraction,Account Abstraction - ERC-4337,ERC-4337
+eth-infinitism-account-abstraction,Account Abstraction - ERC-4337,ERC-4337
+libp2p,Rust Libp2p,libp2p
+libp2p,libp2p,libp2p
+libp2p,jvm-libp2p,libp2p
+libp2p,go-libp2p,libp2p
+libp2p,js-libp2p,libp2p
+lighthouse-sigp,Lighthouse,Lighthouse
+lighthouse-sigp,Lighthouse,Lighthouse
+lighthouse-sigp,Lighthouse,Lighthouse
+zora,Zora,Zora
+zora,ZORA,Zora
+defi-llama,DefiLlama,DefiLlama
+defi-llama,ChainList,DefiLlama
+defi-llama,DefiLlama,DefiLlama
+defi-llama,Chainlist,DefiLlama
+defi-llama,DefiLlama,DefiLlama
+layer3xyz,Layer3,Layer3
+layer3xyz,Layer3,Layer3
+testinprod-io,OP Erigon,Test in Prod
+testinprod-io,Delta Network Upgrade,Test in Prod
+testinprod-io,Test in Prod,Test in Prod
+ethers-io,ethers.js,Ethers
+ethers-io,Ethers,Ethers
+vyperlang,Vyper,Vyper
+vyperlang,Vyper,Vyper
+vyperlang,Vyper,Vyper
+ethglobal,ETHGlobal,ETHGlobal
+ethglobal,ETHGlobal,ETHGlobal
+lifinance,LI.FI,LI.FI
+erigon-ledgerwatch,Erigon,Erigon
+erigon-ledgerwatch,Erigon,Erigon
+buidlguidl,BuidlGuidl,BuidlGuidl
+buidlguidl,🏰 BuidlGuidl,BuidlGuidl
+buidlguidl,🏰 BuidlGuidl,BuidlGuidl
+gitcoin,Gitcoin,Gitcoin
+gitcoin,Gitcoin,Gitcoin
+gitcoin,Gitcoin,Gitcoin
+gitcoin,Gitcoin Passport,Gitcoin
+l2beat,L2BEAT 💗,L2BEAT
+l2beat,L2BEAT,L2BEAT
+synthetix,Synthetix,Synthetix
+synthetix,Synpress,Synthetix
+synthetix,Synthetix,Synthetix
+lodestar-chainsafe,Lodestar,Lodestar
+lodestar-chainsafe,Lodestar,Lodestar
+lodestar-chainsafe,Lodestar,Lodestar
+openzeppelin,OpenZeppelin,OpenZeppelin
+openzeppelin,OpenZeppelin Contracts,OpenZeppelin
+stargate-finance,Stargate Finance,Stargate Finance
+remix-ethereum,Remix Project,Remix Project
+remix-ethereum,Remix Project,Remix Project
+ethereum-attestation-service,Ethereum Attestation Service,EAS
+ethereum-attestation-service,Ethereum Attestation Service (EAS),EAS
+ethereum-attestation-service,Ethereum Attestation Service (EAS),EAS
+nimbus-status-im,Nimbus,Nimbus
+nimbus-status-im,Nimbus,Nimbus
+nimbus-status-im,Nimbus,Nimbus
+latticexyz,OPCraft & MUD (Lattice),Lattice
+latticexyz,Lattice (OPCraft & MUD),Lattice
+odos-xyz,ODOS,ODOS
+wevm,Wagmi / Viem,wevm
+wevm,wagmi,wevm
+aerodrome-finance,Aerodrome Finance,Aero/Velodrome
+aerodrome-finance,Aerodrome Finance,Aero/Velodrome
+velodrome,Sugar,Aero/Velodrome
+velodrome,Velodrome Finance,Aero/Velodrome
+velodrome,Velodrome,Aero/Velodrome
