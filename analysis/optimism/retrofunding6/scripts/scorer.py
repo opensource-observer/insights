@@ -32,6 +32,7 @@ def scorer(ballots_data):
     # Step 1A. Calculate total funding for the round based on median budget vote
     median_total_budget = np.median(budget_allocation)
     max_reward_per_project = median_total_budget * MAX_REWARD_PER_PROJECT_PCT
+    print(f"\nMedian Budget: {median_total_budget:,.0f}")
 
     # Step 1B. Calculate medians for categories and normalize to weights across categories
     category_medians = {k: np.median(v)/100 for k, v in category_scores.items()}    
@@ -41,6 +42,11 @@ def scorer(ballots_data):
     # Step 2. Calculate medians for projects and normalize to weights within a category
     project_weights = defaultdict(lambda: defaultdict(list))
     for category, project_dict in project_scores.items():
+
+        print("\nCategory:", category)
+        print("-----------------")
+        print(f"Median Allocation: {category_weights[category]*100:.3f}%")
+
         for project, scores in project_dict.items():
             project_weights[category][project] = np.median(scores) / 100
         category_subtotal = sum(project_weights[category].values())
