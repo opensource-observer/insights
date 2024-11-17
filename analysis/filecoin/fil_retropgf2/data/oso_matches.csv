@@ -1,153 +1,154 @@
-,artifact_namespace,name,githubProjectLink,OSOName,categoryHasOsoName,artifact_name_owner,artifact_name,fork_count,star_count,commit_count,project_name,type
-0,definomics-labs,DeFinomics Labs,https://github.com/definomics-labs,,False,definomics-labs,,0,0,25.0,definomics-labs,org_lookup
-1,chainupcloud,Chainup Cloud (Filecoin Public RPC) - Updated (4 Nov 2024),https://github.com/chainupcloud,chainupcloud,True,chainupcloud,,,,,,org_lookup
-2,filecoin-station,Filecoin Station,https://github.com/filecoin-station,,False,filecoin-station,,32,146,4628.0,filecoin-station,org_lookup
-3,fill-lab,FILLiquid,https://github.com/fill-lab,FILL-Lab,True,fill-lab,,3,9,124.0,fill-lab,org_lookup
-4,storswiftlabs,Data123 (Full Archival History Node Service),https://github.com/storswiftlabs,,True,storswiftlabs,,15,37,559.0,storswiftlabs,org_lookup
-5,lighthouse-web3,Lighthouse,https://github.com/lighthouse-web3/,https://www.opensource.observer/projects/lighthouse-web3,True,lighthouse-web3,,40,68,1067.0,lighthouse-web3,org_lookup
-6,ethglobal,ETHGlobal,https://github.com/ethglobal,,False,ethglobal,,23,40,44.0,ethglobal,org_lookup
-7,filozone,Storage Onboarding R&D,https://github.com/filozone,,False,filozone,,,,,,org_lookup
-8,titannet-dao,Titan Network,https://github.com/titannet-dao,titannetwork,True,titannet-dao,,47,76,120.0,titannet-dao,org_lookup
-9,oif-admin,Open Impact Foundation,https://github.com/oif-admin,,False,oif-admin,,,,,,org_lookup
-10,fundingthecommons,Funding the Commons,https://github.com/fundingthecommons,,False,fundingthecommons,,2,1,1406.0,fundingthecommons,org_lookup
-11,crossfidao,CrossFi,https://github.com/crossfidao,,False,crossfidao,,,,,,org_lookup
-12,usdfil,USDfil Stablecoin,https://github.com/usdfil,,False,usdfil,,,,,,org_lookup
-13,randa-mu,Randamu,https://github.com/randa-mu,drand,True,randa-mu,,,,,,org_lookup
-14,wengi-web,Filecoin Kenya Community,https://github.com/wengi-web,,False,wengi-web,,,,,,org_lookup
-15,cryptowhizzard,Certifiably Green Filecoin Storage Initiative by DCENT,https://github.com/cryptowhizzard,,False,cryptowhizzard,,4,4,339.0,cryptowhizzard,org_lookup
-16,kencloud-tech,KEN Labs,https://github.com/kencloud-tech,,False,kencloud-tech,,,,,,org_lookup
-17,ucan-wg,UCAN Working Group,https://github.com/ucan-wg,,True,ucan-wg,,74,505,443.0,ucan-wg,org_lookup
-18,novaenergyai,Energy Validation Process & Green Scores Methodology,https://github.com/novaenergyai,,False,novaenergyai,,,,,,org_lookup
-19,fivetoken,Filecoin wallet FiveToken,https://github.com/fivetoken,FiveToken,True,fivetoken,,26,19,85.0,fivetoken,org_lookup
-20,hipiyushhere,Filecoin Memes,https://github.com/hipiyushhere,,False,hipiyushhere,,,,,,org_lookup
-0,  starboard-ventures,Network Health Dashboard,  https://github.com/starboard-ventures/filecoin-network-health-dashboard,,False,  starboard-ventures/filecoin-network-health-dashboard,filecoin-network-health-dashboard,,,,,repo_lookup
-1,ancients-research,Ancients Research,https://github.com/ancients-research/retropgf,,False,ancients-research/retropgf,retropgf,,,,,repo_lookup
-2,aschmahmann,filexp,https://github.com/aschmahmann/filexp,,True,aschmahmann/filexp,filexp,1,11,33.0,filexp-aschmahmann,repo_lookup
-3,asia-spwg,Asia Storage Provider Working Group,https://github.com/asia-spwg/retropgf,,False,asia-spwg/retropgf,retropgf,,,,,repo_lookup
-4,auralgenius,AuralGenius,https://github.com/auralgenius/agcore,,False,auralgenius/agcore,agcore,,,,,repo_lookup
-5,beck-8,FILPlus Data Calculation,https://github.com/beck-8/filplus,,True,beck-8/filplus,filplus,1,0,0.0,filplus-beck-8,repo_lookup
-6,celtd,Consensus Pledge design flaw fix,https://github.com/celtd/builtin-actors/tree/fip0081,,False,celtd/builtin-actors/tree/fip0081,builtin-actors,,,,,repo_lookup
-7,celtd,Filecoin Supply Simulation,"https://github.com/celtd/mechafil-jax-web-levers, https://github.com/celtd/sp_cost_web ",,False,"celtd/mechafil-jax-web-levers, celtd/sp_cost_web ","mechafil-jax-web-levers, celtd",,,,,repo_lookup
-8,celtd,Voting Analysis for Retroactive Public Goods Funding,https://github.com/celtd/voting_mechanism_design  ,,False,celtd/voting_mechanism_design  ,voting_mechanism_design  ,,,,,repo_lookup
-9,chainsafe,ChainSafe Filecoin Community Services,https://github.com/chainsafe/filecoin-community-services,,True,chainsafe/filecoin-community-services,filecoin-community-services,,,,,repo_lookup
-10,chainsafe,Forest,https://github.com/chainsafe/forest,forest-chainsafe,True,chainsafe/forest,forest,157,637,2191.0,forest-chainsafe,repo_lookup
-11,chainsafe,Forest Archive,https://github.com/chainsafe/forest,forest-chainsafe,True,chainsafe/forest,forest,157,637,2191.0,forest-chainsafe,repo_lookup
-12,cidgravity,CIDgravity Nextcloud App,https://github.com/cidgravity/nextcloud-cidgravity-gateway-app,,False,cidgravity/nextcloud-cidgravity-gateway-app,nextcloud-cidgravity-gateway-app,0,1,8.0,cidgravity,repo_lookup
-13,cryptoblarabi,Filecoin Arabia,https://github.com/cryptoblarabi/filecoinarabic,,False,cryptoblarabi/filecoinarabic,filecoinarabic,,,,,repo_lookup
-14,cryptowhizzard, Old Faithful <> CURIO,https://github.com/cryptowhizzard/curio-oldfaithful,,True,cryptowhizzard/curio-oldfaithful,curio-oldfaithful,,,,,repo_lookup
-15,dannyob,Filecoin Orbit Ambassadors II,https://github.com/dannyob/orbit-fil-retropgf-2,,False,dannyob/orbit-fil-retropgf-2,orbit-fil-retropgf-2,,,,,repo_lookup
-16,dataseekcn,IPFS VS Code Extension,https://github.com/dataseekcn/ipfs-vscode-extension,https://www.opensource.observer/projects/dataseekcn,True,dataseekcn/ipfs-vscode-extension,ipfs-vscode-extension,1,5,26.0,dataseekcn,repo_lookup
-17,davidgasquez,Filecoin Data Portal,https://github.com/davidgasquez/filecoin-data-portal,,False,davidgasquez/filecoin-data-portal,filecoin-data-portal,,,,,repo_lookup
-18,decentraschool,Decentraclasses,https://github.com/decentraschool/decentraclasses,,False,decentraschool/decentraclasses,decentraclasses,0,1,103.0,decentraschool,repo_lookup
-19,dspytdao,Dspyt,https://github.com/dspytdao/dspyt-homepage,,False,dspytdao/dspyt-homepage,dspyt-homepage,0,6,338.0,dspytdao,repo_lookup
-20,dspytdao,EVM Explorer,https://github.com/dspytdao/evm-explorer,EVM Explorer,True,dspytdao/evm-explorer,evm-explorer,0,1,1.0,dspytdao,repo_lookup
-21,dukesoft,Spade Client,https://github.com/dukesoft/filecoin-spade-client,spade-client,True,dukesoft/filecoin-spade-client,filecoin-spade-client,0,0,6.0,spade-client-dukesoft,repo_lookup
-22,eastore-project,Eastore,https://github.com/eastore-project/fildeal,,True,eastore-project/fildeal,fildeal,1,0,6.0,eastore-project,repo_lookup
-23,fidlabs,Datacapstats 2.0,https://github.com/fidlabs/filplus-dashboard-webapp,datacapstats,True,fidlabs/filplus-dashboard-webapp,filplus-dashboard-webapp,,,,,repo_lookup
-24,filcat,RIBS,https://github.com/filcat/ribs,,True,filcat/ribs,ribs,2,26,373.0,filcat,repo_lookup
-25,filecoin-africa,Filecoin Africa; Empowering Africa with Decentralized Future,https://github.com/filecoin-africa/education-outreach-repository,,False,filecoin-africa/education-outreach-repository,education-outreach-repository,,,,,repo_lookup
-26,filecoin-nigeria,Filecoin Nigeria Community,https://github.com/filecoin-nigeria/education-outreach,,False,filecoin-nigeria/education-outreach,education-outreach,,,,,repo_lookup
-27,filecoin-project,Network Upgrade Coordinations,https://github.com/filecoin-project/community/discussions/74,,False,filecoin-project/community/discussions/74,community,,,,,repo_lookup
-28,filecoin-project,The CalibrationNet Stability Project,https://github.com/filecoin-project/curio,,True,filecoin-project/curio,curio,8,23,236.0,filecoin-project,repo_lookup
-29,filecoin-project,Curio,https://github.com/filecoin-project/curio,curio,True,filecoin-project/curio,curio,8,23,236.0,filecoin-project,repo_lookup
-30,filecoin-project,FIL Dev Summit,https://github.com/filecoin-project/fildevsummit,,False,filecoin-project/fildevsummit,fildevsummit,,,,,repo_lookup
-31,filecoin-project,allocator.tech tooling,https://github.com/filecoin-project/filplus-registry,,False,filecoin-project/filplus-registry,filplus-registry,5,0,215.0,filecoin-project,repo_lookup
-32,filecoin-project,filsnap,https://github.com/filecoin-project/filsnap,,True,filecoin-project/filsnap,filsnap,9,17,266.0,filecoin-project,repo_lookup
-33,filecoin-project,FIP Editors,https://github.com/filecoin-project/fips,,False,filecoin-project/fips,fips,164,312,829.0,filecoin-project,repo_lookup
-34,filecoin-project,Filecoin Protocol R&D,https://github.com/filecoin-project/fips/,,False,filecoin-project/fips,fips,164,312,829.0,filecoin-project,repo_lookup
-35,filecoin-project,F3: Fast Finality for Filecoin,https://github.com/filecoin-project/go-f3,,True,filecoin-project/go-f3,go-f3,6,9,436.0,filecoin-project,repo_lookup
-36,filecoin-project,FEVM application & tool builder DX,https://github.com/filecoin-project/lotus,,False,filecoin-project/lotus,lotus,1262,2838,11602.0,filecoin-project,repo_lookup
-37,filecoin-project,Lotus Client Implementation,https://github.com/filecoin-project/lotus,https://github.com/opensource-observer/oss-directory/blob/main/data/projects/f/filecoin-project.yaml,True,filecoin-project/lotus,lotus,1262,2838,11602.0,filecoin-project,repo_lookup
-38,filecoin-project,Power Voting,https://github.com/filecoin-project/on-chain-voting,,False,filecoin-project/on-chain-voting,on-chain-voting,0,2,39.0,filecoin-project,repo_lookup
-39,filecoin-project,Filecoin Virtual Machine EVM Compatibility,https://github.com/filecoin-project/ref-fvm,https://www.opensource.observer/projects/ref-fvm,True,filecoin-project/ref-fvm,ref-fvm,137,382,876.0,filecoin-project,repo_lookup
-40,filecoin-project,builtin-actors and ref-fvm maintenance 🔧,https://github.com/filecoin-project/ref-fvm,,True,filecoin-project/ref-fvm,ref-fvm,137,382,876.0,filecoin-project,repo_lookup
-41,filecoin-project,Filecoin Proofs,https://github.com/filecoin-project/rust-fil-proofs,,True,filecoin-project/rust-fil-proofs,rust-fil-proofs,314,491,1298.0,filecoin-project,repo_lookup
-42,filecoin-project,venus,https://github.com/filecoin-project/venus,filecoin-project-venus,True,filecoin-project/venus,venus,462,2058,2263.0,filecoin-project,repo_lookup
-43,filecoin-project,venus-wallet,https://github.com/filecoin-project/venus-wallet,filecoin-project-venus-wallet,True,filecoin-project/venus-wallet,venus-wallet,16,19,164.0,filecoin-project,repo_lookup
-44,filecoin-south-africa-community,Filecoin South Africa Community,https://github.com/filecoin-south-africa-community/impact,,False,filecoin-south-africa-community/impact,impact,,,,,repo_lookup
-45,filecoin-station,Filecoin Spark,https://github.com/filecoin-station/spark,,False,filecoin-station/spark,spark,2,9,86.0,filecoin-station,repo_lookup
-46,filedag-project,filedag-storage,https://github.com/filedag-project/filedag-storage,filedag-project-filedag-storage,True,filedag-project/filedag-storage,filedag-storage,5,10,173.0,filedag-project,repo_lookup
-47,filedrive-team,filejoy,https://github.com/filedrive-team/filejoy,filedrive-team-filejoy,True,filedrive-team/filejoy,filejoy,1,3,82.0,filedrive-team,repo_lookup
-48,filedrive-team,go-ds-cluster,https://github.com/filedrive-team/go-ds-cluster,filedrive-team-go-ds-cluster,True,filedrive-team/go-ds-cluster,go-ds-cluster,1,18,199.0,filedrive-team,repo_lookup
-49,filedrive-team,go-graphsplit,https://github.com/filedrive-team/go-graphsplit,filedrive-team-go-graphsplit,True,filedrive-team/go-graphsplit,go-graphsplit,30,43,87.0,filedrive-team,repo_lookup
-50,filedrive-team,go-parallel-graphsync,https://github.com/filedrive-team/go-parallel-graphsync,filedrive-team-go-parallel-graphsync,True,filedrive-team/go-parallel-graphsync,go-parallel-graphsync,0,5,101.0,filedrive-team,repo_lookup
-51,filforge,pylotus-rpc,https://github.com/filforge/pylotus-rpc,filforge,True,filforge/pylotus-rpc,pylotus-rpc,0,1,165.0,filforge,repo_lookup
-52,filozone,Direct Data Onboarding,https://github.com/filozone/ddo,,False,filozone/ddo,ddo,,,,,repo_lookup
-53,filozone,Fil Implementers WG,https://github.com/filozone/fil-implemeter-wg/tree/main,,False,filozone/fil-implemeter-wg/tree/main,fil-implemeter-wg,,,,,repo_lookup
-54,filpunks,FilPunks NFT,https://github.com/filpunks/retropgf,,False,filpunks/retropgf,retropgf,,,,,repo_lookup
-55,filscriptions1,Filscriptions,https://github.com/filscriptions1/filscriptions,,False,filscriptions1/filscriptions,filscriptions,,,,,repo_lookup
-56,freedomhz,fil-minerinfo-SafeMatrix,https://github.com/freedomhz/rpgf-filminerfnfo,fil-miner-management,True,freedomhz/rpgf-filminerfnfo,rpgf-filminerfnfo,,,,,repo_lookup
-57,gh-efforts,distribution @gh,https://github.com/gh-efforts/distribution,distribution,True,gh-efforts/distribution,distribution,0,1,0.0,distribution-gh-efforts,repo_lookup
-58,gh-efforts,Lotus Monitor (Monitoring Plugin),https://github.com/gh-efforts/lotus-monitor,Lotus Monitor,True,gh-efforts/lotus-monitor,lotus-monitor,0,2,0.0,lotus-monitor-gh-efforts,repo_lookup
-59,gitdataai,JZFS,https://github.com/gitdataai/jzfs,,True,gitdataai/jzfs,jzfs,5,74,251.0,gitdataai,repo_lookup
-60,glifio,Glif Nodes & RPC API service,https://github.com/glifio/filecoin-iac,glifio,True,glifio/filecoin-iac,filecoin-iac,2,13,443.0,glifio,repo_lookup
-61,govxs,GovXS – Evaluating Retro Funding Voting Designs,https://github.com/govxs/evaluating-voting-design-tradeoffs-for-retro-funding ,,False,govxs/evaluating-voting-design-tradeoffs-for-retro-funding ,evaluating-voting-design-tradeoffs-for-retro-funding ,,,,,repo_lookup
-62,grayareaorg,DWeb for Creators,https://github.com/grayareaorg/dweb-curriculum,,False,grayareaorg/dweb-curriculum,dweb-curriculum,1,0,20.0,grayareaorg,repo_lookup
-63,herrehesse,Data Horizon,https://github.com/herrehesse/datahorizon,https://github.com/cryptowhizzard,True,herrehesse/datahorizon,datahorizon,,,,,repo_lookup
-64,hill168,IPFS及Filecoin价值资讯传递（南山居士Hill）,https://github.com/hill168/filecoinhill,,False,hill168/filecoinhill,filecoinhill,,,,,repo_lookup
-65,hugomrdias,iso-filecoin,https://github.com/hugomrdias/filecoin,,True,hugomrdias/filecoin,filecoin,,,,,repo_lookup
-66,ipfs-force-community,damocles,https://github.com/ipfs-force-community/damocles,ipfs-force-community-damocles,True,ipfs-force-community/damocles,damocles,22,21,1529.0,ipfs-force-community,repo_lookup
-67,ipfs-force-community,droplet,https://github.com/ipfs-force-community/droplet,ipfs-force-community-droplet,True,ipfs-force-community/droplet,droplet,20,21,621.0,ipfs-force-community,repo_lookup
-68,ipfs-force-community,Filecoin BlockChain explorer,https://github.com/ipfs-force-community/filscan-backend,ipfs-force-community-filescan,True,ipfs-force-community/filscan-backend,filscan-backend,1,1,21.0,ipfs-force-community,repo_lookup
-69,ipfs-force-community,gevulot-fil,https://github.com/ipfs-force-community/gevulot-fil,ipfs-force-community-gevulot-fil,True,ipfs-force-community/gevulot-fil,gevulot-fil,0,0,2.0,ipfs-force-community,repo_lookup
-70,ipfs-force-community,go-fvm-sdk,https://github.com/ipfs-force-community/go-fvm-sdk,ipfs-force-community-go-fvm-sdk,True,ipfs-force-community/go-fvm-sdk,go-fvm-sdk,4,30,127.0,ipfs-force-community,repo_lookup
-71,ipfs-force-community,gpuproxy,https://github.com/ipfs-force-community/gpuproxy,ipfs-force-community-gpuproxy,True,ipfs-force-community/gpuproxy,gpuproxy,6,4,85.0,ipfs-force-community,repo_lookup
-72,ipfs-force-community,metrics,https://github.com/ipfs-force-community/metrics,ipfs-force-community-metrics,True,ipfs-force-community/metrics,metrics,2,0,53.0,ipfs-force-community,repo_lookup
-73,ipfs-force-community,sophon-auth,https://github.com/ipfs-force-community/sophon-auth,ipfs-force-community-sophon-auth,True,ipfs-force-community/sophon-auth,sophon-auth,12,7,266.0,ipfs-force-community,repo_lookup
-74,ipfs-force-community,sophon-co,https://github.com/ipfs-force-community/sophon-co,ipfs-force-community-sophon-co,True,ipfs-force-community/sophon-co,sophon-co,7,5,230.0,ipfs-force-community,repo_lookup
-75,ipfs-force-community,Sophon-gateway,https://github.com/ipfs-force-community/sophon-gateway,ipfs-force-community-sophon-gateway,True,ipfs-force-community/sophon-gateway,sophon-gateway,6,6,356.0,ipfs-force-community,repo_lookup
-76,ipfs-force-community,sophon-messager,https://github.com/ipfs-force-community/sophon-messager,ipfs-force-community-sophon-messager,True,ipfs-force-community/sophon-messager,sophon-messager,16,13,297.0,ipfs-force-community,repo_lookup
-77,ipfs-force-community,sophon-miner,https://github.com/ipfs-force-community/sophon-miner,ipfs-force-community-sophon-miner,True,ipfs-force-community/sophon-miner,sophon-miner,18,20,564.0,ipfs-force-community,repo_lookup
-78,ipfs-force-community,venus-common-utils,https://github.com/ipfs-force-community/venus-common-utils,ipfs-force-community-venus-common-utils,True,ipfs-force-community/venus-common-utils,venus-common-utils,1,0,11.0,ipfs-force-community,repo_lookup
-79,ipfs-force-community,Venus-hub,https://github.com/ipfs-force-community/venus-hub,,False,ipfs-force-community/venus-hub,venus-hub,1,0,80.0,ipfs-force-community,repo_lookup
-80,ipfs-force-community,venus-tool,https://github.com/ipfs-force-community/venus-tool,ipfs-force-community-venus-tool,True,ipfs-force-community/venus-tool,venus-tool,0,4,115.0,ipfs-force-community,repo_lookup
-81,ipfs,Boxo and Kubo,https://github.com/ipfs/boxo,https://www.opensource.observer/artifacts/github/ipfs/boxo,True,ipfs/boxo,boxo,92,210,599.0,ipfs,repo_lookup
-82,ipfs,Helia,https://github.com/ipfs/helia,https://www.opensource.observer/artifacts/github/ipfs/helia,True,ipfs/helia,helia,105,937,374.0,ipfs,repo_lookup
-83,ipfs,IPFS Desktop and IPFS Companion,https://github.com/ipfs/ipfs-desktop,,False,ipfs/ipfs-desktop,ipfs-desktop,865,5994,300.0,ipfs,repo_lookup
-84,ipni,Interplanetary Network Indexers,https://github.com/ipni/storetheindex,ipni,True,ipni/storetheindex,storetheindex,21,78,2234.0,ipni,repo_lookup
-85,irmago,Orbit China Region,https://github.com/irmago/orbitchinarpgf,,False,irmago/orbitchinarpgf,orbitchinarpgf,,,,,repo_lookup
-86,kenada88,DeStor,https://github.com/kenada88/destor,,False,kenada88/destor,destor,,,,,repo_lookup
-87,kencloud-tech,Prolly Tree Indexed Data Oracle for IPLD,https://github.com/kencloud-tech/prolly-tree-oracle,,True,kencloud-tech/prolly-tree-oracle,prolly-tree-oracle,,,,,repo_lookup
-88,kernelogic,Kernelogic Fil+ Datacap Allocator (KFDA),https://github.com/kernelogic/kfda-ts,kfda-kernelogic,True,kernelogic/kfda-ts,kfda-ts,0,0,0.0,kfda-kernelogic,repo_lookup
-89,libp2p,go-libp2p,https://github.com/libp2p/go-libp2p,https://www.opensource.observer/artifacts/github/libp2p/go-libp2p,True,libp2p/go-libp2p,go-libp2p,1068,6045,2809.0,libp2p,repo_lookup
-90,libp2p,libp2p Ecosystem,https://github.com/libp2p/libp2p,libpp,True,libp2p/libp2p,libp2p,259,2628,58.0,libp2p,repo_lookup
-91,libp2p,Rust-Libp2p,https://github.com/libp2p/rust-libp2p,libp2p,True,libp2p/rust-libp2p,rust-libp2p,946,4545,3108.0,libp2p,repo_lookup
-92,msquarehub,MSquare(RPGF Design team),https://github.com/msquarehub/retropgf-design,,False,msquarehub/retropgf-design,retropgf-design,,,,,repo_lookup
-93,ndlabs-leo,NDLabs,https://github.com/ndlabs-leo/rpgf2---ndlabs,,False,ndlabs-leo/rpgf2---ndlabs,rpgf2---ndlabs,,,,,repo_lookup
-94,ndlabs-leo,StorageStats Retrieve,https://github.com/ndlabs-leo/rpgf2---ndlabs-storagestats,storagestats,True,ndlabs-leo/rpgf2---ndlabs-storagestats,rpgf2---ndlabs-storagestats,,,,,repo_lookup
-95,nftstorage,NFT.Storage - Long-Term Storage Flagship Product,https://github.com/nftstorage/nft.storage-flagship-preservation-public-good,https://www.opensource.observer/projects/nftstorage,True,nftstorage/nft.storage-flagship-preservation-public-good,nft.storage-flagship-preservation-public-good,0,2,10.0,nftstorage,repo_lookup
-96,nftstorage,NFT.Storage: Education & Outreach Initiatives,https://github.com/nftstorage/nft.storage-flagship-preservation-public-good,,False,nftstorage/nft.storage-flagship-preservation-public-good,nft.storage-flagship-preservation-public-good,0,2,10.0,nftstorage,repo_lookup
-97,nijoe1,QUADB,https://github.com/nijoe1/quadb,quadb-nijoe1,True,nijoe1/quadb,quadb,,,,,repo_lookup
-98,nodedao,HashKing- Fil Staking,https://github.com/nodedao/hashking-fil,NodeDAO,True,nodedao/hashking-fil,hashking-fil,,,,,repo_lookup
-99,opengate01,OpenGate,https://github.com/opengate01/opengate-nft-marketplace,,False,opengate01/opengate-nft-marketplace,opengate-nft-marketplace,,,,,repo_lookup
-100,opengatelab,Filecoin Domain Name Service (FNS),https://github.com/opengatelab/fns,,False,opengatelab/fns,fns,,,,,repo_lookup
-101,opensource-observer,Open Source Observer,https://github.com/opensource-observer/oso,,False,opensource-observer/oso,oso,16,71,1111.0,opensource-observer,repo_lookup
-102,orgs,FIL Builder Community,https://github.com/orgs/fil-builders,,False,orgs/fil-builders,fil-builders,,,,,repo_lookup
-103,orgs,Filecoin On-chain Developer Experience,https://github.com/orgs/fil-builders,fil-builders,True,orgs/fil-builders,fil-builders,,,,,repo_lookup
-104,pp1314car,Wanjia Storage,https://github.com/pp1314car/wanjia-storage.git,,False,pp1314car/wanjia-storage.git,wanjia-storage.git,,,,,repo_lookup
-105,probe-lab,"ProbeLab (probelab.io): building tools for P2P layer monitoring, measurements and analytics",https://github.com/probe-lab/hermes,`hermes-probe-lab` (https://github.com/opensource-observer/oss-directory/blob/main/data/projects/h/hermes-probe-lab.yaml),True,probe-lab/hermes,hermes,5,21,132.0,hermes-probe-lab,repo_lookup
-106,protofire,Genesis Ark [Beta Test],https://github.com/protofire/genesis-ark-ansible,,False,protofire/genesis-ark-ansible,genesis-ark-ansible,,,,,repo_lookup
-107,retriev-protocol,Retriev - Contracts for retrieval guarantees,https://github.com/retriev-protocol/core,,False,retriev-protocol/core,core,,,,,repo_lookup
-108,rpcpool,Old Faithful,https://github.com/rpcpool/yellowstone-faithful,,True,rpcpool/yellowstone-faithful,yellowstone-faithful,,,,,repo_lookup
-109,rpcpool,Solana Ledger on Filecoin,https://github.com/rpcpool/yellowstone-faithful,,True,rpcpool/yellowstone-faithful,yellowstone-faithful,,,,,repo_lookup
-110,s0nik42,Farcaster,https://github.com/s0nik42/lotus-farcaster,,False,s0nik42/lotus-farcaster,lotus-farcaster,68,98,83.0,lotus-farcaster-s0nik42,repo_lookup
-111,samflan875,Web3ForGood,https://github.com/samflan875/web3forgood,,False,samflan875/web3forgood,web3forgood,,,,,repo_lookup
-112,storswiftlabs,Drand-RS,https://github.com/storswiftlabs/drand-rs,,True,storswiftlabs/drand-rs,drand-rs,1,2,4.0,storswiftlabs,repo_lookup
-113,strahe,Curio Dashboard,https://github.com/strahe/curio-dashboard,curio-dashboard-strahe,True,strahe/curio-dashboard,curio-dashboard,0,0,44.0,curio-dashboard-strahe,repo_lookup
-114,strahe,Filecoin Extend (Sector Renewal Tool),https://github.com/strahe/extend,filecoin-extend-strahe,True,strahe/extend,extend,0,0,14.0,filecoin-extend-strahe,repo_lookup
-115,ttsszzyy,TDrive,https://github.com/ttsszzyy/tdrive.git,,True,ttsszzyy/tdrive.git,tdrive.git,,,,,repo_lookup
-116,twinquasar,The Green Hosting Offer,https://github.com/twinquasar/green,,True,twinquasar/green,green,0,2,14.0,twinquasar,repo_lookup
-117,vxblocks,Fast Retrieval Car Files,https://github.com/vxblocks/boost,,True,vxblocks/boost,boost,,,,,repo_lookup
-118,vxblocks,Vxblocks Filecoin Utils,https://github.com/vxblocks/filecoin-utils,,True,vxblocks/filecoin-utils,filecoin-utils,,,,,repo_lookup
-119,webtransitions,Ed25519 in Web Browsers (WebTransitions.org),https://github.com/webtransitions/initiatives/,web-transitions,True,webtransitions/initiatives,initiatives,0,0,1.0,webtransitions,repo_lookup
-120,womenbiz,Womenbiz - Filecoin Impact,https://github.com/womenbiz/filecoin,,False,womenbiz/filecoin,filecoin,0,0,10.0,womenbiz,repo_lookup
-121,xutianyi1999,Commp-Worker,https://github.com/xutianyi1999/commp_worker,,True,xutianyi1999/commp_worker,commp_worker,,,,,repo_lookup
-122,xutianyi1999,TreeD-GPU,https://github.com/xutianyi1999/treed_gpu,,True,xutianyi1999/treed_gpu,treed_gpu,0,6,43.0,treed-gpu-xutianyi1999,repo_lookup
-123,yaadyindia,OrbitVault,https://github.com/yaadyindia/yaadyindia.git,OrbitVault,True,yaadyindia/yaadyindia.git,yaadyindia.git,,,,,repo_lookup
-124,yhio,Lotus Pilot (Worker Switching Tool),https://github.com/yhio/lotus-pilot,,True,yhio/lotus-pilot,lotus-pilot,,,,,repo_lookup
-125,yhio,Lotus LevelDB-To-YugabyteDB (Boost Migration Tool) ,https://github.com/yhio/ltoy,,True,yhio/ltoy,ltoy,,,,,repo_lookup
-126,yhio,Rbot,https://github.com/yhio/rbot,,True,yhio/rbot,rbot,,,,,repo_lookup
-127,zenground0,Cross Chain Onramp POC,https://github.com/zenground0/onramp-contracts,,False,zenground0/onramp-contracts,onramp-contracts,,,,,repo_lookup
-128,zondax,Beryx Filecoin API,https://github.com/zondax/rfpg-beryx-api,,True,zondax/rfpg-beryx-api,rfpg-beryx-api,,,,,repo_lookup
-129,zondax,Beryx Explorer,https://github.com/zondax/web-beryx-explorer,,True,zondax/web-beryx-explorer,web-beryx-explorer,1,4,5.0,zondax,repo_lookup
-130,zondax,Filecoin Ledger App & Installation Hub,https://github.com/zondax/web-hub,,True,zondax/web-hub,web-hub,,,,,repo_lookup
+name,githubProjectLink,OSOName,categoryHasOsoName,repo_name_with_owner,repo_owner,repo_name,is_org,verified_oso_name,fork_count,star_count,created_at,updated_at,status
+filexp,https://github.com/aschmahmann/filexp,,True,aschmahmann/filexp,aschmahmann,filexp,False,filexp-aschmahmann,1,11,2023-01-17 06:28:03+00:00,2024-11-14 15:06:07+00:00,1_oso_match_by_github_repo
+FILPlus Data Calculation,https://github.com/beck-8/filplus,,True,beck-8/filplus,beck-8,filplus,False,filplus-beck-8,1,0,2022-09-09 09:23:58+00:00,2022-09-13 01:51:53+00:00,1_oso_match_by_github_repo
+Forest,https://github.com/chainsafe/forest,forest-chainsafe,True,chainsafe/forest,chainsafe,forest,False,forest-chainsafe,158,638,2019-11-11 21:15:40+00:00,2024-11-15 07:16:05+00:00,1_oso_match_by_github_repo
+Forest Archive,https://github.com/chainsafe/forest,forest-chainsafe,True,chainsafe/forest,chainsafe,forest,False,forest-chainsafe,158,638,2019-11-11 21:15:40+00:00,2024-11-15 07:16:05+00:00,1_oso_match_by_github_repo
+CIDgravity Nextcloud App,https://github.com/CIDgravity/nextcloud-cidgravity-gateway-app,,False,cidgravity/nextcloud-cidgravity-gateway-app,cidgravity,nextcloud-cidgravity-gateway-app,False,cidgravity,0,1,2024-06-13 10:51:22+00:00,2024-11-05 08:21:45+00:00,1_oso_match_by_github_repo
+ Old Faithful <> CURIO,https://github.com/cryptowhizzard/curio-oldfaithful,,True,cryptowhizzard/curio-oldfaithful,cryptowhizzard,curio-oldfaithful,False,cryptowhizzard,0,0,2024-11-04 09:13:09+00:00,2024-11-04 09:13:09+00:00,1_oso_match_by_github_repo
+IPFS VS Code Extension,https://github.com/DataseekCN/ipfs-vscode-extension,https://www.opensource.observer/projects/dataseekcn,True,dataseekcn/ipfs-vscode-extension,dataseekcn,ipfs-vscode-extension,False,dataseekcn,1,5,2022-07-18 23:22:14+00:00,2024-10-12 12:18:20+00:00,1_oso_match_by_github_repo
+Decentraclasses,https://github.com/DecentraSchool/decentraclasses,,False,decentraschool/decentraclasses,decentraschool,decentraclasses,False,decentraschool,0,1,2023-07-03 16:52:07+00:00,2024-10-13 06:37:27+00:00,1_oso_match_by_github_repo
+Dspyt,https://github.com/dspytdao/dspyt-homepage,,False,dspytdao/dspyt-homepage,dspytdao,dspyt-homepage,False,dspytdao,0,6,2022-09-16 20:21:08+00:00,2024-10-22 00:51:48+00:00,1_oso_match_by_github_repo
+EVM Explorer,https://github.com/dspytdao/EVM-Explorer,EVM Explorer,True,dspytdao/evm-explorer,dspytdao,evm-explorer,False,dspytdao,0,0,2024-10-19 19:18:58+00:00,2024-11-04 17:30:52+00:00,1_oso_match_by_github_repo
+Spade Client,https://github.com/dukesoft/filecoin-spade-client,spade-client,True,dukesoft/filecoin-spade-client,dukesoft,filecoin-spade-client,False,spade-client-dukesoft,0,0,2023-12-17 12:48:43+00:00,2024-08-11 12:21:21+00:00,1_oso_match_by_github_repo
+Eastore,https://github.com/Eastore-project/fildeal,,True,eastore-project/fildeal,eastore-project,fildeal,False,eastore-project,1,0,2024-09-02 18:27:55+00:00,2024-10-12 07:26:51+00:00,1_oso_match_by_github_repo
+Datacapstats 2.0,https://github.com/fidlabs/filplus-dashboard-webapp,datacapstats,True,fidlabs/filplus-dashboard-webapp,fidlabs,filplus-dashboard-webapp,False,fidlabs,0,0,2024-07-10 14:03:55+00:00,2024-11-12 06:55:42+00:00,1_oso_match_by_github_repo
+RIBS,https://github.com/FILCAT/ribs,,True,filcat/ribs,filcat,ribs,False,filcat,2,26,2023-02-01 18:42:31+00:00,2024-10-25 17:29:54+00:00,1_oso_match_by_github_repo
+The CalibrationNet Stability Project,https://github.com/filecoin-project/curio,,True,filecoin-project/curio,filecoin-project,curio,False,curio-filecoin-project,11,29,2024-05-24 10:16:05+00:00,2024-11-15 17:38:03+00:00,1_oso_match_by_github_repo
+Curio,https://github.com/filecoin-project/curio,curio,True,filecoin-project/curio,filecoin-project,curio,False,curio-filecoin-project,11,29,2024-05-24 10:16:05+00:00,2024-11-15 17:38:03+00:00,1_oso_match_by_github_repo
+allocator.tech tooling,https://github.com/filecoin-project/filplus-registry,,False,filecoin-project/filplus-registry,filecoin-project,filplus-registry,False,filecoin-project,5,1,2023-08-08 15:13:00+00:00,2024-11-07 13:30:49+00:00,1_oso_match_by_github_repo
+filsnap,https://github.com/filecoin-project/filsnap,,True,filecoin-project/filsnap,filecoin-project,filsnap,False,filecoin-project,9,17,2023-06-12 13:23:23+00:00,2024-11-07 07:54:24+00:00,1_oso_match_by_github_repo
+FIP Editors,https://github.com/filecoin-project/FIPs,,False,filecoin-project/fips,filecoin-project,fips,False,filecoin-project,165,314,2019-04-03 01:53:36+00:00,2024-11-16 21:48:15+00:00,1_oso_match_by_github_repo
+Filecoin Protocol R&D,https://github.com/filecoin-project/FIPs/,,False,filecoin-project/fips,filecoin-project,fips,False,filecoin-project,165,314,2019-04-03 01:53:36+00:00,2024-11-16 21:48:15+00:00,1_oso_match_by_github_repo
+F3: Fast Finality for Filecoin,https://github.com/filecoin-project/go-f3,,True,filecoin-project/go-f3,filecoin-project,go-f3,False,filecoin-project,7,11,2023-11-05 18:37:29+00:00,2024-11-14 22:25:40+00:00,1_oso_match_by_github_repo
+FEVM application & tool builder DX,https://github.com/filecoin-project/lotus,,False,filecoin-project/lotus,filecoin-project,lotus,False,filecoin-project,1270,2851,2019-06-25 09:52:07+00:00,2024-11-16 12:23:22+00:00,1_oso_match_by_github_repo
+Lotus Client Implementation,https://github.com/filecoin-project/lotus,https://github.com/opensource-observer/oss-directory/blob/main/data/projects/f/filecoin-project.yaml,True,filecoin-project/lotus,filecoin-project,lotus,False,filecoin-project,1270,2851,2019-06-25 09:52:07+00:00,2024-11-16 12:23:22+00:00,1_oso_match_by_github_repo
+Filecoin Virtual Machine EVM Compatibility,https://github.com/filecoin-project/ref-fvm,https://www.opensource.observer/projects/ref-fvm,True,filecoin-project/ref-fvm,filecoin-project,ref-fvm,False,ref-fvm-filecoin-project,139,384,2021-11-10 17:34:10+00:00,2024-11-11 04:47:57+00:00,1_oso_match_by_github_repo
+builtin-actors and ref-fvm maintenance 🔧,https://github.com/filecoin-project/ref-fvm,,True,filecoin-project/ref-fvm,filecoin-project,ref-fvm,False,ref-fvm-filecoin-project,139,384,2021-11-10 17:34:10+00:00,2024-11-11 04:47:57+00:00,1_oso_match_by_github_repo
+Filecoin Proofs,https://github.com/filecoin-project/rust-fil-proofs,,True,filecoin-project/rust-fil-proofs,filecoin-project,rust-fil-proofs,False,filecoin-project,315,492,2018-05-30 16:12:53+00:00,2024-11-11 15:27:51+00:00,1_oso_match_by_github_repo
+venus,https://github.com/filecoin-project/venus,filecoin-project-venus,True,filecoin-project/venus,filecoin-project,venus,False,filecoin-project,463,2056,2017-12-05 18:41:10+00:00,2024-11-14 06:00:01+00:00,1_oso_match_by_github_repo
+venus-wallet,https://github.com/filecoin-project/venus-wallet,filecoin-project-venus-wallet,True,filecoin-project/venus-wallet,filecoin-project,venus-wallet,False,filecoin-project,16,19,2021-02-05 01:23:41+00:00,2024-11-15 02:14:56+00:00,1_oso_match_by_github_repo
+Filecoin Spark,https://github.com/filecoin-station/spark,,False,filecoin-station/spark,filecoin-station,spark,False,filecoin-station,2,9,2023-04-27 08:54:07+00:00,2024-10-23 04:46:41+00:00,1_oso_match_by_github_repo
+filedag-storage,https://github.com/filedag-project/filedag-storage,filedag-project-filedag-storage,True,filedag-project/filedag-storage,filedag-project,filedag-storage,False,filedag-project,5,10,2022-02-10 05:57:31+00:00,2024-06-05 03:04:12+00:00,1_oso_match_by_github_repo
+filejoy,https://github.com/filedrive-team/filejoy,filedrive-team-filejoy,True,filedrive-team/filejoy,filedrive-team,filejoy,False,filedrive-team,1,3,2021-10-27 09:18:05+00:00,2024-10-09 06:10:44+00:00,1_oso_match_by_github_repo
+go-ds-cluster,https://github.com/filedrive-team/go-ds-cluster,filedrive-team-go-ds-cluster,True,filedrive-team/go-ds-cluster,filedrive-team,go-ds-cluster,False,filedrive-team,1,18,2021-08-10 06:10:03+00:00,2023-10-28 06:14:57+00:00,1_oso_match_by_github_repo
+go-graphsplit,https://github.com/filedrive-team/go-graphsplit,filedrive-team-go-graphsplit,True,filedrive-team/go-graphsplit,filedrive-team,go-graphsplit,False,filedrive-team,30,43,2021-03-09 10:13:30+00:00,2024-08-10 13:51:13+00:00,1_oso_match_by_github_repo
+go-parallel-graphsync,https://github.com/filedrive-team/go-parallel-graphsync,filedrive-team-go-parallel-graphsync,True,filedrive-team/go-parallel-graphsync,filedrive-team,go-parallel-graphsync,False,filedrive-team,0,5,2022-08-03 07:04:38+00:00,2023-08-18 09:34:36+00:00,1_oso_match_by_github_repo
+pylotus-rpc,https://github.com/FilForge/pylotus-rpc,filforge,True,filforge/pylotus-rpc,filforge,pylotus-rpc,False,filforge,0,1,2023-10-15 18:18:40+00:00,2024-11-12 16:33:35+00:00,1_oso_match_by_github_repo
+distribution @gh,https://github.com/gh-efforts/distribution,distribution,True,gh-efforts/distribution,gh-efforts,distribution,False,distribution-gh-efforts,0,1,2024-05-30 03:15:15+00:00,2024-06-04 01:56:38+00:00,1_oso_match_by_github_repo
+Lotus Monitor (Monitoring Plugin),https://github.com/gh-efforts/lotus-monitor,Lotus Monitor,True,gh-efforts/lotus-monitor,gh-efforts,lotus-monitor,False,lotus-monitor-gh-efforts,0,3,2023-07-28 10:36:27+00:00,2024-10-24 02:48:46+00:00,1_oso_match_by_github_repo
+JZFS,https://github.com/GitDataAI/jzfs,,True,gitdataai/jzfs,gitdataai,jzfs,False,gitdataai,5,75,2023-11-24 03:10:29+00:00,2024-11-15 10:54:02+00:00,1_oso_match_by_github_repo
+Glif Nodes & RPC API service,https://github.com/glifio/filecoin-iac,glifio,True,glifio/filecoin-iac,glifio,filecoin-iac,False,glifio,2,13,2022-07-18 16:24:25+00:00,2024-05-29 09:23:06+00:00,1_oso_match_by_github_repo
+GovXS – Evaluating Retro Funding Voting Designs,https://github.com/GovXS/Evaluating-Voting-Design-Tradeoffs-for-Retro-Funding ,,False,govxs/evaluating-voting-design-tradeoffs-for-retro-funding,govxs,evaluating-voting-design-tradeoffs-for-retro-funding,False,evaluating-voting-design-tradeoffs-for-retro-funding-govxs,0,3,2024-07-23 07:28:12+00:00,2024-11-07 12:27:23+00:00,1_oso_match_by_github_repo
+DWeb for Creators,https://github.com/GrayAreaorg/dweb-curriculum,,False,grayareaorg/dweb-curriculum,grayareaorg,dweb-curriculum,False,grayareaorg,1,0,2023-08-10 18:15:09+00:00,2024-10-23 00:35:22+00:00,1_oso_match_by_github_repo
+damocles,https://github.com/ipfs-force-community/damocles,ipfs-force-community-damocles,True,ipfs-force-community/damocles,ipfs-force-community,damocles,False,ipfs-force-community-damocles,22,21,2021-06-09 06:00:26+00:00,2024-11-15 06:10:01+00:00,1_oso_match_by_github_repo
+droplet,https://github.com/ipfs-force-community/droplet,ipfs-force-community-droplet,True,ipfs-force-community/droplet,ipfs-force-community,droplet,False,ipfs-force-community-droplet,21,21,2021-04-26 02:01:04+00:00,2024-11-15 05:43:43+00:00,1_oso_match_by_github_repo
+gevulot-fil,https://github.com/ipfs-force-community/gevulot-fil,ipfs-force-community-gevulot-fil,True,ipfs-force-community/gevulot-fil,ipfs-force-community,gevulot-fil,False,ipfs-force-community-gevulot-fil,0,0,2024-05-07 12:37:40+00:00,2024-11-14 07:15:15+00:00,1_oso_match_by_github_repo
+go-fvm-sdk,https://github.com/ipfs-force-community/go-fvm-sdk,ipfs-force-community-go-fvm-sdk,True,ipfs-force-community/go-fvm-sdk,ipfs-force-community,go-fvm-sdk,False,ipfs-force-community-go-fvm-sdk,4,29,2022-04-13 01:37:56+00:00,2024-11-06 20:44:26+00:00,1_oso_match_by_github_repo
+gpuproxy,https://github.com/ipfs-force-community/gpuproxy,ipfs-force-community-gpuproxy,True,ipfs-force-community/gpuproxy,ipfs-force-community,gpuproxy,False,ipfs-force-community-gpuproxy,6,4,2022-01-05 10:30:17+00:00,2024-02-28 05:49:28+00:00,1_oso_match_by_github_repo
+metrics,https://github.com/ipfs-force-community/metrics,ipfs-force-community-metrics,True,ipfs-force-community/metrics,ipfs-force-community,metrics,False,ipfs-force-community-metrics,2,0,2021-06-24 09:54:00+00:00,2024-07-25 06:24:00+00:00,1_oso_match_by_github_repo
+sophon-auth,https://github.com/ipfs-force-community/sophon-auth,ipfs-force-community-sophon-auth,True,ipfs-force-community/sophon-auth,ipfs-force-community,sophon-auth,False,ipfs-force-community-sophon,12,7,2021-03-31 08:48:05+00:00,2024-07-30 01:47:51+00:00,1_oso_match_by_github_repo
+sophon-co,https://github.com/ipfs-force-community/sophon-co,ipfs-force-community-sophon-co,True,ipfs-force-community/sophon-co,ipfs-force-community,sophon-co,False,ipfs-force-community-sophon,7,5,2021-07-15 01:08:37+00:00,2024-11-14 07:07:13+00:00,1_oso_match_by_github_repo
+Sophon-gateway,https://github.com/ipfs-force-community/Sophon-gateway,ipfs-force-community-sophon-gateway,True,ipfs-force-community/sophon-gateway,ipfs-force-community,sophon-gateway,False,ipfs-force-community-sophon,6,6,2021-05-20 07:41:33+00:00,2024-11-14 07:39:44+00:00,1_oso_match_by_github_repo
+sophon-messager,https://github.com/ipfs-force-community/sophon-messager,ipfs-force-community-sophon-messager,True,ipfs-force-community/sophon-messager,ipfs-force-community,sophon-messager,False,ipfs-force-community-sophon,16,13,2021-02-22 07:26:47+00:00,2024-11-14 06:47:01+00:00,1_oso_match_by_github_repo
+sophon-miner,https://github.com/ipfs-force-community/sophon-miner,ipfs-force-community-sophon-miner,True,ipfs-force-community/sophon-miner,ipfs-force-community,sophon-miner,False,ipfs-force-community-sophon,18,20,2021-01-28 17:44:52+00:00,2024-11-14 06:41:02+00:00,1_oso_match_by_github_repo
+venus-common-utils,https://github.com/ipfs-force-community/venus-common-utils,ipfs-force-community-venus-common-utils,True,ipfs-force-community/venus-common-utils,ipfs-force-community,venus-common-utils,False,ipfs-force-community-venus-common-utils,1,0,2021-07-12 09:12:27+00:00,2021-11-22 03:29:52+00:00,1_oso_match_by_github_repo
+Venus-hub,https://github.com/ipfs-force-community/venus-hub,,False,ipfs-force-community/venus-hub,ipfs-force-community,venus-hub,False,ipfs-force-community-venus-hub,1,0,2022-03-07 06:12:12+00:00,2024-08-28 08:06:11+00:00,1_oso_match_by_github_repo
+venus-tool,https://github.com/ipfs-force-community/venus-tool,ipfs-force-community-venus-tool,True,ipfs-force-community/venus-tool,ipfs-force-community,venus-tool,False,ipfs-force-community-venus-tool,0,4,2022-11-24 10:04:22+00:00,2024-07-17 07:38:05+00:00,1_oso_match_by_github_repo
+Boxo and Kubo,https://github.com/ipfs/boxo,https://www.opensource.observer/artifacts/github/ipfs/boxo,True,ipfs/boxo,ipfs,boxo,False,ipfs,96,214,2022-11-28 20:48:23+00:00,2024-11-15 14:25:19+00:00,1_oso_match_by_github_repo
+Helia,https://github.com/ipfs/helia,https://www.opensource.observer/artifacts/github/ipfs/helia,True,ipfs/helia,ipfs,helia,False,ipfs,104,954,2022-10-25 16:27:56+00:00,2024-11-15 23:58:23+00:00,1_oso_match_by_github_repo
+IPFS Desktop and IPFS Companion,https://github.com/ipfs/ipfs-desktop,,False,ipfs/ipfs-desktop,ipfs,ipfs-desktop,False,ipfs,865,6012,2015-05-30 23:42:36+00:00,2024-11-16 15:56:15+00:00,1_oso_match_by_github_repo
+Interplanetary Network Indexers,https://github.com/ipni/storetheindex,ipni,True,ipni/storetheindex,ipni,storetheindex,False,ipni,22,78,2021-06-26 16:45:07+00:00,2024-10-29 09:32:50+00:00,1_oso_match_by_github_repo
+Kernelogic Fil+ Datacap Allocator (KFDA),https://github.com/kernelogic/kfda-ts,kfda-kernelogic,True,kernelogic/kfda-ts,kernelogic,kfda-ts,False,kfda-kernelogic,0,0,2024-06-27 00:04:06+00:00,2024-10-15 03:27:29+00:00,1_oso_match_by_github_repo
+go-libp2p,https://github.com/libp2p/go-libp2p,https://www.opensource.observer/artifacts/github/libp2p/go-libp2p,True,libp2p/go-libp2p,libp2p,go-libp2p,False,libp2p,1074,6094,2015-09-30 23:24:32+00:00,2024-11-16 16:49:04+00:00,1_oso_match_by_github_repo
+libp2p Ecosystem,https://github.com/libp2p/libp2p,libpp,True,libp2p/libp2p,libp2p,libp2p,False,libp2p,260,2643,2016-06-18 17:01:46+00:00,2024-11-16 22:39:38+00:00,1_oso_match_by_github_repo
+Rust-Libp2p,https://github.com/libp2p/rust-libp2p,libp2p,True,libp2p/rust-libp2p,libp2p,rust-libp2p,False,libp2p,959,4607,2017-03-24 20:05:11+00:00,2024-11-16 17:56:30+00:00,1_oso_match_by_github_repo
+NFT.Storage - Long-Term Storage Flagship Product,https://github.com/nftstorage/NFT.Storage-Flagship-Preservation-Public-Good,https://www.opensource.observer/projects/nftstorage,True,nftstorage/nft.storage-flagship-preservation-public-good,nftstorage,nft.storage-flagship-preservation-public-good,False,nftstorage,0,2,2024-03-06 08:33:09+00:00,2024-10-07 05:48:14+00:00,1_oso_match_by_github_repo
+NFT.Storage: Education & Outreach Initiatives,https://github.com/nftstorage/NFT.Storage-Flagship-Preservation-Public-Good,,False,nftstorage/nft.storage-flagship-preservation-public-good,nftstorage,nft.storage-flagship-preservation-public-good,False,nftstorage,0,2,2024-03-06 08:33:09+00:00,2024-10-07 05:48:14+00:00,1_oso_match_by_github_repo
+QUADB,https://github.com/nijoe1/QUADB,quadb-nijoe1,True,nijoe1/quadb,nijoe1,quadb,False,quadb-nijoe1,0,0,2024-07-13 11:51:26+00:00,2024-11-02 14:02:23+00:00,1_oso_match_by_github_repo
+Open Source Observer,https://github.com/opensource-observer/oso,,False,opensource-observer/oso,opensource-observer,oso,False,opensource-observer,16,73,2023-07-25 20:41:57+00:00,2024-11-16 06:12:25+00:00,1_oso_match_by_github_repo
+"ProbeLab (probelab.io): building tools for P2P layer monitoring, measurements and analytics",https://github.com/probe-lab/hermes,hermes-probe-lab,True,probe-lab/hermes,probe-lab,hermes,False,hermes-probe-lab,5,29,2023-11-30 15:20:09+00:00,2024-11-14 07:57:50+00:00,1_oso_match_by_github_repo
+Farcaster,https://github.com/s0nik42/lotus-farcaster,,False,s0nik42/lotus-farcaster,s0nik42,lotus-farcaster,False,lotus-farcaster-s0nik42,68,98,2020-10-27 10:43:17+00:00,2024-10-20 17:17:14+00:00,1_oso_match_by_github_repo
+Network Health Dashboard,  https://github.com/starboard-ventures/filecoin-network-health-dashboard,,False,starboard-ventures/filecoin-network-health-dashboard,starboard-ventures,filecoin-network-health-dashboard,False,starboard-ventures,0,1,2022-11-19 13:13:58+00:00,2023-12-29 07:13:39+00:00,1_oso_match_by_github_repo
+Drand-RS,https://github.com/storswiftlabs/drand-rs,,True,storswiftlabs/drand-rs,storswiftlabs,drand-rs,False,storswiftlabs,2,2,2024-09-29 23:55:37+00:00,2024-10-15 03:25:17+00:00,1_oso_match_by_github_repo
+Curio Dashboard,https://github.com/strahe/curio-dashboard,curio-dashboard-strahe,True,strahe/curio-dashboard,strahe,curio-dashboard,False,curio-dashboard-strahe,0,0,2024-08-27 14:12:29+00:00,2024-11-14 16:31:36+00:00,1_oso_match_by_github_repo
+Filecoin Extend (Sector Renewal Tool),https://github.com/strahe/extend,filecoin-extend-strahe,True,strahe/extend,strahe,extend,False,filecoin-extend-strahe,0,0,2024-05-09 07:50:08+00:00,2024-11-13 09:12:34+00:00,1_oso_match_by_github_repo
+The Green Hosting Offer,https://github.com/twinquasar/green,,True,twinquasar/green,twinquasar,green,False,twinquasar,0,2,2023-12-22 10:17:12+00:00,2024-05-08 18:23:06+00:00,1_oso_match_by_github_repo
+Ed25519 in Web Browsers (WebTransitions.org),https://github.com/webtransitions/initiatives/,web-transitions,True,webtransitions/initiatives,webtransitions,initiatives,False,webtransitions,0,0,2024-06-18 12:13:50+00:00,2024-10-14 04:39:19+00:00,1_oso_match_by_github_repo
+Womenbiz - Filecoin Impact,https://github.com/womenbiz/Filecoin,,False,womenbiz/filecoin,womenbiz,filecoin,False,womenbiz,0,0,2024-10-02 04:40:34+00:00,2024-10-22 02:46:23+00:00,1_oso_match_by_github_repo
+TreeD-GPU,https://github.com/xutianyi1999/treed_gpu,,True,xutianyi1999/treed_gpu,xutianyi1999,treed_gpu,False,treed-gpu-xutianyi1999,0,6,2023-12-11 06:59:03+00:00,2024-10-22 10:31:36+00:00,1_oso_match_by_github_repo
+Beryx Filecoin API,https://github.com/Zondax/rfpg-beryx-api,,True,zondax/rfpg-beryx-api,zondax,rfpg-beryx-api,False,zondax,0,0,2024-11-04 19:56:35+00:00,2024-11-07 13:14:27+00:00,1_oso_match_by_github_repo
+Beryx Explorer,https://github.com/Zondax/web-beryx-explorer,,True,zondax/web-beryx-explorer,zondax,web-beryx-explorer,False,zondax,1,4,2024-02-22 00:50:47+00:00,2024-11-06 16:15:48+00:00,1_oso_match_by_github_repo
+Filecoin Ledger App & Installation Hub,https://github.com/Zondax/web-hub,,True,zondax/web-hub,zondax,web-hub,False,zondax,0,0,2024-11-04 20:00:35+00:00,2024-11-04 21:52:53+00:00,1_oso_match_by_github_repo
+Certifiably Green Filecoin Storage Initiative by DCENT,https://github.com/cryptowhizzard,,False,cryptowhizzard,cryptowhizzard,,True,cryptowhizzard,4,4,2018-08-27 11:08:03+00:00,2024-11-15 15:12:52+00:00,2_oso_match_by_github_org
+DeFinomics Labs,https://github.com/Definomics-Labs,,False,definomics-labs,definomics-labs,,True,definomics-labs,0,0,2022-11-30 23:28:46+00:00,2024-10-15 02:19:57+00:00,2_oso_match_by_github_org
+ETHGlobal,https://github.com/ethglobal,,False,ethglobal,ethglobal,,True,ethglobal,23,40,2018-09-18 20:40:37+00:00,2024-10-07 18:09:31+00:00,2_oso_match_by_github_org
+FIL Builder Community,https://github.com/orgs/FIL-Builders,,False,fil-builders,fil-builders,,True,fil-builders,9,19,2024-06-24 22:59:32+00:00,2024-11-16 08:57:06+00:00,2_oso_match_by_github_org
+Filecoin On-chain Developer Experience,https://github.com/orgs/FIL-Builders,fil-builders,True,fil-builders,fil-builders,,True,fil-builders,9,19,2024-06-24 22:59:32+00:00,2024-11-16 08:57:06+00:00,2_oso_match_by_github_org
+Filecoin Station,https://github.com/filecoin-station,,False,filecoin-station,filecoin-station,,True,filecoin-station,31,147,2022-02-09 11:33:25+00:00,2024-11-16 13:09:23+00:00,2_oso_match_by_github_org
+FILLiquid,https://github.com/FILL-Lab,FILL-Lab,True,fill-lab,fill-lab,,True,fill-lab,2,8,2023-01-21 04:25:46+00:00,2024-10-10 07:37:53+00:00,2_oso_match_by_github_org
+Filecoin wallet FiveToken,https://github.com/FiveToken,FiveToken,True,fivetoken,fivetoken,,True,fivetoken,26,19,2021-06-01 08:23:07+00:00,2024-10-15 10:57:42+00:00,2_oso_match_by_github_org
+Funding the Commons,https://github.com/fundingthecommons,,False,fundingthecommons,fundingthecommons,,True,fundingthecommons,2,1,2022-04-07 19:57:53+00:00,2024-10-21 14:09:44+00:00,2_oso_match_by_github_org
+Lighthouse,https://github.com/lighthouse-web3/,https://www.opensource.observer/projects/lighthouse-web3,True,lighthouse-web3,lighthouse-web3,,True,lighthouse-web3,41,68,2021-11-06 04:04:40+00:00,2024-11-16 16:03:57+00:00,2_oso_match_by_github_org
+Data123 (Full Archival History Node Service),https://github.com/storswiftlabs,,True,storswiftlabs,storswiftlabs,,True,storswiftlabs,16,37,2020-04-15 01:52:48+00:00,2024-10-15 03:25:17+00:00,2_oso_match_by_github_org
+Titan Network,https://github.com/Titannet-dao,titannetwork,True,titannet-dao,titannet-dao,,True,titannet-dao,49,83,2023-04-14 01:43:25+00:00,2024-11-15 11:38:29+00:00,2_oso_match_by_github_org
+UCAN Working Group,https://github.com/ucan-wg,,True,ucan-wg,ucan-wg,,True,ucan-wg,74,515,2020-09-03 04:15:50+00:00,2024-11-14 23:09:42+00:00,2_oso_match_by_github_org
+fil-minerinfo-SafeMatrix,https://github.com/freedomhz/RPGF-filminerfnfo,fil-miner-management,True,freedomhz/rpgf-filminerfnfo,freedomhz,rpgf-filminerfnfo,False,fil-miner-management,0,0,2024-10-28 08:30:52+00:00,2024-10-28 08:36:18+00:00,3_oso_match_by_project_name
+Data Horizon,https://github.com/herrehesse/datahorizon,https://github.com/cryptowhizzard,True,herrehesse/datahorizon,herrehesse,datahorizon,False,cryptowhizzard,4,4,2018-08-27 11:08:03+00:00,2024-11-15 15:12:52+00:00,3_oso_match_by_project_name
+Randamu,https://github.com/randa-mu,drand,True,randa-mu,randa-mu,,True,drand,203,1518,2017-08-18 00:49:16+00:00,2024-11-16 12:31:03+00:00,3_oso_match_by_project_name
+ChainSafe Filecoin Community Services,https://github.com/ChainSafe/filecoin-community-services,,True,chainsafe/filecoin-community-services,chainsafe,filecoin-community-services,False,,,,,,4_could_not_match_to_oso
+Chainup Cloud (Filecoin Public RPC) - Updated (4 Nov 2024),https://github.com/chainupcloud,chainupcloud,True,chainupcloud,chainupcloud,,True,,,,,,4_could_not_match_to_oso
+iso-filecoin,https://github.com/hugomrdias/filecoin,,True,hugomrdias/filecoin,hugomrdias,filecoin,False,,,,,,4_could_not_match_to_oso
+Filecoin BlockChain explorer,https://github.com/ipfs-force-community/filscan-backend,ipfs-force-community-filescan,True,ipfs-force-community/filscan-backend,ipfs-force-community,filscan-backend,False,,,,,,4_could_not_match_to_oso
+Prolly Tree Indexed Data Oracle for IPLD,https://github.com/KenCloud-Tech/prolly-tree-oracle,,True,kencloud-tech/prolly-tree-oracle,kencloud-tech,prolly-tree-oracle,False,,,,,,4_could_not_match_to_oso
+StorageStats Retrieve,https://github.com/NDLABS-Leo/RPGF2---NDLabs-storagestats,storagestats,True,ndlabs-leo/rpgf2---ndlabs-storagestats,ndlabs-leo,rpgf2---ndlabs-storagestats,False,,,,,,4_could_not_match_to_oso
+HashKing- Fil Staking,https://github.com/NodeDAO/HashKing-FIL,NodeDAO,True,nodedao/hashking-fil,nodedao,hashking-fil,False,,,,,,4_could_not_match_to_oso
+Old Faithful,https://github.com/rpcpool/yellowstone-faithful,,True,rpcpool/yellowstone-faithful,rpcpool,yellowstone-faithful,False,,,,,,4_could_not_match_to_oso
+Solana Ledger on Filecoin,https://github.com/rpcpool/yellowstone-faithful,,True,rpcpool/yellowstone-faithful,rpcpool,yellowstone-faithful,False,,,,,,4_could_not_match_to_oso
+TDrive,https://github.com/ttsszzyy/tdrive.git,,True,ttsszzyy/tdrive,ttsszzyy,tdrive,False,,,,,,4_could_not_match_to_oso
+Fast Retrieval Car Files,https://github.com/VxBlocks/boost,,True,vxblocks/boost,vxblocks,boost,False,,,,,,4_could_not_match_to_oso
+Vxblocks Filecoin Utils,https://github.com/VxBlocks/filecoin-utils,,True,vxblocks/filecoin-utils,vxblocks,filecoin-utils,False,,,,,,4_could_not_match_to_oso
+Commp-Worker,https://github.com/xutianyi1999/commp_worker,,True,xutianyi1999/commp_worker,xutianyi1999,commp_worker,False,,,,,,4_could_not_match_to_oso
+OrbitVault,https://github.com/Yaadyindia/Yaadyindia.git,OrbitVault,True,yaadyindia/yaadyindia,yaadyindia,yaadyindia,False,,,,,,4_could_not_match_to_oso
+Lotus Pilot (Worker Switching Tool),https://github.com/yhio/lotus-pilot,,True,yhio/lotus-pilot,yhio,lotus-pilot,False,,,,,,4_could_not_match_to_oso
+Lotus LevelDB-To-YugabyteDB (Boost Migration Tool) ,https://github.com/yhio/LtoY,,True,yhio/ltoy,yhio,ltoy,False,,,,,,4_could_not_match_to_oso
+Rbot,https://github.com/yhio/rbot,,True,yhio/rbot,yhio,rbot,False,,,,,,4_could_not_match_to_oso
+Ancients Research,https://github.com/Ancients-Research/retroPGF,,False,ancients-research/retropgf,ancients-research,retropgf,False,,,,,,5_no_oso_name
+Asia Storage Provider Working Group,https://github.com/Asia-SPWG/retroPGF,,False,asia-spwg/retropgf,asia-spwg,retropgf,False,,,,,,5_no_oso_name
+AuralGenius,https://github.com/auralgenius/agcore,,False,auralgenius/agcore,auralgenius,agcore,False,,,,,,5_no_oso_name
+Consensus Pledge design flaw fix,https://github.com/CELtd/builtin-actors/tree/fip0081,,False,celtd/builtin-actors/tree/fip0081,celtd,builtin-actors,False,,,,,,5_no_oso_name
+Filecoin Supply Simulation,https://github.com/CELtd/mechafil-jax-web-levers,,False,celtd/mechafil-jax-web-levers,celtd,mechafil-jax-web-levers,False,,,,,,5_no_oso_name
+Filecoin Supply Simulation,https://github.com/CELtd/sp_cost_web,,False,celtd/sp_cost_web,celtd,sp_cost_web,False,,,,,,5_no_oso_name
+Voting Analysis for Retroactive Public Goods Funding,https://github.com/celtd/voting_mechanism_design  ,,False,celtd/voting_mechanism_design,celtd,voting_mechanism_design,False,,,,,,5_no_oso_name
+CrossFi,https://github.com/crossfidao,,False,crossfidao,crossfidao,,True,,,,,,5_no_oso_name
+Filecoin Arabia,https://github.com/Cryptoblarabi/FilecoinArabic,,False,cryptoblarabi/filecoinarabic,cryptoblarabi,filecoinarabic,False,,,,,,5_no_oso_name
+Filecoin Orbit Ambassadors II,https://github.com/dannyob/orbit-fil-retropgf-2,,False,dannyob/orbit-fil-retropgf-2,dannyob,orbit-fil-retropgf-2,False,,,,,,5_no_oso_name
+Filecoin Data Portal,https://github.com/davidgasquez/filecoin-data-portal,,False,davidgasquez/filecoin-data-portal,davidgasquez,filecoin-data-portal,False,,,,,,5_no_oso_name
+Filecoin Africa; Empowering Africa with Decentralized Future,https://github.com/Filecoin-Africa/Education-Outreach-Repository,,False,filecoin-africa/education-outreach-repository,filecoin-africa,education-outreach-repository,False,,,,,,5_no_oso_name
+Filecoin Nigeria Community,https://github.com/Filecoin-Nigeria/Education-Outreach,,False,filecoin-nigeria/education-outreach,filecoin-nigeria,education-outreach,False,,,,,,5_no_oso_name
+Network Upgrade Coordinations,https://github.com/filecoin-project/community/discussions/74,,False,filecoin-project/community/discussions/74,filecoin-project,community,False,,,,,,5_no_oso_name
+FIL Dev Summit,https://github.com/filecoin-project/fildevsummit,,False,filecoin-project/fildevsummit,filecoin-project,fildevsummit,False,,,,,,5_no_oso_name
+Power Voting,https://github.com/filecoin-project/on-chain-voting,,False,filecoin-project/on-chain-voting,filecoin-project,on-chain-voting,False,,,,,,5_no_oso_name
+Filecoin South Africa Community,https://github.com/Filecoin-South-Africa-Community/Impact,,False,filecoin-south-africa-community/impact,filecoin-south-africa-community,impact,False,,,,,,5_no_oso_name
+Storage Onboarding R&D,https://github.com/FilOzone,,False,filozone,filozone,,True,,,,,,5_no_oso_name
+Direct Data Onboarding,https://github.com/FilOzone/DDO,,False,filozone/ddo,filozone,ddo,False,,,,,,5_no_oso_name
+Fil Implementers WG,https://github.com/FilOzone/FIL-Implemeter-WG/tree/main,,False,filozone/fil-implemeter-wg/tree/main,filozone,fil-implemeter-wg,False,,,,,,5_no_oso_name
+FilPunks NFT,https://github.com/FilPunks/retroPGF,,False,filpunks/retropgf,filpunks,retropgf,False,,,,,,5_no_oso_name
+Filscriptions,https://github.com/Filscriptions1/Filscriptions,,False,filscriptions1/filscriptions,filscriptions1,filscriptions,False,,,,,,5_no_oso_name
+IPFS及Filecoin价值资讯传递（南山居士Hill）,https://github.com/Hill168/filecoinhill,,False,hill168/filecoinhill,hill168,filecoinhill,False,,,,,,5_no_oso_name
+Filecoin Memes,https://github.com/hipiyushhere,,False,hipiyushhere,hipiyushhere,,True,,,,,,5_no_oso_name
+Orbit China Region,https://github.com/irmago/OrbitChinaRPGF,,False,irmago/orbitchinarpgf,irmago,orbitchinarpgf,False,,,,,,5_no_oso_name
+DeStor,https://github.com/kenada88/destor,,False,kenada88/destor,kenada88,destor,False,,,,,,5_no_oso_name
+KEN Labs,https://github.com/kencloud-tech,,False,kencloud-tech,kencloud-tech,,True,,,,,,5_no_oso_name
+MSquare(RPGF Design team),https://github.com/MsquareHub/RetroPGF-Design,,False,msquarehub/retropgf-design,msquarehub,retropgf-design,False,,,,,,5_no_oso_name
+NDLabs,https://github.com/NDLABS-Leo/RPGF2---NDLabs,,False,ndlabs-leo/rpgf2---ndlabs,ndlabs-leo,rpgf2---ndlabs,False,,,,,,5_no_oso_name
+Energy Validation Process & Green Scores Methodology,https://github.com/NovaEnergyAI,,False,novaenergyai,novaenergyai,,True,,,,,,5_no_oso_name
+Open Impact Foundation,https://github.com/oif-admin,,False,oif-admin,oif-admin,,True,,,,,,5_no_oso_name
+OpenGate,https://github.com/OpenGate01/OpenGate-NFT-Marketplace,,False,opengate01/opengate-nft-marketplace,opengate01,opengate-nft-marketplace,False,,,,,,5_no_oso_name
+Filecoin Domain Name Service (FNS),https://github.com/OpenGateLab/FNS,,False,opengatelab/fns,opengatelab,fns,False,,,,,,5_no_oso_name
+Wanjia Storage,https://github.com/pp1314car/Wanjia-Storage.git,,False,pp1314car/wanjia-storage,pp1314car,wanjia-storage,False,,,,,,5_no_oso_name
+Genesis Ark [Beta Test],https://github.com/protofire/genesis-ark-ansible,,False,protofire/genesis-ark-ansible,protofire,genesis-ark-ansible,False,,,,,,5_no_oso_name
+Retriev - Contracts for retrieval guarantees,https://github.com/retriev-protocol/core,,False,retriev-protocol/core,retriev-protocol,core,False,,,,,,5_no_oso_name
+Web3ForGood,https://github.com/samflan875/Web3ForGood,,False,samflan875/web3forgood,samflan875,web3forgood,False,,,,,,5_no_oso_name
+USDfil Stablecoin,https://github.com/usdfil,,False,usdfil,usdfil,,True,,,,,,5_no_oso_name
+Filecoin Kenya Community,https://github.com/Wengi-web,,False,wengi-web,wengi-web,,True,,,,,,5_no_oso_name
+Cross Chain Onramp POC,https://github.com/ZenGround0/onramp-contracts,,False,zenground0/onramp-contracts,zenground0,onramp-contracts,False,,,,,,5_no_oso_name

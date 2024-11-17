@@ -80,7 +80,8 @@ NFT.Storage - Long-Term Storage Flagship Product,https://github.com/nftstorage/N
 Solana Ledger on Filecoin,https://github.com/rpcpool/yellowstone-faithful,,TRUE
 ChainSafe Filecoin Community Services,https://github.com/ChainSafe/filecoin-community-services,,TRUE
 Filecoin Kenya Community,https://github.com/Wengi-web,,FALSE
-Filecoin Supply Simulation,"https://github.com/CELtd/mechafil-jax-web-levers, https://github.com/CELtd/sp_cost_web ",,FALSE
+Filecoin Supply Simulation,https://github.com/CELtd/mechafil-jax-web-levers,,FALSE
+Filecoin Supply Simulation,https://github.com/CELtd/sp_cost_web,,FALSE
 pylotus-rpc,https://github.com/FilForge/pylotus-rpc,filforge,TRUE
 Filscriptions,https://github.com/Filscriptions1/Filscriptions,,FALSE
 sophon-miner,https://github.com/ipfs-force-community/sophon-miner,ipfs-force-community-sophon-miner,TRUE
@@ -135,7 +136,7 @@ filexp,https://github.com/aschmahmann/filexp,,TRUE
 Orbit China Region,https://github.com/irmago/OrbitChinaRPGF,,FALSE
 The Green Hosting Offer,https://github.com/twinquasar/green,N/A,TRUE
 gpuproxy,https://github.com/ipfs-force-community/gpuproxy,ipfs-force-community-gpuproxy,TRUE
-"ProbeLab (probelab.io): building tools for P2P layer monitoring, measurements and analytics",https://github.com/probe-lab/hermes,`hermes-probe-lab` (https://github.com/opensource-observer/oss-directory/blob/main/data/projects/h/hermes-probe-lab.yaml),TRUE
+"ProbeLab (probelab.io): building tools for P2P layer monitoring, measurements and analytics",https://github.com/probe-lab/hermes,hermes-probe-lab,TRUE
 venus,https://github.com/filecoin-project/venus,filecoin-project-venus,TRUE
 distribution @gh,https://github.com/gh-efforts/distribution,distribution,TRUE
 Boxo and Kubo,https://github.com/ipfs/boxo,https://www.opensource.observer/artifacts/github/ipfs/boxo,TRUE
