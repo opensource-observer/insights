@@ -5,11 +5,15 @@
 
 This repository contains insights and exploratory data analysis on the health of open source software ecosystems. 
 
-Juypter Notebooks are included so others can get inspiration and understand/improve upon our analysis. Where practical, copies of data used to generate insights has been saved in CSV or JSON format. However, many of the notebooks rely on direct queries to the data warehouse and therefore will not run locally without a live connection. Note: not all of these notebooks are actively maintained, so some queries may go stale over time.
+You can also find our folder of public Colab notebooks, [here](https://drive.google.com/drive/folders/1mzqrSToxPaWhsoGOR-UVldIsaX1gqP0F).
+
+Notebooks are included so others can get inspiration and understand/improve upon our analysis. Where practical, copies of data used to generate insights has been saved in CSV or JSON format. However, many of the notebooks rely on direct queries to the data warehouse and therefore will not run locally without a live connection. Note: not all of these notebooks are actively maintained, so some queries may go stale over time.
 
 ## Getting Started
 
 For most local queries, you'll want to connect directly to BigQuery and query OSO's versioned mart models (anything that ends in a v0 or v1).
+
+Virtually every notebook begins with the following:
 
 ```
 from google.cloud import bigquery
