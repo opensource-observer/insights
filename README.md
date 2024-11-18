@@ -7,6 +7,69 @@ This repository contains insights and exploratory data analysis on the health of
 
 Juypter Notebooks are included so others can get inspiration and understand/improve upon our analysis. Where practical, copies of data used to generate insights has been saved in CSV or JSON format. However, many of the notebooks rely on direct queries to the data warehouse and therefore will not run locally without a live connection. Note: not all of these notebooks are actively maintained, so some queries may go stale over time.
 
+## Getting Started
+
+For most local queries, you'll want to connect directly to BigQuery and query OSO's versioned mart models (anything that ends in a v0 or v1).
+
+```
+from google.cloud import bigquery
+import pandas as pd
+import os
+
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = # PATH TO YOUR CREDENTIALS JSON
+GCP_PROJECT = # YOUR GCP PROJECT NAME
+
+client = bigquery.Client(GCP_PROJECT)
+```
+
+Once you've connected, here are some sample queries. These examples pull from `oso_playground` (a small subset of all data) for testing purposes. Use `oso` for the full dataset (many terabytes).
+
+Get all the GitHub repos by project:
+
+```
+results = client.query("""
+    select
+        project_name,
+        artifact_namespace,
+        artifact_name
+    from `oso_playground.artifacts_by_project_v1`
+    where artifact_source = 'GITHUB'
+""")
+df = results.to_dataframe()
+```
+
+Get a snapshot of all of OSO's static onchain metrics:
+
+```
+results = client.query("""
+    select *
+    from `oso_playground.onchain_metrics_by_project_v1`
+""")
+df = results.to_dataframe()
+```
+
+Get timeseries metrics for Uniswap:
+
+```
+results = client.query("""
+    select
+        m.metric_name,
+        p.project_name,
+        tsm.sample_date,
+        tsm.amount
+    from `oso_playground.timeseries_metrics_by_project_v0` as tsm
+    join `oso_playground.metrics_v0` as m
+        on tsm.metric_id = m.metric_id
+    join `oso_playground.projects_v1` as p
+        on tsm.project_id = p.project_id
+    where p.project_name = 'uniswap'
+    order by sample_date
+""")
+df = results.to_dataframe()
+```
+
+When you are ready to move to a larger dataset, remember to swap out `oso_playground` for `oso`.
+
 ## Repository Structure
 
 Here's an overview of the repository structure:
