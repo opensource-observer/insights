@@ -1,10 +1,10 @@
 ## Table of Contents
 - [Overview](#Overview)
-- [How to Use](#How to Use)
-- [Classification Approach](#Classification Approach)
+- [How to Use](#How-to-Use)
+- [Classification Approach](#Classification-Approach)
 - [Pros](#Pros)
 - [Cons](#Cons)
-- [Future Enhancements for Improved Project Analysis](#Future Enhancements for Improved Project Analysis)
+- [Future Enhancements for Improved Project Analysis](#Future-Enhancements-for-Improved-Project-Analysis)
 
 ## Overview
 
