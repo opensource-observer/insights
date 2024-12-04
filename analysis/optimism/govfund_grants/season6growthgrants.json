@@ -27,15 +27,14 @@
                 "Sep 1"
             ]
         },
-        "relevant_chains": [
-            "op"
-        ],
-        "contract_urls": [],
         "contract_addresses": [
-            "0xd0F92F5d756Bf223574DFa3ef284a35C3c046289",
-            "0x5c8c76f2e990f194462dc5f8a8c76ba16966ed42",
-            "0x5A7fACB970D094B6C7FF1df0eA68D99E6e73CBFF"
-        ]
+            {"weETH on OP Mainnet": "0x5A7fACB970D094B6C7FF1df0eA68D99E6e73CBFF"},
+            {"Velo": "0xd0F92F5d756Bf223574DFa3ef284a35C3c046289"}
+        ],
+        "relevant_chains": [
+            "OP"
+        ],
+        "contract_urls": "N/A"
     },
     {
         "round": "Grants Season 6",
@@ -59,28 +58,28 @@
         },
         "relevant_dates": {
             "OP deployment date": [
-                "Jul 25",
-                ""
+                "",
+                "Jul 25"
             ],
             "Incentives due date": [
-                "Jul 25",
-                ""
+                "",
+                "Jul 25"
             ]
         },
+        "contract_addresses": [
+            "0x87eEE96D50Fb761AD85B1c982d28A042169d61b1",
+            "0x0c5527B3ABFBD0c297104b12bE6f288D335B299c",
+            "0x73a7fe27fe9545d53924e529acf11f3073841b9e",
+            "0xe48b4e392e4fc29ac2600c3c8efe0404a15d60d9"
+        ],
         "relevant_chains": [
-            "lyra",
-            "op"
+            "OP",
+            "Lyra"
         ],
         "contract_urls": [
-            "https://optimistic.etherscan.io/address/0xe48b4e392e4fc29ac2600c3c8efe0404a15d60d9",
             "https://optimistic.etherscan.io/token/0x87eEE96D50Fb761AD85B1c982d28A042169d61b1",
-            "https://balancer.fi/pools/optimism/v2/0x73a7fe27fe9545d53924e529acf11f3073841b9e000000000000000000000133"
-        ],
-        "contract_addresses": [
-            "0xe48b4e392e4fc29ac2600c3c8efe0404a15d60d9",
-            "0x87eEE96D50Fb761AD85B1c982d28A042169d61b1",
-            "0x73a7fe27fe9545d53924e529acf11f3073841b9e",
-            "0x0c5527B3ABFBD0c297104b12bE6f288D335B299c"
+            "https://balancer.fi/pools/optimism/v2/0x73a7fe27fe9545d53924e529acf11f3073841b9e000000000000000000000133",
+            "https://optimistic.etherscan.io/address/0xe48b4e392e4fc29ac2600c3c8efe0404a15d60d9"
         ]
     },
     {
@@ -105,22 +104,21 @@
         },
         "relevant_dates": {
             "OP deployment date": [
-                "Sep 16",
                 "Sep 29",
-                "Sep 7"
+                "Sep 7",
+                "Sep 16"
             ],
             "Incentives due date": [
-                "Sep 16",
                 "Sep 29",
+                "Sep 16",
                 "Sep 6"
             ]
         },
-        "relevant_chains": [],
-        "contract_urls": [],
         "contract_addresses": [
-            "0x00000000fc04c910a0b5fea33b03e0447ad0b0aa",
             "0xe7910f8A4b7eFCf2964F017e34e4E2D9AA06EDc3"
-        ]
+        ],
+        "relevant_chains": "N/A",
+        "contract_urls": "N/A"
     },
     {
         "round": "Grants Season 6",
@@ -150,13 +148,11 @@
                 ""
             ]
         },
-        "relevant_chains": [],
-        "contract_urls": [],
         "contract_addresses": [
-            "0x5D40015034DA6cD75411c54dd826135f725c2498",
-            "0x554866e3654E8485928334e7F91B5AfC37D18e04",
             "0xa41214012d4462ecBB0724673897Ee0dCc0fDF49"
-        ]
+        ],
+        "relevant_chains": "N/A",
+        "contract_urls": "N/A"
     },
     {
         "round": "Grants Season 6",
@@ -186,13 +182,11 @@
                 ""
             ]
         },
-        "relevant_chains": [],
-        "contract_urls": [],
         "contract_addresses": [
-            "0x2416092f143378750bb29b79eD961ab195CcEea5",
-            "0xdBdfd5b04fc3a19C40f2B12F6Ca29Bd772CCB822",
-            "0xbf5495efe5db9ce00f80364c8b423567e58d2110"
-        ]
+            "0x2416092f143378750bb29b79eD961ab195CcEea5"
+        ],
+        "relevant_chains": "N/A",
+        "contract_urls": "N/A"
     },
     {
         "round": "Grants Season 6",
@@ -224,11 +218,9 @@
                 "Aug 30"
             ]
         },
-        "relevant_chains": [],
-        "contract_urls": [],
-        "contract_addresses": [
-            "0x14e09A1a78950B38Ab3B203cdaa0fCB331B9Ee26"
-        ]
+        "contract_addresses": "N/A",
+        "relevant_chains": "N/A",
+        "contract_urls": "N/A"
     },
     {
         "round": "Grants Season 6",
@@ -258,16 +250,11 @@
                 "Sep 30, 2025"
             ]
         },
-        "relevant_chains": [],
-        "contract_urls": [],
         "contract_addresses": [
-            "0xc0DdBAAeed6fC3E2f4f4Efa5778383B0E356621E",
-            "0x50c28a42AC91F6E6437A036D320c9242432CCE3F",
-            "0x9eb516290582424B603E76D66B55D0b268880eD1",
-            "0xB251b4a49de4dA1Ef8758F78c02678E762388FC0",
-            "0xb35659cbac913D5E4119F2Af47fD490A45e2c826",
             "0x5F451dA1b3Ad7bf2845573FccA2808d75065a6f4"
-        ]
+        ],
+        "relevant_chains": "N/A",
+        "contract_urls": "N/A"
     },
     {
         "round": "Grants Season 6",
@@ -291,27 +278,27 @@
         },
         "relevant_dates": {
             "OP deployment date": [
-                "Oct 27",
+                "Nov 17",
+                "Nov 10",
+                "Sep 16",
                 "Aug 19",
                 "Sep 29",
-                "Nov 17",
-                "Sep 16",
-                "Sep 1",
                 "Oct 20",
-                "Nov 10"
+                "Oct 27",
+                "Sep 1"
             ],
             "Incentives due date": [
                 "",
                 "Jul 31"
             ]
         },
-        "relevant_chains": [
-            "op"
-        ],
-        "contract_urls": [],
         "contract_addresses": [
             "0xD6B270DFEE268B452c86251Fd7e12Db8dE9200FB"
-        ]
+        ],
+        "relevant_chains": [
+            "OP"
+        ],
+        "contract_urls": "N/A"
     },
     {
         "round": "Grants Season 6",
@@ -341,12 +328,13 @@
                 ""
             ]
         },
-        "relevant_chains": [],
-        "contract_urls": [],
         "contract_addresses": [
             "0xcb54808F5ef6FD88b933C55Dd4f4c365E61828bB",
+            "0xcb54808F5ef6FD88b933C55Dd4f4c365E61828bB",
             "0xc9aD14cefb29506534a973F7E0E97e68eCe4fa3f"
-        ]
+        ],
+        "relevant_chains": "N/A",
+        "contract_urls": "N/A"
     },
     {
         "round": "Grants Season 6",
@@ -376,12 +364,12 @@
                 ""
             ]
         },
-        "relevant_chains": [],
-        "contract_urls": [],
         "contract_addresses": [
             "0x1BcBB33Ff4272c4fE3A00EAa7958953037A3a471",
             "0xA1dabEF33b3B82c7814B6D82A79e50F4AC44102B"
-        ]
+        ],
+        "relevant_chains": "N/A",
+        "contract_urls": "N/A"
     },
     {
         "round": "Grants Season 6",
@@ -409,12 +397,12 @@
                 ""
             ]
         },
-        "relevant_chains": [],
-        "contract_urls": [],
         "contract_addresses": [
-            "0x70843CE8E54d2b87Ee02B1911c06EA5632cd07d3",
-            "0x6E3fddab68Bf1EBaf9daCF9F7907c7Bc0951D1dc"
-        ]
+            "0x6E3fddab68Bf1EBaf9daCF9F7907c7Bc0951D1dc",
+            "0x70843CE8E54d2b87Ee02B1911c06EA5632cd07d3"
+        ],
+        "relevant_chains": "N/A",
+        "contract_urls": "N/A"
     },
     {
         "round": "Grants Season 6",
@@ -444,21 +432,20 @@
                 ""
             ]
         },
-        "relevant_chains": [
-            "op"
-        ],
-        "contract_urls": [],
         "contract_addresses": [
-            "0x79a5a9e97Dc8f4a1c2370E1049dB960275431793",
-            "0x01ef58e98e389ff5fb80a7b00e495b81cb6298d9",
-            "0xb04a484387a7242339da615a63d2d49d8968aada",
-            "0x5DC1a8Fa98508e342FA8CFf0c49ab57138d53337",
-            "0x5F8d42635A2fa74D03b5F91c825dE6F44c443dA5",
+            "0xf9cfb8a62f50e10adde5aa888b44cf01c5957055",
             "0xbb505c54d71e9e599cb8435b4f0ceec05fc71cbd",
             "0xe0bec4f45aef64cec9dcb9010d4beffb13e91466",
-            "0xf9cfb8a62f50e10adde5aa888b44cf01c5957055",
-            "0xB04A484387a7242339DA615A63D2d49D8968aaDa"
-        ]
+            "0xb04a484387a7242339da615a63d2d49d8968aada",
+            "0x5F8d42635A2fa74D03b5F91c825dE6F44c443dA5",
+            "0x5DC1a8Fa98508e342FA8CFf0c49ab57138d53337",
+            "0x01ef58e98e389ff5fb80a7b00e495b81cb6298d9",
+            "0x79a5a9e97Dc8f4a1c2370E1049dB960275431793"
+        ],
+        "relevant_chains": [
+            "OP"
+        ],
+        "contract_urls": "N/A"
     },
     {
         "round": "Grants Season 6",
@@ -482,32 +469,34 @@
         },
         "relevant_dates": {
             "OP deployment date": [
-                "",
-                "Mar 6"
+                "Mar 6",
+                ""
             ],
             "Incentives due date": [
-                "",
-                "Jul 23"
+                "Jul 23",
+                ""
             ]
         },
-        "relevant_chains": [
-            "op"
-        ],
-        "contract_urls": [
-            "https://optimistic.etherscan.io/tx/0xd81ae96c5d466592ca49f194dd3fd047ba0ea3e65d1e4c29ce601c1a845e55fc",
-            "https://app.charmverse.io/lets-get-hai/let-s-get-hai-mainnet-contracts-30138313854947785",
-            "https://github.com/hai-on-op/minter-rewards",
-            "https://github.com/hai-on-op/lp-rewards"
-        ],
         "contract_addresses": [
+            "0x2d13aC7AD45Fd3B0d146C8C9e508Aa0443123525",
             "0xe807f3282f3391d237BA8B9bECb0d8Ea3ba23777",
-            "0x588f26d5BefE74dC61694a7B36227C0e0C52C0f9",
-            "0xd81ae96c5d466592ca49f194dd3fd047ba0ea3e6",
             "0xd68e7D20008a223dD48A6076AAf5EDd4fe80a899",
             "0xDCb421Cc4Cbb7267F3b2cAcAb44Ec18AEbEd6724",
-            "0x2d13aC7AD45Fd3B0d146C8C9e508Aa0443123525",
             "0x524fE171e80173C15381bB50034033dA282abCc6",
+            "0xd81ae96c5d466592ca49f194dd3fd047ba0ea3e6",
+            "0x524fE171e80173C15381bB50034033dA282abCc6",
+            "0x588f26d5BefE74dC61694a7B36227C0e0C52C0f9",
             "0xbdED651C03E2bC332AA49C1ffCa391eAA3ea6B86"
+        ],
+        "relevant_chains": [
+            "op",
+            "OP"
+        ],
+        "contract_urls": [
+            "https://app.charmverse.io/lets-get-hai/let-s-get-hai-mainnet-contracts-30138313854947785",
+            "https://github.com/hai-on-op/minter-rewards",
+            "https://github.com/hai-on-op/lp-rewards",
+            "https://optimistic.etherscan.io/tx/0xd81ae96c5d466592ca49f194dd3fd047ba0ea3e65d1e4c29ce601c1a845e55fc"
         ]
     },
     {
@@ -539,10 +528,7 @@
                 "Jul 23 -> Jun 29, 2025",
                 "Jul 20 -> Jun 29, 2025"
             ]
-        },
-        "contract_addresses": [
-            "0x0dF840dCbf1229262A4125C1fc559bd338eC9491"
-        ]
+        }
     },
     {
         "round": "Grants Season 6",
@@ -566,18 +552,15 @@
         },
         "relevant_dates": {
             "OP deployment date": [
-                "Aug 31",
-                ""
+                "",
+                "Aug 31"
             ],
             "Incentives due date": [
                 "",
                 "Aug 31, 2025",
                 "Sep 1, 2025"
             ]
-        },
-        "contract_addresses": [
-            "0xd4c00fe7657791c2a43025de483f05e49a5f76a6"
-        ]
+        }
     },
     {
         "round": "Grants Season 6",
@@ -601,10 +584,7 @@
             "Incentives due date": [
                 "Sep 8"
             ]
-        },
-        "contract_addresses": [
-            "0xB6B9E9e56AB5a4AF927faa802ac93786352f3af9"
-        ]
+        }
     },
     {
         "round": "Grants Season 6",
@@ -634,12 +614,13 @@
                 ""
             ]
         },
-        "relevant_chains": [],
-        "contract_urls": [],
         "contract_addresses": [
             "0xcb54808F5ef6FD88b933C55Dd4f4c365E61828bB",
+            "0xcb54808F5ef6FD88b933C55Dd4f4c365E61828bB",
             "0xc9aD14cefb29506534a973F7E0E97e68eCe4fa3f"
-        ]
+        ],
+        "relevant_chains": "N/A",
+        "contract_urls": "N/A"
     },
     {
         "round": "Grants Season 6",
@@ -669,15 +650,14 @@
                 ""
             ]
         },
-        "relevant_chains": [
-            "op"
-        ],
-        "contract_urls": [],
         "contract_addresses": [
-            "0xc55E93C62874D8100dBd2DfE307EDc1036ad5434",
-            "0x4ABa01FB8E1f6BFE80c56Deb367f19F35Df0f4aE",
-            "0x4aba01fb8e1f6bfe80c56deb367f19f35df0f4ae"
-        ]
+            "0x4aba01fb8e1f6bfe80c56deb367f19f35df0f4ae",
+            "0xc55E93C62874D8100dBd2DfE307EDc1036ad5434"
+        ],
+        "relevant_chains": [
+            "OP"
+        ],
+        "contract_urls": "N/A"
     },
     {
         "round": "Grants Season 6",
@@ -705,12 +685,12 @@
                 "Aug 19"
             ]
         },
-        "relevant_chains": [],
-        "contract_urls": [],
         "contract_addresses": [
-            "0xA25c582874f984Dd58f729eF970922A3691a1C69",
-            "0x0ad86842eadee5b484e31db60716eb6867b46e21"
-        ]
+            "0x0ad86842eadee5b484e31db60716eb6867b46e21",
+            "0xA25c582874f984Dd58f729eF970922A3691a1C69"
+        ],
+        "relevant_chains": "N/A",
+        "contract_urls": "N/A"
     },
     {
         "round": "Grants Season 6",
@@ -734,19 +714,16 @@
         },
         "relevant_dates": {
             "OP deployment date": [
-                "Aug 31 -> Oct 9",
                 "Oct 11 -> Nov 9",
-                "Nov 10 -> Dec 9"
+                "Nov 10 -> Dec 9",
+                "Aug 31 -> Oct 9"
             ],
             "Incentives due date": [
                 "Oct 9",
-                "Nov 9",
-                "Dec 9"
+                "Dec 9",
+                "Nov 9"
             ]
-        },
-        "contract_addresses": [
-            "0xe945D527De9c5121EdA9cF48e23CDF691894D4c0"
-        ]
+        }
     },
     {
         "round": "Grants Season 6",
@@ -775,10 +752,7 @@
                 "",
                 "Aug 27"
             ]
-        },
-        "contract_addresses": [
-            "0xde5990625c5b70b6af6d6991f17abfc8c27acc72"
-        ]
+        }
     },
     {
         "round": "Grants Season 6",
@@ -807,10 +781,7 @@
             "Incentives due date": [
                 ""
             ]
-        },
-        "contract_addresses": [
-            "0xbe7946B7988a6556CFB78258592350e706786d36"
-        ]
+        }
     },
     {
         "round": "Grants Season 6",
@@ -836,20 +807,17 @@
             "OP deployment date": [
                 "Aug 17",
                 "Jul 31 -> Aug 30",
-                "Sep 13",
-                "Sep 29"
+                "Sep 29",
+                "Sep 13"
             ],
             "Incentives due date": [
-                "Aug 30",
-                "Oct 18",
                 "Oct 17",
-                "Sep 29",
-                "Jul 23"
+                "Jul 23",
+                "Oct 18",
+                "Aug 30",
+                "Sep 29"
             ]
-        },
-        "contract_addresses": [
-            "0xDe79e22b1b0b02CDbFF3325bfB62dbcF1e65Ca19"
-        ]
+        }
     },
     {
         "round": "Grants Season 6",
@@ -881,13 +849,9 @@
                 ""
             ]
         },
-        "relevant_chains": [],
-        "contract_urls": [],
-        "contract_addresses": [
-            "0xAC62469F4be305727a7De52785E148CbB8C3Eb65",
-            "0x579A18207242C250ADDb67cc4d49F34a5F659449",
-            "0xE40714459D9493994BE025F04afc38D2BCF42f8E"
-        ]
+        "contract_addresses": "N/A",
+        "relevant_chains": "N/A",
+        "contract_urls": "N/A"
     },
     {
         "round": "Grants Season 6",
@@ -917,11 +881,9 @@
                 ""
             ]
         },
-        "relevant_chains": [],
-        "contract_urls": [],
-        "contract_addresses": [
-            "0x93326D53d1E8EBf0af1Ff1B233c46C67c96e4d8D"
-        ]
+        "contract_addresses": "N/A",
+        "relevant_chains": "N/A",
+        "contract_urls": "N/A"
     },
     {
         "round": "Grants Season 6",
@@ -949,12 +911,12 @@
                 ""
             ]
         },
-        "relevant_chains": [],
-        "contract_urls": [],
         "contract_addresses": [
-            "0x70843CE8E54d2b87Ee02B1911c06EA5632cd07d3",
-            "0x6E3fddab68Bf1EBaf9daCF9F7907c7Bc0951D1dc"
-        ]
+            "0x6E3fddab68Bf1EBaf9daCF9F7907c7Bc0951D1dc",
+            "0x70843CE8E54d2b87Ee02B1911c06EA5632cd07d3"
+        ],
+        "relevant_chains": "N/A",
+        "contract_urls": "N/A"
     },
     {
         "round": "Grants Season 6",
@@ -982,14 +944,14 @@
                 ""
             ]
         },
-        "relevant_chains": [],
+        "contract_addresses": [
+            "0x6a189E0E8d3b6B0455DC49e81cC0df33904AF9E8",
+            "0x17a7F6a839fea3b716b43f9414ffc93131878BD2",
+            "0x3Ef3D8bA38EBe18DB133cEc108f4D14CE00Dd9Ae"
+        ],
+        "relevant_chains": "N/A",
         "contract_urls": [
             "https://app.merkl.xyz/"
-        ],
-        "contract_addresses": [
-            "0x17a7F6a839fea3b716b43f9414ffc93131878BD2",
-            "0x3Ef3D8bA38EBe18DB133cEc108f4D14CE00Dd9Ae",
-            "0x6a189E0E8d3b6B0455DC49e81cC0df33904AF9E8"
         ]
     },
     {
@@ -1022,12 +984,12 @@
                 "Sep 23"
             ]
         },
-        "relevant_chains": [],
-        "contract_urls": [],
         "contract_addresses": [
             "0x3b5a0Fc12f8fd8B26d251F28258D1d172F930f8A",
             "0xc78d4395f6ed4e7037faffe634b7b3f8af376a8d"
-        ]
+        ],
+        "relevant_chains": "N/A",
+        "contract_urls": "N/A"
     },
     {
         "round": "Grants Season 6",
@@ -1057,30 +1019,30 @@
                 ""
             ]
         },
+        "contract_addresses": [
+            "0x1026D3D219098D7b1B0A180F7E557DEeA7DA82C1",
+            "0x3Ef3D8bA38EBe18DB133cEc108f4D14CE00Dd9Ae",
+            "0x1F98431c8aD98523631AE4a59f267346ea31F984",
+            "0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD",
+            "0xB753548F6E010e7e680BA186F9Ca1BdAB2E90cf2",
+            "0xbfd8137f7d1516D3ea5cA83523914859ec47F573",
+            "0x42B24A95702b9986e82d421cC3568932790A48Ec",
+            "0x91ae842A5Ffd8d12023116943e72A606179294f3",
+            "0xEe6A57eC80ea46401049E92587E52f5Ec1c24785",
+            "0xC36442b4a4522E871399CD717aBDD847Ab11FE88",
+            "0xA5644E29708357803b5A882D272c41cC0dF92B34",
+            "0xe34139463bA50bD61336E0c446Bd8C0867c6fE65",
+            "0x61fFE014bA17989E743c5F6cB21bF9697530B21e",
+            "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45",
+            "0x000000000022D473030F116dDEE9F6B43aC78BA3",
+            "0x732f5baac411e427d130fed03c2e82a3e0d64d35",
+            "0x54dF9e11c7933a9cA3BD1E540B63dA15edAe40bf"
+        ],
         "relevant_chains": [
-            "op"
+            "OP"
         ],
         "contract_urls": [
             "https://dune.com/queries/3956098/6656202"
-        ],
-        "contract_addresses": [
-            "0x61fFE014bA17989E743c5F6cB21bF9697530B21e",
-            "0x732f5baac411e427d130fed03c2e82a3e0d64d35",
-            "0x42B24A95702b9986e82d421cC3568932790A48Ec",
-            "0xEe6A57eC80ea46401049E92587E52f5Ec1c24785",
-            "0x1026D3D219098D7b1B0A180F7E557DEeA7DA82C1",
-            "0x1F98431c8aD98523631AE4a59f267346ea31F984",
-            "0xA5644E29708357803b5A882D272c41cC0dF92B34",
-            "0xbfd8137f7d1516D3ea5cA83523914859ec47F573",
-            "0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD",
-            "0xe34139463bA50bD61336E0c446Bd8C0867c6fE65",
-            "0xB753548F6E010e7e680BA186F9Ca1BdAB2E90cf2",
-            "0xC36442b4a4522E871399CD717aBDD847Ab11FE88",
-            "0x000000000022D473030F116dDEE9F6B43aC78BA3",
-            "0x54dF9e11c7933a9cA3BD1E540B63dA15edAe40bf",
-            "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45",
-            "0x3Ef3D8bA38EBe18DB133cEc108f4D14CE00Dd9Ae",
-            "0x91ae842A5Ffd8d12023116943e72A606179294f3"
         ]
     },
     {
@@ -1111,29 +1073,29 @@
                 ""
             ]
         },
-        "relevant_chains": [
-            "op"
-        ],
-        "contract_urls": [],
         "contract_addresses": [
-            "0x61fFE014bA17989E743c5F6cB21bF9697530B21e",
-            "0x732f5baac411e427d130fed03c2e82a3e0d64d35",
-            "0x42B24A95702b9986e82d421cC3568932790A48Ec",
-            "0xEe6A57eC80ea46401049E92587E52f5Ec1c24785",
             "0x1026D3D219098D7b1B0A180F7E557DEeA7DA82C1",
-            "0x1F98431c8aD98523631AE4a59f267346ea31F984",
-            "0xA5644E29708357803b5A882D272c41cC0dF92B34",
-            "0xbfd8137f7d1516D3ea5cA83523914859ec47F573",
-            "0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD",
-            "0xe34139463bA50bD61336E0c446Bd8C0867c6fE65",
-            "0xB753548F6E010e7e680BA186F9Ca1BdAB2E90cf2",
-            "0xC36442b4a4522E871399CD717aBDD847Ab11FE88",
-            "0x000000000022D473030F116dDEE9F6B43aC78BA3",
-            "0x54dF9e11c7933a9cA3BD1E540B63dA15edAe40bf",
-            "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45",
             "0x3Ef3D8bA38EBe18DB133cEc108f4D14CE00Dd9Ae",
-            "0x91ae842A5Ffd8d12023116943e72A606179294f3"
-        ]
+            "0x1F98431c8aD98523631AE4a59f267346ea31F984",
+            "0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD",
+            "0xB753548F6E010e7e680BA186F9Ca1BdAB2E90cf2",
+            "0xbfd8137f7d1516D3ea5cA83523914859ec47F573",
+            "0x42B24A95702b9986e82d421cC3568932790A48Ec",
+            "0x91ae842A5Ffd8d12023116943e72A606179294f3",
+            "0xEe6A57eC80ea46401049E92587E52f5Ec1c24785",
+            "0xC36442b4a4522E871399CD717aBDD847Ab11FE88",
+            "0xA5644E29708357803b5A882D272c41cC0dF92B34",
+            "0xe34139463bA50bD61336E0c446Bd8C0867c6fE65",
+            "0x61fFE014bA17989E743c5F6cB21bF9697530B21e",
+            "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45",
+            "0x000000000022D473030F116dDEE9F6B43aC78BA3",
+            "0x732f5baac411e427d130fed03c2e82a3e0d64d35",
+            "0x54dF9e11c7933a9cA3BD1E540B63dA15edAe40bf"
+        ],
+        "relevant_chains": [
+            "OP"
+        ],
+        "contract_urls": "N/A"
     },
     {
         "round": "Grants Season 6",
@@ -1160,10 +1122,7 @@
             "Incentives due date": [
                 ""
             ]
-        },
-        "contract_addresses": [
-            "0x93d2118bdd8B5e243020F01a1391B2e3CB137a56"
-        ]
+        }
     },
     {
         "round": "Grants Season 6",
@@ -1193,15 +1152,15 @@
                 ""
             ]
         },
-        "relevant_chains": [
-            "op"
-        ],
-        "contract_urls": [],
         "contract_addresses": [
-            "0xD152f549545093347A162Dce210e7293f1452150",
             "0xFDbB4d606C199F091143BD604C85c191a526fbd0",
-            "0xeA173648F959790baea225cE3E75dF8A53a6BDE5"
-        ]
+            "0xeA173648F959790baea225cE3E75dF8A53a6BDE5",
+            "0xD152f549545093347A162Dce210e7293f1452150"
+        ],
+        "relevant_chains": [
+            "OP"
+        ],
+        "contract_urls": "N/A"
     },
     {
         "round": "Grants Season 6",
@@ -1229,17 +1188,20 @@
                 ""
             ]
         },
+        "contract_addresses": [
+            "0xF89E24BaD60D78386a5Fe6B6c897dd4d88A9Ed70",
+            "0xc1aB11375AADD9463036d6fA894eD905E1fBb65a",
+            "0xF89E24BaD60D78386a5Fe6B6c897dd4d88A9Ed70",
+            "0xc1aB11375AADD9463036d6fA894eD905E1fBb65a"
+        ],
         "relevant_chains": [
-            "op"
+            "OP"
         ],
         "contract_urls": [
             "https://optimistic.etherscan.io/address/0xF89E24BaD60D78386a5Fe6B6c897dd4d88A9Ed70",
+            "https://optimistic.etherscan.io/address/0xc1aB11375AADD9463036d6fA894eD905E1fBb65a",
+            "https://optimistic.etherscan.io/address/0xF89E24BaD60D78386a5Fe6B6c897dd4d88A9Ed70",
             "https://optimistic.etherscan.io/address/0xc1aB11375AADD9463036d6fA894eD905E1fBb65a"
-        ],
-        "contract_addresses": [
-            "0xF89E24BaD60D78386a5Fe6B6c897dd4d88A9Ed70",
-            "0xbC404429558292eE2D769E57d57D6E74bbd2792d",
-            "0xc1aB11375AADD9463036d6fA894eD905E1fBb65a"
         ]
     },
     {
@@ -1268,16 +1230,16 @@
                 "Oct 31"
             ]
         },
-        "relevant_chains": [
-            "op"
-        ],
-        "contract_urls": [],
         "contract_addresses": [
-            "0xC224bf25Dcc99236F00843c7D8C4194abE8AA94a",
-            "0x343910697c03477e5cc0d386ffa5133d1a827ad7",
             "0xe04Bb5B4de60FA2fBa69a93adE13A8B3B569d5B4",
-            "0x8cca517370CBfc33CC9810bfC7440832C47D251C"
-        ]
+            "0x8cca517370CBfc33CC9810bfC7440832C47D251C",
+            "0x343910697c03477e5cc0d386ffa5133d1a827ad7",
+            "0xC224bf25Dcc99236F00843c7D8C4194abE8AA94a"
+        ],
+        "relevant_chains": [
+            "OP"
+        ],
+        "contract_urls": "N/A"
     },
     {
         "round": "Grants Season 6",
@@ -1307,11 +1269,11 @@
                 ""
             ]
         },
-        "relevant_chains": [],
-        "contract_urls": [],
         "contract_addresses": [
             "0xDc1F5b81EeC7E6391Aeb6C8e5A2000D3A9AA8e6d"
-        ]
+        ],
+        "relevant_chains": "N/A",
+        "contract_urls": "N/A"
     },
     {
         "round": "Grants Season 6",
@@ -1339,40 +1301,13 @@
                 ""
             ]
         },
-        "relevant_chains": [
-            "op"
-        ],
-        "contract_urls": [],
         "contract_addresses": [
-            "0x231120C038f8F730e3a91Fad1028490B0D0C4041",
-            "0xBCDeA8BE038D7e2BFE45B5063C178FFB912f42f3",
-            "0x173C3a71A436878ccdC3dC2B8eC5979307A3dd01",
-            "0x0bFa5A013dBD0791f0F8171AFBAb45EDAA372dbF",
-            "0xde1ed749337f7f4f6bda104a6cc59677faa6c96b",
-            "0x81476cEAE27466572beA9b3397F0EaB4A02f6792",
-            "0xA987c7D6f7cCf7344d2eCB9c17610CE0215cCBD0",
-            "0x2C5048218b414C7D1e1d590b9f0738Cf7349fEA7",
-            "0x8E8C45037333aAd5749f3Dd203F1dad9e3d5C446",
-            "0xf91B8E2bD44Eb311d3cE3C6dA6493160942713B4",
-            "0xE3737dE268a82763fE11E0F8ff4FFA4553823E8b",
-            "0x2E07BAE8644ca7dCc5312e74325a7AADB9437f58",
-            "0x0842E250266506C5160c2762BA9AAE3e64917C36",
-            "0x3835b46bb20c056A48a53e6C892811fbCC43862e",
-            "0x595d607A5ef39a0A2016D785e60dF74AFbc78cC6",
-            "0xF2F48840E781b8d8cbAf3Cea2a4557228233C775",
-            "0x09Bc47bBEC265003AF4568a639915853721575C6",
-            "0xB6B9E9e56AB5a4AF927faa802ac93786352f3af9",
-            "0x9ECe430b7AC53992a73D7a95E40dCDBf5eBe803C",
-            "0x2B127aDF58EF871604F04bFE48ca6f1A2f1d901c",
-            "0xD05DA7B4071BBF8a5c5Ef9fAA23a9D23cB943702",
-            "0x9FA8Ca2013620263a68919Fc18B0667f21ddb76E",
-            "0xf5d1381e70c009d11c9ac6d5b263312b668428a5",
-            "0x6c3f0f8265547cf3606a6ff31103cee207882b9c",
-            "0x3F1E5712AD609E533Ab041B1894048E8F0A29266",
-            "0xd68c2294d796D56F4CFF70505efECFfac8d9FC8b",
-            "0x9bfFe86BA69F7d91ae67f70896aeE42698E2D3DB",
-            "0x6123f328ab34301b8d1ce3bf899f78b3b3d390fd"
-        ]
+            "0xB6B9E9e56AB5a4AF927faa802ac93786352f3af9"
+        ],
+        "relevant_chains": [
+            "OP"
+        ],
+        "contract_urls": "N/A"
     },
     {
         "round": "Grants Season 6",
@@ -1401,18 +1336,17 @@
                 ""
             ]
         },
-        "relevant_chains": [
-            "base",
-            "op",
-            "mode"
-        ],
-        "contract_urls": [],
         "contract_addresses": [
             "0xff1a0f4744e8582DF1aE09D5611b887B6a12925C",
-            "0x6c7D7714F536Cbdb0b3B0FDDea2747d5C4B2668E",
             "0x8250f4aF4B972684F7b336503E2D6dFeDeB1487a",
             "0xA2aa501b19aff244D90cc15a4Cf739D2725B5729"
-        ]
+        ],
+        "relevant_chains": [
+            "Base",
+            "Mode",
+            "OP"
+        ],
+        "contract_urls": "N/A"
     },
     {
         "round": "Grants Season 6",
@@ -1435,23 +1369,21 @@
         "relevant_dates": {
             "OP deployment date": [
                 "Dec 31",
-                "Jan 31, 2025",
+                "Jan 1, 2025 -> Jan 1, 2025",
                 "Feb 28, 2025",
-                "Jan 1, 2025 -> Jan 1, 2025"
+                "Jan 31, 2025"
             ],
             "Incentives due date": [
-                "Jan 1, 2025",
                 "Feb 14, 2025",
+                "Jan 1, 2025",
                 "Jan 14, 2025",
                 "Oct 16"
             ]
         },
-        "relevant_chains": [],
+        "contract_addresses": "N/A",
+        "relevant_chains": "N/A",
         "contract_urls": [
             "https://doc.ionic.money/ionic-documentation/resources/market-addresses"
-        ],
-        "contract_addresses": [
-            "0xfF0375667570d0e6572360e9DFbe8F2a6D85ae87"
         ]
     },
     {
@@ -1480,15 +1412,14 @@
                 ""
             ]
         },
-        "relevant_chains": [
-            "mode"
-        ],
-        "contract_urls": [],
         "contract_addresses": [
             "0x5Cc070844E98F4ceC5f2fBE1592fB1ed73aB7b48",
-            "0x6c7D7714F536Cbdb0b3B0FDDea2747d5C4B2668E",
             "0x59F78DE21a0b05d96Ae00c547BA951a3B905602f"
-        ]
+        ],
+        "relevant_chains": [
+            "Mode"
+        ],
+        "contract_urls": "N/A"
     },
     {
         "round": "Grants Season 6",
@@ -1516,12 +1447,12 @@
                 ""
             ]
         },
-        "relevant_chains": [],
-        "contract_urls": [],
         "contract_addresses": [
             "0x1BcBB33Ff4272c4fE3A00EAa7958953037A3a471",
             "0xA1dabEF33b3B82c7814B6D82A79e50F4AC44102B"
-        ]
+        ],
+        "relevant_chains": "N/A",
+        "contract_urls": "N/A"
     },
     {
         "round": "Grants Season 6",
@@ -1549,10 +1480,7 @@
                 "",
                 "Oct 17"
             ]
-        },
-        "contract_addresses": [
-            "0x9d89Bca142498FE047bD3E169De8eD028AFaB07F"
-        ]
+        }
     },
     {
         "round": "Grants Season 6",
@@ -1577,14 +1505,11 @@
                 "Oct 9"
             ],
             "Incentives due date": [
+                "Oct 9",
                 "Oct 10, 2025",
-                "Oct 9, 2025",
-                "Oct 9"
+                "Oct 9, 2025"
             ]
-        },
-        "contract_addresses": [
-            "0xd4c00fe7657791c2a43025de483f05e49a5f76a6"
-        ]
+        }
     },
     {
         "round": "Grants Season 6",
@@ -1610,15 +1535,12 @@
                 "Aug 12"
             ],
             "Incentives due date": [
-                "Aug 31 -> Sep 1, 2025",
                 "",
-                "Aug 31 -> Aug 30, 2025",
-                "Aug 28 -> Aug 31, 2025"
+                "Aug 28 -> Aug 31, 2025",
+                "Aug 31 -> Sep 1, 2025",
+                "Aug 31 -> Aug 30, 2025"
             ]
-        },
-        "contract_addresses": [
-            "0xd6E27844a260998fA5ccD9908B63488eb73198F8"
-        ]
+        }
     },
     {
         "round": "Grants Season 6",
@@ -1642,10 +1564,7 @@
             "Incentives due date": [
                 ""
             ]
-        },
-        "contract_addresses": [
-            "0xB6B9E9e56AB5a4AF927faa802ac93786352f3af9"
-        ]
+        }
     },
     {
         "round": "Grants Season 6",
@@ -1669,10 +1588,7 @@
             "Incentives due date": [
                 ""
             ]
-        },
-        "contract_addresses": [
-            "0x5A973117Dd273676bf4D14313b80562DC8973ba9"
-        ]
+        }
     },
     {
         "round": "Grants Season 6",
@@ -1696,10 +1612,7 @@
             "Incentives due date": [
                 ""
             ]
-        },
-        "contract_addresses": [
-            "0x5A973117Dd273676bf4D14313b80562DC8973ba9"
-        ]
+        }
     },
     {
         "round": "Grants Season 6",
@@ -1723,10 +1636,7 @@
             "Incentives due date": [
                 ""
             ]
-        },
-        "contract_addresses": [
-            "0x5A973117Dd273676bf4D14313b80562DC8973ba9"
-        ]
+        }
     },
     {
         "round": "Grants Season 6",
@@ -1750,10 +1660,7 @@
             "Incentives due date": [
                 "Dec 8"
             ]
-        },
-        "contract_addresses": [
-            "0xB6B9E9e56AB5a4AF927faa802ac93786352f3af9"
-        ]
+        }
     },
     {
         "round": "Grants Season 6",
@@ -1777,10 +1684,7 @@
             "Incentives due date": [
                 ""
             ]
-        },
-        "contract_addresses": [
-            "0x16779885375D32e7327fAde91f91B5A722bB5Cf4"
-        ]
+        }
     },
     {
         "round": "Grants Season 6",
@@ -1804,10 +1708,7 @@
             "Incentives due date": [
                 ""
             ]
-        },
-        "contract_addresses": [
-            "0x5A973117Dd273676bf4D14313b80562DC8973ba9"
-        ]
+        }
     },
     {
         "round": "Grants Season 6",
@@ -1831,9 +1732,6 @@
             "Incentives due date": [
                 ""
             ]
-        },
-        "contract_addresses": [
-            "0x16779885375D32e7327fAde91f91B5A722bB5Cf4"
-        ]
+        }
     }
 ]

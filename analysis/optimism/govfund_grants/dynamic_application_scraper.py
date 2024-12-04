@@ -60,30 +60,7 @@ def is_url_valid(url):
         return False
 
 
-def extract_addresses_and_chains(text):
-    # Regex to extract contract addresses and urls pointing to contracts
-    contract_address_pattern = r"0x[a-fA-F0-9]{40}"
-    contract_urls_pattern = r"https?://[^\s]+"
-
-    # Regex for finding op chain names
-    op_chain_pattern = r"\b(" + "|".join(re.escape(chain) for chain in op_chains) + r")\b"
-
-    # Extracting contract addresses and urls
-    contract_addresses = re.findall(contract_address_pattern, text)
-    contract_urls = re.findall(contract_urls_pattern, text)
-
-    # Extracting op chain names
-    chains_mentioned = re.findall(op_chain_pattern, text, re.IGNORECASE)
-    chains_mentioned = list(set(chains_mentioned))  # Remove duplicates
-
-    return {
-        "contract_addresses": contract_addresses,
-        "contract_urls": contract_urls,
-        "chains_mentioned": chains_mentioned
-    }
-
-
-def extract_target_info(grant, extracted_list, critical_milestones) -> Dict[str, str]:
+def extract_target_info(grant, extracted_list, critical_milestones, application_text) -> Dict[str, str]:
     questions = [element['q'].lower().replace(":", "") for element in extracted_list]
     
     grant['l2_addresses'] = extracted_list[questions.index("l2 recipient address")]['a'] if "l2 recipient address" in questions else "N/A"
@@ -105,22 +82,25 @@ def extract_target_info(grant, extracted_list, critical_milestones) -> Dict[str,
         dates[date_header] = list(set(dates[date_header]))
     grant['relevant_dates'] = dates
 
-    #op_deployment_date_index, incentives_due_date_index = critical_milestones['headers'].index('op_deployment_date'), critical_milestones['headers'].index('incentives_due_date')
-    #relevant_dates = {'op_deployment_date': [], 'incentives_due_date': []}
-    #for row in critical_milestones['rows']:
-    #    relevant_dates['op_deployment_date'].append(row[op_deployment_date_index])
-    #    relevant_dates['incentives_due_date'].append(row[incentives_due_date_index])
-
-    #relevant_dates['op_deployment_date'] = list(set(relevant_dates['op_deployment_date']))
-    #relevant_dates['incentives_due_date'] = list(set(relevant_dates['incentives_due_date']))
-    #grant['relevant_dates'] = relevant_dates
-
     if "full list of the project’s labeled contracts" in questions:
-        extracted_addresses_and_chains = extract_addresses_and_chains(extracted_list[questions.index("full list of the project’s labeled contracts")]['a'])
-        if extracted_addresses_and_chains:
-            grant['contract_addresses'] = extracted_addresses_and_chains['contract_addresses'] if 'contract_addresses' in extracted_addresses_and_chains.keys() and extracted_addresses_and_chains['contract_addresses'] else 'N/A'
-            grant['relevant_chains'] = extracted_addresses_and_chains['chains_mentioned'] if 'chains_mentioned' in extracted_addresses_and_chains.keys() and extracted_addresses_and_chains['chains_mentioned'] else 'N/A'
-            grant['contract_urls'] = extracted_addresses_and_chains['contract_urls'] if 'contract_urls' in extracted_addresses_and_chains.keys() and extracted_addresses_and_chains['contract_urls'] else 'N/A'
+        text = extracted_list[questions.index("full list of the project’s labeled contracts")]['a']
+    
+        contract_urls_pattern = r"https?://[^\s]+"
+        op_chain_pattern = r"\b(" + "|".join(re.escape(chain) for chain in op_chains) + r")\b"
+
+        chains_mentioned = re.findall(op_chain_pattern, text, re.IGNORECASE)
+        chains_mentioned = [chain.lower() for chain in chains_mentioned]
+        chains_mentioned = list(set(chains_mentioned)) 
+        contract_urls = re.findall(contract_urls_pattern, text)
+        contract_urls = list(set(contract_urls))
+
+        grant['relevant_chains'] = chains_mentioned
+        grant['contract_urls'] = contract_urls
+
+    contract_address_pattern = r"0x[a-fA-F0-9]{40}"
+    contract_addresses = re.findall(contract_address_pattern, application_text)
+    contract_addresses = list(set(contract_addresses))
+    grant['contract_addresses'] = contract_addresses
 
     return grant
 
@@ -135,7 +115,8 @@ def extract_application_info(soup: BeautifulSoup) -> List[Dict[str, str]]:
     :param soup: BeautifulSoup object containing the parsed HTML of the page.
     :return: A dictionary containing the scraped application information.
     """
-    out = []   
+    out = []
+    text = ""   
 
     question_selectors = [
         {'tag': 'p', 'class_': 'MuiTypography-root MuiTypography-body1 css-3vrlul', 'out': 'text'}
@@ -178,6 +159,7 @@ def extract_application_info(soup: BeautifulSoup) -> List[Dict[str, str]]:
         if curr_question.endswith(" *"):
             curr_question = curr_question[:-2]
 
+        text += curr_answer
         out.append({'q': curr_question, 'a': curr_answer})
 
     out = out[:-1]
@@ -208,7 +190,7 @@ def extract_application_info(soup: BeautifulSoup) -> List[Dict[str, str]]:
         row_contents.append(cell_contents[:-1])
     critical_milestones['rows'] = row_contents
     
-    return out, critical_milestones
+    return out, critical_milestones, text
 
 
 def fill_template(output_path: str, extracted_data: List[Dict[str, str]], critical_milestones: Dict[str, List[str]], project_name: str, project_url: str) -> None:
@@ -265,9 +247,9 @@ def scrape_application(grant, application_url, output_path, project_name):
         # Parse the rendered HTML with BeautifulSoup
         soup = BeautifulSoup(html, "html.parser")
 
-        extracted_data, critical_milestones = extract_application_info(soup)
+        extracted_data, critical_milestones, application_text = extract_application_info(soup)
         fill_template(output_path, extracted_data, critical_milestones, project_name, application_url)
-        extracted_table_info = extract_target_info(grant, extracted_data, critical_milestones)
+        extracted_table_info = extract_target_info(grant, extracted_data, critical_milestones, application_text)
         
         print(f"Successfully processed: {application_url}")
 
