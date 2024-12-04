@@ -1,57 +1,51 @@
 # AI Agents for Dependency Analysis - Training Data
 
-This experiment explores using AI agents to analyze software dependency graphs and propose funding allocations that align with human values and preferences. The goal is to develop models that can efficiently and fairly distribute grant funding to critical open source dependencies while maintaining alignment with community preferences.
+## Project Overview
+This experiment uses AI agents to analyze software dependency graphs and propose funding allocations for open source projects. Our goal is to create models that can:
+- Distribute grant funding efficiently to critical infrastructure and upstream dependencies
+- Align funding decisions with community preferences
+- Validate proposals through expert review and pairwise comparisons
 
-This repo includes some initial training data for the AI agents. You can get much more (for free) [here](https://docs.opensource.observer/docs/integrate/). We've also created a [Colab notebook](https://colab.research.google.com/drive/1DpuX0A0ZVdFn63V2aKlJ8hQ2ZyPLwgp8?usp=sharing) to help you get started.
+## Quick Start
+1. Browse the sample data in the `./data` folder
+2. Access OSO's complete datasets via [BigQuery](https://docs.opensource.observer/docs/integrate/)
+3. Run our analysis using either:
+   - Local Jupyter: `DataPrep.ipynb`
+   - [Google Colab](https://colab.research.google.com/drive/1DpuX0A0ZVdFn63V2aKlJ8hQ2ZyPLwgp8?usp=sharing)
+4. Experiment with model training using [Vertex AI](https://cloud.google.com/vertex-ai/docs/training/overview)
 
-## Overview
+## Available Datasets
 
-The goal of this experiment is to:
-- Train AI models on dependency and contribution data
-- Have models propose funding splits from a pool of funds
-- Validate proposals against human preferences through:
-  - Expert spot-checks
-  - Pairwise comparisons
-- Use the winning model(s) as an allocation mechanism
+### Summary
+- 2,010 Git repositories
+- 12,305 Package dependencies
+- 185,285 Git users
 
-## Data Preparation
+### Core Data Files
+- `core_repos.csv`: Ethereum Core repository list with metadata
+- `dep_repos.csv`: Direct dependencies tracked by OSO
+- `repo_metrics.csv`: Repository statistics (stars, commits, etc.)
+- `dep_graph.parquet`: First-level dependency relationships
+- `events.parquet`: Detailed GitHub activity since 2017
 
-The `DataPrep.ipynb` notebook collects and processes OSO data about Ethereum Core repositories and their dependencies. It generates several datasets you can use to get started with your models:
+### Activity Metrics Tracked
+| Event Type | Count |
+|------------|-------|
+| Issue Comments | 371,754 |
+| PR Review Comments | 331,840 |
+| Code Commits | 302,096 |
+| Repository Stars | 256,177 |
+| PRs Opened | 149,180 |
+| PRs Closed | 145,268 |
+| PRs Merged | 123,502 |
+| Repository Forks | 108,210 |
+| Issues Opened | 81,699 |
+| Issues Closed | 64,940 |
+| Releases Published | 5,802 |
+| PRs Reopened | 2,588 |
+| Issues Reopened | 2,214 |
 
-### Core Repository Data
-- `core_repos.csv`: List of all Ethereum Core repositories, including metadata like organization and repository names
-- `dep_repos.csv`: List of all direct dependencies of Core repositories that are tracked by OSO
-
-### Repository Metrics  
-- `repo_metrics.csv`: Key metrics for all repositories including:
-  - Stars, forks, and watchers
-  - Contributor and commit counts
-  - Creation and last update dates
-  - Primary language and license
-
-### Dependency Graph
-- `dep_graph.parquet`: First-level dependency relationships showing:
-  - Source repository (Core)
-  - Dependency name and package manager
-  - Mapped OSO project (if available)
-
-### Activity Data
-- `events.parquet`: GitHub activity data since 2017 including:
-  - Commit counts
-  - Pull requests
-  - Issues
-  - Comments
-  - Code reviews
-  - Stars and forks
-  - Other interactions
-
-## Getting Started
-
-1. Explore the data in the `./data` folder and get familiar with the OSO schema
-2. Ensure you have BigQuery access to OSO's datasets (see [documentation](https://docs.opensource.observer/docs/integrate/))
-3. Run `DataPrep.ipynb` locally or fork the [Colab notebook](https://colab.research.google.com/drive/1DpuX0A0ZVdFn63V2aKlJ8hQ2ZyPLwgp8?usp=sharing)
-4. Check out [Vertex AI](https://cloud.google.com/vertex-ai/docs/training/overview) for some ideas on how to train your models
-
-## Contributing
-
-For questions or suggestions, come say hi in the [OSO Discord](https://www.opensource.observer/discord) or open an issue in this repo.
+## Additional Resources
+- Get more data (free): [OSO Documentation](https://docs.opensource.observer/docs/integrate/)
+- Ask questions: [OSO Discord](https://www.opensource.observer/discord)
+- Report issues: Open an issue in this repository
