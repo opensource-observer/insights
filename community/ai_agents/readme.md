@@ -49,12 +49,14 @@ The notebook used to create the initial graph is `DataPrep.ipynb`. Let us know i
 
 In `Example_WeightedGraph.ipynb`, we show some examples of how you can join the graph on other OSO datasets and start weighting the graph. We include a simple (and probably very bad) method for weighting the graph based on the harmonic mean of the repository stars between two nodes.
 
-We've also included a parquet file with >1M rows of GitHub activity data from 2020 to 2024 for all relevant repositories.
+We've also included a parquet file with >1M rows of GitHub activity data from 2020 to 2024 for all relevant repositories. 
 
 This includes:
 
-| Event Type | Count |
+| Data Type | Count |
 |------------|-------|
+| Git Users | 286,740 |
+| GitHub Repos | 3,990 |
 | Code Commits | 533,503 |
 | Issue Comments | 861,824 |
 | Repository Forks | 199,195 |
@@ -68,8 +70,6 @@ This includes:
 | PR Review Comments | 531,096 |
 | Releases Published | 28,597 |
 | Stars | 445,527 |
-
-Total Git Users: 286,740
 
 ## Additional Resources
 - Get more data (free): [OSO Documentation](https://docs.opensource.observer/docs/integrate/)
