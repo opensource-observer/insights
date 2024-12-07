@@ -1,62 +1,75 @@
-# AI Agents for Dependency Analysis - Training Data
+# Agent Allocators
 
 ## Project Overview
-This experiment uses AI agents to analyze software dependency graphs and propose funding allocations for open source projects. Our goal is to create models that can:
-- Distribute grant funding efficiently to critical infrastructure and upstream dependencies
-- Align funding decisions with community preferences
-- Validate proposals through expert review and pairwise comparisons
 
-## Quick Start
-1. Explore the sample dependency data at `./data/unweighted_graph.csv` and `./data/test_weighted_graph.json`
-2. Try running the `Example_WeightedGraph.ipynb` notebook to see how we might construct a weighted graph to make funding decisions
+This project involves analyzing a depth-2 directed graph of dependencies. The graph consists of nodes representing repositories (on GitHub and various package managers) that are one or two hops away from Ethereum.
 
-**Your objective is to create a better version of the weighted graph that we should deploy funding decisions on!**
+For example:
+```json
+{
+   "relation": "GO",
+   "weight": 9.922603691208574e-05,
+   "source": "https://github.com/prysmaticlabs/prysm",
+   "target": "https://github.com/multiformats/go-multihash"
+}
+```
 
-## Next Steps
-1. Ingest repository metrics (`./data/repo_metrics.csv`) and activity data (`./data/events.parquet`) for ideas on how to weight the graph
-2. Check out OSO's complete datasets via [BigQuery](https://docs.opensource.observer/docs/integrate/)
-3. Experiment with model training using [Vertex AI](https://cloud.google.com/vertex-ai/docs/training/overview)
+Your task is to use an AI agent or your own algorithm to assign weights to the edges of the graph, indicating the proportion of credit that a parent node claims for its child nodes. You can mine GitHub, dependency, and blockchain data for free from [OSO's BigQuery](https://docs.opensource.observer/docs/integrate/) or connect to other data sources.
+
+## Getting Started
+
+1. Explore the dependency data at `./data/unweighted_graph.json`. In this version, every edge has equal weight. You can also use `./data/unweighted_graph.csv` if you prefer (or you want to pass more information to your graph).
+2. Try running the `Example_WeightedGraph.ipynb` notebook to see how we might construct a weighted graph. This version uses a very naive approach based on repository stars to weight the edges. The result is exported to `./data/example_weighted_graph.json`.
+3. Experiment! You can access more public datasets from [OSO's BigQuery](https://docs.opensource.observer/docs/integrate/) and use [Vertex AI](https://cloud.google.com/vertex-ai/docs/training/overview) to train your own model. Or you can take things in a completely different direction!
+4. We'll be posting more instructions on how solutions will be evaluated soon.
 
 ## How It Works
 
-The initial graph is created from package metadata and raw SBOM data from Ethereum and the top consensus and execution layer projects (according to https://clientdiversity.org). 
+The initial graph is seeded with the primary repos of the top consensus and execution layer projects (according to https://clientdiversity.org). We also include a set of related infrastructure projects as seed nodes.
 
-We map each package to a repository and create a dependency graph.
+The full list of seed nodes is: 
+```python
+'prysmaticlabs/prysm', 'sigp/lighthouse', 'consensys/teku', 'status-im/nimbus-eth2', 'chainsafe/lodestar', 'grandinetech/grandine', 'ethereum/go-ethereum', 'nethermindeth/nethermind', 'hyperledger/besu', 'erigontech/erigon', 'paradigmxyz/reth', 'ethereum/solidity', 'ethereum/remix-project', 'vyperlang/vyper', 'ethereum/web3.py', 'ethereum/py-evm', 'eth-infinitism/account-abstraction', 'safe-global/safe-smart-account', 'a16z/helios', 'web3/web3.js', 'ethereumjs/ethereumjs-monorepo'
+```
 
-Currently, the dependency graph has three levels:
-1. Ethereum (all repos except go-ethereum)
-2. Ethereum clients (go-ethereum, nethermind, etc.) and direct dependencies of Ethereum repos
-3. Dependencies of Ethereum clients
+Next, we pull the Software Bill of Materials (SBOM) for each of the above repositories and identify all packages in Go, Rust, JavaScript, and Python. 
 
-The dependency graph considers packages for Python, JavaScript, Go, and Rust.
+This gives us a list of over 6,000 packages:
 
-We haven't implemented the next level of dependencies yet, but this first version gives us a graph of about 6,000 nodes (resolved from around 40,000 packages) and 30,000 edges.
+- JavaScript: 4750 (hosted on npm)
+- Rust: 1076 (hosted on crates.io)
+- Go: 416 (hosted on GitHub)
+- Python: 137 (hosted on PyPi)
 
-The notebook used to create the initial graph is `DataPrep.ipynb`. Let us know if you find any issues with the data or the graph construction! Feel free to fork it and create your own graph!
+Finally, we try to map each package to an open source repository and build a dependency graph. In total, we are left with 3,990 GitHub repositories and over 10,000 edges in the graph.
 
-## GitHub Activity
+The notebook used to create the initial graph is `DataPrep.ipynb`. Let us know if you find any issues with the data or the graph construction. Feel free to fork it and create your own graph!
 
-We've also included a parquet file with 1.5M rows of GitHub activity data from 2020 to 2024 for all relevant repositories.
+## Ideas for Weighting the Graph
+
+In `Example_WeightedGraph.ipynb`, we show some examples of how you can join the graph on other OSO datasets and start weighting the graph. We include a simple (and probably very bad) method for weighting the graph based on the harmonic mean of the repository stars between two nodes.
+
+We've also included a parquet file with >1M rows of GitHub activity data from 2020 to 2024 for all relevant repositories.
 
 This includes:
 
 | Event Type | Count |
 |------------|-------|
-| Code Commits | 740,390 |
-| Issue Comments | 1,078,645 |
-| Repository Forks | 224,868 |
-| Issues Opened | 296,934 |
-| Issues Closed | 185,505 |
-| Issues Reopened | 7,700 |
-| PRs Opened | 423,758 |
-| PRs Closed | 445,122 |
-| PRs Merged | 364,273 |
-| PRs Reopened | 4,476 |
-| PR Review Comments | 681,945 |
-| Releases Published | 19,600 |
-| Stars | 542,384 |
+| Code Commits | 533,503 |
+| Issue Comments | 861,824 |
+| Repository Forks | 199,195 |
+| Issues Opened | 218,345 |
+| Issues Closed | 126,357 |
+| Issues Reopened | 4,474 |
+| PRs Opened | 386,929 |
+| PRs Closed | 381,165 |
+| PRs Merged | 313,453 |
+| PRs Reopened | 3,319 |
+| PR Review Comments | 531,096 |
+| Releases Published | 28,597 |
+| Stars | 445,527 |
 
-Total Git Users: 328,414
+Total Git Users: 286,740
 
 ## Additional Resources
 - Get more data (free): [OSO Documentation](https://docs.opensource.observer/docs/integrate/)
