@@ -1,1 +1,1 @@
-Directory moved to [Deep Funder](../deep_funder/readme.md).
+Directory moved to [Dependency Graph Funding](../dependency_graph_funding/readme.md).

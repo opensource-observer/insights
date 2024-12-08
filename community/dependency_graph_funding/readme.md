@@ -1,4 +1,4 @@
-# Deep Funder
+# Dependency Graph Funding
 
 ## Project Overview
 
@@ -8,13 +8,17 @@ For example:
 ```json
 {
    "relation": "GO",
-   "weight": 0,
+   "weight": 0.1,
    "source": "https://github.com/prysmaticlabs/prysm",
    "target": "https://github.com/multiformats/go-multihash"
 }
 ```
 
-Your task is to use an AI agent or your own algorithm to assign weights to the edges of the graph, indicating the proportion of credit that a parent node claims for its child nodes. You can mine GitHub, dependency, and blockchain data for free from [OSO's BigQuery](https://docs.opensource.observer/docs/integrate/) or connect to other data sources.
+The `source` in the graph is the **dependent** node and the `target` is the **dependency** node. By weighting the edges of the graph, we aim to signal the most important dependencies and allocate funding proportionally to them.
+
+Your job is to submit a list of weights for the edges, where the weight of an edge `source` (dependent) -> `target` (dependency) represents the portion of the credit for `source` (dependent) that belongs to `target` (dependency). The weights coming out of a `source` node into its `target` nodes should sum to less than one; the remainder represents the portion of credit that rests with the `source` node itself.
+
+You can mine GitHub, dependency, and blockchain data for free from [OSO's BigQuery](https://docs.opensource.observer/docs/integrate/) or connect to other data sources.
 
 ## Getting Started
 
