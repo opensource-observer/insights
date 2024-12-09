@@ -26,9 +26,9 @@
       ]
     },
     "relevant_chains": [
-      "OP"
+      "op"
     ],
-    "contract_urls": "N/A",
+    "contract_urls": [],
     "addresses": [
       {
         "0x5c8c76f2e990f194462dc5f8a8c76ba16966ed42": {
@@ -44,18 +44,6 @@
         }
       },
       {
-        "0xd0f92f5d756bf223574dfa3ef284a35c3c046289": {
-          "networks": [
-            "optimism"
-          ],
-          "tags": [
-            "contract"
-          ],
-          "name": "etherfi",
-          "count_txns": 34
-        }
-      },
-      {
         "0x5a7facb970d094b6c7ff1df0ea68d99e6e73cbff": {
           "networks": [
             "optimism"
@@ -64,7 +52,32 @@
             "contract"
           ],
           "name": "etherfi",
-          "count_txns": 1644
+          "count_txns": 1907
+        }
+      },
+      {
+        "0xd0f92f5d756bf223574dfa3ef284a35c3c046289": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "contract"
+          ],
+          "name": "etherfi",
+          "count_txns": 42
+        }
+      },
+      {
+        "0x5c8c76f2e990f194462dc5f8a8c76ba16966ed42": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "eoa",
+            "wallet"
+          ],
+          "name": "etherfi",
+          "count_txns": 0
         }
       }
     ]
@@ -89,22 +102,22 @@
     },
     "relevant_dates": {
       "OP deployment date": [
-        "",
-        "Jul 25"
+        "Jul 25",
+        ""
       ],
       "Incentives due date": [
-        "",
-        "Jul 25"
+        "Jul 25",
+        ""
       ]
     },
     "relevant_chains": [
-      "OP",
-      "Lyra"
+      "lyra",
+      "op"
     ],
     "contract_urls": [
+      "https://optimistic.etherscan.io/address/0xe48b4e392e4fc29ac2600c3c8efe0404a15d60d9",
       "https://optimistic.etherscan.io/token/0x87eEE96D50Fb761AD85B1c982d28A042169d61b1",
-      "https://balancer.fi/pools/optimism/v2/0x73a7fe27fe9545d53924e529acf11f3073841b9e000000000000000000000133",
-      "https://optimistic.etherscan.io/address/0xe48b4e392e4fc29ac2600c3c8efe0404a15d60d9"
+      "https://balancer.fi/pools/optimism/v2/0x73a7fe27fe9545d53924e529acf11f3073841b9e000000000000000000000133"
     ],
     "addresses": [
       {
@@ -121,17 +134,14 @@
         }
       },
       {
-        "0x87eee96d50fb761ad85b1c982d28a042169d61b1": {
+        "0xe48b4e392e4fc29ac2600c3c8efe0404a15d60d9": {
           "networks": [
-            "base",
-            "optimism",
-            "mode"
+            "optimism"
           ],
           "tags": [
             "contract"
           ],
-          "name": "kelp-dao",
-          "count_txns": 21161
+          "count_txns": 71
         }
       },
       {
@@ -155,18 +165,21 @@
           "tags": [
             "contract"
           ],
-          "count_txns": 960
+          "count_txns": 1017
         }
       },
       {
-        "0xe48b4e392e4fc29ac2600c3c8efe0404a15d60d9": {
+        "0x87eee96d50fb761ad85b1c982d28a042169d61b1": {
           "networks": [
-            "optimism"
+            "mode",
+            "optimism",
+            "base"
           ],
           "tags": [
             "contract"
           ],
-          "count_txns": 67
+          "name": "kelp-dao",
+          "count_txns": 22318
         }
       }
     ]
@@ -191,29 +204,40 @@
     },
     "relevant_dates": {
       "OP deployment date": [
+        "Sep 16",
         "Sep 29",
-        "Sep 7",
-        "Sep 16"
+        "Sep 7"
       ],
       "Incentives due date": [
-        "Sep 29",
         "Sep 16",
+        "Sep 29",
         "Sep 6"
       ]
     },
-    "relevant_chains": "N/A",
-    "contract_urls": "N/A",
+    "relevant_chains": [],
+    "contract_urls": [],
     "addresses": [
       {
         "0xe7910f8a4b7efcf2964f017e34e4e2d9aa06edc3": {
           "networks": [
-            "base",
-            "optimism"
+            "optimism",
+            "base"
           ],
           "tags": [
             "wallet"
           ],
           "count_txns": 1
+        }
+      },
+      {
+        "0x00000000fc04c910a0b5fea33b03e0447ad0b0aa": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 47667
         }
       },
       {
@@ -255,8 +279,8 @@
         ""
       ]
     },
-    "relevant_chains": "N/A",
-    "contract_urls": "N/A",
+    "relevant_chains": [],
+    "contract_urls": [],
     "addresses": [
       {
         "0xa41214012d4462ecbb0724673897ee0dcc0fdf49": {
@@ -267,6 +291,26 @@
             "wallet"
           ],
           "count_txns": 2
+        }
+      },
+      {
+        "0x5d40015034da6cd75411c54dd826135f725c2498": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 1
+        }
+      },
+      {
+        "0x554866e3654e8485928334e7f91b5afc37d18e04": {
+          "networks": [],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 0
         }
       },
       {
@@ -308,8 +352,8 @@
         ""
       ]
     },
-    "relevant_chains": "N/A",
-    "contract_urls": "N/A",
+    "relevant_chains": [],
+    "contract_urls": [],
     "addresses": [
       {
         "0xdbdfd5b04fc3a19c40f2b12f6ca29bd772ccb822": {
@@ -328,16 +372,40 @@
         "0x2416092f143378750bb29b79ed961ab195cceea5": {
           "networks": [
             "fraxtal",
-            "optimism",
-            "zora",
+            "base",
             "mode",
-            "base"
+            "zora",
+            "optimism"
           ],
           "tags": [
             "contract"
           ],
           "name": "pyth-network",
-          "count_txns": 160311
+          "count_txns": 173539
+        }
+      },
+      {
+        "0xdbdfd5b04fc3a19c40f2b12f6ca29bd772ccb822": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "safe",
+            "wallet"
+          ],
+          "name": "renzo-protocol",
+          "count_txns": 2
+        }
+      },
+      {
+        "0xbf5495efe5db9ce00f80364c8b423567e58d2110": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 1
         }
       }
     ]
@@ -370,9 +438,22 @@
         "Aug 30"
       ]
     },
-    "relevant_chains": "N/A",
-    "contract_urls": "N/A",
+    "relevant_chains": [],
+    "contract_urls": [],
     "addresses": [
+      {
+        "0x14e09a1a78950b38ab3b203cdaa0fcb331b9ee26": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "safe",
+            "wallet"
+          ],
+          "name": "wannabet-cc",
+          "count_txns": 12
+        }
+      },
       {
         "0x14e09a1a78950b38ab3b203cdaa0fcb331b9ee26": {
           "networks": [
@@ -414,8 +495,8 @@
         "Sep 30, 2025"
       ]
     },
-    "relevant_chains": "N/A",
-    "contract_urls": "N/A",
+    "relevant_chains": [],
+    "contract_urls": [],
     "addresses": [
       {
         "0x5f451da1b3ad7bf2845573fcca2808d75065a6f4": {
@@ -442,6 +523,67 @@
           "name": "hvax",
           "count_txns": 1
         }
+      },
+      {
+        "0xb35659cbac913d5e4119f2af47fd490a45e2c826": {
+          "networks": [
+            "any_evm"
+          ],
+          "tags": [
+            "eoa"
+          ],
+          "name": "hvax",
+          "count_txns": 0
+        }
+      },
+      {
+        "0x9eb516290582424b603e76d66b55d0b268880ed1": {
+          "networks": [
+            "mainnet"
+          ],
+          "tags": [
+            "eoa"
+          ],
+          "name": "hvax",
+          "count_txns": 0
+        }
+      },
+      {
+        "0x50c28a42ac91f6e6437a036d320c9242432cce3f": {
+          "networks": [
+            "any_evm"
+          ],
+          "tags": [
+            "eoa"
+          ],
+          "name": "hvax",
+          "count_txns": 0
+        }
+      },
+      {
+        "0xc0ddbaaeed6fc3e2f4f4efa5778383b0e356621e": {
+          "networks": [
+            "mainnet"
+          ],
+          "tags": [
+            "safe",
+            "wallet"
+          ],
+          "name": "hvax",
+          "count_txns": 0
+        }
+      },
+      {
+        "0xb251b4a49de4da1ef8758f78c02678e762388fc0": {
+          "networks": [
+            "mainnet"
+          ],
+          "tags": [
+            "eoa"
+          ],
+          "name": "hvax",
+          "count_txns": 0
+        }
       }
     ]
   },
@@ -465,14 +607,14 @@
     },
     "relevant_dates": {
       "OP deployment date": [
-        "Nov 17",
-        "Nov 10",
-        "Sep 16",
+        "Oct 27",
         "Aug 19",
         "Sep 29",
+        "Nov 17",
+        "Sep 16",
+        "Sep 1",
         "Oct 20",
-        "Oct 27",
-        "Sep 1"
+        "Nov 10"
       ],
       "Incentives due date": [
         "",
@@ -480,9 +622,9 @@
       ]
     },
     "relevant_chains": [
-      "OP"
+      "op"
     ],
-    "contract_urls": "N/A",
+    "contract_urls": [],
     "addresses": [
       {
         "0xd6b270dfee268b452c86251fd7e12db8de9200fb": {
@@ -538,8 +680,8 @@
         ""
       ]
     },
-    "relevant_chains": "N/A",
-    "contract_urls": "N/A",
+    "relevant_chains": [],
+    "contract_urls": [],
     "addresses": [
       {
         "0xcb54808f5ef6fd88b933c55dd4f4c365e61828bb": {
@@ -551,16 +693,7 @@
             "wallet"
           ],
           "name": "compound-finance",
-          "count_txns": 7
-        }
-      },
-      {
-        "0xc9ad14cefb29506534a973f7e0e97e68ece4fa3f": {
-          "networks": [],
-          "tags": [
-            "contract"
-          ],
-          "count_txns": 0
+          "count_txns": 8
         }
       },
       {
@@ -573,7 +706,16 @@
             "wallet"
           ],
           "name": "compound-finance",
-          "count_txns": 7
+          "count_txns": 8
+        }
+      },
+      {
+        "0xc9ad14cefb29506534a973f7e0e97e68ece4fa3f": {
+          "networks": [],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 0
         }
       }
     ]
@@ -604,8 +746,8 @@
         ""
       ]
     },
-    "relevant_chains": "N/A",
-    "contract_urls": "N/A",
+    "relevant_chains": [],
+    "contract_urls": [],
     "addresses": [
       {
         "0x1bcbb33ff4272c4fe3a00eaa7958953037a3a471": {
@@ -617,22 +759,7 @@
             "wallet"
           ],
           "name": "tlx-protocol",
-          "count_txns": 4
-        }
-      },
-      {
-        "0xa1dabef33b3b82c7814b6d82a79e50f4ac44102b": {
-          "networks": [
-            "base",
-            "fraxtal",
-            "bob",
-            "optimism"
-          ],
-          "tags": [
-            "contract"
-          ],
-          "name": "tlx-protocol",
-          "count_txns": 2073
+          "count_txns": 6
         }
       },
       {
@@ -645,7 +772,22 @@
             "wallet"
           ],
           "name": "tlx-protocol",
-          "count_txns": 4
+          "count_txns": 6
+        }
+      },
+      {
+        "0xa1dabef33b3b82c7814b6d82a79e50f4ac44102b": {
+          "networks": [
+            "fraxtal",
+            "optimism",
+            "bob",
+            "base"
+          ],
+          "tags": [
+            "contract"
+          ],
+          "name": "tlx-protocol",
+          "count_txns": 2342
         }
       }
     ]
@@ -674,8 +816,8 @@
         ""
       ]
     },
-    "relevant_chains": "N/A",
-    "contract_urls": "N/A",
+    "relevant_chains": [],
+    "contract_urls": [],
     "addresses": [
       {
         "0x6e3fddab68bf1ebaf9dacf9f7907c7bc0951d1dc": {
@@ -744,9 +886,9 @@
       ]
     },
     "relevant_chains": [
-      "OP"
+      "op"
     ],
-    "contract_urls": "N/A",
+    "contract_urls": [],
     "addresses": [
       {
         "0xb04a484387a7242339da615a63d2d49d8968aada": {
@@ -762,80 +904,43 @@
         }
       },
       {
-        "0xe0bec4f45aef64cec9dcb9010d4beffb13e91466": {
+        "0xb04a484387a7242339da615a63d2d49d8968aada": {
           "networks": [
-            "base",
             "optimism"
           ],
           "tags": [
-            "contract"
+            "safe",
+            "wallet"
           ],
           "name": "extra-finance",
-          "count_txns": 8661
+          "count_txns": 6
         }
       },
       {
         "0xbb505c54d71e9e599cb8435b4f0ceec05fc71cbd": {
           "networks": [
-            "base",
-            "optimism"
+            "optimism",
+            "base"
           ],
           "tags": [
             "contract",
             "factory"
           ],
           "name": "extra-finance",
-          "count_txns": 164970
+          "count_txns": 179015
         }
       },
       {
-        "0x5f8d42635a2fa74d03b5f91c825de6f44c443da5": {
+        "0xe0bec4f45aef64cec9dcb9010d4beffb13e91466": {
           "networks": [
-            "base",
-            "optimism"
+            "optimism",
+            "base"
           ],
           "tags": [
             "contract"
           ],
           "name": "extra-finance",
-          "count_txns": 1303
-        }
-      },
-      {
-        "0x5dc1a8fa98508e342fa8cff0c49ab57138d53337": {
-          "networks": [
-            "optimism"
-          ],
-          "tags": [
-            "contract"
-          ],
-          "name": "extra-finance",
-          "count_txns": 777
-        }
-      },
-      {
-        "0x01ef58e98e389ff5fb80a7b00e495b81cb6298d9": {
-          "networks": [
-            "optimism"
-          ],
-          "tags": [
-            "contract"
-          ],
-          "name": "extra-finance",
-          "count_txns": 2
-        }
-      },
-      {
-        "0xf9cfb8a62f50e10adde5aa888b44cf01c5957055": {
-          "networks": [
-            "base",
-            "optimism"
-          ],
-          "tags": [
-            "contract"
-          ],
-          "name": "extra-finance",
-          "count_txns": 147815
+          "count_txns": 9372
         }
       },
       {
@@ -851,6 +956,43 @@
         }
       },
       {
+        "0x5dc1a8fa98508e342fa8cff0c49ab57138d53337": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "contract"
+          ],
+          "name": "extra-finance",
+          "count_txns": 845
+        }
+      },
+      {
+        "0x01ef58e98e389ff5fb80a7b00e495b81cb6298d9": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "contract"
+          ],
+          "name": "extra-finance",
+          "count_txns": 2
+        }
+      },
+      {
+        "0x5f8d42635a2fa74d03b5f91c825de6f44c443da5": {
+          "networks": [
+            "optimism",
+            "base"
+          ],
+          "tags": [
+            "contract"
+          ],
+          "name": "extra-finance",
+          "count_txns": 1566
+        }
+      },
+      {
         "0xb04a484387a7242339da615a63d2d49d8968aada": {
           "networks": [
             "optimism"
@@ -861,6 +1003,19 @@
           ],
           "name": "extra-finance",
           "count_txns": 6
+        }
+      },
+      {
+        "0xf9cfb8a62f50e10adde5aa888b44cf01c5957055": {
+          "networks": [
+            "optimism",
+            "base"
+          ],
+          "tags": [
+            "contract"
+          ],
+          "name": "extra-finance",
+          "count_txns": 161908
         }
       }
     ]
@@ -885,23 +1040,22 @@
     },
     "relevant_dates": {
       "OP deployment date": [
-        "Mar 6",
-        ""
+        "",
+        "Mar 6"
       ],
       "Incentives due date": [
-        "Jul 23",
-        ""
+        "",
+        "Jul 23"
       ]
     },
     "relevant_chains": [
-      "op",
-      "OP"
+      "op"
     ],
     "contract_urls": [
+      "https://optimistic.etherscan.io/tx/0xd81ae96c5d466592ca49f194dd3fd047ba0ea3e65d1e4c29ce601c1a845e55fc",
       "https://app.charmverse.io/lets-get-hai/let-s-get-hai-mainnet-contracts-30138313854947785",
       "https://github.com/hai-on-op/minter-rewards",
-      "https://github.com/hai-on-op/lp-rewards",
-      "https://optimistic.etherscan.io/tx/0xd81ae96c5d466592ca49f194dd3fd047ba0ea3e65d1e4c29ce601c1a845e55fc"
+      "https://github.com/hai-on-op/lp-rewards"
     ],
     "addresses": [
       {
@@ -918,11 +1072,14 @@
         }
       },
       {
-        "0xd81ae96c5d466592ca49f194dd3fd047ba0ea3e6": {
-          "networks": [],
+        "0xd68e7d20008a223dd48a6076aaf5edd4fe80a899": {
+          "networks": [
+            "optimism"
+          ],
           "tags": [
             "contract"
           ],
+          "name": "hai-on-op",
           "count_txns": 0
         }
       },
@@ -951,27 +1108,16 @@
         }
       },
       {
-        "0xbded651c03e2bc332aa49c1ffca391eaa3ea6b86": {
+        "0x2d13ac7ad45fd3b0d146c8c9e508aa0443123525": {
           "networks": [
             "optimism"
           ],
           "tags": [
-            "contract"
+            "safe",
+            "wallet"
           ],
           "name": "hai-on-op",
-          "count_txns": 44
-        }
-      },
-      {
-        "0xd68e7d20008a223dd48a6076aaf5edd4fe80a899": {
-          "networks": [
-            "optimism"
-          ],
-          "tags": [
-            "contract"
-          ],
-          "name": "hai-on-op",
-          "count_txns": 0
+          "count_txns": 7
         }
       },
       {
@@ -988,6 +1134,18 @@
         }
       },
       {
+        "0xbded651c03e2bc332aa49c1ffca391eaa3ea6b86": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "contract"
+          ],
+          "name": "hai-on-op",
+          "count_txns": 45
+        }
+      },
+      {
         "0x588f26d5befe74dc61694a7b36227c0e0c52c0f9": {
           "networks": [
             "optimism"
@@ -1000,16 +1158,12 @@
         }
       },
       {
-        "0x2d13ac7ad45fd3b0d146c8c9e508aa0443123525": {
-          "networks": [
-            "optimism"
-          ],
+        "0xd81ae96c5d466592ca49f194dd3fd047ba0ea3e6": {
+          "networks": [],
           "tags": [
-            "safe",
-            "wallet"
+            "contract"
           ],
-          "name": "hai-on-op",
-          "count_txns": 7
+          "count_txns": 0
         }
       }
     ]
@@ -1053,7 +1207,20 @@
             "wallet"
           ],
           "name": "fraxfinance",
-          "count_txns": 3
+          "count_txns": 4
+        }
+      },
+      {
+        "0x0df840dcbf1229262a4125c1fc559bd338ec9491": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "safe",
+            "wallet"
+          ],
+          "name": "fraxfinance",
+          "count_txns": 4
         }
       }
     ]
@@ -1078,8 +1245,8 @@
     },
     "relevant_dates": {
       "OP deployment date": [
-        "",
-        "Aug 31"
+        "Aug 31",
+        ""
       ],
       "Incentives due date": [
         "",
@@ -1098,7 +1265,20 @@
             "wallet"
           ],
           "name": "derivexyz",
-          "count_txns": 34
+          "count_txns": 38
+        }
+      },
+      {
+        "0xd4c00fe7657791c2a43025de483f05e49a5f76a6": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "safe",
+            "wallet"
+          ],
+          "name": "derivexyz",
+          "count_txns": 38
         }
       }
     ]
@@ -1125,6 +1305,19 @@
       ]
     },
     "addresses": [
+      {
+        "0xb6b9e9e56ab5a4af927faa802ac93786352f3af9": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "safe",
+            "wallet"
+          ],
+          "name": "spearbit-portfolio",
+          "count_txns": 5
+        }
+      },
       {
         "0xb6b9e9e56ab5a4af927faa802ac93786352f3af9": {
           "networks": [
@@ -1166,8 +1359,8 @@
         ""
       ]
     },
-    "relevant_chains": "N/A",
-    "contract_urls": "N/A",
+    "relevant_chains": [],
+    "contract_urls": [],
     "addresses": [
       {
         "0xcb54808f5ef6fd88b933c55dd4f4c365e61828bb": {
@@ -1179,16 +1372,7 @@
             "wallet"
           ],
           "name": "compound-finance",
-          "count_txns": 7
-        }
-      },
-      {
-        "0xc9ad14cefb29506534a973f7e0e97e68ece4fa3f": {
-          "networks": [],
-          "tags": [
-            "contract"
-          ],
-          "count_txns": 0
+          "count_txns": 8
         }
       },
       {
@@ -1201,7 +1385,16 @@
             "wallet"
           ],
           "name": "compound-finance",
-          "count_txns": 7
+          "count_txns": 8
+        }
+      },
+      {
+        "0xc9ad14cefb29506534a973f7e0e97e68ece4fa3f": {
+          "networks": [],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 0
         }
       }
     ]
@@ -1233,9 +1426,9 @@
       ]
     },
     "relevant_chains": [
-      "OP"
+      "op"
     ],
-    "contract_urls": "N/A",
+    "contract_urls": [],
     "addresses": [
       {
         "0x4aba01fb8e1f6bfe80c56deb367f19f35df0f4ae": {
@@ -1247,7 +1440,7 @@
             "wallet"
           ],
           "name": "beefy-finance",
-          "count_txns": 78
+          "count_txns": 80
         }
       },
       {
@@ -1260,20 +1453,33 @@
             "wallet"
           ],
           "name": "beefy-finance",
-          "count_txns": 78
+          "count_txns": 80
+        }
+      },
+      {
+        "0x4aba01fb8e1f6bfe80c56deb367f19f35df0f4ae": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "safe",
+            "wallet"
+          ],
+          "name": "beefy-finance",
+          "count_txns": 80
         }
       },
       {
         "0xc55e93c62874d8100dbd2dfe307edc1036ad5434": {
           "networks": [
-            "base",
-            "optimism"
+            "optimism",
+            "base"
           ],
           "tags": [
             "contract"
           ],
           "name": "beefy-finance",
-          "count_txns": 2937
+          "count_txns": 3344
         }
       }
     ]
@@ -1302,8 +1508,8 @@
         "Aug 19"
       ]
     },
-    "relevant_chains": "N/A",
-    "contract_urls": "N/A",
+    "relevant_chains": [],
+    "contract_urls": [],
     "addresses": [
       {
         "0xa25c582874f984dd58f729ef970922a3691a1c69": {
@@ -1334,8 +1540,8 @@
       {
         "0x0ad86842eadee5b484e31db60716eb6867b46e21": {
           "networks": [
-            "base",
-            "optimism"
+            "optimism",
+            "base"
           ],
           "tags": [
             "contract"
@@ -1366,25 +1572,36 @@
     },
     "relevant_dates": {
       "OP deployment date": [
+        "Aug 31 -> Oct 9",
         "Oct 11 -> Nov 9",
-        "Nov 10 -> Dec 9",
-        "Aug 31 -> Oct 9"
+        "Nov 10 -> Dec 9"
       ],
       "Incentives due date": [
         "Oct 9",
-        "Dec 9",
-        "Nov 9"
+        "Nov 9",
+        "Dec 9"
       ]
     },
     "addresses": [
       {
         "0xe945d527de9c5121eda9cf48e23cdf691894d4c0": {
           "networks": [
-            "swan",
-            "optimism"
+            "optimism",
+            "swan"
           ],
           "tags": [
             "wallet"
+          ],
+          "count_txns": 1
+        }
+      },
+      {
+        "0xe945d527de9c5121eda9cf48e23cdf691894d4c0": {
+          "networks": [
+            "swan"
+          ],
+          "tags": [
+            "contract"
           ],
           "count_txns": 1
         }
@@ -1428,6 +1645,17 @@
           ],
           "count_txns": 1
         }
+      },
+      {
+        "0xde5990625c5b70b6af6d6991f17abfc8c27acc72": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 1
+        }
       }
     ]
   },
@@ -1467,7 +1695,19 @@
             "contract"
           ],
           "name": "mode-network",
-          "count_txns": 17
+          "count_txns": 19
+        }
+      },
+      {
+        "0xbe7946b7988a6556cfb78258592350e706786d36": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "contract"
+          ],
+          "name": "mode-network",
+          "count_txns": 19
         }
       }
     ]
@@ -1494,18 +1734,31 @@
       "OP deployment date": [
         "Aug 17",
         "Jul 31 -> Aug 30",
-        "Sep 29",
-        "Sep 13"
+        "Sep 13",
+        "Sep 29"
       ],
       "Incentives due date": [
-        "Oct 17",
-        "Jul 23",
-        "Oct 18",
         "Aug 30",
-        "Sep 29"
+        "Oct 18",
+        "Oct 17",
+        "Sep 29",
+        "Jul 23"
       ]
     },
     "addresses": [
+      {
+        "0xde79e22b1b0b02cdbff3325bfb62dbcf1e65ca19": {
+          "networks": [
+            "any_evm"
+          ],
+          "tags": [
+            "eoa",
+            "wallet"
+          ],
+          "name": "liskhq",
+          "count_txns": 0
+        }
+      },
       {
         "0xde79e22b1b0b02cdbff3325bfb62dbcf1e65ca19": {
           "networks": [
@@ -1549,8 +1802,8 @@
         ""
       ]
     },
-    "relevant_chains": "N/A",
-    "contract_urls": "N/A",
+    "relevant_chains": [],
+    "contract_urls": [],
     "addresses": [
       {
         "0xe40714459d9493994be025f04afc38d2bcf42f8e": {
@@ -1559,6 +1812,37 @@
           ],
           "tags": [
             "wallet"
+          ],
+          "count_txns": 2
+        }
+      },
+      {
+        "0xac62469f4be305727a7de52785e148cbb8c3eb65": {
+          "networks": [],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 0
+        }
+      },
+      {
+        "0x579a18207242c250addb67cc4d49f34a5f659449": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 1
+        }
+      },
+      {
+        "0xe40714459d9493994be025f04afc38d2bcf42f8e": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "contract"
           ],
           "count_txns": 2
         }
@@ -1591,19 +1875,31 @@
         ""
       ]
     },
-    "relevant_chains": "N/A",
-    "contract_urls": "N/A",
+    "relevant_chains": [],
+    "contract_urls": [],
     "addresses": [
       {
         "0x93326d53d1e8ebf0af1ff1b233c46c67c96e4d8d": {
           "networks": [
-            "base",
-            "optimism"
+            "optimism",
+            "base"
           ],
           "tags": [
             "wallet"
           ],
-          "count_txns": 1
+          "count_txns": 2
+        }
+      },
+      {
+        "0x93326d53d1e8ebf0af1ff1b233c46c67c96e4d8d": {
+          "networks": [
+            "optimism",
+            "base"
+          ],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 2
         }
       }
     ]
@@ -1632,8 +1928,8 @@
         ""
       ]
     },
-    "relevant_chains": "N/A",
-    "contract_urls": "N/A",
+    "relevant_chains": [],
+    "contract_urls": [],
     "addresses": [
       {
         "0x6e3fddab68bf1ebaf9dacf9f7907c7bc0951d1dc": {
@@ -1699,7 +1995,7 @@
         ""
       ]
     },
-    "relevant_chains": "N/A",
+    "relevant_chains": [],
     "contract_urls": [
       "https://app.merkl.xyz/"
     ],
@@ -1718,19 +2014,6 @@
         }
       },
       {
-        "0x17a7f6a839fea3b716b43f9414ffc93131878bd2": {
-          "networks": [
-            "optimism"
-          ],
-          "tags": [
-            "safe",
-            "wallet"
-          ],
-          "name": "contango-xyz",
-          "count_txns": 2
-        }
-      },
-      {
         "0x6a189e0e8d3b6b0455dc49e81cc0df33904af9e8": {
           "networks": [
             "optimism"
@@ -1746,22 +2029,35 @@
       {
         "0x3ef3d8ba38ebe18db133cec108f4d14ce00dd9ae": {
           "networks": [
+            "lisk",
             "fraxtal",
+            "bob",
+            "base",
+            "mode",
             "optimism",
-            "arbitrum_one",
+            "mainnet",
             "redstone",
             "worldchain",
-            "bob",
-            "mode",
-            "mainnet",
-            "lisk",
-            "base"
+            "arbitrum_one"
           ],
           "tags": [
             "contract"
           ],
           "name": "angle-protocol",
-          "count_txns": 41458
+          "count_txns": 45544
+        }
+      },
+      {
+        "0x17a7f6a839fea3b716b43f9414ffc93131878bd2": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "safe",
+            "wallet"
+          ],
+          "name": "contango-xyz",
+          "count_txns": 2
         }
       }
     ]
@@ -1794,8 +2090,8 @@
         "Sep 23"
       ]
     },
-    "relevant_chains": "N/A",
-    "contract_urls": "N/A",
+    "relevant_chains": [],
+    "contract_urls": [],
     "addresses": [
       {
         "0x3b5a0fc12f8fd8b26d251f28258d1d172f930f8a": {
@@ -1864,7 +2160,7 @@
       ]
     },
     "relevant_chains": [
-      "OP"
+      "op"
     ],
     "contract_urls": [
       "https://dune.com/queries/3956098/6656202"
@@ -1884,19 +2180,15 @@
         }
       },
       {
-        "0x1f98431c8ad98523631ae4a59f267346ea31f984": {
+        "0xee6a57ec80ea46401049e92587e52f5ec1c24785": {
           "networks": [
-            "base",
-            "mainnet",
-            "optimism",
-            "arbitrum_one"
+            "optimism"
           ],
           "tags": [
-            "contract",
-            "factory"
+            "contract"
           ],
           "name": "uniswap",
-          "count_txns": 18
+          "count_txns": 0
         }
       },
       {
@@ -1912,32 +2204,10 @@
         }
       },
       {
-        "0x000000000022d473030f116ddee9f6b43ac78ba3": {
+        "0x3fc91a3afd70395cd496c647d5a6cc9d4b2b7fad": {
           "networks": [
-            "fraxtal",
-            "optimism",
             "arbitrum_one",
-            "redstone",
-            "worldchain",
-            "zora",
-            "mode",
-            "base",
-            "unichain"
-          ],
-          "tags": [
-            "contract"
-          ],
-          "name": "uniswap",
-          "count_txns": 250138
-        }
-      },
-      {
-        "0xc36442b4a4522e871399cd717abdd847ab11fe88": {
-          "networks": [
-            "fraxtal",
             "optimism",
-            "arbitrum_one",
-            "zora",
             "mainnet",
             "base"
           ],
@@ -1945,22 +2215,87 @@
             "contract"
           ],
           "name": "uniswap",
-          "count_txns": 124648
+          "count_txns": 41410646
         }
       },
       {
-        "0x3fc91a3afd70395cd496c647d5a6cc9d4b2b7fad": {
+        "0x000000000022d473030f116ddee9f6b43ac78ba3": {
           "networks": [
+            "fraxtal",
             "base",
-            "mainnet",
+            "mode",
+            "zora",
+            "unichain",
             "optimism",
+            "redstone",
+            "worldchain",
             "arbitrum_one"
           ],
           "tags": [
             "contract"
           ],
           "name": "uniswap",
-          "count_txns": 37638533
+          "count_txns": 269067
+        }
+      },
+      {
+        "0x68b3465833fb72a70ecdf485e0e4c7bd8665fc45": {
+          "networks": [
+            "arbitrum_one",
+            "optimism",
+            "mainnet",
+            "base"
+          ],
+          "tags": [
+            "contract"
+          ],
+          "name": "uniswap",
+          "count_txns": 301936
+        }
+      },
+      {
+        "0x3ef3d8ba38ebe18db133cec108f4d14ce00dd9ae": {
+          "networks": [
+            "lisk",
+            "fraxtal",
+            "bob",
+            "base",
+            "mode",
+            "optimism",
+            "mainnet",
+            "redstone",
+            "worldchain",
+            "arbitrum_one"
+          ],
+          "tags": [
+            "contract"
+          ],
+          "name": "angle-protocol",
+          "count_txns": 45544
+        }
+      },
+      {
+        "0x91ae842a5ffd8d12023116943e72a606179294f3": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "contract"
+          ],
+          "name": "uniswap",
+          "count_txns": 0
+        }
+      },
+      {
+        "0xbfd8137f7d1516d3ea5ca83523914859ec47f573": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "contract"
+          ],
+          "name": "uniswap",
+          "count_txns": 0
         }
       },
       {
@@ -1979,9 +2314,9 @@
       {
         "0xe34139463ba50bd61336e0c446bd8c0867c6fe65": {
           "networks": [
-            "mainnet",
+            "arbitrum_one",
             "optimism",
-            "arbitrum_one"
+            "mainnet"
           ],
           "tags": [
             "contract"
@@ -1991,78 +2326,25 @@
         }
       },
       {
-        "0xbfd8137f7d1516d3ea5ca83523914859ec47f573": {
+        "0xc36442b4a4522e871399cd717abdd847ab11fe88": {
           "networks": [
-            "optimism"
-          ],
-          "tags": [
-            "contract"
-          ],
-          "name": "uniswap",
-          "count_txns": 0
-        }
-      },
-      {
-        "0x3ef3d8ba38ebe18db133cec108f4d14ce00dd9ae": {
-          "networks": [
+            "base",
             "fraxtal",
+            "zora",
             "optimism",
-            "arbitrum_one",
-            "redstone",
+            "mainnet",
             "worldchain",
-            "bob",
-            "mode",
-            "mainnet",
-            "lisk",
-            "base"
-          ],
-          "tags": [
-            "contract"
-          ],
-          "name": "angle-protocol",
-          "count_txns": 41458
-        }
-      },
-      {
-        "0x91ae842a5ffd8d12023116943e72a606179294f3": {
-          "networks": [
-            "optimism"
-          ],
-          "tags": [
-            "contract"
-          ],
-          "name": "uniswap",
-          "count_txns": 0
-        }
-      },
-      {
-        "0xee6a57ec80ea46401049e92587e52f5ec1c24785": {
-          "networks": [
-            "optimism"
-          ],
-          "tags": [
-            "contract"
-          ],
-          "name": "uniswap",
-          "count_txns": 0
-        }
-      },
-      {
-        "0x61ffe014ba17989e743c5f6cb21bf9697530b21e": {
-          "networks": [
-            "mainnet",
-            "optimism",
             "arbitrum_one"
           ],
           "tags": [
             "contract"
           ],
           "name": "uniswap",
-          "count_txns": 37
+          "count_txns": 145466
         }
       },
       {
-        "0x42b24a95702b9986e82d421cc3568932790a48ec": {
+        "0xb753548f6e010e7e680ba186f9ca1bdab2e90cf2": {
           "networks": [
             "optimism"
           ],
@@ -2074,16 +2356,23 @@
         }
       },
       {
-        "0x732f5baac411e427d130fed03c2e82a3e0d64d35": {
-          "networks": [],
-          "tags": [
-            "contract"
+        "0x1f98431c8ad98523631ae4a59f267346ea31f984": {
+          "networks": [
+            "arbitrum_one",
+            "optimism",
+            "mainnet",
+            "base"
           ],
-          "count_txns": 0
+          "tags": [
+            "contract",
+            "factory"
+          ],
+          "name": "uniswap",
+          "count_txns": 18
         }
       },
       {
-        "0xb753548f6e010e7e680ba186f9ca1bdab2e90cf2": {
+        "0x42b24a95702b9986e82d421cc3568932790a48ec": {
           "networks": [
             "optimism"
           ],
@@ -2107,18 +2396,27 @@
         }
       },
       {
-        "0x68b3465833fb72a70ecdf485e0e4c7bd8665fc45": {
+        "0x61ffe014ba17989e743c5f6cb21bf9697530b21e": {
           "networks": [
-            "base",
-            "mainnet",
+            "arbitrum_one",
             "optimism",
-            "arbitrum_one"
+            "mainnet",
+            "base"
           ],
           "tags": [
             "contract"
           ],
           "name": "uniswap",
-          "count_txns": 282962
+          "count_txns": 40
+        }
+      },
+      {
+        "0x732f5baac411e427d130fed03c2e82a3e0d64d35": {
+          "networks": [],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 0
         }
       }
     ]
@@ -2150,9 +2448,9 @@
       ]
     },
     "relevant_chains": [
-      "OP"
+      "op"
     ],
-    "contract_urls": "N/A",
+    "contract_urls": [],
     "addresses": [
       {
         "0x1026d3d219098d7b1b0a180f7e557deea7da82c1": {
@@ -2168,19 +2466,15 @@
         }
       },
       {
-        "0x1f98431c8ad98523631ae4a59f267346ea31f984": {
+        "0xee6a57ec80ea46401049e92587e52f5ec1c24785": {
           "networks": [
-            "base",
-            "mainnet",
-            "optimism",
-            "arbitrum_one"
+            "optimism"
           ],
           "tags": [
-            "contract",
-            "factory"
+            "contract"
           ],
           "name": "uniswap",
-          "count_txns": 18
+          "count_txns": 0
         }
       },
       {
@@ -2196,32 +2490,10 @@
         }
       },
       {
-        "0x000000000022d473030f116ddee9f6b43ac78ba3": {
+        "0x3fc91a3afd70395cd496c647d5a6cc9d4b2b7fad": {
           "networks": [
-            "fraxtal",
-            "optimism",
             "arbitrum_one",
-            "redstone",
-            "worldchain",
-            "zora",
-            "mode",
-            "base",
-            "unichain"
-          ],
-          "tags": [
-            "contract"
-          ],
-          "name": "uniswap",
-          "count_txns": 250138
-        }
-      },
-      {
-        "0xc36442b4a4522e871399cd717abdd847ab11fe88": {
-          "networks": [
-            "fraxtal",
             "optimism",
-            "arbitrum_one",
-            "zora",
             "mainnet",
             "base"
           ],
@@ -2229,22 +2501,87 @@
             "contract"
           ],
           "name": "uniswap",
-          "count_txns": 124648
+          "count_txns": 41410646
         }
       },
       {
-        "0x3fc91a3afd70395cd496c647d5a6cc9d4b2b7fad": {
+        "0x000000000022d473030f116ddee9f6b43ac78ba3": {
           "networks": [
+            "fraxtal",
             "base",
-            "mainnet",
+            "mode",
+            "zora",
+            "unichain",
             "optimism",
+            "redstone",
+            "worldchain",
             "arbitrum_one"
           ],
           "tags": [
             "contract"
           ],
           "name": "uniswap",
-          "count_txns": 37638533
+          "count_txns": 269067
+        }
+      },
+      {
+        "0x68b3465833fb72a70ecdf485e0e4c7bd8665fc45": {
+          "networks": [
+            "arbitrum_one",
+            "optimism",
+            "mainnet",
+            "base"
+          ],
+          "tags": [
+            "contract"
+          ],
+          "name": "uniswap",
+          "count_txns": 301936
+        }
+      },
+      {
+        "0x3ef3d8ba38ebe18db133cec108f4d14ce00dd9ae": {
+          "networks": [
+            "lisk",
+            "fraxtal",
+            "bob",
+            "base",
+            "mode",
+            "optimism",
+            "mainnet",
+            "redstone",
+            "worldchain",
+            "arbitrum_one"
+          ],
+          "tags": [
+            "contract"
+          ],
+          "name": "angle-protocol",
+          "count_txns": 45544
+        }
+      },
+      {
+        "0x91ae842a5ffd8d12023116943e72a606179294f3": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "contract"
+          ],
+          "name": "uniswap",
+          "count_txns": 0
+        }
+      },
+      {
+        "0xbfd8137f7d1516d3ea5ca83523914859ec47f573": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "contract"
+          ],
+          "name": "uniswap",
+          "count_txns": 0
         }
       },
       {
@@ -2263,9 +2600,9 @@
       {
         "0xe34139463ba50bd61336e0c446bd8c0867c6fe65": {
           "networks": [
-            "mainnet",
+            "arbitrum_one",
             "optimism",
-            "arbitrum_one"
+            "mainnet"
           ],
           "tags": [
             "contract"
@@ -2275,78 +2612,25 @@
         }
       },
       {
-        "0xbfd8137f7d1516d3ea5ca83523914859ec47f573": {
+        "0xc36442b4a4522e871399cd717abdd847ab11fe88": {
           "networks": [
-            "optimism"
-          ],
-          "tags": [
-            "contract"
-          ],
-          "name": "uniswap",
-          "count_txns": 0
-        }
-      },
-      {
-        "0x3ef3d8ba38ebe18db133cec108f4d14ce00dd9ae": {
-          "networks": [
+            "base",
             "fraxtal",
+            "zora",
             "optimism",
-            "arbitrum_one",
-            "redstone",
+            "mainnet",
             "worldchain",
-            "bob",
-            "mode",
-            "mainnet",
-            "lisk",
-            "base"
-          ],
-          "tags": [
-            "contract"
-          ],
-          "name": "angle-protocol",
-          "count_txns": 41458
-        }
-      },
-      {
-        "0x91ae842a5ffd8d12023116943e72a606179294f3": {
-          "networks": [
-            "optimism"
-          ],
-          "tags": [
-            "contract"
-          ],
-          "name": "uniswap",
-          "count_txns": 0
-        }
-      },
-      {
-        "0xee6a57ec80ea46401049e92587e52f5ec1c24785": {
-          "networks": [
-            "optimism"
-          ],
-          "tags": [
-            "contract"
-          ],
-          "name": "uniswap",
-          "count_txns": 0
-        }
-      },
-      {
-        "0x61ffe014ba17989e743c5f6cb21bf9697530b21e": {
-          "networks": [
-            "mainnet",
-            "optimism",
             "arbitrum_one"
           ],
           "tags": [
             "contract"
           ],
           "name": "uniswap",
-          "count_txns": 37
+          "count_txns": 145466
         }
       },
       {
-        "0x42b24a95702b9986e82d421cc3568932790a48ec": {
+        "0xb753548f6e010e7e680ba186f9ca1bdab2e90cf2": {
           "networks": [
             "optimism"
           ],
@@ -2358,16 +2642,23 @@
         }
       },
       {
-        "0x732f5baac411e427d130fed03c2e82a3e0d64d35": {
-          "networks": [],
-          "tags": [
-            "contract"
+        "0x1f98431c8ad98523631ae4a59f267346ea31f984": {
+          "networks": [
+            "arbitrum_one",
+            "optimism",
+            "mainnet",
+            "base"
           ],
-          "count_txns": 0
+          "tags": [
+            "contract",
+            "factory"
+          ],
+          "name": "uniswap",
+          "count_txns": 18
         }
       },
       {
-        "0xb753548f6e010e7e680ba186f9ca1bdab2e90cf2": {
+        "0x42b24a95702b9986e82d421cc3568932790a48ec": {
           "networks": [
             "optimism"
           ],
@@ -2391,18 +2682,27 @@
         }
       },
       {
-        "0x68b3465833fb72a70ecdf485e0e4c7bd8665fc45": {
+        "0x61ffe014ba17989e743c5f6cb21bf9697530b21e": {
           "networks": [
-            "base",
-            "mainnet",
+            "arbitrum_one",
             "optimism",
-            "arbitrum_one"
+            "mainnet",
+            "base"
           ],
           "tags": [
             "contract"
           ],
           "name": "uniswap",
-          "count_txns": 282962
+          "count_txns": 40
+        }
+      },
+      {
+        "0x732f5baac411e427d130fed03c2e82a3e0d64d35": {
+          "networks": [],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 0
         }
       }
     ]
@@ -2435,11 +2735,23 @@
       {
         "0x93d2118bdd8b5e243020f01a1391b2e3cb137a56": {
           "networks": [
-            "optimism",
-            "mint"
+            "mint",
+            "optimism"
           ],
           "tags": [
             "wallet"
+          ],
+          "count_txns": 5
+        }
+      },
+      {
+        "0x93d2118bdd8b5e243020f01a1391b2e3cb137a56": {
+          "networks": [
+            "mint",
+            "optimism"
+          ],
+          "tags": [
+            "contract"
           ],
           "count_txns": 5
         }
@@ -2473,9 +2785,9 @@
       ]
     },
     "relevant_chains": [
-      "OP"
+      "op"
     ],
-    "contract_urls": "N/A",
+    "contract_urls": [],
     "addresses": [
       {
         "0xfdbb4d606c199f091143bd604c85c191a526fbd0": {
@@ -2491,6 +2803,20 @@
         }
       },
       {
+        "0xd152f549545093347a162dce210e7293f1452150": {
+          "networks": [
+            "worldchain",
+            "optimism",
+            "base"
+          ],
+          "tags": [
+            "contract"
+          ],
+          "name": "idle-finance",
+          "count_txns": 25902
+        }
+      },
+      {
         "0xea173648f959790baea225ce3e75df8a53a6bde5": {
           "networks": [
             "optimism"
@@ -2501,20 +2827,6 @@
           ],
           "name": "idle-finance",
           "count_txns": 0
-        }
-      },
-      {
-        "0xd152f549545093347a162dce210e7293f1452150": {
-          "networks": [
-            "base",
-            "worldchain",
-            "optimism"
-          ],
-          "tags": [
-            "contract"
-          ],
-          "name": "idle-finance",
-          "count_txns": 20599
         }
       },
       {
@@ -2557,11 +2869,9 @@
       ]
     },
     "relevant_chains": [
-      "OP"
+      "op"
     ],
     "contract_urls": [
-      "https://optimistic.etherscan.io/address/0xF89E24BaD60D78386a5Fe6B6c897dd4d88A9Ed70",
-      "https://optimistic.etherscan.io/address/0xc1aB11375AADD9463036d6fA894eD905E1fBb65a",
       "https://optimistic.etherscan.io/address/0xF89E24BaD60D78386a5Fe6B6c897dd4d88A9Ed70",
       "https://optimistic.etherscan.io/address/0xc1aB11375AADD9463036d6fA894eD905E1fBb65a"
     ],
@@ -2577,6 +2887,18 @@
           ],
           "name": "dforce-network",
           "count_txns": 0
+        }
+      },
+      {
+        "0xbc404429558292ee2d769e57d57d6e74bbd2792d": {
+          "networks": [
+            "optimism",
+            "base"
+          ],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 561
         }
       },
       {
@@ -2631,9 +2953,9 @@
       ]
     },
     "relevant_chains": [
-      "OP"
+      "op"
     ],
-    "contract_urls": "N/A",
+    "contract_urls": [],
     "addresses": [
       {
         "0x8cca517370cbfc33cc9810bfc7440832c47d251c": {
@@ -2647,16 +2969,15 @@
         }
       },
       {
-        "0xe04bb5b4de60fa2fba69a93ade13a8b3b569d5b4": {
+        "0x343910697c03477e5cc0d386ffa5133d1a827ad7": {
           "networks": [
-            "mainnet",
             "optimism"
           ],
           "tags": [
             "contract"
           ],
           "name": "alchemix",
-          "count_txns": 2417
+          "count_txns": 0
         }
       },
       {
@@ -2680,19 +3001,20 @@
             "wallet"
           ],
           "name": "alchemix",
-          "count_txns": 35
+          "count_txns": 37
         }
       },
       {
-        "0x343910697c03477e5cc0d386ffa5133d1a827ad7": {
+        "0xe04bb5b4de60fa2fba69a93ade13a8b3b569d5b4": {
           "networks": [
-            "optimism"
+            "optimism",
+            "mainnet"
           ],
           "tags": [
             "contract"
           ],
           "name": "alchemix",
-          "count_txns": 0
+          "count_txns": 2584
         }
       }
     ]
@@ -2723,8 +3045,8 @@
         ""
       ]
     },
-    "relevant_chains": "N/A",
-    "contract_urls": "N/A",
+    "relevant_chains": [],
+    "contract_urls": [],
     "addresses": [
       {
         "0xdc1f5b81eec7e6391aeb6c8e5a2000d3a9aa8e6d": {
@@ -2734,7 +3056,7 @@
           "tags": [
             "wallet"
           ],
-          "count_txns": 1
+          "count_txns": 4
         }
       },
       {
@@ -2745,7 +3067,7 @@
           "tags": [
             "contract"
           ],
-          "count_txns": 1
+          "count_txns": 4
         }
       }
     ]
@@ -2775,9 +3097,9 @@
       ]
     },
     "relevant_chains": [
-      "OP"
+      "op"
     ],
-    "contract_urls": "N/A",
+    "contract_urls": [],
     "addresses": [
       {
         "0xb6b9e9e56ab5a4af927faa802ac93786352f3af9": {
@@ -2793,6 +3115,35 @@
         }
       },
       {
+        "0x6123f328ab34301b8d1ce3bf899f78b3b3d390fd": {
+          "networks": [],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 0
+        }
+      },
+      {
+        "0x231120c038f8f730e3a91fad1028490b0d0c4041": {
+          "networks": [],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 0
+        }
+      },
+      {
+        "0x3835b46bb20c056a48a53e6c892811fbcc43862e": {
+          "networks": [
+            "base"
+          ],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 8
+        }
+      },
+      {
         "0xb6b9e9e56ab5a4af927faa802ac93786352f3af9": {
           "networks": [
             "optimism"
@@ -2803,6 +3154,234 @@
           ],
           "name": "spearbit-portfolio",
           "count_txns": 5
+        }
+      },
+      {
+        "0x9bffe86ba69f7d91ae67f70896aee42698e2d3db": {
+          "networks": [
+            "base"
+          ],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 1
+        }
+      },
+      {
+        "0x0bfa5a013dbd0791f0f8171afbab45edaa372dbf": {
+          "networks": [
+            "base"
+          ],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 901
+        }
+      },
+      {
+        "0xf2f48840e781b8d8cbaf3cea2a4557228233c775": {
+          "networks": [],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 0
+        }
+      },
+      {
+        "0xe3737de268a82763fe11e0f8ff4ffa4553823e8b": {
+          "networks": [],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 0
+        }
+      },
+      {
+        "0xd05da7b4071bbf8a5c5ef9faa23a9d23cb943702": {
+          "networks": [],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 0
+        }
+      },
+      {
+        "0x09bc47bbec265003af4568a639915853721575c6": {
+          "networks": [],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 0
+        }
+      },
+      {
+        "0x81476ceae27466572bea9b3397f0eab4a02f6792": {
+          "networks": [
+            "base"
+          ],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 137
+        }
+      },
+      {
+        "0x6c3f0f8265547cf3606a6ff31103cee207882b9c": {
+          "networks": [],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 0
+        }
+      },
+      {
+        "0x8e8c45037333aad5749f3dd203f1dad9e3d5c446": {
+          "networks": [],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 0
+        }
+      },
+      {
+        "0xbcdea8be038d7e2bfe45b5063c178ffb912f42f3": {
+          "networks": [],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 0
+        }
+      },
+      {
+        "0x2e07bae8644ca7dcc5312e74325a7aadb9437f58": {
+          "networks": [],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 0
+        }
+      },
+      {
+        "0xd68c2294d796d56f4cff70505efecffac8d9fc8b": {
+          "networks": [],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 0
+        }
+      },
+      {
+        "0x0842e250266506c5160c2762ba9aae3e64917c36": {
+          "networks": [],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 0
+        }
+      },
+      {
+        "0x2b127adf58ef871604f04bfe48ca6f1a2f1d901c": {
+          "networks": [],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 0
+        }
+      },
+      {
+        "0x3f1e5712ad609e533ab041b1894048e8f0a29266": {
+          "networks": [],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 0
+        }
+      },
+      {
+        "0x2c5048218b414c7d1e1d590b9f0738cf7349fea7": {
+          "networks": [
+            "base"
+          ],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 67
+        }
+      },
+      {
+        "0xa987c7d6f7ccf7344d2ecb9c17610ce0215ccbd0": {
+          "networks": [],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 0
+        }
+      },
+      {
+        "0xf5d1381e70c009d11c9ac6d5b263312b668428a5": {
+          "networks": [],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 0
+        }
+      },
+      {
+        "0x9fa8ca2013620263a68919fc18b0667f21ddb76e": {
+          "networks": [
+            "base"
+          ],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 27
+        }
+      },
+      {
+        "0xf91b8e2bd44eb311d3ce3c6da6493160942713b4": {
+          "networks": [],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 0
+        }
+      },
+      {
+        "0xde1ed749337f7f4f6bda104a6cc59677faa6c96b": {
+          "networks": [],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 0
+        }
+      },
+      {
+        "0x9ece430b7ac53992a73d7a95e40dcdbf5ebe803c": {
+          "networks": [],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 0
+        }
+      },
+      {
+        "0x173c3a71a436878ccdc3dc2b8ec5979307a3dd01": {
+          "networks": [],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 0
+        }
+      },
+      {
+        "0x595d607a5ef39a0a2016d785e60df74afbc78cc6": {
+          "networks": [
+            "lyra"
+          ],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 6
         }
       }
     ]
@@ -2833,11 +3412,11 @@
       ]
     },
     "relevant_chains": [
-      "Base",
-      "Mode",
-      "OP"
+      "base",
+      "op",
+      "mode"
     ],
-    "contract_urls": "N/A",
+    "contract_urls": [],
     "addresses": [
       {
         "0x6c7d7714f536cbdb0b3b0fddea2747d5c4b2668e": {
@@ -2853,17 +3432,28 @@
         }
       },
       {
-        "0xff1a0f4744e8582df1ae09d5611b887b6a12925c": {
+        "0x8250f4af4b972684f7b336503e2d6dfedeb1487a": {
           "networks": [
-            "mainnet",
-            "optimism",
-            "arbitrum_one"
+            "base"
           ],
           "tags": [
             "contract"
           ],
           "name": "pyth-network",
-          "count_txns": 17
+          "count_txns": 19855
+        }
+      },
+      {
+        "0x6c7d7714f536cbdb0b3b0fddea2747d5c4b2668e": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "safe",
+            "wallet"
+          ],
+          "name": "pyth-network",
+          "count_txns": 0
         }
       },
       {
@@ -2875,19 +3465,21 @@
             "contract"
           ],
           "name": "pyth-network",
-          "count_txns": 7998
+          "count_txns": 10314
         }
       },
       {
-        "0x8250f4af4b972684f7b336503e2d6dfedeb1487a": {
+        "0xff1a0f4744e8582df1ae09d5611b887b6a12925c": {
           "networks": [
-            "base"
+            "optimism",
+            "arbitrum_one",
+            "mainnet"
           ],
           "tags": [
             "contract"
           ],
           "name": "pyth-network",
-          "count_txns": 15924
+          "count_txns": 17
         }
       }
     ]
@@ -2911,18 +3503,18 @@
     "relevant_dates": {
       "OP deployment date": [
         "Dec 31",
-        "Jan 1, 2025 -> Jan 1, 2025",
+        "Jan 31, 2025",
         "Feb 28, 2025",
-        "Jan 31, 2025"
+        "Jan 1, 2025 -> Jan 1, 2025"
       ],
       "Incentives due date": [
-        "Feb 14, 2025",
         "Jan 1, 2025",
+        "Feb 14, 2025",
         "Jan 14, 2025",
         "Oct 16"
       ]
     },
-    "relevant_chains": "N/A",
+    "relevant_chains": [],
     "contract_urls": [
       "https://doc.ionic.money/ionic-documentation/resources/market-addresses"
     ],
@@ -2934,6 +3526,15 @@
           ],
           "tags": [
             "wallet"
+          ],
+          "count_txns": 0
+        }
+      },
+      {
+        "0xff0375667570d0e6572360e9dfbe8f2a6d85ae87": {
+          "networks": [],
+          "tags": [
+            "contract"
           ],
           "count_txns": 0
         }
@@ -2965,10 +3566,23 @@
       ]
     },
     "relevant_chains": [
-      "Mode"
+      "mode"
     ],
-    "contract_urls": "N/A",
+    "contract_urls": [],
     "addresses": [
+      {
+        "0x6c7d7714f536cbdb0b3b0fddea2747d5c4b2668e": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "safe",
+            "wallet"
+          ],
+          "name": "pyth-network",
+          "count_txns": 0
+        }
+      },
       {
         "0x6c7d7714f536cbdb0b3b0fddea2747d5c4b2668e": {
           "networks": [
@@ -3003,7 +3617,7 @@
             "contract"
           ],
           "name": "pyth-network",
-          "count_txns": 239
+          "count_txns": 249
         }
       }
     ]
@@ -3032,8 +3646,8 @@
         ""
       ]
     },
-    "relevant_chains": "N/A",
-    "contract_urls": "N/A",
+    "relevant_chains": [],
+    "contract_urls": [],
     "addresses": [
       {
         "0x1bcbb33ff4272c4fe3a00eaa7958953037a3a471": {
@@ -3045,22 +3659,7 @@
             "wallet"
           ],
           "name": "tlx-protocol",
-          "count_txns": 4
-        }
-      },
-      {
-        "0xa1dabef33b3b82c7814b6d82a79e50f4ac44102b": {
-          "networks": [
-            "base",
-            "fraxtal",
-            "bob",
-            "optimism"
-          ],
-          "tags": [
-            "contract"
-          ],
-          "name": "tlx-protocol",
-          "count_txns": 2073
+          "count_txns": 6
         }
       },
       {
@@ -3073,7 +3672,22 @@
             "wallet"
           ],
           "name": "tlx-protocol",
-          "count_txns": 4
+          "count_txns": 6
+        }
+      },
+      {
+        "0xa1dabef33b3b82c7814b6d82a79e50f4ac44102b": {
+          "networks": [
+            "fraxtal",
+            "optimism",
+            "bob",
+            "base"
+          ],
+          "tags": [
+            "contract"
+          ],
+          "name": "tlx-protocol",
+          "count_txns": 2342
         }
       }
     ]
@@ -3116,6 +3730,19 @@
           "name": "kroma-network",
           "count_txns": 3
         }
+      },
+      {
+        "0x9d89bca142498fe047bd3e169de8ed028afab07f": {
+          "networks": [
+            "kroma",
+            "optimism"
+          ],
+          "tags": [
+            "wallet"
+          ],
+          "name": "kroma-network",
+          "count_txns": 3
+        }
       }
     ]
   },
@@ -3140,9 +3767,9 @@
         "Oct 9"
       ],
       "Incentives due date": [
-        "Oct 9",
         "Oct 10, 2025",
-        "Oct 9, 2025"
+        "Oct 9, 2025",
+        "Oct 9"
       ]
     },
     "addresses": [
@@ -3156,7 +3783,20 @@
             "wallet"
           ],
           "name": "derivexyz",
-          "count_txns": 34
+          "count_txns": 38
+        }
+      },
+      {
+        "0xd4c00fe7657791c2a43025de483f05e49a5f76a6": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "safe",
+            "wallet"
+          ],
+          "name": "derivexyz",
+          "count_txns": 38
         }
       }
     ]
@@ -3183,13 +3823,25 @@
         "Aug 12"
       ],
       "Incentives due date": [
-        "",
-        "Aug 28 -> Aug 31, 2025",
         "Aug 31 -> Sep 1, 2025",
-        "Aug 31 -> Aug 30, 2025"
+        "",
+        "Aug 31 -> Aug 30, 2025",
+        "Aug 28 -> Aug 31, 2025"
       ]
     },
     "addresses": [
+      {
+        "0xd6e27844a260998fa5ccd9908b63488eb73198f8": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "wallet"
+          ],
+          "name": "polynomial-protocol",
+          "count_txns": 0
+        }
+      },
       {
         "0xd6e27844a260998fa5ccd9908b63488eb73198f8": {
           "networks": [
@@ -3226,6 +3878,19 @@
       ]
     },
     "addresses": [
+      {
+        "0xb6b9e9e56ab5a4af927faa802ac93786352f3af9": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "safe",
+            "wallet"
+          ],
+          "name": "spearbit-portfolio",
+          "count_txns": 5
+        }
+      },
       {
         "0xb6b9e9e56ab5a4af927faa802ac93786352f3af9": {
           "networks": [
@@ -3275,6 +3940,19 @@
           "name": "sherlock-audit",
           "count_txns": 3
         }
+      },
+      {
+        "0x5a973117dd273676bf4d14313b80562dc8973ba9": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "safe",
+            "wallet"
+          ],
+          "name": "sherlock-audit",
+          "count_txns": 3
+        }
       }
     ]
   },
@@ -3300,6 +3978,19 @@
       ]
     },
     "addresses": [
+      {
+        "0x5a973117dd273676bf4d14313b80562dc8973ba9": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "safe",
+            "wallet"
+          ],
+          "name": "sherlock-audit",
+          "count_txns": 3
+        }
+      },
       {
         "0x5a973117dd273676bf4d14313b80562dc8973ba9": {
           "networks": [
@@ -3349,6 +4040,19 @@
           "name": "sherlock-audit",
           "count_txns": 3
         }
+      },
+      {
+        "0x5a973117dd273676bf4d14313b80562dc8973ba9": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "safe",
+            "wallet"
+          ],
+          "name": "sherlock-audit",
+          "count_txns": 3
+        }
       }
     ]
   },
@@ -3374,6 +4078,19 @@
       ]
     },
     "addresses": [
+      {
+        "0xb6b9e9e56ab5a4af927faa802ac93786352f3af9": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "safe",
+            "wallet"
+          ],
+          "name": "spearbit-portfolio",
+          "count_txns": 5
+        }
+      },
       {
         "0xb6b9e9e56ab5a4af927faa802ac93786352f3af9": {
           "networks": [
@@ -3422,6 +4139,18 @@
           "name": "alchemix",
           "count_txns": 0
         }
+      },
+      {
+        "0x16779885375d32e7327fade91f91b5a722bb5cf4": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "wallet"
+          ],
+          "name": "alchemix",
+          "count_txns": 0
+        }
       }
     ]
   },
@@ -3459,6 +4188,19 @@
           "name": "sherlock-audit",
           "count_txns": 3
         }
+      },
+      {
+        "0x5a973117dd273676bf4d14313b80562dc8973ba9": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "safe",
+            "wallet"
+          ],
+          "name": "sherlock-audit",
+          "count_txns": 3
+        }
       }
     ]
   },
@@ -3484,6 +4226,18 @@
       ]
     },
     "addresses": [
+      {
+        "0x16779885375d32e7327fade91f91b5a722bb5cf4": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "wallet"
+          ],
+          "name": "alchemix",
+          "count_txns": 0
+        }
+      },
       {
         "0x16779885375d32e7327fade91f91b5a722bb5cf4": {
           "networks": [
