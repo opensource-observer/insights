@@ -1,0 +1,498 @@
+[
+    {
+        "project_name": "Ether.fi",
+        "metrics": {
+            "TVL in grantee’s protocol": "5000 weETH of TVL added to the OP Mainnet ecosystem",
+            "OP request Locked": "24000",
+            "OP request for User Incentives": "96000"
+        }
+    },
+    {
+        "project_name": "Kelp",
+        "metrics": {
+            "TVL in grantee’s protocol": "N/A",
+            "Users Open": "N/A"
+        }
+    },
+    {
+        "project_name": "FrameTrain",
+        "metrics": {
+            "Users registering on Farcaster every 24 hours": "At least double after FrameHack #2 ends",
+            "Base transactions from Frames created on FrameTrain": "Around 1,600 tx per day",
+            "Templates created during the first edition of FrameHack": "N/A"
+        }
+    },
+    {
+        "project_name": "Optimism GovQuests",
+        "metrics": {
+            "number_of_addresses_delegating_for_the_first_time": "100 address delegating for the first time",
+            "user_interaction_with_gaming_features": "N/A",
+            "successful_completion_of_quests": "N/A",
+            "overall_voter_participation": "N/A"
+        }
+    },
+    {
+        "project_name": "Renzo Protocol",
+        "metrics": {
+            "TVL on OP Mainnet": "$22M"
+        }
+    },
+    {
+        "project_name": "WannaBet Weekly Tournaments",
+        "metrics": {
+            "number_of_active_addresses": "10,000",
+            "accepted_bets": "2,500"
+        }
+    },
+    {
+        "project_name": "Event Horizon",
+        "metrics": {
+            "# of addresses delegating for the first time": "500",
+            "User incentives 40% upfront": "N/A",
+            "Receive 100 new delegations": "N/A",
+            "Receive 250 new delegations": "N/A"
+        }
+    },
+    {
+        "project_name": "Aragon and RISC Zero Cross-Chain Voting",
+        "metrics": {
+            "# of addresses voting for the first time": "increased with 1k (10% increase)"
+        }
+    },
+    {
+        "project_name": "Compound Finance",
+        "metrics": {
+            "TVL growth": "$6000000",
+            "Number of active users": "N/A",
+            "Incentivized markets": "N/A",
+            "LRT assets added as collateral": "N/A"
+        }
+    },
+    {
+        "project_name": "TLX",
+        "metrics": {
+            "cumulative nominal volume": "$130,000,000",
+            "cumulative notional volume": "$430,000,000",
+            "total unique users": "3,700",
+            "production code audit": "N/A"
+        }
+    },
+    {
+        "project_name": "Origin Ether (OETH)",
+        "metrics": {
+            "TVL on Optimism": "$10-20 million",
+            "TVL by Week 4": "$600K",
+            "TVL by Week 8": "$1.2M",
+            "TVL by Week 12": "$1.5M",
+            "TVL by Week 16": "$2.5M",
+            "TVL by Week 20": "$4M",
+            "TVL by Week 24": "$6M"
+        }
+    },
+    {
+        "project_name": "Extra Finance",
+        "metrics": {
+            "TVL in grantee’s protocol": "$8M-$10M",
+            "TVL Growth for Yield-Bearing Assets on Extra Finance": "$1M",
+            "TVL Growth for Extra Finance": "$4M"
+        }
+    },
+    {
+        "project_name": "Let's Get HAI",
+        "metrics": {
+            "TVL increase": "$4 Million",
+            "Circulating supply increase": "N/A"
+        }
+    },
+    {
+        "project_name": "Fraxtal",
+        "metrics": {
+            "Total Value Locked (TVL)": "$1 billion by End of 2024",
+            "Average Transactions per Day": "100,000 by End of 2024",
+            "Number of transactions emitting event logs": "N/A",
+            "Number of active addresses": "N/A",
+            "Percentage of retained active addresses interacting with the grantee’s contracts": "N/A"
+        }
+    },
+    {
+        "project_name": "Lyra",
+        "metrics": {
+            "TVL": "100M",
+            "Number of transactions emitting event logs": "N/A",
+            "Number of active addresses interacting with grantee’s contracts": "N/A",
+            "Total amount of gas fees generated from grantee’s contracts": "N/A",
+            "Percentage of retained active addresses interacting with the grantee’s contracts": "N/A",
+            "DAA/MAA ratio": "N/A",
+            "Number of testnet transactions emitting event logs": "N/A",
+            "Number of active developer addresses interacting with grantee’s contracts": "N/A",
+            "Grants distributed": "N/A",
+            "User retention": "N/A",
+            "Volume": "N/A"
+        }
+    },
+    {
+        "project_name": "OP-Besu/Hildr",
+        "metrics": {
+            "OP request locked": "0",
+            "OP request for User incentives": "137362",
+            "Audit Completion": "N/A"
+        }
+    },
+    {
+        "project_name": "Compound Finance",
+        "metrics": {
+            "TVL increase": "8M",
+            "wstETH Supplies on ETH Market increase": "1M",
+            "rETH supply on OP rises": "500K",
+            "TVL rise": "5M",
+            "Yield bearing stablecoin added as collateral on USDT Market": "N/A"
+        }
+    },
+    {
+        "project_name": "Beefy",
+        "metrics": {
+            "TVL in grantee’s protocol": "4.1M USD",
+            "mooBIFI liquidity": "N/A",
+            "mooBIFI holders": "N/A",
+            "mooBIFI integration with SILO": "N/A",
+            "Overall user interaction with Optimism": "N/A"
+        }
+    },
+    {
+        "project_name": "Aori",
+        "metrics": {
+            "number_of_active_addresses": "100",
+            "OP_request_for_User_Incentives": "2500"
+        }
+    },
+    {
+        "project_name": "Swan Chain",
+        "metrics": {
+            "Total Value Locked (TVL)": "$6M",
+            "Daily Transactions": "0.2 million",
+            "Active Developer Addresses": "150",
+            "Active User Addresses": "6000",
+            "Gas Fees Generated": "250 ETH",
+            "Cumulative TVL": "$3M",
+            "Daily Transaction Volume from DeFi Projects": "100K",
+            "Transactions Emitting Event Logs": "100K",
+            "Percentage of Retained Active Addresses": "3%"
+        }
+    },
+    {
+        "project_name": "Cyber Ecosystem Grants Program",
+        "metrics": {
+            "new_projects_deployed_on_Cyber": "N/A",
+            "#_of_apps_built_natively_using_existing_protocols_and_infra": "N/A",
+            "transactions_per_project": "N/A",
+            "user_metrics": "N/A",
+            "#_of_new_established_multichain_protocols": "N/A",
+            "Cyber's_market_share_of_total_Txs": "N/A",
+            "TVL_on_multichain_protocols": "N/A",
+            "#_of_projects_integrated": "N/A",
+            "#_of_active_developer_addresses": "N/A",
+            "#_of_events_hosted": "N/A",
+            "attendance_numbers": "N/A",
+            "#_of_new_projects_from_developer_events": "N/A",
+            "#_of_wallets_integrated": "N/A",
+            "#_of_new_users_coming_to_Cyber_via_wallet_providers": "N/A",
+            "#_of_transactions_these_users_made_on_Cyber_Mainnet": "N/A",
+            "user_retention_rate": "N/A"
+        }
+    },
+    {
+        "project_name": "Mode Grants Program",
+        "metrics": {
+            "Total Value Locked (TVL)": "$2 billion by September 2025",
+            "Average Transactions per Day": "1,000,000 by September 2025",
+            "DEX Volume": "50 million swaps by September 2025",
+            "New Applications Deployed": "100 by September 2025",
+            "# of new accounts created": "300K in a year (15% quarterly growth rate)",
+            "# of transactions": "N/A",
+            "DEX TVL": "N/A",
+            "Stickiness": "N/A",
+            "# of unique applications deployed on Mode": "N/A",
+            "# of applications deployed": "N/A",
+            "# of projects integrated": "N/A",
+            "# of active developer addresses": "N/A"
+        }
+    },
+    {
+        "project_name": "Lisk",
+        "metrics": {
+            "TVL in the grantee’s protocol": "N/A",
+            "Number of transactions emitting event logs": "N/A",
+            "Number of active addresses interacting with grantee’s contracts": "N/A",
+            "Total amount of gas fees generated from grantee’s contracts": "N/A",
+            "Percentage of retained active addresses interacting with the grantee’s contracts": "N/A",
+            "DAA/MAA ratio": "N/A",
+            "Number of testnet transactions emitting event logs": "N/A",
+            "Number of active developer addresses interacting with grantee’s contracts": "N/A",
+            "1 trophy app": "N/A",
+            "Organic, industry-wide PR": "N/A",
+            "Users joining the network specifically for this app": "N/A",
+            "10 existing apps that users love": "N/A",
+            "5 million Transactions Per Month": "top 20 L2 Beat",
+            "50 Apps on Lisk": "N/A",
+            "10 apps with airdrops / token launch planned on Lisk": "N/A",
+            "Stable Monthly active user numbers in 6+ months": "N/A",
+            "$400 million in TVL": "N/A",
+            "More than $100m non-LSK TVL": "N/A",
+            "Top 15 on L2Beat at Launch": "N/A",
+            "100k new verified users in Africa and South East Asia": "N/A",
+            "# New Lisk wallet addresses": "N/A",
+            "Github ID, Worldcoin Users, etc.": "N/A"
+        }
+    },
+    {
+        "project_name": "DelegateMatch",
+        "metrics": {
+            "Number of addresses delegating": "100+",
+            "Total amount of OP delegated using the grantee’s protocol": "15,000+ OP"
+        }
+    },
+    {
+        "project_name": "Scout Game",
+        "metrics": {
+            "Farcaster ID signups": "500",
+            "Builder NFTs minted": "2,500",
+            "Gas fees generated": "5M Gwei"
+        }
+    },
+    {
+        "project_name": "Origin Ether (OETH)",
+        "metrics": {
+            "TVL on Optimism": "$10-20 million",
+            "OETH TVL by end of Week 4": "$600K",
+            "OETH TVL by end of Week 8": "$1.2M",
+            "OETH TVL by end of Week 12": "$1.5M",
+            "OETH TVL by end of Week 16": "$2.5M",
+            "OETH TVL by end of Week 20": "$4M",
+            "OETH TVL by end of Week 24": "$6M"
+        }
+    },
+    {
+        "project_name": "Contango",
+        "metrics": {
+            "Total Volume": "$3B",
+            "Open Interest": "$350M",
+            "Target TVL Increase": "10%"
+        }
+    },
+    {
+        "project_name": "Velodrome",
+        "metrics": {
+            "TVL for YBA's": "Increase TVL for YBA's on Velodrome",
+            "User incentives": "200000"
+        }
+    },
+    {
+        "project_name": "Uniswap Liquidity Incentivization for Yield Bearing Assets on Optimism",
+        "metrics": {
+            "OP request for User Incentives": "180000",
+            "TVL increase": "10M",
+            "TVL Increase by 5m": "N/A",
+            "TVL Increase by 10m+": "N/A"
+        }
+    },
+    {
+        "project_name": "Uniswap LRT Incentivization Program",
+        "metrics": {
+            "OP request for User Incentives": "120000",
+            "LRT pool TVL increase": "$10m+",
+            "TVL Increase by 3m": "N/A",
+            "TVL Increase by 4m+": "N/A"
+        }
+    },
+    {
+        "project_name": "Mint Blockchain",
+        "metrics": {
+            "Transaction Volume": "1M Daily Transactions",
+            "Unique Active Wallets": "20M Active Wallets",
+            "Dapps": "50+ New Projects",
+            "TVL": "$30M Total Value Locked (TVL)"
+        }
+    },
+    {
+        "project_name": "Idle DAO Credit Vaults Expansion",
+        "metrics": {
+            "TVL in grantee’s protocol": "20,000,000",
+            "OP request for User Incentives": "140,000"
+        }
+    },
+    {
+        "project_name": "dForce",
+        "metrics": {
+            "Total Volume": "$11.7B",
+            "Total Assets": "$151M",
+            "Total Transactions": "991K",
+            "Total Users": "38,775",
+            "TVL (Target)": "$4~8m"
+        }
+    },
+    {
+        "project_name": "Alchemix",
+        "metrics": {
+            "TVL in wstETH vault": "1320 ETH"
+        }
+    },
+    {
+        "project_name": "Toros Finance",
+        "metrics": {
+            "Total TVL across all chains": "$54 million",
+            "Total TVL on Optimism": "$33 million",
+            "Total TVL in leveraged tokens on Optimism": "$26 million",
+            "Cumulative volume on Synthetix Perps": "$719 million",
+            "Daily active users": "7,624",
+            "Total transactions": "41,673",
+            "Gas fees generated": "1 ETH",
+            "Cumulative volume on Synthetix": "$222 million",
+            "Cumulative exchange fees": "$127,800",
+            "User Incentives request": "50,000 OP tokens",
+            "Deposits and Withdrawals Milestone": "$60M",
+            "Notional Volume Milestone": "$80M"
+        }
+    },
+    {
+        "project_name": "Strands",
+        "metrics": {
+            "Total Notional Volume by February 2025": "250 million",
+            "Total Notional Volume tokenized by April 2025": "1 billion"
+        }
+    },
+    {
+        "project_name": "Pyth Network",
+        "metrics": {
+            "number_of_active_addresses_interacting_with_Pyth_Data_Contracts": "increase by 5x"
+        }
+    },
+    {
+        "project_name": "IONIC Protocol Mission Request Application",
+        "metrics": {
+            "TVL in grantee’s protocol": "$500M-$1B",
+            "User Incentives OP request": "3000",
+            "Development of aggregator logic and streams for best rates OP amount": "5000",
+            "Contract Development /connections OP amount": "10000",
+            "Front End & Backend Development OP amount": "10000",
+            "Product Shipped OP amount": "5000"
+        }
+    },
+    {
+        "project_name": "Pyth Express Relay",
+        "metrics": {
+            "num_transactions_emitting_event_logs": "Increase by 5x",
+            "user_incentives": "70000"
+        }
+    },
+    {
+        "project_name": "TLX",
+        "metrics": {
+            "TVL halfway into incentive program": "$2,500,000",
+            "TVL 6 weeks after end of incentive program": "$2,500,000",
+            "Cumulative fees halfway into incentive program": "$600k",
+            "Cumulative fees 6 weeks after end of incentive program": "$630k"
+        }
+    },
+    {
+        "project_name": "Kroma",
+        "metrics": {
+            "Number of active addresses interacting with grantee’s contracts": "N/A",
+            "Total amount of gas fees generated from grantee’s contracts": "N/A",
+            "Percentage of retained active addresses interacting with the grantee’s contracts": "N/A",
+            "DAA/MAA ratio": "N/A",
+            "Achieve 1,000 monthly active addresses for two consecutive months": "N/A",
+            "Achieve 5,000 monthly active addresses for two consecutive months and 30% of retained active addresses interacting with the grantee’s contracts": "N/A",
+            "Achieve 10,000 monthly active addresses for two consecutive months and 30% of retained active addresses interacting with the grantee’s contracts": "N/A"
+        }
+    },
+    {
+        "project_name": "Derive (Formerly Lyra)",
+        "metrics": {
+            "Unlocked Tokens": "0",
+            "Foundation Grant Size": "500000",
+            "OP Request for Builder Grants": "300000",
+            "OP Request for User Incentive Grants": "700000",
+            "Targeted Liquidity Incentives Distribution": "N/A",
+            "Achieve 100M TVL": "N/A",
+            "Generate > 10 ETH Profit share with Optimism": "N/A",
+            "Total Unique Depositors": "N/A"
+        }
+    },
+    {
+        "project_name": "Polynomial Chain",
+        "metrics": {
+            "TVL Growth": "200,000",
+            "Number of Transactions": "25,000",
+            "Total Unique Depositors": "200,000",
+            "Contracts Deployed": "25,000"
+        }
+    },
+    {
+        "project_name": "Balmy",
+        "metrics": {
+            "Audit completion": "Not Completed",
+            "User incentives": "70000"
+        }
+    },
+    {
+        "project_name": "Autonomint",
+        "metrics": {
+            "Users in waitlist signups": "1600+",
+            "Grants received": "N/A",
+            "Total requested OP for User incentives": "49500",
+            "TVL in Testnet": "$300K",
+            "Accelerator competitions won": "2"
+        }
+    },
+    {
+        "project_name": "Autonomint",
+        "metrics": {
+            "Testnet Users": "1600+",
+            "Grants received": "N/A",
+            "Total requested OP": "49500",
+            "Current TVL": "$300K",
+            "Audit Completion": "N/A"
+        }
+    },
+    {
+        "project_name": "Extra Finance",
+        "metrics": {
+            "TVL on Optimism": "$20M",
+            "TVL on Base": "$109M",
+            "OP request locked": "4800",
+            "OP request for User incentives": "28850"
+        }
+    },
+    {
+        "project_name": "Clusters.xyz",
+        "metrics": {
+            "OP request for User incentives": "35000",
+            "Audit Completion": "N/A"
+        }
+    },
+    {
+        "project_name": "Alchemix",
+        "metrics": {
+            "Total Value Locked (TVL) on Optimism": "$7M",
+            "Total Value Locked (TVL) across all platforms": "$47M",
+            "Audit Completion": "N/A",
+            "User Incentives": "N/A"
+        }
+    },
+    {
+        "project_name": "Resolv Labs",
+        "metrics": {
+            "TVL on Ethereum mainnet": "16m",
+            "OP request locked": "13500",
+            "OP request for User incentives": "31500",
+            "Audit completion": "N/A"
+        }
+    },
+    {
+        "project_name": "QuantAMM",
+        "metrics": {
+            "OP request for User incentives": "49600",
+            "Cyfrin Audit Report Open": "N/A"
+        }
+    }
+]
