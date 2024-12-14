@@ -300,6 +300,4 @@ def main(grant_path, output_path, comparator):
     with open(final_grants_path, "w", encoding="utf-8") as output_file:
         json.dump(final_grants, output_file, ensure_ascii=False, indent=4)
 
-#scrape_application(g, 'https://app.charmverse.io/op-grants/derive-formerly-lyra-chain-intent-3b-9106030612947877', 'temp.md', 'temp')
-
 main('govgrants.json', output_path, growth_season_six)
