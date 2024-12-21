@@ -1,0 +1,154 @@
+[
+    {
+      "round": "Grants Season 6",
+      "cycle": "Cycle 25",
+      "project_name": "Ether.fi OP Mainnet LRT Grant",
+      "status": "Sent",
+      "proposal_link": "https://app.charmverse.io/op-grants/ether-fi-op-mainnet-lrt-grant-46198635300198077",
+      "amount": 96000,
+      "amount_comment": null,
+      "meta": {
+        "Initial Delivery Date": "2024-09-01T00:00:00",
+        "(OP) Delivered": 57600.0,
+        "Intent": "Intent 3A",
+        "Incentive Program Launched?": "Growth"
+      },
+      "relevant_metrics": {
+        "select the metric specified in the mission request": "(Intent 3 Growth) TVL in grantee\u2019s protocol",
+        "fill out your metric objective": "5,000 weETH of TVL added to the OP Mainnet ecosystem "
+      },
+      "relevant_dates": {
+        "OP deployment date": [
+          "Sep 1"
+        ],
+        "Incentives due date": [
+          "Sep 1"
+        ]
+      },
+      "relevant_chains": [
+        "op"
+      ],
+      "contract_urls": [],
+      "addresses": [
+        {
+          "0x5c8c76f2e990f194462dc5f8a8c76ba16966ed42": {
+            "networks": [
+              "optimism"
+            ],
+            "tags": [
+              "eoa",
+              "wallet"
+            ],
+            "name": "etherfi",
+            "count_txns": 0
+          }
+        },
+        {
+          "0x5a7facb970d094b6c7ff1df0ea68d99e6e73cbff": {
+            "networks": [
+              "optimism"
+            ],
+            "tags": [
+              "contract"
+            ],
+            "name": "etherfi",
+            "count_txns": 1919
+          }
+        },
+        {
+          "0x5c8c76f2e990f194462dc5f8a8c76ba16966ed42": {
+            "networks": [
+              "optimism"
+            ],
+            "tags": [
+              "eoa",
+              "wallet"
+            ],
+            "name": "etherfi",
+            "count_txns": 0
+          }
+        },
+        {
+          "0xd0f92f5d756bf223574dfa3ef284a35c3c046289": {
+            "networks": [
+              "optimism"
+            ],
+            "tags": [
+              "contract"
+            ],
+            "name": "etherfi",
+            "count_txns": 46
+          }
+        }
+      ]
+    },
+    {
+        "round": "Grants Season 6",
+        "cycle": "Cycle 25",
+        "project_name": "FrameHack #2",
+        "status": "Sent",
+        "proposal_link": "https://app.charmverse.io/op-grants/framehack-2-1877138093587576",
+        "amount": 2000,
+        "amount_comment": null,
+        "meta": {
+          "Initial Delivery Date": "2024-09-01T00:00:00",
+          "(OP) Delivered": 1200.0,
+          "Intent": "Intent 3A",
+          "Incentive Program Launched?": "Growth"
+        },
+        "relevant_metrics": {
+          "select the metric specified in the mission request": "(Intent 3 Stickiness) DAA/MAA ratio",
+          "fill out your metric objective": "As seen by the Farcaster Dune dashboard @ https://dune.com/pixelhack/farcaster, the launch of Frames on 01/26/2024 has skyrocketed the growth of the protocol, making the metrics before the launch look like a blip.\n\nThis piece of backstory is important because we have to note that all of the growth happened while Farcaster users created (and still create) Frames by stitching various frameworks and libraries together. Developers have started building on top of existing frameworks and created easier way to create Frames, but still only for developers and technical people alike. To put this into perspective and provide an example for the difficulty of creating Frames: no matter how easy to use a specific framework is, you still have to host the Frame yourself on a VPS (server) or similar hosting solution. The growth of Frames is severely hindered by the lack of a UI first solution to build these Frames that also integrates hosting under the hood w/out the user having to do _anything_ extra.\n\nFrameTrain has made that possible, but the road ahead has just begun. The next steps are to integrate more templates (achieved through FrameHack and this proposal) and to make the existence of our solution known to current users, they will in turn share these new and useful type of interactions with non Farcaster users (either on platforms like Twitter, or direct sharing with their friends).\n\nWe envision a 10x growth of the Farcaster protocol through a solution like FrameTrain. This is not a downplayed, nor an exaggerated factor of growth. The protocol has grown in revenue 10x already (from under ~$200,000 to over ~$2M revenue) after the launch of Frames (given all current barriers of entry noted above). We also see a considerable amount of new accounts & transactions on Optimism and related OP Stack chains, each for various reasons. \n\nSources of transactions for the Optimism chain\n- Registering a FID (creating an account)\n- Buying storage units (needed to be able to cast/react/follow on Farcaster)\n\nSources of transactions for Base, Zora & related chains\n- Minting (supported natively in Frames)\n- Swapping (through Frames that enable that)\n- Attestations (through the Ethereum Attestation Service)\n- Various contract interactions\n\n\nMETRICS OBJECTIVE\n1 \u2014\u2014 With ~1,150 users registering on Farcaster every 24 hours ( https://optimistic.etherscan.io/address/0x00000000fc04c910a0b5fea33b03e0447ad0b0aa), we expect this number to at least double after FrameHack #2 ends and FrameTrain exits stealth mode (i.e. starts outreach and marketing, which is outside of this proposal and the sole responsibility of FrameTrain to do).\n\n2 \u2014\u2014 Given that Base is the preferred network on Warpcast and clients alike for making transactions, we estimate that 0.5% of all Base transactions will come from Frames created on FrameTrain, which means around 1,600 tx per day. "
+        },
+        "relevant_dates": {
+          "OP deployment date": [
+            "Sep 16",
+            "Sep 29",
+            "Sep 7"
+          ],
+          "Incentives due date": [
+            "Sep 16",
+            "Sep 29",
+            "Sep 6"
+          ]
+        },
+        "relevant_chains": [],
+        "contract_urls": [],
+        "addresses": [
+          {
+            "0xe7910f8a4b7efcf2964f017e34e4e2d9aa06edc3": {
+              "networks": [
+                "base",
+                "optimism"
+              ],
+              "tags": [
+                "wallet"
+              ],
+              "count_txns": 1
+            }
+          },
+          {
+            "0xe7910f8a4b7efcf2964f017e34e4e2d9aa06edc3": {
+              "networks": [
+                "base"
+              ],
+              "tags": [
+                "contract"
+              ],
+              "count_txns": 1
+            }
+          },
+          {
+            "0x00000000fc04c910a0b5fea33b03e0447ad0b0aa": {
+              "networks": [
+                "optimism"
+              ],
+              "tags": [
+                "contract"
+              ],
+              "count_txns": 47812
+            }
+          }
+        ]
+      }
+]

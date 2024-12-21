@@ -1,0 +1,18 @@
+[
+    {
+        "project_name": "Ether.fi OP Mainnet LRT Grant",
+        "metrics": {
+            "TVL in grantee’s protocol": "5000 weETH of TVL added to the OP Mainnet ecosystem",
+            "OP request Locked": "24000",
+            "OP request for User Incentives": "96000"
+        }
+    },
+    {
+        "project_name": "FrameHack #2",
+        "metrics": {
+            "Users registering on Farcaster every 24 hours": "At least double after FrameHack #2 ends",
+            "Base transactions from Frames created on FrameTrain": "Around 1,600 tx per day",
+            "Templates created during the first edition of FrameHack": "N/A"
+        }
+    }
+]
