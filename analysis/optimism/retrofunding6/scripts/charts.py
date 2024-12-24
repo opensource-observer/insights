@@ -282,7 +282,7 @@ def plot_medians_by_voter_group(
             )
         ax.plot([x1, x2], [y, y], color='black', linewidth=0.8)
 
-    ax.legend(loc='upper right')
+    ax.legend(loc='lower right')
     ax.set_title(f"{subtitle}\n", loc='left', weight='bold')
     fig.tight_layout()
 

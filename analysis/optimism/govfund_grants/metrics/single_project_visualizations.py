@@ -6,6 +6,7 @@ from typing import List, Dict, Tuple, Union, Optional
 
 PROJECT_START_DATE = '2024-09-01'
 PROJECT_START_DATE_DT = datetime(2024, 9, 1)
+
 PROJECT_NETWORK = 'mainnet'
 NUMERIC_COLS = ['transaction_cnt', 'active_users', 'unique_users', 'total_op_transferred']
 BIGQUERY_PROJECT_NAME = 'oso-data-436717'
