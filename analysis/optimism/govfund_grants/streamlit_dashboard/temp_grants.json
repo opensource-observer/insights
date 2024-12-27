@@ -1,0 +1,229 @@
+[
+  {
+    "round": "Grants Season 6",
+    "cycle": "Cycle 25",
+    "project_name": "Ether.fi OP Mainnet LRT Grant",
+    "status": "Sent",
+    "proposal_link": "https://app.charmverse.io/op-grants/ether-fi-op-mainnet-lrt-grant-46198635300198077",
+    "amount": 96000,
+    "amount_comment": null,
+    "meta": {
+      "Initial Delivery Date": "2024-09-01T00:00:00",
+      "(OP) Delivered": 57600.0,
+      "Intent": "Intent 3A",
+      "Incentive Program Launched?": "Growth"
+    },
+    "relevant_metrics": {
+      "select the metric specified in the mission request": "(Intent 3 Growth) TVL in grantee\u2019s protocol",
+      "fill out your metric objective": "5,000 weETH of TVL added to the OP Mainnet ecosystem "
+    },
+    "relevant_dates": {
+      "OP deployment date": [
+        "Sep 1"
+      ],
+      "Incentives due date": [
+        "Sep 1"
+      ]
+    },
+    "relevant_chains": [
+      "op"
+    ],
+    "contract_urls": [],
+    "addresses": [
+      {
+        "0x5c8c76f2e990f194462dc5f8a8c76ba16966ed42": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "eoa",
+            "wallet"
+          ],
+          "name": "etherfi",
+          "count_txns": 0
+        }
+      },
+      {
+        "0x5a7facb970d094b6c7ff1df0ea68d99e6e73cbff": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "contract"
+          ],
+          "name": "etherfi",
+          "count_txns": 1919
+        }
+      },
+      {
+        "0x5c8c76f2e990f194462dc5f8a8c76ba16966ed42": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "eoa",
+            "wallet"
+          ],
+          "name": "etherfi",
+          "count_txns": 0
+        }
+      },
+      {
+        "0xd0f92f5d756bf223574dfa3ef284a35c3c046289": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "contract"
+          ],
+          "name": "etherfi",
+          "count_txns": 46
+        }
+      }
+    ]
+  },
+  {
+    "round": "Grants Season 6",
+    "cycle": "Cycle 25",
+    "project_name": "Expanding restaking on Optimism",
+    "status": "Sent",
+    "proposal_link": "https://app.charmverse.io/op-grants/expanding-restaking-on-optimism-882168603000568",
+    "amount": 120000,
+    "amount_comment": null,
+    "meta": {
+      "Initial Delivery Date": "2024-09-01T00:00:00",
+      "(OP) Delivered": 48000.0,
+      "Intent": "Intent 3A",
+      "Incentive Program Launched?": "Growth"
+    },
+    "relevant_metrics": {
+      "select the metric specified in the mission request": "(Intent 3 Growth) TVL in grantee\u2019s protocol",
+      "fill out your metric objective": "Our metric objective for this grant is the growth of overall TVL (including native restaking + bridging) on Optimism. \n\nWe will be tracking this weekly using onchain metrics and publishing on a public dashboard "
+    },
+    "relevant_dates": {
+      "OP deployment date": [
+        "Jul 25",
+        ""
+      ],
+      "Incentives due date": [
+        "Jul 25",
+        ""
+      ]
+    },
+    "relevant_chains": [
+      "lyra",
+      "op"
+    ],
+    "contract_urls": [
+      "https://optimistic.etherscan.io/address/0xe48b4e392e4fc29ac2600c3c8efe0404a15d60d9",
+      "https://optimistic.etherscan.io/token/0x87eEE96D50Fb761AD85B1c982d28A042169d61b1",
+      "https://balancer.fi/pools/optimism/v2/0x73a7fe27fe9545d53924e529acf11f3073841b9e000000000000000000000133"
+    ],
+    "addresses": [
+      {
+        "0x0c5527b3abfbd0c297104b12be6f288d335b299c": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "safe",
+            "wallet"
+          ],
+          "name": "kelp-dao",
+          "count_txns": 16
+        }
+      }
+    ]
+  },
+  {
+    "round": "Grants Season 6",
+    "cycle": "Cycle 28",
+    "project_name": "Alchemix Grant Request",
+    "status": "Passed",
+    "proposal_link": "https://app.charmverse.io/op-grants/alchemix-grant-request-90710470226371",
+    "amount": 50000,
+    "amount_comment": null,
+    "meta": {
+      "Intent": "Intent 3A",
+      "Incentive Program Launched?": "Growth"
+    },
+    "relevant_metrics": {
+      "select the metric specified in the mission request": "(Intent 3 Growth) TVL in grantee\u2019s protocol",
+      "fill out your metric objective": "Increase in TVL of 1320 ETH in the wstETH vault (~50%), depending on OP/ETH price fluctuation. "
+    },
+    "relevant_dates": {
+      "OP deployment date": [
+        "Sep 27, 2022"
+      ],
+      "Incentives due date": [
+        "Oct 31"
+      ]
+    },
+    "relevant_chains": [
+      "op"
+    ],
+    "contract_urls": [],
+    "addresses": [
+      {
+        "0x8cca517370cbfc33cc9810bfc7440832c47d251c": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "wallet"
+          ],
+          "count_txns": 1
+        }
+      },
+      {
+        "0x8cca517370cbfc33cc9810bfc7440832c47d251c": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "contract"
+          ],
+          "count_txns": 1
+        }
+      },
+      {
+        "0xe04bb5b4de60fa2fba69a93ade13a8b3b569d5b4": {
+          "networks": [
+            "mainnet",
+            "optimism"
+          ],
+          "tags": [
+            "contract"
+          ],
+          "name": "alchemix",
+          "count_txns": 2632
+        }
+      },
+      {
+        "0x343910697c03477e5cc0d386ffa5133d1a827ad7": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "contract"
+          ],
+          "name": "alchemix",
+          "count_txns": 0
+        }
+      },
+      {
+        "0xc224bf25dcc99236f00843c7d8c4194abe8aa94a": {
+          "networks": [
+            "optimism"
+          ],
+          "tags": [
+            "safe",
+            "wallet"
+          ],
+          "name": "alchemix",
+          "count_txns": 37
+        }
+      }
+    ]
+  }
+]
