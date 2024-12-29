@@ -478,7 +478,6 @@ def defi_llama_section(protocol: Any) -> None:
         safe_execution(tvl_across_chains_chart, chain_tvls_df)
         safe_execution(tvl_across_tokens_chart, tokens_in_usd_df)
         safe_execution(tvl_distribution_section, chain_tvls_df, tvl_df)
-
         return chain_tvls_df, tvl_df, tokens_in_usd_df, tokens_df
     
     except Exception:
