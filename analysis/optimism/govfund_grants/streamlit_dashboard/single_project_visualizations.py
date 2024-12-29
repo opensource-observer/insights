@@ -11,10 +11,9 @@ NUMERIC_COLS = ['transaction_cnt', 'active_users', 'unique_users', 'total_op_tra
 BIGQUERY_PROJECT_NAME = 'oso-data-436717'
 
 # create a list of all dates from now to the start date
-def generate_dates() -> List[str]:
+def generate_dates(target_date = PROJECT_START_DATE_DT) -> List[str]:
     dates = []
     todays_date = datetime.now()
-    target_date = PROJECT_START_DATE_DT
     date_interval = (todays_date - target_date).days
     for i in range(date_interval):
         date = target_date + timedelta(days=i)
@@ -42,7 +41,7 @@ def make_dates_df(dates: List[str], project_addresses: Tuple[str, ...]) -> pd.Da
     return pd.DataFrame(data)
 
 # query the daily transaction data of the project addresses over the interval and store it in a dataframe
-def query_daily_transactions(client: bigquery.Client, project_addresses: Tuple[str, ...], dates_df: pd.DataFrame) -> pd.DataFrame:
+def query_daily_transactions(client: bigquery.Client, project_addresses: Tuple[str, ...], dates_df: pd.DataFrame, start_date: str = PROJECT_START_DATE) -> pd.DataFrame:
     try:
         # handle single or multiple addresses in the query
         if len(project_addresses) == 1:
@@ -55,42 +54,77 @@ def query_daily_transactions(client: bigquery.Client, project_addresses: Tuple[s
                 dt AS transaction_date,
                 to_address AS address,
                 COUNT(*) AS transaction_cnt,
-                COUNT(from_address) AS active_users,
-                COUNT(DISTINCT from_address) AS unique_users,
+                COUNT(DISTINCT from_address) AS active_users,
                 SUM(value_64) AS total_op_transferred
             FROM `{BIGQUERY_PROJECT_NAME}.optimism_superchain_raw_onchain_data.transactions` 
             WHERE to_address {addresses_condition}
                 AND network = '{PROJECT_NETWORK}'
-                AND dt >= '{PROJECT_START_DATE}'
+                AND dt >= '{start_date}'
             GROUP BY dt, to_address
             ORDER BY dt, to_address"""
-                
+
+        daily_transactions_unique_users_query = f"""
+            WITH firstseen AS (
+                SELECT
+                    to_address,
+                    from_address,
+                    MIN(dt) transaction_date
+                FROM `{BIGQUERY_PROJECT_NAME}.optimism_superchain_raw_onchain_data.transactions`
+                WHERE to_address {addresses_condition}
+                    AND network = '{PROJECT_NETWORK}'
+                    AND dt >= '{start_date}'
+                GROUP BY to_address, from_address
+            ), cum_sum_count AS (
+                SELECT
+                    transaction_date,
+                    to_address,
+                    COUNT(from_address) OVER (PARTITION BY to_address ORDER BY transaction_date) AS daily_cumulative_count
+                FROM firstseen
+            )
+            SELECT 
+                transaction_date,
+                to_address AS address,
+                daily_cumulative_count - COALESCE(LAG(daily_cumulative_count) OVER (PARTITION BY to_address ORDER BY transaction_date), 0) AS unique_users
+            FROM cum_sum_count
+            ORDER BY transaction_date"""
+
+        # Execute the queries
         daily_transactions_result = client.query(daily_transactions_query)
         daily_transactions_df = daily_transactions_result.to_dataframe()
 
-        # merge the queried data with the dates dataframe to ensure we have 0 rows for days without transactions
-        daily_transactions_merged_df = pd.merge(daily_transactions_df, dates_df, how='outer', on=['transaction_date', 'address']).fillna(0) 
-        
-        # ensure datatypes align of the columns we'll be working with later
-        daily_transactions_merged_df[NUMERIC_COLS] = daily_transactions_merged_df[NUMERIC_COLS].astype(int)
+        daily_transactions_unique_users_result = client.query(daily_transactions_unique_users_query)
+        daily_transactions_unique_users_df = daily_transactions_unique_users_result.to_dataframe()
 
-        daily_transactions_merged_df = (daily_transactions_merged_df
-            .groupby(['transaction_date', 'address'], as_index=False)
-            .agg({
-                'transaction_cnt': 'sum',
-                'active_users': 'sum',
-                'unique_users': 'sum',
-                'total_op_transferred': 'sum'
-            })
+        # Merge results
+        daily_transactions_df = pd.merge(
+            daily_transactions_df,
+            daily_transactions_unique_users_df,
+            how='outer',
+            on=['transaction_date', 'address']
         )
 
+        # Merge with dates_df to ensure all dates are included
+        daily_transactions_merged_df = pd.merge(
+            daily_transactions_df,
+            dates_df,
+            how='outer',
+            on=['transaction_date', 'address']
+        )
+
+        # Fill missing numeric values with 0, but leave other columns (e.g., transaction_date) unchanged
+        NUMERIC_COLS = ['transaction_cnt', 'active_users', 'unique_users', 'total_op_transferred']
+        daily_transactions_merged_df[NUMERIC_COLS] = daily_transactions_merged_df[NUMERIC_COLS].fillna(0).astype(int)
+
+        daily_transactions_merged_df = daily_transactions_merged_df.drop_duplicates(subset=['transaction_date', 'address']).reset_index(drop=True)
+
         return daily_transactions_merged_df
-    
+
     except Exception as e:
         raise RuntimeError(f"Failed to query daily transactions: {e}")
 
+
 # create a table of all transactions (in and out) involving one of the project addresses over the interval
-def query_op_flow(client: bigquery.Client, project_addresses: Tuple[str, ...]) -> pd.DataFrame:
+def query_op_flow(client: bigquery.Client, project_addresses: Tuple[str, ...], start_date: str = PROJECT_START_DATE) -> pd.DataFrame:
     try:
         # handle single or multiple addresses in the query
         if len(project_addresses) == 1:
@@ -108,7 +142,7 @@ def query_op_flow(client: bigquery.Client, project_addresses: Tuple[str, ...]) -
         FROM `{BIGQUERY_PROJECT_NAME}.optimism_superchain_raw_onchain_data.transactions`
         WHERE network = '{PROJECT_NETWORK}'
             AND to_address {addresses_condition}
-            AND dt >= '{PROJECT_START_DATE}'
+            AND dt >= '{start_date}'
         GROUP BY dt, from_address, to_address
         ORDER BY 3 DESC)
 
@@ -123,7 +157,7 @@ def query_op_flow(client: bigquery.Client, project_addresses: Tuple[str, ...]) -
         FROM `{BIGQUERY_PROJECT_NAME}.optimism_superchain_raw_onchain_data.transactions`
         WHERE network = '{PROJECT_NETWORK}'
             AND from_address {addresses_condition}
-            AND dt >= '{PROJECT_START_DATE}'
+            AND dt >= '{start_date}'
         GROUP BY dt, from_address, to_address
         ORDER BY 3 DESC)"""
 
@@ -285,13 +319,13 @@ def generate_visualizations(project_addresses: Tuple[str, ...], daily_transactio
     return transaction_count_plot, active_users_plot, unique_users_plot, total_op_transferred_plot, top_addresses_plot, net_op_flow_plot
 
 # given a bigquery client, the addresses of a target project, and a blank list of dates, return all of the desired dataframes
-def process_project(client: bigquery.Client, project_addresses: Tuple[str, ...], dates: List[str]) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+def process_project(client: bigquery.Client, project_addresses: Tuple[str, ...], dates: List[str], start_date: str = PROJECT_START_DATE) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     dates_df = make_dates_df(dates, project_addresses)
 
-    daily_transactions = query_daily_transactions(client, project_addresses, dates_df)
+    daily_transactions = query_daily_transactions(client, project_addresses, dates_df, start_date)
     daily_transactions['total_op_transferred_in_tokens'] = daily_transactions['total_op_transferred'] / 1e15
     
-    op_flow = query_op_flow(client, project_addresses)
+    op_flow = query_op_flow(client, project_addresses, start_date)
     op_flow['total_op_transferred_in_tokens'] = op_flow['total_op_transferred'] / 1e15
     
     net_op_flow = make_net_op_dataset(op_flow, project_addresses)
