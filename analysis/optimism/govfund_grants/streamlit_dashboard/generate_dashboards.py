@@ -1,5 +1,6 @@
 import streamlit as st
 from google.cloud import bigquery
+from datetime import datetime
 import pandas as pd
 import plotly.express as px
 import json
@@ -7,10 +8,12 @@ import os
 from typing import Dict, List, Union, Optional, Tuple
 from single_project_visualizations import process_project, generate_dates, extract_addresses
 from defi_llama_visualizations import defi_llama_section, read_in_defi_llama_protocols, return_protocol, safe_execution
+from hypothesis_testing import hypothesis_testing_section
 
+GRANT_DATE = datetime(2024, 9, 1)
 BIGQUERY_PROJECT_NAME = 'oso-data-436717'
-DEFI_LLAMA_PROTOCOLS_PATH = "metrics/defillama.json"
-GRANTS_PATH = "metrics/temp_grants.json"
+DEFI_LLAMA_PROTOCOLS_PATH = "streamlit_dashboard/defillama.json"
+GRANTS_PATH = "streamlit_dashboard/temp_grants.json"
 
 # create a dictionary of the target grants to work with
 def read_in_grants(grants_path: str) -> Dict[str, Dict[str, Union[str, List[str], Dict[str, Union[str, int]]]]]:
@@ -193,7 +196,7 @@ def main() -> None:
     project_addresses = extract_addresses(project)
 
     # process the selected project
-    project_daily_transactions, project_op_flow, project_net_op_flow = process_project(client, project_addresses, dates)        
+    project_daily_transactions, _, project_net_op_flow = process_project(client, project_addresses, dates)        
 
     # header 2 - core metrics
     st.divider()
@@ -219,17 +222,27 @@ def main() -> None:
     # flatten the multi-level column names created by .agg()
     transaction_cnts_by_address.columns = ['address', 'transaction_cnt_sum', 'transaction_cnt_avg', 'transaction_cnt_max']
 
+    # determine the top 10 addresses based on total op transferred
     net_op_transferred_by_address = project_net_op_flow.groupby('address')['total_op_transferred_in_tokens'].sum().reset_index()
     metrics_by_address = transaction_cnts_by_address.merge(net_op_transferred_by_address, on='address')
     st.dataframe(metrics_by_address.head(10))
 
     st.divider()
 
+    # read in a json of the defi llama protocols
     defi_llama_protocols = read_in_defi_llama_protocols(DEFI_LLAMA_PROTOCOLS_PATH)
+    # check if the selected project has an associated defi llama protocol
     protocol = return_protocol(defi_llama_protocols, selected_project_name)
     if protocol:
-        defi_llama_section(protocol)
+        # generate the section based on defi llama data (TVL data) 
+        chain_tvls_df, tvl_df, _, _ = defi_llama_section(protocol)
+        st.divider()
 
+        # generate the hypothesis testing section, reusing the defi llama data
+        hypothesis_testing_section(client, project_addresses, GRANT_DATE, chain_tvls_df, tvl_df)
+
+    # generate the hypothesis testing section without the defi llama data if it doesn't exist
+    hypothesis_testing_section(client, project_addresses, GRANT_DATE)
 
 if __name__ == "__main__":
     main()
