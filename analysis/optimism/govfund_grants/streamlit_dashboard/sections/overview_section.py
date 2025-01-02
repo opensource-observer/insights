@@ -46,7 +46,15 @@ def display_addresses_table(addresses: List[Dict[str, Dict[str, Union[str, List[
     df = pd.DataFrame(address_data)
 
     st.subheader("Addresses")
-    st.dataframe(df)
+    st.dataframe(
+        df.assign(hack='').set_index('hack'),
+        column_config={
+            "hack": None,
+            "Address": st.column_config.TextColumn(width="large"),
+            "Networks": st.column_config.TextColumn(width="small"),
+            "Name": st.column_config.TextColumn(width="small")
+        }
+    )
 
 def overview_section(project):
 

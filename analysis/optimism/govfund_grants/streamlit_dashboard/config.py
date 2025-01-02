@@ -1,4 +1,5 @@
 from datetime import datetime
+import streamlit as st
 
 PULL_FROM_BIGQUERY = False
 LIVE_STREAMLIT_INSTANCE = False
@@ -14,7 +15,7 @@ PROJECT_NETWORK = 'mainnet'
 
 BIGQUERY_PROJECT_NAME = 'oso-data-436717'
 
-DEFI_LLAMA_PROTOCOLS_PATH = "streamlit_dashboard/defillama.json"
+DEFI_LLAMA_PROTOCOLS_PATH = "defillama.json"
 GRANTS_PATH = "temp_grants.json"
-SERVICE_ACCOUNT_PATH = '../../../oso_gcp_credentials.json'
-STORED_DATA_PATH = 'streamlit_dashboard/data/'
+SERVICE_ACCOUNT_PATH = 'oso_gcp_credentials.json'
+STORED_DATA_PATH = 'data/'

@@ -132,6 +132,14 @@ def read_in_stored_dfs_for_projects(project, data_path, protocol):
     project_name = project['project_name']
     clean_name = project_name.lower().replace(" ", "_").replace(".", "-")
 
+    # Initialize everything to None
+    daily_transactions = None
+    net_op_flow = None
+    chain_tvls_df = None
+    tvl_df = None
+    tokens_in_usd_df = None
+    forecasted_df = None
+
     # read in daily transactions dataset
     try:
         daily_transactions = pd.read_csv(f"{data_path}{clean_name}_daily_transactions.csv")
@@ -144,7 +152,7 @@ def read_in_stored_dfs_for_projects(project, data_path, protocol):
     except Exception:
         pass
 
-    # read in tvl dataset if applicable 
+    # read in TVL datasets if protocol is provided
     if protocol is not None:
         try:
             chain_tvls_df = pd.read_csv(f"{data_path}{clean_name}_chain_tvls_df.csv")
@@ -167,13 +175,14 @@ def read_in_stored_dfs_for_projects(project, data_path, protocol):
     except Exception:
         pass
 
+    # Return a dict with each key = DataFrame or None
     return {
-        "daily_transactions": daily_transactions if daily_transactions is not None else None,
-        "net_op_flow": net_op_flow if net_op_flow is not None else None,
-        "forecasted" : forecasted_df if forecasted_df is not None else None,
-        "chain_tvls" : chain_tvls_df if protocol is not None and chain_tvls_df is not None else None,
-        "tvl": tvl_df if protocol is not None and tvl_df is not None else None,
-        "tokens_in_usd": tokens_in_usd_df if protocol is not None and tokens_in_usd_df is not None else None
+        "daily_transactions": daily_transactions,
+        "net_op_flow": net_op_flow,
+        "forecasted" : forecasted_df,
+        "chain_tvls" : chain_tvls_df,
+        "tvl": tvl_df,
+        "tokens_in_usd": tokens_in_usd_df
     }
 
 # take in a bigquery client and target protocol and return it's tvl data

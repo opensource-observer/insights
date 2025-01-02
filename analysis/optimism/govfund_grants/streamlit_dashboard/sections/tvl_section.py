@@ -40,17 +40,37 @@ def tvl_by_chain_and_token_chart(chain_tvls_df: pd.DataFrame) -> None:
 
     # filter data to start at the beginning of the year
     filtered_chain_tvl_df = chain_tvls_df[chain_tvls_df['readable_date'] >= datetime(2024, 1, 1)]
-
     filtered_chain_tvl_df['grant_label'] = filtered_chain_tvl_df.apply(assign_grant_label, axis=1)
 
     # allow user to select tokens
-    selected_tokens = st.multiselect("Select Tokens", filtered_chain_tvl_df['token'].unique())
-    filtered_chain_tvl_df = filtered_chain_tvl_df[filtered_chain_tvl_df['token'].isin(selected_tokens)]
+    all_chain_options = [f'All {chain} tokens' for chain in filtered_chain_tvl_df['chain'].unique()]
+    token_options = all_chain_options + list(filtered_chain_tvl_df['token'].unique())
+    selected_tokens = st.multiselect("Select Tokens", token_options)
 
-    # allow user to select chains
-    selected_chains = st.multiselect("Select Chains", filtered_chain_tvl_df['chain'].unique())
-    filtered_chain_tvl_df = filtered_chain_tvl_df[filtered_chain_tvl_df['chain'].isin(selected_chains)]
+    # check if any "All {chain} tokens" option is selected
+    selected_all_chain_option = [opt for opt in selected_tokens if opt in all_chain_options]
 
+    if selected_all_chain_option:
+        if len(selected_tokens) > 1:
+            st.warning("You can only select one 'All {chain} tokens' option at a time. Please deselect other options.")
+            return
+        else:
+            # extract the chain name from the selected "All {chain} tokens" option
+            chain = selected_all_chain_option[0].replace('All ', '').replace(' tokens', '')
+
+            # filter the DataFrame to include only the selected chain
+            filtered_chain_tvl_df = filtered_chain_tvl_df[filtered_chain_tvl_df['chain'] == chain]
+
+            # clear other selections and display filtered data
+            st.write(f"All {chain} tokens: {", ".join(filtered_chain_tvl_df['token'].unique())}")
+    else:
+        # filter by individual token selections
+        filtered_chain_tvl_df = filtered_chain_tvl_df[filtered_chain_tvl_df['token'].isin(selected_tokens)]
+
+        # allow user to select chains
+        selected_chains = st.multiselect("Select Chains", filtered_chain_tvl_df['chain'].unique())
+        filtered_chain_tvl_df = filtered_chain_tvl_df[filtered_chain_tvl_df['chain'].isin(selected_chains)]
+    
     # group data by date and grant label, summing the values
     grouped_tvl = (
         filtered_chain_tvl_df
@@ -240,8 +260,25 @@ def tvl_volatility_by_chain_chart(chain_tvls_df: pd.DataFrame) -> None:
     chain_tvls_df['grant_label'] = chain_tvls_df.apply(assign_grant_label, axis=1)
 
     # user selects tokens
-    selected_tokens = st.multiselect("Select Tokens", chain_tvls_df['token'].unique())
-    selected_chain_tvls_df = chain_tvls_df[chain_tvls_df['token'].isin(selected_tokens)]
+    token_options = ["All tokens"] + list(chain_tvls_df['token'].unique())
+    selected_tokens = st.multiselect("Select Tokens", token_options)
+
+    if not selected_tokens:
+        st.warning("Please select at least one address.")
+        return
+
+    # handle the "All" option
+    if "All tokens" in selected_tokens and len(selected_tokens) > 1:
+        st.warning("You cannot select individual tokens when 'All' is selected.")
+        selected_tokens = ["All tokens"]
+        return
+
+    if "All tokens" in selected_tokens:
+        # select all tokens
+        selected_chain_tvls_df = chain_tvls_df
+    else:
+        # filter data for the selected tokens
+        selected_chain_tvls_df = chain_tvls_df[chain_tvls_df['token'].isin(selected_tokens)]
 
     # create horizontal box plot
     fig = px.box(
@@ -304,7 +341,6 @@ def tvl_distribution_section(chain_tvls_df: pd.DataFrame, tvl_df: pd.DataFrame) 
 
 # main function to visualize the full tvl section
 def tvl_section(chain_tvls_df, tvl_df, tokens_in_usd_df) -> None:
-    st.header("Defi Llama Metrics")
 
     chain_tvls_df['readable_date'] = pd.to_datetime(chain_tvls_df['readable_date'])
     tvl_df['readable_date'] = pd.to_datetime(tvl_df['readable_date'])
@@ -318,3 +354,5 @@ def tvl_section(chain_tvls_df, tvl_df, tokens_in_usd_df) -> None:
         safe_execution(tvl_distribution_section, chain_tvls_df, tvl_df)
     except Exception:
         pass
+
+# add to tokens: All "Chain" Tokens

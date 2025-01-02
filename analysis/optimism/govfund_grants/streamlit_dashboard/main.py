@@ -64,6 +64,7 @@ def display_dashboard_overview():
         """)
 
 def main() -> None:
+
     st.title("S6 Growth Grants Performance Analysis")
     # description goes here
     display_dashboard_overview()
@@ -127,9 +128,9 @@ def main() -> None:
     with stat_analysis:
         project_forecasted_df = None if PULL_FROM_BIGQUERY else project_forecasted_df
         if project_protocol and project_protocol is not None:
-            stat_analysis_section(daily_transactions_df=project_daily_transactions_df, net_op_flow_df=project_net_op_flow_df, forecasted_df=project_forecasted_df)
+            stat_analysis_section(daily_transactions_df=project_daily_transactions_df, net_op_flow_df=project_net_op_flow_df, tvl_df=project_tvl_df, forecasted_df=project_forecasted_df)            
         else:
-            stat_analysis_section(daily_transactions_df=project_daily_transactions_df, net_op_flow_df=project_net_op_flow_df, chain_tvls_df=project_chain_tvls_df, tvl_df=project_tvl_df, forecasted_df=project_forecasted_df)
+            stat_analysis_section(daily_transactions_df=project_daily_transactions_df, net_op_flow_df=project_net_op_flow_df, forecasted_df=project_forecasted_df)
 
 if __name__ == "__main__":
     main()

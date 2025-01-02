@@ -5,6 +5,7 @@ import json
 
 from config import GRANT_DATE
 
+
 # create a list of all dates from now to the start date
 def generate_dates(target_date = GRANT_DATE) -> List[str]:
     dates = []

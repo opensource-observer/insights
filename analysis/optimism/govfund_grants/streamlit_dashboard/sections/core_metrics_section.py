@@ -149,7 +149,7 @@ def display_kpis_and_vis_for_core_metrics(project_daily_transactions: pd.DataFra
     st.plotly_chart(fig)
 
 def core_metrics_section(daily_transactions_df, net_op_flow_df, project_addresses):
+
     st.header("Plotting Core Metrics by Day")
 
-    #safe_execution(display_kpis_and_vis_for_core_metrics, daily_transactions_df, net_op_flow_df, project_addresses, GRANT_DATE)
-    display_kpis_and_vis_for_core_metrics (daily_transactions_df, net_op_flow_df, project_addresses, GRANT_DATE)
+    safe_execution(display_kpis_and_vis_for_core_metrics, daily_transactions_df, net_op_flow_df, project_addresses, GRANT_DATE)
