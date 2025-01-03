@@ -5,12 +5,12 @@ import plotly.express as px
 import streamlit as st
 import pandas as pd
 import numpy as np
+from typing import Tuple
 from pmdarima import auto_arima
-from statsmodels.stats.power import TTestIndPower
 from scipy.stats import t
 
 from processing import split_dataset_by_date
-from utils import assign_grant_label
+from utils import assign_grant_label, determine_date_col
 from config import GRANT_DATE
 
 ##### Hypothesis Testing Section #####
@@ -22,12 +22,7 @@ def aggregate_split_datasets_by_metrics(split_datasets: list[tuple[pd.DataFrame,
     # iterates through split datasets
     for pre_grant_df, post_grant_df in split_datasets:
         select_metrics = [metric for metric in metrics if metric in pre_grant_df.columns]
-        if 'transaction_date' in pre_grant_df.columns:
-            date_col = 'transaction_date'
-        elif 'readable_date' in pre_grant_df.columns:
-            date_col = 'readable_date'
-        else:
-            date_col = 'date'
+        date_col = determine_date_col(df=pre_grant_df)
         agg_pre_grant_df, agg_post_grant_df = None, None
 
         # aggregates data by summing the metrics for each time period
@@ -170,16 +165,16 @@ def adjusted_tvl_metrics(filtered_chain_tvl_df: pd.DataFrame, grant_date: dateti
     return updated_tvl_metrics
 
 # function to visualize the significance of the t-test
-def plot_ttest_streamlit(selected_metric, selected_metric_stats, alpha) -> None:
+def plot_ttest_streamlit(selected_metric_stats: pd.DataFrame, alpha: float) -> None:
 
-    df = selected_metric_stats['degrees_of_freedom'].iloc[0]
+    dof = selected_metric_stats['degrees_of_freedom'].iloc[0]
 
     # create x values for the t-distribution
     x = np.linspace(-10, 10, 1000)  # extended range for t-stat visibility
-    y = t.pdf(x, df)
+    y = t.pdf(x, dof)
 
     # critical values for two-tailed test
-    critical_value = t.ppf(1 - alpha / 2, df)
+    critical_value = t.ppf(1 - alpha / 2, dof)
 
     # get the t-statistic for the selected metric
     t_stat = selected_metric_stats['test_statistic'].iloc[0]
@@ -193,8 +188,6 @@ def plot_ttest_streamlit(selected_metric, selected_metric_stats, alpha) -> None:
     rejection_y_left = y[x <= -critical_value]
     rejection_x_right = x[x >= critical_value]
     rejection_y_right = y[x >= critical_value]
-
-    dof = selected_metric_stats['degrees_of_freedom'].iloc[0]
 
     # plot t-distribution
     fig = px.line(
@@ -242,7 +235,7 @@ def plot_ttest_streamlit(selected_metric, selected_metric_stats, alpha) -> None:
             y=[0, max(y)],
             mode='lines',
             line=dict(color='red', dash='dot'),
-            showlegend=False  # Hhde duplicate legend entry
+            showlegend=False  # hide duplicate legend entry
         )
     )
 
@@ -277,33 +270,42 @@ def plot_ttest_streamlit(selected_metric, selected_metric_stats, alpha) -> None:
 
 ##### Synthetic Controls Section #####
 
-# return a bootstraped sample (same length) of the input series
-def bootstrap_series(series, rng, bootstrap_ratio=0.33):
+# return a partially bootstrapped sample of the input series while preserving the original order
+def bootstrap_series(series: np.ndarray, rng: np.random.Generator, bootstrap_ratio: float = 0.33) -> np.ndarray:
     n = len(series)
     num_bootstrap = int(bootstrap_ratio * n)
-    bootstrap_indices = rng.choice(n, size=num_bootstrap, replace=True)  # sample with replacement
-    fixed_indices = rng.choice(n, size=n - num_bootstrap, replace=False)  # sample without replacement
-    indices = np.concatenate([bootstrap_indices, fixed_indices])
-    rng.shuffle(indices)
-    return series[indices]
 
+    # randomly choose indices to replace
+    bootstrap_indices = rng.choice(n, size=num_bootstrap, replace=False)
 
+    # copy the series to avoid modifying the original
+    bootstrapped_series = series.copy()
+
+    # replace selected indices with values randomly sampled from the series
+    replacement_values = rng.choice(series, size=num_bootstrap, replace=True)
+    bootstrapped_series[bootstrap_indices] = replacement_values
+
+    return bootstrapped_series
+
+# train an arima model on the pre grant data to forecast what the post grant data would look like if the grant never occured
 def forecast_based_on_pregrant(
-        pre_grant_df,
-        post_grant_df,
-        target_col,
-        bootstrap_ratio,
-        chunk_size=3,  # number of days to predict at each iteration
-        noise_std=0.25,  # increased noise for sharp day-to-day variability
-        random_state=None,
-        handle_negative=False
-    ):
+        pre_grant_df: pd.DataFrame,
+        post_grant_df: pd.DataFrame,
+        target_col: str,
+        bootstrap_ratio: float,
+        seasonality: int=0,
+        chunk_size: int=3,  # number of days to predict at each iteration
+        noise_std: float=0.25,  # amount of relative noise for day-to-day variability
+        random_state: np.random.RandomState=None,
+        handle_negative: bool=False
+    ) -> pd.DataFrame:
+
     rng = np.random.RandomState(random_state)
 
-    # Identify the date column
-    date_col = 'transaction_date' if 'transaction_date' in pre_grant_df.columns else 'readable_date'
+    # identify the date column
+    date_col = determine_date_col(df=pre_grant_df)
 
-    # Aggregate and sort the data
+    # aggregate and sort the data
     pre_grant_df = pre_grant_df.groupby(date_col)[target_col].sum().reset_index()
     post_grant_df = post_grant_df.groupby(date_col)[target_col].sum().reset_index()
 
@@ -311,55 +313,58 @@ def forecast_based_on_pregrant(
     post_grant_df[date_col] = pd.to_datetime(post_grant_df[date_col])
 
     y = pre_grant_df[target_col].values
+    # if the dataset contains negative values offset them so everything is positive (since we are using a log function)
     if handle_negative:
         offset = abs(y.min()) + 1 if y.min() < 0 else 0
         y = y + offset
 
-    y_train_trans = np.log1p(y)  # Log-transform to stabilize variance
+    y_train_trans = np.log1p(y)  # log-transform to stabilize variance
 
     predictions = []
+    # iterate until predictions are made for every day of the post-grant period
     predictions_left = len(post_grant_df)
-
     while predictions_left > 0:
+        # how much to forecast
         forecast_window = min(chunk_size, predictions_left)
 
-        # Bootstrapping
+        # bootstrapping to combat overfitting
         if bootstrap_ratio > 0:
             y_curr = bootstrap_series(y_train_trans, rng, bootstrap_ratio)
         else:
             y_curr = y_train_trans
 
-        # Fit ARIMA model
+        # fit the arima model
         model = auto_arima(
             y_curr,
-            seasonal=False,
-            #m=7,  # weekly seasonality
+            seasonal=(seasonality > 0),
+            m=seasonality,  # weekly seasonality
             suppress_warnings=True,
             stepwise=True,
             trace=False,
             error_action='ignore'
         )
 
-        # Forecast
+        # forecast
         forecasted_log = model.predict(n_periods=forecast_window)
         forecasted_vals = np.expm1(forecasted_log)
 
-        # Add variability with noise
+        # add variability with noise
         noise_factors = rng.normal(loc=1.0, scale=noise_std, size=forecast_window)
         forecasted_vals_noisy = forecasted_vals * noise_factors
 
+        # subtract offset to return to original data
         if handle_negative:
             forecasted_vals_noisy = forecasted_vals_noisy - offset
 
         predictions.extend(forecasted_vals_noisy)
 
-        # Update the training set with the forecast
+        # update the training set with the forecast
         forecasted_log_noisy = np.log1p(np.clip(forecasted_vals_noisy, 1e-9, None))
         y_train_trans = np.concatenate([y_train_trans, forecasted_log_noisy])
 
         predictions_left -= forecast_window
 
-    # Create a DataFrame for results
+    # create a dataframe for results
     result_df = pd.DataFrame({
         'date': post_grant_df[date_col],
         f'forecasted_{target_col}': predictions
@@ -367,9 +372,10 @@ def forecast_based_on_pregrant(
 
     return result_df
 
-
-def aggregate_datasets(daily_transactions_df, net_op_flow_df, tvl_df):
+# sum each datasets' metrics over all of the relevant addresses and then merge all 3 datasets
+def aggregate_datasets(daily_transactions_df: pd.DataFrame, net_op_flow_df: pd.DataFrame, tvl_df: pd.DataFrame) -> pd.DataFrame:
     
+    # rename date columns so they all align
     daily_transactions_df.rename(columns={'transaction_date': 'date'}, inplace=True)
     daily_transactions_df['date'] = pd.to_datetime(daily_transactions_df['date'])
     net_op_flow_df.rename(columns={'transaction_date': 'date'}, inplace=True)
@@ -378,12 +384,14 @@ def aggregate_datasets(daily_transactions_df, net_op_flow_df, tvl_df):
         tvl_df.rename(columns={'readable_date': 'date'}, inplace=True)
         tvl_df['date'] = pd.to_datetime(tvl_df['date'])
 
+    # sum each day's metric over all of the relevant addresses
     daily_transactions_df = daily_transactions_df.groupby('date')[['transaction_cnt', 'active_users', 'unique_users', 'total_op_transferred']].sum().reset_index()
     net_op_flow_df = net_op_flow_df.groupby('date')[['net_op_transferred_in_tokens']].sum().reset_index()
     net_op_flow_df['date'] = pd.to_datetime(net_op_flow_df['date'])
     if tvl_df is not None: 
         tvl_df = tvl_df.groupby('date')['totalLiquidityUSD'].sum().reset_index()
 
+    # rename columns so for when they're displayed
     agg_df = daily_transactions_df.merge(net_op_flow_df, on='date', how='outer')
     agg_df.rename(columns={'transaction_cnt': 'Transaction Count', 
                            'active_users': 'Active Users', 
@@ -396,18 +404,19 @@ def aggregate_datasets(daily_transactions_df, net_op_flow_df, tvl_df):
         agg_df.rename(columns={'totalLiquidityUSD': 'TVL'}, inplace=True)
 
     agg_df['date'] = pd.to_datetime(agg_df['date'])
+    # label rows based on whether they were pre or post grant
     agg_df['grant_label'] = agg_df.apply(assign_grant_label, axis=1)
 
     return agg_df
 
-
-def plot_forecast(curr_selection_df, selected_metric, grant_date, dates):
+# plot the forecasted data against the pre and post grant data as a line chart
+def plot_forecast(curr_selection_df: pd.DataFrame, selected_metric: str, grant_date: datetime, dates: Tuple[datetime.date, datetime.date]) -> None:
     start_date, end_date = dates[0], dates[1]
 
     # plot
     fig = go.Figure()
 
-    # Add actual data and forecast data as separate traces
+    # add actual data and forecast data as separate traces
     for grant_label in curr_selection_df['grant_label'].unique():
         df_subset = curr_selection_df[curr_selection_df['grant_label'] == grant_label]
         fig.add_trace(
@@ -420,7 +429,7 @@ def plot_forecast(curr_selection_df, selected_metric, grant_date, dates):
         )
     
     if (start_date <= grant_date.date()) and (end_date >= grant_date.date()):
-        # Add vertical line for grant date
+        # add vertical line for grant date
         fig.add_vline(
             x=grant_date, 
             line_width=2, 
@@ -428,7 +437,7 @@ def plot_forecast(curr_selection_df, selected_metric, grant_date, dates):
             line_color="red"
         )
 
-        # Add a legend entry for the grant date
+        # add a legend entry for the grant date
         fig.add_trace(
             go.Scatter(
                 x=[grant_date], 
@@ -456,23 +465,26 @@ def plot_forecast(curr_selection_df, selected_metric, grant_date, dates):
     
     st.plotly_chart(fig)
 
-
-def display_ttest_table(metric_table, alpha, selected_metric):
-    # Display growth KPIs
+# display the results of the 2-sample t-test
+def display_ttest_table(metric_table: pd.DataFrame, alpha: float, selected_metric: str) -> None:
+    # display most import results as KPIs
     perc_change, test_stat, p_val = st.columns(3)
 
+    # display the percentage change of the chosen metric over the pre to post grant period
     with perc_change:
         first_percent_change = metric_table['percent_change'].iloc[0]
         pos = '+' if first_percent_change > 0 else ''
         st.metric(label="Percent Change", value=f"{pos}{round(first_percent_change * 100, 2)}%")
 
+     # display the test statistic of the t-test
     with test_stat:
         st.metric(label="Test Statistic", value=metric_table['test_statistic'].iloc[0])
 
+     # display the p value of the t-test
     with p_val:
         st.metric(label="P-Value", value=metric_table['p_value_formatted'].iloc[0])
 
-    # Display sample statistics
+    # display sample statistics
     ttest_table = {
         'grant_status': ['pre-grant', 'post-grant'],
         'sample_size': [metric_table['pre_grant_n'].iloc[0], metric_table['post_grant_n'].iloc[0]],
@@ -481,9 +493,9 @@ def display_ttest_table(metric_table, alpha, selected_metric):
     }
 
     ttest_table = pd.DataFrame(ttest_table)
-
+    # display the pre and post grant metrics as a table
     st.dataframe(
-        ttest_table.assign(hack='').set_index('hack'),
+        ttest_table.assign(hack='').set_index('hack'), # hide the dataframe index
         column_config={
             "hack": None,
             "sample_size": st.column_config.NumberColumn(width="medium"),
@@ -492,10 +504,11 @@ def display_ttest_table(metric_table, alpha, selected_metric):
         }
     )
 
-    # Write conclusion
+    # write conclusion based on the p value and current alpha value
     p_value = metric_table['p_value'].iloc[0]
     p_value_formatted = metric_table['p_value_formatted'].iloc[0]
     selected_metric = selected_metric if selected_metric == "TVL" else selected_metric.lower()
+    # we reject the null hypothesis
     if p_value <= alpha:
         st.write(
             f"The p-value is **{p_value_formatted}**, which is less than the significance level (**α = {alpha}**). "
@@ -503,6 +516,7 @@ def display_ttest_table(metric_table, alpha, selected_metric):
             f"We reject the null hypothesis and conclude that the grant likely had a measurable impact on {selected_metric}. "
             f"We are ***{round((1 - (alpha)) * 100, 4)}% confident*** in this conclusion."
         )
+    # we fail to reject the null hypothesis
     else:
         st.write(
             f"The p-value is **{p_value_formatted}**, which is greater than the significance level (**α = {alpha}**). "
@@ -511,8 +525,8 @@ def display_ttest_table(metric_table, alpha, selected_metric):
             f"We are ***{round((1 - (alpha)) * 100, 4)}% confident*** in this conclusion."
         )
 
-
-def forecasted_data_content():
+# display the explanation for how the forecasted data was created
+def forecasted_data_content() -> None:
     st.subheader("Comparing Post-Grant Metrics to Forecasted Data")
     
     with st.expander("The Process Behind The Forecasted Data"):
@@ -539,8 +553,8 @@ def forecasted_data_content():
             - While not conclusive, this helps identify general patterns and raises questions for further exploration.
         """)
 
-
-def ttest_table_content():
+# display the explanation for what a 2-sample t-test is
+def ttest_table_content() -> None:
     st.subheader("Conducting a 2-Sample T-Test")
 
     with st.expander("Understanding The 2-Sample T-Test"):
@@ -569,8 +583,8 @@ def ttest_table_content():
             - For example, if the p_value is 0.03, we can reject the null hypothesis (no difference) and infer the grant had a measurable impact.
         """)
 
-
-def ttest_distribution_content():
+# display the explanation of how to understand the t-test distribution
+def ttest_distribution_content() -> None:
     st.subheader("T-Test Distribution")
 
     with st.expander("How To Intepret The T-Test Distribution"):
@@ -601,26 +615,28 @@ def ttest_distribution_content():
             - **Rejection Region**: If the test statistic lands here, the results are statistically significant.
         """)
 
-
-def concat_aggregate_with_forecasted(aggregated_dataset, forecasted_df):
+# concat the forecasted metrics onto the pre and post grant data with it's respective label
+def concat_aggregate_with_forecasted(aggregated_dataset: pd.DataFrame, forecasted_df: pd.DataFrame) -> pd.DataFrame:
     forecasted_df = forecasted_df.copy()
     forecasted_df['grant_label'] = 'forecast'
     
+    # rename the columns so they are the same and can be concatted
     rename_dict = {
         col: col.replace("forecasted_", "")
         for col in forecasted_df.columns
     }
     forecasted_df.rename(columns=rename_dict, inplace=True)
 
+    # rename the columns for when they're displayed
     forecasted_df.rename(columns={'transaction_cnt': 'Transaction Count', 
                            'active_users': 'Active Users', 
                            'unique_users': 'Unique Users',
                            'total_op_transferred': 'Total OP Transferred',
                            'net_op_transferred_in_tokens': 'Net OP Transferred'}, inplace=True)
-    
     if 'totalLiquidityUSD' in forecasted_df.columns:
         forecasted_df.rename(columns={'totalLiquidityUSD': 'TVL'}, inplace=True)
 
+    # concat the datasets
     combined_df = pd.concat([aggregated_dataset, forecasted_df], ignore_index=True)
     combined_df['date'] = pd.to_datetime(combined_df['date'])
     combined_df['date'] = combined_df['date'].dt.date
@@ -628,17 +644,17 @@ def concat_aggregate_with_forecasted(aggregated_dataset, forecasted_df):
 
     return combined_df
 
-
 # main function to generate the full statistical analysis section
-def stat_analysis_section(daily_transactions_df, net_op_flow_df, tvl_df=None, forecasted_df=None):
+def stat_analysis_section(daily_transactions_df: pd.DataFrame, net_op_flow_df: pd.DataFrame, tvl_df: pd.DataFrame=None, forecasted_df: pd.DataFrame=None) -> None:
 
+    # combine all of the metrics into the same dataset for easy and quick filtering
     aggregated_dataset = aggregate_datasets(daily_transactions_df=daily_transactions_df, net_op_flow_df=net_op_flow_df, tvl_df=tvl_df)
     if forecasted_df is not None:
         combined_df = concat_aggregate_with_forecasted(aggregated_dataset, forecasted_df)
     else:
         combined_df = aggregated_dataset.copy()
 
-    # select a target metric
+    # allow user to select a target metric
     metric_options = aggregated_dataset.columns.drop(['date', 'grant_label'])
     selected_metric = st.selectbox("Select a target metric", metric_options)
     
@@ -703,7 +719,6 @@ def stat_analysis_section(daily_transactions_df, net_op_flow_df, tvl_df=None, fo
 
     st.divider()
 
-    # display the t-test plot
+    # display the t-test distribution plot
     ttest_distribution_content()
-
     plot_ttest_streamlit(selected_metric, selected_metric_stats=metric_table, alpha=alpha)

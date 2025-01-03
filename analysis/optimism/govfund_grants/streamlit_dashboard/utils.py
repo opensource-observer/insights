@@ -7,8 +7,7 @@ import json
 from typing import List, Dict, Tuple, Union, Optional, Callable, Any
 
 from config import GRANT_DATE
-from queries import query_transactions_min_date, query_daily_transactions, query_op_flow, query_tvl
-from processing import make_dates_df, generate_dates, tvl_col_to_df, chain_tvls_col_to_df, tokens_col_to_df, tokens_in_usd_col_to_df
+from queries import query_transactions_min_date
 
 # allow for projects that might not have the same data as others to only visualize the plots that execute
 def safe_execution(func: Callable, *args: Any) -> None:
@@ -42,7 +41,7 @@ def read_in_grants(grants_path: str) -> Dict[str, Dict[str, Union[str, List[str]
     return clean_grants
 
 # returns max(oldest transaction for the project, grant date - time since grant date)
-def get_project_min_date(client, project_addresses):
+def get_project_min_date(client: bigquery.Client, project_addresses: Tuple[str, ...]):
     # create a pre-grant date range equal to the post-grant date length
     time_since_interval = datetime.today() - GRANT_DATE
     min_start = GRANT_DATE - time_since_interval
@@ -80,7 +79,7 @@ def return_protocol(defi_llama_protocols: Dict[str, Any], project: str) -> Optio
     return defi_llama_protocols.get(project, None)
 
 # connect to the bigquery client to begin querying
-def connect_bq_client(service_account_path=None, use_streamlit_secrets=False):
+def connect_bq_client(service_account_path: str=None, use_streamlit_secrets: bool=False) -> bigquery.Client:
     credentials = None
 
     # check the source of the credentials
@@ -109,30 +108,13 @@ def connect_bq_client(service_account_path=None, use_streamlit_secrets=False):
     client = bigquery.Client(credentials=credentials)
     return client
 
-# connect to bigquery and query all necessary data for the passed project
-def query_transaction_data_from_bq(client, project_addresses):
-
-    min_start = get_project_min_date(client=client, project_addresses=project_addresses)
-    min_start_string = min_start.strftime('%Y-%m-%d')
-
-    # create a templated dataframe of each pair (dates, address) from the minimum start date
-    dates = generate_dates(target_date=min_start)
-    dates_df = make_dates_df(dates=dates, project_addresses=project_addresses)
-
-    # query daily transactions data from bigquery
-    daily_transactions = query_daily_transactions(client=client,project_addresses=project_addresses, dates_df=dates_df, start_date=min_start_string)
-    
-    # query op flow data from bigquery
-    op_flow = query_op_flow(client=client, project_addresses=project_addresses, start_date=min_start_string)
-    
-    return daily_transactions, op_flow
-
 # read in already stored datasets at the respective path
-def read_in_stored_dfs_for_projects(project, data_path, protocol):
+def read_in_stored_dfs_for_projects(project: Dict[str, List[Dict[str, Dict[str, Union[str, int]]]]], data_path: str, protocol: Any) -> Dict[str, Any]:
+    # get the name of the project
     project_name = project['project_name']
     clean_name = project_name.lower().replace(" ", "_").replace(".", "-")
 
-    # Initialize everything to None
+    # initialize everything to None
     daily_transactions = None
     net_op_flow = None
     chain_tvls_df = None
@@ -175,7 +157,7 @@ def read_in_stored_dfs_for_projects(project, data_path, protocol):
     except Exception:
         pass
 
-    # Return a dict with each key = DataFrame or None
+    # return a dict with each key = dataframe or None
     return {
         "daily_transactions": daily_transactions,
         "net_op_flow": net_op_flow,
@@ -184,18 +166,6 @@ def read_in_stored_dfs_for_projects(project, data_path, protocol):
         "tvl": tvl_df,
         "tokens_in_usd": tokens_in_usd_df
     }
-
-# take in a bigquery client and target protocol and return it's tvl data
-def query_tvl_data_from_bq(client, protocol: Any) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
-
-    protocol_df = query_tvl(client, protocol)
-
-    chain_tvls_df = chain_tvls_col_to_df(protocol_df)
-    tvl_df = tvl_col_to_df(protocol_df)
-    tokens_in_usd_df = tokens_in_usd_col_to_df(protocol_df)
-    tokens_df = tokens_col_to_df(protocol_df)
-
-    return chain_tvls_df, tvl_df, tokens_in_usd_df, tokens_df
 
 # helper function used to create KPIs that determine the amount of growth that occurred between two metrics 
 def compute_growth(df: pd.DataFrame, column_name: str) -> Tuple[Optional[float], Optional[float]]:
@@ -212,17 +182,50 @@ def compute_growth(df: pd.DataFrame, column_name: str) -> Tuple[Optional[float],
 
 # helper function to assign pre/post-grant labels
 def assign_grant_label(row: Any) -> str:
-    if 'transaction_date' in row and pd.notnull(row['transaction_date']):
-        date_col = 'transaction_date'
-    elif 'readable_date' in row and pd.notnull(row['readable_date']):
-        date_col = 'readable_date'
-    elif 'date' in row and pd.notnull(row['date']):
-        date_col = 'date'
-    else:
-        raise ValueError("None of the expected date columns ('transaction_date', 'readable_date', 'date') are available in the row.")
+    date_col = determine_date_col(row)
 
     # compare the row's date with GRANT_DATE
     if pd.to_datetime(row[date_col]) < pd.to_datetime(GRANT_DATE):
         return 'pre grant'
     else:
         return 'post grant'
+
+# handle single or multiple addresses in the query
+def get_addresses_condition(project_addresses: Tuple[str, ...]):
+    if len(project_addresses) == 1:
+        addresses_condition = f"= '{project_addresses[0]}'"
+    else:
+        addresses_condition = f"IN {tuple(project_addresses)}"
+
+    return addresses_condition
+
+# handle single or multiple project networks
+def get_project_network_condition(project_network: Tuple[str, ...]):
+    if len(project_network) == 1:
+        project_network_condition = f"= '{project_network[0]}'"
+    else:
+        project_network_condition = f"IN {tuple(project_network)}"
+
+    return project_network_condition
+
+# identifies the date column based on the dataset
+def determine_date_col(df: pd.DataFrame=None, row: pd.Series=None):
+    date_col = None
+    
+    if df is not None:
+        if 'transaction_date' in df.columns:
+            date_col = 'transaction_date'
+        elif 'readable_date' in df.columns:
+            date_col = 'readable_date'
+        elif 'date' in df.columns:
+            date_col = 'date'
+
+    elif row is not None:
+        if 'transaction_date' in row and pd.notnull(row['transaction_date']):
+            date_col = 'transaction_date'
+        elif 'readable_date' in row and pd.notnull(row['readable_date']):
+            date_col = 'readable_date'
+        elif 'date' in row and pd.notnull(row['date']):
+            date_col = 'date'
+
+    return date_col

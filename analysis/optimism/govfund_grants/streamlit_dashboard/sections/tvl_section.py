@@ -3,7 +3,6 @@ from datetime import datetime
 import plotly.express as px
 import numpy as np
 import pandas as pd
-from typing import Any, Dict, Tuple, Callable, Optional
 
 from config import GRANT_DATE
 from utils import assign_grant_label, safe_execution
@@ -11,14 +10,14 @@ from utils import assign_grant_label, safe_execution
 # plot tvl over time as a line chart
 def tvl_over_time_chart(tvl_df: pd.DataFrame) -> None:
 
+    # filter to just show YTD
     filtered_tvl_df = tvl_df[tvl_df['readable_date'] >= datetime(2024, 1, 1)]
-
     filtered_tvl_df['grant_label'] = filtered_tvl_df.apply(assign_grant_label, axis=1)
 
+    # pivot the dataset so pre grant and post grant have their own columns
     pivoted_tvl_df = filtered_tvl_df.pivot(index='readable_date', columns='grant_label', values='totalLiquidityUSD')
 
     fig = px.line(pivoted_tvl_df)
-
     fig.update_layout(
         legend_title_text='',
         legend=dict(
@@ -103,7 +102,6 @@ def tvl_by_chain_and_token_chart(chain_tvls_df: pd.DataFrame) -> None:
 def tvl_over_time_section(tvl_df: pd.DataFrame, chain_tvls_df: pd.DataFrame) -> None:
 
     st.subheader("TVL Trends Over Time (YTD)")
-
     high_level, focused = st.tabs(['Overview Across Chains', 'Detailed by Chain and Token'])
 
     with high_level:
@@ -340,7 +338,7 @@ def tvl_distribution_section(chain_tvls_df: pd.DataFrame, tvl_df: pd.DataFrame) 
 
 
 # main function to visualize the full tvl section
-def tvl_section(chain_tvls_df, tvl_df, tokens_in_usd_df) -> None:
+def tvl_section(chain_tvls_df: pd.DataFrame, tvl_df: pd.DataFrame, tokens_in_usd_df: pd.DataFrame) -> None:
 
     chain_tvls_df['readable_date'] = pd.to_datetime(chain_tvls_df['readable_date'])
     tvl_df['readable_date'] = pd.to_datetime(tvl_df['readable_date'])
@@ -354,5 +352,3 @@ def tvl_section(chain_tvls_df, tvl_df, tokens_in_usd_df) -> None:
         safe_execution(tvl_distribution_section, chain_tvls_df, tvl_df)
     except Exception:
         pass
-
-# add to tokens: All "Chain" Tokens

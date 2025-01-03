@@ -45,9 +45,10 @@ def display_addresses_table(addresses: List[Dict[str, Dict[str, Union[str, List[
 
     df = pd.DataFrame(address_data)
 
+    # display the addresses relevant to the project 
     st.subheader("Addresses")
     st.dataframe(
-        df.assign(hack='').set_index('hack'),
+        df.assign(hack='').set_index('hack'), # hide the index of the dataframe
         column_config={
             "hack": None,
             "Address": st.column_config.TextColumn(width="large"),
@@ -56,8 +57,9 @@ def display_addresses_table(addresses: List[Dict[str, Dict[str, Union[str, List[
         }
     )
 
-def overview_section(project):
+def overview_section(project: Dict[str, List[Dict[str, Dict[str, Union[str, int]]]]]) -> None:
 
+    # project details table
     st.header("Project Specifics / Overview")
     safe_execution(display_project_details, project)
 

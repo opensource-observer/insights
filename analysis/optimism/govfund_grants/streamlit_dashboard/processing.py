@@ -1,10 +1,10 @@
 from datetime import datetime, timedelta, timezone
 import pandas as pd
-from typing import List, Dict, Tuple, Any
+from typing import List, Tuple
 import json
 
+from utils import determine_date_col
 from config import GRANT_DATE
-
 
 # create a list of all dates from now to the start date
 def generate_dates(target_date = GRANT_DATE) -> List[str]:
@@ -27,17 +27,7 @@ def make_dates_df(dates: List[str], project_addresses: Tuple[str, ...]) -> pd.Da
     return pd.DataFrame(data)
 
 # create a dataset that represents net transactions by factoring in transaction direction
-def make_net_op_dataset(op_flow_df: pd.DataFrame, project_addresses: Tuple[str, ...]) -> pd.DataFrame:
-    # helper to determine transaction direction
-    def transaction_direction(row: pd.Series) -> str:
-        if row['from_address'] in project_addresses:
-            return "out"
-        elif row['to_address'] in project_addresses:
-            return "in"
-        return ""
-
-    # apply direction logic
-    op_flow_df['direction'] = op_flow_df.apply(transaction_direction, axis=1)
+def make_net_op_dataset(op_flow_df: pd.DataFrame) -> pd.DataFrame:
 
     # prepare cumulative transaction data
     transaction_direction_df = pd.concat([
@@ -55,20 +45,25 @@ def make_net_op_dataset(op_flow_df: pd.DataFrame, project_addresses: Tuple[str, 
         'total_op_transferred_in_tokens': 'sum'
     })
 
+    # convert outbound transactions to negative
     transaction_direction_df.loc[transaction_direction_df['direction'] == 'out', 'total_op_transferred'] *= -1
     transaction_direction_df.loc[transaction_direction_df['direction'] == 'out', 'total_op_transferred_in_tokens'] *= -1
 
+    # ensure the data is sorted correctly
     transaction_direction_df.sort_values(by=['address', 'transaction_date'], inplace=True)
-    transaction_direction_df['cum_op_transferred'] = transaction_direction_df.groupby('address')['total_op_transferred'].cumsum()
-    transaction_direction_df['cum_op_transferred_in_tokens'] = transaction_direction_df.groupby('address')['total_op_transferred_in_tokens'].cumsum()
+    # calculate the net op transferred over time
+    transaction_direction_df['net_op_transferred'] = transaction_direction_df.groupby('address')['total_op_transferred'].cumsum()
+    transaction_direction_df['net_op_transferred_in_tokens'] = transaction_direction_df.groupby('address')['total_op_transferred_in_tokens'].cumsum()
 
     return transaction_direction_df
 
 # create a dataframe for TVL data by chain
 def chain_tvls_col_to_df(df: pd.DataFrame) -> pd.DataFrame:
 
+    # grab the data from the respective column
     chain_tvls = pd.DataFrame(json.loads(df.iloc[0, 1]))
 
+    # helper function to unroll the dictionary
     def normalize_chain_data(chain_name, chain_data):
         records = []
         for entry in chain_data:
@@ -80,29 +75,28 @@ def chain_tvls_col_to_df(df: pd.DataFrame) -> pd.DataFrame:
     all_chains_data = []
     for chain in chain_tvls.columns:
         chain_data = chain_tvls[chain].iloc[0]
-        normalized_data = normalize_chain_data(chain, chain_data)
+        normalized_data = normalize_chain_data(chain_name=chain, chain_data=chain_data)
         all_chains_data.append(normalized_data)
 
     cleaned_df = pd.concat(all_chains_data, ignore_index=True)
 
+    # create a new column of a readable date
     cleaned_df['readable_date'] = cleaned_df['date'].apply(
         lambda x: datetime.fromtimestamp(x, tz=timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
     )
-
     cleaned_df['readable_date'] = pd.to_datetime(cleaned_df['readable_date'])
 
     return cleaned_df
 
 # create a dataframe for aggregate TVL data
 def tvl_col_to_df(df: pd.DataFrame) -> pd.DataFrame:
-    # extract tvl data
+    # extract tvl data from it's respective column
     tvl_df = pd.DataFrame(json.loads(df.iloc[0, 2]))
     
-    # convert timestamp to a human-readable date
+    # create a new column of a readable date
     tvl_df['readable_date'] = tvl_df['date'].apply(
         lambda x: datetime.fromtimestamp(x, tz=timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
     )
-
     tvl_df['readable_date'] = pd.to_datetime(tvl_df['readable_date'])
 
     return tvl_df
@@ -120,14 +114,12 @@ def tokens_in_usd_col_to_df(df: pd.DataFrame) -> pd.DataFrame:
         for token, value in tokens.items():
             records.append({"date": date, "token": token, "value": value})
 
-    # create a DataFrame from the flattened records
     tokens_df = pd.DataFrame(records)
 
-    # convert timestamp to a human-readable date
+    # create a new column of a readable date
     tokens_df['readable_date'] = tokens_df['date'].apply(
         lambda x: datetime.fromtimestamp(x, tz=timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
     )
-
     tokens_df['readable_date'] = pd.to_datetime(tokens_df['readable_date'])
 
     return tokens_df
@@ -145,14 +137,12 @@ def tokens_col_to_df(df: pd.DataFrame) -> pd.DataFrame:
         for token, value in tokens.items():
             records.append({"date": date, "token": token, "value": value})
 
-    # create a DataFrame from the flattened records
     tokens_df = pd.DataFrame(records)
 
-    # convert timestamp to a human-readable date
+    # create a new column of a readable date
     tokens_df['readable_date'] = tokens_df['date'].apply(
         lambda x: datetime.fromtimestamp(x, tz=timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
     )
-
     tokens_df['readable_date'] = pd.to_datetime(tokens_df['readable_date'])
 
     return tokens_df
@@ -160,12 +150,7 @@ def tokens_col_to_df(df: pd.DataFrame) -> pd.DataFrame:
 # splits a dataset into pre- and post-grant dataframes based on the grant date
 def split_dataset_by_date(dataset: pd.DataFrame, grant_date: datetime) -> tuple[pd.DataFrame, pd.DataFrame]:
     # identifies the date column based on the dataset
-    if 'transaction_date' in dataset.columns:
-        date_col = 'transaction_date'
-    elif 'readable_date' in dataset.columns:
-        date_col = 'readable_date'
-    else:
-        date_col = 'date'
+    date_col = determine_date_col(df=dataset)
 
     # ensures the date column is in datetime format
     dataset[date_col] = pd.to_datetime(dataset[date_col])

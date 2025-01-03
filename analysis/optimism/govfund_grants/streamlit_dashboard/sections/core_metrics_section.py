@@ -1,13 +1,15 @@
 import streamlit as st
 import plotly.graph_objects as go
 import pandas as pd
-from typing import Dict, List
+from typing import Tuple
+
 from utils import safe_execution, compute_growth
 from config import GRANT_DATE
 
 # streamlit function to display 2 primary KPIs and then a line graph for a desired metric
-def display_kpis_and_vis_for_core_metrics(project_daily_transactions: pd.DataFrame, project_net_op_flow, project_addresses, grant_date) -> None:
+def display_kpis_and_vis_for_core_metrics(project_daily_transactions: pd.DataFrame, project_net_op_flow: pd.DataFrame, project_addresses: Tuple[str, ...], grant_date: str) -> None:
 
+    # merge the two datasets and rename the columns for when they'll get displayed
     data_merged = pd.merge(project_daily_transactions, project_net_op_flow[['transaction_date', 'address', 'net_op_transferred']], on=['transaction_date', 'address'], how='outer')
     data_merged.rename(columns={
         "transaction_cnt": "Transaction Count", 
@@ -18,6 +20,7 @@ def display_kpis_and_vis_for_core_metrics(project_daily_transactions: pd.DataFra
         "net_op_transferred": "Net OP Transferred"
     }, inplace=True)
 
+    # fill the nulls for all numeric columns
     target_cols = ["Transaction Count", "Active Users", "Unique Users", "Total OP Transferred", "Cumulative OP Transferred", "Net OP Transferred"]
     data_merged[target_cols] = data_merged[target_cols].fillna(0)
 
@@ -73,9 +76,11 @@ def display_kpis_and_vis_for_core_metrics(project_daily_transactions: pd.DataFra
     # display growth KPIs (columns allow side-by-side)
     col1, col2 = st.columns(2)
 
+    # the first KPI which represents the total of the metric since the current start date
     with col1:
         st.metric(label=f"Since {start_date.strftime('%Y-%m-%d')}", value=round(float(total_count), 4))
     
+    # the second KPI which represents the metric on the current end date, as well as it's % growth from the day before
     with col2:
         if diff is not None and diff != 0:
             st.metric(
@@ -126,7 +131,7 @@ def display_kpis_and_vis_for_core_metrics(project_daily_transactions: pd.DataFra
         )
 
     if (start_date <= grant_date.date()) and (end_date >= grant_date.date()):
-        # Add vertical line for grant date
+        # add vertical line for grant date
         fig.add_vline(
             x=grant_date, 
             line_width=2, 
@@ -134,7 +139,7 @@ def display_kpis_and_vis_for_core_metrics(project_daily_transactions: pd.DataFra
             line_color="red"
         )
 
-        # Add a legend entry for the grant date
+        # add a legend entry for the grant date
         fig.add_trace(
             go.Scatter(
                 x=[grant_date], 
@@ -148,8 +153,8 @@ def display_kpis_and_vis_for_core_metrics(project_daily_transactions: pd.DataFra
 
     st.plotly_chart(fig)
 
-def core_metrics_section(daily_transactions_df, net_op_flow_df, project_addresses):
+def core_metrics_section(daily_transactions_df: pd.DataFrame, net_op_flow_df: pd.DataFrame, project_addresses: Tuple[str, ...]) -> None:
 
+    # display the core metrics visualizations
     st.header("Plotting Core Metrics by Day")
-
     safe_execution(display_kpis_and_vis_for_core_metrics, daily_transactions_df, net_op_flow_df, project_addresses, GRANT_DATE)
