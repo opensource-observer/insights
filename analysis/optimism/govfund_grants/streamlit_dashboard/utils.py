@@ -7,7 +7,6 @@ import json
 from typing import List, Dict, Tuple, Union, Optional, Callable, Any
 
 from config import GRANT_DATE
-from queries import query_transactions_min_date
 
 # allow for projects that might not have the same data as others to only visualize the plots that execute
 def safe_execution(func: Callable, *args: Any) -> None:
@@ -42,6 +41,8 @@ def read_in_grants(grants_path: str) -> Dict[str, Dict[str, Union[str, List[str]
 
 # returns max(oldest transaction for the project, grant date - time since grant date)
 def get_project_min_date(client: bigquery.Client, project_addresses: Tuple[str, ...]):
+    from queries import query_transactions_min_date # to avoid circular import
+    
     # create a pre-grant date range equal to the post-grant date length
     time_since_interval = datetime.today() - GRANT_DATE
     min_start = GRANT_DATE - time_since_interval
@@ -182,7 +183,7 @@ def compute_growth(df: pd.DataFrame, column_name: str) -> Tuple[Optional[float],
 
 # helper function to assign pre/post-grant labels
 def assign_grant_label(row: Any) -> str:
-    date_col = determine_date_col(row)
+    date_col = determine_date_col(row=row)
 
     # compare the row's date with GRANT_DATE
     if pd.to_datetime(row[date_col]) < pd.to_datetime(GRANT_DATE):
