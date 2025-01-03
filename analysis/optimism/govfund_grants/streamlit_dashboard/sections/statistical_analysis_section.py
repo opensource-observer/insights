@@ -1,0 +1,724 @@
+from typing import Optional
+from datetime import datetime
+import plotly.graph_objects as go
+import plotly.express as px
+import streamlit as st
+import pandas as pd
+import numpy as np
+from typing import Tuple
+from pmdarima import auto_arima
+from scipy.stats import t
+
+from processing import split_dataset_by_date
+from utils import assign_grant_label, determine_date_col
+from config import GRANT_DATE
+
+##### Hypothesis Testing Section #####
+
+# aggregates metrics for datasets split by pre- and post-grant periods
+def aggregate_split_datasets_by_metrics(split_datasets: list[tuple[pd.DataFrame, pd.DataFrame]], metrics: list[str]) -> list[tuple[pd.DataFrame, pd.DataFrame]]:
+    aggregated_metrics = []
+
+    # iterates through split datasets
+    for pre_grant_df, post_grant_df in split_datasets:
+        select_metrics = [metric for metric in metrics if metric in pre_grant_df.columns]
+        date_col = determine_date_col(df=pre_grant_df)
+        agg_pre_grant_df, agg_post_grant_df = None, None
+
+        # aggregates data by summing the metrics for each time period
+        for metric in select_metrics:
+            curr_pre_agg = pre_grant_df.groupby(date_col)[metric].sum().reset_index()
+            if agg_pre_grant_df is not None:
+                agg_pre_grant_df = agg_pre_grant_df.merge(curr_pre_agg, on=date_col, how='inner')
+            else:
+                agg_pre_grant_df = curr_pre_agg
+
+            curr_post_agg = post_grant_df.groupby(date_col)[metric].sum().reset_index()
+            if agg_post_grant_df is not None:
+                agg_post_grant_df = agg_post_grant_df.merge(curr_post_agg, on=date_col, how='inner')
+            else:
+                agg_post_grant_df = curr_post_agg
+
+        # calculates descriptive statistics for both periods
+        if agg_pre_grant_df is not None:
+            pre_grant_stats = agg_pre_grant_df[select_metrics].agg(['count', 'mean', 'std', 'var']).transpose()
+        else:
+            pre_grant_stats = pd.DataFrame()
+
+        if agg_post_grant_df is not None:
+            post_grant_stats = agg_post_grant_df[select_metrics].agg(['count', 'mean', 'std', 'var']).transpose()
+        else:
+            post_grant_stats = pd.DataFrame()
+
+        aggregated_metrics.append((pre_grant_stats, post_grant_stats))
+
+    return aggregated_metrics
+
+# 2-sample hypothesis test
+def test_statistic(sample1: pd.Series, sample2: pd.Series) -> tuple[float, float]:
+    # define our constants
+    mu1, mu2 = sample1['mean'], sample2['mean']
+    n1, n2 = sample1['count'], sample2['count']
+    s1_squared, s2_squared = sample1['var'], sample2['var']
+
+    # determine if we can consider variances to be equal
+    var_ratio = sample1['var'] / sample2['var']
+    if var_ratio <= 2 and var_ratio >= 0.5:
+        # variances equal so use students t-test (pooled variance)
+        s_pooled_squared = ((n1 - 1) * s1_squared + (n2 - 1) * s2_squared) / (n1 + n2 - 2)
+        t_stat = (mu1 - mu2) / s_pooled_squared * np.sqrt((1/n1) + (1/n2))
+        df = n1 + n2 - 2
+        
+    else:
+        # variances not equal so use welch's t
+        t_stat = (mu1 - mu2) / np.sqrt((s1_squared/n1) + (s2_squared/n2))
+        df = (((s1_squared / n1) + (s2_squared / n2))**2) / ((((s1_squared/n1)**2)/(n1-1)) + (((s2_squared/n2)**2)/(n2-1)))
+
+    return t_stat, df
+
+# function to calculate p-value
+def ttest(t_stat: float, df: float) -> float:
+    # calculate the two-tailed p-value
+    p_value = 2 * (1 - t.cdf(abs(t_stat), df))
+
+    return p_value
+
+# conduct the t-stat tests and result a dataframe of the results
+def determine_statistics(sample1_df: pd.DataFrame, sample2_df: pd.DataFrame) -> pd.DataFrame:
+    metric_table = []
+
+    # iterate over the metrics (assumed to be the index of the DataFrame)
+    for i, metric in enumerate(sample2_df.index):
+        try:
+            # calculate t-statistic and degrees of freedom
+            t_stat, df = test_statistic(sample1_df.iloc[i, :], sample2_df.iloc[i, :])
+
+            # handle division by zero in percent_change
+            sample1_grant_mean = sample1_df.iloc[i]['mean']
+            sample2_grant_mean = sample2_df.iloc[i]['mean']
+            if sample1_grant_mean != 0:
+                percent_change = round(((sample2_grant_mean - sample1_grant_mean) / sample1_grant_mean), 4)
+            else:
+                percent_change = None  # avoid division by zero
+
+            p_value = ttest(t_stat, df)
+            if p_value < 1e-4:  # adjust to the desired threshold
+                p_value_formatted = f"{p_value:.2e}"  # scientific notation
+            else:
+                p_value_formatted = f"{p_value:.4f}"  # standard decimal format
+
+            # append the metric details to the metric_table
+            metric_dict = {
+                'metric': metric,
+                'pre_grant_n': round(sample1_df.iloc[i]['count'], 4),
+                'pre_grant_mean': round(sample1_grant_mean, 4),
+                'pre_grant_std': round(sample1_df.iloc[i]['std'], 4),
+                'post_grant_n': round(sample2_df.iloc[i]['count'], 4),
+                'post_grant_mean': round(sample2_grant_mean, 4),
+                'post_grant_std': round(sample2_df.iloc[i]['std'], 4),
+                'percent_change': percent_change,
+                'test_statistic': round(t_stat, 4),
+                'degrees_of_freedom': round(df, 4),
+                'p_value': p_value,
+                'p_value_formatted': p_value_formatted
+            }
+
+            metric_table.append(metric_dict)
+
+        except Exception as e:
+            print(f"Error processing metric {metric}: {e}")
+            continue
+
+    # convert the list of dictionaries to a DataFrame
+    return pd.DataFrame(metric_table)
+
+# filters the displayed tvl data based on user inputted chains and tokens
+### deprecated function
+def adjusted_tvl_metrics(filtered_chain_tvl_df: pd.DataFrame, grant_date: datetime) -> Optional[pd.DataFrame]:
+    # user selection for tokens
+    selected_tokens = st.multiselect("Select Tokens", filtered_chain_tvl_df['token'].unique())
+    filtered_chain_tvl_df = filtered_chain_tvl_df[filtered_chain_tvl_df['token'].isin(selected_tokens)]
+
+    # user selection for chains
+    selected_chains = st.multiselect("Select Chains", filtered_chain_tvl_df['chain'].unique())
+    filtered_chain_tvl_df = filtered_chain_tvl_df[filtered_chain_tvl_df['chain'].isin(selected_chains)]
+
+    # ensure there's data after filtering
+    if filtered_chain_tvl_df is not None and filtered_chain_tvl_df.empty:
+        st.warning("No data available for the selected filters.")
+        return
+    
+    # split the dataset based on grant date
+    pre_grant_tvl_df, post_grant_tvl_df = split_dataset_by_date(dataset=filtered_chain_tvl_df, grant_date=grant_date)
+
+    # ensure that there are enough data points on both ends of the split
+    if len(pre_grant_tvl_df) < 10 or len(post_grant_tvl_df) < 10:
+        st.warning("Not enough data available for the selected filters.")
+        return
+
+    # determine the sample metrics
+    aggregated_metrics = aggregate_split_datasets_by_metrics([(pre_grant_tvl_df, post_grant_tvl_df)], ['value'])
+
+    # conduct the t-test and return the results
+    updated_tvl_metrics = determine_statistics(aggregated_metrics[0][0], aggregated_metrics[0][1])
+    updated_tvl_metrics['metric'] = updated_tvl_metrics['metric'].replace('value', 'TVL by Token and Chain (USD)')
+    return updated_tvl_metrics
+
+# function to visualize the significance of the t-test
+def plot_ttest_streamlit(selected_metric_stats: pd.DataFrame, alpha: float) -> None:
+
+    dof = selected_metric_stats['degrees_of_freedom'].iloc[0]
+
+    # create x values for the t-distribution
+    x = np.linspace(-10, 10, 1000)  # extended range for t-stat visibility
+    y = t.pdf(x, dof)
+
+    # critical values for two-tailed test
+    critical_value = t.ppf(1 - alpha / 2, dof)
+
+    # get the t-statistic for the selected metric
+    t_stat = selected_metric_stats['test_statistic'].iloc[0]
+
+    # adjust x-axis range to ensure t-stat is always visible
+    x_min = min(-4, -1 * (abs(t_stat) + 1))
+    x_max = max(4, abs(t_stat) + 1)
+
+    # generate data for rejection regions
+    rejection_x_left = x[x <= -critical_value]
+    rejection_y_left = y[x <= -critical_value]
+    rejection_x_right = x[x >= critical_value]
+    rejection_y_right = y[x >= critical_value]
+
+    # plot t-distribution
+    fig = px.line(
+        x=x,
+        y=y,
+        labels={'x': f't-value, dof={dof}', 'y': 'Probability Density'},
+        title=f""
+    )
+
+    # add rejection region shading (merged for left and right)
+    fig.add_trace(
+        go.Scatter(
+            x=np.concatenate([rejection_x_left, rejection_x_left[::-1]]),
+            y=np.concatenate([rejection_y_left, np.zeros_like(rejection_y_left)]),
+            fill='toself',
+            fillcolor='rgba(255, 0, 0, 0.3)',
+            line=dict(color='rgba(255,0,0,0)'),
+            name="Rejection Region"
+        )
+    )
+    fig.add_trace(
+        go.Scatter(
+            x=np.concatenate([rejection_x_right, rejection_x_right[::-1]]),
+            y=np.concatenate([rejection_y_right, np.zeros_like(rejection_y_right)]),
+            fill='toself',
+            fillcolor='rgba(255, 0, 0, 0.3)',
+            line=dict(color='rgba(255,0,0,0)'),
+            showlegend=False  # hide duplicate legend entry
+        )
+    )
+
+    # add critical value lines (red dotted, single legend)
+    fig.add_trace(
+        go.Scatter(
+            x=[-critical_value, -critical_value],
+            y=[0, max(y)],
+            mode='lines',
+            line=dict(color='red', dash='dot'),
+            name="Critical Values"
+        )
+    )
+    fig.add_trace(
+        go.Scatter(
+            x=[critical_value, critical_value],
+            y=[0, max(y)],
+            mode='lines',
+            line=dict(color='red', dash='dot'),
+            showlegend=False  # hide duplicate legend entry
+        )
+    )
+
+    # add t-statistic line (green)
+    fig.add_trace(
+        go.Scatter(
+            x=[t_stat, t_stat],
+            y=[0, max(y)],  # extend the line to the top of the plot
+            mode='lines',
+            line=dict(color='green', width=2),
+            name=f"T-Statistic: {t_stat:.2f}"
+        )
+    )
+
+    # update layout for better visualization
+    fig.update_layout(
+        xaxis=dict(range=[x_min, x_max]),
+        yaxis_title="Probability Density",
+        legend_title="",
+        template="plotly_white",
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1
+        )
+    )
+
+    # display the chart in Streamlit
+    st.plotly_chart(fig)
+
+##### Synthetic Controls Section #####
+
+# return a partially bootstrapped sample of the input series while preserving the original order
+def bootstrap_series(series: np.ndarray, rng: np.random.Generator, bootstrap_ratio: float = 0.33) -> np.ndarray:
+    n = len(series)
+    num_bootstrap = int(bootstrap_ratio * n)
+
+    # randomly choose indices to replace
+    bootstrap_indices = rng.choice(n, size=num_bootstrap, replace=False)
+
+    # copy the series to avoid modifying the original
+    bootstrapped_series = series.copy()
+
+    # replace selected indices with values randomly sampled from the series
+    replacement_values = rng.choice(series, size=num_bootstrap, replace=True)
+    bootstrapped_series[bootstrap_indices] = replacement_values
+
+    return bootstrapped_series
+
+# train an arima model on the pre grant data to forecast what the post grant data would look like if the grant never occured
+def forecast_based_on_pregrant(
+        pre_grant_df: pd.DataFrame,
+        post_grant_df: pd.DataFrame,
+        target_col: str,
+        bootstrap_ratio: float,
+        seasonality: int=0,
+        chunk_size: int=3,  # number of days to predict at each iteration
+        noise_std: float=0.25,  # amount of relative noise for day-to-day variability
+        random_state: np.random.RandomState=None,
+        handle_negative: bool=False
+    ) -> pd.DataFrame:
+
+    rng = np.random.RandomState(random_state)
+
+    # identify the date column
+    date_col = determine_date_col(df=pre_grant_df)
+
+    # aggregate and sort the data
+    pre_grant_df = pre_grant_df.groupby(date_col)[target_col].sum().reset_index()
+    post_grant_df = post_grant_df.groupby(date_col)[target_col].sum().reset_index()
+
+    pre_grant_df[date_col] = pd.to_datetime(pre_grant_df[date_col])
+    post_grant_df[date_col] = pd.to_datetime(post_grant_df[date_col])
+
+    y = pre_grant_df[target_col].values
+    # if the dataset contains negative values offset them so everything is positive (since we are using a log function)
+    if handle_negative:
+        offset = abs(y.min()) + 1 if y.min() < 0 else 0
+        y = y + offset
+
+    y_train_trans = np.log1p(y)  # log-transform to stabilize variance
+
+    predictions = []
+    # iterate until predictions are made for every day of the post-grant period
+    predictions_left = len(post_grant_df)
+    while predictions_left > 0:
+        # how much to forecast
+        forecast_window = min(chunk_size, predictions_left)
+
+        # bootstrapping to combat overfitting
+        if bootstrap_ratio > 0:
+            y_curr = bootstrap_series(y_train_trans, rng, bootstrap_ratio)
+        else:
+            y_curr = y_train_trans
+
+        # fit the arima model
+        model = auto_arima(
+            y_curr,
+            seasonal=(seasonality > 0),
+            m=seasonality,  # weekly seasonality
+            suppress_warnings=True,
+            stepwise=True,
+            trace=False,
+            error_action='ignore'
+        )
+
+        # forecast
+        forecasted_log = model.predict(n_periods=forecast_window)
+        forecasted_vals = np.expm1(forecasted_log)
+
+        # add variability with noise
+        noise_factors = rng.normal(loc=1.0, scale=noise_std, size=forecast_window)
+        forecasted_vals_noisy = forecasted_vals * noise_factors
+
+        # subtract offset to return to original data
+        if handle_negative:
+            forecasted_vals_noisy = forecasted_vals_noisy - offset
+
+        predictions.extend(forecasted_vals_noisy)
+
+        # update the training set with the forecast
+        forecasted_log_noisy = np.log1p(np.clip(forecasted_vals_noisy, 1e-9, None))
+        y_train_trans = np.concatenate([y_train_trans, forecasted_log_noisy])
+
+        predictions_left -= forecast_window
+
+    # create a dataframe for results
+    result_df = pd.DataFrame({
+        'date': post_grant_df[date_col],
+        f'forecasted_{target_col}': predictions
+    })
+
+    return result_df
+
+# sum each datasets' metrics over all of the relevant addresses and then merge all 3 datasets
+def aggregate_datasets(daily_transactions_df: pd.DataFrame, net_op_flow_df: pd.DataFrame, tvl_df: pd.DataFrame) -> pd.DataFrame:
+    
+    # rename date columns so they all align
+    daily_transactions_df.rename(columns={'transaction_date': 'date'}, inplace=True)
+    daily_transactions_df['date'] = pd.to_datetime(daily_transactions_df['date'])
+    net_op_flow_df.rename(columns={'transaction_date': 'date'}, inplace=True)
+    if tvl_df is not None: 
+        tvl_df.drop('date', axis=1, inplace=True)
+        tvl_df.rename(columns={'readable_date': 'date'}, inplace=True)
+        tvl_df['date'] = pd.to_datetime(tvl_df['date'])
+
+    # sum each day's metric over all of the relevant addresses
+    daily_transactions_df = daily_transactions_df.groupby('date')[['transaction_cnt', 'active_users', 'unique_users', 'total_op_transferred']].sum().reset_index()
+    net_op_flow_df = net_op_flow_df.groupby('date')[['net_op_transferred_in_tokens']].sum().reset_index()
+    net_op_flow_df['date'] = pd.to_datetime(net_op_flow_df['date'])
+    if tvl_df is not None: 
+        tvl_df = tvl_df.groupby('date')['totalLiquidityUSD'].sum().reset_index()
+
+    # rename columns so for when they're displayed
+    agg_df = daily_transactions_df.merge(net_op_flow_df, on='date', how='outer')
+    agg_df.rename(columns={'transaction_cnt': 'Transaction Count', 
+                           'active_users': 'Active Users', 
+                           'unique_users': 'Unique Users',
+                           'total_op_transferred': 'Total OP Transferred',
+                           'net_op_transferred_in_tokens': 'Net OP Transferred'}, inplace=True)
+    if tvl_df is not None: 
+        tvl_df = tvl_df[tvl_df['date'] >= min(agg_df['date'])]
+        agg_df = agg_df.merge(tvl_df, on='date', how='outer')
+        agg_df.rename(columns={'totalLiquidityUSD': 'TVL'}, inplace=True)
+
+    agg_df['date'] = pd.to_datetime(agg_df['date'])
+    # label rows based on whether they were pre or post grant
+    agg_df['grant_label'] = agg_df.apply(assign_grant_label, axis=1)
+
+    return agg_df
+
+# plot the forecasted data against the pre and post grant data as a line chart
+def plot_forecast(curr_selection_df: pd.DataFrame, selected_metric: str, grant_date: datetime, dates: Tuple[datetime.date, datetime.date]) -> None:
+    start_date, end_date = dates[0], dates[1]
+
+    # plot
+    fig = go.Figure()
+
+    # add actual data and forecast data as separate traces
+    for grant_label in curr_selection_df['grant_label'].unique():
+        df_subset = curr_selection_df[curr_selection_df['grant_label'] == grant_label]
+        fig.add_trace(
+            go.Scatter(
+                x=df_subset['date'],
+                y=df_subset[selected_metric],
+                mode='lines',
+                name=grant_label,
+            )
+        )
+    
+    if (start_date <= grant_date.date()) and (end_date >= grant_date.date()):
+        # add vertical line for grant date
+        fig.add_vline(
+            x=grant_date, 
+            line_width=2, 
+            line_dash="dash", 
+            line_color="red"
+        )
+
+        # add a legend entry for the grant date
+        fig.add_trace(
+            go.Scatter(
+                x=[grant_date], 
+                y=[None],  # placeholder value
+                mode="lines",
+                name="Grant Date",  # legend entry
+                line=dict(color="red", dash="dash", width=2),
+                showlegend=True,
+            )
+        )
+
+    fig.update_layout(
+        title=f"{selected_metric} Forecast vs. Actuals",
+        xaxis_title="Date",
+        yaxis_title=selected_metric,
+        legend_title="",
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1
+        )
+    )
+    
+    st.plotly_chart(fig)
+
+# display the results of the 2-sample t-test
+def display_ttest_table(metric_table: pd.DataFrame, alpha: float, selected_metric: str) -> None:
+    # display most import results as KPIs
+    perc_change, test_stat, p_val = st.columns(3)
+
+    # display the percentage change of the chosen metric over the pre to post grant period
+    with perc_change:
+        first_percent_change = metric_table['percent_change'].iloc[0]
+        pos = '+' if first_percent_change > 0 else ''
+        st.metric(label="Percent Change", value=f"{pos}{round(first_percent_change * 100, 2)}%")
+
+     # display the test statistic of the t-test
+    with test_stat:
+        st.metric(label="Test Statistic", value=metric_table['test_statistic'].iloc[0])
+
+     # display the p value of the t-test
+    with p_val:
+        st.metric(label="P-Value", value=metric_table['p_value_formatted'].iloc[0])
+
+    # display sample statistics
+    ttest_table = {
+        'grant_status': ['pre-grant', 'post-grant'],
+        'sample_size': [metric_table['pre_grant_n'].iloc[0], metric_table['post_grant_n'].iloc[0]],
+        'sample_mean': [metric_table['pre_grant_mean'].iloc[0], metric_table['post_grant_mean'].iloc[0]],
+        'sample_std': [metric_table['pre_grant_std'].iloc[0], metric_table['post_grant_std'].iloc[0]]
+    }
+
+    ttest_table = pd.DataFrame(ttest_table)
+    # display the pre and post grant metrics as a table
+    st.dataframe(
+        ttest_table.assign(hack='').set_index('hack'), # hide the dataframe index
+        column_config={
+            "hack": None,
+            "sample_size": st.column_config.NumberColumn(width="medium"),
+            "sample_mean": st.column_config.NumberColumn(width="medium"),
+            "sample_std": st.column_config.NumberColumn(width="medium")
+        }
+    )
+
+    # write conclusion based on the p value and current alpha value
+    p_value = metric_table['p_value'].iloc[0]
+    p_value_formatted = metric_table['p_value_formatted'].iloc[0]
+    selected_metric = selected_metric if selected_metric == "TVL" else selected_metric.lower()
+    # we reject the null hypothesis
+    if p_value <= alpha:
+        st.write(
+            f"The p-value is **{p_value_formatted}**, which is less than the significance level (**α = {alpha}**). "
+            f"This indicates that the observed difference between the pre-grant and post-grant periods ***mean {selected_metric}*** is statistically significant. "
+            f"We reject the null hypothesis and conclude that the grant likely had a measurable impact on {selected_metric}. "
+            f"We are ***{round((1 - (alpha)) * 100, 4)}% confident*** in this conclusion."
+        )
+    # we fail to reject the null hypothesis
+    else:
+        st.write(
+            f"The p-value is **{p_value_formatted}**, which is greater than the significance level (**α = {alpha}**). "
+            f"This indicates that the observed difference between the pre-grant and post-grant periods ***mean {selected_metric}*** is not statistically significant. "
+            f"We fail to reject the null hypothesis and conclude that the grant likely did not have a measurable impact on {selected_metric}. "
+            f"We are ***{round((1 - (alpha)) * 100, 4)}% confident*** in this conclusion."
+        )
+
+# display the explanation for how the forecasted data was created
+def forecasted_data_content() -> None:
+    st.subheader("Comparing Post-Grant Metrics to Forecasted Data")
+    
+    with st.expander("The Process Behind The Forecasted Data"):
+        st.write("""
+            This visualization showcases three key data points for the selected metric:
+            - **Pre-Grant Data**: Actual values before the grant was issued.
+            - **Post-Grant Data**: Actual values after the grant was issued.
+            - **Forecasted Data**: Values predicted using the pre-grant data as a baseline.
+
+            **How It Was Done**:
+            - A **SARIMA model** (Seasonal Autoregressive Integrated Moving Average) was trained for each metric using only the pre-grant data.
+            - The forecasting process involved predicting **three data points at a time** and using those predictions iteratively as new training data for the next forecast.
+            - To prevent overfitting, **slight bootstrapping** was applied to the training set, introducing randomness while maintaining overall trends.
+            - A **noise distribution** (~Normal(mean=1, std=0.25)) was added to simulate real-world volatility and ensure the forecasted data captured realistic variability.
+
+            **Concepts Behind It**:
+            - SARIMA accounts for both trend and seasonality in the data, making it suitable for metrics that exhibit periodic patterns.
+            - Bootstrapping introduces slight variability, making the model more robust and less overfit to the pre-grant data.
+            - The noise distribution emulates random fluctuations commonly seen in real-world datasets, ensuring the forecast isn't overly smooth.
+
+            **Interpreting the Results**:
+            - The **forecasted line** provides a baseline for how the data might have trended without the grant, based purely on pre-grant trends.
+            - Comparing the forecasted line to the actual post-grant data highlights deviations potentially influenced by the grant.
+            - While not conclusive, this helps identify general patterns and raises questions for further exploration.
+        """)
+
+# display the explanation for what a 2-sample t-test is
+def ttest_table_content() -> None:
+    st.subheader("Conducting a 2-Sample T-Test")
+
+    with st.expander("Understanding The 2-Sample T-Test"):
+        st.write("""
+            **What Is a Two-Sample T-Test?**
+            - A **two-sample t-test** is a statistical method used to compare the means of two groups to determine if they are significantly different from each other.
+            - In this context, it compares the **pre-grant data** (group 1) to the **post-grant data** (group 2) for the selected metric.
+
+            **Why It's Used**:
+            - To evaluate whether the observed differences between pre-grant and post-grant performance are statistically significant or could be due to random chance.
+
+            **Displayed Metrics**:
+            - **pre_grant_n**: Number of data points in the pre-grant period.
+            - **pre_grant_mean**: Average value of the metric during the pre-grant period.
+            - **pre_grant_std**: Standard deviation of the metric during the pre-grant period.
+            - **post_grant_n**: Number of data points in the post-grant period.
+            - **post_grant_mean**: Average value of the metric during the post-grant period.
+            - **post_grant_std**: Standard deviation of the metric during the post-grant period.
+            - **percent_change**: The percentage difference between the pre-grant and post-grant means.
+            - **test_statistic**: The calculated value used to determine statistical significance.
+            - **p_value**: The probability that the observed difference occurred by chance.
+
+            **Interpreting the Results**:
+            - The **p_value** indicates whether the difference between pre-grant and post-grant means is statistically significant.
+            - A **p_value < alpha** (commonly 0.05) suggests the difference is statistically significant.
+            - For example, if the p_value is 0.03, we can reject the null hypothesis (no difference) and infer the grant had a measurable impact.
+        """)
+
+# display the explanation of how to understand the t-test distribution
+def ttest_distribution_content() -> None:
+    st.subheader("T-Test Distribution")
+
+    with st.expander("How To Intepret The T-Test Distribution"):
+        st.write("""
+            **What Does This Visualization Show?**
+            - This visualization plots the t-test distribution for the selected metric, highlighting:
+            - The **test statistic** (calculated value for the t-test).
+            - The **rejection region**, defined by the **alpha value** (significance level).
+            - Whether the test statistic falls within or outside the rejection region.
+
+            **How It Works**:
+            - The **test statistic** is plotted on the t-distribution curve to visualize its relationship with the rejection region.
+            - Users can adjust the **alpha value** to change the significance level, moving the rejection region boundaries.
+
+            **Concepts Behind It**:
+            - The **alpha value** determines the threshold for statistical significance. For example:
+            - Alpha = 0.05 means there's a 5% chance of rejecting the null hypothesis incorrectly.
+            - The **rejection region** is the area under the curve where the null hypothesis is rejected if the test statistic falls within it.
+
+            **Interpreting the Results**:
+            - If the test statistic falls within the rejection region, the null hypothesis (no difference) is rejected.
+            - If it falls outside the region, the null hypothesis cannot be rejected.
+            - **Example**: "If the test statistic is -2.5 and falls in the rejection region, the data suggests a statistically significant impact of the grant."
+
+            **Easy-to-Understand Summary**:
+            - **Test Statistic**: The value we're testing.
+            - **Alpha Value**: The threshold for determining significance.
+            - **Rejection Region**: If the test statistic lands here, the results are statistically significant.
+        """)
+
+# concat the forecasted metrics onto the pre and post grant data with it's respective label
+def concat_aggregate_with_forecasted(aggregated_dataset: pd.DataFrame, forecasted_df: pd.DataFrame) -> pd.DataFrame:
+    forecasted_df = forecasted_df.copy()
+    forecasted_df['grant_label'] = 'forecast'
+    
+    # rename the columns so they are the same and can be concatted
+    rename_dict = {
+        col: col.replace("forecasted_", "")
+        for col in forecasted_df.columns
+    }
+    forecasted_df.rename(columns=rename_dict, inplace=True)
+
+    # rename the columns for when they're displayed
+    forecasted_df.rename(columns={'transaction_cnt': 'Transaction Count', 
+                           'active_users': 'Active Users', 
+                           'unique_users': 'Unique Users',
+                           'total_op_transferred': 'Total OP Transferred',
+                           'net_op_transferred_in_tokens': 'Net OP Transferred'}, inplace=True)
+    if 'totalLiquidityUSD' in forecasted_df.columns:
+        forecasted_df.rename(columns={'totalLiquidityUSD': 'TVL'}, inplace=True)
+
+    # concat the datasets
+    combined_df = pd.concat([aggregated_dataset, forecasted_df], ignore_index=True)
+    combined_df['date'] = pd.to_datetime(combined_df['date'])
+    combined_df['date'] = combined_df['date'].dt.date
+    combined_df = combined_df.sort_values('date')
+
+    return combined_df
+
+# main function to generate the full statistical analysis section
+def stat_analysis_section(daily_transactions_df: pd.DataFrame, net_op_flow_df: pd.DataFrame, tvl_df: pd.DataFrame=None, forecasted_df: pd.DataFrame=None) -> None:
+
+    # combine all of the metrics into the same dataset for easy and quick filtering
+    aggregated_dataset = aggregate_datasets(daily_transactions_df=daily_transactions_df, net_op_flow_df=net_op_flow_df, tvl_df=tvl_df)
+    if forecasted_df is not None:
+        combined_df = concat_aggregate_with_forecasted(aggregated_dataset, forecasted_df)
+    else:
+        combined_df = aggregated_dataset.copy()
+
+    # allow user to select a target metric
+    metric_options = aggregated_dataset.columns.drop(['date', 'grant_label'])
+    selected_metric = st.selectbox("Select a target metric", metric_options)
+    
+    selected_metric_df = combined_df[['date', selected_metric, 'grant_label']]
+
+    min_date = combined_df['date'].min()
+    max_date = combined_df['date'].max()
+
+    # allow for users to input desired date range
+    dates = st.slider(
+        label="Select a date range",
+        min_value=min_date,
+        max_value=max_date,
+        value=(min_date, max_date),
+        format="YYYY-MM-DD"
+    )
+
+    start_date, end_date = dates[0], dates[1]
+
+    curr_selection_df = selected_metric_df[(selected_metric_df['date'] >= start_date) & (selected_metric_df['date'] <= end_date)]
+    pre_grant_df, post_grant_df = split_dataset_by_date(curr_selection_df, GRANT_DATE)
+
+    st.divider()
+   
+    # display the forecast plot 
+    if forecasted_df is None and selected_metric == 'TVL':
+        forecasted_df = forecast_based_on_pregrant(pre_grant_df, post_grant_df, bootstrap_ratio=0, noise_std=0.05, target_col=selected_metric)
+    elif forecasted_df is None:
+        forecasted_df = forecast_based_on_pregrant(pre_grant_df, post_grant_df, bootstrap_ratio=0.33, target_col=selected_metric)
+
+    forecasted_data_content()
+    
+    plot_forecast(curr_selection_df=curr_selection_df, selected_metric=selected_metric, grant_date=GRANT_DATE, dates=(start_date, end_date))
+    
+    if len(pre_grant_df) < 10:
+        st.warning("Not enough pre grant data points to conduct the t-test")
+        return
+
+    # display t-test results
+    ttest_table_content()
+
+    alpha = st.slider(
+        label="Select an alpha value",
+        min_value=0.01,
+        max_value=1.0,
+        value=0.05,  # default value
+        step=0.01   # step size
+    )
+
+    st.markdown(f"#### This means that we are ***{round((1 - (alpha)) * 100, 4)}%*** confident in our results.")
+    
+    st.divider()
+
+    st.subheader("T-Test Results")
+
+    aggregated_metrics = aggregate_split_datasets_by_metrics([(pre_grant_df, post_grant_df)], [selected_metric])
+
+    # conduct the t-test and return the results
+    metric_table = determine_statistics(aggregated_metrics[0][0], aggregated_metrics[0][1])
+
+    display_ttest_table(metric_table, alpha, selected_metric)
+
+    st.divider()
+
+    # display the t-test distribution plot
+    ttest_distribution_content()
+    plot_ttest_streamlit(selected_metric, selected_metric_stats=metric_table, alpha=alpha)

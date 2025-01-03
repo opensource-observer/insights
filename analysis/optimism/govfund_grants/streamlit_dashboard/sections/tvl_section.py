@@ -1,181 +1,23 @@
 import streamlit as st
-from google.cloud import bigquery
-from datetime import datetime, timezone
+from datetime import datetime
 import plotly.express as px
 import numpy as np
 import pandas as pd
-import json
-import os
-from typing import Any, Dict, Tuple, Callable, Optional
 
-BIGQUERY_PROJECT_NAME = 'oso-data-436717'
-PROJECT_START_DATE = '2024-09-01'
-PROJECT_START_DATE_DT = datetime(2024, 9, 1)
-
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '../../../oso_gcp_credentials.json'
-client = bigquery.Client(BIGQUERY_PROJECT_NAME)
-
-# read in a dictionary of projects mapped to their respective protocols
-def read_in_defi_llama_protocols(path: str) -> Dict[str, Any]:
-    with open(path, "r") as f:
-        defi_llama_protocols = json.load(f)
-
-    return defi_llama_protocols
-
-# search for the target project and return the corresponding protocol
-def return_protocol(defi_llama_protocols: Dict[str, Any], project: str) -> Optional[Any]:
-    return defi_llama_protocols.get(project, None)
-
-# take in a target protocol and return it's respective dataframes
-def process_protocol(protocol: Any) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
-
-    protocol_df = query_protocol(protocol)
-
-    chain_tvls_df = chain_tvls_col_to_df(protocol_df)
-    tvl_df = tvl_col_to_df(protocol_df)
-    tokens_in_usd_df = tokens_in_usd_col_to_df(protocol_df)
-    tokens_df = tokens_col_to_df(protocol_df)
-
-    return chain_tvls_df, tvl_df, tokens_in_usd_df, tokens_df
-
-# query protocol data from bigquery
-def query_protocol(protocol: str) -> pd.DataFrame:
-    sql_query = f"""
-        select
-            name,
-            chain_tvls,
-            tvl,
-            tokens_in_usd,
-            tokens,
-            current_chain_tvls,
-            raises,
-            metrics,
-            mcap
-        from `{BIGQUERY_PROJECT_NAME}.defillama_tvl.{protocol}`
-    """
-
-    protocol_result = client.query(sql_query)
-    protocol_df = protocol_result.to_dataframe()
-
-    return protocol_df
-
-# helper function to assign pre/post-grant labels
-def assign_grant_label(row: Any) -> str:
-    if row['readable_date'] < PROJECT_START_DATE_DT:
-        return 'pre grant'
-    else:
-        return 'post grant'
-
-# create a dataframe for TVL data by chain
-def chain_tvls_col_to_df(df: pd.DataFrame) -> pd.DataFrame:
-
-    chain_tvls = pd.DataFrame(json.loads(df.iloc[0, 1]))
-
-    def normalize_chain_data(chain_name, chain_data):
-        records = []
-        for entry in chain_data:
-            date = entry["date"]
-            for token, value in entry["tokens"].items():
-                records.append({"chain": chain_name, "date": date, "token": token, "value": value})
-        return pd.DataFrame(records)
-
-    all_chains_data = []
-    for chain in chain_tvls.columns:
-        chain_data = chain_tvls[chain].iloc[0]
-        normalized_data = normalize_chain_data(chain, chain_data)
-        all_chains_data.append(normalized_data)
-
-    cleaned_df = pd.concat(all_chains_data, ignore_index=True)
-
-    cleaned_df['readable_date'] = cleaned_df['date'].apply(
-        lambda x: datetime.fromtimestamp(x, tz=timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
-    )
-
-    cleaned_df['readable_date'] = pd.to_datetime(cleaned_df['readable_date'])
-
-    return cleaned_df
-
-# create a dataframe for aggregate TVL data
-def tvl_col_to_df(df: pd.DataFrame) -> pd.DataFrame:
-    # extract tvl data
-    tvl_df = pd.DataFrame(json.loads(df.iloc[0, 2]))
-    
-    # convert timestamp to a human-readable date
-    tvl_df['readable_date'] = tvl_df['date'].apply(
-        lambda x: datetime.fromtimestamp(x, tz=timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
-    )
-
-    tvl_df['readable_date'] = pd.to_datetime(tvl_df['readable_date'])
-
-    return tvl_df
-
-# create a dataframe for token data (in usd)
-def tokens_in_usd_col_to_df(df: pd.DataFrame) -> pd.DataFrame:
-    # extract tokens_in_usd data from the column
-    tokens_data = pd.DataFrame(json.loads(df.iloc[0, 3]))
-
-    # flatten the tokens dictionary for each date
-    records = []
-    for _, row in tokens_data.iterrows():
-        date = row["date"]
-        tokens = row["tokens"]
-        for token, value in tokens.items():
-            records.append({"date": date, "token": token, "value": value})
-
-    # create a DataFrame from the flattened records
-    tokens_df = pd.DataFrame(records)
-
-    # convert timestamp to a human-readable date
-    tokens_df['readable_date'] = tokens_df['date'].apply(
-        lambda x: datetime.fromtimestamp(x, tz=timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
-    )
-
-    tokens_df['readable_date'] = pd.to_datetime(tokens_df['readable_date'])
-
-    return tokens_df
-
-# create a dataframe for token data
-def tokens_col_to_df(df: pd.DataFrame) -> pd.DataFrame:
-    # extract tokens data from the column
-    tokens_data = pd.DataFrame(json.loads(df.iloc[0, 4]))
-
-    # flatten the tokens dictionary for each date
-    records = []
-    for _, row in tokens_data.iterrows():
-        date = row["date"]
-        tokens = row["tokens"]
-        for token, value in tokens.items():
-            records.append({"date": date, "token": token, "value": value})
-
-    # create a DataFrame from the flattened records
-    tokens_df = pd.DataFrame(records)
-
-    # convert timestamp to a human-readable date
-    tokens_df['readable_date'] = tokens_df['date'].apply(
-        lambda x: datetime.fromtimestamp(x, tz=timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
-    )
-
-    tokens_df['readable_date'] = pd.to_datetime(tokens_df['readable_date'])
-
-    return tokens_df
+from config import GRANT_DATE
+from utils import assign_grant_label, safe_execution
 
 # plot tvl over time as a line chart
 def tvl_over_time_chart(tvl_df: pd.DataFrame) -> None:
 
+    # filter to just show YTD
     filtered_tvl_df = tvl_df[tvl_df['readable_date'] >= datetime(2024, 1, 1)]
-
-    def assign_grant_label(row):
-        if row['readable_date'] < PROJECT_START_DATE_DT:
-            return 'pre grant'
-        else:
-            return 'post grant'
-
     filtered_tvl_df['grant_label'] = filtered_tvl_df.apply(assign_grant_label, axis=1)
 
+    # pivot the dataset so pre grant and post grant have their own columns
     pivoted_tvl_df = filtered_tvl_df.pivot(index='readable_date', columns='grant_label', values='totalLiquidityUSD')
 
     fig = px.line(pivoted_tvl_df)
-
     fig.update_layout(
         legend_title_text='',
         legend=dict(
@@ -197,17 +39,37 @@ def tvl_by_chain_and_token_chart(chain_tvls_df: pd.DataFrame) -> None:
 
     # filter data to start at the beginning of the year
     filtered_chain_tvl_df = chain_tvls_df[chain_tvls_df['readable_date'] >= datetime(2024, 1, 1)]
-
     filtered_chain_tvl_df['grant_label'] = filtered_chain_tvl_df.apply(assign_grant_label, axis=1)
 
     # allow user to select tokens
-    selected_tokens = st.multiselect("Select Tokens", filtered_chain_tvl_df['token'].unique())
-    filtered_chain_tvl_df = filtered_chain_tvl_df[filtered_chain_tvl_df['token'].isin(selected_tokens)]
+    all_chain_options = [f'All {chain} tokens' for chain in filtered_chain_tvl_df['chain'].unique()]
+    token_options = all_chain_options + list(filtered_chain_tvl_df['token'].unique())
+    selected_tokens = st.multiselect("Select Tokens", token_options)
 
-    # allow user to select chains
-    selected_chains = st.multiselect("Select Chains", filtered_chain_tvl_df['chain'].unique())
-    filtered_chain_tvl_df = filtered_chain_tvl_df[filtered_chain_tvl_df['chain'].isin(selected_chains)]
+    # check if any "All {chain} tokens" option is selected
+    selected_all_chain_option = [opt for opt in selected_tokens if opt in all_chain_options]
 
+    if selected_all_chain_option:
+        if len(selected_tokens) > 1:
+            st.warning("You can only select one 'All {chain} tokens' option at a time. Please deselect other options.")
+            return
+        else:
+            # extract the chain name from the selected "All {chain} tokens" option
+            chain = selected_all_chain_option[0].replace('All ', '').replace(' tokens', '')
+
+            # filter the DataFrame to include only the selected chain
+            filtered_chain_tvl_df = filtered_chain_tvl_df[filtered_chain_tvl_df['chain'] == chain]
+
+            # clear other selections and display filtered data
+            st.write(f"All {chain} tokens: {", ".join(filtered_chain_tvl_df['token'].unique())}")
+    else:
+        # filter by individual token selections
+        filtered_chain_tvl_df = filtered_chain_tvl_df[filtered_chain_tvl_df['token'].isin(selected_tokens)]
+
+        # allow user to select chains
+        selected_chains = st.multiselect("Select Chains", filtered_chain_tvl_df['chain'].unique())
+        filtered_chain_tvl_df = filtered_chain_tvl_df[filtered_chain_tvl_df['chain'].isin(selected_chains)]
+    
     # group data by date and grant label, summing the values
     grouped_tvl = (
         filtered_chain_tvl_df
@@ -240,7 +102,6 @@ def tvl_by_chain_and_token_chart(chain_tvls_df: pd.DataFrame) -> None:
 def tvl_over_time_section(tvl_df: pd.DataFrame, chain_tvls_df: pd.DataFrame) -> None:
 
     st.subheader("TVL Trends Over Time (YTD)")
-
     high_level, focused = st.tabs(['Overview Across Chains', 'Detailed by Chain and Token'])
 
     with high_level:
@@ -252,8 +113,8 @@ def tvl_over_time_section(tvl_df: pd.DataFrame, chain_tvls_df: pd.DataFrame) -> 
 # plot tvl across all chains, comparing pre and post grant numbers
 def tvl_across_chains_chart(chain_tvls_df: pd.DataFrame) -> None:
     # group by chain and sum the TVL values for pre- and post-grant periods
-    chain_tvl_pre_grant = chain_tvls_df[chain_tvls_df['readable_date'] < PROJECT_START_DATE_DT].groupby('chain')['value'].sum().reset_index()
-    chain_tvl_post_grant = chain_tvls_df[chain_tvls_df['readable_date'] >= PROJECT_START_DATE_DT].groupby('chain')['value'].sum().reset_index()
+    chain_tvl_pre_grant = chain_tvls_df[chain_tvls_df['readable_date'] < GRANT_DATE].groupby('chain')['value'].sum().reset_index()
+    chain_tvl_post_grant = chain_tvls_df[chain_tvls_df['readable_date'] >= GRANT_DATE].groupby('chain')['value'].sum().reset_index()
 
     # filter out rows with non-positive values (to avoid log errors)
     chain_tvl_pre_grant = chain_tvl_pre_grant[chain_tvl_pre_grant['value'] > 0]
@@ -297,8 +158,8 @@ def tvl_across_chains_chart(chain_tvls_df: pd.DataFrame) -> None:
 def tvl_across_tokens_chart(tokens_in_usd_df: pd.DataFrame) -> None:
 
     # group by token and sum the TVL values
-    token_tvl_pre_grant = tokens_in_usd_df[tokens_in_usd_df['readable_date'] < PROJECT_START_DATE_DT].groupby('token')['value'].sum().reset_index()
-    token_tvl_post_grant = tokens_in_usd_df[tokens_in_usd_df['readable_date'] >= PROJECT_START_DATE_DT].groupby('token')['value'].sum().reset_index()
+    token_tvl_pre_grant = tokens_in_usd_df[tokens_in_usd_df['readable_date'] < GRANT_DATE].groupby('token')['value'].sum().reset_index()
+    token_tvl_post_grant = tokens_in_usd_df[tokens_in_usd_df['readable_date'] >= GRANT_DATE].groupby('token')['value'].sum().reset_index()
 
     # filter out rows with non-positive values (to avoid log errors)
     token_tvl_pre_grant = token_tvl_pre_grant[token_tvl_pre_grant['value'] > 0]
@@ -397,8 +258,25 @@ def tvl_volatility_by_chain_chart(chain_tvls_df: pd.DataFrame) -> None:
     chain_tvls_df['grant_label'] = chain_tvls_df.apply(assign_grant_label, axis=1)
 
     # user selects tokens
-    selected_tokens = st.multiselect("Select Tokens", chain_tvls_df['token'].unique())
-    selected_chain_tvls_df = chain_tvls_df[chain_tvls_df['token'].isin(selected_tokens)]
+    token_options = ["All tokens"] + list(chain_tvls_df['token'].unique())
+    selected_tokens = st.multiselect("Select Tokens", token_options)
+
+    if not selected_tokens:
+        st.warning("Please select at least one address.")
+        return
+
+    # handle the "All" option
+    if "All tokens" in selected_tokens and len(selected_tokens) > 1:
+        st.warning("You cannot select individual tokens when 'All' is selected.")
+        selected_tokens = ["All tokens"]
+        return
+
+    if "All tokens" in selected_tokens:
+        # select all tokens
+        selected_chain_tvls_df = chain_tvls_df
+    else:
+        # filter data for the selected tokens
+        selected_chain_tvls_df = chain_tvls_df[chain_tvls_df['token'].isin(selected_tokens)]
 
     # create horizontal box plot
     fig = px.box(
@@ -458,28 +336,19 @@ def tvl_distribution_section(chain_tvls_df: pd.DataFrame, tvl_df: pd.DataFrame) 
     with tab3:
         tvl_volatility_by_chain_chart(chain_tvls_df)
 
-# allow for projects that might not have the same data as others to only visualize the plots that execute
-def safe_execution(func: Callable, *args: Any) -> None:
+
+# main function to visualize the full tvl section
+def tvl_section(chain_tvls_df: pd.DataFrame, tvl_df: pd.DataFrame, tokens_in_usd_df: pd.DataFrame) -> None:
+
+    chain_tvls_df['readable_date'] = pd.to_datetime(chain_tvls_df['readable_date'])
+    tvl_df['readable_date'] = pd.to_datetime(tvl_df['readable_date'])
+    tokens_in_usd_df['readable_date'] = pd.to_datetime(tokens_in_usd_df['readable_date'])
+    
     try:
-        func(*args)
-    except Exception:
-        pass
-
-# main function to visualize this full section
-def defi_llama_section(protocol: Any) -> None:
-    try:
-
-        chain_tvls_df, tvl_df, tokens_in_usd_df, tokens_df = process_protocol(protocol)
-
-        st.header("Defi Llama Metrics")
-
-        # execute each section safely (don't display and skip the plot if the execution fails)
+    # execute each section safely (don't display and skip the plot if the execution fails)
         safe_execution(tvl_over_time_section, tvl_df, chain_tvls_df)
         safe_execution(tvl_across_chains_chart, chain_tvls_df)
         safe_execution(tvl_across_tokens_chart, tokens_in_usd_df)
         safe_execution(tvl_distribution_section, chain_tvls_df, tvl_df)
-        return chain_tvls_df, tvl_df, tokens_in_usd_df, tokens_df
-    
     except Exception:
         pass
-
