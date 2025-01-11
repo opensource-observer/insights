@@ -1,30 +1,28 @@
 from google.cloud import bigquery
 import pandas as pd
-from typing import Tuple, Any
+from typing import Tuple
 
-from config import BIGQUERY_PROJECT_NAME, PROJECT_NETWORK, GRANT_DATE_STR, TOKEN_CONVERSION
-from utils import get_project_min_date, get_addresses_condition, get_project_network_condition
-from processing import make_dates_df, generate_dates, tvl_col_to_df, chain_tvls_col_to_df, tokens_col_to_df, tokens_in_usd_col_to_df
+from config import BIGQUERY_PROJECT_NAME
+from utils import get_project_min_date_optimism, get_addresses_condition
+from processing import make_dates_df, generate_dates
 
 # query the daily transaction data of the project addresses over the interval and store it in a dataframe
-def query_daily_transactions(client: bigquery.Client, project_addresses: Tuple[str, ...], dates_df: pd.DataFrame, start_date: str = GRANT_DATE_STR) -> pd.DataFrame:
+def query_daily_transactions_optimism(client: bigquery.Client, project_addresses: Tuple[str, ...], dates_df: pd.DataFrame, start_date: str, token_conversion: int) -> pd.DataFrame:
     try:
        # handle single or multiple addresses in the query
         addresses_condition = get_addresses_condition(project_addresses=project_addresses)
-        # handle single or multiple project networks
-        project_network_condition = get_project_network_condition(project_network=PROJECT_NETWORK)
 
-        # query for transaction count, active users, and total op transferred, for each address
+        # query for transaction count, active users, and total transferred, for each address
         daily_transactions_query = f"""
             SELECT 
                 dt AS transaction_date,
                 to_address AS address,
                 COUNT(*) AS transaction_cnt,
                 COUNT(DISTINCT from_address) AS active_users,
-                SUM(value_64) AS total_op_transferred
+                SUM(value_64) AS total_transferred
             FROM `{BIGQUERY_PROJECT_NAME}.optimism_superchain_raw_onchain_data.transactions` 
             WHERE to_address {addresses_condition}
-                AND network '{project_network_condition}'
+                AND network = 'mainnet'
                 AND dt >= '{start_date}'
             GROUP BY dt, to_address
             ORDER BY dt, to_address"""
@@ -38,7 +36,7 @@ def query_daily_transactions(client: bigquery.Client, project_addresses: Tuple[s
                     MIN(dt) transaction_date
                 FROM `{BIGQUERY_PROJECT_NAME}.optimism_superchain_raw_onchain_data.transactions`
                 WHERE to_address {addresses_condition}
-                    AND network = '{PROJECT_NETWORK}'
+                    AND network = 'mainnet'
                     AND dt >= '{start_date}'
                 GROUP BY to_address, from_address
             ), cum_sum_count AS (
@@ -79,16 +77,16 @@ def query_daily_transactions(client: bigquery.Client, project_addresses: Tuple[s
         )
 
         # fill missing numeric values with 0, but leave other columns (e.g., transaction_date) unchanged
-        numeric_columns = ['transaction_cnt', 'active_users', 'unique_users', 'total_op_transferred']
+        numeric_columns = ['transaction_cnt', 'active_users', 'unique_users', 'total_transferred']
         daily_transactions_merged_df[numeric_columns] = daily_transactions_merged_df[numeric_columns].fillna(0).astype(int)
 
         # remove duplicated rows
         daily_transactions_merged_df = daily_transactions_merged_df.drop_duplicates(subset=['transaction_date', 'address']).reset_index(drop=True)
 
-        # add a column for the total op transferred represented in tokens
-        daily_transactions_merged_df['total_op_transferred_in_tokens'] = daily_transactions_merged_df['total_op_transferred'] / TOKEN_CONVERSION
-        # add a column for the cumulative total op transferred (by address)
-        daily_transactions_merged_df['cum_op_transferred'] = (daily_transactions_merged_df.groupby('address')['total_op_transferred'].cumsum())
+        # add a column for the total transferred represented in tokens
+        daily_transactions_merged_df['total_transferred_in_tokens'] = daily_transactions_merged_df['total_transferred'] / token_conversion
+        # add a column for the cumulative total transferred (by address)
+        daily_transactions_merged_df['cum_transferred'] = (daily_transactions_merged_df.groupby('address')['total_transferred'].cumsum())
 
         return daily_transactions_merged_df
 
@@ -96,70 +94,66 @@ def query_daily_transactions(client: bigquery.Client, project_addresses: Tuple[s
         raise RuntimeError(f"Failed to query daily transactions: {e}")
 
 # create a table of all transactions (in and out) involving one of the project addresses over the interval
-def query_op_flow(client: bigquery.Client, project_addresses: Tuple[str, ...], start_date: str = GRANT_DATE_STR) -> pd.DataFrame:
+def query_transaction_flow_optimism(client: bigquery.Client, project_addresses: Tuple[str, ...], start_date: str, token_conversion: str) -> pd.DataFrame:
     try:
         # handle single or multiple addresses in the query
         addresses_condition = get_addresses_condition(project_addresses=project_addresses)
-        # handle single or multiple project networks
-        project_network_condition = get_project_network_condition(project_network=PROJECT_NETWORK)
 
         # query the amount of op transferred in and out of the relevant addresses
-        op_flow_query = f"""
-        (SELECT 
+        transaction_flow_query = f"""
+        SELECT 
             dt AS transaction_date,
             from_address,
             to_address,
             COUNT(*) AS cnt,
-            SUM(value_64) AS total_op_transferred,
+            SUM(value_64) AS total_transferred,
             'in' AS direction
         FROM `{BIGQUERY_PROJECT_NAME}.optimism_superchain_raw_onchain_data.transactions`
-        WHERE network '{project_network_condition}'
+        WHERE network = 'mainnet'
             AND to_address {addresses_condition}
             AND dt >= '{start_date}'
         GROUP BY dt, from_address, to_address
-        ORDER BY 3 DESC)
+        ORDER BY 3 DESC
 
         UNION ALL 
 
-        (SELECT 
+        SELECT 
             dt AS transaction_date,
             from_address,
             to_address,
             COUNT(*) AS cnt,
-            SUM(value_64) AS total_op_transferred,
+            SUM(value_64) AS total_transferred,
             'out' AS direction
         FROM `{BIGQUERY_PROJECT_NAME}.optimism_superchain_raw_onchain_data.transactions`
-        WHERE network '{project_network_condition}'
+        WHERE network = 'mainnet'
             AND from_address {addresses_condition}
             AND dt >= '{start_date}'
         GROUP BY dt, from_address, to_address
-        ORDER BY 3 DESC)"""
+        ORDER BY 3 DESC"""
 
         # execute the query
-        op_flow_result = client.query(op_flow_query)
-        op_flow_df = op_flow_result.to_dataframe()
+        transaction_flow_result = client.query(transaction_flow_query)
+        transaction_flow_df = transaction_flow_result.to_dataframe()
 
-        # add a column for the total op transferred represented in tokens
-        op_flow_df['total_op_transferred_in_tokens'] = op_flow_df['total_op_transferred'] / TOKEN_CONVERSION
+        # add a column for the total transferred represented in tokens
+        transaction_flow_df['total_transferred_in_tokens'] = transaction_flow_df['total_transferred'] / token_conversion
 
-        return op_flow_df
+        return transaction_flow_df
 
     except Exception as e:
         raise RuntimeError(f"Failed to query op flow: {e}")
     
 # queries the minimum transaction date for a given set of project addresses and start date
-def query_transactions_min_date(client: bigquery.Client, project_addresses: list[str], start_date: str) -> pd.Timestamp | None:
+def query_transactions_min_date_optimism(client: bigquery.Client, project_addresses: list[str], start_date: str) -> pd.Timestamp | None:
     try:
         # handles both single and multiple project addresses
         addresses_condition = get_addresses_condition(project_addresses=project_addresses)
-        # handle single or multiple project networks
-        project_network_condition = get_project_network_condition(project_network=PROJECT_NETWORK)
 
         # sql query to fetch the minimum transaction date from the bigquery table
         min_date_query = f"""
         SELECT MIN(dt) AS transaction_date
         FROM `{BIGQUERY_PROJECT_NAME}.optimism_superchain_raw_onchain_data.transactions`
-        WHERE network '{project_network_condition}'
+        WHERE network = 'mainnet'
             AND (to_address {addresses_condition}
             OR from_address {addresses_condition})
             AND dt >= '{start_date}'
@@ -179,32 +173,11 @@ def query_transactions_min_date(client: bigquery.Client, project_addresses: list
     # returns None if the query fails
     return None
 
-# query protocol data from bigquery
-def query_tvl(client: bigquery.Client, protocol: str) -> pd.DataFrame:
-    sql_query = f"""
-        select
-            name,
-            chain_tvls,
-            tvl,
-            tokens_in_usd,
-            tokens,
-            current_chain_tvls,
-            raises,
-            metrics
-        from `{BIGQUERY_PROJECT_NAME}.defillama_tvl.{protocol}`
-    """
-
-    # execute the query
-    protocol_result = client.query(sql_query)
-    protocol_df = protocol_result.to_dataframe()
-
-    return protocol_df
-
 # connect to bigquery and query all necessary data for the passed project
-def query_transaction_data_from_bq(client, project_addresses):
+def query_transaction_data_from_bq_optimism(client: bigquery.Client, project_addresses: Tuple[str, ...], grant_date: str, token_conversion: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
 
     # get the minimum transaction date associated with the project
-    min_start = get_project_min_date(client=client, project_addresses=project_addresses)
+    min_start = get_project_min_date_optimism(client=client, project_addresses=project_addresses, grant_date=grant_date)
     min_start_string = min_start.strftime('%Y-%m-%d')
 
     # create a templated dataframe of each pair (dates, address) from the minimum start date
@@ -212,23 +185,9 @@ def query_transaction_data_from_bq(client, project_addresses):
     dates_df = make_dates_df(dates=dates, project_addresses=project_addresses)
 
     # query daily transactions data from bigquery
-    daily_transactions = query_daily_transactions(client=client,project_addresses=project_addresses, dates_df=dates_df, start_date=min_start_string)
+    daily_transactions = query_daily_transactions_optimism(client=client,project_addresses=project_addresses, dates_df=dates_df, start_date=min_start_string, token_conversion=token_conversion)
     
-    # query op flow data from bigquery
-    op_flow = query_op_flow(client=client, project_addresses=project_addresses, start_date=min_start_string)
+    # query transaction flow data from bigquery
+    transaction_flow = query_transaction_flow_optimism(client=client, project_addresses=project_addresses, start_date=min_start_string, token_conversion=token_conversion)
     
-    return daily_transactions, op_flow
-
-# take in a bigquery client and target protocol and return it's tvl data
-def query_tvl_data_from_bq(client: bigquery.Client, protocol: Any) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
-
-    # query the tvl dataset
-    protocol_df = query_tvl(client=client, protocol=protocol)
-
-    # the tvl data is stored by column, so each of the following functions unravel the relevant columns into it's respective dataset
-    chain_tvls_df = chain_tvls_col_to_df(df=protocol_df)
-    tvl_df = tvl_col_to_df(df=protocol_df)
-    tokens_in_usd_df = tokens_in_usd_col_to_df(df=protocol_df)
-    tokens_df = tokens_col_to_df(df=protocol_df)
-
-    return chain_tvls_df, tvl_df, tokens_in_usd_df, tokens_df
+    return daily_transactions, transaction_flow
