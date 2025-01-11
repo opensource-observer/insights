@@ -207,6 +207,7 @@ def compute_growth(df: pd.DataFrame, column_name: str) -> Tuple[Optional[float],
 
 # helper function to assign pre/post-grant labels
 def assign_grant_label(row: Any, grant_date: str) -> str:
+
     date_col = determine_date_col(row=row)
 
     # compare the row's date with GRANT_DATE
