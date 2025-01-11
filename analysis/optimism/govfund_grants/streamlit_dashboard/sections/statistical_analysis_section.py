@@ -721,4 +721,4 @@ def stat_analysis_section(daily_transactions_df: pd.DataFrame, net_op_flow_df: p
 
     # display the t-test distribution plot
     ttest_distribution_content()
-    plot_ttest_streamlit(selected_metric, selected_metric_stats=metric_table, alpha=alpha)
+    plot_ttest_streamlit(selected_metric_stats=metric_table, alpha=alpha)
