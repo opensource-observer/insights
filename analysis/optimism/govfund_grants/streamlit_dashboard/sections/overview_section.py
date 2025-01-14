@@ -53,7 +53,8 @@ def display_addresses_table(addresses: List[Dict[str, Dict[str, Union[str, List[
             "hack": None,
             "Address": st.column_config.TextColumn(width="large"),
             "Networks": st.column_config.TextColumn(width="small"),
-            "Name": st.column_config.TextColumn(width="small")
+            "Name": st.column_config.TextColumn(width="small"),
+            "Tags": st.column_config.NumberColumn(width="medium")
         }
     )
 
