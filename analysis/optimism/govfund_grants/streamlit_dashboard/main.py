@@ -1,9 +1,9 @@
 import streamlit as st
+import pandas as pd
 
 from processing import make_net_transaction_dataset
 from forecasting import forecast_project
 from queries.optimism import query_transaction_data_from_bq_optimism
-from queries.cyber import query_transaction_data_from_bq_cyber
 from queries.superchain import query_transaction_data_from_bq_superchain
 from queries.defillama import query_tvl_data_from_bq
 
@@ -18,7 +18,8 @@ from utils import (read_in_stored_dfs_for_projects,
 from config import (GRANTS_PATH, 
                     DEFI_LLAMA_PROTOCOLS_PATH,
                     SERVICE_ACCOUNT_PATH,
-                    STORED_DATA_PATH)
+                    STORED_DATA_PATH,
+                    P_VALUE)
 
 from sections.overview_section import overview_section
 from sections.core_metrics_section import core_metrics_section
@@ -67,130 +68,216 @@ def display_dashboard_overview() -> None:
             A dedicated explanation on interpreting these results is available at the section for deeper understanding.
         """)
 
-def main() -> None:
+# highlight the cells based on the increase or decrease condition
+def highlight_changes(val):
+    if val == "increase":
+        return 'background-color: green'
+    elif val == "decrease":
+        return 'background-color: red'
+    return ''
 
+# create the high level overview table of all of the projects
+def high_level_overview_table(df: pd.DataFrame) -> pd.DataFrame:
+    # flatten the column names to simplify processing
+    df.columns = [f"{col[0]}: {col[1]}" for col in df.columns]
+
+    # initialize a dictionary to hold the simplified columns
+    simplified_data = {
+        "Project Name": df["General Info: Project Name"],
+        "Round": df["General Info: Round"],
+        "Cycle": df["General Info: Cycle"],
+        "Status": df["General Info: Status"],
+        "Amount": df["General Info: Amount"],
+        "Date Range": df["General Info: Date Range"],
+    }
+
+    # process each metric to create a single column summarizing the result
+    metric_list = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Net Transferred", "TVL"]
+
+    for metric in metric_list:
+        percent_change_col = f"{metric}: Percent Change"
+        p_value_col = f"{metric}: P Value"
+
+        # apply logic to categorize results based on percent change and p value
+        simplified_data[metric] = df.apply(
+            lambda row: (
+                "N/A" if row[percent_change_col] == "N/A" or row[p_value_col] == "N/A" or pd.isna(row[percent_change_col]) or pd.isna(row[p_value_col]) else
+                "decrease" if row[percent_change_col] < 0 and row[p_value_col] < P_VALUE else
+                "increase" if row[percent_change_col] > 0 and row[p_value_col] < P_VALUE else
+                "no change"
+            ),
+            axis=1
+        )
+
+    # create a new DataFrame with the simplified structure
+    simplified_df = pd.DataFrame(simplified_data)
+    simplified_df = simplified_df.T
+    simplified_df.columns = simplified_df.iloc[0]
+    simplified_df = simplified_df.iloc[1:]
+
+    return simplified_df
+
+def main() -> None:
     # display title and description
     st.title("S6 Growth Grants Performance Analysis")
-    display_dashboard_overview()
 
-    st.divider()
+    # widen the dashboard and center contents
+    st.markdown(
+        """
+        <style>
+            .stMainBlockContainer {
+                max-width:65rem;
+            }
+
+            h1, h2, h3, h4, h5, h6 {
+                text-align: center;
+            }
+        </style>
+        """, 
+        unsafe_allow_html=True
+    )
 
     # read in a dictionary of each project's corresponding defi llama protocol
     defi_llama_protocols = read_in_defi_llama_protocols(path=DEFI_LLAMA_PROTOCOLS_PATH)
 
-    # allow for users to select a desired project
-    projects = read_in_grants(grants_path=GRANTS_PATH)
-    project_names = list(projects.keys())
-    selected_project_name = st.selectbox("Select a Project", project_names) # project selection dropdown
+    ttest_results = pd.read_csv("data/ttest_results.csv", header=[0, 1])
 
-    if not selected_project_name:
-        st.warning("Please select a project from the dropdown.")
-        return
-    
-    # retrieve selected project data
-    project = projects[selected_project_name]
+    by_project, overview_table = st.tabs(["By Project Drill Down", "High-Level Overview Table"])
 
-    # retrieve relevant information from the project
-    project_name = project['project_name']
-    chain = project['chain']
-    pull_from_bigquery = project['pull_from_bigquery']
-    store_bq_datasets = project['store_bq_datasets']
-    live_streamlit_instance = project['live_streamlit_instance']
-    display_by_address = project['display_by_address']
-    token_conversion = project['token_conversion']
-    grant_date = project['grant_date']
+    st.divider()
 
-    # get the relevant wallet/contract addresses associated with the selected project
-    just_addresses, project_addresses = extract_addresses(project_dict=project) 
-    # check if the selected project has an associated defi llama protocol
-    project_protocol = return_protocol(defi_llama_protocols=defi_llama_protocols, project=selected_project_name)
-    
-    # if pull from bigquery is true, pull the necessary datasets directly from bigquery
-    if pull_from_bigquery:
-        # connect to the bigquery client with the service account at the passed path
-        # if this project is connected to a live streamlit instance it connects to bigquery differently
-        client = connect_bq_client(service_account_path=SERVICE_ACCOUNT_PATH, use_streamlit_secrets=live_streamlit_instance)
+    with overview_table:
+        table = high_level_overview_table(ttest_results)
+        table.rename_axis("", inplace=True)
+        styled_table = table.style.applymap(highlight_changes)  # highlight only metric columns
+        st.dataframe(
+            styled_table, 
+            height=35*len(table)+38,
+            column_config={
+                project: st.column_config.TextColumn(width="medium")
+                for project in list(table.columns) + [""]
+            }
+        )
+
+    with by_project: 
+
+        display_dashboard_overview()
+
+        st.divider()
+
+        # allow for users to select a desired project
+        projects = read_in_grants(grants_path=GRANTS_PATH)
+        project_names = list(projects.keys())
+        selected_project_name = st.selectbox("Select a Project", project_names) # project selection dropdown
+
+        if not selected_project_name:
+            st.warning("Please select a project from the dropdown.")
+            return
         
-        datasets = {}
+        # retrieve selected project data
+        project = projects[selected_project_name]
 
-        # query transaction count, active users, unique users, and total transferred for the passed project based on the target chain
-        if chain == "optimism":
-            project_daily_transactions_df, project_transaction_flow_df = query_transaction_data_from_bq_optimism(client=client, project_addresses=just_addresses, grant_date=grant_date, token_conversion=token_conversion)
+        # retrieve relevant information from the project
+        project_name = project['project_name']
+        chain = project['chain']
+        pull_from_bigquery = project['pull_from_bigquery']
+        store_bq_datasets = project['store_bq_datasets']
+        live_streamlit_instance = project['live_streamlit_instance']
+        display_by_address = project['display_by_address']
+        token_conversion = project['token_conversion']
+        grant_date = project['grant_date']
+
+        # get the relevant wallet/contract addresses associated with the selected project
+        just_addresses, project_addresses = extract_addresses(project_dict=project) 
+        # check if the selected project has an associated defi llama protocol
+        project_protocol = return_protocol(defi_llama_protocols=defi_llama_protocols, project=selected_project_name)
+        
+        # if pull from bigquery is true, pull the necessary datasets directly from bigquery
+        if pull_from_bigquery:
+            # connect to the bigquery client with the service account at the passed path
+            # if this project is connected to a live streamlit instance it connects to bigquery differently
+            client = connect_bq_client(service_account_path=SERVICE_ACCOUNT_PATH, use_streamlit_secrets=live_streamlit_instance)
             
-            # use the transaction flow dataset (which looks at abs(op amount)) to create a dataset that considers the direction of the transactions
-            project_net_transaction_flow_df = make_net_transaction_dataset(transaction_flow_df=project_transaction_flow_df)
-            datasets['net_transaction_flow'] = project_net_transaction_flow_df
-        else:
-            project_daily_transactions_df = query_transaction_data_from_bq_superchain(client=client, grant_date=grant_date, token_conversion=token_conversion, chain=chain)
-            project_net_transaction_flow_df = None
+            datasets = {}
 
-        datasets['daily_transactions'] = project_daily_transactions_df
-
-        # only query the tvl data if the project has an associated defi llama protocol
-        if project_protocol and project_protocol is not None:
-            project_chain_tvls_df, project_tvl_df, project_tokens_in_usd_df, project_tokens_df = query_tvl_data_from_bq(client=client, protocol=project_protocol)
-
-            datasets['chain_tvls'] = project_chain_tvls_df
-            datasets['tvl'] = project_tvl_df
-            datasets['tokens_in_usd'] = project_tokens_in_usd_df
-
-        project_forecasted_df = forecast_project(datasets=datasets, grant_date=grant_date)
-        datasets['forecasted_metrics'] = project_forecasted_df
-
-        if store_bq_datasets:
-            save_datasets(project_name=project_name, datasets=datasets, data_path=STORED_DATA_PATH)
-
-    else:
-        # otherwise pull the datasets from the stored database at the passed path
-        project_datasets = read_in_stored_dfs_for_projects(project_name=project_name, data_path=STORED_DATA_PATH, protocol=project_protocol)
-        project_daily_transactions_df = project_datasets['daily_transactions']
-        project_net_transaction_flow_df = project_datasets['net_transaction_flow']
-        project_chain_tvls_df = project_datasets['chain_tvls']
-        project_tokens_in_usd_df = project_datasets['tokens_in_usd']
-        project_tvl_df = project_datasets['tvl']
-        project_forecasted_df = project_datasets['forecasted']
-
-    # define the tabs that will be displayed
-    if project_protocol and project_protocol is not None:
-        overview, core_metrics, tvl, stat_analysis = st.tabs(['Project Overview', 'Core Metrics', 'TVL', 'Statistical Analysis'])
-
-    else:
-        overview, core_metrics, stat_analysis = st.tabs(['Project Overview', 'Core Metrics', 'Statistical Analysis'])
-
-    # display the project specifics and relevant addresses
-    with overview: 
-        overview_section(project=project)
-
-    # display the line charts for the daily transactions data
-    with core_metrics:
-        core_metrics_section(daily_transactions_df=project_daily_transactions_df, net_transaction_flow_df=project_net_transaction_flow_df, project_addresses=project_addresses, grant_date=grant_date, display_by_address=display_by_address)
-
-    # if the project has a corresponding defi llama protocol display the tvl related charts
-    if project_protocol and project_protocol is not None:
-        with tvl:
-            tvl_section(chain_tvls_df=project_chain_tvls_df, tvl_df=project_tvl_df, tokens_in_usd_df=project_tokens_in_usd_df, grant_date=grant_date)
-
-    # display the results of the synthetic control methods and hypothesis testing
-    with stat_analysis:
-        # if data is being pulled from bigquery, pass none for the project forecasted data so a new one will get generated in the stat_analysis_section function
-        project_forecasted_df = None if pull_from_bigquery else project_forecasted_df
+            # query transaction count, active users, unique users, and total transferred for the passed project based on the target chain
+            if chain == "optimism":
+                project_daily_transactions_df, project_transaction_flow_df = query_transaction_data_from_bq_optimism(client=client, project_addresses=just_addresses, grant_date=grant_date, token_conversion=token_conversion)
                 
-        if project_protocol and project_protocol is not None:
-            stat_analysis_section(
-                daily_transactions_df = project_daily_transactions_df,
-                net_transaction_flow_df = project_net_transaction_flow_df,
-                forecasted_df = project_forecasted_df,
-                grant_date = grant_date,
-                tvl_df = project_tvl_df
-            )            
+                # use the transaction flow dataset (which looks at abs(op amount)) to create a dataset that considers the direction of the transactions
+                project_net_transaction_flow_df = make_net_transaction_dataset(transaction_flow_df=project_transaction_flow_df)
+                datasets['net_transaction_flow'] = project_net_transaction_flow_df
+            else:
+                project_daily_transactions_df = query_transaction_data_from_bq_superchain(client=client, grant_date=grant_date, token_conversion=token_conversion, chain=chain)
+                project_net_transaction_flow_df = None
+
+            datasets['daily_transactions'] = project_daily_transactions_df
+
+            # only query the tvl data if the project has an associated defi llama protocol
+            if project_protocol and project_protocol is not None:
+                project_chain_tvls_df, project_tvl_df, project_tokens_in_usd_df, project_tokens_df = query_tvl_data_from_bq(client=client, protocol=project_protocol)
+
+                datasets['chain_tvls'] = project_chain_tvls_df
+                datasets['tvl'] = project_tvl_df
+                datasets['tokens_in_usd'] = project_tokens_in_usd_df
+
+            project_forecasted_df = forecast_project(datasets=datasets, grant_date=grant_date)
+            datasets['forecasted_metrics'] = project_forecasted_df
+
+            if store_bq_datasets:
+                save_datasets(project_name=project_name, datasets=datasets, data_path=STORED_DATA_PATH)
+
         else:
-            stat_analysis_section(
-                daily_transactions_df = project_daily_transactions_df,
-                net_transaction_flow_df = project_net_transaction_flow_df,
-                forecasted_df = project_forecasted_df,
-                grant_date = grant_date,
-                tvl_df = None
-            )
+            # otherwise pull the datasets from the stored database at the passed path
+            project_datasets = read_in_stored_dfs_for_projects(project_name=project_name, data_path=STORED_DATA_PATH, protocol=project_protocol)
+            project_daily_transactions_df = project_datasets['daily_transactions']
+            project_net_transaction_flow_df = project_datasets['net_transaction_flow']
+            project_chain_tvls_df = project_datasets['chain_tvls']
+            project_tokens_in_usd_df = project_datasets['tokens_in_usd']
+            project_tvl_df = project_datasets['tvl']
+            project_forecasted_df = project_datasets['forecasted']
+
+        # define the tabs that will be displayed
+        if project_protocol and project_protocol is not None:
+            overview, core_metrics, tvl, stat_analysis = st.tabs(['Project Overview', 'Core Metrics', 'TVL', 'Statistical Analysis'])
+
+        else:
+            overview, core_metrics, stat_analysis = st.tabs(['Project Overview', 'Core Metrics', 'Statistical Analysis'])
+
+        # display the project specifics and relevant addresses
+        with overview: 
+            overview_section(project=project)
+
+        # display the line charts for the daily transactions data
+        with core_metrics:
+            core_metrics_section(daily_transactions_df=project_daily_transactions_df, net_transaction_flow_df=project_net_transaction_flow_df, project_addresses=project_addresses, grant_date=grant_date, display_by_address=display_by_address)
+
+        # if the project has a corresponding defi llama protocol display the tvl related charts
+        if project_protocol and project_protocol is not None:
+            with tvl:
+                tvl_section(chain_tvls_df=project_chain_tvls_df, tvl_df=project_tvl_df, tokens_in_usd_df=project_tokens_in_usd_df, grant_date=grant_date)
+
+        # display the results of the synthetic control methods and hypothesis testing
+        with stat_analysis:
+            # if data is being pulled from bigquery, pass none for the project forecasted data so a new one will get generated in the stat_analysis_section function
+            project_forecasted_df = None if pull_from_bigquery else project_forecasted_df
+                    
+            if project_protocol and project_protocol is not None:
+                stat_analysis_section(
+                    daily_transactions_df = project_daily_transactions_df,
+                    net_transaction_flow_df = project_net_transaction_flow_df,
+                    forecasted_df = project_forecasted_df,
+                    grant_date = grant_date,
+                    tvl_df = project_tvl_df
+                )            
+            else:
+                stat_analysis_section(
+                    daily_transactions_df = project_daily_transactions_df,
+                    net_transaction_flow_df = project_net_transaction_flow_df,
+                    forecasted_df = project_forecasted_df,
+                    grant_date = grant_date,
+                    tvl_df = None
+                )
 
 
 if __name__ == "__main__":

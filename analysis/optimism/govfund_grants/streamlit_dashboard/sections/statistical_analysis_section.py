@@ -416,6 +416,23 @@ def display_ttest_table(metric_table: pd.DataFrame, alpha: float, selected_metri
     # display most import results as KPIs
     perc_change, test_stat, p_val = st.columns(3)
 
+    st.markdown(
+        '''
+        <style>
+        /*center metric label*/
+        [data-testid="stMetricLabel"] > div:nth-child(1) {
+            justify-content: center;
+        }
+
+        /*center metric value*/
+        [data-testid="stMetricValue"] > div:nth-child(1) {
+            justify-content: center;
+        }
+        </style>
+        ''', 
+        unsafe_allow_html=True
+    )
+
     # display the percentage change of the chosen metric over the pre to post grant period
     with perc_change:
         first_percent_change = metric_table['percent_change'].iloc[0]
@@ -432,10 +449,10 @@ def display_ttest_table(metric_table: pd.DataFrame, alpha: float, selected_metri
 
     # display sample statistics
     ttest_table = {
-        'grant_status': ['pre-grant', 'post-grant'],
-        'sample_size': [metric_table['pre_grant_n'].iloc[0], metric_table['post_grant_n'].iloc[0]],
-        'sample_mean': [metric_table['pre_grant_mean'].iloc[0], metric_table['post_grant_mean'].iloc[0]],
-        'sample_std': [metric_table['pre_grant_std'].iloc[0], metric_table['post_grant_std'].iloc[0]]
+        'Grant Status': ['pre-grant', 'post-grant'],
+        'Sample Size': [metric_table['pre_grant_n'].iloc[0], metric_table['post_grant_n'].iloc[0]],
+        'Sample Mean': [metric_table['pre_grant_mean'].iloc[0], metric_table['post_grant_mean'].iloc[0]],
+        'Sample Standard Deviation': [metric_table['pre_grant_std'].iloc[0], metric_table['post_grant_std'].iloc[0]]
     }
 
     ttest_table = pd.DataFrame(ttest_table)
@@ -444,9 +461,10 @@ def display_ttest_table(metric_table: pd.DataFrame, alpha: float, selected_metri
         ttest_table.assign(hack='').set_index('hack'), # hide the dataframe index
         column_config={
             "hack": None,
-            "sample_size": st.column_config.NumberColumn(width="medium"),
-            "sample_mean": st.column_config.NumberColumn(width="medium"),
-            "sample_std": st.column_config.NumberColumn(width="medium")
+            "Grant Status": st.column_config.TextColumn(width="medium"),
+            "Sample Size": st.column_config.NumberColumn(width="medium"),
+            "Sample Mean": st.column_config.NumberColumn(width="medium"),
+            "Sample Standard Deviation": st.column_config.NumberColumn(width="medium")
         }
     )
 

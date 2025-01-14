@@ -59,9 +59,8 @@ def get_project_min_date_optimism(client: bigquery.Client, project_addresses: Tu
     transactions_min_date = query_transactions_min_date_optimism(client=client, project_addresses=project_addresses, start_date=min_start_string)
 
     # ensure transactions_min_date is valid before comparison
-    if transactions_min_date is not None:
-        # determine the minimum start date we can use
-        min_start = max(transactions_min_date, min_start)
+    # determine the minimum start date we can use
+    min_start = max(transactions_min_date, min_start)
 
     return min_start
 
@@ -207,7 +206,6 @@ def compute_growth(df: pd.DataFrame, column_name: str) -> Tuple[Optional[float],
 
 # helper function to assign pre/post-grant labels
 def assign_grant_label(row: Any, grant_date: str) -> str:
-
     date_col = determine_date_col(row=row)
 
     # compare the row's date with GRANT_DATE

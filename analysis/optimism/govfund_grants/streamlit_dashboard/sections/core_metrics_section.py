@@ -16,7 +16,7 @@ def display_op_kpis_and_vis_for_core_metrics(
     display_by_address: bool
 ) -> None:
 
-    # Preprocess and merge the datasets once
+    # preprocess and merge the datasets once
     data_merged = pd.merge(
         project_daily_transactions, 
         project_net_transaction_flow[['transaction_date', 'address', 'net_transferred']], 
@@ -32,23 +32,25 @@ def display_op_kpis_and_vis_for_core_metrics(
         "net_transferred": "Net Transferred"
     }, inplace=True)
 
-    # Fill nulls for numeric columns
-    target_cols = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Cumulative Transferred", "Net Transferred"]
+    # fill nulls for numeric columns
+    target_cols = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Net Transferred"]
+    data_merged["Cumulative Transferred"] = data_merged["Cumulative Transferred"].fillna(method="ffill")
     data_merged[target_cols] = data_merged[target_cols].fillna(0)
+    target_cols += ["Cumulative Transferred"]
 
-    # Precompute groupings
-    # Group by transaction date and address
+    # precompute groupings
+    # group by transaction date and address
     grouped_by_date_and_address = data_merged.groupby(['transaction_date', 'address'])[target_cols].sum().reset_index()
 
-    # Group by transaction date only (aggregate across all addresses)
+    # group by transaction date only (aggregate across all addresses)
     grouped_by_date = data_merged.groupby('transaction_date')[target_cols].sum().reset_index()
 
-    # User selects a metric
+    # user selects a metric
     selected_metric = st.selectbox("Select a metric", target_cols)
 
-    # User selects addresses if display_by_address is enabled
+    # user selects addresses if display_by_address is enabled
     if display_by_address:
-        # Add "All" option to the address list
+        # add "All" option to the address list
         display_addresses = [f"{address['address']} {address['label']}" if address['label'] else address['address'] for address in project_addresses]
         address_options = ["All addresses"] + display_addresses
         selected_addresses = st.multiselect("Select addresses", address_options)
@@ -58,18 +60,18 @@ def display_op_kpis_and_vis_for_core_metrics(
             return
 
         if "All addresses" in selected_addresses:
-            # Use precomputed data aggregated by transaction date
+            # use precomputed data aggregated by transaction date
             data_grouped = grouped_by_date[['transaction_date', selected_metric]]
         else:
-            # Filter precomputed data for the selected addresses
+            # filter precomputed data for the selected addresses
             just_selected_addresses = [address.split(" ")[0] for address in selected_addresses]
             data_grouped = grouped_by_date_and_address[grouped_by_date_and_address['address'].isin(just_selected_addresses)]
             data_grouped = data_grouped[['transaction_date', 'address', selected_metric]]
     else:
-        # Use precomputed data aggregated by transaction date
+        # use precomputed data aggregated by transaction date
         data_grouped = grouped_by_date[['transaction_date', selected_metric]]
 
-    # Ensure transaction_date is a date object
+    # ensure transaction_date is a date object
     data_grouped['transaction_date'] = pd.to_datetime(data_grouped['transaction_date']).dt.date
     
     min_date = data_grouped['transaction_date'].min()
@@ -188,9 +190,7 @@ def display_op_kpis_and_vis_for_core_metrics(
 # streamlit function to display KPIs and a line graph for a desired metric
 def display_superchain_kpis_and_vis_for_core_metrics(
     project_daily_transactions: pd.DataFrame, 
-    project_addresses: List[Dict[str, Union[str, None]]], 
-    grant_date: str, 
-    display_by_address: bool
+    grant_date: str
 ) -> None:
     
     target_df = project_daily_transactions.copy()
@@ -305,6 +305,6 @@ def core_metrics_section(daily_transactions_df: pd.DataFrame, project_addresses:
         ].sum().reset_index()
 
     if net_transaction_flow_df is None:
-        safe_execution(display_superchain_kpis_and_vis_for_core_metrics, daily_transactions_df, project_addresses, grant_date, display_by_address)
+        safe_execution(display_superchain_kpis_and_vis_for_core_metrics, daily_transactions_df, grant_date)
     else:
         safe_execution(display_op_kpis_and_vis_for_core_metrics, daily_transactions_df, net_transaction_flow_df, project_addresses, grant_date, display_by_address)
