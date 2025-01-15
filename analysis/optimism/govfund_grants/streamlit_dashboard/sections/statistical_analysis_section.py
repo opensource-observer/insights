@@ -498,23 +498,33 @@ def forecasted_data_content() -> None:
             This visualization showcases three key data points for the selected metric:
             - **Pre-Grant Data**: Actual values before the grant was issued.
             - **Post-Grant Data**: Actual values after the grant was issued.
-            - **Forecasted Data**: Values predicted using the pre-grant data as a baseline.
+            - **Forecasted Data**: Values predicted using pre-grant data and/or related external factors as a baseline.
 
             **How It Was Done**:
-            - A **SARIMA model** (Seasonal Autoregressive Integrated Moving Average) was trained for each metric using only the pre-grant data.
-            - The forecasting process involved predicting **three data points at a time** and using those predictions iteratively as new training data for the next forecast.
-            - To prevent overfitting, **slight bootstrapping** was applied to the training set, introducing randomness while maintaining overall trends.
-            - A **noise distribution** (~Normal(mean=1, std=0.25)) was added to simulate real-world volatility and ensure the forecasted data captured realistic variability.
+            There are now two models used for forecasting based on the specific circumstances:
+            1. **SARIMA Model**: 
+                - Trained using only the pre-grant data.
+                - Forecasting was done **three data points at a time**, iteratively adding predictions as new training data for subsequent forecasts.
+                - Slight bootstrapping was applied to the training set to introduce randomness while maintaining overall trends and prevent overfitting.
+                - A **noise distribution** (~Normal(mean=1, std=0.25)) was added to simulate real-world volatility and ensure realistic variability.
+            2. **Linear Regression Model**:
+                - Trained using the **Optimism chain TVL** (after normalization) as the independent variable and the **selected protocol TVL** as the target.
+                - Predictions were made three days at a time, combined with a **slight noise distribution** (~Normal(mean=1, std=0.05)) to emulate real-world fluctuations.
+                - The predictions were then concatenated to the dataset as additional data points.
 
             **Concepts Behind It**:
-            - SARIMA accounts for both trend and seasonality in the data, making it suitable for metrics that exhibit periodic patterns.
-            - Bootstrapping introduces slight variability, making the model more robust and less overfit to the pre-grant data.
-            - The noise distribution emulates random fluctuations commonly seen in real-world datasets, ensuring the forecast isn't overly smooth.
-
+            - **SARIMA Model**:
+                - Captures both trend and seasonality, making it suitable for metrics that exhibit periodic patterns.
+                - Bootstrapping introduces slight variability, enhancing robustness and reducing overfitting.
+                - Noise distribution ensures predictions reflect real-world random fluctuations.
+            - **Linear Regression Model**:
+                - Leverages external metrics (Optimism chain TVL) to model dependencies between related datasets.
+                - Adding a noise distribution ensures realistic variability in predictions.
+            
             **Interpreting the Results**:
-            - The **forecasted line** provides a baseline for how the data might have trended without the grant, based purely on pre-grant trends.
-            - Comparing the forecasted line to the actual post-grant data highlights deviations potentially influenced by the grant.
-            - While not conclusive, this helps identify general patterns and raises questions for further exploration.
+            - The **forecasted lines** provide baselines for how the data might have trended based on either pre-grant trends (SARIMA) or external factors (Linear Regression).
+            - Comparing the forecasted lines to the actual post-grant data highlights deviations potentially influenced by the grant.
+            - While not conclusive, these insights help identify patterns and raise questions for further exploration.
         """)
 
 # display the explanation for what a 2-sample t-test is
@@ -587,10 +597,27 @@ def stat_analysis_section(daily_transactions_df: pd.DataFrame, forecasted_df: pd
     combined_df = concat_aggregate_with_forecasted(aggregated_dataset, forecasted_df)
     
     # allow user to select a target metric
-    metric_options = combined_df.columns.drop(['date', 'grant_label'])
+    if 'TVL_opchain' in combined_df.columns: 
+        metric_options = combined_df.columns.drop(['date', 'grant_label', 'TVL_opchain'])
+    else:
+        metric_options = combined_df.columns.drop(['date', 'grant_label'])
+
     selected_metric = st.selectbox("Select a target metric", metric_options)
     
-    selected_metric_df = combined_df[['date', selected_metric, 'grant_label']]
+    if selected_metric == "TVL":
+        comparison_methods = ["Based on previous chain TVL trends", "Based on OP chain trends"]
+        selected_comparison = st.selectbox("Select a forecast method", comparison_methods)
+
+        if selected_comparison == "Based on OP chain trends":
+            selected_metric_df = combined_df[['date', "TVL", "TVL_opchain", 'grant_label']]
+
+            selected_metric_df.loc[selected_metric_df["grant_label"] == "forecast", "TVL"] = selected_metric_df["TVL_opchain"]
+            selected_metric_df.drop("TVL_opchain", axis=1, inplace=True)
+
+        else:
+            selected_metric_df = combined_df[['date', selected_metric, 'grant_label']]
+    else:
+        selected_metric_df = combined_df[['date', selected_metric, 'grant_label']]
 
     min_date = combined_df['date'].min()
     max_date = combined_df['date'].max()
@@ -607,7 +634,6 @@ def stat_analysis_section(daily_transactions_df: pd.DataFrame, forecasted_df: pd
     start_date, end_date = dates[0], dates[1]
 
     curr_selection_df = selected_metric_df[(selected_metric_df['date'] >= start_date) & (selected_metric_df['date'] <= end_date)]
-    pre_grant_df, post_grant_df = split_dataset_by_date(curr_selection_df, grant_date=grant_date)
 
     st.divider()
    
@@ -615,12 +641,28 @@ def stat_analysis_section(daily_transactions_df: pd.DataFrame, forecasted_df: pd
     
     plot_forecast(curr_selection_df=curr_selection_df, selected_metric=selected_metric, grant_date=grant_date, dates=(start_date, end_date))
     
+    curr_selection_forecasted_df = curr_selection_df[curr_selection_df["grant_label"] == "forecast"]
+    curr_selection_df = curr_selection_df[curr_selection_df["grant_label"] != "forecast"]
+    pre_grant_df, post_grant_df = split_dataset_by_date(curr_selection_df, grant_date=grant_date)
+
     if len(pre_grant_df) < 10:
         st.warning("Not enough pre grant data points to conduct the t-test")
         return
 
     # display t-test results
     ttest_table_content()
+
+    sample_1_options = ["Pre grant data"]
+    if curr_selection_forecasted_df is not None and not curr_selection_forecasted_df.empty:
+        sample_1_options.append("Forecasted data")
+
+    selected_sample_1 = st.selectbox("Select sample 1 (sample 2 will always be post grant data)", sample_1_options)
+    if selected_sample_1 == "Forecasted Data":
+        sample_1 = curr_selection_forecasted_df
+    else:
+        sample_1 = pre_grant_df
+    
+    sample_2 = post_grant_df
 
     alpha = st.slider(
         label="Select an alpha value",
@@ -631,12 +673,12 @@ def stat_analysis_section(daily_transactions_df: pd.DataFrame, forecasted_df: pd
     )
 
     st.markdown(f"#### This means that we are ***{round((1 - (alpha)) * 100, 4)}%*** confident in our results.")
-    
+
     st.divider()
 
     st.subheader("T-Test Results")
 
-    aggregated_metrics = aggregate_split_datasets_by_metrics([(pre_grant_df, post_grant_df)], [selected_metric])
+    aggregated_metrics = aggregate_split_datasets_by_metrics([(sample_1, sample_2)], [selected_metric])
 
     # conduct the t-test and return the results
     metric_table = determine_statistics(aggregated_metrics[0][0], aggregated_metrics[0][1])

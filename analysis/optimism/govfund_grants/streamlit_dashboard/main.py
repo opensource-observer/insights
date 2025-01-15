@@ -26,11 +26,6 @@ from sections.core_metrics_section import core_metrics_section
 from sections.tvl_section import tvl_section
 from sections.statistical_analysis_section import stat_analysis_section
 
-from sections.overview_section import overview_section
-from sections.core_metrics_section import core_metrics_section
-from sections.tvl_section import tvl_section
-from sections.statistical_analysis_section import stat_analysis_section
-
 # display the detailed description and overview of each aspect of the project
 def display_dashboard_overview() -> None:
     st.subheader("Dashboard Overview")

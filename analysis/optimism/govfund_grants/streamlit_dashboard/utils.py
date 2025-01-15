@@ -255,3 +255,18 @@ def save_datasets(project_name: str, datasets: Dict[str, pd.DataFrame], data_pat
     for dataset_name, dataset in datasets.items():
         # save each dataset as a CSV file
         dataset.to_csv(f"{project_path}/{clean_name}_{dataset_name}.csv", index=False)
+
+# save the tvl dataset at the passed protocol 
+def save_tvl_dataset(data_path: str, dataset_label: str, service_account_path: str, use_streamlit_secrets: bool, protocol: str) -> None:
+    from queries.defillama import query_tvl_data_from_bq
+    
+    # connect to the bigquery client
+    client = connect_bq_client(service_account_path=service_account_path, use_streamlit_secrets=use_streamlit_secrets)
+
+    # query the tvl data from bigquery
+    chain_tvls_df, tvl_df, tokens_in_usd_df, tokens_df = query_tvl_data_from_bq(client=client, protocol=protocol)
+
+    # save the datasets
+    chain_tvls_df.to_csv(f"{data_path}{dataset_label}_chain_tvls.csv", index=False)
+    tvl_df.to_csv(f"{data_path}{dataset_label}_tvl.csv", index=False)
+    tokens_in_usd_df.to_csv(f"{data_path}{dataset_label}_tokens_in_usd.csv", index=False)

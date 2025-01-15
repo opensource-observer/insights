@@ -70,9 +70,8 @@ def display_op_kpis_and_vis_for_core_metrics(
     else:
         # use precomputed data aggregated by transaction date
         data_grouped = grouped_by_date[['transaction_date', selected_metric]]
-        # Use precomputed data aggregated by transaction date
-        data_grouped = grouped_by_date[['transaction_date', selected_metric]]
 
+    # ensure transaction_date is a date object
     data_grouped['transaction_date'] = pd.to_datetime(data_grouped['transaction_date']).dt.date
     
     min_date = data_grouped['transaction_date'].min()
