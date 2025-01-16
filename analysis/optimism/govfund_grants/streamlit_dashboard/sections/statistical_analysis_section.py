@@ -214,7 +214,7 @@ def adjusted_tvl_metrics(filtered_chain_tvl_df: pd.DataFrame, grant_date: dateti
     return updated_tvl_metrics
 
 # function to visualize the significance of the t-test
-def plot_ttest_streamlit(selected_metric_stats: pd.DataFrame, alpha: float) -> None:
+def plot_ttest_distribution(selected_metric_stats: pd.DataFrame, alpha: float) -> None:
 
     dof = selected_metric_stats['degrees_of_freedom'].iloc[0]
 
@@ -667,7 +667,7 @@ def stat_analysis_section(daily_transactions_df: pd.DataFrame, forecasted_df: pd
     alpha = st.slider(
         label="Select an alpha value",
         min_value=0.01,
-        max_value=1.0,
+        max_value=0.99,
         value=0.05,  # default value
         step=0.01   # step size
     )
@@ -689,4 +689,4 @@ def stat_analysis_section(daily_transactions_df: pd.DataFrame, forecasted_df: pd
 
     # display the t-test distribution plot
     ttest_distribution_content()
-    plot_ttest_streamlit(selected_metric_stats=metric_table, alpha=alpha)
+    plot_ttest_distribution(selected_metric_stats=metric_table, alpha=alpha)

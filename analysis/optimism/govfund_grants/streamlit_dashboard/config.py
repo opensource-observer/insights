@@ -15,9 +15,6 @@ from datetime import datetime
 # the project name for the bigquery project
 BIGQUERY_PROJECT_NAME = 'oso-data-436717'
 
-# define the significance threshold
-P_VALUE = 0.05
-
 # where the dictionary mapping each project to it's respective defi llama protocol is stored
 DEFI_LLAMA_PROTOCOLS_PATH = "defillama.json"
 # where the dictionary of the grants to be displayed is stored

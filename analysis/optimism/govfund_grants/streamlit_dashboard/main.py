@@ -18,13 +18,13 @@ from utils import (read_in_stored_dfs_for_projects,
 from config import (GRANTS_PATH, 
                     DEFI_LLAMA_PROTOCOLS_PATH,
                     SERVICE_ACCOUNT_PATH,
-                    STORED_DATA_PATH,
-                    P_VALUE)
+                    STORED_DATA_PATH)
 
 from sections.overview_section import overview_section
 from sections.core_metrics_section import core_metrics_section
 from sections.tvl_section import tvl_section
 from sections.statistical_analysis_section import stat_analysis_section
+from sections.all_projects_section import all_projects_section
 
 # display the detailed description and overview of each aspect of the project
 def display_dashboard_overview() -> None:
@@ -68,54 +68,6 @@ def display_dashboard_overview() -> None:
             A dedicated explanation on interpreting these results is available at the section for deeper understanding.
         """)
 
-# highlight the cells based on the increase or decrease condition
-def highlight_changes(val):
-    if val == "increase":
-        return 'background-color: green'
-    elif val == "decrease":
-        return 'background-color: red'
-    return ''
-
-# create the high level overview table of all of the projects
-def high_level_overview_table(df: pd.DataFrame) -> pd.DataFrame:
-    # flatten the column names to simplify processing
-    df.columns = [f"{col[0]}: {col[1]}" for col in df.columns]
-
-    # initialize a dictionary to hold the simplified columns
-    simplified_data = {
-        "Project Name": df["General Info: Project Name"],
-        "Round": df["General Info: Round"],
-        "Cycle": df["General Info: Cycle"],
-        "Status": df["General Info: Status"],
-        "Amount": df["General Info: Amount"],
-        "Date Range": df["General Info: Date Range"],
-    }
-
-    # process each metric to create a single column summarizing the result
-    metric_list = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Net Transferred", "TVL"]
-
-    for metric in metric_list:
-        percent_change_col = f"{metric}: Percent Change"
-        p_value_col = f"{metric}: P Value"
-
-        # apply logic to categorize results based on percent change and p value
-        simplified_data[metric] = df.apply(
-            lambda row: (
-                "N/A" if row[percent_change_col] == "N/A" or row[p_value_col] == "N/A" or pd.isna(row[percent_change_col]) or pd.isna(row[p_value_col]) else
-                "decrease" if row[percent_change_col] < 0 and row[p_value_col] < P_VALUE else
-                "increase" if row[percent_change_col] > 0 and row[p_value_col] < P_VALUE else
-                "no change"
-            ),
-            axis=1
-        )
-
-    # create a new DataFrame with the simplified structure
-    simplified_df = pd.DataFrame(simplified_data)
-    simplified_df = simplified_df.T
-    simplified_df.columns = simplified_df.iloc[0]
-    simplified_df = simplified_df.iloc[1:]
-
-    return simplified_df
 
 def main() -> None:
     # display title and description
@@ -147,17 +99,7 @@ def main() -> None:
     st.divider()
 
     with overview_table:
-        table = high_level_overview_table(ttest_results)
-        table.rename_axis("", inplace=True)
-        styled_table = table.style.applymap(highlight_changes)  # highlight only metric columns
-        st.dataframe(
-            styled_table, 
-            height=35*len(table)+38,
-            column_config={
-                project: st.column_config.TextColumn(width="medium")
-                for project in list(table.columns) + [""]
-            }
-        )
+        all_projects_section(ttest_results=ttest_results)
 
     with by_project: 
 
