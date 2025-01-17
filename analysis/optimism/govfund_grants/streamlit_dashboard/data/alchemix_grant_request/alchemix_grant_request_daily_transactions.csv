@@ -1,4 +1,4 @@
-transaction_date,address,transaction_cnt,active_users,total_op_transferred,unique_users,total_op_transferred_in_tokens,cum_op_transferred
+transaction_date,address,transaction_cnt,active_users,total_transferred,unique_users,total_transferred_in_tokens,cum_transferred
 2024-07-01,0xc224bf25dcc99236f00843c7d8c4194abe8aa94a,2,1,0,1,0.0,0
 2024-07-01,0x343910697c03477e5cc0d386ffa5133d1a827ad7,0,0,0,0,0.0,0
 2024-07-01,0xe04bb5b4de60fa2fba69a93ade13a8b3b569d5b4,0,0,0,0,0.0,0

@@ -1,4 +1,4 @@
-transaction_date,address,direction,cnt,total_op_transferred,total_op_transferred_in_tokens,net_op_transferred,net_op_transferred_in_tokens
+transaction_date,address,direction,cnt,total_transferred,total_transferred_in_tokens,net_transferred,net_transferred_in_tokens
 2024-06-27,0x0001ed56e6cf24590ead27364fd9b3d89c203e4e,in,1,0,0.0,0,0.0
 2024-06-29,0x000b7a8b92f18375b71a03bdb3b6f26d1990597d,in,1,0,0.0,0,0.0
 2024-06-24,0x0010b97bf096a8753d2470379fb8d1c677323857,in,1,0,0.0,0,0.0

@@ -1,4 +1,4 @@
-date,forecasted_transaction_cnt,forecasted_active_users,forecasted_unique_users,forecasted_total_op_transferred,forecasted_cum_op_transferred_in_tokens
+date,forecasted_transaction_cnt,forecasted_active_users,forecasted_unique_users,forecasted_total_transferred,forecasted_cum_transferred_in_tokens
 2024-09-01,9.082154949711155,12.668206338727387,5.266804259555504,6427438292.372574,-1130.8929029961091
 2024-09-02,7.449471309250422,5.1166043099497545,6.103483873100735,7294466971.348544,-4363.317641236696
 2024-09-03,7.828808492211137,8.727721850784524,6.113544044693391,8121023703.162917,3737.1156560780073

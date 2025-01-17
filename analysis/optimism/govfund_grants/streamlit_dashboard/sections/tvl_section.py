@@ -3,16 +3,16 @@ from datetime import datetime
 import plotly.express as px
 import numpy as np
 import pandas as pd
+from typing import Optional
 
-from config import GRANT_DATE
 from utils import assign_grant_label, safe_execution
 
 # plot tvl over time as a line chart
-def tvl_over_time_chart(tvl_df: pd.DataFrame) -> None:
+def tvl_over_time_chart(tvl_df: pd.DataFrame, grant_date: datetime) -> None:
 
     # filter to just show YTD
     filtered_tvl_df = tvl_df[tvl_df['readable_date'] >= datetime(2024, 1, 1)]
-    filtered_tvl_df['grant_label'] = filtered_tvl_df.apply(assign_grant_label, axis=1)
+    filtered_tvl_df['grant_label'] = filtered_tvl_df.apply(assign_grant_label, axis=1, grant_date=grant_date)
 
     # pivot the dataset so pre grant and post grant have their own columns
     pivoted_tvl_df = filtered_tvl_df.pivot(index='readable_date', columns='grant_label', values='totalLiquidityUSD')
@@ -35,11 +35,11 @@ def tvl_over_time_chart(tvl_df: pd.DataFrame) -> None:
     st.plotly_chart(fig)
 
 # plot tvl over time as a line chart, with chain and token selection offered for users
-def tvl_by_chain_and_token_chart(chain_tvls_df: pd.DataFrame) -> None:
+def tvl_by_chain_and_token_chart(chain_tvls_df: pd.DataFrame, grant_date: datetime) -> None:
 
     # filter data to start at the beginning of the year
     filtered_chain_tvl_df = chain_tvls_df[chain_tvls_df['readable_date'] >= datetime(2024, 1, 1)]
-    filtered_chain_tvl_df['grant_label'] = filtered_chain_tvl_df.apply(assign_grant_label, axis=1)
+    filtered_chain_tvl_df['grant_label'] = filtered_chain_tvl_df.apply(assign_grant_label, axis=1, grant_date=grant_date)
 
     # allow user to select tokens
     all_chain_options = [f'All {chain} tokens' for chain in filtered_chain_tvl_df['chain'].unique()]
@@ -99,22 +99,28 @@ def tvl_by_chain_and_token_chart(chain_tvls_df: pd.DataFrame) -> None:
     st.plotly_chart(fig)
 
 # create the section that displays both tvl over time line charts
-def tvl_over_time_section(tvl_df: pd.DataFrame, chain_tvls_df: pd.DataFrame) -> None:
+def tvl_over_time_section(tvl_df: pd.DataFrame, chain_tvls_df: pd.DataFrame, grant_date: datetime) -> None:
 
     st.subheader("TVL Trends Over Time (YTD)")
     high_level, focused = st.tabs(['Overview Across Chains', 'Detailed by Chain and Token'])
 
     with high_level:
-        tvl_over_time_chart(tvl_df)
+        try:
+            tvl_over_time_chart(tvl_df=tvl_df, grant_date=grant_date)
+        except:
+            st.warning("Error occured while creating these visualizations")
     
     with focused:
-        tvl_by_chain_and_token_chart(chain_tvls_df)
+        try:
+            tvl_by_chain_and_token_chart(chain_tvls_df=chain_tvls_df, grant_date=grant_date)
+        except:
+            st.warning("Error occured while creating these visualizations")
 
 # plot tvl across all chains, comparing pre and post grant numbers
-def tvl_across_chains_chart(chain_tvls_df: pd.DataFrame) -> None:
+def tvl_across_chains_chart(chain_tvls_df: pd.DataFrame, grant_date: datetime) -> None:
     # group by chain and sum the TVL values for pre- and post-grant periods
-    chain_tvl_pre_grant = chain_tvls_df[chain_tvls_df['readable_date'] < GRANT_DATE].groupby('chain')['value'].sum().reset_index()
-    chain_tvl_post_grant = chain_tvls_df[chain_tvls_df['readable_date'] >= GRANT_DATE].groupby('chain')['value'].sum().reset_index()
+    chain_tvl_pre_grant = chain_tvls_df[chain_tvls_df['readable_date'] < grant_date].groupby('chain')['value'].sum().reset_index()
+    chain_tvl_post_grant = chain_tvls_df[chain_tvls_df['readable_date'] >= grant_date].groupby('chain')['value'].sum().reset_index()
 
     # filter out rows with non-positive values (to avoid log errors)
     chain_tvl_pre_grant = chain_tvl_pre_grant[chain_tvl_pre_grant['value'] > 0]
@@ -155,20 +161,20 @@ def tvl_across_chains_chart(chain_tvls_df: pd.DataFrame) -> None:
     st.plotly_chart(fig)
 
 # plot tvl of each token as a bar chart
-def tvl_across_tokens_chart(tokens_in_usd_df: pd.DataFrame) -> None:
+def tvl_across_tokens_chart(tokens_in_usd_df: pd.DataFrame, grant_date: datetime) -> None:
 
     # group by token and sum the TVL values
-    token_tvl_pre_grant = tokens_in_usd_df[tokens_in_usd_df['readable_date'] < GRANT_DATE].groupby('token')['value'].sum().reset_index()
-    token_tvl_post_grant = tokens_in_usd_df[tokens_in_usd_df['readable_date'] >= GRANT_DATE].groupby('token')['value'].sum().reset_index()
+    token_tvl_pre_grant = tokens_in_usd_df[tokens_in_usd_df['readable_date'] < grant_date].groupby('token')['value'].sum().reset_index()
+    token_tvl_post_grant = tokens_in_usd_df[tokens_in_usd_df['readable_date'] >= grant_date].groupby('token')['value'].sum().reset_index()
 
     # filter out rows with non-positive values (to avoid log errors)
     token_tvl_pre_grant = token_tvl_pre_grant[token_tvl_pre_grant['value'] > 0]
     token_tvl_post_grant = token_tvl_post_grant[token_tvl_post_grant['value'] > 0]
 
     # compute the log of the TVL values and drop the original values
-    token_tvl_pre_grant['pre_grant'] = np.log(token_tvl_pre_grant['value'])
+    token_tvl_pre_grant['pre grant'] = np.log(token_tvl_pre_grant['value'])
     token_tvl_pre_grant.drop('value', axis=1, inplace=True)
-    token_tvl_post_grant['post_grant'] = np.log(token_tvl_post_grant['value'])
+    token_tvl_post_grant['post grant'] = np.log(token_tvl_post_grant['value'])
     token_tvl_post_grant.drop('value', axis=1, inplace=True)
 
     # merge the two tables together
@@ -251,11 +257,11 @@ def daily_tvl_changes_chart(tvl_df: pd.DataFrame) -> None:
     st.plotly_chart(fig)
 
 # plot the volatility of each chain with allowing for users to select target tokens
-def tvl_volatility_by_chain_chart(chain_tvls_df: pd.DataFrame) -> None:
+def tvl_volatility_by_chain_chart(chain_tvls_df: pd.DataFrame, grant_date: datetime) -> None:
     # calculate daily changes
     chain_tvls_df['daily_change'] = chain_tvls_df.groupby(['chain', 'token'])['value'].diff()
     chain_tvls_df.dropna(subset=['daily_change'], inplace=True)
-    chain_tvls_df['grant_label'] = chain_tvls_df.apply(assign_grant_label, axis=1)
+    chain_tvls_df['grant_label'] = chain_tvls_df.apply(assign_grant_label, axis=1, grant_date=grant_date)
 
     # user selects tokens
     token_options = ["All tokens"] + list(chain_tvls_df['token'].unique())
@@ -307,7 +313,7 @@ def tvl_volatility_by_chain_chart(chain_tvls_df: pd.DataFrame) -> None:
     st.plotly_chart(fig)
 
 # create the section that displays the plots surrounding the tvl distribution
-def tvl_distribution_section(chain_tvls_df: pd.DataFrame, tvl_df: pd.DataFrame) -> None:
+def tvl_distribution_section(chain_tvls_df: pd.DataFrame, tvl_df: pd.DataFrame, grant_date: datetime) -> None:
 
     st.subheader("Distribution of Relative Daily Changes in TVL (YTD)")
 
@@ -322,33 +328,46 @@ def tvl_distribution_section(chain_tvls_df: pd.DataFrame, tvl_df: pd.DataFrame) 
     tvl_df['relative_change'] = tvl_df['tvl_diff'] / tvl_df['totalLiquidityUSD'].shift(1)
 
     # assign pre/post-grant labels
-    tvl_df['grant_label'] = tvl_df.apply(assign_grant_label, axis=1)
+    tvl_df['grant_label'] = tvl_df.apply(assign_grant_label, axis=1, grant_date=grant_date)
 
     # define tabs
     tab1, tab2, tab3 = st.tabs(['Distribution of Daily Changes', 'Daily Changes Over Time', 'Volatility by Chain'])
 
     with tab1:
-        tvl_daily_changes_chart(tvl_df)
+        try:
+            tvl_daily_changes_chart(tvl_df)
+        except:
+            st.warning("Error occured while creating these visualizations")
     
     with tab2:
-        daily_tvl_changes_chart(tvl_df)
+        try:
+            daily_tvl_changes_chart(tvl_df)
+        except:
+            st.warning("Error occured while creating these visualizations")
 
     with tab3:
-        tvl_volatility_by_chain_chart(chain_tvls_df)
-
+        try:
+            tvl_volatility_by_chain_chart(chain_tvls_df, grant_date)
+        except:
+            st.warning("Error occured while creating these visualizations")
 
 # main function to visualize the full tvl section
-def tvl_section(chain_tvls_df: pd.DataFrame, tvl_df: pd.DataFrame, tokens_in_usd_df: pd.DataFrame) -> None:
+def tvl_section(grant_date: datetime, chain_tvls_df: Optional[pd.DataFrame] = None, tvl_df: Optional[pd.DataFrame] = None, tokens_in_usd_df: Optional[pd.DataFrame] = None) -> None:
 
-    chain_tvls_df['readable_date'] = pd.to_datetime(chain_tvls_df['readable_date'])
-    tvl_df['readable_date'] = pd.to_datetime(tvl_df['readable_date'])
-    tokens_in_usd_df['readable_date'] = pd.to_datetime(tokens_in_usd_df['readable_date'])
+    if chain_tvls_df is not None and not chain_tvls_df.empty:
+        chain_tvls_df['readable_date'] = pd.to_datetime(chain_tvls_df['readable_date'])
+    
+    if tvl_df is not None and not tvl_df.empty:
+        tvl_df['readable_date'] = pd.to_datetime(tvl_df['readable_date'])
+    
+    if tokens_in_usd_df is not None and not tokens_in_usd_df.empty:
+        tokens_in_usd_df['readable_date'] = pd.to_datetime(tokens_in_usd_df['readable_date'], format='%Y-%m-%d %H:%M:%S', errors='coerce')
     
     try:
     # execute each section safely (don't display and skip the plot if the execution fails)
-        safe_execution(tvl_over_time_section, tvl_df, chain_tvls_df)
-        safe_execution(tvl_across_chains_chart, chain_tvls_df)
-        safe_execution(tvl_across_tokens_chart, tokens_in_usd_df)
-        safe_execution(tvl_distribution_section, chain_tvls_df, tvl_df)
+        safe_execution(tvl_over_time_section, tvl_df, chain_tvls_df, grant_date)
+        safe_execution(tvl_across_chains_chart, chain_tvls_df, grant_date)
+        safe_execution(tvl_across_tokens_chart, tokens_in_usd_df, grant_date)
+        safe_execution(tvl_distribution_section, chain_tvls_df, tvl_df, grant_date)
     except Exception:
         pass

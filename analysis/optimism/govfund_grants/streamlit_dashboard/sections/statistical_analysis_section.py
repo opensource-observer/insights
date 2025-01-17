@@ -1,17 +1,14 @@
-from typing import Optional
 from datetime import datetime
 import plotly.graph_objects as go
 import plotly.express as px
 import streamlit as st
 import pandas as pd
 import numpy as np
-from typing import Tuple
-from pmdarima import auto_arima
+from typing import Tuple, Optional
 from scipy.stats import t
 
 from processing import split_dataset_by_date
 from utils import assign_grant_label, determine_date_col
-from config import GRANT_DATE
 
 ##### Hypothesis Testing Section #####
 
@@ -54,6 +51,58 @@ def aggregate_split_datasets_by_metrics(split_datasets: list[tuple[pd.DataFrame,
 
     return aggregated_metrics
 
+# sum each datasets' metrics over all of the relevant addresses and then merge all 3 datasets
+def aggregate_datasets(daily_transactions_df: pd.DataFrame, tvl_df: pd.DataFrame, grant_date: datetime, net_transaction_flow_df: Optional[pd.DataFrame] = None) -> pd.DataFrame:
+    
+    # rename date columns so they all align
+    daily_transactions_df.rename(columns={'transaction_date': 'date'}, inplace=True)
+    daily_transactions_df['date'] = pd.to_datetime(daily_transactions_df['date'])
+
+    if net_transaction_flow_df is not None and not net_transaction_flow_df.empty: 
+        net_transaction_flow_df.rename(columns={"transaction_date": 'date'}, inplace=True)
+        net_transaction_flow_df['date'] = pd.to_datetime(net_transaction_flow_df['date'])
+
+    if tvl_df is not None and not tvl_df.empty: 
+        tvl_df.drop('date', axis=1, inplace=True)
+        tvl_df.rename(columns={'readable_date': 'date'}, inplace=True)
+        tvl_df['date'] = pd.to_datetime(tvl_df['date'])
+
+    # sum each day's metric over all of the relevant addresses
+    daily_transactions_df = daily_transactions_df.groupby('date')[['transaction_cnt', 'active_users', 'unique_users', 'total_transferred']].sum().reset_index()
+    
+    if net_transaction_flow_df is not None and not net_transaction_flow_df.empty: 
+        net_transaction_flow_df = net_transaction_flow_df.groupby('date')[['net_transferred_in_tokens']].sum().reset_index()
+        net_transaction_flow_df['date'] = pd.to_datetime(net_transaction_flow_df['date'])
+    
+    if tvl_df is not None and not tvl_df.empty: 
+        tvl_df = tvl_df.groupby('date')['totalLiquidityUSD'].sum().reset_index()
+
+    # rename columns so for when they're displayed
+    agg_df = daily_transactions_df.copy()
+    agg_df.rename(columns={'transaction_cnt': 'Transaction Count', 
+                            'active_users': 'Active Users', 
+                            'unique_users': 'Unique Users',
+                            'total_transferred': 'Total Transferred',
+                            'cum_transferred': 'Cumulative Transferred'}, inplace=True)
+
+    if net_transaction_flow_df is not None and not net_transaction_flow_df.empty:
+        agg_df = agg_df.merge(net_transaction_flow_df, on='date', how='outer')
+        agg_df['net_transferred_in_tokens'].fillna(0, inplace=True)
+        agg_df.rename(columns={'net_transferred_in_tokens': 'Net Transferred'}, inplace=True)
+
+    if tvl_df is not None and not tvl_df.empty: 
+        tvl_df = tvl_df[tvl_df['date'] >= min(agg_df['date'])]
+        agg_df = agg_df.merge(tvl_df, on='date', how='outer')
+        agg_df['totalLiquidityUSD'].fillna(0, inplace=True)
+        agg_df.rename(columns={'totalLiquidityUSD': 'TVL'}, inplace=True)
+
+    agg_df[['Transaction Count', 'Active Users', 'Unique Users', 'Total Transferred']].fillna(0, inplace=True)
+    agg_df['date'] = pd.to_datetime(agg_df['date'])
+    # label rows based on whether they were pre or post grant
+    agg_df['grant_label'] = agg_df.apply(assign_grant_label, axis=1, grant_date=grant_date)
+
+    return agg_df
+
 # 2-sample hypothesis test
 def test_statistic(sample1: pd.Series, sample2: pd.Series) -> tuple[float, float]:
     # define our constants
@@ -66,7 +115,7 @@ def test_statistic(sample1: pd.Series, sample2: pd.Series) -> tuple[float, float
     if var_ratio <= 2 and var_ratio >= 0.5:
         # variances equal so use students t-test (pooled variance)
         s_pooled_squared = ((n1 - 1) * s1_squared + (n2 - 1) * s2_squared) / (n1 + n2 - 2)
-        t_stat = (mu1 - mu2) / s_pooled_squared * np.sqrt((1/n1) + (1/n2))
+        t_stat = (mu1 - mu2) / np.sqrt(s_pooled_squared * ((1/n1) + (1/n2)))
         df = n1 + n2 - 2
         
     else:
@@ -270,147 +319,44 @@ def plot_ttest_streamlit(selected_metric_stats: pd.DataFrame, alpha: float) -> N
 
 ##### Synthetic Controls Section #####
 
-# return a partially bootstrapped sample of the input series while preserving the original order
-def bootstrap_series(series: np.ndarray, rng: np.random.Generator, bootstrap_ratio: float = 0.33) -> np.ndarray:
-    n = len(series)
-    num_bootstrap = int(bootstrap_ratio * n)
-
-    # randomly choose indices to replace
-    bootstrap_indices = rng.choice(n, size=num_bootstrap, replace=False)
-
-    # copy the series to avoid modifying the original
-    bootstrapped_series = series.copy()
-
-    # replace selected indices with values randomly sampled from the series
-    replacement_values = rng.choice(series, size=num_bootstrap, replace=True)
-    bootstrapped_series[bootstrap_indices] = replacement_values
-
-    return bootstrapped_series
-
-# train an arima model on the pre grant data to forecast what the post grant data would look like if the grant never occured
-def forecast_based_on_pregrant(
-        pre_grant_df: pd.DataFrame,
-        post_grant_df: pd.DataFrame,
-        target_col: str,
-        bootstrap_ratio: float,
-        seasonality: int=0,
-        chunk_size: int=3,  # number of days to predict at each iteration
-        noise_std: float=0.25,  # amount of relative noise for day-to-day variability
-        random_state: np.random.RandomState=None,
-        handle_negative: bool=False
-    ) -> pd.DataFrame:
-
-    rng = np.random.RandomState(random_state)
-
-    # identify the date column
-    date_col = determine_date_col(df=pre_grant_df)
-
-    # aggregate and sort the data
-    pre_grant_df = pre_grant_df.groupby(date_col)[target_col].sum().reset_index()
-    post_grant_df = post_grant_df.groupby(date_col)[target_col].sum().reset_index()
-
-    pre_grant_df[date_col] = pd.to_datetime(pre_grant_df[date_col])
-    post_grant_df[date_col] = pd.to_datetime(post_grant_df[date_col])
-
-    y = pre_grant_df[target_col].values
-    # if the dataset contains negative values offset them so everything is positive (since we are using a log function)
-    if handle_negative:
-        offset = abs(y.min()) + 1 if y.min() < 0 else 0
-        y = y + offset
-
-    y_train_trans = np.log1p(y)  # log-transform to stabilize variance
-
-    predictions = []
-    # iterate until predictions are made for every day of the post-grant period
-    predictions_left = len(post_grant_df)
-    while predictions_left > 0:
-        # how much to forecast
-        forecast_window = min(chunk_size, predictions_left)
-
-        # bootstrapping to combat overfitting
-        if bootstrap_ratio > 0:
-            y_curr = bootstrap_series(y_train_trans, rng, bootstrap_ratio)
-        else:
-            y_curr = y_train_trans
-
-        # fit the arima model
-        model = auto_arima(
-            y_curr,
-            seasonal=(seasonality > 0),
-            m=seasonality,  # weekly seasonality
-            suppress_warnings=True,
-            stepwise=True,
-            trace=False,
-            error_action='ignore'
-        )
-
-        # forecast
-        forecasted_log = model.predict(n_periods=forecast_window)
-        forecasted_vals = np.expm1(forecasted_log)
-
-        # add variability with noise
-        noise_factors = rng.normal(loc=1.0, scale=noise_std, size=forecast_window)
-        forecasted_vals_noisy = forecasted_vals * noise_factors
-
-        # subtract offset to return to original data
-        if handle_negative:
-            forecasted_vals_noisy = forecasted_vals_noisy - offset
-
-        predictions.extend(forecasted_vals_noisy)
-
-        # update the training set with the forecast
-        forecasted_log_noisy = np.log1p(np.clip(forecasted_vals_noisy, 1e-9, None))
-        y_train_trans = np.concatenate([y_train_trans, forecasted_log_noisy])
-
-        predictions_left -= forecast_window
-
-    # create a dataframe for results
-    result_df = pd.DataFrame({
-        'date': post_grant_df[date_col],
-        f'forecasted_{target_col}': predictions
-    })
-
-    return result_df
-
-# sum each datasets' metrics over all of the relevant addresses and then merge all 3 datasets
-def aggregate_datasets(daily_transactions_df: pd.DataFrame, net_op_flow_df: pd.DataFrame, tvl_df: pd.DataFrame) -> pd.DataFrame:
+# concat the forecasted metrics onto the pre and post grant data with it's respective label
+def concat_aggregate_with_forecasted(aggregated_dataset: pd.DataFrame, forecasted_df: pd.DataFrame) -> pd.DataFrame:
+    forecasted_df = forecasted_df.copy()
+    forecasted_df['grant_label'] = 'forecast'
     
-    # rename date columns so they all align
-    daily_transactions_df.rename(columns={'transaction_date': 'date'}, inplace=True)
-    daily_transactions_df['date'] = pd.to_datetime(daily_transactions_df['date'])
-    net_op_flow_df.rename(columns={'transaction_date': 'date'}, inplace=True)
-    if tvl_df is not None: 
-        tvl_df.drop('date', axis=1, inplace=True)
-        tvl_df.rename(columns={'readable_date': 'date'}, inplace=True)
-        tvl_df['date'] = pd.to_datetime(tvl_df['date'])
+    # rename the columns so they are the same and can be concatted
+    rename_dict = {
+        col: col.replace("forecasted_", "")
+        for col in forecasted_df.columns
+    }
+    forecasted_df.rename(columns=rename_dict, inplace=True)
 
-    # sum each day's metric over all of the relevant addresses
-    daily_transactions_df = daily_transactions_df.groupby('date')[['transaction_cnt', 'active_users', 'unique_users', 'total_op_transferred']].sum().reset_index()
-    net_op_flow_df = net_op_flow_df.groupby('date')[['net_op_transferred_in_tokens']].sum().reset_index()
-    net_op_flow_df['date'] = pd.to_datetime(net_op_flow_df['date'])
-    if tvl_df is not None: 
-        tvl_df = tvl_df.groupby('date')['totalLiquidityUSD'].sum().reset_index()
-
-    # rename columns so for when they're displayed
-    agg_df = daily_transactions_df.merge(net_op_flow_df, on='date', how='outer')
-    agg_df.rename(columns={'transaction_cnt': 'Transaction Count', 
+    # rename the columns for when they're displayed
+    forecasted_df.rename(columns={'transaction_cnt': 'Transaction Count', 
                            'active_users': 'Active Users', 
                            'unique_users': 'Unique Users',
-                           'total_op_transferred': 'Total OP Transferred',
-                           'net_op_transferred_in_tokens': 'Net OP Transferred'}, inplace=True)
-    if tvl_df is not None: 
-        tvl_df = tvl_df[tvl_df['date'] >= min(agg_df['date'])]
-        agg_df = agg_df.merge(tvl_df, on='date', how='outer')
-        agg_df.rename(columns={'totalLiquidityUSD': 'TVL'}, inplace=True)
+                           'total_transferred': 'Total Transferred',
+                           'net_transferred_in_tokens': 'Net Transferred'}, inplace=True)
+    if 'cum_transferred_in_tokens' in forecasted_df.columns:
+        forecasted_df.drop('cum_transferred_in_tokens', axis=1, inplace=True)
+    if 'totalLiquidityUSD' in forecasted_df.columns:
+        forecasted_df.rename(columns={'totalLiquidityUSD': 'TVL'}, inplace=True)
 
-    agg_df['date'] = pd.to_datetime(agg_df['date'])
-    # label rows based on whether they were pre or post grant
-    agg_df['grant_label'] = agg_df.apply(assign_grant_label, axis=1)
+    # concat the datasets
+    combined_df = pd.concat([aggregated_dataset, forecasted_df], ignore_index=True)
+    combined_df['date'] = pd.to_datetime(combined_df['date'])
+    combined_df['date'] = combined_df['date'].dt.date
+    combined_df = combined_df.sort_values('date')
 
-    return agg_df
+    return combined_df
 
 # plot the forecasted data against the pre and post grant data as a line chart
-def plot_forecast(curr_selection_df: pd.DataFrame, selected_metric: str, grant_date: datetime, dates: Tuple[datetime.date, datetime.date]) -> None:
+def plot_forecast(curr_selection_df: pd.DataFrame, selected_metric: str, grant_date: datetime, dates: Tuple[datetime.date, datetime.date]) -> None:   
+    # check if all forecast data for the selected metric is missing
+    if curr_selection_df.loc[curr_selection_df['grant_label'] == 'forecast', selected_metric].isna().all():
+        st.warning("No forecast data available for the selected metric.")
+        return
+    
     start_date, end_date = dates[0], dates[1]
 
     # plot
@@ -615,47 +561,15 @@ def ttest_distribution_content() -> None:
             - **Rejection Region**: If the test statistic lands here, the results are statistically significant.
         """)
 
-# concat the forecasted metrics onto the pre and post grant data with it's respective label
-def concat_aggregate_with_forecasted(aggregated_dataset: pd.DataFrame, forecasted_df: pd.DataFrame) -> pd.DataFrame:
-    forecasted_df = forecasted_df.copy()
-    forecasted_df['grant_label'] = 'forecast'
-    
-    # rename the columns so they are the same and can be concatted
-    rename_dict = {
-        col: col.replace("forecasted_", "")
-        for col in forecasted_df.columns
-    }
-    forecasted_df.rename(columns=rename_dict, inplace=True)
-
-    # rename the columns for when they're displayed
-    forecasted_df.rename(columns={'transaction_cnt': 'Transaction Count', 
-                           'active_users': 'Active Users', 
-                           'unique_users': 'Unique Users',
-                           'total_op_transferred': 'Total OP Transferred',
-                           'net_op_transferred_in_tokens': 'Net OP Transferred'}, inplace=True)
-    if 'totalLiquidityUSD' in forecasted_df.columns:
-        forecasted_df.rename(columns={'totalLiquidityUSD': 'TVL'}, inplace=True)
-
-    # concat the datasets
-    combined_df = pd.concat([aggregated_dataset, forecasted_df], ignore_index=True)
-    combined_df['date'] = pd.to_datetime(combined_df['date'])
-    combined_df['date'] = combined_df['date'].dt.date
-    combined_df = combined_df.sort_values('date')
-
-    return combined_df
-
 # main function to generate the full statistical analysis section
-def stat_analysis_section(daily_transactions_df: pd.DataFrame, net_op_flow_df: pd.DataFrame, tvl_df: pd.DataFrame=None, forecasted_df: pd.DataFrame=None) -> None:
+def stat_analysis_section(daily_transactions_df: pd.DataFrame, forecasted_df: pd.DataFrame, grant_date: datetime, net_transaction_flow_df: Optional[pd.DataFrame], tvl_df: Optional[pd.DataFrame]=None) -> None:
 
     # combine all of the metrics into the same dataset for easy and quick filtering
-    aggregated_dataset = aggregate_datasets(daily_transactions_df=daily_transactions_df, net_op_flow_df=net_op_flow_df, tvl_df=tvl_df)
-    if forecasted_df is not None:
-        combined_df = concat_aggregate_with_forecasted(aggregated_dataset, forecasted_df)
-    else:
-        combined_df = aggregated_dataset.copy()
-
+    aggregated_dataset = aggregate_datasets(daily_transactions_df=daily_transactions_df, net_transaction_flow_df=net_transaction_flow_df, tvl_df=tvl_df, grant_date=grant_date)
+    combined_df = concat_aggregate_with_forecasted(aggregated_dataset, forecasted_df)
+    
     # allow user to select a target metric
-    metric_options = aggregated_dataset.columns.drop(['date', 'grant_label'])
+    metric_options = combined_df.columns.drop(['date', 'grant_label'])
     selected_metric = st.selectbox("Select a target metric", metric_options)
     
     selected_metric_df = combined_df[['date', selected_metric, 'grant_label']]
@@ -675,19 +589,13 @@ def stat_analysis_section(daily_transactions_df: pd.DataFrame, net_op_flow_df: p
     start_date, end_date = dates[0], dates[1]
 
     curr_selection_df = selected_metric_df[(selected_metric_df['date'] >= start_date) & (selected_metric_df['date'] <= end_date)]
-    pre_grant_df, post_grant_df = split_dataset_by_date(curr_selection_df, GRANT_DATE)
+    pre_grant_df, post_grant_df = split_dataset_by_date(curr_selection_df, grant_date=grant_date)
 
     st.divider()
    
-    # display the forecast plot 
-    if forecasted_df is None and selected_metric == 'TVL':
-        forecasted_df = forecast_based_on_pregrant(pre_grant_df, post_grant_df, bootstrap_ratio=0, noise_std=0.05, target_col=selected_metric)
-    elif forecasted_df is None:
-        forecasted_df = forecast_based_on_pregrant(pre_grant_df, post_grant_df, bootstrap_ratio=0.33, target_col=selected_metric)
-
     forecasted_data_content()
     
-    plot_forecast(curr_selection_df=curr_selection_df, selected_metric=selected_metric, grant_date=GRANT_DATE, dates=(start_date, end_date))
+    plot_forecast(curr_selection_df=curr_selection_df, selected_metric=selected_metric, grant_date=grant_date, dates=(start_date, end_date))
     
     if len(pre_grant_df) < 10:
         st.warning("Not enough pre grant data points to conduct the t-test")
@@ -721,4 +629,4 @@ def stat_analysis_section(daily_transactions_df: pd.DataFrame, net_op_flow_df: p
 
     # display the t-test distribution plot
     ttest_distribution_content()
-    plot_ttest_streamlit(selected_metric, selected_metric_stats=metric_table, alpha=alpha)
+    plot_ttest_streamlit(selected_metric_stats=metric_table, alpha=alpha)

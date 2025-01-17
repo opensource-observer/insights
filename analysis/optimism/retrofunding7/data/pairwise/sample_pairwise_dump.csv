@@ -1,0 +1,125 @@
+,Onchain Project,Devtool Project,Devtool URL,Onchain Gas - 6 Months,Onchain Transactions - 6 Months,Devtool Star Count,Devtool Fork Count,Devtool Created Date,Devtool Language,License
+0,Synthetix,Blocknative,https://github.com/blocknative/web3-onboard,31.11641070993972,515495.0,868,515,2019-08-16 05:57:08+00:00,TypeScript,MIT License
+1,Kwenta,Blocknative,https://github.com/blocknative/sdk,4.298871167814712,172471.0,107,25,2019-08-08 04:57:50+00:00,TypeScript,MIT License
+2,Synthetix,Blocknative,https://github.com/blocknative/sdk,31.11641070993972,515495.0,107,25,2019-08-08 04:57:50+00:00,TypeScript,MIT License
+3,Across,Blocknative,https://github.com/blocknative/sdk,3.381811871050149,769731.0,107,25,2019-08-08 04:57:50+00:00,TypeScript,MIT License
+4,Perpetual Protocol,Blocknative,https://github.com/blocknative/sdk,8.13707754211869,145154.0,107,25,2019-08-08 04:57:50+00:00,TypeScript,MIT License
+5,Kwenta,Blocknative,https://github.com/blocknative/web3-onboard,4.298871167814712,172471.0,868,515,2019-08-16 05:57:08+00:00,TypeScript,MIT License
+6,Across,Blocknative,https://github.com/blocknative/web3-onboard,3.381811871050149,769731.0,868,515,2019-08-16 05:57:08+00:00,TypeScript,MIT License
+7,Synthetix,Cannon,https://github.com/usecannon/cannon,31.11641070993972,515495.0,106,23,2022-07-12 17:24:36+00:00,JavaScript,GNU General Public License v3.0
+8,Infinitism (ERC-4337) - Account Abstraction,Hardhat,https://github.com/nomicfoundation/hardhat,3.24867055529942,1495243.0,7418,1457,2018-04-14 22:20:59+00:00,TypeScript,Other
+9,Across,Hardhat,https://github.com/nomicfoundation/hardhat,3.381811871050149,769731.0,7418,1457,2018-04-14 22:20:59+00:00,TypeScript,Other
+10,Velodrome,Hardhat,https://github.com/nomicfoundation/hardhat,4.952631652057592,738721.0,7418,1457,2018-04-14 22:20:59+00:00,TypeScript,Other
+11,Kwenta,Hardhat,https://github.com/nomicfoundation/hardhat,4.298871167814712,172471.0,7418,1457,2018-04-14 22:20:59+00:00,TypeScript,Other
+12,Hyperlane,Hardhat,https://github.com/nomicfoundation/hardhat,5.363097028823558,256406.0,7418,1457,2018-04-14 22:20:59+00:00,TypeScript,Other
+13,Synthetix,Hardhat,https://github.com/nomicfoundation/hardhat,31.11641070993972,515495.0,7418,1457,2018-04-14 22:20:59+00:00,TypeScript,Other
+14,dHedge,Hardhat,https://github.com/nomicfoundation/hardhat,10.26776805796316,285481.0,7418,1457,2018-04-14 22:20:59+00:00,TypeScript,Other
+15,Across,IPFS,https://github.com/ipfs/js-ipfs,3.381811871050149,769731.0,7444,1248,2014-05-30 00:31:06+00:00,JavaScript,Other
+16,Synthetix,IPFS,https://github.com/ipfs/js-ipfs,31.11641070993972,515495.0,7444,1248,2014-05-30 00:31:06+00:00,JavaScript,Other
+17,dHedge,IPFS,https://github.com/ipfs/js-ipfs,10.26776805796316,285481.0,7444,1248,2014-05-30 00:31:06+00:00,JavaScript,Other
+18,Perpetual Protocol,IPFS,https://github.com/ipfs/js-ipfs,8.13707754211869,145154.0,7444,1248,2014-05-30 00:31:06+00:00,JavaScript,Other
+19,Kwenta,IPFS,https://github.com/ipfs/js-ipfs,4.298871167814712,172471.0,7444,1248,2014-05-30 00:31:06+00:00,JavaScript,Other
+20,Across,Jolly Roger and Hardhat-deploy,https://github.com/wighawag/hardhat-deploy,3.381811871050149,769731.0,1205,298,2020-03-19 15:42:44+00:00,TypeScript,MIT License
+21,Perpetual Protocol,Jolly Roger and Hardhat-deploy,https://github.com/wighawag/hardhat-deploy,8.13707754211869,145154.0,1205,298,2020-03-19 15:42:44+00:00,TypeScript,MIT License
+22,Hyperlane,Jolly Roger and Hardhat-deploy,https://github.com/wighawag/hardhat-deploy,5.363097028823558,256406.0,1205,298,2020-03-19 15:42:44+00:00,TypeScript,MIT License
+23,Velodrome,Jolly Roger and Hardhat-deploy,https://github.com/wighawag/hardhat-deploy,4.952631652057592,738721.0,1205,298,2020-03-19 15:42:44+00:00,TypeScript,MIT License
+24,Infinitism (ERC-4337) - Account Abstraction,Jolly Roger and Hardhat-deploy,https://github.com/wighawag/hardhat-deploy,3.24867055529942,1495243.0,1205,298,2020-03-19 15:42:44+00:00,TypeScript,MIT License
+25,Kwenta,Jolly Roger and Hardhat-deploy,https://github.com/wighawag/hardhat-deploy,4.298871167814712,172471.0,1205,298,2020-03-19 15:42:44+00:00,TypeScript,MIT License
+26,Kwenta,Lodestar,https://github.com/chainsafe/lodestar,4.298871167814712,172471.0,1224,312,2018-06-22 14:41:47+00:00,TypeScript,Apache License 2.0
+27,Synthetix,OpenZeppelin,https://github.com/openzeppelin/openzeppelin-test-helpers,31.11641070993972,515495.0,416,133,2018-11-30 13:57:15+00:00,JavaScript,MIT License
+28,Synthetix,OpenZeppelin,https://github.com/openzeppelin/openzeppelin-contracts,31.11641070993972,515495.0,25157,11854,2016-08-01 20:54:54+00:00,Solidity,MIT License
+29,Hyperlane,OpenZeppelin,https://github.com/openzeppelin/openzeppelin-contracts-upgradeable,5.363097028823558,256406.0,1012,440,2018-07-20 20:22:39+00:00,JavaScript,MIT License
+30,Across,OpenZeppelin,https://github.com/openzeppelin/openzeppelin-upgrades,3.381811871050149,769731.0,634,271,2020-06-19 20:03:11+00:00,TypeScript,MIT License
+31,Across,OpenZeppelin,https://github.com/openzeppelin/openzeppelin-contracts,3.381811871050149,769731.0,25157,11854,2016-08-01 20:54:54+00:00,Solidity,MIT License
+32,Across,OpenZeppelin,https://github.com/openzeppelin/openzeppelin-contracts-upgradeable,3.381811871050149,769731.0,1012,440,2018-07-20 20:22:39+00:00,JavaScript,MIT License
+33,Perpetual Protocol,OpenZeppelin,https://github.com/openzeppelin/solidity-docgen,8.13707754211869,145154.0,453,119,2018-01-08 01:13:23+00:00,TypeScript,MIT License
+34,Perpetual Protocol,OpenZeppelin,https://github.com/openzeppelin/openzeppelin-contracts-upgradeable,8.13707754211869,145154.0,1012,440,2018-07-20 20:22:39+00:00,JavaScript,MIT License
+35,dHedge,OpenZeppelin,https://github.com/openzeppelin/openzeppelin-contracts,10.26776805796316,285481.0,25157,11854,2016-08-01 20:54:54+00:00,Solidity,MIT License
+36,Hyperlane,OpenZeppelin,https://github.com/openzeppelin/openzeppelin-contracts,5.363097028823558,256406.0,25157,11854,2016-08-01 20:54:54+00:00,Solidity,MIT License
+37,Perpetual Protocol,OpenZeppelin,https://github.com/openzeppelin/openzeppelin-upgrades,8.13707754211869,145154.0,634,271,2020-06-19 20:03:11+00:00,TypeScript,MIT License
+38,Synthetix,OpenZeppelin,https://github.com/openzeppelin/openzeppelin-contracts-upgradeable,31.11641070993972,515495.0,1012,440,2018-07-20 20:22:39+00:00,JavaScript,MIT License
+39,Hyperlane,OpenZeppelin,https://github.com/openzeppelin/openzeppelin-upgrades,5.363097028823558,256406.0,634,271,2020-06-19 20:03:11+00:00,TypeScript,MIT License
+40,Perpetual Protocol,OpenZeppelin,https://github.com/openzeppelin/openzeppelin-contracts,8.13707754211869,145154.0,25157,11854,2016-08-01 20:54:54+00:00,Solidity,MIT License
+41,Velodrome,OpenZeppelin,https://github.com/openzeppelin/openzeppelin-contracts,4.952631652057592,738721.0,25157,11854,2016-08-01 20:54:54+00:00,Solidity,MIT License
+42,Infinitism (ERC-4337) - Account Abstraction,OpenZeppelin,https://github.com/openzeppelin/openzeppelin-contracts,3.24867055529942,1495243.0,25157,11854,2016-08-01 20:54:54+00:00,Solidity,MIT License
+43,TLX,OpenZeppelin,https://github.com/openzeppelin/merkle-tree,2.8384853427560226,87229.0,470,111,2022-10-24 17:08:31+00:00,TypeScript,MIT License
+44,Synthetix,OpenZeppelin,https://github.com/openzeppelin/openzeppelin-upgrades,31.11641070993972,515495.0,634,271,2020-06-19 20:03:11+00:00,TypeScript,MIT License
+45,Kwenta,OpenZeppelin,https://github.com/openzeppelin/openzeppelin-contracts-upgradeable,4.298871167814712,172471.0,1012,440,2018-07-20 20:22:39+00:00,JavaScript,MIT License
+46,Perpetual Protocol,OpenZeppelin,https://github.com/openzeppelin/openzeppelin-sdk,8.13707754211869,145154.0,431,199,2018-08-01 18:53:24+00:00,JavaScript,MIT License
+47,dHedge,OpenZeppelin,https://github.com/openzeppelin/openzeppelin-upgrades,10.26776805796316,285481.0,634,271,2020-06-19 20:03:11+00:00,TypeScript,MIT License
+48,dHedge,OpenZeppelin,https://github.com/openzeppelin/openzeppelin-contracts-upgradeable,10.26776805796316,285481.0,1012,440,2018-07-20 20:22:39+00:00,JavaScript,MIT License
+49,dHedge,OpenZeppelin,https://github.com/openzeppelin/openzeppelin-sdk,10.26776805796316,285481.0,431,199,2018-08-01 18:53:24+00:00,JavaScript,MIT License
+50,Synthetix,OpenZeppelin,https://github.com/openzeppelin/solidity-docgen,31.11641070993972,515495.0,453,119,2018-01-08 01:13:23+00:00,TypeScript,MIT License
+51,Kwenta,OpenZeppelin,https://github.com/openzeppelin/openzeppelin-contracts,4.298871167814712,172471.0,25157,11854,2016-08-01 20:54:54+00:00,Solidity,MIT License
+52,Kwenta,OpenZeppelin,https://github.com/openzeppelin/openzeppelin-upgrades,4.298871167814712,172471.0,634,271,2020-06-19 20:03:11+00:00,TypeScript,MIT License
+53,Perpetual Protocol,OpenZeppelin,https://github.com/openzeppelin/openzeppelin-test-helpers,8.13707754211869,145154.0,416,133,2018-11-30 13:57:15+00:00,JavaScript,MIT License
+54,Synthetix,Prettier Solidity,https://github.com/prettier-solidity/prettier-plugin-solidity,31.11641070993972,515495.0,731,75,2018-05-15 15:12:02+00:00,Solidity,MIT License
+55,Hyperlane,Prettier Solidity,https://github.com/prettier-solidity/prettier-plugin-solidity,5.363097028823558,256406.0,731,75,2018-05-15 15:12:02+00:00,Solidity,MIT License
+56,Perpetual Protocol,Prettier Solidity,https://github.com/prettier-solidity/prettier-plugin-solidity,8.13707754211869,145154.0,731,75,2018-05-15 15:12:02+00:00,Solidity,MIT License
+57,Velodrome,Prettier Solidity,https://github.com/prettier-solidity/prettier-plugin-solidity,4.952631652057592,738721.0,731,75,2018-05-15 15:12:02+00:00,Solidity,MIT License
+58,dHedge,Prettier Solidity,https://github.com/prettier-solidity/prettier-plugin-solidity,10.26776805796316,285481.0,731,75,2018-05-15 15:12:02+00:00,Solidity,MIT License
+59,Across,Prettier Solidity,https://github.com/prettier-solidity/prettier-plugin-solidity,3.381811871050149,769731.0,731,75,2018-05-15 15:12:02+00:00,Solidity,MIT License
+60,TLX,Prettier Solidity,https://github.com/prettier-solidity/prettier-plugin-solidity,2.8384853427560226,87229.0,731,75,2018-05-15 15:12:02+00:00,Solidity,MIT License
+61,Kwenta,Prettier Solidity,https://github.com/prettier-solidity/prettier-plugin-solidity,4.298871167814712,172471.0,731,75,2018-05-15 15:12:02+00:00,Solidity,MIT License
+62,Synthetix,Pyth Network,https://github.com/pyth-network/pyth-crosschain,31.11641070993972,515495.0,158,218,2021-11-08 11:03:15+00:00,TypeScript,Other
+63,Kwenta,Pyth Network,https://github.com/pyth-network/pyth-crosschain,4.298871167814712,172471.0,158,218,2021-11-08 11:03:15+00:00,TypeScript,Other
+64,dHedge,Pyth Network,https://github.com/pyth-network/pyth-crosschain,10.26776805796316,285481.0,158,218,2021-11-08 11:03:15+00:00,TypeScript,Other
+65,Kwenta,Rainbow,https://github.com/rainbow-me/rainbowkit,4.298871167814712,172471.0,2476,685,2021-08-04 08:32:05+00:00,MDX,MIT License
+66,Hyperlane,Rainbow,https://github.com/rainbow-me/rainbowkit,5.363097028823558,256406.0,2476,685,2021-08-04 08:32:05+00:00,MDX,MIT License
+67,Synthetix,Rainbow,https://github.com/rainbow-me/rainbowkit,31.11641070993972,515495.0,2476,685,2021-08-04 08:32:05+00:00,MDX,MIT License
+68,Across,Rainbow,https://github.com/rainbow-me/rainbowkit,3.381811871050149,769731.0,2476,685,2021-08-04 08:32:05+00:00,MDX,MIT License
+69,Synthetix,Snapshot,https://github.com/snapshot-labs/snapshot.js,31.11641070993972,515495.0,239,580,2020-09-05 01:47:29+00:00,TypeScript,MIT License
+70,Kwenta,Snapshot,https://github.com/snapshot-labs/snapshot.js,4.298871167814712,172471.0,239,580,2020-09-05 01:47:29+00:00,TypeScript,MIT License
+71,Synthetix,Solhint,https://github.com/protofire/solhint,31.11641070993972,515495.0,1054,169,2017-10-16 11:48:44+00:00,JavaScript,MIT License
+72,Hyperlane,Solhint,https://github.com/protofire/solhint,5.363097028823558,256406.0,1054,169,2017-10-16 11:48:44+00:00,JavaScript,MIT License
+73,Across,Solhint,https://github.com/protofire/solhint,3.381811871050149,769731.0,1054,169,2017-10-16 11:48:44+00:00,JavaScript,MIT License
+74,Perpetual Protocol,Solhint,https://github.com/protofire/solhint,8.13707754211869,145154.0,1054,169,2017-10-16 11:48:44+00:00,JavaScript,MIT License
+75,dHedge,Solhint,https://github.com/protofire/solhint,10.26776805796316,285481.0,1054,169,2017-10-16 11:48:44+00:00,JavaScript,MIT License
+76,Velodrome,Solhint,https://github.com/protofire/solhint,4.952631652057592,738721.0,1054,169,2017-10-16 11:48:44+00:00,JavaScript,MIT License
+77,Infinitism (ERC-4337) - Account Abstraction,Solhint,https://github.com/protofire/solhint,3.24867055529942,1495243.0,1054,169,2017-10-16 11:48:44+00:00,JavaScript,MIT License
+78,TLX,Solhint,https://github.com/protofire/solhint,2.8384853427560226,87229.0,1054,169,2017-10-16 11:48:44+00:00,JavaScript,MIT License
+79,Kwenta,Synpress,https://github.com/synthetixio/synpress,4.298871167814712,172471.0,618,200,2020-11-18 22:10:14+00:00,TypeScript,
+80,Across,Synpress,https://github.com/synthetixio/synpress,3.381811871050149,769731.0,618,200,2020-11-18 22:10:14+00:00,TypeScript,
+81,Synthetix,Synpress,https://github.com/synthetixio/synpress,31.11641070993972,515495.0,618,200,2020-11-18 22:10:14+00:00,TypeScript,
+82,Kwenta,Synthetix,https://github.com/synthetixio/synthetix,4.298871167814712,172471.0,1220,602,2017-11-30 07:43:43+00:00,JavaScript,MIT License
+83,dHedge,Synthetix,https://github.com/synthetixio/synthetix,10.26776805796316,285481.0,1220,602,2017-11-30 07:43:43+00:00,JavaScript,MIT License
+84,Velodrome,Tenderly,https://github.com/tenderly/hardhat-tenderly,4.952631652057592,738721.0,164,41,2020-09-09 11:44:13+00:00,TypeScript,Other
+85,Kwenta,Tenderly,https://github.com/tenderly/hardhat-tenderly,4.298871167814712,172471.0,164,41,2020-09-09 11:44:13+00:00,TypeScript,Other
+86,Perpetual Protocol,Tenderly,https://github.com/tenderly/hardhat-tenderly,8.13707754211869,145154.0,164,41,2020-09-09 11:44:13+00:00,TypeScript,Other
+87,Across,Wonderland,https://github.com/defi-wonderland/smock,3.381811871050149,769731.0,322,41,2021-07-19 21:23:42+00:00,TypeScript,MIT License
+88,Perpetual Protocol,Wonderland,https://github.com/defi-wonderland/smock,8.13707754211869,145154.0,322,41,2021-07-19 21:23:42+00:00,TypeScript,MIT License
+89,Synthetix,Wonderland,https://github.com/defi-wonderland/smock,31.11641070993972,515495.0,322,41,2021-07-19 21:23:42+00:00,TypeScript,MIT License
+90,Kwenta,Wonderland,https://github.com/defi-wonderland/smock,4.298871167814712,172471.0,322,41,2021-07-19 21:23:42+00:00,TypeScript,MIT License
+91,dHedge,Wonderland,https://github.com/defi-wonderland/smock,10.26776805796316,285481.0,322,41,2021-07-19 21:23:42+00:00,TypeScript,MIT License
+92,Kwenta,ethers.js,https://github.com/ethers-io/ethers.js,4.298871167814712,172471.0,8054,1895,2016-07-16 04:35:37+00:00,TypeScript,MIT License
+93,Velodrome,ethers.js,https://github.com/ethers-io/ethers.js,4.952631652057592,738721.0,8054,1895,2016-07-16 04:35:37+00:00,TypeScript,MIT License
+94,Infinitism (ERC-4337) - Account Abstraction,ethers.js,https://github.com/ethers-io/ethers.js,3.24867055529942,1495243.0,8054,1895,2016-07-16 04:35:37+00:00,TypeScript,MIT License
+95,dHedge,ethers.js,https://github.com/ethers-io/ethers.js,10.26776805796316,285481.0,8054,1895,2016-07-16 04:35:37+00:00,TypeScript,MIT License
+96,Synthetix,ethers.js,https://github.com/ethers-io/ethers.js,31.11641070993972,515495.0,8054,1895,2016-07-16 04:35:37+00:00,TypeScript,MIT License
+97,Across,ethers.js,https://github.com/ethers-io/ethers.js,3.381811871050149,769731.0,8054,1895,2016-07-16 04:35:37+00:00,TypeScript,MIT License
+98,Perpetual Protocol,ethers.js,https://github.com/ethers-io/ethers.js,8.13707754211869,145154.0,8054,1895,2016-07-16 04:35:37+00:00,TypeScript,MIT License
+99,Hyperlane,ethers.js,https://github.com/ethers-io/ethers.js,5.363097028823558,256406.0,8054,1895,2016-07-16 04:35:37+00:00,TypeScript,MIT License
+100,TLX,ethers.js,https://github.com/ethers-io/ethers.js,2.8384853427560226,87229.0,8054,1895,2016-07-16 04:35:37+00:00,TypeScript,MIT License
+101,Odos,ethers.js,https://github.com/ethers-io/ethers.js,2.9515457766525612,376202.0,8054,1895,2016-07-16 04:35:37+00:00,TypeScript,MIT License
+102,Kwenta,libp2p,https://github.com/libp2p/js-libp2p,4.298871167814712,172471.0,2370,453,2015-07-23 21:05:43+00:00,TypeScript,Apache License 2.0
+103,Kwenta,libp2p,https://github.com/libp2p/js-libp2p-kad-dht,4.298871167814712,172471.0,141,60,2017-01-02 19:57:57+00:00,TypeScript,Other
+104,Kwenta,libp2p,https://github.com/libp2p/js-libp2p-webrtc-star,4.298871167814712,172471.0,319,93,2016-05-20 16:04:27+00:00,TypeScript,Other
+105,Across,useDapp,https://github.com/truefieng/usedapp,3.381811871050149,769731.0,1600,375,2020-12-18 09:01:59+00:00,TypeScript,MIT License
+106,Kwenta,wevm,https://github.com/wevm/viem,4.298871167814712,172471.0,2648,923,2022-07-22 00:54:04+00:00,TypeScript,Other
+107,Synthetix,wevm,https://github.com/wevm/abitype,31.11641070993972,515495.0,493,48,2022-08-03 17:19:23+00:00,TypeScript,MIT License
+108,Synthetix,wevm,https://github.com/wevm/viem,31.11641070993972,515495.0,2648,923,2022-07-22 00:54:04+00:00,TypeScript,Other
+109,Across,wevm,https://github.com/wevm/viem,3.381811871050149,769731.0,2648,923,2022-07-22 00:54:04+00:00,TypeScript,Other
+110,Kwenta,wevm,https://github.com/wevm/abitype,4.298871167814712,172471.0,493,48,2022-08-03 17:19:23+00:00,TypeScript,MIT License
+111,Hyperlane,wevm,https://github.com/wevm/wagmi,5.363097028823558,256406.0,6097,1114,2021-11-23 03:11:46+00:00,TypeScript,MIT License
+112,Hyperlane,wevm,https://github.com/wevm/abitype,5.363097028823558,256406.0,493,48,2022-08-03 17:19:23+00:00,TypeScript,MIT License
+113,Hyperlane,wevm,https://github.com/wevm/viem,5.363097028823558,256406.0,2648,923,2022-07-22 00:54:04+00:00,TypeScript,Other
+114,Across,wevm,https://github.com/wevm/abitype,3.381811871050149,769731.0,493,48,2022-08-03 17:19:23+00:00,TypeScript,MIT License
+115,dHedge,wevm,https://github.com/wevm/wagmi,10.26776805796316,285481.0,6097,1114,2021-11-23 03:11:46+00:00,TypeScript,MIT License
+116,Odos,wevm,https://github.com/wevm/abitype,2.9515457766525612,376202.0,493,48,2022-08-03 17:19:23+00:00,TypeScript,MIT License
+117,Across,wevm,https://github.com/wevm/wagmi,3.381811871050149,769731.0,6097,1114,2021-11-23 03:11:46+00:00,TypeScript,MIT License
+118,dHedge,wevm,https://github.com/wevm/abitype,10.26776805796316,285481.0,493,48,2022-08-03 17:19:23+00:00,TypeScript,MIT License
+119,dHedge,wevm,https://github.com/wevm/viem,10.26776805796316,285481.0,2648,923,2022-07-22 00:54:04+00:00,TypeScript,Other
+120,Odos,wevm,https://github.com/wevm/viem,2.9515457766525612,376202.0,2648,923,2022-07-22 00:54:04+00:00,TypeScript,Other
+121,Synthetix,wevm,https://github.com/wevm/wagmi,31.11641070993972,515495.0,6097,1114,2021-11-23 03:11:46+00:00,TypeScript,MIT License
+122,Odos,wevm,https://github.com/wevm/wagmi,2.9515457766525612,376202.0,6097,1114,2021-11-23 03:11:46+00:00,TypeScript,MIT License
+123,Kwenta,wevm,https://github.com/wevm/wagmi,4.298871167814712,172471.0,6097,1114,2021-11-23 03:11:46+00:00,TypeScript,MIT License
