@@ -45,7 +45,8 @@ def read_in_grants(grants_path: str) -> Dict[str, Dict[str, Union[str, List[str]
             "starting_balance": project.get("starting_balance", "N/A"),
             "inflow_total": project.get("inflow_total_todate", "N/A"),
             "recieved_todate": project.get("recieve_todate", "N/A"),
-            "balance_left": project.get("balance_left_todate", "N/A")
+            "balance_left": project.get("balance_left_todate", "N/A"),
+            "intent": project["meta"].get("Intent", "N/A")
         }
 
     return clean_grants

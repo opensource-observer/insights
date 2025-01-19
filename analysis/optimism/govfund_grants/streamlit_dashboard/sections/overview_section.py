@@ -11,6 +11,7 @@ def display_project_details(project: Dict[str, Union[str, List[str], Dict[str, U
         ("Project Name", str(project.get("project_name", "N/A"))),
         ("Round", str(project.get("round", "N/A"))),
         ("Cycle", str(project.get("cycle", "N/A"))),
+        ("Intent", str(project.get("intent", "N/A"))),
         ("Grant Status", str(project.get("status", "N/A"))),
         ("Grant Amount", str(project.get("amount", "N/A"))),
         ("Full Grant Recieved to Date?", str(project.get("recieved_todate", "N/A"))),

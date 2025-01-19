@@ -299,6 +299,29 @@ def core_metrics_section(daily_transactions_df: pd.DataFrame, project_addresses:
     # display the core metrics visualizations
     st.header("Plotting Core Metrics by Day")
 
+    with st.expander("Understanding and Interacting with the Charts"):
+        st.write("""
+        ### How to Use the Charts
+        1. **Select a Metric**: Use the dropdown to choose the metric you want to visualize.
+        2. **Choose a Date Range**: Narrow down the time period to analyze specific trends or events.
+        3. **Select Addresses (if applicable)**: If the project is on the Optimism chain, you can select specific addresses to focus on.
+        4. **Interpret the Line Graph**:
+        - The x-axis shows the selected date range.
+        - The y-axis represents the value of the chosen metric.
+        - Each address is displayed as a separate line, allowing for comparison.       
+
+        ### Metrics
+        - **Transaction Count**: Displays the number of transactions processed each day within the selected date range. Use this to monitor daily activity and trends in transaction frequency.
+        - **Active Users**: Shows the count of unique users who interacted with the project on each day. This metric helps evaluate daily engagement and adoption levels.
+        - **Unique Users**: Represents the total number of distinct users interacting with the project over the selected date range. This provides an overview of the user base's size during the specified period.
+        - **Total Transferred**: Tracks the daily transaction volume (sum of all transferred values) within the selected date range. Use this to analyze the overall activity level and economic throughput of the project.
+        - **Net Transferred**: Takes into account the transaction direction for wallets:
+            - Transfers **to** the selected addresses contribute positively (+).
+            - Transfers **from** the selected addresses contribute negatively (-).
+        - **Cumulative Transferred**: Cumulates the net transferred value over time, creating a running total. This shows the long-term accumulation of funds for the selected addresses.
+        - **TVL (Total Value Locked)**: If the project is associated with a DeFiLlama protocol, this chart displays the total value locked over the date range. It reflects the overall assets deposited in the protocol and is a key indicator of the project's financial health.
+        """)
+
     if not display_by_address:
         daily_transactions_df = daily_transactions_df.groupby('transaction_date')[
             ['transaction_cnt', 'active_users', 'total_transferred', 'unique_users', 'total_transferred_in_tokens', 'cum_transferred']
