@@ -1,6 +1,7 @@
 import pandas as pd
 import streamlit as st
 import plotly.express as px
+from typing import Dict, List, Union
 
 
 # highlight the cells based on the increase or decrease condition
@@ -22,9 +23,12 @@ def high_level_overview_table(df: pd.DataFrame, alpha: float) -> pd.DataFrame:
         "Project Name": df["General Info: Project Name"],
         "Round": df["General Info: Round"],
         "Cycle": df["General Info: Cycle"],
-        "Status": df["General Info: Status"],
-        "Amount": df["General Info: Amount"],
-        "Date Range": df["General Info: Date Range"],
+        "Grant Status": df["General Info: Grant Status"],
+        "Grant Amount": df["General Info: Grant Amount"],
+        "Grant Recieved (to date)?": df["General Info: Grant Recieved (to date)?"],
+        "Date Funds Recieved": df["General Info: Date Funds Recieved"],
+        "Balance Left (to date)": df["General Info: Balance Left (to date)"],
+        "Date Range": df["General Info: Date Range"]
     }
 
     # process each metric to create a single column summarizing the result
@@ -63,7 +67,7 @@ def prepare_data_for_scatterplots(df: pd.DataFrame, alpha: float) -> pd.DataFram
     metric_list = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Net Transferred", "TVL"]
 
     # select relevant columns
-    target_cols = ["General Info: Project Name", "General Info: Amount"]
+    target_cols = ["General Info: Project Name", "General Info: Grant Amount"]
     for metric in metric_list:
         target_cols.append(f"{metric}: P Value")
         target_cols.append(f"{metric}: Percent Change")
@@ -72,7 +76,7 @@ def prepare_data_for_scatterplots(df: pd.DataFrame, alpha: float) -> pd.DataFram
     df = df[target_cols]
 
     # rename columns with distinct names for P Value and Percent Change
-    rename_dict = {"General Info: Project Name": "Project", "General Info: Amount": "Grant Amount"}
+    rename_dict = {"General Info: Project Name": "Project", "General Info: Grant Amount": "Grant Amount"}
     rename_dict.update({f"{metric}: P Value": f"{metric} P Value" for metric in metric_list})
     rename_dict.update({f"{metric}: Percent Change": f"{metric} Percent Change" for metric in metric_list})
     df.rename(columns=rename_dict, inplace=True)
@@ -314,7 +318,7 @@ def display_stacked_bar_chart(df: pd.DataFrame) -> None:
     st.plotly_chart(fig)
 
 # display all of the tables and visualizations that compare impact across all projects
-def all_projects_section(ttest_results: pd.DataFrame, ):
+def all_projects_section(ttest_results: pd.DataFrame):
     st.subheader("High-Level of All Projects")
     
     # allow users to manually set their desired alpha value

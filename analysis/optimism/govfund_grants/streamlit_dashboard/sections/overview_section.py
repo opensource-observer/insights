@@ -11,8 +11,12 @@ def display_project_details(project: Dict[str, Union[str, List[str], Dict[str, U
         ("Project Name", str(project.get("project_name", "N/A"))),
         ("Round", str(project.get("round", "N/A"))),
         ("Cycle", str(project.get("cycle", "N/A"))),
-        ("Status", str(project.get("status", "N/A"))),
-        ("Amount", str(project.get("amount", "N/A"))),
+        ("Grant Status", str(project.get("status", "N/A"))),
+        ("Grant Amount", str(project.get("amount", "N/A"))),
+        ("Full Grant Recieved to Date?", str(project.get("recieved_todate", "N/A"))),
+        ("Date of Funds Recieved", str(project.get("funds_recieved_date", "N/A"))),
+        ("Balance Left Today", str(project.get("balance_left", "N/A"))),
+        ("Total Amount Recieved", str(project.get("inflow_total", "N/A")))
     ]
     df = pd.DataFrame(rows, columns=["Field", "Value"])
 

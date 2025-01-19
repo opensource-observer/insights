@@ -40,8 +40,12 @@ def read_in_grants(grants_path: str) -> Dict[str, Dict[str, Union[str, List[str]
             "relevant_dates": project.get("relevant_dates", {}),
             "relevant_chains": project.get("relevant_chains", []),
             "addresses": project.get("addresses", []),
-            "project_name": project.get('project_name', "N/A"),  # ensure name is stored
-            "funds_recieved_date": datetime.strptime(project["funds_recieved_date"], "%Y-%m-%d") if project.get("funds_recieved_date") not in [None, "N/A"] else None
+            "project_name": project.get('project_name', "N/A"),
+            "funds_recieved_date": datetime.strptime(project["funds_recieved_date"], "%Y-%m-%d") if project.get("funds_recieved_date") not in [None, "N/A"] else None,
+            "starting_balance": project.get("starting_balance", "N/A"),
+            "inflow_total": project.get("inflow_total_todate", "N/A"),
+            "recieved_todate": project.get("recieve_todate", "N/A"),
+            "balance_left": project.get("balance_left_todate", "N/A")
         }
 
     return clean_grants

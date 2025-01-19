@@ -1,4 +1,5 @@
 import pandas as pd
+from datetime import datetime
 
 from utils import (read_in_stored_dfs_for_projects,
                    read_in_defi_llama_protocols, 
@@ -22,8 +23,11 @@ data = {
     "Project Name" : [],
     "Round" : [],
     "Cycle" : [],
-    "Status" : [],
-    "Amount" : [],
+    "Grant Status" : [],
+    "Grant Amount" : [],
+    "Grant Recieved (to date)?": [],
+    "Date Funds Recieved": [],
+    "Balance Left (to date)": [],
     "Date Range" : [],
     "Transaction Count" : [], 
     "Active Users" : [], 
@@ -40,8 +44,11 @@ header = [
     ('General Info', "Project Name"),
     ('General Info', "Round"),
     ('General Info', "Cycle"),
-    ('General Info', "Status"),
-    ('General Info', "Amount"),
+    ('General Info', "Grant Status"),
+    ('General Info', "Grant Amount"),
+    ("General Info", "Grant Recieved (to date)?"),
+    ("General Info", "Date Funds Recieved"),
+    ("General Info", "Balance Left (to date)"),
     ('General Info', "Date Range")
 ]
 metric_list = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Net Transferred", "TVL"]
@@ -59,11 +66,14 @@ for project_name, project in projects.items():
     data["Project Name"].append(str(project.get("project_name", "N/A")))
     data["Round"].append(str(project.get("round", "N/A")))
     data["Cycle"].append(str(project.get("cycle", "N/A")))
-    data["Status"].append(str(project.get("status", "N/A")))
-    data["Amount"].append(str(project.get("amount", "N/A")))
+    data["Grant Status"].append(str(project.get("status", "N/A")))
+    data["Grant Amount"].append(str(project.get("amount", "N/A")))
+    data["Grant Recieved (to date)?"].append(str(project.get("recieved_todate", "N/A")))
+    data["Date Funds Recieved"].append(str(project.get("funds_recieved_date", "N/A")))
+    data["Balance Left (to date)"].append(str(project.get("balance_left", "N/A")))
 
     project_protocol = return_protocol(defi_llama_protocols=defi_llama_protocols, project=project_name)
-    grant_date = project['grant_date']
+    grant_date = project['funds_recieved_date']
 
     project_datasets = read_in_stored_dfs_for_projects(
         project_name=project_name,
@@ -151,9 +161,12 @@ for i in range(len(data["Project Name"])):  # Iterate over each project
         ("General Info", "Project Name"): data["Project Name"][i],
         ("General Info", "Round"): data["Round"][i],
         ("General Info", "Cycle"): data["Cycle"][i],
-        ("General Info", "Status"): data["Status"][i],
-        ("General Info", "Amount"): data["Amount"][i],
-        ("General Info", "Date Range"): data["Date Range"][i],
+        ("General Info", "Grant Status"): data["Grant Status"][i],
+        ("General Info", "Grant Amount"): data["Grant Amount"][i],
+        ("General Info", "Grant Recieved (to date)?"): data["Grant Recieved (to date)?"][i],
+        ("General Info", "Date Funds Recieved"): data["Date Funds Recieved"][i],
+        ("General Info", "Balance Left (to date)"): data["Balance Left (to date)"][i],
+        ("General Info", "Date Range"): data["Date Range"][i]
     }
     for metric in metric_list:
         metric_data = data[metric][i] if i < len(data[metric]) else {}
