@@ -127,7 +127,7 @@ def main() -> None:
         live_streamlit_instance = project['live_streamlit_instance']
         display_by_address = project['display_by_address']
         token_conversion = project['token_conversion']
-        grant_date = project['grant_date']
+        grant_date = project['funds_recieved_date']
 
         # get the relevant wallet/contract addresses associated with the selected project
         just_addresses, project_addresses = extract_addresses(project_dict=project) 

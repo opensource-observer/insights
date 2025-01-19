@@ -1,4 +1,4 @@
-[
+[ 
   {
     "round": "Grants Season 6",
     "chain": "optimism",
@@ -7,7 +7,6 @@
     "live_streamlit_instance": false,
     "display_by_address": true,
     "token_conversion": 1e15,
-    "grant_date_str": "2024-09-01",
     "cycle": "Cycle 25",
     "project_name": "Ether.fi OP Mainnet LRT Grant",
     "status": "Sent",
@@ -33,7 +32,7 @@
       ]
     },
     "relevant_chains": [
-      "op"
+        "op"
     ],
     "contract_urls": [],
     "addresses": [
@@ -87,7 +86,8 @@
           "count_txns": 46
         }
       }
-    ]
+    ],
+    "funds_recieved_date": "2024-09-01"
   },
   {
     "round": "Grants Season 6",
@@ -97,7 +97,6 @@
     "live_streamlit_instance": false,
     "display_by_address": true,
     "token_conversion": 1e15,
-    "grant_date_str": "2024-09-01",
     "cycle": "Cycle 28",
     "project_name": "Alchemix Grant Request",
     "status": "Passed",
@@ -105,87 +104,88 @@
     "amount": 50000,
     "amount_comment": null,
     "meta": {
-      "Intent": "Intent 3A",
-      "Incentive Program Launched?": "Growth"
+        "Intent": "Intent 3A",
+        "Incentive Program Launched?": "Growth"
     },
     "relevant_metrics": {
-      "select the metric specified in the mission request": "(Intent 3 Growth) TVL in grantee\u2019s protocol",
-      "fill out your metric objective": "Increase in TVL of 1320 ETH in the wstETH vault (~50%), depending on OP/ETH price fluctuation. "
+        "select the metric specified in the mission request": "(Intent 3 Growth) TVL in grantee\u2019s protocol",
+        "fill out your metric objective": "Increase in TVL of 1320 ETH in the wstETH vault (~50%), depending on OP/ETH price fluctuation. "
     },
     "relevant_dates": {
-      "OP deployment date": [
-        "Sep 27, 2022"
-      ],
-      "Incentives due date": [
-        "Oct 31"
-      ]
+        "OP deployment date": [
+            "Sep 27, 2022"
+        ],
+        "Incentives due date": [
+            "Oct 31"
+        ]
     },
     "relevant_chains": [
-      "op"
+        "op"
     ],
     "contract_urls": [],
     "addresses": [
-      {
-        "0x8cca517370cbfc33cc9810bfc7440832c47d251c": {
-          "networks": [
-            "optimism"
-          ],
-          "tags": [
-            "wallet"
-          ],
-          "count_txns": 1
+        {
+            "0x8cca517370cbfc33cc9810bfc7440832c47d251c": {
+                "networks": [
+                    "optimism"
+                ],
+                "tags": [
+                    "wallet"
+                ],
+                "count_txns": 1
+            }
+        },
+        {
+            "0x8cca517370cbfc33cc9810bfc7440832c47d251c": {
+                "networks": [
+                    "optimism"
+                ],
+                "tags": [
+                    "contract"
+                ],
+                "count_txns": 1
+            }
+        },
+        {
+            "0xe04bb5b4de60fa2fba69a93ade13a8b3b569d5b4": {
+                "networks": [
+                    "mainnet",
+                    "optimism"
+                ],
+                "tags": [
+                    "contract"
+                ],
+                "name": "alchemix",
+                "count_txns": 2632
+            }
+        },
+        {
+            "0x343910697c03477e5cc0d386ffa5133d1a827ad7": {
+                "networks": [
+                    "optimism"
+                ],
+                "tags": [
+                    "contract"
+                ],
+                "name": "alchemix",
+                "count_txns": 0
+            }
+        },
+        {
+            "0xc224bf25dcc99236f00843c7d8c4194abe8aa94a": {
+                "networks": [
+                    "optimism"
+                ],
+                "tags": [
+                    "safe",
+                    "wallet"
+                ],
+                "name": "alchemix",
+                "count_txns": 37
+            }
         }
-      },
-      {
-        "0x8cca517370cbfc33cc9810bfc7440832c47d251c": {
-          "networks": [
-            "optimism"
-          ],
-          "tags": [
-            "contract"
-          ],
-          "count_txns": 1
-        }
-      },
-      {
-        "0xe04bb5b4de60fa2fba69a93ade13a8b3b569d5b4": {
-          "networks": [
-            "mainnet",
-            "optimism"
-          ],
-          "tags": [
-            "contract"
-          ],
-          "name": "alchemix",
-          "count_txns": 2632
-        }
-      },
-      {
-        "0x343910697c03477e5cc0d386ffa5133d1a827ad7": {
-          "networks": [
-            "optimism"
-          ],
-          "tags": [
-            "contract"
-          ],
-          "name": "alchemix",
-          "count_txns": 0
-        }
-      },
-      {
-        "0xc224bf25dcc99236f00843c7d8c4194abe8aa94a": {
-          "networks": [
-            "optimism"
-          ],
-          "tags": [
-            "safe",
-            "wallet"
-          ],
-          "name": "alchemix",
-          "count_txns": 37
-        }
-      }
-    ]
+    ],
+    "funds_recieved_date": "2024-09-01"
   },
   {
     "round": "Grants Season 6",
@@ -194,7 +194,6 @@
     "store_bq_datasets": false,
     "live_streamlit_instance": false,
     "display_by_address": false,
-    "grant_date_str": "2024-10-01",
     "token_conversion": 1,
     "cycle": "Cycle 27",
     "project_name": "Cyber",
@@ -203,47 +202,48 @@
     "amount": 375000,
     "amount_comment": null,
     "meta": {
-      "Intent": "Intent 3B",
-      "Incentive Program Launched?": "Growth"
+        "Intent": "Intent 3B",
+        "Incentive Program Launched?": "Growth"
     },
     "relevant_metrics": {
-      "target metrics": "Growth (we agree to use the metrics provided) : Number of transactions emitting event logs Number of active addresses interacting with grantee\u2019s contracts The total amount of gas fees generated from grantee\u2019s contracts Stickiness (we agree to use the metrics provided): Percentage of retained active addresses interacting with the grantee\u2019s contracts DAA/MAA ratio Developer Tooling (we agree to use the metrics provided): Number of testnet transactions emitting event logs Number of mainnet transactions emitting event logs (we added this ourselves) Number of active developer addresses interacting with grantee\u2019s contracts Community Events: (we added this ourselves) Number of people signed up for the event Number of people participated in the event Number of impressions the event is able to generate on X and Farcaster",
-      "impact analysis": "We will establish comprehensive tracking panels to monitor key metrics, aligning with our Mandate and Allocation Framework. These will be made open-source for transparency. To ensure effectiveness, we will provide ongoing support to grant recipients, including engineering retrospectives, GTM assistance, and investor intros. \n\nAt the program's conclusion, we will produce a detailed report evaluating successes, areas for improvement, and metric comparisons. A retrospective session will be held to discuss the program\u2019s impact and refine future strategies for Cyber's ecosystem growth. "
+        "target metrics": "Growth (we agree to use the metrics provided) : Number of transactions emitting event logs Number of active addresses interacting with grantee\u2019s contracts The total amount of gas fees generated from grantee\u2019s contracts Stickiness (we agree to use the metrics provided): Percentage of retained active addresses interacting with the grantee\u2019s contracts DAA/MAA ratio Developer Tooling (we agree to use the metrics provided): Number of testnet transactions emitting event logs Number of mainnet transactions emitting event logs (we added this ourselves) Number of active developer addresses interacting with grantee\u2019s contracts Community Events: (we added this ourselves) Number of people signed up for the event Number of people participated in the event Number of impressions the event is able to generate on X and Farcaster",
+        "impact analysis": "We will establish comprehensive tracking panels to monitor key metrics, aligning with our Mandate and Allocation Framework. These will be made open-source for transparency. To ensure effectiveness, we will provide ongoing support to grant recipients, including engineering retrospectives, GTM assistance, and investor intros. \n\nAt the program's conclusion, we will produce a detailed report evaluating successes, areas for improvement, and metric comparisons. A retrospective session will be held to discuss the program\u2019s impact and refine future strategies for Cyber's ecosystem growth. "
     },
     "relevant_dates": {
-      "OP deployment date": [
-        "",
-        "Aug 27"
-      ],
-      "Incentives due date": [
-        "",
-        "Aug 27"
-      ]
+        "OP deployment date": [
+            "",
+            "Aug 27"
+        ],
+        "Incentives due date": [
+            "",
+            "Aug 27"
+        ]
     },
     "addresses": [
-      {
-        "0xde5990625c5b70b6af6d6991f17abfc8c27acc72": {
-          "networks": [
-            "optimism"
-          ],
-          "tags": [
-            "wallet"
-          ],
-          "count_txns": 1
+        {
+            "0xde5990625c5b70b6af6d6991f17abfc8c27acc72": {
+                "networks": [
+                    "optimism"
+                ],
+                "tags": [
+                    "wallet"
+                ],
+                "count_txns": 1
+            }
+        },
+        {
+            "0xde5990625c5b70b6af6d6991f17abfc8c27acc72": {
+                "networks": [
+                    "optimism"
+                ],
+                "tags": [
+                    "contract"
+                ],
+                "count_txns": 1
+            }
         }
-      },
-      {
-        "0xde5990625c5b70b6af6d6991f17abfc8c27acc72": {
-          "networks": [
-            "optimism"
-          ],
-          "tags": [
-            "contract"
-          ],
-          "count_txns": 1
-        }
-      }
-    ]
+    ],
+    "funds_recieved_date": "2024-10-01"
   },
   {
     "round": "Grants Season 6",
@@ -253,7 +253,6 @@
     "live_streamlit_instance": false,
     "display_by_address": false,
     "token_conversion": 1,
-    "grant_date_str": "2024-09-01",
     "cycle": "Cycle 26",
     "project_name": "Fraxtal Application",
     "status": "Sent",
@@ -261,52 +260,53 @@
     "amount": 900000,
     "amount_comment": null,
     "meta": {
-      "Initial Delivery Date": "2024-09-01T00:00:00",
-      "(OP) Delivered": 900000.0,
-      "Intent": "Intent 3B",
-      "Incentive Program Launched?": "Growth"
+        "Initial Delivery Date": "2024-09-01T00:00:00",
+        "(OP) Delivered": 900000.0,
+        "Intent": "Intent 3B",
+        "Incentive Program Launched?": "Growth"
     },
     "relevant_metrics": {
-      "target metrics": "Growth: TVL in the grantee\u2019s protocol Number of transactions emitting event logs Number of active addresses FXTL Points Stickiness: Percentage of retained active addresses interacting with the grantee\u2019s contracts",
-      "impact analysis": "Impact Assessment:\n\nThe impact of the grants program will be assessed through a combination of key performance indicators (KPIs), periodic reviews, and continuous monitoring. The primary metrics for assessment will include TVL, transaction volumes, user engagement, and protocol adoption rates. Specific milestones will serve as benchmarks for success.\n\nReporting:\n\nTo ensure transparency and accountability, the following reporting mechanisms will be implemented:\n\nMonthly Reports: Detailed monthly reports will be provided, outlining the progress of the grants program, the utilization of funds, and the achievement of key milestones. These reports will include data on TVL growth, transaction volumes, and other relevant KPIs.\n\nReal-Time Dashboard: A real-time dashboard will be available for stakeholders to monitor the grants program's performance continuously. This dashboard will provide up-to-date information on TVL, transaction volumes, and other key metrics, ensuring full transparency.\n\nExample of Reporting:\n\nFor reference, we have implemented similar reporting mechanisms for the Arbitrum STIP grant for liquidity incentivization grant. An example of this reporting can be found bellow. This example showcases our commitment to transparency and detailed reporting. https://forum.arbitrum.foundation/t/frax-finance-bi-weekly-update-final-update/22960 "
+        "target metrics": "Growth: TVL in the grantee\u2019s protocol Number of transactions emitting event logs Number of active addresses FXTL Points Stickiness: Percentage of retained active addresses interacting with the grantee\u2019s contracts",
+        "impact analysis": "Impact Assessment:\n\nThe impact of the grants program will be assessed through a combination of key performance indicators (KPIs), periodic reviews, and continuous monitoring. The primary metrics for assessment will include TVL, transaction volumes, user engagement, and protocol adoption rates. Specific milestones will serve as benchmarks for success.\n\nReporting:\n\nTo ensure transparency and accountability, the following reporting mechanisms will be implemented:\n\nMonthly Reports: Detailed monthly reports will be provided, outlining the progress of the grants program, the utilization of funds, and the achievement of key milestones. These reports will include data on TVL growth, transaction volumes, and other relevant KPIs.\n\nReal-Time Dashboard: A real-time dashboard will be available for stakeholders to monitor the grants program's performance continuously. This dashboard will provide up-to-date information on TVL, transaction volumes, and other key metrics, ensuring full transparency.\n\nExample of Reporting:\n\nFor reference, we have implemented similar reporting mechanisms for the Arbitrum STIP grant for liquidity incentivization grant. An example of this reporting can be found bellow. This example showcases our commitment to transparency and detailed reporting. https://forum.arbitrum.foundation/t/frax-finance-bi-weekly-update-final-update/22960 "
     },
     "relevant_dates": {
-      "OP deployment date": [
-        "Jul 23",
-        "Jul 24"
-      ],
-      "Incentives due date": [
-        "Jul 23 -> Jun 29, 2025",
-        "Jul 20 -> Jun 29, 2025"
-      ]
+        "OP deployment date": [
+            "Jul 23",
+            "Jul 24"
+        ],
+        "Incentives due date": [
+            "Jul 23 -> Jun 29, 2025",
+            "Jul 20 -> Jun 29, 2025"
+        ]
     },
     "addresses": [
-      {
-        "0x0df840dcbf1229262a4125c1fc559bd338ec9491": {
-          "networks": [
-            "optimism"
-          ],
-          "tags": [
-            "safe",
-            "wallet"
-          ],
-          "name": "fraxfinance",
-          "count_txns": 4
+        {
+            "0x0df840dcbf1229262a4125c1fc559bd338ec9491": {
+                "networks": [
+                    "optimism"
+                ],
+                "tags": [
+                    "safe",
+                    "wallet"
+                ],
+                "name": "fraxfinance",
+                "count_txns": 4
+            }
+        },
+        {
+            "0x0df840dcbf1229262a4125c1fc559bd338ec9491": {
+                "networks": [
+                    "optimism"
+                ],
+                "tags": [
+                    "safe",
+                    "wallet"
+                ],
+                "name": "fraxfinance",
+                "count_txns": 4
+            }
         }
-      },
-      {
-        "0x0df840dcbf1229262a4125c1fc559bd338ec9491": {
-          "networks": [
-            "optimism"
-          ],
-          "tags": [
-            "safe",
-            "wallet"
-          ],
-          "name": "fraxfinance",
-          "count_txns": 4
-        }
-      }
-    ]
+    ],
+    "funds_recieved_date": "2024-09-30"
   }
 ]

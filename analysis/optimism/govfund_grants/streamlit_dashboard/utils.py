@@ -28,7 +28,6 @@ def read_in_grants(grants_path: str) -> Dict[str, Dict[str, Union[str, List[str]
             "store_bq_datasets": project.get("store_bq_datasets", False),
             "live_streamlit_instance": project.get("live_streamlit_instance", False),
             "display_by_address": project.get("display_by_address", False),
-            "grant_date": datetime.strptime(project["grant_date_str"], "%Y-%m-%d") if project.get("grant_date_str") not in [None, "N/A"] else None,
             "grant_date_str": project.get("grant_date_str", "N/A"),
             "token_conversion": project.get("token_conversion", "N/A"),
             "round": project.get("round", "N/A"),
@@ -41,7 +40,8 @@ def read_in_grants(grants_path: str) -> Dict[str, Dict[str, Union[str, List[str]
             "relevant_dates": project.get("relevant_dates", {}),
             "relevant_chains": project.get("relevant_chains", []),
             "addresses": project.get("addresses", []),
-            "project_name": project.get('project_name', "N/A")  # ensure name is stored
+            "project_name": project.get('project_name', "N/A"),  # ensure name is stored
+            "funds_recieved_date": datetime.strptime(project["funds_recieved_date"], "%Y-%m-%d") if project.get("funds_recieved_date") not in [None, "N/A"] else None
         }
 
     return clean_grants
