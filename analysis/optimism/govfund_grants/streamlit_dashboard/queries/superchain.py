@@ -1,6 +1,5 @@
 from google.cloud import bigquery
 import pandas as pd
-from typing import Tuple
 from datetime import datetime
 
 from config import BIGQUERY_PROJECT_NAME

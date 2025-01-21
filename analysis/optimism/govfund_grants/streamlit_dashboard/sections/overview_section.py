@@ -11,8 +11,13 @@ def display_project_details(project: Dict[str, Union[str, List[str], Dict[str, U
         ("Project Name", str(project.get("project_name", "N/A"))),
         ("Round", str(project.get("round", "N/A"))),
         ("Cycle", str(project.get("cycle", "N/A"))),
-        ("Status", str(project.get("status", "N/A"))),
-        ("Amount", str(project.get("amount", "N/A"))),
+        ("Intent", str(project.get("intent", "N/A"))),
+        ("Grant Status", str(project.get("status", "N/A"))),
+        ("Grant Amount", str(project.get("amount", "N/A"))),
+        ("Full Grant Recieved to Date?", str(project.get("recieved_todate", "N/A"))),
+        ("Date of Funds Recieved", str(project.get("funds_recieved_date", "N/A"))),
+        ("Balance Left Today", str(project.get("balance_left", "N/A"))),
+        ("Total Amount Recieved", str(project.get("inflow_total", "N/A")))
     ]
     df = pd.DataFrame(rows, columns=["Field", "Value"])
 
@@ -49,12 +54,8 @@ def display_addresses_table(addresses: List[Dict[str, Dict[str, Union[str, List[
     st.subheader("Addresses")
     st.dataframe(
         df.assign(hack='').set_index('hack'), # hide the index of the dataframe
-        column_config={
-            "hack": None,
-            "Address": st.column_config.TextColumn(width="large"),
-            "Networks": st.column_config.TextColumn(width="small"),
-            "Name": st.column_config.TextColumn(width="small")
-        }
+        column_config={"hack": None},
+        use_container_width=True
     )
 
 def overview_section(project: Dict[str, List[Dict[str, Dict[str, Union[str, int]]]]]) -> None:

@@ -28,7 +28,6 @@ def read_in_grants(grants_path: str) -> Dict[str, Dict[str, Union[str, List[str]
             "store_bq_datasets": project.get("store_bq_datasets", False),
             "live_streamlit_instance": project.get("live_streamlit_instance", False),
             "display_by_address": project.get("display_by_address", False),
-            "grant_date": datetime.strptime(project["grant_date_str"], "%Y-%m-%d") if project.get("grant_date_str") not in [None, "N/A"] else None,
             "grant_date_str": project.get("grant_date_str", "N/A"),
             "token_conversion": project.get("token_conversion", "N/A"),
             "round": project.get("round", "N/A"),
@@ -41,7 +40,13 @@ def read_in_grants(grants_path: str) -> Dict[str, Dict[str, Union[str, List[str]
             "relevant_dates": project.get("relevant_dates", {}),
             "relevant_chains": project.get("relevant_chains", []),
             "addresses": project.get("addresses", []),
-            "project_name": project.get('project_name', "N/A")  # ensure name is stored
+            "project_name": project.get('project_name', "N/A"),
+            "funds_recieved_date": datetime.strptime(project["funds_recieved_date"], "%Y-%m-%d") if project.get("funds_recieved_date") not in [None, "N/A"] else None,
+            "starting_balance": project.get("starting_balance", "N/A"),
+            "inflow_total": project.get("inflow_total_todate", "N/A"),
+            "recieved_todate": project.get("recieve_todate", "N/A"),
+            "balance_left": project.get("balance_left_todate", "N/A"),
+            "intent": project["meta"].get("Intent", "N/A")
         }
 
     return clean_grants
@@ -59,9 +64,8 @@ def get_project_min_date_optimism(client: bigquery.Client, project_addresses: Tu
     transactions_min_date = query_transactions_min_date_optimism(client=client, project_addresses=project_addresses, start_date=min_start_string)
 
     # ensure transactions_min_date is valid before comparison
-    if transactions_min_date is not None:
-        # determine the minimum start date we can use
-        min_start = max(transactions_min_date, min_start)
+    # determine the minimum start date we can use
+    min_start = max(transactions_min_date, min_start)
 
     return min_start
 
@@ -207,7 +211,6 @@ def compute_growth(df: pd.DataFrame, column_name: str) -> Tuple[Optional[float],
 
 # helper function to assign pre/post-grant labels
 def assign_grant_label(row: Any, grant_date: str) -> str:
-
     date_col = determine_date_col(row=row)
 
     # compare the row's date with GRANT_DATE
@@ -257,3 +260,18 @@ def save_datasets(project_name: str, datasets: Dict[str, pd.DataFrame], data_pat
     for dataset_name, dataset in datasets.items():
         # save each dataset as a CSV file
         dataset.to_csv(f"{project_path}/{clean_name}_{dataset_name}.csv", index=False)
+
+# save the tvl dataset at the passed protocol 
+def save_tvl_dataset(data_path: str, dataset_label: str, service_account_path: str, use_streamlit_secrets: bool, protocol: str) -> None:
+    from queries.defillama import query_tvl_data_from_bq
+    
+    # connect to the bigquery client
+    client = connect_bq_client(service_account_path=service_account_path, use_streamlit_secrets=use_streamlit_secrets)
+
+    # query the tvl data from bigquery
+    chain_tvls_df, tvl_df, tokens_in_usd_df, tokens_df = query_tvl_data_from_bq(client=client, protocol=protocol)
+
+    # save the datasets
+    chain_tvls_df.to_csv(f"{data_path}{dataset_label}_chain_tvls.csv", index=False)
+    tvl_df.to_csv(f"{data_path}{dataset_label}_tvl.csv", index=False)
+    tokens_in_usd_df.to_csv(f"{data_path}{dataset_label}_tokens_in_usd.csv", index=False)

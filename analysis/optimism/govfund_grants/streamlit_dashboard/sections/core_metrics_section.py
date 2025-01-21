@@ -2,10 +2,30 @@ import streamlit as st
 import plotly.graph_objects as go
 import plotly.express as px
 import pandas as pd
-from typing import List, Dict, Union, Optional
+from typing import List, Dict, Union, Optional, Tuple
 from datetime import datetime
 
 from utils import safe_execution, compute_growth
+
+
+# normalize the metrics by grant amount
+def add_normalized_metrics(project_daily_transactions: pd.DataFrame, project_net_transaction_flow: pd.DataFrame, grant_amount: int) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    daily_transaction_cols = ["transaction_cnt", "active_users", "total_transferred", "unique_users", "total_transferred_in_tokens", "cum_transferred"]
+    net_transaction_flow_cols = ["total_transferred", "total_transferred_in_tokens", "net_transferred", "net_transferred_in_tokens"]
+
+    # normalize the metrics
+    project_daily_transactions_normalized = project_daily_transactions[daily_transaction_cols] / grant_amount
+    project_net_transaction_flow_normalized = project_net_transaction_flow[net_transaction_flow_cols] / grant_amount
+
+    # rename columns to include "_normalized"
+    project_daily_transactions_normalized.columns = [f"{col}_normalized" for col in daily_transaction_cols]
+    project_net_transaction_flow_normalized.columns = [f"{col}_normalized" for col in net_transaction_flow_cols]
+
+    # add the normalized columns back to the original DataFrames
+    project_daily_transactions = pd.concat([project_daily_transactions, project_daily_transactions_normalized], axis=1)
+    project_net_transaction_flow = pd.concat([project_net_transaction_flow, project_net_transaction_flow_normalized], axis=1)
+
+    return project_daily_transactions, project_net_transaction_flow
 
 # streamlit function to display KPIs and a line graph for a desired metric
 def display_op_kpis_and_vis_for_core_metrics(
@@ -16,7 +36,7 @@ def display_op_kpis_and_vis_for_core_metrics(
     display_by_address: bool
 ) -> None:
 
-    # Preprocess and merge the datasets once
+    # preprocess and merge the datasets once
     data_merged = pd.merge(
         project_daily_transactions, 
         project_net_transaction_flow[['transaction_date', 'address', 'net_transferred']], 
@@ -29,26 +49,34 @@ def display_op_kpis_and_vis_for_core_metrics(
         "unique_users": "Unique Users", 
         "total_transferred": "Total Transferred",
         "cum_transferred": "Cumulative Transferred",
-        "net_transferred": "Net Transferred"
+        "transaction_cnt_normalized": "Transaction Count (Normalized by Grant Amount)", 
+        "active_users_normalized": "Active Users (Normalized by Grant Amount)", 
+        "unique_users_normalized": "Unique Users (Normalized by Grant Amount)", 
+        "total_transferred_normalized": "Total Transferred (Normalized by Grant Amount)",
+        "cum_transferred_normalized": "Cumulative Transferred (Normalized by Grant Amount)",
     }, inplace=True)
 
-    # Fill nulls for numeric columns
-    target_cols = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Cumulative Transferred", "Net Transferred"]
+    # fill nulls for numeric columns
+    target_cols = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred",
+                   "Transaction Count (Normalized by Grant Amount)", "Active Users (Normalized by Grant Amount)", "Unique Users (Normalized by Grant Amount)", "Total Transferred (Normalized by Grant Amount)"]
+    data_merged["Cumulative Transferred"] = data_merged["Cumulative Transferred"].fillna(method="ffill")
+    data_merged["Cumulative Transferred (Normalized by Grant Amount)"] = data_merged["Cumulative Transferred (Normalized by Grant Amount)"].fillna(method="ffill")
     data_merged[target_cols] = data_merged[target_cols].fillna(0)
+    target_cols += ["Cumulative Transferred", "Cumulative Transferred (Normalized by Grant Amount)"]
 
-    # Precompute groupings
-    # Group by transaction date and address
+    # precompute groupings
+    # group by transaction date and address
     grouped_by_date_and_address = data_merged.groupby(['transaction_date', 'address'])[target_cols].sum().reset_index()
 
-    # Group by transaction date only (aggregate across all addresses)
+    # group by transaction date only (aggregate across all addresses)
     grouped_by_date = data_merged.groupby('transaction_date')[target_cols].sum().reset_index()
 
-    # User selects a metric
+    # user selects a metric
     selected_metric = st.selectbox("Select a metric", target_cols)
 
-    # User selects addresses if display_by_address is enabled
+    # user selects addresses if display_by_address is enabled
     if display_by_address:
-        # Add "All" option to the address list
+        # add "All" option to the address list
         display_addresses = [f"{address['address']} {address['label']}" if address['label'] else address['address'] for address in project_addresses]
         address_options = ["All addresses"] + display_addresses
         selected_addresses = st.multiselect("Select addresses", address_options)
@@ -58,18 +86,18 @@ def display_op_kpis_and_vis_for_core_metrics(
             return
 
         if "All addresses" in selected_addresses:
-            # Use precomputed data aggregated by transaction date
+            # use precomputed data aggregated by transaction date
             data_grouped = grouped_by_date[['transaction_date', selected_metric]]
         else:
-            # Filter precomputed data for the selected addresses
+            # filter precomputed data for the selected addresses
             just_selected_addresses = [address.split(" ")[0] for address in selected_addresses]
             data_grouped = grouped_by_date_and_address[grouped_by_date_and_address['address'].isin(just_selected_addresses)]
             data_grouped = data_grouped[['transaction_date', 'address', selected_metric]]
     else:
-        # Use precomputed data aggregated by transaction date
+        # use precomputed data aggregated by transaction date
         data_grouped = grouped_by_date[['transaction_date', selected_metric]]
 
-    # Ensure transaction_date is a date object
+    # ensure transaction_date is a date object
     data_grouped['transaction_date'] = pd.to_datetime(data_grouped['transaction_date']).dt.date
     
     min_date = data_grouped['transaction_date'].min()
@@ -188,9 +216,7 @@ def display_op_kpis_and_vis_for_core_metrics(
 # streamlit function to display KPIs and a line graph for a desired metric
 def display_superchain_kpis_and_vis_for_core_metrics(
     project_daily_transactions: pd.DataFrame, 
-    project_addresses: List[Dict[str, Union[str, None]]], 
-    grant_date: str, 
-    display_by_address: bool
+    grant_date: str
 ) -> None:
     
     target_df = project_daily_transactions.copy()
@@ -201,12 +227,22 @@ def display_superchain_kpis_and_vis_for_core_metrics(
         "active_users": "Active Users", 
         "unique_users": "Unique Users", 
         "total_transferred": "Total Transferred",
-        "cum_transferred": "Cumulative Transferred"
+        "cum_transferred": "Cumulative Transferred",
+        "transaction_cnt_normalized": "Transaction Count (Normalized by Grant Amount)", 
+        "active_users_normalized": "Active Users (Normalized by Grant Amount)", 
+        "unique_users_normalized": "Unique Users (Normalized by Grant Amount)", 
+        "total_transferred_normalized": "Total Transferred (Normalized by Grant Amount)",
+        "net_transferred_normalized": "Net Transferred (Normalized by Grant Amount)"
     }, inplace=True)
 
     # fill nulls for numeric columns
-    target_cols = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Cumulative Transferred"]
+    target_cols = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred",
+                   "Transaction Count (Normalized by Grant Amount)", "Active Users (Normalized by Grant Amount)", "Unique Users (Normalized by Grant Amount)", "Total Transferred (Normalized by Grant Amount)"]
+    target_df["Cumulative Transferred"] = target_df["Cumulative Transferred"].fillna(method="ffill")
+    target_df["Cumulative Transferred (Normalized by Grant Amount)"] = target_df["Cumulative Transferred (Normalized by Grant Amount)"].fillna(method="ffill")
     target_df[target_cols] = target_df[target_cols].fillna(0)
+    target_cols += ["Cumulative Transferred", "Cumulative Transferred (Normalized by Grant Amount)"]
+
 
     # ensure transaction_date is a date object
     target_df['transaction_date'] = pd.to_datetime(target_df['transaction_date']).dt.date
@@ -294,17 +330,42 @@ def display_superchain_kpis_and_vis_for_core_metrics(
     st.plotly_chart(fig)
 
 
-def core_metrics_section(daily_transactions_df: pd.DataFrame, project_addresses: List[Dict[str, Union[str, None]]], grant_date: datetime, display_by_address: bool, net_transaction_flow_df: Optional[pd.DataFrame] = None) -> None:
+def core_metrics_section(daily_transactions_df: pd.DataFrame, project_addresses: List[Dict[str, Union[str, None]]], grant_date: datetime, display_by_address: bool, grant_amount: int, net_transaction_flow_df: Optional[pd.DataFrame] = None) -> None:
 
     # display the core metrics visualizations
     st.header("Plotting Core Metrics by Day")
+
+    with st.expander("Understanding and Interacting with the Charts"):
+        st.write("""
+        ### How to Use the Charts
+        1. **Select a Metric**: Use the dropdown to choose the metric you want to visualize.
+        2. **Choose a Date Range**: Narrow down the time period to analyze specific trends or events.
+        3. **Select Addresses (if applicable)**: If the project is on the Optimism chain, you can select specific addresses to focus on.
+        4. **Interpret the Line Graph**:
+        - The x-axis shows the selected date range.
+        - The y-axis represents the value of the chosen metric.
+        - Each address is displayed as a separate line, allowing for comparison.       
+
+        ### Metrics
+        - **Transaction Count**: Displays the number of transactions processed each day within the selected date range. Use this to monitor daily activity and trends in transaction frequency.
+        - **Active Users**: Shows the count of unique users who interacted with the project on each day. This metric helps evaluate daily engagement and adoption levels.
+        - **Unique Users**: Represents the total number of distinct users interacting with the project over the selected date range. This provides an overview of the user base's size during the specified period.
+        - **Total Transferred**: Tracks the daily transaction volume (sum of all transferred values) within the selected date range. Use this to analyze the overall activity level and economic throughput of the project.
+        - **Net Transferred**: Takes into account the transaction direction for wallets:
+            - Transfers **to** the selected addresses contribute positively (+).
+            - Transfers **from** the selected addresses contribute negatively (-).
+        - **Cumulative Transferred**: Cumulates the net transferred value over time, creating a running total. This shows the long-term accumulation of funds for the selected addresses.
+        - **TVL (Total Value Locked)**: If the project is associated with a DeFiLlama protocol, this chart displays the total value locked over the date range. It reflects the overall assets deposited in the protocol and is a key indicator of the project's financial health.
+        """)
 
     if not display_by_address:
         daily_transactions_df = daily_transactions_df.groupby('transaction_date')[
             ['transaction_cnt', 'active_users', 'total_transferred', 'unique_users', 'total_transferred_in_tokens', 'cum_transferred']
         ].sum().reset_index()
 
+    daily_transactions_df_normalized, net_transaction_flow_df_normalized = add_normalized_metrics(project_daily_transactions=daily_transactions_df, project_net_transaction_flow=net_transaction_flow_df, grant_amount=grant_amount)
+
     if net_transaction_flow_df is None:
-        safe_execution(display_superchain_kpis_and_vis_for_core_metrics, daily_transactions_df, project_addresses, grant_date, display_by_address)
+        safe_execution(display_superchain_kpis_and_vis_for_core_metrics, daily_transactions_df_normalized, grant_date)
     else:
-        safe_execution(display_op_kpis_and_vis_for_core_metrics, daily_transactions_df, net_transaction_flow_df, project_addresses, grant_date, display_by_address)
+        safe_execution(display_op_kpis_and_vis_for_core_metrics, daily_transactions_df_normalized, net_transaction_flow_df_normalized, project_addresses, grant_date, display_by_address)

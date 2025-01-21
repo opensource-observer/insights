@@ -81,7 +81,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-09-01"
+        "funds_recieved_date": "2024-09-01",
+        "grant_wallet": "0x5c8c76f2e990f194462dc5f8a8c76ba16966ed42",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 96000
     },
     {
         "round": "Grants Season 6",
@@ -184,7 +189,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-09-19"
+        "funds_recieved_date": "2024-09-19",
+        "grant_wallet": "0x0c5527B3ABFBD0c297104b12bE6f288D335B299c",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 120000
     },
     {
         "round": "Grants Season 6",
@@ -254,7 +264,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-10-24"
+        "funds_recieved_date": "2024-09-01",
+        "grant_wallet": "0xe7910f8A4b7eFCf2964F017e34e4E2D9AA06EDc3",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 2000
     },
     {
         "round": "Grants Season 6",
@@ -328,7 +343,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-09-26"
+        "funds_recieved_date": "2024-09-26",
+        "grant_wallet": "0xa41214012d4462ecBB0724673897Ee0dCc0fDF49",
+        "starting_balance": 66286053359878,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 5000
     },
     {
         "round": "Grants Season 6",
@@ -413,7 +433,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-11-14"
+        "funds_recieved_date": "2024-11-14",
+        "grant_wallet": "0xdBdfd5b04fc3a19C40f2B12F6Ca29Bd772CCB822",
+        "starting_balance": 0,
+        "inflow_total_todate": 120000,
+        "recieve_todate": true,
+        "balance_left_todate": 0
     },
     {
         "round": "Grants Season 6",
@@ -473,7 +498,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-10-08"
+        "funds_recieved_date": "2024-10-08",
+        "grant_wallet": "0x14e09A1a78950B38Ab3B203cdaa0fCB331B9Ee26",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 35000
     },
     {
         "round": "Grants Season 6",
@@ -592,7 +622,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-11-04"
+        "funds_recieved_date": "2024-11-04",
+        "grant_wallet": "0x5F451dA1b3Ad7bf2845573FccA2808d75065a6f4",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 15000
     },
     {
         "round": "Grants Season 6",
@@ -660,7 +695,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-09-19"
+        "funds_recieved_date": "2024-09-19",
+        "grant_wallet": "0xD6B270DFEE268B452c86251Fd7e12Db8dE9200FB",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 1250
     },
     {
         "round": "Grants Season 6",
@@ -727,7 +767,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-09-24"
+        "funds_recieved_date": "2024-09-24",
+        "grant_wallet": "0xcb54808F5ef6FD88b933C55Dd4f4c365E61828bB",
+        "starting_balance": 20000000000000000,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 120000
     },
     {
         "round": "Grants Season 6",
@@ -800,7 +845,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-11-18"
+        "funds_recieved_date": "2024-11-18",
+        "grant_wallet": "0x1BcBB33Ff4272c4fE3A00EAa7958953037A3a471",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 50000
     },
     {
         "round": "Grants Season 6",
@@ -868,7 +918,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-09-01"
+        "funds_recieved_date": "2024-09-01",
+        "grant_wallet": "0x6E3fddab68Bf1EBaf9daCF9F7907c7Bc0951D1dc",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 29978
     },
     {
         "round": "Grants Season 6",
@@ -1030,7 +1085,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-09-04"
+        "funds_recieved_date": "2024-09-04",
+        "grant_wallet": "0xb04a484387a7242339da615a63d2d49d8968aada",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 136000
     },
     {
         "round": "Grants Season 6",
@@ -1179,7 +1239,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-09-13"
+        "funds_recieved_date": "2024-09-13",
+        "grant_wallet": "0x2d13aC7AD45Fd3B0d146C8C9e508Aa0443123525",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 115000
     },
     {
         "round": "Grants Season 6",
@@ -1237,7 +1302,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-09-30"
+        "funds_recieved_date": "2024-09-30",
+        "grant_wallet": "0x0dF840dCbf1229262A4125C1fc559bd338eC9491",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 900000
     },
     {
         "round": "Grants Season 6",
@@ -1296,7 +1366,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-09-09"
+        "funds_recieved_date": "2024-09-09",
+        "grant_wallet": "0xd4c00fe7657791c2a43025de483f05e49a5f76a6",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 400000
     },
     {
         "round": "Grants Season 6",
@@ -1304,7 +1379,7 @@
         "project_name": "OP - Besu/Hildr",
         "status": "Team non responsive",
         "proposal_link": "https://app.charmverse.io/op-grants/op-besu-hildr-729952251744669",
-        "amount": null,
+        "amount": 137362,
         "amount_comment": "S4 and 5 budget",
         "meta": {
             "Intent": "Intent 3A",
@@ -1347,7 +1422,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-10-02"
+        "funds_recieved_date": "2024-10-02",
+        "grant_wallet": "0xB6B9E9e56AB5a4AF927faa802ac93786352f3af9",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 137362
     },
     {
         "round": "Grants Season 6",
@@ -1414,7 +1494,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-09-24"
+        "funds_recieved_date": "2024-09-24",
+        "grant_wallet": "0xcb54808F5ef6FD88b933C55Dd4f4c365E61828bB",
+        "starting_balance": 20000000000000000,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 180000
     },
     {
         "round": "Grants Season 6",
@@ -1500,7 +1585,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-09-02"
+        "funds_recieved_date": "2024-09-02",
+        "grant_wallet": "0x4ABa01FB8E1f6BFE80c56Deb367f19F35Df0f4aE",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 70000
     },
     {
         "round": "Grants Season 6",
@@ -1569,7 +1659,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-09-01"
+        "funds_recieved_date": "2024-09-01",
+        "grant_wallet": "0xA25c582874f984Dd58f729eF970922A3691a1C69",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 2500
     },
     {
         "round": "Grants Season 6",
@@ -1626,7 +1721,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-09-27"
+        "funds_recieved_date": "2024-12-09",
+        "grant_wallet": "0xe945D527De9c5121EdA9cF48e23CDF691894D4c0",
+        "starting_balance": 0,
+        "inflow_total_todate": 250000,
+        "recieve_todate": true,
+        "balance_left_todate": 0
     },
     {
         "round": "Grants Season 6",
@@ -1678,7 +1778,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-10-01"
+        "funds_recieved_date": "2024-10-01",
+        "grant_wallet": "0xde5990625c5b70b6af6d6991f17abfc8c27acc72",
+        "starting_balance": 0,
+        "inflow_total_todate": 375000,
+        "recieve_todate": true,
+        "balance_left_todate": 0
     },
     {
         "round": "Grants Season 6",
@@ -1731,7 +1836,13 @@
                     "count_txns": 19
                 }
             }
-        ]
+        ],
+        "funds_recieved_date": "2024-09-13",
+        "grant_wallet": "0xbe7946B7988a6556CFB78258592350e706786d36",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 900000
     },
     {
         "round": "Grants Season 6",
@@ -1794,7 +1905,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-09-01"
+        "funds_recieved_date": "2024-09-01",
+        "grant_wallet": "0xDe79e22b1b0b02CDbFF3325bfB62dbcF1e65Ca19",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 500000
     },
     {
         "round": "Grants Season 6",
@@ -1870,7 +1986,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-09-14"
+        "funds_recieved_date": "2024-09-14",
+        "grant_wallet": "0xE40714459D9493994BE025F04afc38D2BCF42f8E",
+        "starting_balance": 0,
+        "inflow_total_todate": 2500,
+        "recieve_todate": true,
+        "balance_left_todate": 0
     },
     {
         "round": "Grants Season 6",
@@ -1926,7 +2047,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-09-23"
+        "funds_recieved_date": "2024-11-29",
+        "grant_wallet": "0x93326D53d1E8EBf0af1Ff1B233c46C67c96e4d8D",
+        "starting_balance": 1000000000000000,
+        "inflow_total_todate": 1,
+        "recieve_todate": false,
+        "balance_left_todate": 19999
     },
     {
         "round": "Grants Season 6",
@@ -1994,7 +2120,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-09-01"
+        "funds_recieved_date": "2024-09-01",
+        "grant_wallet": "0x6E3fddab68Bf1EBaf9daCF9F7907c7Bc0951D1dc",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 29978
     },
     {
         "round": "Grants Season 6",
@@ -2086,7 +2217,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-09-03"
+        "funds_recieved_date": "2024-09-03",
+        "grant_wallet": "0x6a189E0E8d3b6B0455DC49e81cC0df33904AF9E8",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 100000
     },
     {
         "round": "Grants Season 6",
@@ -2158,7 +2294,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-09-04"
+        "funds_recieved_date": "2024-09-04",
+        "grant_wallet": "0x3b5a0Fc12f8fd8B26d251F28258D1d172F930f8A",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 200000
     },
     {
         "round": "Grants Season 6",
@@ -2447,7 +2588,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-09-12"
+        "funds_recieved_date": "2024-09-12",
+        "grant_wallet": "0x1026D3D219098D7b1B0A180F7E557DEeA7DA82C1",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 180000
     },
     {
         "round": "Grants Season 6",
@@ -2734,7 +2880,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-09-12"
+        "funds_recieved_date": "2024-09-12",
+        "grant_wallet": "0x1026D3D219098D7b1B0A180F7E557DEeA7DA82C1",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 120000
     },
     {
         "round": "Grants Season 6",
@@ -2786,7 +2937,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-09-20"
+        "funds_recieved_date": "2024-11-18",
+        "grant_wallet": "0x93d2118bdd8B5e243020F01a1391B2e3CB137a56",
+        "starting_balance": 0,
+        "inflow_total_todate": 250000,
+        "recieve_todate": true,
+        "balance_left_todate": 0
     },
     {
         "round": "Grants Season 6",
@@ -2873,7 +3029,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-09-18"
+        "funds_recieved_date": "2024-09-18",
+        "grant_wallet": "0xFDbB4d606C199F091143BD604C85c191a526fbd0",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 140000
     },
     {
         "round": "Grants Season 6",
@@ -2958,7 +3119,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-12-22"
+        "funds_recieved_date": "2024-12-22",
+        "grant_wallet": "0xF89E24BaD60D78386a5Fe6B6c897dd4d88A9Ed70",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 70000
     },
     {
         "round": "Grants Season 6",
@@ -3050,7 +3216,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-09-01"
+        "funds_recieved_date": "2024-10-17",
+        "grant_wallet": "0x8cca517370CBfc33CC9810bfC7440832C47D251C",
+        "starting_balance": 0,
+        "inflow_total_todate": 50000,
+        "recieve_todate": true,
+        "balance_left_todate": 0
     },
     {
         "round": "Grants Season 6",
@@ -3104,7 +3275,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-11-15"
+        "funds_recieved_date": "2024-11-15",
+        "grant_wallet": "0xDc1F5b81EeC7E6391Aeb6C8e5A2000D3A9AA8e6d",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 50000
     },
     {
         "round": "Grants Season 6",
@@ -3419,7 +3595,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-10-02"
+        "funds_recieved_date": "2024-10-02",
+        "grant_wallet": "0xB6B9E9e56AB5a4AF927faa802ac93786352f3af9",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 50000
     },
     {
         "round": "Grants Season 6",
@@ -3518,7 +3699,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-09-01"
+        "funds_recieved_date": "2024-09-01",
+        "grant_wallet": "0x6c7D7714F536Cbdb0b3B0FDDea2747d5C4B2668E",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 70000
     },
     {
         "round": "Grants Season 6",
@@ -3576,7 +3762,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-09-01"
+        "funds_recieved_date": "2024-09-01",
+        "grant_wallet": "0xfF0375667570d0e6572360e9DFbe8F2a6D85ae87",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 3000
     },
     {
         "round": "Grants Season 6",
@@ -3658,7 +3849,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-09-01"
+        "funds_recieved_date": "2024-09-01",
+        "grant_wallet": "0x6c7D7714F536Cbdb0b3B0FDDea2747d5C4B2668E",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 70000
     },
     {
         "round": "Grants Season 6",
@@ -3729,7 +3925,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-11-18"
+        "funds_recieved_date": "2024-11-18",
+        "grant_wallet": "0x1BcBB33Ff4272c4fE3A00EAa7958953037A3a471",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 100000
     },
     {
         "round": "Grants Season 6",
@@ -3784,7 +3985,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-09-10"
+        "funds_recieved_date": "2024-09-01",
+        "grant_wallet": "0x9d89Bca142498FE047bD3E169De8eD028AFaB07F",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 500000
     },
     {
         "round": "Grants Season 6",
@@ -3840,7 +4046,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-09-09"
+        "funds_recieved_date": "2024-09-09",
+        "grant_wallet": "0xd4c00fe7657791c2a43025de483f05e49a5f76a6",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 700000
     },
     {
         "round": "Grants Season 6",
@@ -3896,7 +4107,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-12-23"
+        "funds_recieved_date": "2024-12-23",
+        "grant_wallet": "0xd6e27844a260998fa5ccd9908b63488eb73198f8",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 400000
     },
     {
         "round": "Grants Season 6",
@@ -3904,7 +4120,7 @@
         "project_name": "Spearbit/Cantina for Balmy",
         "status": "Passed",
         "proposal_link": "https://app.charmverse.io/op-grants/spearbit-cantina-for-balmy-8020571064322373",
-        "amount": null,
+        "amount": 70000,
         "amount_comment": "Budget from S4/S5",
         "meta": {
             "Intent": "Intent 3A",
@@ -3947,7 +4163,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-10-02"
+        "funds_recieved_date": "2024-10-02",
+        "grant_wallet": "0xB6B9E9e56AB5a4AF927faa802ac93786352f3af9",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 70000
     },
     {
         "round": "Grants Season 6",
@@ -3998,7 +4219,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-09-22"
+        "funds_recieved_date": "2024-09-22",
+        "grant_wallet": "0x5A973117Dd273676bf4D14313b80562DC8973ba9",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 39022
     },
     {
         "round": "Grants Season 6",
@@ -4006,7 +4232,7 @@
         "project_name": "Autonomint Security Grant Application",
         "status": "Passed",
         "proposal_link": "https://app.charmverse.io/op-grants/autonomint-security-grant-application-2908153924414494",
-        "amount": null,
+        "amount": 49500,
         "amount_comment": "Total req 49.5k, 10478 OP  from previous season budget. 39022 OP on S6",
         "meta": {
             "Intent": "Intent 3A",
@@ -4049,7 +4275,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-09-22"
+        "funds_recieved_date": "2024-09-22",
+        "grant_wallet": "0x5A973117Dd273676bf4D14313b80562DC8973ba9",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 49500
     },
     {
         "round": "Grants Season 6",
@@ -4100,7 +4331,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-09-22"
+        "funds_recieved_date": "2024-09-22",
+        "grant_wallet": "0x5A973117Dd273676bf4D14313b80562DC8973ba9",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 28850
     },
     {
         "round": "Grants Season 6",
@@ -4108,7 +4344,7 @@
         "project_name": "Clusters.xyz",
         "status": "Passed",
         "proposal_link": "https://app.charmverse.io/op-grants/clusters-xyz-7959150966012731",
-        "amount": null,
+        "amount": 35000,
         "amount_comment": "Budget from S4/S5",
         "meta": {
             "Intent": "Intent 3A",
@@ -4151,7 +4387,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-10-02"
+        "funds_recieved_date": "2024-10-02",
+        "grant_wallet": "0xB6B9E9e56AB5a4AF927faa802ac93786352f3af9",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 35000
     },
     {
         "round": "Grants Season 6",
@@ -4159,7 +4400,7 @@
         "project_name": "Alchemix Audit Grant Request (Cyfrin)",
         "status": "Passed",
         "proposal_link": "https://app.charmverse.io/op-grants/alchemix-audit-grant-request-cyfrin-5604150300660156",
-        "amount": null,
+        "amount": 14741,
         "amount_comment": "Budget from S4/S5",
         "meta": {
             "Intent": "Intent 3A",
@@ -4200,7 +4441,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-12-13"
+        "funds_recieved_date": "2024-12-13",
+        "grant_wallet": "0x16779885375D32e7327fAde91f91B5A722bB5Cf4",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 14741
     },
     {
         "round": "Grants Season 6",
@@ -4251,7 +4497,12 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-09-22"
+        "funds_recieved_date": "2024-09-22",
+        "grant_wallet": "0x5A973117Dd273676bf4D14313b80562DC8973ba9",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 31500
     },
     {
         "round": "Grants Season 6",
@@ -4259,7 +4510,7 @@
         "project_name": "QuantAMM Audit Grant Request (Cyfrin)",
         "status": "Passed",
         "proposal_link": "https://app.charmverse.io/op-grants/quantamm-audit-grant-request-cyfrin-9897619391373831",
-        "amount": null,
+        "amount": 49600,
         "amount_comment": "Budget from S4/S5",
         "meta": {
             "Intent": "Intent 3A",
@@ -4300,6 +4551,11 @@
                 }
             }
         ],
-        "funds_recieved_date": "2024-12-13"
+        "funds_recieved_date": "2024-12-13",
+        "grant_wallet": "0x16779885375D32e7327fAde91f91B5A722bB5Cf4",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 49600
     }
 ]

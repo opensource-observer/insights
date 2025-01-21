@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 from typing import Dict
 from pmdarima import auto_arima
+from sklearn.linear_model import LinearRegression
 
 from processing import split_dataset_by_date
 from utils import determine_date_col
@@ -166,3 +167,101 @@ def forecast_project(datasets: Dict[str, pd.DataFrame], grant_date: datetime) ->
             forecasted_df = forecasted_df.merge(col_forecasted_df, on='date', how='outer')
 
     return forecasted_df
+
+# use a linear regression model to forecast based on the growth of a reference chain
+def forecast_based_on_chain_tvl(
+    chain_tvl: pd.DataFrame,
+    target_protocol: pd.DataFrame,
+    grant_date: datetime,
+    chunk_size: int = 3,
+    random_state: np.random.RandomState = None,
+    noise_std: float = 0.05,
+) -> pd.DataFrame:
+
+    # convert dates to datetime format
+    chain_tvl["readable_date"] = pd.to_datetime(chain_tvl["readable_date"], errors="coerce")
+    target_protocol["readable_date"] = pd.to_datetime(target_protocol["readable_date"], errors="coerce")
+
+    # normalize the TVL data
+    chain_tvl_max = chain_tvl["totalLiquidityUSD"].max()
+    chain_tvl["TVL_normalized"] = chain_tvl["totalLiquidityUSD"] / chain_tvl_max
+
+    target_protocol_max = target_protocol["totalLiquidityUSD"].max()
+    target_protocol["TVL_normalized"] = target_protocol["totalLiquidityUSD"] / target_protocol_max
+
+    # determine the common date range
+    chain_tvl_min_date = chain_tvl["readable_date"].min()
+    target_protocol_min_date = target_protocol["readable_date"].min()
+    min_date = max(chain_tvl_min_date, target_protocol_min_date)
+
+    chain_tvl_max_date = chain_tvl["readable_date"].max()
+    target_protocol_max_date = target_protocol["readable_date"].max()
+    max_date = min(chain_tvl_max_date, target_protocol_max_date)
+
+    # filter pre- and post-grant data with dates preserved
+    chain_tvl_pre_grant = chain_tvl[(chain_tvl["readable_date"] < grant_date) & (chain_tvl["readable_date"] >= min_date)]
+    chain_tvl_post_grant = chain_tvl[(chain_tvl["readable_date"] >= grant_date) & (chain_tvl["readable_date"] <= max_date)]
+
+    target_protocol_pre_grant = target_protocol[(target_protocol["readable_date"] < grant_date) & (target_protocol["readable_date"] >= min_date)]
+    target_protocol_post_grant = target_protocol[(target_protocol["readable_date"] >= grant_date) & (target_protocol["readable_date"] <= max_date)]
+
+    # extract normalized TVL values
+    X_pre_grant = chain_tvl_pre_grant["TVL_normalized"].values.reshape(-1, 1)
+    X_post_grant = chain_tvl_post_grant["TVL_normalized"].values.reshape(-1, 1)
+
+    y_pre_grant = target_protocol_pre_grant["TVL_normalized"].values
+    y_post_grant = target_protocol_post_grant["TVL_normalized"].values
+
+    predictions = []
+    model = LinearRegression()
+    rng = np.random.RandomState(random_state)
+    # iterate until predictions are made for every day of the post-grant period
+    predictions_left = len(X_post_grant)
+
+    X_pre_grant_curr = X_pre_grant.copy()
+    X_post_grant_curr = X_post_grant.copy()
+    y_pre_grant_curr = y_pre_grant.copy()
+    y_post_grant_curr = y_post_grant.copy()
+
+    while predictions_left > 0:
+        # how much to forecast
+        forecast_window = min(chunk_size, predictions_left)
+
+        # train the Linear Regression model
+        model.fit(X=X_pre_grant_curr, y=y_pre_grant_curr)
+
+        # predict post-grant TVL
+        pred = model.predict(X_post_grant_curr[:forecast_window])
+
+        # add variability with noise
+        noise_factors = rng.normal(loc=1.0, scale=noise_std, size=forecast_window)
+        pred_noisy = pred * noise_factors
+
+        predictions.extend(pred_noisy)
+        # update the training set with the forecast
+        X_pre_grant_curr = np.concatenate([X_pre_grant_curr, pred_noisy.reshape(-1, 1)])
+        y_pre_grant_curr = np.concatenate([y_pre_grant_curr, y_post_grant_curr[:forecast_window]])
+
+        predictions_left -= forecast_window
+        X_post_grant_curr = X_post_grant_curr[forecast_window:]
+        y_post_grant_curr = y_post_grant_curr[forecast_window:]
+
+    min_length = min(len(predictions), len(y_post_grant), len(X_post_grant))
+
+    predictions = np.array(predictions)
+
+    # ensure lengths align
+    y_post_grant = y_post_grant[:min_length]
+    X_post_grant = X_post_grant[:min_length]
+    predictions = predictions[:min_length]
+    dates_post_grant = chain_tvl_post_grant["readable_date"].values[:len(X_post_grant)]
+
+    # create a dataframe for results
+    post_grant_df = pd.DataFrame({
+        'date': dates_post_grant,
+        'chain_tvl_tvl': X_post_grant.flatten() * chain_tvl_max,
+        'forecasted_TVL_opchain': predictions * target_protocol_max,
+        'actual_tvl': y_post_grant * target_protocol_max
+    })
+
+    return post_grant_df[["date", "forecasted_TVL_opchain"]]
