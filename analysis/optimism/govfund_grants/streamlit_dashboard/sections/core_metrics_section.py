@@ -2,10 +2,30 @@ import streamlit as st
 import plotly.graph_objects as go
 import plotly.express as px
 import pandas as pd
-from typing import List, Dict, Union, Optional
+from typing import List, Dict, Union, Optional, Tuple
 from datetime import datetime
 
 from utils import safe_execution, compute_growth
+
+
+# normalize the metrics by grant amount
+def add_normalized_metrics(project_daily_transactions: pd.DataFrame, project_net_transaction_flow: pd.DataFrame, grant_amount: int) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    daily_transaction_cols = ["transaction_cnt", "active_users", "total_transferred", "unique_users", "total_transferred_in_tokens", "cum_transferred"]
+    net_transaction_flow_cols = ["total_transferred", "total_transferred_in_tokens", "net_transferred", "net_transferred_in_tokens"]
+
+    # normalize the metrics
+    project_daily_transactions_normalized = project_daily_transactions[daily_transaction_cols] / grant_amount
+    project_net_transaction_flow_normalized = project_net_transaction_flow[net_transaction_flow_cols] / grant_amount
+
+    # rename columns to include "_normalized"
+    project_daily_transactions_normalized.columns = [f"{col}_normalized" for col in daily_transaction_cols]
+    project_net_transaction_flow_normalized.columns = [f"{col}_normalized" for col in net_transaction_flow_cols]
+
+    # add the normalized columns back to the original DataFrames
+    project_daily_transactions = pd.concat([project_daily_transactions, project_daily_transactions_normalized], axis=1)
+    project_net_transaction_flow = pd.concat([project_net_transaction_flow, project_net_transaction_flow_normalized], axis=1)
+
+    return project_daily_transactions, project_net_transaction_flow
 
 # streamlit function to display KPIs and a line graph for a desired metric
 def display_op_kpis_and_vis_for_core_metrics(
@@ -29,14 +49,20 @@ def display_op_kpis_and_vis_for_core_metrics(
         "unique_users": "Unique Users", 
         "total_transferred": "Total Transferred",
         "cum_transferred": "Cumulative Transferred",
-        "net_transferred": "Net Transferred"
+        "transaction_cnt_normalized": "Transaction Count (Normalized by Grant Amount)", 
+        "active_users_normalized": "Active Users (Normalized by Grant Amount)", 
+        "unique_users_normalized": "Unique Users (Normalized by Grant Amount)", 
+        "total_transferred_normalized": "Total Transferred (Normalized by Grant Amount)",
+        "cum_transferred_normalized": "Cumulative Transferred (Normalized by Grant Amount)",
     }, inplace=True)
 
     # fill nulls for numeric columns
-    target_cols = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Net Transferred"]
+    target_cols = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred",
+                   "Transaction Count (Normalized by Grant Amount)", "Active Users (Normalized by Grant Amount)", "Unique Users (Normalized by Grant Amount)", "Total Transferred (Normalized by Grant Amount)"]
     data_merged["Cumulative Transferred"] = data_merged["Cumulative Transferred"].fillna(method="ffill")
+    data_merged["Cumulative Transferred (Normalized by Grant Amount)"] = data_merged["Cumulative Transferred (Normalized by Grant Amount)"].fillna(method="ffill")
     data_merged[target_cols] = data_merged[target_cols].fillna(0)
-    target_cols += ["Cumulative Transferred"]
+    target_cols += ["Cumulative Transferred", "Cumulative Transferred (Normalized by Grant Amount)"]
 
     # precompute groupings
     # group by transaction date and address
@@ -201,12 +227,22 @@ def display_superchain_kpis_and_vis_for_core_metrics(
         "active_users": "Active Users", 
         "unique_users": "Unique Users", 
         "total_transferred": "Total Transferred",
-        "cum_transferred": "Cumulative Transferred"
+        "cum_transferred": "Cumulative Transferred",
+        "transaction_cnt_normalized": "Transaction Count (Normalized by Grant Amount)", 
+        "active_users_normalized": "Active Users (Normalized by Grant Amount)", 
+        "unique_users_normalized": "Unique Users (Normalized by Grant Amount)", 
+        "total_transferred_normalized": "Total Transferred (Normalized by Grant Amount)",
+        "net_transferred_normalized": "Net Transferred (Normalized by Grant Amount)"
     }, inplace=True)
 
     # fill nulls for numeric columns
-    target_cols = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Cumulative Transferred"]
+    target_cols = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred",
+                   "Transaction Count (Normalized by Grant Amount)", "Active Users (Normalized by Grant Amount)", "Unique Users (Normalized by Grant Amount)", "Total Transferred (Normalized by Grant Amount)"]
+    target_df["Cumulative Transferred"] = target_df["Cumulative Transferred"].fillna(method="ffill")
+    target_df["Cumulative Transferred (Normalized by Grant Amount)"] = target_df["Cumulative Transferred (Normalized by Grant Amount)"].fillna(method="ffill")
     target_df[target_cols] = target_df[target_cols].fillna(0)
+    target_cols += ["Cumulative Transferred", "Cumulative Transferred (Normalized by Grant Amount)"]
+
 
     # ensure transaction_date is a date object
     target_df['transaction_date'] = pd.to_datetime(target_df['transaction_date']).dt.date
@@ -294,7 +330,7 @@ def display_superchain_kpis_and_vis_for_core_metrics(
     st.plotly_chart(fig)
 
 
-def core_metrics_section(daily_transactions_df: pd.DataFrame, project_addresses: List[Dict[str, Union[str, None]]], grant_date: datetime, display_by_address: bool, net_transaction_flow_df: Optional[pd.DataFrame] = None) -> None:
+def core_metrics_section(daily_transactions_df: pd.DataFrame, project_addresses: List[Dict[str, Union[str, None]]], grant_date: datetime, display_by_address: bool, grant_amount: int, net_transaction_flow_df: Optional[pd.DataFrame] = None) -> None:
 
     # display the core metrics visualizations
     st.header("Plotting Core Metrics by Day")
@@ -327,7 +363,9 @@ def core_metrics_section(daily_transactions_df: pd.DataFrame, project_addresses:
             ['transaction_cnt', 'active_users', 'total_transferred', 'unique_users', 'total_transferred_in_tokens', 'cum_transferred']
         ].sum().reset_index()
 
+    daily_transactions_df_normalized, net_transaction_flow_df_normalized = add_normalized_metrics(project_daily_transactions=daily_transactions_df, project_net_transaction_flow=net_transaction_flow_df, grant_amount=grant_amount)
+
     if net_transaction_flow_df is None:
-        safe_execution(display_superchain_kpis_and_vis_for_core_metrics, daily_transactions_df, grant_date)
+        safe_execution(display_superchain_kpis_and_vis_for_core_metrics, daily_transactions_df_normalized, grant_date)
     else:
-        safe_execution(display_op_kpis_and_vis_for_core_metrics, daily_transactions_df, net_transaction_flow_df, project_addresses, grant_date, display_by_address)
+        safe_execution(display_op_kpis_and_vis_for_core_metrics, daily_transactions_df_normalized, net_transaction_flow_df_normalized, project_addresses, grant_date, display_by_address)

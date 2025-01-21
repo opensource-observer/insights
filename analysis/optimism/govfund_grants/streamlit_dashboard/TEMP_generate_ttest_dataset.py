@@ -1,5 +1,4 @@
 import pandas as pd
-from datetime import datetime
 
 from utils import (read_in_stored_dfs_for_projects,
                    read_in_defi_llama_protocols, 
@@ -34,7 +33,13 @@ data = {
     "Unique Users" : [], 
     "Total Transferred" : [], 
     "Net Transferred" : [],
-    "TVL" : []
+    "TVL" : [],
+    "Transaction Count (forecasted)" : [], 
+    "Active Users (forecasted)" : [], 
+    "Unique Users (forecasted)" : [], 
+    "Total Transferred (forecasted)" : [], 
+    "Net Transferred (forecasted)" : [],
+    "TVL (forecasted)" : []
 }
 
 projects = read_in_grants(grants_path=GRANTS_PATH)
@@ -53,11 +58,11 @@ header = [
 ]
 metric_list = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Net Transferred", "TVL"]
 for metric in metric_list:
-    header.append((metric, "Percent Change"))
-    header.append((metric, "Test Statistic"))
-    header.append((metric, "P Value"))
-    header.append((metric, "P Value Formatted"))
-
+    for curr_metric in [metric, f"{metric} (forecasted)"]:
+        header.append((curr_metric, "Percent Change"))
+        header.append((curr_metric, "Test Statistic"))
+        header.append((curr_metric, "P Value"))
+        header.append((curr_metric, "P Value Formatted"))
 
 for project_name, project in projects.items():
     project_results = {}
@@ -86,6 +91,10 @@ for project_name, project in projects.items():
     project_tokens_in_usd_df = project_datasets['tokens_in_usd']
     project_tvl_df = project_datasets['tvl']
     project_forecasted_df = project_datasets['forecasted']
+
+    if "forecasted_TVL" in project_forecasted_df.columns:
+        project_forecasted_df.drop("forecasted_TVL", axis=1, inplace=True)
+        project_forecasted_df.rename(columns={"forecasted_TVL_opchain":"forecasted_TVL"}, inplace=True)
 
     if project_daily_transactions_df is not None and not project_daily_transactions_df.empty:
         project_daily_transactions_df['transaction_date'] = pd.to_datetime(
@@ -130,18 +139,35 @@ for project_name, project in projects.items():
     )
     combined_df = concat_aggregate_with_forecasted(aggregated_dataset, project_forecasted_df)
     pre_grant_df, post_grant_df = split_dataset_by_date(combined_df, grant_date=grant_date)
+    post_grant_df = post_grant_df[post_grant_df["grant_label"] == "post grant"]
+    curr_forecasted_df = combined_df[combined_df["grant_label"] == "forecast"]
 
     for metric in metric_list:
         if metric in combined_df.columns:
-            aggregated_metrics = aggregate_split_datasets_by_metrics([(pre_grant_df, post_grant_df)], [metric])
-            metric_table = determine_statistics(aggregated_metrics[0][0], aggregated_metrics[0][1])
-            
-            data[metric].append({
-                "Percent Change" : metric_table['percent_change'].iloc[0],
-                "Test Statistic" : metric_table['test_statistic'].iloc[0],
-                "P Value" : metric_table['p_value'].iloc[0],
-                "P Value Formatted" : metric_table['p_value_formatted'].iloc[0]
-            })
+            # first run for pre grant data then run on forecasted data
+            metric_mapping = {
+                metric: pre_grant_df,
+                f"{metric} (forecasted)" : curr_forecasted_df
+            }
+            sample_2 = post_grant_df[["date", metric, "grant_label"]]
+
+            for curr_metric, sample_1 in metric_mapping.items():
+                sample_1 = sample_1[["date", metric, "grant_label"]]
+                print(project_name)
+                print(curr_metric)
+                print(sample_1)
+                print(sample_2)
+                print()
+
+                aggregated_metrics = aggregate_split_datasets_by_metrics([(sample_1, sample_2)], [metric])
+                metric_table = determine_statistics(aggregated_metrics[0][0], aggregated_metrics[0][1])
+
+                data[curr_metric].append({
+                    "Percent Change" : metric_table['percent_change'].iloc[0],
+                    "Test Statistic" : metric_table['test_statistic'].iloc[0],
+                    "P Value" : metric_table['p_value'].iloc[0],
+                    "P Value Formatted" : metric_table['p_value_formatted'].iloc[0]
+                })
 
         else:
             data[metric].append({
@@ -151,12 +177,19 @@ for project_name, project in projects.items():
                 "P Value Formatted" : "N/A"
             })
 
-# Create MultiIndex for the columns
+            data[f"{metric} (forecasted)"].append({
+                "Percent Change" : "N/A",
+                "Test Statistic" : "N/A",
+                "P Value" : "N/A",
+                "P Value Formatted" : "N/A"
+            })
+
+# create multi-index for the columns
 multi_index = pd.MultiIndex.from_tuples(header)
 
-# Prepare flattened data to match MultiIndex structure
+# prepare flattened data to match multi-index structure
 flat_data = []
-for i in range(len(data["Project Name"])):  # Iterate over each project
+for i in range(len(data["Project Name"])): 
     row = {
         ("General Info", "Project Name"): data["Project Name"][i],
         ("General Info", "Round"): data["Round"][i],
@@ -169,16 +202,17 @@ for i in range(len(data["Project Name"])):  # Iterate over each project
         ("General Info", "Date Range"): data["Date Range"][i]
     }
     for metric in metric_list:
-        metric_data = data[metric][i] if i < len(data[metric]) else {}
-        row[(metric, "Percent Change")] = metric_data.get("Percent Change", "N/A")
-        row[(metric, "Test Statistic")] = metric_data.get("Test Statistic", "N/A")
-        row[(metric, "P Value")] = metric_data.get("P Value", "N/A")
-        row[(metric, "P Value Formatted")] = metric_data.get("P Value Formatted", "N/A")
+        for curr_metric in [metric, f"{metric} (forecasted)"]:
+            metric_data = data[curr_metric][i] if i < len(data[curr_metric]) else {}
+            row[(curr_metric, "Percent Change")] = metric_data.get("Percent Change", "N/A")
+            row[(curr_metric, "Test Statistic")] = metric_data.get("Test Statistic", "N/A")
+            row[(curr_metric, "P Value")] = metric_data.get("P Value", "N/A")
+            row[(curr_metric, "P Value Formatted")] = metric_data.get("P Value Formatted", "N/A")
     flat_data.append(row)
 
-# Convert flattened data into a DataFrame with MultiIndex columns
+# convert flattened data into a dataframe with multi-index columns
 output_df = pd.DataFrame(flat_data, columns=multi_index)
 
-# Save to CSV
-output_path = f"{STORED_DATA_PATH}ttest_results.csv"
+# save to csv
+output_path = f"{STORED_DATA_PATH}ttest_results2.csv"
 output_df.to_csv(output_path, index=False)

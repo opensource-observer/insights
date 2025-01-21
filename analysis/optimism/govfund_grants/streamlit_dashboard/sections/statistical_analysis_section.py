@@ -449,7 +449,7 @@ def display_ttest_table(metric_table: pd.DataFrame, alpha: float, selected_metri
 
     # display sample statistics
     ttest_table = {
-        'Grant Status': ['pre-grant', 'post-grant'],
+        'Sample': ['sample 1', 'post-grant'],
         'Sample Size': [metric_table['pre_grant_n'].iloc[0], metric_table['post_grant_n'].iloc[0]],
         'Sample Mean': [metric_table['pre_grant_mean'].iloc[0], metric_table['post_grant_mean'].iloc[0]],
         'Sample Standard Deviation': [metric_table['pre_grant_std'].iloc[0], metric_table['post_grant_std'].iloc[0]]
@@ -459,13 +459,8 @@ def display_ttest_table(metric_table: pd.DataFrame, alpha: float, selected_metri
     # display the pre and post grant metrics as a table
     st.dataframe(
         ttest_table.assign(hack='').set_index('hack'), # hide the dataframe index
-        column_config={
-            "hack": None,
-            "Grant Status": st.column_config.TextColumn(width="medium"),
-            "Sample Size": st.column_config.NumberColumn(width="medium"),
-            "Sample Mean": st.column_config.NumberColumn(width="medium"),
-            "Sample Standard Deviation": st.column_config.NumberColumn(width="medium")
-        }
+        column_config={"hack": None},
+        use_container_width=True
     )
 
     # write conclusion based on the p value and current alpha value
@@ -657,7 +652,7 @@ def stat_analysis_section(daily_transactions_df: pd.DataFrame, forecasted_df: pd
         sample_1_options.append("Forecasted data")
 
     selected_sample_1 = st.selectbox("Select sample 1 (sample 2 will always be post grant data)", sample_1_options)
-    if selected_sample_1 == "Forecasted Data":
+    if selected_sample_1 == "Forecasted data":
         sample_1 = curr_selection_forecasted_df
     else:
         sample_1 = pre_grant_df

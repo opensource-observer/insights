@@ -128,6 +128,7 @@ def main() -> None:
         display_by_address = project['display_by_address']
         token_conversion = project['token_conversion']
         grant_date = project['funds_recieved_date']
+        grant_amount = project['amount']
 
         # get the relevant wallet/contract addresses associated with the selected project
         just_addresses, project_addresses = extract_addresses(project_dict=project) 
@@ -192,7 +193,12 @@ def main() -> None:
 
         # display the line charts for the daily transactions data
         with core_metrics:
-            core_metrics_section(daily_transactions_df=project_daily_transactions_df, net_transaction_flow_df=project_net_transaction_flow_df, project_addresses=project_addresses, grant_date=grant_date, display_by_address=display_by_address)
+            core_metrics_section(daily_transactions_df=project_daily_transactions_df, 
+                                 net_transaction_flow_df=project_net_transaction_flow_df, 
+                                 project_addresses=project_addresses, 
+                                 grant_date=grant_date, 
+                                 display_by_address=display_by_address,
+                                 grant_amount=grant_amount)
 
         # if the project has a corresponding defi llama protocol display the tvl related charts
         if project_protocol and project_protocol is not None:

@@ -54,13 +54,8 @@ def display_addresses_table(addresses: List[Dict[str, Dict[str, Union[str, List[
     st.subheader("Addresses")
     st.dataframe(
         df.assign(hack='').set_index('hack'), # hide the index of the dataframe
-        column_config={
-            "hack": None,
-            "Address": st.column_config.TextColumn(width="large"),
-            "Networks": st.column_config.TextColumn(width="small"),
-            "Name": st.column_config.TextColumn(width="small"),
-            "Tags": st.column_config.NumberColumn(width="medium")
-        }
+        column_config={"hack": None},
+        use_container_width=True
     )
 
 def overview_section(project: Dict[str, List[Dict[str, Dict[str, Union[str, int]]]]]) -> None:
