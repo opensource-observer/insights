@@ -9,7 +9,7 @@ from processing import make_dates_df, generate_dates
 # query the daily transaction data of the project addresses over the interval and store it in a dataframe
 def query_daily_transactions_optimism(client: bigquery.Client, project_addresses: Tuple[str, ...], dates_df: pd.DataFrame, start_date: str, token_conversion: int) -> pd.DataFrame:
     try:
-       # handle single or multiple addresses in the query
+        # handle single or multiple addresses in the query
         addresses_condition = get_addresses_condition(project_addresses=project_addresses)
 
         # query for transaction count, active users, and total transferred, for each address

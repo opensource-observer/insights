@@ -68,7 +68,10 @@ def aggregate_datasets(daily_transactions_df: pd.DataFrame, tvl_df: pd.DataFrame
         tvl_df['date'] = pd.to_datetime(tvl_df['date'])
 
     # sum each day's metric over all of the relevant addresses
-    daily_transactions_df = daily_transactions_df.groupby('date')[['transaction_cnt', 'active_users', 'unique_users', 'total_transferred']].sum().reset_index()
+    if "retained_percent" in daily_transactions_df:
+        daily_transactions_df = daily_transactions_df.groupby('date')[['transaction_cnt', 'active_users', 'unique_users', 'total_transferred', 'retained_percent', 'daa_to_maa_ratio']].sum().reset_index()
+    else:
+        daily_transactions_df = daily_transactions_df.groupby('date')[['transaction_cnt', 'active_users', 'unique_users', 'total_transferred']].sum().reset_index()
     
     if net_transaction_flow_df is not None and not net_transaction_flow_df.empty: 
         net_transaction_flow_df = net_transaction_flow_df.groupby('date')[['net_transferred_in_tokens']].sum().reset_index()
@@ -83,7 +86,9 @@ def aggregate_datasets(daily_transactions_df: pd.DataFrame, tvl_df: pd.DataFrame
                             'active_users': 'Active Users', 
                             'unique_users': 'Unique Users',
                             'total_transferred': 'Total Transferred',
-                            'cum_transferred': 'Cumulative Transferred'}, inplace=True)
+                            'cum_transferred': 'Cumulative Transferred',
+                            'retained_percent': "Retained Daily Active Users",
+                            "daa_to_maa_ratio": "DAA/MAA"}, inplace=True)
 
     if net_transaction_flow_df is not None and not net_transaction_flow_df.empty:
         agg_df = agg_df.merge(net_transaction_flow_df, on='date', how='outer')
@@ -648,7 +653,7 @@ def stat_analysis_section(daily_transactions_df: pd.DataFrame, forecasted_df: pd
     ttest_table_content()
 
     sample_1_options = ["Pre grant data"]
-    if curr_selection_forecasted_df is not None and not curr_selection_forecasted_df.empty:
+    if curr_selection_forecasted_df is not None and not curr_selection_forecasted_df.empty and not curr_selection_forecasted_df[selected_metric].isna().all():
         sample_1_options.append("Forecasted data")
 
     selected_sample_1 = st.selectbox("Select sample 1 (sample 2 will always be post grant data)", sample_1_options)

@@ -9,21 +9,21 @@ from utils import safe_execution, compute_growth
 
 
 # normalize the metrics by grant amount
-def add_normalized_metrics(project_daily_transactions: pd.DataFrame, project_net_transaction_flow: pd.DataFrame, grant_amount: int) -> Tuple[pd.DataFrame, pd.DataFrame]:
+def add_normalized_metrics(project_daily_transactions: pd.DataFrame, grant_amount: int, project_net_transaction_flow: pd.DataFrame = None) -> Tuple[pd.DataFrame, pd.DataFrame]:
     daily_transaction_cols = ["transaction_cnt", "active_users", "total_transferred", "unique_users", "total_transferred_in_tokens", "cum_transferred"]
     net_transaction_flow_cols = ["total_transferred", "total_transferred_in_tokens", "net_transferred", "net_transferred_in_tokens"]
 
     # normalize the metrics
     project_daily_transactions_normalized = project_daily_transactions[daily_transaction_cols] / grant_amount
-    project_net_transaction_flow_normalized = project_net_transaction_flow[net_transaction_flow_cols] / grant_amount
-
     # rename columns to include "_normalized"
     project_daily_transactions_normalized.columns = [f"{col}_normalized" for col in daily_transaction_cols]
-    project_net_transaction_flow_normalized.columns = [f"{col}_normalized" for col in net_transaction_flow_cols]
-
     # add the normalized columns back to the original DataFrames
     project_daily_transactions = pd.concat([project_daily_transactions, project_daily_transactions_normalized], axis=1)
-    project_net_transaction_flow = pd.concat([project_net_transaction_flow, project_net_transaction_flow_normalized], axis=1)
+
+    if project_net_transaction_flow is not None and not project_net_transaction_flow.empty:
+        project_net_transaction_flow_normalized = project_net_transaction_flow[net_transaction_flow_cols] / grant_amount
+        project_net_transaction_flow_normalized.columns = [f"{col}_normalized" for col in net_transaction_flow_cols]
+        project_net_transaction_flow = pd.concat([project_net_transaction_flow, project_net_transaction_flow_normalized], axis=1)
 
     return project_daily_transactions, project_net_transaction_flow
 
@@ -228,21 +228,34 @@ def display_superchain_kpis_and_vis_for_core_metrics(
         "unique_users": "Unique Users", 
         "total_transferred": "Total Transferred",
         "cum_transferred": "Cumulative Transferred",
+        "retained_percent": "Retained Daily Active Users",
+        "daa_to_maa_ratio": "DAA/MAA",
         "transaction_cnt_normalized": "Transaction Count (Normalized by Grant Amount)", 
         "active_users_normalized": "Active Users (Normalized by Grant Amount)", 
         "unique_users_normalized": "Unique Users (Normalized by Grant Amount)", 
         "total_transferred_normalized": "Total Transferred (Normalized by Grant Amount)",
-        "net_transferred_normalized": "Net Transferred (Normalized by Grant Amount)"
+        "net_transferred_normalized": "Net Transferred (Normalized by Grant Amount)",
+        "cum_transferred_normalized": "Cumulative Transferred (Normalized by Grant Amount)"
     }, inplace=True)
 
-    # fill nulls for numeric columns
-    target_cols = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred",
-                   "Transaction Count (Normalized by Grant Amount)", "Active Users (Normalized by Grant Amount)", "Unique Users (Normalized by Grant Amount)", "Total Transferred (Normalized by Grant Amount)"]
-    target_df["Cumulative Transferred"] = target_df["Cumulative Transferred"].fillna(method="ffill")
-    target_df["Cumulative Transferred (Normalized by Grant Amount)"] = target_df["Cumulative Transferred (Normalized by Grant Amount)"].fillna(method="ffill")
-    target_df[target_cols] = target_df[target_cols].fillna(0)
-    target_cols += ["Cumulative Transferred", "Cumulative Transferred (Normalized by Grant Amount)"]
+    target_cols = [
+        "Transaction Count", "Active Users", "Unique Users", "Total Transferred",
+        "Transaction Count (Normalized by Grant Amount)", "Active Users (Normalized by Grant Amount)",
+        "Unique Users (Normalized by Grant Amount)", "Total Transferred (Normalized by Grant Amount)",
+        "Cumulative Transferred", "Cumulative Transferred (Normalized by Grant Amount)",
+        "Retained Daily Active Users", "DAA/MAA"
+    ]
 
+    # fill nulls for cumulative columns using forward fill
+    cumulative_cols = [
+        "Cumulative Transferred", "Cumulative Transferred (Normalized by Grant Amount)",
+        "Retained Daily Active Users", "DAA/MAA"
+    ]
+    target_df[cumulative_cols] = target_df[cumulative_cols].fillna(method="ffill")
+
+    # fill nulls for other numeric columns with 0
+    non_cumulative_cols = list(set(target_cols) - set(cumulative_cols))
+    target_df[non_cumulative_cols] = target_df[non_cumulative_cols].fillna(0)
 
     # ensure transaction_date is a date object
     target_df['transaction_date'] = pd.to_datetime(target_df['transaction_date']).dt.date
@@ -270,7 +283,11 @@ def display_superchain_kpis_and_vis_for_core_metrics(
     curr_selection_df = selected_data[(selected_data['transaction_date'] >= start_date) & (selected_data['transaction_date'] <= end_date)]
 
     # initial calculations
-    total_count = curr_selection_df[selected_metric].sum()
+    metrics_to_avg = ["Retained Daily Active Users", "DAA/MAA"]
+    if selected_metric in metrics_to_avg:
+        kpi1 = curr_selection_df[selected_metric].mean()
+    else:
+        kpi1 = curr_selection_df[selected_metric].sum()
     last_day = end_date
     last_day_count = curr_selection_df.loc[curr_selection_df["transaction_date"] == last_day, selected_metric].sum() if not curr_selection_df.empty else 0
     diff, growth = compute_growth(curr_selection_df, selected_metric)
@@ -280,7 +297,7 @@ def display_superchain_kpis_and_vis_for_core_metrics(
 
     # the first KPI which represents the total of the metric since the current start date
     with col1:
-        st.metric(label=f"Since {start_date.strftime('%Y-%m-%d')}", value=round(float(total_count), 4))
+        st.metric(label=f"Since {start_date.strftime('%Y-%m-%d')}", value=round(float(kpi1), 4))
     
     # the second KPI which represents the metric on the current end date, as well as it's % growth from the day before
     with col2:
@@ -331,7 +348,7 @@ def display_superchain_kpis_and_vis_for_core_metrics(
 
 
 def core_metrics_section(daily_transactions_df: pd.DataFrame, project_addresses: List[Dict[str, Union[str, None]]], grant_date: datetime, display_by_address: bool, grant_amount: int, net_transaction_flow_df: Optional[pd.DataFrame] = None) -> None:
-
+    
     # display the core metrics visualizations
     st.header("Plotting Core Metrics by Day")
 
@@ -355,17 +372,21 @@ def core_metrics_section(daily_transactions_df: pd.DataFrame, project_addresses:
             - Transfers **to** the selected addresses contribute positively (+).
             - Transfers **from** the selected addresses contribute negatively (-).
         - **Cumulative Transferred**: Cumulates the net transferred value over time, creating a running total. This shows the long-term accumulation of funds for the selected addresses.
+        - **DAA/MAA (Daily Active Users to Monthly Active Users Ratio)**: Represents the ratio of daily active users to monthly active users. This metric provides insights into the intensity of daily engagement compared to the broader monthly activity, helping to assess user retention and stickiness.
+        - **Retained Daily Active Users**: Shows the percentage of active users on a given day who were also active the previous day. This metric highlights short-term user retention and helps track consistent engagement levels over time.
         - **TVL (Total Value Locked)**: If the project is associated with a DeFiLlama protocol, this chart displays the total value locked over the date range. It reflects the overall assets deposited in the protocol and is a key indicator of the project's financial health.
         """)
 
+
     if not display_by_address:
         daily_transactions_df = daily_transactions_df.groupby('transaction_date')[
-            ['transaction_cnt', 'active_users', 'total_transferred', 'unique_users', 'total_transferred_in_tokens', 'cum_transferred']
+            ['transaction_cnt', 'active_users', 'total_transferred', 'unique_users', 'total_transferred_in_tokens', 'cum_transferred', 'retained_percent', 'daa_to_maa_ratio']
         ].sum().reset_index()
 
     daily_transactions_df_normalized, net_transaction_flow_df_normalized = add_normalized_metrics(project_daily_transactions=daily_transactions_df, project_net_transaction_flow=net_transaction_flow_df, grant_amount=grant_amount)
 
     if net_transaction_flow_df is None:
-        safe_execution(display_superchain_kpis_and_vis_for_core_metrics, daily_transactions_df_normalized, grant_date)
+        #safe_execution(display_superchain_kpis_and_vis_for_core_metrics, daily_transactions_df_normalized, grant_date)
+        display_superchain_kpis_and_vis_for_core_metrics(daily_transactions_df_normalized, grant_date)
     else:
         safe_execution(display_op_kpis_and_vis_for_core_metrics, daily_transactions_df_normalized, net_transaction_flow_df_normalized, project_addresses, grant_date, display_by_address)
