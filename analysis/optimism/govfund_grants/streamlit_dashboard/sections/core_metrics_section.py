@@ -348,7 +348,6 @@ def display_superchain_kpis_and_vis_for_core_metrics(
 
 
 def core_metrics_section(daily_transactions_df: pd.DataFrame, project_addresses: List[Dict[str, Union[str, None]]], grant_date: datetime, display_by_address: bool, grant_amount: int, net_transaction_flow_df: Optional[pd.DataFrame] = None) -> None:
-    
     # display the core metrics visualizations
     st.header("Plotting Core Metrics by Day")
 
@@ -376,7 +375,6 @@ def core_metrics_section(daily_transactions_df: pd.DataFrame, project_addresses:
         - **Retained Daily Active Users**: Shows the percentage of active users on a given day who were also active the previous day. This metric highlights short-term user retention and helps track consistent engagement levels over time.
         - **TVL (Total Value Locked)**: If the project is associated with a DeFiLlama protocol, this chart displays the total value locked over the date range. It reflects the overall assets deposited in the protocol and is a key indicator of the project's financial health.
         """)
-
 
     if not display_by_address:
         daily_transactions_df = daily_transactions_df.groupby('transaction_date')[

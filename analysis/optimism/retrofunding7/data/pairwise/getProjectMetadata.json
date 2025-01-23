@@ -1,0 +1,250 @@
+{
+  "https://github.com/blocknative/web3-onboard":{
+    "Project Name":"Blocknative",
+    "Stars":868,
+    "Forks":515,
+    "Created Date":1565935028000,
+    "Language":"TypeScript",
+    "License":"MIT License"
+  },
+  "https://github.com/blocknative/sdk":{
+    "Project Name":"Blocknative",
+    "Stars":107,
+    "Forks":25,
+    "Created Date":1565240270000,
+    "Language":"TypeScript",
+    "License":"MIT License"
+  },
+  "https://github.com/usecannon/cannon":{
+    "Project Name":"Cannon",
+    "Stars":106,
+    "Forks":23,
+    "Created Date":1657646676000,
+    "Language":"JavaScript",
+    "License":"GNU General Public License v3.0"
+  },
+  "https://github.com/nomicfoundation/hardhat":{
+    "Project Name":"Hardhat",
+    "Stars":7418,
+    "Forks":1457,
+    "Created Date":1523744459000,
+    "Language":"TypeScript",
+    "License":"Other"
+  },
+  "https://github.com/ipfs/js-ipfs":{
+    "Project Name":"IPFS",
+    "Stars":7444,
+    "Forks":1248,
+    "Created Date":1401409866000,
+    "Language":"JavaScript",
+    "License":"Other"
+  },
+  "https://github.com/wighawag/hardhat-deploy":{
+    "Project Name":"Jolly Roger and Hardhat-deploy",
+    "Stars":1205,
+    "Forks":298,
+    "Created Date":1584632564000,
+    "Language":"TypeScript",
+    "License":"MIT License"
+  },
+  "https://github.com/chainsafe/lodestar":{
+    "Project Name":"Lodestar",
+    "Stars":1224,
+    "Forks":312,
+    "Created Date":1529678507000,
+    "Language":"TypeScript",
+    "License":"Apache License 2.0"
+  },
+  "https://github.com/openzeppelin/openzeppelin-test-helpers":{
+    "Project Name":"OpenZeppelin",
+    "Stars":416,
+    "Forks":133,
+    "Created Date":1543586235000,
+    "Language":"JavaScript",
+    "License":"MIT License"
+  },
+  "https://github.com/openzeppelin/openzeppelin-contracts":{
+    "Project Name":"OpenZeppelin",
+    "Stars":25157,
+    "Forks":11854,
+    "Created Date":1470084894000,
+    "Language":"Solidity",
+    "License":"MIT License"
+  },
+  "https://github.com/openzeppelin/openzeppelin-contracts-upgradeable":{
+    "Project Name":"OpenZeppelin",
+    "Stars":1012,
+    "Forks":440,
+    "Created Date":1532118159000,
+    "Language":"JavaScript",
+    "License":"MIT License"
+  },
+  "https://github.com/openzeppelin/openzeppelin-upgrades":{
+    "Project Name":"OpenZeppelin",
+    "Stars":634,
+    "Forks":271,
+    "Created Date":1592596991000,
+    "Language":"TypeScript",
+    "License":"MIT License"
+  },
+  "https://github.com/openzeppelin/solidity-docgen":{
+    "Project Name":"OpenZeppelin",
+    "Stars":453,
+    "Forks":119,
+    "Created Date":1515374003000,
+    "Language":"TypeScript",
+    "License":"MIT License"
+  },
+  "https://github.com/openzeppelin/merkle-tree":{
+    "Project Name":"OpenZeppelin",
+    "Stars":470,
+    "Forks":111,
+    "Created Date":1666631311000,
+    "Language":"TypeScript",
+    "License":"MIT License"
+  },
+  "https://github.com/openzeppelin/openzeppelin-sdk":{
+    "Project Name":"OpenZeppelin",
+    "Stars":431,
+    "Forks":199,
+    "Created Date":1533149604000,
+    "Language":"JavaScript",
+    "License":"MIT License"
+  },
+  "https://github.com/prettier-solidity/prettier-plugin-solidity":{
+    "Project Name":"Prettier Solidity",
+    "Stars":731,
+    "Forks":75,
+    "Created Date":1526397122000,
+    "Language":"Solidity",
+    "License":"MIT License"
+  },
+  "https://github.com/pyth-network/pyth-crosschain":{
+    "Project Name":"Pyth Network",
+    "Stars":158,
+    "Forks":218,
+    "Created Date":1636369395000,
+    "Language":"TypeScript",
+    "License":"Other"
+  },
+  "https://github.com/rainbow-me/rainbowkit":{
+    "Project Name":"Rainbow",
+    "Stars":2476,
+    "Forks":685,
+    "Created Date":1628065925000,
+    "Language":"MDX",
+    "License":"MIT License"
+  },
+  "https://github.com/snapshot-labs/snapshot.js":{
+    "Project Name":"Snapshot",
+    "Stars":239,
+    "Forks":580,
+    "Created Date":1599270449000,
+    "Language":"TypeScript",
+    "License":"MIT License"
+  },
+  "https://github.com/protofire/solhint":{
+    "Project Name":"Solhint",
+    "Stars":1054,
+    "Forks":169,
+    "Created Date":1508154524000,
+    "Language":"JavaScript",
+    "License":"MIT License"
+  },
+  "https://github.com/synthetixio/synpress":{
+    "Project Name":"Synpress",
+    "Stars":618,
+    "Forks":200,
+    "Created Date":1605737414000,
+    "Language":"TypeScript",
+    "License":""
+  },
+  "https://github.com/synthetixio/synthetix":{
+    "Project Name":"Synthetix",
+    "Stars":1220,
+    "Forks":602,
+    "Created Date":1512027823000,
+    "Language":"JavaScript",
+    "License":"MIT License"
+  },
+  "https://github.com/tenderly/hardhat-tenderly":{
+    "Project Name":"Tenderly",
+    "Stars":164,
+    "Forks":41,
+    "Created Date":1599651853000,
+    "Language":"TypeScript",
+    "License":"Other"
+  },
+  "https://github.com/defi-wonderland/smock":{
+    "Project Name":"Wonderland",
+    "Stars":322,
+    "Forks":41,
+    "Created Date":1626729822000,
+    "Language":"TypeScript",
+    "License":"MIT License"
+  },
+  "https://github.com/ethers-io/ethers.js":{
+    "Project Name":"ethers.js",
+    "Stars":8054,
+    "Forks":1895,
+    "Created Date":1468643737000,
+    "Language":"TypeScript",
+    "License":"MIT License"
+  },
+  "https://github.com/libp2p/js-libp2p":{
+    "Project Name":"libp2p",
+    "Stars":2370,
+    "Forks":453,
+    "Created Date":1437685543000,
+    "Language":"TypeScript",
+    "License":"Apache License 2.0"
+  },
+  "https://github.com/libp2p/js-libp2p-kad-dht":{
+    "Project Name":"libp2p",
+    "Stars":141,
+    "Forks":60,
+    "Created Date":1483387077000,
+    "Language":"TypeScript",
+    "License":"Other"
+  },
+  "https://github.com/libp2p/js-libp2p-webrtc-star":{
+    "Project Name":"libp2p",
+    "Stars":319,
+    "Forks":93,
+    "Created Date":1463760267000,
+    "Language":"TypeScript",
+    "License":"Other"
+  },
+  "https://github.com/truefieng/usedapp":{
+    "Project Name":"useDapp",
+    "Stars":1600,
+    "Forks":375,
+    "Created Date":1608282119000,
+    "Language":"TypeScript",
+    "License":"MIT License"
+  },
+  "https://github.com/wevm/viem":{
+    "Project Name":"wevm",
+    "Stars":2648,
+    "Forks":923,
+    "Created Date":1658451244000,
+    "Language":"TypeScript",
+    "License":"Other"
+  },
+  "https://github.com/wevm/abitype":{
+    "Project Name":"wevm",
+    "Stars":493,
+    "Forks":48,
+    "Created Date":1659547163000,
+    "Language":"TypeScript",
+    "License":"MIT License"
+  },
+  "https://github.com/wevm/wagmi":{
+    "Project Name":"wevm",
+    "Stars":6097,
+    "Forks":1114,
+    "Created Date":1637637106000,
+    "Language":"TypeScript",
+    "License":"MIT License"
+  }
+}
