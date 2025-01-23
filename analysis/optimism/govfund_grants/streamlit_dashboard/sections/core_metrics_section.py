@@ -53,7 +53,7 @@ def display_op_kpis_and_vis_for_core_metrics(
         "active_users_normalized": "Active Users (Normalized by Grant Amount)", 
         "unique_users_normalized": "Unique Users (Normalized by Grant Amount)", 
         "total_transferred_normalized": "Total Transferred (Normalized by Grant Amount)",
-        "cum_transferred_normalized": "Cumulative Transferred (Normalized by Grant Amount)",
+        "cum_transferred_normalized": "Cumulative Transferred (Normalized by Grant Amount)"
     }, inplace=True)
 
     # fill nulls for numeric columns
@@ -72,7 +72,12 @@ def display_op_kpis_and_vis_for_core_metrics(
     grouped_by_date = data_merged.groupby('transaction_date')[target_cols].sum().reset_index()
 
     # user selects a metric
-    selected_metric = st.selectbox("Select a metric", target_cols)
+    metrics = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Cumulative Transferred"]
+    selected_metric = st.selectbox("Select a metric", metrics)
+    normalized = st.checkbox("Normalize by Grant Amount")
+
+    if normalized:
+        selected_metric = selected_metric + " (Normalized by Grant Amount)"
 
     # user selects addresses if display_by_address is enabled
     if display_by_address:
@@ -240,17 +245,10 @@ def display_superchain_kpis_and_vis_for_core_metrics(
 
     target_cols = [
         "Transaction Count", "Active Users", "Unique Users", "Total Transferred",
-        "Transaction Count (Normalized by Grant Amount)", "Active Users (Normalized by Grant Amount)",
-        "Unique Users (Normalized by Grant Amount)", "Total Transferred (Normalized by Grant Amount)",
-        "Cumulative Transferred", "Cumulative Transferred (Normalized by Grant Amount)",
-        "Retained Daily Active Users", "DAA/MAA"
-    ]
+        "Cumulative Transferred", "Retained Daily Active Users", "DAA/MAA"]
 
     # fill nulls for cumulative columns using forward fill
-    cumulative_cols = [
-        "Cumulative Transferred", "Cumulative Transferred (Normalized by Grant Amount)",
-        "Retained Daily Active Users", "DAA/MAA"
-    ]
+    cumulative_cols = ["Cumulative Transferred", "Retained Daily Active Users", "DAA/MAA"]
     target_df[cumulative_cols] = target_df[cumulative_cols].fillna(method="ffill")
 
     # fill nulls for other numeric columns with 0
@@ -262,6 +260,14 @@ def display_superchain_kpis_and_vis_for_core_metrics(
 
     # user selects a metric
     selected_metric = st.selectbox("Select a metric", target_cols)
+    normalized = st.checkbox("Normalize by Grant Amount")
+    unable_to_normalize = ["Retained Daily Active Users", "DAA/MAA"]
+
+    if normalized:
+        if selected_metric in unable_to_normalize:
+            st.warning("Selected metric cannot be normalized")
+            return
+        selected_metric = selected_metric + " (Normalized by Grant Amount)"
 
     # Use precomputed data aggregated by transaction date
     selected_data = target_df[['transaction_date', selected_metric]]
@@ -348,6 +354,7 @@ def display_superchain_kpis_and_vis_for_core_metrics(
 
 
 def core_metrics_section(daily_transactions_df: pd.DataFrame, project_addresses: List[Dict[str, Union[str, None]]], grant_date: datetime, display_by_address: bool, grant_amount: int, net_transaction_flow_df: Optional[pd.DataFrame] = None) -> None:
+    
     # display the core metrics visualizations
     st.header("Plotting Core Metrics by Day")
 
@@ -376,6 +383,7 @@ def core_metrics_section(daily_transactions_df: pd.DataFrame, project_addresses:
         - **TVL (Total Value Locked)**: If the project is associated with a DeFiLlama protocol, this chart displays the total value locked over the date range. It reflects the overall assets deposited in the protocol and is a key indicator of the project's financial health.
         """)
 
+
     if not display_by_address:
         daily_transactions_df = daily_transactions_df.groupby('transaction_date')[
             ['transaction_cnt', 'active_users', 'total_transferred', 'unique_users', 'total_transferred_in_tokens', 'cum_transferred', 'retained_percent', 'daa_to_maa_ratio']
@@ -387,4 +395,5 @@ def core_metrics_section(daily_transactions_df: pd.DataFrame, project_addresses:
         #safe_execution(display_superchain_kpis_and_vis_for_core_metrics, daily_transactions_df_normalized, grant_date)
         display_superchain_kpis_and_vis_for_core_metrics(daily_transactions_df_normalized, grant_date)
     else:
-        safe_execution(display_op_kpis_and_vis_for_core_metrics, daily_transactions_df_normalized, net_transaction_flow_df_normalized, project_addresses, grant_date, display_by_address)
+        #safe_execution(display_op_kpis_and_vis_for_core_metrics, daily_transactions_df_normalized, net_transaction_flow_df_normalized, project_addresses, grant_date, display_by_address)
+        display_op_kpis_and_vis_for_core_metrics(daily_transactions_df_normalized, net_transaction_flow_df_normalized, project_addresses, grant_date, display_by_address)

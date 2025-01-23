@@ -27,27 +27,38 @@ def high_level_overview_table(df: pd.DataFrame, alpha: float) -> None:
         "Balance Left (to date)": df["General Info: Balance Left (to date)"],
         "Date Range": df["General Info: Date Range"]
     }
+    
+    # define metric groups
+    forecasted_metric_list = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Net Transferred", "TVL"]
+    metric_list = ["Retained Daily Active Users", "DAA/MAA"]
 
-    # Process each metric to create a single column summarizing the result
-    metric_list = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Net Transferred", "TVL"]
+    # iterate over all metrics (including forecasted ones)
+    for metric in forecasted_metric_list + metric_list:
+        # check if the metric has a forecasted counterpart
+        metric_variants = [metric, f"{metric} (forecasted)"] if metric in forecasted_metric_list else [metric]
 
-    for metric in metric_list:
-        for curr_metric in [metric, f"{metric} (forecasted)"]:
+        for curr_metric in metric_variants:
+            # define column names for percent change and p-value
             percent_change_col = f"{curr_metric}: Percent Change"
             p_value_col = f"{curr_metric}: P Value"
 
-            # Apply logic to categorize results based on percent change and p-value
+            # apply logic to categorize results based on percent change and p-value
             simplified_data[curr_metric] = df.apply(
                 lambda row: (
+                    # handle cases where data is missing or invalid
                     "N/A" if row[percent_change_col] == "N/A" or row[p_value_col] == "N/A" or pd.isna(row[percent_change_col]) or pd.isna(row[p_value_col]) else
+                    # format as a decrease if the percent change is negative and p-value is significant
                     f"-{format_percent_change(abs(row[percent_change_col] * 100))}% daily average decrease"
                     if row[percent_change_col] < 0 and row[p_value_col] < alpha else
+                    # format as an increase if the percent change is positive and p-value is significant
                     f"+{format_percent_change(row[percent_change_col] * 100)}% daily average increase"
                     if row[percent_change_col] > 0 and row[p_value_col] < alpha else
+                    # handle cases with no statistically significant change
                     "no statistically significant change"
                 ),
                 axis=1
             )
+
 
     # Create a new DataFrame with the simplified structure
     simplified_df = pd.DataFrame(simplified_data)
@@ -126,7 +137,7 @@ def prepare_data_for_scatterplots(df: pd.DataFrame, alpha: float) -> pd.DataFram
     df.columns = [f"{col[0]}: {col[1]}" for col in df.columns]
     
     # define the list of metrics
-    metric_list = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Net Transferred", "TVL"]
+    metric_list = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Net Transferred", "TVL", "Retained Daily Active Users", "DAA/MAA"]
 
     # select relevant columns
     target_cols = ["General Info: Project Name", "General Info: Grant Amount"]
@@ -180,7 +191,7 @@ def prepare_data_for_scatterplots(df: pd.DataFrame, alpha: float) -> pd.DataFram
 def display_scatterplots(df: pd.DataFrame, alpha: float) -> None:
     st.subheader("Impact Across Projects By Metric")
 
-    metric_list = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Net Transferred", "TVL"]
+    metric_list = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Net Transferred", "TVL", "Retained Daily Active Users", "DAA/MAA"]
     selected_metric = st.selectbox("Select desired metric", metric_list)
 
     df = df[df["Metric"] == selected_metric]
@@ -256,7 +267,7 @@ def display_scatterplots(df: pd.DataFrame, alpha: float) -> None:
         color_discrete_map=color_map,
         title="Impact of Each Project by Grant Amount",
         text="Project",
-        labels={"Grant Amount": "Grant Amount ($)", "Percent Change": "Percent Change (%)"}
+        labels={"Grant Amount": "Grant Amount (OP)", "Percent Change": "Percent Change (%)"}
     )
 
     # update trace to position text and adjust marker size

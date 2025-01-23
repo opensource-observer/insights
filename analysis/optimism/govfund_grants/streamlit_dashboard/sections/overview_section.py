@@ -13,9 +13,9 @@ def display_project_details(project: Dict[str, Union[str, List[str], Dict[str, U
         ("Cycle", str(project.get("cycle", "N/A"))),
         ("Intent", str(project.get("intent", "N/A"))),
         ("Grant Status", str(project.get("status", "N/A"))),
-        ("Grant Amount", str(project.get("amount", "N/A"))),
+        ("Grant Amount (OP)", str(project.get("amount", "N/A"))),
         ("Full Grant Recieved to Date?", str(project.get("recieved_todate", "N/A"))),
-        ("Date of Funds Recieved", str(project.get("funds_recieved_date", "N/A"))),
+        ("Date of Funds Recieved*", str(project.get("funds_recieved_date", "N/A"))),
         ("Balance Left Today", str(project.get("balance_left", "N/A"))),
         ("Total Amount Recieved", str(project.get("inflow_total", "N/A")))
     ]
@@ -29,6 +29,15 @@ def display_project_details(project: Dict[str, Union[str, List[str], Dict[str, U
     )
 
     st.table(df_style)
+
+    st.markdown(
+        """
+        <p style="color: grey; font-style: italic;">
+        *If the total amount received for the wallet is 0, the grant approval date will be used as the default grant date across the platform.
+        </p>
+        """,
+        unsafe_allow_html=True,
+    )
 
     # display the proposal link as a clickable hyperlink
     proposal_link = project.get("proposal_link", "N/A")

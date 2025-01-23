@@ -1,4 +1,3 @@
-import pandas as pd
 from queries.superchain_sandbox import query_transaction_data_from_bq_superchain_sandbox
 from utils import connect_bq_client, read_in_grants, extract_addresses, return_protocol, read_in_defi_llama_protocols
 

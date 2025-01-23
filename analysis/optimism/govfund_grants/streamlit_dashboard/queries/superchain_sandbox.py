@@ -12,7 +12,7 @@ def query_optimism_daily_transactions_superchain_sandbox(client: bigquery.Client
     try:
         # handle single or multiple addresses in the query
         addresses_condition = get_addresses_condition(project_addresses=project_addresses)
-        
+
         # query for transaction count, active users, and total transferred, for each address
         daily_transactions_query = f"""
             SELECT 

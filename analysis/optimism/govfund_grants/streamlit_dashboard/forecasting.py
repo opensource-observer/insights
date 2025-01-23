@@ -26,7 +26,7 @@ def bootstrap_series(series: np.ndarray, rng: np.random.Generator, bootstrap_rat
 
     return bootstrapped_series
 
-# train an arima model on the pre grant data to forecast what the post grant data would look like if the grant never occured
+# train an arima model on the pre-grant data to forecast what the post-grant data would look like if the grant never occurred
 def forecast_based_on_pregrant(
         pre_grant_df: pd.DataFrame,
         post_grant_df: pd.DataFrame,
@@ -51,6 +51,11 @@ def forecast_based_on_pregrant(
     post_grant_df[date_col] = pd.to_datetime(post_grant_df[date_col])
 
     y = pre_grant_df[target_col].values
+
+    # check for NaN values and handle them
+    if np.any(np.isnan(y)):
+        print(f"Warning: Found NaN values in {target_col}. Filling with zeros.")
+        y = np.nan_to_num(y, nan=0.0)
 
     # check if the series is constant
     if pre_grant_df[target_col].nunique() <= 1:
@@ -79,6 +84,9 @@ def forecast_based_on_pregrant(
             else:
                 y_curr = y_train_trans
 
+            # ensure all values in y_curr are finite
+            y_curr = np.nan_to_num(y_curr, nan=0.0, posinf=0.0, neginf=0.0)
+
             # fit the ARIMA model
             model = auto_arima(
                 y_curr,
@@ -87,7 +95,8 @@ def forecast_based_on_pregrant(
                 suppress_warnings=True,
                 stepwise=True,
                 trace=False,
-                error_action='ignore'
+                error_action='ignore',
+                ensure_all_finite=True  # ensure data contains no NaN or infinite values
             )
 
             # forecast
@@ -121,9 +130,20 @@ def forecast_based_on_pregrant(
 # generate the forecasted dataset for the target project
 def forecast_project(datasets: Dict[str, pd.DataFrame], grant_date: datetime) -> pd.DataFrame:
     # extract the relevant datasets
-    daily_transactions_df = datasets.get('daily_transactions', pd.DataFrame()).copy()
-    net_transaction_flow_df = datasets.get('net_transaction_flow', pd.DataFrame()).copy()
-    tvl_df = datasets.get('tvl', pd.DataFrame()).copy()
+    if datasets['daily_transactions'] is not None:
+        daily_transactions_df = datasets.get('daily_transactions').copy()
+    else:
+        daily_transactions_df = pd.DataFrame()
+
+    if datasets['net_transaction_flow'] is not None:
+        net_transaction_flow_df = datasets.get('net_transaction_flow').copy()
+    else:
+        net_transaction_flow_df = pd.DataFrame()
+
+    if datasets['tvl'] is not None:
+        tvl_df = datasets.get('tvl').copy()
+    else:
+        tvl_df = pd.DataFrame()
 
     # combine all metrics into a single aggregated dataset
     aggregated_dataset = aggregate_datasets(
@@ -226,6 +246,10 @@ def forecast_based_on_chain_tvl(
     while predictions_left > 0:
         # how much to forecast
         forecast_window = min(chunk_size, predictions_left)
+
+        # ensure all values in X_pre_grant and y_pre_grant are finite
+        X_pre_grant_curr = np.nan_to_num(X_pre_grant_curr, nan=0.0, posinf=0.0, neginf=0.0)
+        y_pre_grant_curr = np.nan_to_num(y_pre_grant_curr, nan=0.0, posinf=0.0, neginf=0.0)
 
         # train the Linear Regression model
         model.fit(X=X_pre_grant_curr, y=y_pre_grant_curr)
