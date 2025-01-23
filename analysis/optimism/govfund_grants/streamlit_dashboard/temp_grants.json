@@ -262,7 +262,7 @@
   },
   {
     "round": "Grants Season 6",
-    "chain": "frax",
+    "chain": "fraxtal",
     "pull_from_bigquery": false,
     "store_bq_datasets": false,
     "live_streamlit_instance": false,

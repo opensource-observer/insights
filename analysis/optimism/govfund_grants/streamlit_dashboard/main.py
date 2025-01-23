@@ -3,8 +3,7 @@ import pandas as pd
 
 from processing import make_net_transaction_dataset
 from forecasting import forecast_project
-from queries.optimism import query_transaction_data_from_bq_optimism
-from queries.superchain import query_transaction_data_from_bq_superchain
+from queries.superchain_sandbox import query_transaction_data_from_bq_superchain_sandbox
 from queries.defillama import query_tvl_data_from_bq
 
 from utils import (read_in_stored_dfs_for_projects,
@@ -145,13 +144,13 @@ def main() -> None:
 
             # query transaction count, active users, unique users, and total transferred for the passed project based on the target chain
             if chain == "optimism":
-                project_daily_transactions_df, project_transaction_flow_df = query_transaction_data_from_bq_optimism(client=client, project_addresses=just_addresses, grant_date=grant_date, token_conversion=token_conversion)
+                project_daily_transactions_df, project_transaction_flow_df = query_transaction_data_from_bq_superchain_sandbox(client=client, project_addresses=just_addresses, grant_date=grant_date, token_conversion=token_conversion, chain=chain)
                 
                 # use the transaction flow dataset (which looks at abs(op amount)) to create a dataset that considers the direction of the transactions
                 project_net_transaction_flow_df = make_net_transaction_dataset(transaction_flow_df=project_transaction_flow_df)
                 datasets['net_transaction_flow'] = project_net_transaction_flow_df
             else:
-                project_daily_transactions_df = query_transaction_data_from_bq_superchain(client=client, grant_date=grant_date, token_conversion=token_conversion, chain=chain)
+                project_daily_transactions_df = query_transaction_data_from_bq_superchain_sandbox(client=client, project_addresses=just_addresses, grant_date=grant_date, token_conversion=token_conversion, chain=chain)
                 project_net_transaction_flow_df = None
 
             datasets['daily_transactions'] = project_daily_transactions_df
