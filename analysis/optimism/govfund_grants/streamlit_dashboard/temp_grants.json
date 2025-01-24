@@ -190,7 +190,7 @@
             }
         }
     ],
-    "funds_recieved_date": "2024-09-01",
+    "funds_recieved_date": "2024-12-17",
     "grant_wallet": "0x8cca517370CBfc33CC9810bfC7440832C47D251C",
     "starting_balance": 0,
     "inflow_total_todate": 50000,
@@ -322,7 +322,7 @@
             }
         }
     ],
-    "funds_recieved_date": "2024-09-30",
+    "funds_recieved_date": "2024-09-01",
     "grant_wallet": "0x0dF840dCbf1229262A4125C1fc559bd338eC9491",
     "starting_balance": 0,
     "inflow_total_todate": 0,

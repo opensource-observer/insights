@@ -1,0 +1,7 @@
+transaction_date,address,cnt,total_transferred,direction,total_transferred_in_tokens,net_transferred,net_transferred_in_tokens
+2024-06-06,0xb6b9e9e56ab5a4af927faa802ac93786352f3af9,4,0.0,in,0.0,0.0,0.0
+2024-06-12,0xb6b9e9e56ab5a4af927faa802ac93786352f3af9,1,0.0,in,0.0,0.0,0.0
+2024-10-02,0xb6b9e9e56ab5a4af927faa802ac93786352f3af9,1,0.0,in,0.0,0.0,0.0
+2024-10-31,0xb6b9e9e56ab5a4af927faa802ac93786352f3af9,1,0.0,in,0.0,0.0,0.0
+2024-11-19,0xb6b9e9e56ab5a4af927faa802ac93786352f3af9,1,0.0,in,0.0,0.0,0.0
+2025-01-10,0xb6b9e9e56ab5a4af927faa802ac93786352f3af9,2,0.0,in,0.0,0.0,0.0
