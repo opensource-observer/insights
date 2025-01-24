@@ -349,7 +349,6 @@ def display_superchain_kpis_and_vis_for_core_metrics(
 
 
 def core_metrics_section(daily_transactions_df: pd.DataFrame, project_addresses: List[Dict[str, Union[str, None]]], grant_date: datetime, chain: str, grant_amount: int, net_transaction_flow_df: Optional[pd.DataFrame] = None) -> None:
-    
     # display the core metrics visualizations
     st.header("Plotting Core Metrics by Day")
 

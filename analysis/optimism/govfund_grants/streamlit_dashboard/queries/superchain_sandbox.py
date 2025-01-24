@@ -12,7 +12,6 @@ def query_optimism_daily_transactions_superchain_sandbox(client: bigquery.Client
     try:
         # handle single or multiple addresses in the query
         addresses_condition = get_addresses_condition(project_addresses=project_addresses)
-
         # query for transaction count, active users, and total transferred, for each address
         daily_transactions_query = f"""
             SELECT 
@@ -298,6 +297,7 @@ def query_chainwide_daily_transactions_superchain_sandbox(client: bigquery.Clien
         # add a column for the total transferred represented in tokens
         if token_conversion is not None:
             daily_transactions_merged_df['total_transferred_in_tokens'] = daily_transactions_merged_df['total_transferred'] / token_conversion
+
         # add a column for the cumulative total transferred (by address)
         daily_transactions_merged_df['cum_transferred'] = (daily_transactions_merged_df['total_transferred'].cumsum())
 

@@ -240,6 +240,7 @@ for i in range(len(data["Project Name"])):
             metric_data = data[curr_metric][i] if i < len(data[curr_metric]) else {}
 
             # populate the row with the relevant data
+            
             row[(curr_metric, "Percent Change")] = metric_data.get("Percent Change", "N/A")
             row[(curr_metric, "Test Statistic")] = metric_data.get("Test Statistic", "N/A")
             row[(curr_metric, "P Value")] = metric_data.get("P Value", "N/A")
@@ -247,7 +248,6 @@ for i in range(len(data["Project Name"])):
 
     # append the populated row to the flat_data list
     flat_data.append(row)
-
 
 # convert flattened data into a dataframe with multi-index columns
 output_df = pd.DataFrame(flat_data, columns=multi_index)

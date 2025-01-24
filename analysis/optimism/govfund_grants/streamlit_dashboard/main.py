@@ -143,6 +143,7 @@ def main() -> None:
 
             # query transaction count, active users, unique users, and total transferred for the passed project based on the target chain
             if chain == "op":
+    
                 project_daily_transactions_df, project_transaction_flow_df = query_transaction_data_from_bq_superchain_sandbox(client=client, project_addresses=just_addresses, grant_date=grant_date, token_conversion=token_conversion, chain=chain)
                 
                 # use the transaction flow dataset (which looks at abs(op amount)) to create a dataset that considers the direction of the transactions
