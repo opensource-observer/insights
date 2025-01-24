@@ -91,7 +91,7 @@ def main() -> None:
     # read in a dictionary of each project's corresponding defi llama protocol
     defi_llama_protocols = read_in_defi_llama_protocols(path=DEFI_LLAMA_PROTOCOLS_PATH)
 
-    ttest_results = pd.read_csv("data/ttest_results.csv", header=[0, 1])
+    ttest_results = pd.read_csv("data/ttest_results2.csv", header=[0, 1])
 
     by_project, overview_table = st.tabs(["By Project Drill Down", "High-Level Overview Table"])
 
@@ -124,7 +124,6 @@ def main() -> None:
         pull_from_bigquery = project['pull_from_bigquery']
         store_bq_datasets = project['store_bq_datasets']
         live_streamlit_instance = project['live_streamlit_instance']
-        display_by_address = project['display_by_address']
         token_conversion = project['token_conversion']
         grant_date = project['funds_recieved_date']
         grant_amount = project['amount']
@@ -143,7 +142,7 @@ def main() -> None:
             datasets = {}
 
             # query transaction count, active users, unique users, and total transferred for the passed project based on the target chain
-            if chain == "optimism":
+            if chain == "op":
                 project_daily_transactions_df, project_transaction_flow_df = query_transaction_data_from_bq_superchain_sandbox(client=client, project_addresses=just_addresses, grant_date=grant_date, token_conversion=token_conversion, chain=chain)
                 
                 # use the transaction flow dataset (which looks at abs(op amount)) to create a dataset that considers the direction of the transactions
@@ -196,7 +195,7 @@ def main() -> None:
                                  net_transaction_flow_df=project_net_transaction_flow_df, 
                                  project_addresses=project_addresses, 
                                  grant_date=grant_date, 
-                                 display_by_address=display_by_address,
+                                 chain=chain,
                                  grant_amount=grant_amount)
 
         # if the project has a corresponding defi llama protocol display the tvl related charts

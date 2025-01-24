@@ -27,7 +27,6 @@ def read_in_grants(grants_path: str) -> Dict[str, Dict[str, Union[str, List[str]
             "pull_from_bigquery": project.get("pull_from_bigquery", False),
             "store_bq_datasets": project.get("store_bq_datasets", False),
             "live_streamlit_instance": project.get("live_streamlit_instance", False),
-            "display_by_address": project.get("display_by_address", False),
             "grant_date_str": project.get("grant_date_str", "N/A"),
             "token_conversion": project.get("token_conversion", "N/A"),
             "round": project.get("round", "N/A"),
@@ -130,7 +129,7 @@ def connect_bq_client(service_account_path: str=None, use_streamlit_secrets: boo
 # read in already stored datasets at the respective path
 def read_in_stored_dfs_for_projects(project_name: str, data_path: str, protocol: Any) -> Dict[str, Any]:
     # get the clean name of the project
-    clean_name = project_name.lower().replace(" ", "_").replace(".", "-")
+    clean_name = project_name.lower().replace(" ", "_").replace(".", "-").replace("/","-")
 
     # initialize everything to None
     daily_transactions = None
@@ -184,17 +183,6 @@ def read_in_stored_dfs_for_projects(project_name: str, data_path: str, protocol:
         "tvl": tvl_df,
         "tokens_in_usd": tokens_in_usd_df
     }
-
-# save all of the passed datasets to the desired path
-def save_datasets(project_name: str, datasets: Dict[str, pd.DataFrame], data_path: str) -> None:
-    # get the clean name of the project
-    clean_name = project_name.lower().replace(" ", "_").replace(".", "-")
-
-    for dataset_name, dataset in datasets.items():
-        current_dataset_path = f"{data_path}{clean_name}/{clean_name}_{dataset_name}.csv"
-        dataset.to_csv(current_dataset_path, index=False)
-
-    return
 
 # helper function used to create KPIs that determine the amount of growth that occurred between two metrics 
 def compute_growth(df: pd.DataFrame, column_name: str) -> Tuple[Optional[float], Optional[float]]:
@@ -251,15 +239,16 @@ def determine_date_col(df: pd.DataFrame=None, row: pd.Series=None):
 # save the datasets at the respective path
 def save_datasets(project_name: str, datasets: Dict[str, pd.DataFrame], data_path: str) -> None:
     # get the clean name of the project
-    clean_name = project_name.lower().replace(" ", "_").replace(".", "-")
+    clean_name = project_name.lower().replace(" ", "_").replace(".", "-").replace("/","-")
 
     # ensure the target directory exists
     project_path = os.path.join(data_path, clean_name)
     os.makedirs(project_path, exist_ok=True)
 
     for dataset_name, dataset in datasets.items():
-        # save each dataset as a CSV file
-        dataset.to_csv(f"{project_path}/{clean_name}_{dataset_name}.csv", index=False)
+        if dataset is not None:
+            # save each dataset as a CSV file
+            dataset.to_csv(f"{project_path}/{clean_name}_{dataset_name}.csv", index=False)
 
 # save the tvl dataset at the passed protocol 
 def save_tvl_dataset(data_path: str, dataset_label: str, service_account_path: str, use_streamlit_secrets: bool, protocol: str) -> None:

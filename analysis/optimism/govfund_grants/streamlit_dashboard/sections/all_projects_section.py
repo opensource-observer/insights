@@ -1,9 +1,20 @@
 import pandas as pd
+import numpy as np
 import streamlit as st
 import plotly.express as px
 
 
 def high_level_overview_table(df: pd.DataFrame, alpha: float) -> None:
+    
+    st.markdown(
+        """
+        <p style="color: grey; font-style: italic;">
+        Projects are ordered, left to right, by their average percent change across all metrics
+        </p>
+        """,
+        unsafe_allow_html=True,
+    )
+    
     # Helper function to format percent change
     def format_percent_change(value: float) -> str:
         if abs(value) >= 1e6:  # Use scientific notation for very large values
@@ -29,13 +40,12 @@ def high_level_overview_table(df: pd.DataFrame, alpha: float) -> None:
     }
     
     # define metric groups
-    forecasted_metric_list = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Net Transferred", "TVL"]
-    metric_list = ["Retained Daily Active Users", "DAA/MAA"]
+    metric_list = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Net Transferred", "TVL", "Retained Daily Active Users", "DAA/MAA"]
 
     # iterate over all metrics (including forecasted ones)
-    for metric in forecasted_metric_list + metric_list:
+    for metric in metric_list:
         # check if the metric has a forecasted counterpart
-        metric_variants = [metric, f"{metric} (forecasted)"] if metric in forecasted_metric_list else [metric]
+        metric_variants = [metric, f"{metric} (forecasted)"]
 
         for curr_metric in metric_variants:
             # define column names for percent change and p-value
@@ -59,14 +69,39 @@ def high_level_overview_table(df: pd.DataFrame, alpha: float) -> None:
                 axis=1
             )
 
-
-    # Create a new DataFrame with the simplified structure
+    # create a new dataframe with the simplified structure
     simplified_df = pd.DataFrame(simplified_data)
     simplified_df = simplified_df.T
     simplified_df.columns = simplified_df.iloc[0]
     simplified_df = simplified_df.iloc[1:]
+    simplified_df = simplified_df.T
 
-    # Define each table
+    # create a ranking dictionary to store mean percent change for each project
+    ranking = {}
+    for project_name, row in simplified_df.iterrows():
+        vals = []
+        for col in simplified_df.columns:
+            if "%" in str(row[col]):
+                try:
+                    num = float(row[col].split('%')[0].lstrip('+-'))
+                    vals.append(num)
+                except ValueError:
+                    continue
+        if len(vals) > 0:
+            ranking[project_name] = sum(vals) / len(vals)  # calculate the mean percent change
+
+    # rank projects based on mean percent change (highest to lowest)
+    ranked_projects = sorted(ranking, key=ranking.get, reverse=True)
+
+    # add projects not in ranking at the end
+    all_projects = simplified_df.index.tolist()
+    unranked_projects = [proj for proj in all_projects if proj not in ranking]
+    final_project_order = ranked_projects + unranked_projects
+
+    # reorder simplified_df based on ranking and transpose back
+    simplified_df = simplified_df.loc[final_project_order].T
+
+    # define each table
     project_details = simplified_df.iloc[:8]
     pre_grant_results = simplified_df[8:][~simplified_df[8:].index.str.contains(r"\(forecasted\)", regex=True)]
     forecasted_results = simplified_df[8:][simplified_df[8:].index.str.contains(r"\(forecasted\)", regex=True)]
@@ -196,25 +231,26 @@ def display_scatterplots(df: pd.DataFrame, alpha: float) -> None:
 
     df = df[df["Metric"] == selected_metric]
 
-    # Ensure proper scaling
-    if df["Percent Change"].max() <= 1:
-        df["Percent Change"] *= 100
+    # ensure proper scaling
+    df["Percent Change"] *= 100
 
-    # Validate P Value range
-    assert df["P Value"].between(0, 1).all(), "P Value column should only contain values between 0 and 1."
+    # handle negative values before applying log transformation
+    offset = abs(df["Percent Change"].min()) + 1
+    df["Percent Change"] += offset  # shift all values to make them positive
+    df["Percent Change"] = np.log1p(df["Percent Change"])  # apply log transformation
+    df["Percent Change"] -= np.log1p(offset)  # shift values back to their original range
 
-    # Determine x-axis range
+    # determine x-axis range
     max_percent_change = max(abs(df["Percent Change"].min()), abs(df["Percent Change"].max()))
-    x_range = [-max_percent_change, max_percent_change]
 
-    # Define color mapping
+    # define color mapping
     color_map = {
         "increase": "green",
         "decrease": "red",
         "no change": "rgba(128, 128, 128, 0.6)"
     }
 
-    # Create scatter plot
+    # create scatter plot
     fig1 = px.scatter(
         df,
         x="P Value",
@@ -222,20 +258,20 @@ def display_scatterplots(df: pd.DataFrame, alpha: float) -> None:
         color="Change",
         color_discrete_map=color_map,
         title="Significance and Impact of the Grant on Each Project",
-        text="Project",
-        labels={"Percent Change": "Percent Change (%)", "P Value": "Significance"}
+        labels={"Percent Change": "Percent Change (Log Scale)", "P Value": "Significance"},
+        hover_data={"Project": True, "Change": False, "P Value": False, "Percent Change": False} 
     )
 
     fig1.update_traces(
         textposition="middle right",
-        marker=dict(size=10)
+        marker=dict(size=12)
     )
 
     # add significance threshold and shaded regions
     fig1.add_vline(x=alpha, line_width=2, line_dash="dash", line_color="red")
     fig1.add_shape(type="rect", x0=alpha, x1=1, y0=-max_percent_change * 1.1, y1=max_percent_change * 1.1,
                    fillcolor="rgba(0, 0, 0, 0.3)", layer="above", line_width=0)
-    fig1.add_shape(type="rect", x0=0, x1=alpha, y0=-max_percent_change * 1.1, y1=max_percent_change * 1.1,
+    fig1.add_shape(type="rect", x0=-0.01, x1=alpha, y0=-max_percent_change * 1.1, y1=max_percent_change * 1.1,
                    fillcolor="rgba(255, 255, 255, 0.1)", layer="below", line_width=0)
 
     # add annotations
@@ -246,7 +282,7 @@ def display_scatterplots(df: pd.DataFrame, alpha: float) -> None:
 
     # update layout
     fig1.update_layout(
-        xaxis=dict(range=[0, 1]),
+        xaxis=dict(range=[-0.01, 1]),
         width=900,
         height=600,
         title_font=dict(size=20),
@@ -266,14 +302,14 @@ def display_scatterplots(df: pd.DataFrame, alpha: float) -> None:
         color="Change",
         color_discrete_map=color_map,
         title="Impact of Each Project by Grant Amount",
-        text="Project",
-        labels={"Grant Amount": "Grant Amount (OP)", "Percent Change": "Percent Change (%)"}
+        labels={"Grant Amount": "Grant Amount (OP)", "Percent Change": "Percent Change (Log Scale)"},
+        hover_data={"Project": True, "Change": False, "P Value": False, "Percent Change": False} 
     )
 
     # update trace to position text and adjust marker size
     fig2.update_traces(
         textposition="top center",  # position text above the dots
-        marker=dict(size=10)  # increase dot size
+        marker=dict(size=12)  # increase dot size
     )
 
     # adjust plot layout

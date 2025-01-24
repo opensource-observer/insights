@@ -17,14 +17,15 @@ def query_optimism_daily_transactions_superchain_sandbox(client: bigquery.Client
         daily_transactions_query = f"""
             SELECT 
                 dt AS transaction_date,
+                to_address AS address,
                 COUNT(*) AS transaction_cnt,
                 COUNT(DISTINCT from_address) AS active_users,
-                SUM(value_64) AS total_transferred
+                SUM(SAFE_CAST(value_64 AS FLOAT64)) AS total_transferred
             FROM `{BIGQUERY_PROJECT_NAME}.oso_production.int_superchain_transactions_sandbox`
             WHERE dt >= '{start_date}' 
                 AND to_address {addresses_condition}
                 AND chain = "{chain}"
-            GROUP BY transaction_date
+            GROUP BY transaction_date, to_address
             ORDER BY transaction_date;
         """
 
@@ -33,10 +34,12 @@ def query_optimism_daily_transactions_superchain_sandbox(client: bigquery.Client
             WITH firstseen AS (
             SELECT
                 address,
+                other_address,
                 MIN(dt) AS first_seen_date
             FROM (
                 SELECT
                     to_address AS address,
+                    from_address AS other_address,
                     dt
                 FROM `{BIGQUERY_PROJECT_NAME}.oso_production.int_superchain_transactions_sandbox`
                 WHERE dt >= '{start_date}'
@@ -47,23 +50,26 @@ def query_optimism_daily_transactions_superchain_sandbox(client: bigquery.Client
 
                 SELECT
                     from_address AS address,
+                    to_address AS other_address,
                     dt
                 FROM `{BIGQUERY_PROJECT_NAME}.oso_production.int_superchain_transactions_sandbox`
                 WHERE dt >= '{start_date}'
                     AND from_address {addresses_condition}
                     AND chain = "{chain}"
             )
-            GROUP BY address
+            GROUP BY address, other_address
             ),
             daily_unique_users AS (
             SELECT
                 first_seen_date AS transaction_date,
-                COUNT(address) AS daily_new_users
+                address,
+                COUNT(DISTINCT other_address) AS daily_new_users
             FROM firstseen
-            GROUP BY first_seen_date
+            GROUP BY first_seen_date, address
             )
             SELECT 
             transaction_date,
+            address,
             COALESCE(daily_new_users, 0) AS unique_users
             FROM daily_unique_users
             ORDER BY transaction_date;"""
@@ -84,7 +90,7 @@ def query_optimism_daily_transactions_superchain_sandbox(client: bigquery.Client
             daily_transactions_df,
             daily_transactions_unique_users_df,
             how='outer',
-            on='transaction_date'
+            on=['transaction_date', 'address']
         )
 
         # merge with dates_df to ensure all dates are included
@@ -92,7 +98,7 @@ def query_optimism_daily_transactions_superchain_sandbox(client: bigquery.Client
             daily_transactions_df,
             dates_df,
             how='outer',
-            on='transaction_date'
+            on=['transaction_date', 'address']
         )
 
         # fill missing numeric values with 0, but leave other columns (e.g., transaction_date) unchanged
@@ -308,35 +314,42 @@ def query_optimism_transaction_flow_superchain_sandbox(client: bigquery.Client, 
 
         # query the amount of op transferred in and out of the relevant addresses
         transaction_flow_query = f"""
-        SELECT 
-            dt AS transaction_date,
-            from_address,
-            to_address,
-            COUNT(*) AS cnt,
-            SUM(value_64) AS total_transferred,
-            'in' AS direction
-        FROM `{BIGQUERY_PROJECT_NAME}.oso_production.int_superchain_transactions_sandbox`
-        WHERE chain = "{chain}"
-            AND to_address {addresses_condition}
-            AND dt >= '{start_date}'
-        GROUP BY dt, from_address, to_address
-        ORDER BY 3 DESC
+        SELECT
+            transaction_date,
+            address,
+            cnt,
+            total_transferred,
+            direction
+        FROM (
+            SELECT 
+                dt AS transaction_date,
+                from_address AS other_address,
+                to_address AS address,
+                COUNT(*) AS cnt,
+                SUM(SAFE_CAST(value_64 AS FLOAT64)) AS total_transferred,
+                'in' AS direction
+            FROM `{BIGQUERY_PROJECT_NAME}.oso_production.int_superchain_transactions_sandbox`
+            WHERE chain = "{chain}"
+                AND to_address {addresses_condition}
+                AND dt >= '{start_date}'
+            GROUP BY dt, from_address, to_address
 
-        UNION ALL 
+            UNION ALL 
 
-        SELECT 
-            dt AS transaction_date,
-            from_address,
-            to_address,
-            COUNT(*) AS cnt,
-            SUM(value_64) AS total_transferred,
-            'out' AS direction
-        FROM `{BIGQUERY_PROJECT_NAME}.oso_production.int_superchain_transactions_sandbox`
-        WHERE chain = "{chain}"
-            AND from_address {addresses_condition}
-            AND dt >= '{start_date}'
-        GROUP BY dt, from_address, to_address
-        ORDER BY 3 DESC"""
+            SELECT 
+                dt AS transaction_date,
+                from_address AS address,
+                to_address AS other_address,
+                COUNT(*) AS cnt,
+                SUM(SAFE_CAST(value_64 AS FLOAT64)) AS total_transferred,
+                'out' AS direction
+            FROM `{BIGQUERY_PROJECT_NAME}.oso_production.int_superchain_transactions_sandbox`
+            WHERE chain = "{chain}"
+                AND from_address {addresses_condition}
+                AND dt >= '{start_date}'
+            GROUP BY dt, from_address, to_address
+        )
+        ORDER BY transaction_date"""
 
         # execute the query
         transaction_flow_result = client.query(transaction_flow_query)
@@ -349,7 +362,7 @@ def query_optimism_transaction_flow_superchain_sandbox(client: bigquery.Client, 
         return transaction_flow_df
 
     except Exception as e:
-        raise RuntimeError(f"Failed to query op flow: {e}")
+        raise RuntimeError(f"Failed to query transaction flow: {e}")
     
 # queries the minimum transaction date for a given set of project addresses and start date
 def query_optimism_transactions_min_date_superchain_sandbox(client: bigquery.Client, project_addresses: list[str], start_date: str, chain: str) -> pd.Timestamp | None:
@@ -382,18 +395,27 @@ def query_optimism_transactions_min_date_superchain_sandbox(client: bigquery.Cli
     return None
 
 # connect to bigquery and query all necessary data for the passed project
-def query_transaction_data_from_bq_superchain_sandbox(client: bigquery.Client, grant_date: str, chain: str, token_conversion: str = None, project_addresses: list[str] = None) -> Tuple[pd.DataFrame, Optional[pd.DataFrame]]:
+def query_transaction_data_from_bq_superchain_sandbox(client: bigquery.Client, grant_date: str, chain: str, token_conversion: str = None, project_addresses: list[str] = None) -> Tuple[pd.DataFrame, Optional[pd.DataFrame | None]]:
 
     # create a pre-grant date range equal to the post-grant date length
     time_since_interval = datetime.today() - grant_date
     min_start = grant_date - time_since_interval
     min_start_string = min_start.strftime('%Y-%m-%d')
 
+    if chain == "op":
+        queried_min_start = query_optimism_transactions_min_date_superchain_sandbox(client=client, project_addresses=project_addresses, start_date=min_start_string, chain=chain)
+        min_start = max(min_start, queried_min_start)
+        min_start_string = min_start.strftime('%Y-%m-%d')
+
     # create a templated dataframe of each pair (dates, address) from the minimum start date
     dates = generate_dates(target_date=min_start)
-    dates_df = make_dates_df(dates=dates, project_addresses=None)
 
-    if chain == "optimism":
+    if chain == "op":
+        dates_df = make_dates_df(dates=dates, project_addresses=project_addresses)
+    else:
+        dates_df = make_dates_df(dates=dates, project_addresses=None)
+
+    if chain == "op":
         # query daily transactions data from bigquery
         daily_transactions = query_optimism_daily_transactions_superchain_sandbox(client=client, project_addresses=project_addresses, dates_df=dates_df, start_date=min_start_string, token_conversion=token_conversion, chain=chain)
         
@@ -405,4 +427,4 @@ def query_transaction_data_from_bq_superchain_sandbox(client: bigquery.Client, g
         # query daily transactions data from bigquery
         daily_transactions = query_chainwide_daily_transactions_superchain_sandbox(client=client, dates_df=dates_df, start_date=min_start_string, token_conversion=token_conversion, chain=chain)
 
-        return daily_transactions
+        return daily_transactions, None

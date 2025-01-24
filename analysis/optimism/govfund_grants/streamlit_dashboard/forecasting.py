@@ -1,7 +1,7 @@
 from datetime import datetime
 import pandas as pd
 import numpy as np
-from typing import Dict
+from typing import Dict, Optional
 from pmdarima import auto_arima
 from sklearn.linear_model import LinearRegression
 
@@ -26,121 +26,97 @@ def bootstrap_series(series: np.ndarray, rng: np.random.Generator, bootstrap_rat
 
     return bootstrapped_series
 
-# train an arima model on the pre-grant data to forecast what the post-grant data would look like if the grant never occurred
 def forecast_based_on_pregrant(
         pre_grant_df: pd.DataFrame,
         post_grant_df: pd.DataFrame,
         target_col: str,
         bootstrap_ratio: float,
         seasonality: int = 0,
-        chunk_size: int = 3,  # number of days to predict at each iteration
-        noise_std: float = 0.25,  # amount of relative noise for day-to-day variability
+        chunk_size: int = 3,
+        noise_std: float = 0.25,
         random_state: np.random.RandomState = None,
         handle_negative: bool = False
 ) -> pd.DataFrame:
     rng = np.random.RandomState(random_state)
 
-    # identify the date column
     date_col = determine_date_col(df=pre_grant_df)
-
-    # aggregate and sort the data
     pre_grant_df = pre_grant_df.groupby(date_col)[target_col].sum().reset_index()
     post_grant_df = post_grant_df.groupby(date_col)[target_col].sum().reset_index()
 
-    pre_grant_df[date_col] = pd.to_datetime(pre_grant_df[date_col])
-    post_grant_df[date_col] = pd.to_datetime(post_grant_df[date_col])
-
     y = pre_grant_df[target_col].values
 
-    # check for NaN values and handle them
-    if np.any(np.isnan(y)):
-        print(f"Warning: Found NaN values in {target_col}. Filling with zeros.")
-        y = np.nan_to_num(y, nan=0.0)
+    if len(y) == 0:
+        raise ValueError(f"The input series for '{target_col}' is empty.")
 
-    # check if the series is constant
     if pre_grant_df[target_col].nunique() <= 1:
         print(f"Time-series for '{target_col}' is constant. Skipping ARIMA modeling.")
-        # create a forecast by simply repeating the constant value
         constant_value = y[0] if len(y) > 0 else 0
         predictions = [constant_value] * len(post_grant_df)
-    else:
-        # handle negative values if necessary
+        return pd.DataFrame({'date': post_grant_df[date_col], f'forecasted_{target_col}': predictions})
+
+    if handle_negative:
+        offset = abs(y.min()) + 1 if y.min() < 0 else 0
+        y = y + offset
+
+    y_train_trans = np.log1p(y)
+    y_train_trans = np.nan_to_num(y_train_trans, nan=0.0, posinf=0.0, neginf=0.0)
+
+    predictions = []
+    predictions_left = len(post_grant_df)
+    while predictions_left > 0:
+        forecast_window = min(chunk_size, predictions_left)
+
+        if bootstrap_ratio > 0:
+            y_curr = bootstrap_series(y_train_trans, rng, bootstrap_ratio)
+        else:
+            y_curr = y_train_trans
+
+        y_curr = np.nan_to_num(y_curr, nan=0.0, posinf=0.0, neginf=0.0)
+
+        model = auto_arima(
+            y_curr,
+            seasonal=(seasonality > 0),
+            m=seasonality,
+            suppress_warnings=True,
+            stepwise=True,
+            trace=False,
+            error_action='ignore',
+            ensure_all_finite=True
+        )
+
+        forecasted_log = model.predict(n_periods=forecast_window)
+        forecasted_vals = np.expm1(forecasted_log)
+
+        noise_factors = rng.normal(loc=1.0, scale=noise_std, size=forecast_window)
+        forecasted_vals_noisy = forecasted_vals * noise_factors
+
         if handle_negative:
-            offset = abs(y.min()) + 1 if y.min() < 0 else 0
-            y = y + offset
+            forecasted_vals_noisy = forecasted_vals_noisy - offset
 
-        y_train_trans = np.log1p(y)  # log-transform to stabilize variance
+        predictions.extend(forecasted_vals_noisy)
+        forecasted_log_noisy = np.log1p(np.clip(forecasted_vals_noisy, 1e-9, None))
+        y_train_trans = np.concatenate([y_train_trans, forecasted_log_noisy])
 
-        predictions = []
-        # iterate until predictions are made for every day of the post-grant period
-        predictions_left = len(post_grant_df)
-        while predictions_left > 0:
-            # how much to forecast
-            forecast_window = min(chunk_size, predictions_left)
+        predictions_left -= forecast_window
 
-            # bootstrapping to combat overfitting
-            if bootstrap_ratio > 0:
-                y_curr = bootstrap_series(y_train_trans, rng, bootstrap_ratio)
-            else:
-                y_curr = y_train_trans
-
-            # ensure all values in y_curr are finite
-            y_curr = np.nan_to_num(y_curr, nan=0.0, posinf=0.0, neginf=0.0)
-
-            # fit the ARIMA model
-            model = auto_arima(
-                y_curr,
-                seasonal=(seasonality > 0),
-                m=seasonality,  # weekly seasonality
-                suppress_warnings=True,
-                stepwise=True,
-                trace=False,
-                error_action='ignore',
-                ensure_all_finite=True  # ensure data contains no NaN or infinite values
-            )
-
-            # forecast
-            forecasted_log = model.predict(n_periods=forecast_window)
-            forecasted_vals = np.expm1(forecasted_log)
-
-            # add variability with noise
-            noise_factors = rng.normal(loc=1.0, scale=noise_std, size=forecast_window)
-            forecasted_vals_noisy = forecasted_vals * noise_factors
-
-            # subtract offset to return to original data
-            if handle_negative:
-                forecasted_vals_noisy = forecasted_vals_noisy - offset
-
-            predictions.extend(forecasted_vals_noisy)
-
-            # update the training set with the forecast
-            forecasted_log_noisy = np.log1p(np.clip(forecasted_vals_noisy, 1e-9, None))
-            y_train_trans = np.concatenate([y_train_trans, forecasted_log_noisy])
-
-            predictions_left -= forecast_window
-
-    # create a dataframe for results
-    result_df = pd.DataFrame({
-        'date': post_grant_df[date_col],
-        f'forecasted_{target_col}': predictions
-    })
-
-    return result_df
+    return pd.DataFrame({'date': post_grant_df[date_col], f'forecasted_{target_col}': predictions})
 
 # generate the forecasted dataset for the target project
 def forecast_project(datasets: Dict[str, pd.DataFrame], grant_date: datetime) -> pd.DataFrame:
+    optimism_bridge_tvl = pd.read_csv("data/optimism_bridge_tvl.csv")
+    
     # extract the relevant datasets
-    if datasets['daily_transactions'] is not None:
+    if 'daily_transactions' in datasets.keys() and datasets['daily_transactions'] is not None:
         daily_transactions_df = datasets.get('daily_transactions').copy()
     else:
         daily_transactions_df = pd.DataFrame()
 
-    if datasets['net_transaction_flow'] is not None:
+    if 'net_transaction_flow' in datasets.keys() and datasets['net_transaction_flow'] is not None:
         net_transaction_flow_df = datasets.get('net_transaction_flow').copy()
     else:
         net_transaction_flow_df = pd.DataFrame()
 
-    if datasets['tvl'] is not None:
+    if 'tvl' in datasets.keys() and datasets['tvl'] is not None:
         tvl_df = datasets.get('tvl').copy()
     else:
         tvl_df = pd.DataFrame()
@@ -156,37 +132,52 @@ def forecast_project(datasets: Dict[str, pd.DataFrame], grant_date: datetime) ->
     # split the dataset into pre-grant and post-grant based on the grant date
     pre_grant_df, post_grant_df = split_dataset_by_date(aggregated_dataset, grant_date=grant_date)
 
-    # identify target columns for forecasting
-    target_cols = aggregated_dataset.drop(['date', 'grant_label'], axis=1).columns
+    if len(pre_grant_df) >= 10:
+        # identify target columns for forecasting
+        target_cols = aggregated_dataset.drop(['date', 'grant_label'], axis=1).columns
 
-    # initialize the forecasted dataframe
-    forecasted_df = None
+        # initialize the forecasted dataframe
+        forecasted_df = None
 
-    for col in target_cols:
-        # adjust forecasting parameters based on the column
-        if col == 'TVL':
-            col_forecasted_df = forecast_based_on_pregrant(
-                pre_grant_df, 
-                post_grant_df, 
-                bootstrap_ratio=0, 
-                noise_std=0.05, 
-                target_col=col
-            )
-        else:
-            col_forecasted_df = forecast_based_on_pregrant(
-                pre_grant_df, 
-                post_grant_df, 
-                bootstrap_ratio=0.33, 
-                target_col=col
-            )
+        for col in target_cols:
+            # adjust forecasting parameters based on the column
+            if col == 'TVL':
+                col_forecasted_df2 = forecast_based_on_chain_tvl(
+                    chain_tvl=optimism_bridge_tvl, 
+                    target_protocol=aggregated_dataset,
+                    grant_date=grant_date
+                )
 
-        # merge the forecasts for each column
-        if forecasted_df is None:
-            forecasted_df = col_forecasted_df
-        else:
-            forecasted_df = forecasted_df.merge(col_forecasted_df, on='date', how='outer')
+                col_forecasted_df = forecast_based_on_pregrant(
+                    pre_grant_df, 
+                    post_grant_df, 
+                    bootstrap_ratio=0, 
+                    noise_std=0.05, 
+                    target_col=col
+                )
 
-    return forecasted_df
+                if col_forecasted_df is not None and col_forecasted_df2 is not None:
+                    col_forecasted_df = col_forecasted_df.merge(col_forecasted_df2, how='outer', on='date')
+                elif col_forecasted_df2 is not None and col_forecasted_df is None:
+                    col_forecasted_df = col_forecasted_df2
+
+            else:
+                col_forecasted_df = forecast_based_on_pregrant(
+                    pre_grant_df, 
+                    post_grant_df, 
+                    bootstrap_ratio=0.33, 
+                    target_col=col
+                )
+
+            # merge the forecasts for each column
+            if forecasted_df is None:
+                forecasted_df = col_forecasted_df
+            else:
+                forecasted_df = forecasted_df.merge(col_forecasted_df, on='date', how='outer')
+
+        return forecasted_df
+
+    return None
 
 # use a linear regression model to forecast based on the growth of a reference chain
 def forecast_based_on_chain_tvl(
@@ -196,34 +187,40 @@ def forecast_based_on_chain_tvl(
     chunk_size: int = 3,
     random_state: np.random.RandomState = None,
     noise_std: float = 0.05,
-) -> pd.DataFrame:
+) -> Optional[pd.DataFrame | None]:
+
+    chain_tvl_date_col = determine_date_col(df=chain_tvl)
+    target_protocol_date_col = determine_date_col(df=target_protocol)
 
     # convert dates to datetime format
-    chain_tvl["readable_date"] = pd.to_datetime(chain_tvl["readable_date"], errors="coerce")
-    target_protocol["readable_date"] = pd.to_datetime(target_protocol["readable_date"], errors="coerce")
+    chain_tvl[chain_tvl_date_col] = pd.to_datetime(chain_tvl[chain_tvl_date_col], errors="coerce")
+    target_protocol[target_protocol_date_col] = pd.to_datetime(target_protocol[target_protocol_date_col], errors="coerce")
+
+    chain_tvl_col = "totalLiquidityUSD" if "totalLiquidityUSD" in chain_tvl.columns else "TVL"
+    target_protocol_col = "totalLiquidityUSD" if "totalLiquidityUSD" in target_protocol.columns else "TVL"
 
     # normalize the TVL data
-    chain_tvl_max = chain_tvl["totalLiquidityUSD"].max()
-    chain_tvl["TVL_normalized"] = chain_tvl["totalLiquidityUSD"] / chain_tvl_max
+    chain_tvl_max = chain_tvl[chain_tvl_col].max()
+    chain_tvl["TVL_normalized"] = chain_tvl[chain_tvl_col] / chain_tvl_max
 
-    target_protocol_max = target_protocol["totalLiquidityUSD"].max()
-    target_protocol["TVL_normalized"] = target_protocol["totalLiquidityUSD"] / target_protocol_max
+    target_protocol_max = target_protocol[target_protocol_col].max()
+    target_protocol["TVL_normalized"] = target_protocol[target_protocol_col] / target_protocol_max
 
     # determine the common date range
-    chain_tvl_min_date = chain_tvl["readable_date"].min()
-    target_protocol_min_date = target_protocol["readable_date"].min()
+    chain_tvl_min_date = chain_tvl[chain_tvl_date_col].min()
+    target_protocol_min_date = target_protocol[target_protocol_date_col].min()
     min_date = max(chain_tvl_min_date, target_protocol_min_date)
 
-    chain_tvl_max_date = chain_tvl["readable_date"].max()
-    target_protocol_max_date = target_protocol["readable_date"].max()
+    chain_tvl_max_date = chain_tvl[chain_tvl_date_col].max()
+    target_protocol_max_date = target_protocol[target_protocol_date_col].max()
     max_date = min(chain_tvl_max_date, target_protocol_max_date)
 
     # filter pre- and post-grant data with dates preserved
-    chain_tvl_pre_grant = chain_tvl[(chain_tvl["readable_date"] < grant_date) & (chain_tvl["readable_date"] >= min_date)]
-    chain_tvl_post_grant = chain_tvl[(chain_tvl["readable_date"] >= grant_date) & (chain_tvl["readable_date"] <= max_date)]
+    chain_tvl_pre_grant = chain_tvl[(chain_tvl[chain_tvl_date_col] < grant_date) & (chain_tvl[chain_tvl_date_col] >= min_date)]
+    chain_tvl_post_grant = chain_tvl[(chain_tvl[chain_tvl_date_col] >= grant_date) & (chain_tvl[chain_tvl_date_col] <= max_date)]
 
-    target_protocol_pre_grant = target_protocol[(target_protocol["readable_date"] < grant_date) & (target_protocol["readable_date"] >= min_date)]
-    target_protocol_post_grant = target_protocol[(target_protocol["readable_date"] >= grant_date) & (target_protocol["readable_date"] <= max_date)]
+    target_protocol_pre_grant = target_protocol[(target_protocol[target_protocol_date_col] < grant_date) & (target_protocol[target_protocol_date_col] >= min_date)]
+    target_protocol_post_grant = target_protocol[(target_protocol[target_protocol_date_col] >= grant_date) & (target_protocol[target_protocol_date_col] <= max_date)]
 
     # extract normalized TVL values
     X_pre_grant = chain_tvl_pre_grant["TVL_normalized"].values.reshape(-1, 1)
@@ -231,6 +228,10 @@ def forecast_based_on_chain_tvl(
 
     y_pre_grant = target_protocol_pre_grant["TVL_normalized"].values
     y_post_grant = target_protocol_post_grant["TVL_normalized"].values
+
+    if len(X_pre_grant) < 20 or len(y_pre_grant) < 20:
+        print('here')
+        return None
 
     predictions = []
     model = LinearRegression()
@@ -278,7 +279,7 @@ def forecast_based_on_chain_tvl(
     y_post_grant = y_post_grant[:min_length]
     X_post_grant = X_post_grant[:min_length]
     predictions = predictions[:min_length]
-    dates_post_grant = chain_tvl_post_grant["readable_date"].values[:len(X_post_grant)]
+    dates_post_grant = chain_tvl_post_grant[chain_tvl_date_col].values[:len(X_post_grant)]
 
     # create a dataframe for results
     post_grant_df = pd.DataFrame({

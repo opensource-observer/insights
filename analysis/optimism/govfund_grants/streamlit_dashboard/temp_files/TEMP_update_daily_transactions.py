@@ -1,4 +1,4 @@
-from queries.superchain_sandbox import query_transaction_data_from_bq_superchain_sandbox
+from deprecated_files.superchain_sandbox2 import query_transaction_data_from_bq_superchain_sandbox
 from utils import connect_bq_client, read_in_grants, extract_addresses, return_protocol, read_in_defi_llama_protocols
 
 from config import GRANTS_PATH, DEFI_LLAMA_PROTOCOLS_PATH, SERVICE_ACCOUNT_PATH

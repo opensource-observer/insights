@@ -32,8 +32,7 @@ def display_op_kpis_and_vis_for_core_metrics(
     project_daily_transactions: pd.DataFrame,
     project_net_transaction_flow: pd.DataFrame, 
     project_addresses: List[Dict[str, Union[str, None]]], 
-    grant_date: str, 
-    display_by_address: bool
+    grant_date: str
 ) -> None:
 
     # preprocess and merge the datasets once
@@ -79,28 +78,35 @@ def display_op_kpis_and_vis_for_core_metrics(
     if normalized:
         selected_metric = selected_metric + " (Normalized by Grant Amount)"
 
-    # user selects addresses if display_by_address is enabled
-    if display_by_address:
-        # add "All" option to the address list
-        display_addresses = [f"{address['address']} {address['label']}" if address['label'] else address['address'] for address in project_addresses]
-        address_options = ["All addresses"] + display_addresses
-        selected_addresses = st.multiselect("Select addresses", address_options)
+    # add "All" option to the address list
+    display_addresses = []
+    for address in project_addresses:
+        # check if transactions at 0
+        if len(grouped_by_date_and_address[grouped_by_date_and_address['address'] == address['address']]) < 1:
+            continue
 
-        if not selected_addresses:
-            st.warning("Please select at least one address.")
-            return
-
-        if "All addresses" in selected_addresses:
-            # use precomputed data aggregated by transaction date
-            data_grouped = grouped_by_date[['transaction_date', selected_metric]]
+        if address['label']:
+            curr_address = f"{address['address']} {address['label']}"
         else:
-            # filter precomputed data for the selected addresses
-            just_selected_addresses = [address.split(" ")[0] for address in selected_addresses]
-            data_grouped = grouped_by_date_and_address[grouped_by_date_and_address['address'].isin(just_selected_addresses)]
-            data_grouped = data_grouped[['transaction_date', 'address', selected_metric]]
-    else:
+            curr_address = address['address']
+
+        display_addresses.append(curr_address)
+
+    address_options = ["All addresses"] + display_addresses
+    selected_addresses = st.multiselect("Select addresses", address_options)
+
+    if not selected_addresses:
+        st.warning("Please select at least one address.")
+        return
+
+    if "All addresses" in selected_addresses:
         # use precomputed data aggregated by transaction date
         data_grouped = grouped_by_date[['transaction_date', selected_metric]]
+    else:
+        # filter precomputed data for the selected addresses
+        just_selected_addresses = [address.split(" ")[0] for address in selected_addresses]
+        data_grouped = grouped_by_date_and_address[grouped_by_date_and_address['address'].isin(just_selected_addresses)]
+        data_grouped = data_grouped[['transaction_date', 'address', selected_metric]]
 
     # ensure transaction_date is a date object
     data_grouped['transaction_date'] = pd.to_datetime(data_grouped['transaction_date']).dt.date
@@ -149,50 +155,39 @@ def display_op_kpis_and_vis_for_core_metrics(
     # plot the data
     fig = go.Figure()
 
-    if display_by_address:
-        if "All addresses" in selected_addresses:
+    if "All addresses" in selected_addresses:
+        fig.add_trace(
+            go.Scatter(
+                x=curr_selection_df['transaction_date'],
+                y=curr_selection_df[selected_metric],
+                mode='lines',
+                name="All addresses"
+            )
+        )
+    else:
+        for project_address in just_selected_addresses:
+            df_subset = curr_selection_df[curr_selection_df['address'] == project_address]
             fig.add_trace(
                 go.Scatter(
-                    x=curr_selection_df['transaction_date'],
-                    y=curr_selection_df[selected_metric],
+                    x=df_subset['transaction_date'],
+                    y=df_subset[selected_metric],
                     mode='lines',
-                    name="All addresses"
+                    name=project_address
                 )
             )
-        else:
-            for project_address in just_selected_addresses:
-                df_subset = curr_selection_df[curr_selection_df['address'] == project_address]
-                fig.add_trace(
-                    go.Scatter(
-                        x=df_subset['transaction_date'],
-                        y=df_subset[selected_metric],
-                        mode='lines',
-                        name=project_address
-                    )
-                )
 
-            fig.update_layout(
-                legend_title_text='Addresses',
-                legend=dict(
-                    orientation="v",
-                    yanchor="top",
-                    y=1,
-                    xanchor="right",
-                x=1.02
-                ),
-                xaxis_title='',
-                yaxis_title='',
-                template="plotly_white"
-            )
-
-    else:
-        # plot the line since there's only one line because we aren't plotting by address
-        fig = px.line(
-            curr_selection_df,
-            x="transaction_date",
-            y=selected_metric,
-            title=f"{selected_metric} Over Time",
-            labels={"transaction_date": "Date", selected_metric: selected_metric},
+        fig.update_layout(
+            legend_title_text='Addresses',
+            legend=dict(
+                orientation="v",
+                yanchor="top",
+                y=1,
+                xanchor="right",
+            x=1.02
+            ),
+            xaxis_title='',
+            yaxis_title='',
+            template="plotly_white"
         )
 
     if (start_date <= grant_date.date()) and (end_date >= grant_date.date()):
@@ -353,7 +348,7 @@ def display_superchain_kpis_and_vis_for_core_metrics(
     st.plotly_chart(fig)
 
 
-def core_metrics_section(daily_transactions_df: pd.DataFrame, project_addresses: List[Dict[str, Union[str, None]]], grant_date: datetime, display_by_address: bool, grant_amount: int, net_transaction_flow_df: Optional[pd.DataFrame] = None) -> None:
+def core_metrics_section(daily_transactions_df: pd.DataFrame, project_addresses: List[Dict[str, Union[str, None]]], grant_date: datetime, chain: str, grant_amount: int, net_transaction_flow_df: Optional[pd.DataFrame] = None) -> None:
     
     # display the core metrics visualizations
     st.header("Plotting Core Metrics by Day")
@@ -383,17 +378,30 @@ def core_metrics_section(daily_transactions_df: pd.DataFrame, project_addresses:
         - **TVL (Total Value Locked)**: If the project is associated with a DeFiLlama protocol, this chart displays the total value locked over the date range. It reflects the overall assets deposited in the protocol and is a key indicator of the project's financial health.
         """)
 
+    if chain == "op":
+        daily_transactions_df = daily_transactions_df.groupby(['transaction_date', 'address'])[
+            ['transaction_cnt', 'active_users', 'total_transferred', 'unique_users', 'total_transferred_in_tokens', 'cum_transferred']
+        ].sum().reset_index()
 
-    if not display_by_address:
+        net_transaction_flow_df = net_transaction_flow_df.groupby(['transaction_date', 'address']).agg({
+            'cnt': 'sum',
+            'total_transferred': 'sum',
+            'total_transferred_in_tokens': 'sum',
+            'net_transferred': 'sum',
+            'net_transferred_in_tokens': 'sum'
+        }).reset_index()
+
+        daily_transactions_df_normalized, net_transaction_flow_df_normalized = add_normalized_metrics(project_daily_transactions=daily_transactions_df, project_net_transaction_flow=net_transaction_flow_df, grant_amount=grant_amount)
+
+        #safe_execution(display_op_kpis_and_vis_for_core_metrics, daily_transactions_df_normalized, net_transaction_flow_df_normalized, project_addresses, grant_date)
+        display_op_kpis_and_vis_for_core_metrics(daily_transactions_df_normalized, net_transaction_flow_df_normalized, project_addresses, grant_date)
+    
+    else:
         daily_transactions_df = daily_transactions_df.groupby('transaction_date')[
             ['transaction_cnt', 'active_users', 'total_transferred', 'unique_users', 'total_transferred_in_tokens', 'cum_transferred', 'retained_percent', 'daa_to_maa_ratio']
         ].sum().reset_index()
+    
+        daily_transactions_df_normalized, _ = add_normalized_metrics(project_daily_transactions=daily_transactions_df, project_net_transaction_flow=net_transaction_flow_df, grant_amount=grant_amount)
 
-    daily_transactions_df_normalized, net_transaction_flow_df_normalized = add_normalized_metrics(project_daily_transactions=daily_transactions_df, project_net_transaction_flow=net_transaction_flow_df, grant_amount=grant_amount)
-
-    if net_transaction_flow_df is None:
         #safe_execution(display_superchain_kpis_and_vis_for_core_metrics, daily_transactions_df_normalized, grant_date)
         display_superchain_kpis_and_vis_for_core_metrics(daily_transactions_df_normalized, grant_date)
-    else:
-        #safe_execution(display_op_kpis_and_vis_for_core_metrics, daily_transactions_df_normalized, net_transaction_flow_df_normalized, project_addresses, grant_date, display_by_address)
-        display_op_kpis_and_vis_for_core_metrics(daily_transactions_df_normalized, net_transaction_flow_df_normalized, project_addresses, grant_date, display_by_address)

@@ -104,7 +104,8 @@ def aggregate_datasets(daily_transactions_df: pd.DataFrame, tvl_df: pd.DataFrame
     agg_df[['Transaction Count', 'Active Users', 'Unique Users', 'Total Transferred']].fillna(0, inplace=True)
     agg_df['date'] = pd.to_datetime(agg_df['date'])
     # label rows based on whether they were pre or post grant
-    agg_df['grant_label'] = agg_df.apply(assign_grant_label, axis=1, grant_date=grant_date)
+
+    agg_df['grant_label'] = agg_df.apply(lambda row: assign_grant_label(row, grant_date), axis=1)
 
     return agg_df
 
@@ -220,6 +221,9 @@ def adjusted_tvl_metrics(filtered_chain_tvl_df: pd.DataFrame, grant_date: dateti
 
 # function to visualize the significance of the t-test
 def plot_ttest_distribution(selected_metric_stats: pd.DataFrame, alpha: float) -> None:
+    if selected_metric_stats['p_value'].isna().any():
+        st.warning("The t-test could not be performed due to invalid or insufficient data.")
+        return
 
     dof = selected_metric_stats['degrees_of_freedom'].iloc[0]
 
@@ -418,6 +422,10 @@ def plot_forecast(curr_selection_df: pd.DataFrame, selected_metric: str, grant_d
 
 # display the results of the 2-sample t-test
 def display_ttest_table(metric_table: pd.DataFrame, alpha: float, selected_metric: str) -> None:
+    if metric_table['p_value'].isna().any():
+        st.warning("The t-test could not be performed due to invalid or insufficient data.")
+        return
+        
     # display most import results as KPIs
     perc_change, test_stat, p_val = st.columns(3)
 
@@ -594,7 +602,14 @@ def stat_analysis_section(daily_transactions_df: pd.DataFrame, forecasted_df: pd
 
     # combine all of the metrics into the same dataset for easy and quick filtering
     aggregated_dataset = aggregate_datasets(daily_transactions_df=daily_transactions_df, net_transaction_flow_df=net_transaction_flow_df, tvl_df=tvl_df, grant_date=grant_date)
-    combined_df = concat_aggregate_with_forecasted(aggregated_dataset, forecasted_df)
+    
+    if forecasted_df is not None:
+        combined_df = concat_aggregate_with_forecasted(aggregated_dataset, forecasted_df)
+    else:
+        combined_df = aggregated_dataset
+
+    combined_df['date'] = pd.to_datetime(combined_df['date'])
+    combined_df['date'] = combined_df['date'].dt.date
     
     # allow user to select a target metric
     if 'TVL_opchain' in combined_df.columns: 

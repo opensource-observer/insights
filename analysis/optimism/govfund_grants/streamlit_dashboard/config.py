@@ -18,7 +18,7 @@ BIGQUERY_PROJECT_NAME = 'oso-data-436717'
 # where the dictionary mapping each project to it's respective defi llama protocol is stored
 DEFI_LLAMA_PROTOCOLS_PATH = "defillama.json"
 # where the dictionary of the grants to be displayed is stored
-GRANTS_PATH = "temp_grants.json"
+GRANTS_PATH = "updated_grants_reviewed.json"
 # where the service account credentials is stored
 SERVICE_ACCOUNT_PATH = 'oso_gcp_credentials.json'
 # where the previously queried datasets are stored

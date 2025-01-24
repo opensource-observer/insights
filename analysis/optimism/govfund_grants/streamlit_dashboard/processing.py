@@ -26,39 +26,39 @@ def make_dates_df(dates: List[str], project_addresses: Optional[Tuple[str, ...]]
                 data.append({'transaction_date': date, 'address': address})
     else:  # if no addresses are provided, generate rows for each date only
         for date in dates:
-            data.append({'transaction_date': date, 'address': None})  # use None or an empty string for the address
+            data.append({'transaction_date': date})  # use None or an empty string for the address
 
     return pd.DataFrame(data)
-
 
 # create a dataset that represents net transactions by factoring in transaction direction
 def make_net_transaction_dataset(transaction_flow_df: pd.DataFrame) -> pd.DataFrame:
 
-    # prepare cumulative transaction data
-    transaction_direction_df = pd.concat([
-        transaction_flow_df[['transaction_date', 'from_address', 'direction', 'cnt', 'total_transferred', 'total_transferred_in_tokens']]
-        .rename(columns={'from_address': 'address'}),
-        transaction_flow_df[['transaction_date', 'to_address', 'direction', 'cnt', 'total_transferred', 'total_transferred_in_tokens']]
-        .rename(columns={'to_address': 'address'})
-    ])
+    transaction_direction_df = transaction_flow_df.copy()
 
-    # aggregate and calculate cumulative sum
-    transaction_direction_df.drop_duplicates(inplace=True)
-    transaction_direction_df = transaction_direction_df.groupby(['transaction_date', 'address', 'direction'], as_index=False).agg({
-        'cnt': 'sum',
-        'total_transferred': 'sum',
-        'total_transferred_in_tokens': 'sum'
-    })
+    # ensure numeric types for cumulative sum calculations
+    transaction_direction_df['total_transferred'] = pd.to_numeric(transaction_direction_df['total_transferred'], errors='coerce').fillna(0)
+    transaction_direction_df['total_transferred_in_tokens'] = pd.to_numeric(transaction_direction_df['total_transferred_in_tokens'], errors='coerce').fillna(0)
 
     # convert outbound transactions to negative
     transaction_direction_df.loc[transaction_direction_df['direction'] == 'out', 'total_transferred'] *= -1
     transaction_direction_df.loc[transaction_direction_df['direction'] == 'out', 'total_transferred_in_tokens'] *= -1
 
     # ensure the data is sorted correctly
-    transaction_direction_df.sort_values(by=['address', 'transaction_date'], inplace=True)
+    transaction_direction_df.sort_values(by=['transaction_date'], inplace=True)
+
     # calculate the net transferred over time
     transaction_direction_df['net_transferred'] = transaction_direction_df.groupby('address')['total_transferred'].cumsum()
     transaction_direction_df['net_transferred_in_tokens'] = transaction_direction_df.groupby('address')['total_transferred_in_tokens'].cumsum()
+
+    transaction_direction_df = transaction_direction_df.groupby(['transaction_date', 'address']).agg({
+        'cnt': 'sum',
+        'total_transferred': 'sum',
+        'total_transferred_in_tokens': 'sum',
+        'net_transferred': 'sum',
+        'net_transferred_in_tokens': 'sum'
+    }).reset_index()
+
+    transaction_direction_df.reset_index(drop=True, inplace=True)
 
     return transaction_direction_df
 

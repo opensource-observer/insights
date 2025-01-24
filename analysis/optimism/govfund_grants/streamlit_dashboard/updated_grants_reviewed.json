@@ -1,8 +1,139 @@
 [
     {
         "round": "Grants Season 6",
+        "cycle": "Cycle 26",
+        "chain": "fraxtal",
+        "project_name": "Fraxtal Application",
+        "status": "Sent",
+        "proposal_link": "https://app.charmverse.io/op-grants/fraxtal-application-2593578457179595",
+        "amount": 900000,
+        "amount_comment": null,
+        "meta": {
+            "Initial Delivery Date": "2024-09-01T00:00:00",
+            "(OP) Delivered": 900000.0,
+            "Intent": "Intent 3B",
+            "Incentive Program Launched?": "Growth"
+        },
+        "relevant_metrics": {
+            "target metrics": "Growth: TVL in the grantee\u2019s protocol Number of transactions emitting event logs Number of active addresses FXTL Points Stickiness: Percentage of retained active addresses interacting with the grantee\u2019s contracts",
+            "impact analysis": "Impact Assessment:\n\nThe impact of the grants program will be assessed through a combination of key performance indicators (KPIs), periodic reviews, and continuous monitoring. The primary metrics for assessment will include TVL, transaction volumes, user engagement, and protocol adoption rates. Specific milestones will serve as benchmarks for success.\n\nReporting:\n\nTo ensure transparency and accountability, the following reporting mechanisms will be implemented:\n\nMonthly Reports: Detailed monthly reports will be provided, outlining the progress of the grants program, the utilization of funds, and the achievement of key milestones. These reports will include data on TVL growth, transaction volumes, and other relevant KPIs.\n\nReal-Time Dashboard: A real-time dashboard will be available for stakeholders to monitor the grants program's performance continuously. This dashboard will provide up-to-date information on TVL, transaction volumes, and other key metrics, ensuring full transparency.\n\nExample of Reporting:\n\nFor reference, we have implemented similar reporting mechanisms for the Arbitrum STIP grant for liquidity incentivization grant. An example of this reporting can be found bellow. This example showcases our commitment to transparency and detailed reporting. https://forum.arbitrum.foundation/t/frax-finance-bi-weekly-update-final-update/22960 "
+        },
+        "relevant_dates": {
+            "OP deployment date": [
+                "Jul 23",
+                "Jul 24"
+            ],
+            "Incentives due date": [
+                "Jul 23 -> Jun 29, 2025",
+                "Jul 20 -> Jun 29, 2025"
+            ]
+        },
+        "addresses": [
+            {
+                "0x0df840dcbf1229262a4125c1fc559bd338ec9491": {
+                    "networks": [
+                        "optimism"
+                    ],
+                    "tags": [
+                        "safe",
+                        "wallet"
+                    ],
+                    "name": "fraxfinance",
+                    "count_txns": 4
+                }
+            },
+            {
+                "0x0df840dcbf1229262a4125c1fc559bd338ec9491": {
+                    "networks": [
+                        "optimism"
+                    ],
+                    "tags": [
+                        "safe",
+                        "wallet"
+                    ],
+                    "name": "fraxfinance",
+                    "count_txns": 4
+                }
+            }
+        ],
+        "funds_recieved_date": "2024-09-01",
+        "grant_wallet": "0x0dF840dCbf1229262A4125C1fc559bd338eC9491",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 900000
+    },
+    {
+        "round": "Grants Season 6",
+        "cycle": "Cycle 25",
+        "project_name": "WannaBet Weekly Tournaments",
+        "chain": "op",
+        "status": "Sent",
+        "proposal_link": "https://app.charmverse.io/op-grants/wannabet-weekly-tournaments-6787943309761097",
+        "amount": 35000,
+        "amount_comment": null,
+        "meta": {
+            "Initial Delivery Date": "2024-09-01T00:00:00",
+            "(OP) Delivered": 21000.0,
+            "Intent": "Intent 3A",
+            "Incentive Program Launched?": "Growth"
+        },
+        "relevant_metrics": {
+            "select the metric specified in the mission request": "(Intent 3 Growth) # of active addresses interacting with grantee\u2019s contracts",
+            "fill out your metric objective": "10,000 Transactions "
+        },
+        "relevant_dates": {
+            "OP deployment date": [
+                "",
+                "Jun 30"
+            ],
+            "Incentives due date": [
+                "",
+                "Aug 30"
+            ]
+        },
+        "relevant_chains": [],
+        "contract_urls": [],
+        "addresses": [
+            {
+                "0x14e09a1a78950b38ab3b203cdaa0fcb331b9ee26": {
+                    "networks": [
+                        "optimism"
+                    ],
+                    "tags": [
+                        "safe",
+                        "wallet"
+                    ],
+                    "name": "wannabet-cc",
+                    "count_txns": 12
+                }
+            },
+            {
+                "0x14e09a1a78950b38ab3b203cdaa0fcb331b9ee26": {
+                    "networks": [
+                        "optimism"
+                    ],
+                    "tags": [
+                        "safe",
+                        "wallet"
+                    ],
+                    "name": "wannabet-cc",
+                    "count_txns": 12
+                }
+            }
+        ],
+        "funds_recieved_date": "2024-09-01",
+        "grant_wallet": "0x14e09A1a78950B38Ab3B203cdaa0fCB331B9Ee26",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 35000
+    },
+    {
+        "round": "Grants Season 6",
         "cycle": "Cycle 25",
         "project_name": "Ether.fi OP Mainnet LRT Grant",
+        "chain": "op",
         "status": "Sent",
         "proposal_link": "https://app.charmverse.io/op-grants/ether-fi-op-mainnet-lrt-grant-46198635300198077",
         "amount": 96000,
@@ -92,6 +223,7 @@
         "round": "Grants Season 6",
         "cycle": "Cycle 25",
         "project_name": "Expanding restaking on Optimism",
+        "chain": "op",
         "status": "Sent",
         "proposal_link": "https://app.charmverse.io/op-grants/expanding-restaking-on-optimism-882168603000568",
         "amount": 120000,
@@ -200,6 +332,7 @@
         "round": "Grants Season 6",
         "cycle": "Cycle 25",
         "project_name": "FrameHack #2",
+        "chain": "op",
         "status": "Sent",
         "proposal_link": "https://app.charmverse.io/op-grants/framehack-2-1877138093587576",
         "amount": 2000,
@@ -275,6 +408,7 @@
         "round": "Grants Season 6",
         "cycle": "Cycle 25",
         "project_name": "Optimism GovQuests",
+        "chain": "op",
         "status": "Sent",
         "proposal_link": "https://app.charmverse.io/op-grants/optimism-govquests-8512541302772494",
         "amount": 5000,
@@ -354,6 +488,7 @@
         "round": "Grants Season 6",
         "cycle": "Cycle 25",
         "project_name": "Renzo Optimism Season 6 Mission Request - Optimism as base for LRTs",
+        "chain": "op",
         "status": "Sent",
         "proposal_link": "https://app.charmverse.io/op-grants/renzo-optimism-season-6-mission-request-optimism-as-base-for-lrts-10206774269051233",
         "amount": 120000,
@@ -442,72 +577,8 @@
     },
     {
         "round": "Grants Season 6",
-        "cycle": "Cycle 25",
-        "project_name": "WannaBet Weekly Tournaments",
-        "status": "Sent",
-        "proposal_link": "https://app.charmverse.io/op-grants/wannabet-weekly-tournaments-6787943309761097",
-        "amount": 35000,
-        "amount_comment": null,
-        "meta": {
-            "Initial Delivery Date": "2024-09-01T00:00:00",
-            "(OP) Delivered": 21000.0,
-            "Intent": "Intent 3A",
-            "Incentive Program Launched?": "Growth"
-        },
-        "relevant_metrics": {
-            "select the metric specified in the mission request": "(Intent 3 Growth) # of active addresses interacting with grantee\u2019s contracts",
-            "fill out your metric objective": "10,000 Transactions "
-        },
-        "relevant_dates": {
-            "OP deployment date": [
-                "",
-                "Jun 30"
-            ],
-            "Incentives due date": [
-                "",
-                "Aug 30"
-            ]
-        },
-        "relevant_chains": [],
-        "contract_urls": [],
-        "addresses": [
-            {
-                "0x14e09a1a78950b38ab3b203cdaa0fcb331b9ee26": {
-                    "networks": [
-                        "optimism"
-                    ],
-                    "tags": [
-                        "safe",
-                        "wallet"
-                    ],
-                    "name": "wannabet-cc",
-                    "count_txns": 12
-                }
-            },
-            {
-                "0x14e09a1a78950b38ab3b203cdaa0fcb331b9ee26": {
-                    "networks": [
-                        "optimism"
-                    ],
-                    "tags": [
-                        "safe",
-                        "wallet"
-                    ],
-                    "name": "wannabet-cc",
-                    "count_txns": 12
-                }
-            }
-        ],
-        "funds_recieved_date": "2024-09-01",
-        "grant_wallet": "0x14e09A1a78950B38Ab3B203cdaa0fCB331B9Ee26",
-        "starting_balance": 0,
-        "inflow_total_todate": 0,
-        "recieve_todate": false,
-        "balance_left_todate": 35000
-    },
-    {
-        "round": "Grants Season 6",
         "cycle": "Cycle 26",
+        "chain": "op",
         "project_name": "Event Horizon Public Access Voter Pool",
         "status": "Sent",
         "proposal_link": "https://app.charmverse.io/op-grants/event-horizon-public-access-voter-pool-415135727941663",
@@ -632,6 +703,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 26",
+        "chain": "op",
         "project_name": "Aragon <> RISC Zero - Joint partnership on crosschain voting",
         "status": "Sent",
         "proposal_link": "https://app.charmverse.io/op-grants/aragon-risc-zero-joint-partnership-on-crosschain-voting-4808601679474991",
@@ -705,6 +777,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 26",
+        "chain": "op",
         "project_name": "Boosting LRT adoption with Compound Finance",
         "status": "Sent",
         "proposal_link": "https://app.charmverse.io/op-grants/boosting-lrt-adoption-with-compound-finance-4302288148086588",
@@ -777,6 +850,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 26",
+        "chain": "op",
         "project_name": "TLX - Leveraged Tokens Protocol",
         "status": "Sent",
         "proposal_link": "https://app.charmverse.io/op-grants/tlx-leveraged-tokens-protocol-9777216613723387",
@@ -855,6 +929,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 26",
+        "chain": "op",
         "project_name": "OETH on OP (2 of 3)",
         "status": "Passed",
         "proposal_link": "https://app.charmverse.io/op-grants/oeth-on-op-2-of-3-07697256675112008",
@@ -928,6 +1003,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 26",
+        "chain": "op",
         "project_name": "Extra Finance S6 Mission Application",
         "status": "Sent",
         "proposal_link": "https://app.charmverse.io/op-grants/extra-finance-s6-mission-application-9060059472663584",
@@ -1095,6 +1171,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 26",
+        "chain": "op",
         "project_name": "Let's Get HAI",
         "status": "Sent",
         "proposal_link": "https://app.charmverse.io/op-grants/let-s-get-hai-7100512325516011",
@@ -1249,69 +1326,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 26",
-        "project_name": "Fraxtal Application",
-        "status": "Sent",
-        "proposal_link": "https://app.charmverse.io/op-grants/fraxtal-application-2593578457179595",
-        "amount": 900000,
-        "amount_comment": null,
-        "meta": {
-            "Initial Delivery Date": "2024-09-01T00:00:00",
-            "(OP) Delivered": 900000.0,
-            "Intent": "Intent 3B",
-            "Incentive Program Launched?": "Growth"
-        },
-        "relevant_metrics": {
-            "target metrics": "Growth: TVL in the grantee\u2019s protocol Number of transactions emitting event logs Number of active addresses FXTL Points Stickiness: Percentage of retained active addresses interacting with the grantee\u2019s contracts",
-            "impact analysis": "Impact Assessment:\n\nThe impact of the grants program will be assessed through a combination of key performance indicators (KPIs), periodic reviews, and continuous monitoring. The primary metrics for assessment will include TVL, transaction volumes, user engagement, and protocol adoption rates. Specific milestones will serve as benchmarks for success.\n\nReporting:\n\nTo ensure transparency and accountability, the following reporting mechanisms will be implemented:\n\nMonthly Reports: Detailed monthly reports will be provided, outlining the progress of the grants program, the utilization of funds, and the achievement of key milestones. These reports will include data on TVL growth, transaction volumes, and other relevant KPIs.\n\nReal-Time Dashboard: A real-time dashboard will be available for stakeholders to monitor the grants program's performance continuously. This dashboard will provide up-to-date information on TVL, transaction volumes, and other key metrics, ensuring full transparency.\n\nExample of Reporting:\n\nFor reference, we have implemented similar reporting mechanisms for the Arbitrum STIP grant for liquidity incentivization grant. An example of this reporting can be found bellow. This example showcases our commitment to transparency and detailed reporting. https://forum.arbitrum.foundation/t/frax-finance-bi-weekly-update-final-update/22960 "
-        },
-        "relevant_dates": {
-            "OP deployment date": [
-                "Jul 23",
-                "Jul 24"
-            ],
-            "Incentives due date": [
-                "Jul 23 -> Jun 29, 2025",
-                "Jul 20 -> Jun 29, 2025"
-            ]
-        },
-        "addresses": [
-            {
-                "0x0df840dcbf1229262a4125c1fc559bd338ec9491": {
-                    "networks": [
-                        "optimism"
-                    ],
-                    "tags": [
-                        "safe",
-                        "wallet"
-                    ],
-                    "name": "fraxfinance",
-                    "count_txns": 4
-                }
-            },
-            {
-                "0x0df840dcbf1229262a4125c1fc559bd338ec9491": {
-                    "networks": [
-                        "optimism"
-                    ],
-                    "tags": [
-                        "safe",
-                        "wallet"
-                    ],
-                    "name": "fraxfinance",
-                    "count_txns": 4
-                }
-            }
-        ],
-        "funds_recieved_date": "2024-09-01",
-        "grant_wallet": "0x0dF840dCbf1229262A4125C1fc559bd338eC9491",
-        "starting_balance": 0,
-        "inflow_total_todate": 0,
-        "recieve_todate": false,
-        "balance_left_todate": 900000
-    },
-    {
-        "round": "Grants Season 6",
-        "cycle": "Cycle 26",
+        "chain": "op",
         "project_name": "Derive (Formerly Lyra) Chain - Intent 3B",
         "status": "Sent",
         "proposal_link": "https://app.charmverse.io/op-grants/lyra-chain-intent-3b-9106030612947877",
@@ -1376,6 +1391,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 26",
+        "chain": "op",
         "project_name": "OP - Besu/Hildr",
         "status": "Team non responsive",
         "proposal_link": "https://app.charmverse.io/op-grants/op-besu-hildr-729952251744669",
@@ -1432,6 +1448,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 27",
+        "chain": "op",
         "project_name": "Yield Bearing asset utility with Compound",
         "status": "Sent",
         "proposal_link": "https://app.charmverse.io/op-grants/yield-bearing-asset-utility-with-compound-5258253943922393",
@@ -1504,6 +1521,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 27",
+        "chain": "op",
         "project_name": "Beefy - mooBIFI",
         "status": "Sent",
         "proposal_link": "https://app.charmverse.io/op-grants/beefy-moobifi-6114661844871652",
@@ -1595,6 +1613,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 27",
+        "chain": "op",
         "project_name": "Enable High-Frequency Execution Across the Superchain",
         "status": "Passed",
         "proposal_link": "https://app.charmverse.io/op-grants/mission-application-enable-high-frequency-execution-across-the-superchain-18406669427164446",
@@ -1669,6 +1688,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 27",
+        "chain": "swan",
         "project_name": "Swan Superchain Application",
         "status": "Sent",
         "proposal_link": "https://app.charmverse.io/op-grants/swan-superchain-application-2116176655047597",
@@ -1731,6 +1751,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 27",
+        "chain": "cyber",
         "project_name": "Cyber",
         "status": "Passed",
         "proposal_link": "https://app.charmverse.io/op-grants/cyber-8839404063326592",
@@ -1788,6 +1809,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 27",
+        "chain": "mode",
         "project_name": "Mode",
         "status": "Sent",
         "proposal_link": "https://app.charmverse.io/op-grants/mode-8040250934164535",
@@ -1847,6 +1869,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 27",
+        "chain": "lisk",
         "project_name": "Lisk - Intent 3B Grant Application",
         "status": "Sent",
         "proposal_link": "https://app.charmverse.io/op-grants/lisk-intent-3b-grant-application-2607178917235111",
@@ -1915,6 +1938,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 28",
+        "chain": "op",
         "project_name": "DelegateMatch: Governance incentives for a delegation Farcaster frame.",
         "status": "Sent",
         "proposal_link": "https://app.charmverse.io/op-grants/delegatematch-governance-incentives-for-a-delegation-farcaster-frame-7247453561607329",
@@ -1996,6 +2020,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 28",
+        "chain": "op",
         "project_name": "Scout Game: onchain gamified talent referral platform",
         "status": "Sent",
         "proposal_link": "https://app.charmverse.io/op-grants/scout-game-onchain-gamified-talent-referral-platform-1895533757313108",
@@ -2057,6 +2082,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 28",
+        "chain": "op",
         "project_name": "OETH on OP 4",
         "status": "Passed",
         "proposal_link": "https://app.charmverse.io/op-grants/oeth-on-op-4-3939994257661674",
@@ -2130,6 +2156,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 28",
+        "chain": "op",
         "project_name": "Contango ",
         "status": "Passed",
         "proposal_link": "https://app.charmverse.io/op-grants/contango-715168209147812",
@@ -2227,6 +2254,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 28",
+        "chain": "op",
         "project_name": "Velodrome Finance",
         "status": "Sent",
         "proposal_link": "https://app.charmverse.io/op-grants/velodrome-finance-17955229174251075",
@@ -2304,6 +2332,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 28",
+        "chain": "op",
         "project_name": "Uniswap: YBA Grant",
         "status": "Sent",
         "proposal_link": "https://app.charmverse.io/op-grants/uniswap-yba-grant-4104398903684521",
@@ -2598,6 +2627,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 28",
+        "chain": "op",
         "project_name": "Uniswap: LRT Grant",
         "status": "Sent",
         "proposal_link": "https://app.charmverse.io/op-grants/uniswap-lrt-grant-17738920278366765",
@@ -2890,6 +2920,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 28",
+        "chain": "mint",
         "project_name": "Mint Blockchain- grow the Superchain NFT economy",
         "status": "Passed",
         "proposal_link": "https://app.charmverse.io/op-grants/mint-blockchain-grow-the-superchain-nft-economy-8452774737107762",
@@ -2947,6 +2978,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 28",
+        "chain": "op",
         "project_name": "Idle - Credit Vaults III",
         "status": "Sent",
         "proposal_link": "https://app.charmverse.io/op-grants/idle-credit-vaults-iii-981117297217641",
@@ -3039,6 +3071,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 28",
+        "chain": "op",
         "project_name": "dForce on OP (Resubmission II)",
         "status": "Passed",
         "proposal_link": "https://app.charmverse.io/op-grants/dforce-on-op-resubmission-ii-557631925628695",
@@ -3129,6 +3162,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 28",
+        "chain": "op",
         "project_name": "Alchemix Grant Request",
         "status": "Passed",
         "proposal_link": "https://app.charmverse.io/op-grants/alchemix-grant-request-90710470226371",
@@ -3226,6 +3260,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 28",
+        "chain": "op",
         "project_name": "Toros Finance",
         "status": "Sent",
         "proposal_link": "https://app.charmverse.io/op-grants/toros-finance-24562712361559202",
@@ -3285,6 +3320,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 28",
+        "chain": "op",
         "project_name": "Strands",
         "status": "Passed",
         "proposal_link": "https://app.charmverse.io/op-grants/strands-22002497038881574",
@@ -3605,6 +3641,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 28",
+        "chain": "op",
         "project_name": "Pyth Network: Infrastructure Subsidies",
         "status": "Passed",
         "proposal_link": "https://app.charmverse.io/op-grants/pyth-network-infrastructure-subsidies-07445213474602608",
@@ -3709,6 +3746,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 28",
+        "chain": "op",
         "project_name": "Ionic Superchain Borrow/Lend Aggregator",
         "status": "Passed",
         "proposal_link": "https://app.charmverse.io/op-grants/ionic-superchain-borrow-lend-aggregator-9112616629480161",
@@ -3772,6 +3810,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 28",
+        "chain": "op",
         "project_name": "Pyth Network: Decentralized Solvers (Pyth Express Relay)",
         "status": "Passed",
         "proposal_link": "https://app.charmverse.io/op-grants/pyth-network-decentralized-solvers-pyth-express-relay-7897124393686845",
@@ -3859,6 +3898,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 28",
+        "chain": "op",
         "project_name": "TLX - Leveraged Tokens Protocol",
         "status": "Passed",
         "proposal_link": "https://app.charmverse.io/op-grants/tlx-leveraged-tokens-protocol-15830889177856755",
@@ -3935,6 +3975,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 28",
+        "chain": "kroma",
         "project_name": "Kroma Intent 3B Grants Application",
         "status": "Passed",
         "proposal_link": "https://app.charmverse.io/op-grants/kroma-intent-3b-grants-application-8724628572058577",
@@ -3995,6 +4036,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 28",
+        "chain": "lyra",
         "project_name": "Derive (Formerly Lyra) Chain - Intent 3B Take 2",
         "status": "Passed",
         "proposal_link": "https://app.charmverse.io/op-grants/derive-formerly-lyra-chain-intent-3b-take-2-5364123983364093",
@@ -4056,6 +4098,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 28",
+        "chain": "op",
         "project_name": "Polynomial Chain",
         "status": "Passed",
         "proposal_link": "https://app.charmverse.io/op-grants/polynomial-chain-1678962772944228",
@@ -4117,6 +4160,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 28",
+        "chain": "op",
         "project_name": "Spearbit/Cantina for Balmy",
         "status": "Passed",
         "proposal_link": "https://app.charmverse.io/op-grants/spearbit-cantina-for-balmy-8020571064322373",
@@ -4173,6 +4217,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 28",
+        "chain": "op",
         "project_name": "Autonomint Security Grant Application",
         "status": "Passed",
         "proposal_link": "https://app.charmverse.io/op-grants/autonomint-security-grant-application-2908153924414494",
@@ -4229,6 +4274,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 28",
+        "chain": "op",
         "project_name": "Autonomint Security Grant Application",
         "status": "Passed",
         "proposal_link": "https://app.charmverse.io/op-grants/autonomint-security-grant-application-2908153924414494",
@@ -4285,6 +4331,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 28",
+        "chain": "op",
         "project_name": "Extra Finance Security Grant Application",
         "status": "Passed",
         "proposal_link": "https://app.charmverse.io/op-grants/extra-finance-security-grant-application-7028250039355781",
@@ -4341,6 +4388,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 28",
+        "chain": "op",
         "project_name": "Clusters.xyz",
         "status": "Passed",
         "proposal_link": "https://app.charmverse.io/op-grants/clusters-xyz-7959150966012731",
@@ -4397,6 +4445,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 28",
+        "chain": "op",
         "project_name": "Alchemix Audit Grant Request (Cyfrin)",
         "status": "Passed",
         "proposal_link": "https://app.charmverse.io/op-grants/alchemix-audit-grant-request-cyfrin-5604150300660156",
@@ -4451,6 +4500,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 28",
+        "chain": "op",
         "project_name": "Resolv Labs Security Grant Application",
         "status": "Passed",
         "proposal_link": "https://app.charmverse.io/op-grants/resolv-labs-security-grant-application-5072691667085958",
@@ -4507,6 +4557,7 @@
     {
         "round": "Grants Season 6",
         "cycle": "Cycle 28",
+        "chain": "op",
         "project_name": "QuantAMM Audit Grant Request (Cyfrin)",
         "status": "Passed",
         "proposal_link": "https://app.charmverse.io/op-grants/quantamm-audit-grant-request-cyfrin-9897619391373831",
