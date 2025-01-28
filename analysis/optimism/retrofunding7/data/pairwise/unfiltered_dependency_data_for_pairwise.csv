@@ -1,0 +1,1892 @@
+,Onchain Builder,Devtool Project,Devtool URL,List of Packages Used by Project,Total Package Dependents in OSO,Total Package Dependents in RF4,Devtool Star Count,Devtool Fork Count,Devtool Created Date,Devtool Language,License,Past RF Recipient,Repo Relative Star Rank,OSO Package Rank,RF4 Package Rank,RF4 Delta
+0,Giveth,ethers.js,https://github.com/ethers-io/ethers.js,"['@ethersproject/transactions' '@ethersproject/units'
+ '@ethersproject/abstract-signer' '@ethersproject/address'
+ '@ethersproject/random' '@ethersproject/signing-key'
+ '@ethersproject/strings' '@ethersproject/properties'
+ '@ethersproject/wordlists' '@ethersproject/hash'
+ '@ethersproject/solidity' '@ethersproject/networks' '@ethersproject/abi'
+ '@ethersproject/json-wallets' '@ethersproject/base64'
+ '@ethersproject/web' '@ethersproject/hdnode' '@ethersproject/keccak256'
+ '@ethersproject/sha2' '@ethersproject/pbkdf2' '@ethersproject/providers'
+ 'ethers' '@ethersproject/constants' '@ethersproject/wallet'
+ '@ethersproject/abstract-provider' '@ethersproject/bytes'
+ '@ethersproject/logger' '@ethersproject/bignumber'
+ '@ethersproject/contracts' '@ethersproject/basex' '@ethersproject/rlp']",2543,180,8071,1916,2016-07-16,TypeScript,MIT License,True,1.0,0.9462025316455697,0.9841772151898734,0.03797468354430378
+1,Synthetix,ethers.js,https://github.com/ethers-io/ethers.js,"['@ethersproject/logger' '@ethersproject/networks'
+ '@ethersproject/properties' '@ethersproject/rlp'
+ '@ethersproject/keccak256' '@ethersproject/address'
+ '@ethersproject/wallet' '@ethersproject/providers' '@ethersproject/hash'
+ '@ethersproject/solidity' '@ethersproject/hdnode'
+ '@ethersproject/bignumber' '@ethersproject/units' '@ethersproject/random'
+ '@ethersproject/wordlists' '@ethersproject/bytes' '@ethersproject/sha2'
+ '@ethersproject/base64' '@ethersproject/abi' '@ethersproject/signing-key'
+ '@ethersproject/strings' '@ethersproject/pbkdf2'
+ '@ethersproject/abstract-signer' '@ethersproject/abstract-provider'
+ '@ethersproject/basex' '@ethersproject/web' '@ethersproject/contracts'
+ 'ethers' '@ethersproject/json-wallets' '@ethersproject/transactions'
+ '@ethersproject/constants']",2543,180,8071,1916,2016-07-16,TypeScript,MIT License,True,1.0,0.9462025316455697,0.9841772151898734,0.03797468354430378
+2,Sushi,ethers.js,https://github.com/ethers-io/ethers.js,"['@ethersproject/rlp' '@ethersproject/abstract-signer'
+ '@ethersproject/hash' '@ethersproject/transactions' '@ethersproject/web'
+ 'ethers' '@ethersproject/sha2' '@ethersproject/random'
+ '@ethersproject/bignumber' '@ethersproject/solidity' '@ethersproject/abi'
+ '@ethersproject/units' '@ethersproject/wordlists' '@ethersproject/logger'
+ '@ethersproject/hdnode' '@ethersproject/bytes' '@ethersproject/pbkdf2'
+ '@ethersproject/contracts' '@ethersproject/base64'
+ '@ethersproject/abstract-provider' '@ethersproject/basex'
+ '@ethersproject/keccak256' '@ethersproject/constants'
+ '@ethersproject/json-wallets' '@ethersproject/signing-key'
+ '@ethersproject/experimental' '@ethersproject/wallet'
+ '@ethersproject/address' '@ethersproject/providers'
+ '@ethersproject/strings' '@ethersproject/networks'
+ '@ethersproject/properties']",2543,180,8071,1916,2016-07-16,TypeScript,MIT License,True,1.0,0.9462025316455697,0.9841772151898734,0.03797468354430378
+3,Across,ethers.js,https://github.com/ethers-io/ethers.js,"['ethers' '@ethersproject/contracts' '@ethersproject/experimental'
+ '@ethersproject/keccak256' '@ethersproject/abi' '@ethersproject/hdnode'
+ '@ethersproject/rlp' '@ethersproject/networks' '@ethersproject/solidity'
+ '@ethersproject/providers' '@ethersproject/address'
+ '@ethersproject/abstract-provider' '@ethersproject/web'
+ '@ethersproject/sha2' '@ethersproject/constants' '@ethersproject/pbkdf2'
+ '@ethersproject/transactions' '@ethersproject/hardware-wallets'
+ '@ethersproject/properties' '@ethersproject/json-wallets'
+ '@ethersproject/basex' '@ethersproject/hash' '@ethersproject/bytes'
+ '@ethersproject/wordlists' '@ethersproject/abstract-signer'
+ '@ethersproject/signing-key' '@ethersproject/base64'
+ '@ethersproject/bignumber' '@ethersproject/units' '@ethersproject/wallet'
+ '@ethersproject/random' '@ethersproject/logger' '@ethersproject/strings']",2543,180,8071,1916,2016-07-16,TypeScript,MIT License,True,1.0,0.9462025316455697,0.9841772151898734,0.03797468354430378
+4,Smol Dapp,ethers.js,https://github.com/ethers-io/ethers.js,"['@ethersproject/networks' '@ethersproject/properties'
+ '@ethersproject/abi' '@ethersproject/pbkdf2' '@ethersproject/wallet'
+ '@ethersproject/bytes' '@ethersproject/hash' '@ethersproject/web'
+ '@ethersproject/rlp' '@ethersproject/contracts' '@ethersproject/address'
+ '@ethersproject/basex' '@ethersproject/providers'
+ '@ethersproject/wordlists' '@ethersproject/base64'
+ '@ethersproject/constants' '@ethersproject/abstract-signer'
+ '@ethersproject/logger' '@ethersproject/strings'
+ '@ethersproject/bignumber' '@ethersproject/units' '@ethersproject/hdnode'
+ '@ethersproject/solidity' '@ethersproject/abstract-provider'
+ '@ethersproject/keccak256' '@ethersproject/sha2' '@ethersproject/random'
+ '@ethersproject/json-wallets' '@ethersproject/signing-key'
+ '@ethersproject/transactions' 'ethers']",2543,180,8071,1916,2016-07-16,TypeScript,MIT License,True,1.0,0.9462025316455697,0.9841772151898734,0.03797468354430378
+5,Agora,ethers.js,https://github.com/ethers-io/ethers.js,"['ethers' '@ethersproject/abstract-signer' '@ethersproject/transactions'
+ '@ethersproject/hdnode' '@ethersproject/properties' '@ethersproject/hash'
+ '@ethersproject/constants' '@ethersproject/rlp' '@ethersproject/sha2'
+ '@ethersproject/logger' '@ethersproject/signing-key'
+ '@ethersproject/strings' '@ethersproject/json-wallets'
+ '@ethersproject/keccak256' '@ethersproject/wallet'
+ '@ethersproject/providers' '@ethersproject/abi' '@ethersproject/address'
+ '@ethersproject/networks' '@ethersproject/pbkdf2' '@ethersproject/units'
+ '@ethersproject/base64' '@ethersproject/abstract-provider'
+ '@ethersproject/wordlists' '@ethersproject/bytes' '@ethersproject/web'
+ '@ethersproject/basex' '@ethersproject/bignumber' '@ethersproject/random'
+ '@ethersproject/contracts']",2543,180,8071,1916,2016-07-16,TypeScript,MIT License,True,1.0,0.9462025316455697,0.9841772151898734,0.03797468354430378
+6,Superfluid,ethers.js,https://github.com/ethers-io/ethers.js,"['@ethersproject/units' '@ethersproject/abi' '@ethersproject/signing-key'
+ '@ethersproject/json-wallets' '@ethersproject/constants'
+ '@ethersproject/logger' '@ethersproject/solidity'
+ '@ethersproject/abstract-signer' '@ethersproject/hdnode'
+ '@ethersproject/properties' '@ethersproject/hash'
+ '@ethersproject/abstract-provider' '@ethersproject/networks'
+ '@ethersproject/basex' '@ethersproject/sha2'
+ '@ethersproject/transactions' '@ethersproject/address'
+ '@ethersproject/providers' '@ethersproject/random' '@ethersproject/bytes'
+ '@ethersproject/rlp' '@ethersproject/web' 'ethers'
+ '@ethersproject/keccak256' '@ethersproject/bignumber'
+ '@ethersproject/contracts' '@ethersproject/pbkdf2'
+ '@ethersproject/wallet' '@ethersproject/strings'
+ '@ethersproject/wordlists' '@ethersproject/base64']",2543,180,8071,1916,2016-07-16,TypeScript,MIT License,True,1.0,0.9462025316455697,0.9841772151898734,0.03797468354430378
+7,Velodrome,ethers.js,https://github.com/ethers-io/ethers.js,"['@ethersproject/basex' 'ethers' '@ethersproject/hash'
+ '@ethersproject/bignumber' '@ethersproject/pbkdf2'
+ '@ethersproject/wordlists' '@ethersproject/signing-key'
+ '@ethersproject/sha2' '@ethersproject/strings' '@ethersproject/web'
+ '@ethersproject/constants' '@ethersproject/abi' '@ethersproject/networks'
+ '@ethersproject/bytes' '@ethersproject/json-wallets'
+ '@ethersproject/transactions' '@ethersproject/rlp'
+ '@ethersproject/abstract-signer' '@ethersproject/contracts'
+ '@ethersproject/units' '@ethersproject/providers' '@ethersproject/wallet'
+ '@ethersproject/solidity' '@ethersproject/abstract-provider'
+ '@ethersproject/random' '@ethersproject/base64' '@ethersproject/logger'
+ '@ethersproject/keccak256' '@ethersproject/address'
+ '@ethersproject/properties' '@ethersproject/hdnode']",2543,180,8071,1916,2016-07-16,TypeScript,MIT License,True,1.0,0.9462025316455697,0.9841772151898734,0.03797468354430378
+8,Boost Studios,ethers.js,https://github.com/ethers-io/ethers.js,"['@ethersproject/signing-key' '@ethersproject/sha2'
+ '@ethersproject/bignumber' '@ethersproject/abstract-signer'
+ '@ethersproject/transactions' '@ethersproject/strings'
+ '@ethersproject/abi' '@ethersproject/hash' '@ethersproject/wallet'
+ '@ethersproject/bytes' '@ethersproject/constants'
+ '@ethersproject/address' '@ethersproject/web' '@ethersproject/providers'
+ '@ethersproject/logger' '@ethersproject/networks'
+ '@ethersproject/keccak256' '@ethersproject/rlp' '@ethersproject/units'
+ '@ethersproject/contracts' 'ethers' '@ethersproject/random'
+ '@ethersproject/abstract-provider' '@ethersproject/pbkdf2'
+ '@ethersproject/hardware-wallets' '@ethersproject/base64'
+ '@ethersproject/basex' '@ethersproject/solidity'
+ '@ethersproject/wordlists' '@ethersproject/json-wallets'
+ '@ethersproject/hdnode' '@ethersproject/properties']",2543,180,8071,1916,2016-07-16,TypeScript,MIT License,True,1.0,0.9462025316455697,0.9841772151898734,0.03797468354430378
+9,Sound.xyz,ethers.js,https://github.com/ethers-io/ethers.js,"['@ethersproject/address' '@ethersproject/abi' '@ethersproject/wordlists'
+ '@ethersproject/signing-key' '@ethersproject/keccak256'
+ '@ethersproject/transactions' '@ethersproject/hash'
+ '@ethersproject/json-wallets' '@ethersproject/bignumber'
+ '@ethersproject/abstract-signer' '@ethersproject/rlp'
+ '@ethersproject/random' '@ethersproject/abstract-provider'
+ '@ethersproject/providers' '@ethersproject/solidity'
+ '@ethersproject/logger' '@ethersproject/strings'
+ '@ethersproject/properties' '@ethersproject/units'
+ '@ethersproject/contracts' '@ethersproject/sha2' '@ethersproject/hdnode'
+ '@ethersproject/pbkdf2' '@ethersproject/constants'
+ '@ethersproject/base64' '@ethersproject/web' '@ethersproject/networks'
+ 'ethers' '@ethersproject/wallet' '@ethersproject/bytes'
+ '@ethersproject/basex']",2543,180,8071,1916,2016-07-16,TypeScript,MIT License,True,1.0,0.9462025316455697,0.9841772151898734,0.03797468354430378
+10,Ethereum Attestation Service,ethers.js,https://github.com/ethers-io/ethers.js,"['@ethersproject/abstract-signer' '@ethersproject/networks'
+ '@ethersproject/bignumber' '@ethersproject/units' '@ethersproject/hash'
+ '@ethersproject/wordlists' '@ethersproject/sha2'
+ '@ethersproject/properties' '@ethersproject/base64' 'ethers'
+ '@ethersproject/signing-key' '@ethersproject/keccak256'
+ '@ethersproject/wallet' '@ethersproject/random'
+ '@ethersproject/transactions' '@ethersproject/bytes'
+ '@ethersproject/contracts' '@ethersproject/providers'
+ '@ethersproject/abi' '@ethersproject/abstract-provider'
+ '@ethersproject/web' '@ethersproject/address' '@ethersproject/rlp'
+ '@ethersproject/constants' '@ethersproject/hdnode'
+ '@ethersproject/pbkdf2' '@ethersproject/json-wallets'
+ '@ethersproject/strings' '@ethersproject/logger' '@ethersproject/basex'
+ '@ethersproject/solidity']",2543,180,8071,1916,2016-07-16,TypeScript,MIT License,True,1.0,0.9462025316455697,0.9841772151898734,0.03797468354430378
+11,Sushi,Babel,https://github.com/babel/babel,"['babel-plugin-transform-es2015-sticky-regex' 'babel-helpers'
+ '@babel/helper-simple-access' 'babel-helper-function-name'
+ '@babel/plugin-transform-block-scoped-functions' '@babel/parser'
+ 'babel-plugin-transform-exponentiation-operator'
+ 'babel-plugin-transform-es2015-classes' 'babel-register'
+ '@babel/plugin-proposal-class-static-block'
+ 'babel-plugin-transform-es2015-unicode-regex'
+ '@babel/plugin-proposal-nullish-coalescing-operator'
+ '@babel/plugin-transform-unicode-escapes'
+ '@babel/plugin-transform-destructuring'
+ '@babel/plugin-transform-unicode-sets-regex'
+ '@babel/plugin-transform-computed-properties'
+ 'babel-plugin-transform-es2015-template-literals'
+ 'babel-helper-builder-binary-assignment-operator-visitor'
+ '@babel/generator' 'babel-types' '@babel/helper-wrap-function'
+ '@babel/plugin-syntax-json-strings' '@babel/code-frame'
+ 'babel-helper-call-delegate' '@babel/plugin-transform-typeof-symbol'
+ 'babel-plugin-transform-strict-mode' '@babel/plugin-transform-parameters'
+ '@babel/helper-create-class-features-plugin'
+ '@babel/helper-annotate-as-pure'
+ '@babel/plugin-proposal-logical-assignment-operators'
+ 'babel-plugin-transform-es2015-shorthand-properties'
+ 'babel-plugin-transform-es2015-destructuring'
+ 'babel-helper-optimise-call-expression'
+ '@babel/helper-optimise-call-expression' '@babel/core' 'babel-template'
+ 'babel-helper-explode-assignable-expression'
+ '@babel/plugin-syntax-bigint'
+ 'babel-plugin-transform-es2015-typeof-symbol'
+ '@babel/helper-module-transforms' '@babel/plugin-syntax-jsx'
+ '@babel/plugin-transform-react-jsx'
+ '@babel/plugin-transform-react-pure-annotations'
+ '@babel/plugin-transform-export-namespace-from'
+ '@babel/plugin-transform-class-properties'
+ '@babel/plugin-transform-unicode-property-regex'
+ '@babel/helper-explode-assignable-expression'
+ '@babel/plugin-transform-react-display-name'
+ '@babel/plugin-proposal-object-rest-spread'
+ '@babel/plugin-proposal-json-strings'
+ '@babel/plugin-transform-named-capturing-groups-regex'
+ '@babel/plugin-proposal-numeric-separator' '@babel/helper-module-imports'
+ '@babel/helper-remap-async-to-generator'
+ 'babel-plugin-transform-es2015-modules-systemjs'
+ '@babel/plugin-transform-regenerator'
+ '@babel/plugin-syntax-optional-chaining'
+ '@babel/plugin-syntax-logical-assignment-operators'
+ 'babel-plugin-transform-es2015-function-name'
+ '@babel/helper-function-name' '@babel/plugin-syntax-numeric-separator'
+ 'babel-generator' '@babel/helper-split-export-declaration'
+ '@babel/plugin-syntax-dynamic-import' 'babel-helper-get-function-arity'
+ '@babel/plugin-syntax-async-generators'
+ '@babel/plugin-syntax-private-property-in-object'
+ '@babel/plugin-transform-logical-assignment-operators'
+ '@babel/plugin-transform-for-of' '@babel/preset-react'
+ '@babel/plugin-proposal-unicode-property-regex' '@babel/highlight'
+ 'babel-helper-hoist-variables' 'babel-messages'
+ '@babel/helper-validator-option'
+ 'babel-plugin-transform-es2015-modules-umd'
+ '@babel/plugin-syntax-import-meta'
+ '@babel/plugin-syntax-export-namespace-from' 'babel-code-frame'
+ 'babel-plugin-transform-es2015-object-super'
+ '@babel/plugin-transform-property-literals'
+ '@babel/plugin-syntax-top-level-await'
+ '@babel/plugin-transform-modules-umd'
+ '@babel/plugin-transform-private-property-in-object'
+ '@babel/helper-create-regexp-features-plugin'
+ '@babel/plugin-transform-shorthand-properties'
+ '@babel/plugin-transform-runtime'
+ '@babel/plugin-transform-object-rest-spread'
+ '@babel/plugin-proposal-async-generator-functions'
+ 'babel-plugin-transform-regenerator' '@babel/types'
+ 'babel-plugin-syntax-exponentiation-operator'
+ 'babel-plugin-transform-async-to-generator'
+ '@babel/helper-skip-transparent-expression-wrappers'
+ '@babel/helper-hoist-variables'
+ 'babel-plugin-transform-es2015-block-scoped-functions'
+ '@babel/plugin-transform-exponentiation-operator'
+ '@babel/helper-plugin-utils'
+ '@babel/plugin-bugfix-firefox-class-in-computed-class-key'
+ '@babel/plugin-transform-async-to-generator'
+ '@babel/plugin-transform-nullish-coalescing-operator'
+ '@babel/plugin-transform-modules-amd'
+ '@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression'
+ 'babel-helper-replace-supers' 'babel-plugin-transform-es2015-for-of'
+ '@babel/helper-string-parser' 'babel-helper-remap-async-to-generator'
+ '@babel/helpers' '@babel/plugin-syntax-class-static-block'
+ '@babel/plugin-transform-literals'
+ '@babel/plugin-proposal-dynamic-import' '@babel/plugin-transform-classes'
+ '@babel/preset-env' '@babel/plugin-transform-class-static-block'
+ '@babel/plugin-transform-function-name' '@babel/plugin-transform-spread'
+ '@babel/plugin-syntax-unicode-sets-regex' '@babel/runtime-corejs3'
+ '@babel/plugin-transform-dynamic-import'
+ 'babel-plugin-transform-es2015-computed-properties'
+ '@babel/plugin-syntax-optional-catch-binding'
+ '@babel/plugin-transform-unicode-regex' 'babel-core' '@babel/compat-data'
+ '@babel/plugin-transform-private-methods'
+ 'babel-plugin-transform-es2015-parameters'
+ 'babel-plugin-transform-es2015-block-scoping'
+ '@babel/plugin-transform-reserved-words'
+ 'babel-plugin-syntax-async-functions'
+ 'babel-plugin-transform-es2015-arrow-functions'
+ 'babel-plugin-syntax-trailing-function-commas' '@babel/traverse'
+ '@babel/plugin-transform-modules-systemjs'
+ '@babel/helper-environment-visitor'
+ '@babel/plugin-transform-object-super'
+ '@babel/plugin-transform-optional-chaining' 'babel-preset-env'
+ '@babel/plugin-transform-template-literals'
+ '@babel/plugin-transform-react-jsx-development'
+ '@babel/plugin-bugfix-v8-static-class-fields-redefine-readonly'
+ '@babel/helper-member-expression-to-functions'
+ '@babel/plugin-proposal-private-property-in-object'
+ '@babel/plugin-transform-async-generator-functions'
+ '@babel/plugin-transform-dotall-regex'
+ '@babel/plugin-transform-numeric-separator'
+ '@babel/plugin-transform-optional-catch-binding'
+ '@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining'
+ 'babel-plugin-transform-es2015-modules-amd' 'babel-runtime'
+ '@babel/plugin-transform-arrow-functions'
+ '@babel/helper-compilation-targets' 'babel-helper-define-map'
+ '@babel/helper-validator-identifier' '@babel/plugin-syntax-typescript'
+ 'babel-plugin-transform-es2015-spread' 'babel-traverse'
+ '@babel/plugin-transform-duplicate-keys'
+ '@babel/plugin-syntax-object-rest-spread'
+ '@babel/plugin-proposal-optional-catch-binding'
+ '@babel/plugin-transform-new-target'
+ '@babel/plugin-syntax-import-attributes'
+ '@babel/helper-builder-binary-assignment-operator-visitor'
+ '@babel/plugin-transform-block-scoping' 'babel-helper-regex'
+ 'babel-plugin-check-es2015-constants'
+ '@babel/plugin-proposal-optional-chaining'
+ 'babel-plugin-transform-es2015-literals'
+ 'babel-plugin-transform-es2015-duplicate-keys'
+ '@babel/helper-replace-supers'
+ '@babel/plugin-proposal-export-namespace-from'
+ 'babel-plugin-transform-es2015-modules-commonjs'
+ '@babel/plugin-transform-sticky-regex' '@babel/template'
+ '@babel/plugin-transform-member-expression-literals'
+ '@babel/plugin-syntax-nullish-coalescing-operator'
+ '@babel/plugin-syntax-class-properties' '@babel/runtime'
+ '@babel/plugin-syntax-import-assertions'
+ '@babel/plugin-transform-modules-commonjs'
+ '@babel/plugin-transform-json-strings'
+ '@babel/plugin-proposal-class-properties'
+ '@babel/plugin-proposal-private-methods']",3006,168,43364,5658,2014-09-28,TypeScript,MIT License,False,1.0,0.9825949367088608,0.9161392405063291,-0.06645569620253167
+12,Velodrome,Babel,https://github.com/babel/babel,"['babel-helper-builder-binary-assignment-operator-visitor'
+ '@babel/helper-validator-identifier'
+ 'babel-plugin-transform-es2015-arrow-functions' '@babel/types'
+ 'babel-plugin-transform-es2015-duplicate-keys'
+ 'babel-helper-get-function-arity' '@babel/highlight'
+ 'babel-plugin-syntax-exponentiation-operator'
+ 'babel-plugin-transform-es2015-block-scoped-functions'
+ 'babel-plugin-syntax-async-functions' 'babel-traverse' 'babel-generator'
+ 'babel-plugin-transform-es2015-spread' 'babel-core'
+ 'babel-plugin-transform-es2015-typeof-symbol'
+ 'babel-plugin-transform-es2015-literals'
+ 'babel-plugin-transform-es2015-function-name'
+ 'babel-plugin-transform-es2015-modules-amd' 'babel-runtime'
+ 'babel-plugin-transform-es2015-destructuring'
+ 'babel-plugin-transform-es2015-modules-umd'
+ 'babel-plugin-transform-es2015-modules-commonjs' 'babel-register'
+ 'babel-helper-explode-assignable-expression'
+ 'babel-helper-optimise-call-expression'
+ 'babel-plugin-transform-strict-mode' 'babel-code-frame'
+ '@babel/code-frame' 'babel-preset-env' 'babel-types'
+ 'babel-helper-function-name'
+ 'babel-plugin-transform-es2015-template-literals' 'babel-helper-regex'
+ 'babel-helper-define-map' 'babel-plugin-transform-es2015-block-scoping'
+ 'babel-plugin-transform-es2015-classes'
+ 'babel-plugin-transform-es2015-parameters' 'babel-helper-replace-supers'
+ 'babel-plugin-transform-regenerator'
+ 'babel-plugin-transform-es2015-for-of'
+ 'babel-plugin-transform-es2015-sticky-regex'
+ 'babel-plugin-check-es2015-constants'
+ 'babel-plugin-syntax-trailing-function-commas'
+ 'babel-plugin-transform-async-to-generator'
+ 'babel-helper-hoist-variables' 'babel-messages'
+ 'babel-plugin-transform-exponentiation-operator'
+ 'babel-helper-remap-async-to-generator'
+ 'babel-plugin-transform-es2015-modules-systemjs' 'babel-helpers'
+ 'babel-template' 'babel-plugin-transform-es2015-computed-properties'
+ 'babel-plugin-transform-es2015-unicode-regex'
+ 'babel-plugin-transform-es2015-shorthand-properties'
+ 'babel-helper-call-delegate' 'babel-plugin-transform-es2015-object-super']",3006,168,43364,5658,2014-09-28,TypeScript,MIT License,False,1.0,0.9825949367088608,0.9161392405063291,-0.06645569620253167
+13,Superfluid,Babel,https://github.com/babel/babel,"['@babel/plugin-transform-shorthand-properties'
+ '@babel/plugin-transform-react-jsx-source'
+ '@babel/plugin-transform-dynamic-import'
+ '@babel/plugin-transform-react-jsx-development'
+ '@babel/plugin-transform-member-expression-literals'
+ '@babel/plugin-syntax-class-properties' '@babel/preset-typescript'
+ '@babel/plugin-transform-react-jsx-self'
+ '@babel/plugin-transform-modules-systemjs' '@babel/preset-react'
+ '@babel/helper-environment-visitor' '@babel/plugin-syntax-import-meta'
+ '@babel/helper-validator-option' '@babel/core'
+ '@babel/helper-wrap-function' '@babel/plugin-transform-runtime'
+ '@babel/plugin-transform-classes' '@babel/helper-simple-access'
+ '@babel/types'
+ '@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression'
+ '@babel/preset-flow' '@babel/plugin-transform-dotall-regex'
+ '@babel/plugin-syntax-nullish-coalescing-operator'
+ '@babel/plugin-proposal-class-properties'
+ '@babel/plugin-bugfix-v8-static-class-fields-redefine-readonly'
+ '@babel/plugin-transform-react-pure-annotations'
+ '@babel/plugin-syntax-logical-assignment-operators'
+ '@babel/plugin-transform-spread'
+ '@babel/plugin-proposal-optional-chaining'
+ '@babel/helper-hoist-variables' '@babel/plugin-syntax-dynamic-import'
+ '@babel/generator' '@babel/plugin-transform-for-of'
+ '@babel/plugin-transform-regenerator'
+ '@babel/plugin-transform-unicode-sets-regex'
+ '@babel/plugin-transform-arrow-functions'
+ '@babel/plugin-transform-private-property-in-object'
+ '@babel/plugin-transform-new-target'
+ '@babel/plugin-transform-block-scoped-functions'
+ '@babel/plugin-syntax-class-static-block'
+ '@babel/plugin-transform-numeric-separator'
+ '@babel/plugin-transform-unicode-property-regex'
+ '@babel/plugin-syntax-object-rest-spread'
+ '@babel/plugin-syntax-unicode-sets-regex' 'babel-runtime'
+ '@babel/template' '@babel/traverse'
+ '@babel/plugin-transform-react-display-name'
+ '@babel/helper-member-expression-to-functions'
+ '@babel/plugin-transform-typeof-symbol'
+ '@babel/helper-optimise-call-expression'
+ '@babel/plugin-syntax-async-generators'
+ '@babel/plugin-transform-private-methods'
+ '@babel/plugin-syntax-numeric-separator'
+ '@babel/plugin-syntax-json-strings'
+ '@babel/plugin-syntax-optional-chaining'
+ '@babel/plugin-transform-async-generator-functions'
+ '@babel/plugin-transform-modules-amd'
+ '@babel/helper-remap-async-to-generator' '@babel/helper-string-parser'
+ '@babel/plugin-transform-template-literals'
+ '@babel/plugin-transform-function-name'
+ '@babel/helper-skip-transparent-expression-wrappers'
+ '@babel/plugin-transform-object-super'
+ '@babel/plugin-proposal-object-rest-spread'
+ '@babel/helper-module-imports' '@babel/plugin-transform-json-strings'
+ '@babel/plugin-transform-block-scoping'
+ '@babel/plugin-syntax-private-property-in-object'
+ '@babel/plugin-transform-computed-properties'
+ '@babel/plugin-transform-duplicate-keys'
+ '@babel/plugin-transform-unicode-escapes'
+ '@babel/plugin-transform-nullish-coalescing-operator'
+ '@babel/helper-function-name' '@babel/compat-data' '@babel/register'
+ '@babel/plugin-transform-modules-commonjs' '@babel/code-frame'
+ '@babel/highlight'
+ '@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining'
+ '@babel/plugin-syntax-export-namespace-from'
+ '@babel/plugin-transform-reserved-words'
+ '@babel/plugin-transform-class-static-block' '@babel/runtime'
+ '@babel/plugin-transform-optional-catch-binding'
+ '@babel/helper-module-transforms'
+ '@babel/plugin-syntax-export-default-from'
+ '@babel/plugin-proposal-export-default-from'
+ '@babel/plugin-transform-sticky-regex'
+ '@babel/helper-validator-identifier'
+ '@babel/plugin-proposal-private-property-in-object'
+ '@babel/helper-builder-binary-assignment-operator-visitor'
+ '@babel/plugin-transform-export-namespace-from'
+ '@babel/plugin-transform-named-capturing-groups-regex' 'babel-core'
+ '@babel/preset-env' '@babel/helper-annotate-as-pure'
+ '@babel/helper-split-export-declaration'
+ '@babel/plugin-transform-destructuring'
+ '@babel/plugin-transform-typescript'
+ '@babel/plugin-transform-object-rest-spread'
+ '@babel/helper-compilation-targets'
+ '@babel/plugin-transform-flow-strip-types' '@babel/plugin-syntax-flow'
+ '@babel/plugin-transform-modules-umd'
+ '@babel/plugin-syntax-top-level-await'
+ '@babel/plugin-transform-async-to-generator'
+ 'babel-plugin-syntax-trailing-function-commas'
+ '@babel/plugin-syntax-optional-catch-binding'
+ '@babel/plugin-transform-exponentiation-operator'
+ '@babel/plugin-transform-property-literals'
+ '@babel/plugin-transform-logical-assignment-operators'
+ '@babel/helper-create-class-features-plugin' '@babel/plugin-syntax-jsx'
+ '@babel/helper-create-regexp-features-plugin'
+ '@babel/plugin-syntax-typescript' '@babel/plugin-transform-literals'
+ '@babel/helper-plugin-utils' '@babel/plugin-transform-react-jsx'
+ '@babel/helpers' '@babel/plugin-transform-unicode-regex'
+ '@babel/helper-replace-supers' '@babel/plugin-transform-parameters'
+ '@babel/plugin-syntax-import-assertions'
+ '@babel/plugin-transform-optional-chaining'
+ '@babel/plugin-transform-class-properties' '@babel/parser'
+ '@babel/plugin-syntax-import-attributes'
+ '@babel/plugin-proposal-nullish-coalescing-operator']",3006,168,43364,5658,2014-09-28,TypeScript,MIT License,False,1.0,0.9825949367088608,0.9161392405063291,-0.06645569620253167
+14,Smol Dapp,Babel,https://github.com/babel/babel,"['@babel/compat-data' '@babel/plugin-syntax-import-assertions'
+ '@babel/plugin-transform-template-literals'
+ '@babel/plugin-transform-optional-catch-binding'
+ '@babel/helper-function-name' '@babel/plugin-transform-spread'
+ '@babel/plugin-transform-sticky-regex' '@babel/plugin-transform-for-of'
+ '@babel/helper-replace-supers'
+ '@babel/plugin-transform-computed-properties'
+ '@babel/plugin-syntax-numeric-separator' '@babel/helper-module-imports'
+ '@babel/plugin-transform-shorthand-properties'
+ '@babel/plugin-transform-modules-commonjs' '@babel/highlight'
+ '@babel/plugin-transform-dynamic-import'
+ '@babel/plugin-syntax-optional-chaining'
+ '@babel/plugin-transform-exponentiation-operator' '@babel/types'
+ '@babel/helper-split-export-declaration' '@babel/template'
+ '@babel/helper-string-parser' '@babel/plugin-transform-modules-systemjs'
+ '@babel/helper-member-expression-to-functions'
+ '@babel/plugin-transform-unicode-sets-regex'
+ '@babel/plugin-transform-dotall-regex'
+ '@babel/plugin-transform-function-name'
+ '@babel/plugin-syntax-optional-catch-binding'
+ '@babel/plugin-transform-json-strings'
+ '@babel/plugin-transform-modules-amd'
+ '@babel/plugin-transform-logical-assignment-operators'
+ '@babel/plugin-transform-destructuring'
+ '@babel/plugin-transform-named-capturing-groups-regex'
+ '@babel/plugin-transform-object-rest-spread'
+ '@babel/plugin-syntax-object-rest-spread'
+ '@babel/plugin-syntax-top-level-await' '@babel/plugin-transform-classes'
+ '@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining'
+ '@babel/plugin-transform-export-namespace-from'
+ '@babel/plugin-transform-class-properties'
+ '@babel/plugin-transform-private-property-in-object'
+ '@babel/plugin-syntax-dynamic-import'
+ '@babel/plugin-transform-unicode-property-regex'
+ '@babel/plugin-transform-arrow-functions'
+ '@babel/helper-create-regexp-features-plugin' '@babel/helpers'
+ '@babel/traverse' '@babel/helper-hoist-variables'
+ '@babel/plugin-syntax-class-properties' '@babel/code-frame'
+ '@babel/plugin-proposal-private-property-in-object'
+ '@babel/plugin-transform-private-methods'
+ '@babel/plugin-transform-class-static-block'
+ '@babel/plugin-transform-modules-umd'
+ '@babel/plugin-transform-typeof-symbol'
+ '@babel/plugin-syntax-async-generators'
+ '@babel/helper-remap-async-to-generator'
+ '@babel/plugin-transform-nullish-coalescing-operator'
+ '@babel/plugin-syntax-nullish-coalescing-operator'
+ '@babel/plugin-syntax-import-attributes'
+ '@babel/plugin-transform-optional-chaining'
+ '@babel/plugin-transform-object-super' '@babel/preset-env'
+ '@babel/plugin-syntax-private-property-in-object'
+ '@babel/plugin-transform-numeric-separator' '@babel/generator'
+ '@babel/plugin-transform-literals'
+ '@babel/helper-builder-binary-assignment-operator-visitor' '@babel/core'
+ '@babel/plugin-syntax-json-strings'
+ '@babel/plugin-syntax-class-static-block'
+ '@babel/plugin-transform-duplicate-keys' '@babel/helper-validator-option'
+ '@babel/helper-validator-identifier'
+ '@babel/helper-create-class-features-plugin'
+ '@babel/plugin-transform-reserved-words' '@babel/helper-simple-access'
+ '@babel/helper-environment-visitor' '@babel/helper-annotate-as-pure'
+ '@babel/plugin-transform-async-generator-functions'
+ '@babel/plugin-transform-parameters'
+ '@babel/plugin-transform-property-literals'
+ '@babel/plugin-syntax-import-meta'
+ '@babel/plugin-transform-block-scoped-functions'
+ '@babel/helper-optimise-call-expression'
+ '@babel/plugin-syntax-logical-assignment-operators'
+ '@babel/plugin-transform-block-scoping'
+ '@babel/helper-compilation-targets' '@babel/helper-module-transforms'
+ '@babel/plugin-transform-unicode-escapes' '@babel/parser'
+ '@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression'
+ '@babel/helper-plugin-utils' '@babel/plugin-transform-regenerator'
+ '@babel/helper-wrap-function'
+ '@babel/plugin-transform-async-to-generator' '@babel/runtime'
+ '@babel/plugin-transform-new-target'
+ '@babel/plugin-syntax-export-namespace-from'
+ '@babel/plugin-syntax-unicode-sets-regex'
+ '@babel/plugin-bugfix-v8-static-class-fields-redefine-readonly'
+ '@babel/helper-skip-transparent-expression-wrappers'
+ '@babel/plugin-transform-unicode-regex'
+ '@babel/plugin-transform-member-expression-literals']",3006,168,43364,5658,2014-09-28,TypeScript,MIT License,False,1.0,0.9825949367088608,0.9161392405063291,-0.06645569620253167
+15,Giveth,Babel,https://github.com/babel/babel,"['@babel/plugin-transform-property-literals' '@babel/parser'
+ 'babel-runtime' '@babel/plugin-transform-unicode-escapes'
+ '@babel/plugin-proposal-unicode-property-regex'
+ '@babel/plugin-syntax-numeric-separator' '@babel/plugin-transform-for-of'
+ '@babel/plugin-transform-block-scoping'
+ '@babel/helper-create-regexp-features-plugin'
+ '@babel/plugin-syntax-import-attributes'
+ 'babel-plugin-transform-es2015-arrow-functions'
+ '@babel/plugin-syntax-decorators' 'babel-plugin-transform-es2015-for-of'
+ '@babel/plugin-transform-react-jsx-source' '@babel/compat-data'
+ '@babel/helper-module-imports' 'babel-register'
+ '@babel/helper-explode-assignable-expression'
+ '@babel/plugin-transform-react-pure-annotations'
+ '@babel/helper-wrap-function'
+ '@babel/helper-builder-binary-assignment-operator-visitor'
+ '@babel/plugin-transform-modules-umd'
+ '@babel/helper-skip-transparent-expression-wrappers'
+ '@babel/helper-optimise-call-expression' 'babel-helper-replace-supers'
+ '@babel/helper-replace-supers' 'babel-types'
+ '@babel/plugin-transform-shorthand-properties'
+ '@babel/plugin-transform-duplicate-keys' '@babel/helper-string-parser'
+ '@babel/plugin-transform-numeric-separator' '@babel/core'
+ '@babel/helper-member-expression-to-functions'
+ '@babel/plugin-syntax-import-meta'
+ '@babel/plugin-transform-dynamic-import'
+ '@babel/plugin-transform-react-display-name'
+ '@babel/plugin-bugfix-firefox-class-in-computed-class-key'
+ 'babel-plugin-transform-es2015-modules-systemjs'
+ '@babel/plugin-syntax-dynamic-import'
+ 'babel-plugin-transform-es2015-unicode-regex'
+ '@babel/plugin-transform-modules-commonjs'
+ '@babel/plugin-transform-async-generator-functions'
+ 'babel-plugin-transform-es2015-computed-properties'
+ '@babel/plugin-syntax-import-assertions'
+ '@babel/plugin-transform-logical-assignment-operators'
+ '@babel/plugin-proposal-logical-assignment-operators'
+ 'babel-plugin-transform-es2015-template-literals'
+ '@babel/plugin-proposal-numeric-separator' '@babel/polyfill'
+ '@babel/plugin-transform-flow-strip-types'
+ 'babel-plugin-transform-es2015-duplicate-keys'
+ '@babel/plugin-transform-reserved-words'
+ 'babel-plugin-transform-es2015-typeof-symbol' '@babel/traverse'
+ 'babel-helper-function-name' '@babel/plugin-transform-unicode-regex'
+ 'babel-helper-optimise-call-expression' 'babel-helpers'
+ '@babel/plugin-transform-sticky-regex'
+ '@babel/plugin-syntax-nullish-coalescing-operator'
+ '@babel/plugin-transform-new-target'
+ '@babel/plugin-transform-modules-amd' '@babel/preset-env'
+ '@babel/plugin-proposal-decorators'
+ 'babel-plugin-syntax-trailing-function-commas' 'babel-plugin-syntax-jsx'
+ 'babel-template' '@babel/plugin-proposal-private-property-in-object'
+ '@babel/plugin-proposal-nullish-coalescing-operator'
+ '@babel/plugin-proposal-class-static-block'
+ '@babel/plugin-syntax-object-rest-spread'
+ '@babel/plugin-transform-unicode-sets-regex' '@babel/helper-plugin-utils'
+ '@babel/plugin-proposal-async-generator-functions'
+ '@babel/plugin-transform-object-rest-spread'
+ 'babel-plugin-transform-exponentiation-operator'
+ '@babel/plugin-transform-object-super'
+ 'babel-plugin-check-es2015-constants'
+ '@babel/plugin-transform-typescript' '@babel/helper-simple-access'
+ 'babel-code-frame' '@babel/plugin-transform-typeof-symbol'
+ 'babel-helper-get-function-arity' 'babel-helper-regex'
+ '@babel/plugin-transform-function-name' '@babel/preset-flow'
+ 'babel-plugin-transform-es2015-block-scoping'
+ '@babel/plugin-transform-unicode-property-regex'
+ '@babel/plugin-syntax-typescript'
+ 'babel-plugin-transform-es2015-modules-commonjs' 'babel-traverse'
+ '@babel/template' '@babel/helper-create-class-features-plugin'
+ '@babel/helper-environment-visitor' '@babel/plugin-syntax-json-strings'
+ '@babel/plugin-syntax-bigint' '@babel/helper-validator-identifier'
+ 'babel-plugin-transform-es2015-literals'
+ '@babel/plugin-transform-template-literals' 'babel-generator'
+ '@babel/plugin-transform-runtime'
+ '@babel/plugin-transform-named-capturing-groups-regex'
+ '@babel/plugin-transform-literals'
+ '@babel/plugin-transform-private-methods'
+ '@babel/helper-annotate-as-pure' '@babel/helper-validator-option'
+ '@babel/plugin-syntax-private-property-in-object' '@babel/generator'
+ '@babel/plugin-transform-nullish-coalescing-operator'
+ '@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining'
+ '@babel/plugin-transform-arrow-functions'
+ 'babel-plugin-transform-es2015-spread'
+ '@babel/plugin-syntax-class-static-block' 'babel-helper-define-map'
+ '@babel/plugin-transform-private-property-in-object'
+ 'babel-plugin-syntax-exponentiation-operator'
+ '@babel/plugin-transform-exponentiation-operator'
+ '@babel/plugin-transform-modules-systemjs'
+ '@babel/plugin-syntax-export-namespace-from'
+ '@babel/plugin-proposal-export-namespace-from'
+ '@babel/plugin-transform-export-namespace-from'
+ 'babel-plugin-transform-async-to-generator'
+ '@babel/plugin-proposal-private-methods'
+ '@babel/plugin-transform-class-static-block'
+ '@babel/plugin-transform-optional-chaining'
+ 'babel-plugin-transform-es2015-function-name'
+ 'babel-helper-hoist-variables' 'babel-helper-call-delegate'
+ '@babel/plugin-transform-react-jsx-self'
+ '@babel/plugin-transform-optional-catch-binding'
+ 'babel-plugin-transform-es2015-shorthand-properties'
+ '@babel/plugin-transform-parameters'
+ '@babel/plugin-transform-regenerator'
+ 'babel-plugin-transform-es2015-sticky-regex'
+ '@babel/plugin-syntax-optional-catch-binding'
+ 'babel-plugin-transform-es2015-destructuring'
+ '@babel/plugin-proposal-class-properties'
+ 'babel-plugin-transform-es2015-modules-amd'
+ 'babel-plugin-transform-es2015-object-super'
+ 'babel-plugin-transform-es2015-classes'
+ '@babel/plugin-transform-dotall-regex' '@babel/preset-react'
+ '@babel/helper-module-transforms'
+ '@babel/plugin-bugfix-v8-static-class-fields-redefine-readonly'
+ '@babel/plugin-syntax-top-level-await' 'babel-messages'
+ '@babel/plugin-syntax-logical-assignment-operators'
+ '@babel/helper-hoist-variables' '@babel/plugin-transform-destructuring'
+ '@babel/runtime'
+ 'babel-helper-builder-binary-assignment-operator-visitor'
+ '@babel/plugin-syntax-jsx' '@babel/helper-compilation-targets'
+ 'babel-plugin-syntax-async-functions'
+ 'babel-helper-explode-assignable-expression'
+ '@babel/plugin-transform-json-strings'
+ '@babel/plugin-transform-class-properties'
+ '@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression'
+ '@babel/helper-get-function-arity' '@babel/code-frame'
+ '@babel/plugin-transform-computed-properties'
+ 'babel-plugin-transform-regenerator' '@babel/runtime-corejs3'
+ '@babel/helper-function-name'
+ '@babel/plugin-transform-block-scoped-functions'
+ '@babel/plugin-transform-spread' '@babel/plugin-syntax-flow' 'babel-core'
+ '@babel/highlight' '@babel/plugin-syntax-unicode-sets-regex'
+ '@babel/helpers' '@babel/plugin-proposal-optional-catch-binding'
+ '@babel/runtime-corejs2' '@babel/plugin-syntax-optional-chaining'
+ 'babel-helper-remap-async-to-generator'
+ '@babel/plugin-proposal-json-strings'
+ 'babel-plugin-transform-es2015-parameters'
+ '@babel/plugin-transform-member-expression-literals'
+ '@babel/plugin-transform-react-jsx' '@babel/plugin-transform-classes'
+ '@babel/preset-typescript' 'babel-plugin-transform-strict-mode'
+ '@babel/helper-split-export-declaration'
+ '@babel/plugin-proposal-dynamic-import'
+ '@babel/helper-remap-async-to-generator' '@babel/types'
+ '@babel/plugin-transform-async-to-generator'
+ '@babel/plugin-syntax-async-generators'
+ '@babel/plugin-transform-react-jsx-development'
+ 'babel-plugin-transform-es2015-block-scoped-functions' '@babel/register'
+ '@babel/plugin-syntax-class-properties' 'babel-preset-env'
+ 'babel-plugin-transform-es2015-modules-umd'
+ '@babel/plugin-proposal-object-rest-spread'
+ '@babel/plugin-proposal-optional-chaining']",3006,168,43364,5658,2014-09-28,TypeScript,MIT License,False,1.0,0.9825949367088608,0.9161392405063291,-0.06645569620253167
+16,Synthetix,Babel,https://github.com/babel/babel,"['@babel/plugin-syntax-object-rest-spread'
+ '@babel/plugin-proposal-object-rest-spread'
+ '@babel/plugin-syntax-json-strings'
+ '@babel/plugin-transform-reserved-words'
+ '@babel/plugin-transform-modules-systemjs' '@babel/plugin-syntax-bigint'
+ '@babel/plugin-transform-block-scoped-functions'
+ '@babel/plugin-proposal-optional-chaining'
+ '@babel/plugin-transform-typeof-symbol'
+ '@babel/plugin-transform-modules-umd'
+ '@babel/plugin-transform-object-super'
+ 'babel-plugin-transform-exponentiation-operator'
+ 'babel-plugin-transform-es2015-object-super'
+ '@babel/plugin-transform-logical-assignment-operators'
+ '@babel/plugin-transform-shorthand-properties' '@babel/runtime-corejs3'
+ '@babel/plugin-transform-modules-amd'
+ 'babel-plugin-transform-es2015-shorthand-properties'
+ '@babel/plugin-syntax-optional-chaining'
+ 'babel-plugin-transform-es2015-template-literals'
+ '@babel/helper-plugin-utils' 'babel-helper-explode-assignable-expression'
+ '@babel/plugin-transform-function-name'
+ '@babel/plugin-transform-numeric-separator'
+ '@babel/plugin-transform-class-properties' '@babel/plugin-syntax-flow'
+ '@babel/plugin-transform-exponentiation-operator'
+ 'babel-helper-call-delegate' '@babel/plugin-syntax-export-default-from'
+ 'babel-preset-env' 'babel-template'
+ '@babel/plugin-proposal-private-methods' 'babel-helper-regex'
+ 'babel-code-frame'
+ '@babel/plugin-bugfix-v8-static-class-fields-redefine-readonly'
+ '@babel/preset-flow' '@babel/runtime'
+ '@babel/plugin-transform-unicode-sets-regex'
+ '@babel/plugin-transform-react-pure-annotations'
+ '@babel/helper-simple-access'
+ '@babel/helper-skip-transparent-expression-wrappers'
+ '@babel/helper-create-regexp-features-plugin'
+ 'babel-plugin-syntax-trailing-function-commas'
+ '@babel/plugin-transform-regenerator' '@babel/register'
+ '@babel/helper-create-class-features-plugin'
+ '@babel/plugin-transform-react-jsx'
+ '@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining'
+ 'babel-plugin-transform-es2015-sticky-regex'
+ '@babel/plugin-syntax-optional-catch-binding'
+ '@babel/plugin-transform-sticky-regex' 'babel-types'
+ 'babel-helper-get-function-arity' '@babel/plugin-syntax-dynamic-import'
+ '@babel/plugin-transform-named-capturing-groups-regex'
+ '@babel/plugin-syntax-private-property-in-object'
+ 'babel-plugin-transform-es2015-unicode-regex'
+ '@babel/plugin-transform-arrow-functions' '@babel/helper-module-imports'
+ 'babel-core' '@babel/plugin-transform-template-literals'
+ 'babel-plugin-transform-es2015-parameters'
+ 'babel-helper-remap-async-to-generator'
+ '@babel/plugin-proposal-nullish-coalescing-operator'
+ 'babel-helper-optimise-call-expression'
+ '@babel/plugin-syntax-import-meta'
+ '@babel/helper-builder-binary-assignment-operator-visitor'
+ '@babel/plugin-transform-nullish-coalescing-operator'
+ '@babel/plugin-syntax-async-generators' 'babel-helper-function-name'
+ 'babel-plugin-transform-es2015-spread'
+ '@babel/plugin-syntax-unicode-sets-regex'
+ '@babel/plugin-transform-dotall-regex'
+ 'babel-plugin-transform-es2015-modules-amd'
+ '@babel/plugin-transform-modules-commonjs'
+ '@babel/plugin-transform-destructuring'
+ 'babel-plugin-transform-es2015-literals' 'babel-helper-hoist-variables'
+ 'babel-generator' '@babel/plugin-transform-typescript'
+ 'babel-plugin-transform-regenerator'
+ '@babel/plugin-syntax-numeric-separator' '@babel/plugin-transform-for-of'
+ '@babel/plugin-syntax-class-properties'
+ '@babel/plugin-proposal-private-property-in-object'
+ 'babel-plugin-syntax-exponentiation-operator'
+ '@babel/helper-validator-identifier' '@babel/helper-annotate-as-pure'
+ '@babel/helper-optimise-call-expression' '@babel/code-frame'
+ '@babel/helper-split-export-declaration'
+ '@babel/plugin-transform-unicode-regex'
+ '@babel/plugin-transform-private-property-in-object' '@babel/compat-data'
+ '@babel/plugin-transform-async-to-generator'
+ '@babel/plugin-transform-optional-catch-binding'
+ 'babel-plugin-transform-es2015-modules-systemjs'
+ '@babel/plugin-transform-parameters' '@babel/core'
+ 'babel-helper-builder-binary-assignment-operator-visitor' 'babel-helpers'
+ '@babel/plugin-syntax-export-namespace-from'
+ 'babel-plugin-transform-es2015-modules-umd'
+ 'babel-plugin-transform-es2015-computed-properties'
+ '@babel/plugin-transform-computed-properties'
+ '@babel/helper-remap-async-to-generator'
+ '@babel/plugin-transform-property-literals' '@babel/helper-function-name'
+ '@babel/helpers' '@babel/plugin-syntax-typescript'
+ '@babel/helper-string-parser'
+ 'babel-plugin-transform-es2015-block-scoped-functions'
+ '@babel/helper-wrap-function' '@babel/plugin-proposal-class-properties'
+ '@babel/plugin-transform-spread'
+ '@babel/plugin-syntax-nullish-coalescing-operator' 'babel-runtime'
+ '@babel/plugin-proposal-export-default-from'
+ '@babel/plugin-transform-classes' 'babel-helper-replace-supers'
+ '@babel/helper-environment-visitor'
+ '@babel/plugin-transform-block-scoping'
+ '@babel/plugin-transform-duplicate-keys'
+ 'babel-plugin-transform-es2015-arrow-functions'
+ 'babel-plugin-transform-es2015-destructuring' '@babel/highlight'
+ '@babel/plugin-transform-react-display-name'
+ 'babel-plugin-transform-es2015-classes'
+ '@babel/plugin-transform-flow-strip-types' 'babel-plugin-syntax-jsx'
+ '@babel/plugin-syntax-import-assertions'
+ '@babel/helper-member-expression-to-functions' '@babel/parser'
+ 'babel-plugin-transform-async-to-generator' '@babel/traverse'
+ '@babel/plugin-transform-async-generator-functions'
+ '@babel/helper-compilation-targets' '@babel/plugin-transform-runtime'
+ 'babel-plugin-transform-es2015-modules-commonjs'
+ 'babel-helper-define-map' '@babel/plugin-syntax-top-level-await'
+ 'babel-plugin-transform-es2015-for-of' '@babel/plugin-syntax-jsx'
+ 'babel-plugin-check-es2015-constants' '@babel/preset-env'
+ 'babel-plugin-transform-strict-mode' '@babel/plugin-transform-literals'
+ 'babel-plugin-transform-es2015-duplicate-keys' 'babel-traverse'
+ '@babel/plugin-transform-object-rest-spread'
+ '@babel/plugin-transform-react-constant-elements' '@babel/preset-react'
+ '@babel/plugin-syntax-import-attributes'
+ 'babel-plugin-transform-es2015-typeof-symbol'
+ '@babel/plugin-transform-private-methods' '@babel/preset-typescript'
+ '@babel/plugin-transform-dynamic-import' '@babel/types'
+ '@babel/plugin-syntax-class-static-block'
+ '@babel/plugin-transform-optional-chaining'
+ '@babel/plugin-syntax-logical-assignment-operators'
+ '@babel/plugin-transform-unicode-property-regex'
+ '@babel/plugin-transform-export-namespace-from'
+ '@babel/helper-hoist-variables' '@babel/plugin-transform-new-target'
+ '@babel/plugin-proposal-decorators' '@babel/helper-validator-option'
+ '@babel/generator' 'babel-plugin-syntax-async-functions' 'babel-messages'
+ 'babel-plugin-transform-es2015-function-name'
+ '@babel/helper-module-transforms' 'babel-register'
+ '@babel/plugin-transform-json-strings'
+ '@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression'
+ '@babel/helper-replace-supers'
+ '@babel/plugin-transform-class-static-block'
+ 'babel-plugin-transform-es2015-block-scoping' '@babel/template'
+ '@babel/plugin-transform-member-expression-literals'
+ '@babel/plugin-transform-react-jsx-development'
+ '@babel/plugin-bugfix-firefox-class-in-computed-class-key'
+ '@babel/plugin-syntax-decorators'
+ '@babel/plugin-transform-unicode-escapes']",3006,168,43364,5658,2014-09-28,TypeScript,MIT License,False,1.0,0.9825949367088608,0.9161392405063291,-0.06645569620253167
+17,Across,Babel,https://github.com/babel/babel,"['@babel/plugin-transform-block-scoped-functions'
+ '@babel/helper-module-imports' '@babel/register'
+ 'babel-helper-remap-async-to-generator'
+ '@babel/plugin-transform-async-generator-functions'
+ '@babel/plugin-transform-regenerator' '@babel/helper-function-name'
+ 'babel-code-frame'
+ 'babel-helper-builder-binary-assignment-operator-visitor'
+ '@babel/plugin-syntax-top-level-await' '@babel/preset-env'
+ 'babel-helper-function-name' '@babel/plugin-syntax-import-meta'
+ '@babel/plugin-transform-property-literals'
+ '@babel/plugin-transform-modules-umd' 'babel-cli'
+ '@babel/plugin-transform-numeric-separator'
+ '@babel/plugin-transform-unicode-regex'
+ '@babel/plugin-transform-destructuring' '@babel/helper-string-parser'
+ '@babel/plugin-syntax-logical-assignment-operators'
+ '@babel/plugin-transform-exponentiation-operator'
+ 'babel-plugin-transform-es2015-object-super'
+ '@babel/plugin-transform-dynamic-import'
+ 'babel-plugin-syntax-trailing-function-commas'
+ '@babel/plugin-syntax-numeric-separator'
+ 'babel-plugin-transform-react-jsx-self'
+ '@babel/plugin-syntax-optional-catch-binding'
+ '@babel/plugin-syntax-bigint' 'babel-polyfill'
+ '@babel/helper-plugin-utils'
+ 'babel-plugin-syntax-exponentiation-operator'
+ 'babel-plugin-transform-es2015-sticky-regex'
+ 'babel-helper-get-function-arity' '@babel/traverse'
+ 'babel-helper-define-map' '@babel/plugin-transform-classes'
+ 'babel-preset-es2015' 'babel-helper-call-delegate' '@babel/code-frame'
+ '@babel/types' 'babel-plugin-transform-es2015-modules-commonjs'
+ '@babel/helper-skip-transparent-expression-wrappers' '@babel/helpers'
+ '@babel/helper-compilation-targets' '@babel/preset-flow'
+ '@babel/plugin-syntax-class-static-block'
+ 'babel-plugin-transform-es2015-destructuring'
+ '@babel/plugin-transform-named-capturing-groups-regex'
+ '@babel/plugin-transform-for-of' '@babel/helper-annotate-as-pure'
+ '@babel/plugin-transform-optional-catch-binding'
+ '@babel/plugin-syntax-import-attributes'
+ 'babel-plugin-transform-react-display-name'
+ '@babel/helper-member-expression-to-functions'
+ '@babel/plugin-transform-modules-systemjs' '@babel/highlight'
+ '@babel/plugin-transform-parameters' 'babel-helper-regex'
+ '@babel/plugin-proposal-class-properties'
+ '@babel/plugin-syntax-optional-chaining'
+ 'babel-plugin-transform-es2015-typeof-symbol' '@babel/plugin-syntax-flow'
+ '@babel/plugin-transform-unicode-escapes'
+ 'babel-plugin-transform-es2015-block-scoping' 'babel-preset-env'
+ '@babel/compat-data' '@babel/plugin-proposal-nullish-coalescing-operator'
+ 'babel-plugin-transform-flow-strip-types'
+ '@babel/plugin-syntax-unicode-sets-regex'
+ '@babel/helper-remap-async-to-generator'
+ 'babel-plugin-transform-es2015-block-scoped-functions'
+ '@babel/plugin-transform-typescript' '@babel/preset-typescript'
+ 'babel-preset-flow' 'babel-runtime' '@babel/polyfill' 'babel-register'
+ 'babel-helper-explode-assignable-expression'
+ 'babel-plugin-transform-es2015-duplicate-keys'
+ 'babel-helper-replace-supers' '@babel/plugin-transform-optional-chaining'
+ '@babel/plugin-transform-nullish-coalescing-operator'
+ '@babel/plugin-syntax-dynamic-import'
+ 'babel-plugin-transform-react-jsx-source' '@babel/helper-wrap-function'
+ '@babel/plugin-syntax-export-namespace-from'
+ 'babel-plugin-transform-es2015-modules-amd' '@babel/generator'
+ '@babel/plugin-transform-unicode-sets-regex'
+ 'babel-plugin-transform-es2015-parameters'
+ '@babel/helper-validator-option' '@babel/plugin-syntax-json-strings'
+ '@babel/plugin-transform-object-super'
+ '@babel/plugin-transform-private-methods'
+ '@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression'
+ '@babel/plugin-proposal-private-property-in-object'
+ 'babel-helper-hoist-variables' '@babel/plugin-syntax-class-properties'
+ '@babel/core' '@babel/plugin-transform-literals'
+ '@babel/plugin-transform-template-literals'
+ '@babel/plugin-transform-spread' '@babel/helper-optimise-call-expression'
+ 'babel-plugin-transform-regenerator' '@babel/helper-hoist-variables'
+ 'babel-plugin-transform-es2015-spread' '@babel/runtime'
+ '@babel/plugin-syntax-jsx' '@babel/helper-split-export-declaration'
+ '@babel/template' 'babel-plugin-transform-es2015-unicode-regex'
+ '@babel/plugin-transform-class-static-block'
+ '@babel/plugin-syntax-nullish-coalescing-operator'
+ '@babel/plugin-transform-block-scoping'
+ '@babel/plugin-transform-react-jsx-self'
+ '@babel/helper-builder-binary-assignment-operator-visitor'
+ 'babel-template' '@babel/plugin-transform-private-property-in-object'
+ '@babel/plugin-transform-member-expression-literals' 'babel-preset-react'
+ '@babel/helper-replace-supers'
+ 'babel-plugin-transform-es2015-modules-umd' 'babel-helpers'
+ '@babel/helper-environment-visitor'
+ '@babel/plugin-syntax-import-assertions' 'babel-types'
+ '@babel/plugin-transform-runtime'
+ '@babel/plugin-transform-class-properties'
+ '@babel/plugin-transform-typeof-symbol' '@babel/plugin-syntax-typescript'
+ 'babel-plugin-transform-es2015-for-of'
+ '@babel/plugin-syntax-private-property-in-object'
+ 'babel-plugin-syntax-jsx' 'babel-plugin-transform-es2015-function-name'
+ 'babel-plugin-syntax-flow' 'babel-plugin-transform-async-to-generator'
+ '@babel/plugin-transform-duplicate-keys' 'babel-traverse'
+ '@babel/plugin-proposal-optional-chaining'
+ '@babel/helper-create-regexp-features-plugin'
+ '@babel/plugin-transform-arrow-functions'
+ '@babel/plugin-transform-shorthand-properties'
+ '@babel/helper-validator-identifier' 'babel-plugin-transform-strict-mode'
+ '@babel/plugin-transform-unicode-property-regex'
+ '@babel/plugin-transform-dotall-regex'
+ '@babel/plugin-transform-sticky-regex' '@babel/helper-module-transforms'
+ 'babel-plugin-transform-es2015-classes' 'babel-messages'
+ '@babel/plugin-transform-react-jsx-source'
+ 'babel-plugin-transform-es2015-computed-properties'
+ '@babel/plugin-transform-async-to-generator'
+ '@babel/plugin-transform-export-namespace-from'
+ '@babel/plugin-transform-new-target'
+ 'babel-plugin-transform-es2015-shorthand-properties'
+ 'babel-plugin-syntax-async-functions'
+ '@babel/plugin-transform-function-name'
+ 'babel-plugin-transform-react-jsx'
+ '@babel/plugin-transform-modules-commonjs'
+ '@babel/plugin-transform-computed-properties'
+ 'babel-plugin-transform-exponentiation-operator'
+ '@babel/plugin-syntax-async-generators'
+ 'babel-plugin-transform-es2015-modules-systemjs' '@babel/parser'
+ '@babel/plugin-syntax-object-rest-spread'
+ '@babel/plugin-transform-object-rest-spread'
+ 'babel-helper-optimise-call-expression' '@babel/helper-simple-access'
+ 'babel-plugin-check-es2015-constants'
+ '@babel/plugin-transform-logical-assignment-operators'
+ '@babel/plugin-transform-reserved-words' 'babel-generator'
+ '@babel/plugin-transform-json-strings'
+ '@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining'
+ '@babel/plugin-transform-flow-strip-types'
+ 'babel-plugin-transform-es2015-template-literals'
+ 'babel-plugin-transform-es2015-arrow-functions' 'babel-core'
+ 'babel-helper-builder-react-jsx' '@babel/plugin-transform-modules-amd'
+ 'babel-plugin-transform-es2015-literals'
+ '@babel/helper-create-class-features-plugin']",3006,168,43364,5658,2014-09-28,TypeScript,MIT License,False,1.0,0.9825949367088608,0.9161392405063291,-0.06645569620253167
+18,Agora,Babel,https://github.com/babel/babel,"['@babel/plugin-proposal-optional-catch-binding'
+ '@babel/plugin-proposal-object-rest-spread'
+ '@babel/plugin-syntax-import-attributes'
+ '@babel/plugin-syntax-dynamic-import'
+ '@babel/plugin-proposal-logical-assignment-operators'
+ '@babel/plugin-proposal-optional-chaining'
+ '@babel/plugin-syntax-json-strings'
+ '@babel/plugin-proposal-numeric-separator'
+ '@babel/plugin-syntax-import-meta' '@babel/plugin-transform-literals'
+ '@babel/plugin-transform-function-name' '@babel/preset-flow'
+ '@babel/template' '@babel/core' '@babel/plugin-transform-spread'
+ '@babel/plugin-transform-computed-properties'
+ '@babel/helper-skip-transparent-expression-wrappers'
+ '@babel/plugin-syntax-top-level-await'
+ '@babel/plugin-proposal-class-properties'
+ '@babel/plugin-transform-react-jsx-source'
+ '@babel/plugin-transform-modules-commonjs'
+ '@babel/helper-create-regexp-features-plugin'
+ '@babel/plugin-transform-named-capturing-groups-regex'
+ '@babel/plugin-syntax-class-properties'
+ '@babel/helper-compilation-targets'
+ '@babel/plugin-syntax-optional-chaining'
+ '@babel/plugin-syntax-nullish-coalescing-operator'
+ '@babel/plugin-transform-sticky-regex'
+ '@babel/plugin-transform-async-to-generator'
+ '@babel/plugin-syntax-logical-assignment-operators' '@babel/parser'
+ '@babel/helper-environment-visitor' '@babel/helper-validator-option'
+ '@babel/plugin-syntax-export-default-from'
+ '@babel/plugin-syntax-async-generators'
+ '@babel/plugin-transform-react-jsx-self' '@babel/runtime-corejs3'
+ '@babel/plugin-transform-parameters' '@babel/traverse'
+ '@babel/plugin-syntax-flow' '@babel/helper-create-class-features-plugin'
+ '@babel/register' '@babel/plugin-transform-unicode-regex'
+ '@babel/plugin-proposal-export-default-from'
+ '@babel/helper-module-imports' '@babel/helper-string-parser'
+ '@babel/helper-validator-identifier' '@babel/helpers'
+ '@babel/plugin-syntax-bigint' '@babel/plugin-transform-arrow-functions'
+ '@babel/plugin-proposal-async-generator-functions' '@babel/compat-data'
+ '@babel/helper-replace-supers'
+ '@babel/plugin-syntax-private-property-in-object'
+ '@babel/helper-plugin-utils' '@babel/plugin-syntax-object-rest-spread'
+ '@babel/plugin-transform-private-property-in-object'
+ '@babel/plugin-transform-flow-strip-types'
+ '@babel/plugin-transform-destructuring' '@babel/helper-wrap-function'
+ '@babel/runtime' '@babel/plugin-transform-shorthand-properties'
+ '@babel/plugin-transform-private-methods'
+ '@babel/helper-optimise-call-expression'
+ '@babel/plugin-transform-runtime' '@babel/preset-typescript'
+ '@babel/plugin-transform-block-scoping' '@babel/plugin-syntax-jsx'
+ '@babel/generator' '@babel/plugin-syntax-class-static-block'
+ '@babel/plugin-transform-react-display-name'
+ '@babel/plugin-syntax-numeric-separator' '@babel/helper-simple-access'
+ '@babel/plugin-proposal-nullish-coalescing-operator'
+ '@babel/plugin-syntax-typescript'
+ '@babel/helper-remap-async-to-generator' '@babel/highlight'
+ '@babel/code-frame' '@babel/types'
+ '@babel/helper-member-expression-to-functions' 'babel-core'
+ '@babel/helper-module-transforms' '@babel/plugin-transform-react-jsx'
+ '@babel/plugin-syntax-optional-catch-binding'
+ '@babel/plugin-transform-classes' '@babel/helper-annotate-as-pure'
+ '@babel/plugin-transform-typescript']",3006,168,43364,5658,2014-09-28,TypeScript,MIT License,False,1.0,0.9825949367088608,0.9161392405063291,-0.06645569620253167
+19,Ethereum Attestation Service,Babel,https://github.com/babel/babel,"['@babel/plugin-syntax-async-generators' '@babel/plugin-syntax-flow'
+ '@babel/plugin-transform-async-generator-functions'
+ '@babel/plugin-syntax-unicode-sets-regex' '@babel/core'
+ '@babel/helper-module-transforms' '@babel/plugin-transform-react-jsx'
+ '@babel/plugin-transform-shorthand-properties'
+ '@babel/plugin-transform-logical-assignment-operators'
+ '@babel/helper-annotate-as-pure' '@babel/plugin-transform-for-of'
+ '@babel/plugin-transform-unicode-escapes'
+ '@babel/plugin-transform-react-pure-annotations'
+ '@babel/plugin-transform-new-target'
+ '@babel/plugin-transform-unicode-regex'
+ '@babel/plugin-transform-template-literals'
+ '@babel/plugin-syntax-class-static-block'
+ '@babel/plugin-transform-named-capturing-groups-regex'
+ '@babel/plugin-syntax-json-strings' '@babel/plugin-transform-literals'
+ '@babel/plugin-transform-duplicate-keys' '@babel/plugin-transform-spread'
+ '@babel/preset-react' '@babel/plugin-transform-typescript'
+ '@babel/helper-create-class-features-plugin'
+ '@babel/plugin-transform-sticky-regex' '@babel/types'
+ '@babel/plugin-proposal-decorators'
+ '@babel/plugin-syntax-object-rest-spread'
+ '@babel/plugin-transform-member-expression-literals'
+ '@babel/plugin-syntax-jsx' '@babel/helper-simple-access'
+ '@babel/plugin-proposal-numeric-separator' '@babel/template'
+ '@babel/helper-plugin-utils' '@babel/plugin-syntax-class-properties'
+ '@babel/helper-function-name' '@babel/helper-validator-option'
+ '@babel/plugin-transform-unicode-property-regex' '@babel/parser'
+ '@babel/helper-wrap-function' '@babel/plugin-syntax-top-level-await'
+ '@babel/plugin-transform-flow-strip-types'
+ '@babel/plugin-transform-reserved-words'
+ '@babel/plugin-proposal-class-properties'
+ '@babel/plugin-proposal-private-methods'
+ '@babel/plugin-transform-modules-umd' '@babel/helper-string-parser'
+ '@babel/compat-data' '@babel/plugin-transform-dynamic-import'
+ '@babel/plugin-transform-private-methods' '@babel/traverse'
+ '@babel/code-frame' '@babel/preset-env'
+ '@babel/plugin-transform-property-literals'
+ '@babel/plugin-syntax-import-meta' 'babel-plugin-syntax-jsx'
+ '@babel/plugin-transform-async-to-generator'
+ '@babel/plugin-syntax-decorators' '@babel/plugin-transform-runtime'
+ '@babel/helper-hoist-variables'
+ '@babel/helper-skip-transparent-expression-wrappers'
+ '@babel/helper-replace-supers' '@babel/plugin-transform-destructuring'
+ '@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression'
+ '@babel/plugin-syntax-nullish-coalescing-operator'
+ '@babel/preset-typescript' '@babel/highlight'
+ '@babel/plugin-syntax-numeric-separator'
+ '@babel/plugin-syntax-logical-assignment-operators'
+ '@babel/plugin-transform-numeric-separator'
+ '@babel/plugin-transform-export-namespace-from'
+ '@babel/plugin-transform-block-scoping'
+ '@babel/plugin-syntax-optional-catch-binding'
+ '@babel/helper-split-export-declaration'
+ '@babel/helper-validator-identifier'
+ '@babel/plugin-syntax-export-namespace-from'
+ '@babel/plugin-transform-classes'
+ '@babel/plugin-transform-optional-chaining'
+ '@babel/plugin-transform-function-name'
+ '@babel/plugin-transform-react-display-name'
+ '@babel/plugin-transform-parameters'
+ '@babel/helper-create-regexp-features-plugin'
+ '@babel/plugin-transform-json-strings'
+ '@babel/helper-compilation-targets'
+ '@babel/plugin-transform-nullish-coalescing-operator'
+ '@babel/plugin-syntax-private-property-in-object'
+ '@babel/plugin-transform-computed-properties'
+ '@babel/plugin-transform-react-constant-elements' '@babel/helpers'
+ '@babel/plugin-transform-dotall-regex'
+ '@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining'
+ '@babel/plugin-transform-unicode-sets-regex'
+ '@babel/plugin-transform-modules-amd'
+ '@babel/plugin-transform-class-static-block'
+ '@babel/plugin-proposal-nullish-coalescing-operator'
+ '@babel/plugin-transform-arrow-functions'
+ '@babel/plugin-syntax-typescript'
+ '@babel/plugin-proposal-unicode-property-regex'
+ '@babel/helper-optimise-call-expression'
+ '@babel/plugin-transform-typeof-symbol'
+ '@babel/helper-remap-async-to-generator'
+ '@babel/plugin-transform-class-properties'
+ '@babel/helper-builder-binary-assignment-operator-visitor'
+ '@babel/plugin-proposal-optional-chaining'
+ '@babel/plugin-transform-modules-commonjs' '@babel/eslint-parser'
+ '@babel/helper-environment-visitor'
+ '@babel/plugin-proposal-private-property-in-object' '@babel/generator'
+ '@babel/plugin-syntax-import-attributes'
+ '@babel/plugin-transform-object-super' '@babel/runtime'
+ '@babel/plugin-syntax-import-assertions'
+ '@babel/plugin-transform-exponentiation-operator'
+ '@babel/helper-module-imports' '@babel/plugin-syntax-optional-chaining'
+ '@babel/plugin-syntax-dynamic-import'
+ '@babel/plugin-transform-optional-catch-binding'
+ '@babel/plugin-transform-block-scoped-functions'
+ '@babel/plugin-transform-react-jsx-development'
+ '@babel/plugin-transform-modules-systemjs'
+ '@babel/helper-member-expression-to-functions'
+ '@babel/plugin-syntax-bigint'
+ '@babel/plugin-transform-private-property-in-object'
+ '@babel/plugin-transform-regenerator'
+ '@babel/plugin-transform-object-rest-spread']",3006,168,43364,5658,2014-09-28,TypeScript,MIT License,False,1.0,0.9825949367088608,0.9161392405063291,-0.06645569620253167
+20,Basepaint,Babel,https://github.com/babel/babel,"['@babel/helper-validator-option' '@babel/helpers' '@babel/highlight'
+ '@babel/helper-compilation-targets' '@babel/helper-annotate-as-pure'
+ '@babel/plugin-transform-react-jsx-development'
+ '@babel/helper-module-imports' '@babel/types'
+ '@babel/helper-validator-identifier' '@babel/code-frame'
+ '@babel/compat-data' '@babel/helper-plugin-utils'
+ '@babel/helper-string-parser' '@babel/plugin-transform-react-jsx'
+ '@babel/plugin-syntax-jsx' '@babel/parser' '@babel/template'
+ '@babel/core' '@babel/generator' '@babel/traverse'
+ '@babel/helper-module-transforms']",3006,168,43364,5658,2014-09-28,TypeScript,MIT License,False,1.0,0.9825949367088608,0.9161392405063291,-0.06645569620253167
+21,Sound.xyz,Babel,https://github.com/babel/babel,"['@babel/highlight' '@babel/runtime' '@babel/code-frame'
+ '@babel/helper-validator-identifier']",3006,168,43364,5658,2014-09-28,TypeScript,MIT License,False,1.0,0.9825949367088608,0.9161392405063291,-0.06645569620253167
+22,Boost Studios,Babel,https://github.com/babel/babel,"['@babel/highlight' '@babel/runtime-corejs3'
+ '@babel/helper-validator-identifier' '@babel/runtime' '@babel/code-frame']",3006,168,43364,5658,2014-09-28,TypeScript,MIT License,False,1.0,0.9825949367088608,0.9161392405063291,-0.06645569620253167
+23,Agora,Multiformats,https://github.com/multiformats/js-multiaddr,['multiaddr' '@multiformats/multiaddr'],1041,74,109,64,2014-06-08,TypeScript,Other,False,2.0,0.5870253164556962,0.37816455696202533,-0.2088607594936709
+24,Across,Multiformats,https://github.com/multiformats/js-multiaddr,['multiaddr'],1041,74,109,64,2014-06-08,TypeScript,Other,False,2.0,0.5870253164556962,0.37816455696202533,-0.2088607594936709
+25,Superfluid,Multiformats,https://github.com/multiformats/js-multiaddr,['multiaddr'],1041,74,109,64,2014-06-08,TypeScript,Other,False,2.0,0.5870253164556962,0.37816455696202533,-0.2088607594936709
+26,Sushi,Multiformats,https://github.com/multiformats/js-multiaddr,['multiaddr'],1041,74,109,64,2014-06-08,TypeScript,Other,False,2.0,0.5870253164556962,0.37816455696202533,-0.2088607594936709
+27,Giveth,Multiformats,https://github.com/multiformats/js-multiaddr,['multiaddr'],1041,74,109,64,2014-06-08,TypeScript,Other,False,2.0,0.5870253164556962,0.37816455696202533,-0.2088607594936709
+28,Synthetix,Multiformats,https://github.com/multiformats/js-multiaddr,['multiaddr'],1041,74,109,64,2014-06-08,TypeScript,Other,False,2.0,0.5870253164556962,0.37816455696202533,-0.2088607594936709
+29,Synthetix,IPFS,https://github.com/ipfs/js-ipfs-unixfs,['ipfs-unixfs' 'ipfs-unixfs-importer'],708,48,87,35,2016-02-10,TypeScript,Other,True,1.0,0.3338607594936709,0.20094936708860758,-0.1329113924050633
+30,Giveth,IPFS,https://github.com/ipfs/js-ipfs-unixfs,['ipfs-unixfs'],708,48,87,35,2016-02-10,TypeScript,Other,True,1.0,0.3338607594936709,0.20094936708860758,-0.1329113924050633
+31,Sushi,IPFS,https://github.com/ipfs/js-ipfs-unixfs,['ipfs-unixfs'],708,48,87,35,2016-02-10,TypeScript,Other,True,1.0,0.3338607594936709,0.20094936708860758,-0.1329113924050633
+32,Superfluid,IPFS,https://github.com/ipfs/js-ipfs-unixfs,['ipfs-unixfs'],708,48,87,35,2016-02-10,TypeScript,Other,True,1.0,0.3338607594936709,0.20094936708860758,-0.1329113924050633
+33,Synthetix,ESLint,https://github.com/eslint/js,['eslint-scope' 'eslint-visitor-keys'],2718,153,2300,206,2014-12-06,JavaScript,"BSD 2-Clause ""Simplified"" License",False,2.0,0.890625,0.965625,0.07499999999999996
+34,Velodrome,ESLint,https://github.com/eslint/js,['eslint-visitor-keys' 'eslint-scope'],2718,153,2300,206,2014-12-06,JavaScript,"BSD 2-Clause ""Simplified"" License",False,2.0,0.890625,0.965625,0.07499999999999996
+35,Smol Dapp,ESLint,https://github.com/eslint/js,['eslint-scope' 'eslint-visitor-keys'],2718,153,2300,206,2014-12-06,JavaScript,"BSD 2-Clause ""Simplified"" License",False,2.0,0.890625,0.965625,0.07499999999999996
+36,Ethereum Attestation Service,ESLint,https://github.com/eslint/js,['eslint-visitor-keys' 'eslint-scope'],2718,153,2300,206,2014-12-06,JavaScript,"BSD 2-Clause ""Simplified"" License",False,2.0,0.890625,0.965625,0.07499999999999996
+37,Sound.xyz,ESLint,https://github.com/eslint/js,['eslint-scope' 'eslint-visitor-keys'],2718,153,2300,206,2014-12-06,JavaScript,"BSD 2-Clause ""Simplified"" License",False,2.0,0.890625,0.965625,0.07499999999999996
+38,Superfluid,ESLint,https://github.com/eslint/js,['eslint-scope' 'eslint-visitor-keys'],2718,153,2300,206,2014-12-06,JavaScript,"BSD 2-Clause ""Simplified"" License",False,2.0,0.890625,0.965625,0.07499999999999996
+39,Sushi,ESLint,https://github.com/eslint/js,['eslint-scope' 'eslint-visitor-keys'],2718,153,2300,206,2014-12-06,JavaScript,"BSD 2-Clause ""Simplified"" License",False,2.0,0.890625,0.965625,0.07499999999999996
+40,Boost Studios,ESLint,https://github.com/eslint/js,['eslint-visitor-keys' 'eslint-scope'],2718,153,2300,206,2014-12-06,JavaScript,"BSD 2-Clause ""Simplified"" License",False,2.0,0.890625,0.965625,0.07499999999999996
+41,Across,ESLint,https://github.com/eslint/js,['eslint-scope' 'eslint-visitor-keys'],2718,153,2300,206,2014-12-06,JavaScript,"BSD 2-Clause ""Simplified"" License",False,2.0,0.890625,0.965625,0.07499999999999996
+42,Basepaint,ESLint,https://github.com/eslint/js,['eslint-scope' 'eslint-visitor-keys'],2718,153,2300,206,2014-12-06,JavaScript,"BSD 2-Clause ""Simplified"" License",False,2.0,0.890625,0.965625,0.07499999999999996
+43,Giveth,ESLint,https://github.com/eslint/js,['eslint-scope' 'eslint-visitor-keys'],2718,153,2300,206,2014-12-06,JavaScript,"BSD 2-Clause ""Simplified"" License",False,2.0,0.890625,0.965625,0.07499999999999996
+44,Agora,ESLint,https://github.com/eslint/js,['eslint-scope' 'eslint-visitor-keys'],2718,153,2300,206,2014-12-06,JavaScript,"BSD 2-Clause ""Simplified"" License",False,2.0,0.890625,0.965625,0.07499999999999996
+45,Giveth,Safe,https://github.com/safe-global/safe-modules-deployments,['@safe-global/safe-modules-deployments'],32,3,11,22,2022-04-07,TypeScript,MIT License,True,5.0,0.030063291139240507,0.020569620253164556,-0.009493670886075951
+46,Agora,Facebook Open Source,https://github.com/facebook/metro,"['metro-transform-plugins' 'metro-minify-terser' 'metro-babel-transformer'
+ 'metro-resolver' 'metro-core' 'metro-transform-worker' 'metro-config'
+ 'metro-runtime' 'metro-cache' 'metro-source-map' 'ob1' 'metro-cache-key'
+ 'metro-symbolicate' 'metro' 'metro-file-map']",569,55,5279,636,2016-12-14,JavaScript,MIT License,False,6.0,0.115625,0.184375,0.06875
+47,Superfluid,Facebook Open Source,https://github.com/facebook/metro,"['metro-babel-transformer' 'metro-core' 'metro-cache-key' 'metro-cache'
+ 'metro-transform-worker' 'metro' 'metro-source-map' 'metro-symbolicate'
+ 'metro-config' 'metro-transform-plugins' 'ob1' 'metro-file-map'
+ 'metro-minify-terser' 'metro-resolver' 'metro-runtime']",569,55,5279,636,2016-12-14,JavaScript,MIT License,False,7.0,0.115625,0.184375,0.06875
+48,Smol Dapp,Facebook Open Source,https://github.com/facebook/react,"['react' 'react-dom' 'scheduler' 'eslint-plugin-react-hooks'
+ 'use-sync-external-store' 'react-is']",2619,151,231439,47390,2013-05-24,JavaScript,MIT License,False,1.0,0.815625,0.815625,0.0
+49,Synthetix,Facebook Open Source,https://github.com/facebook/react,"['react' 'react-is' 'react-refresh' 'scheduler'
+ 'eslint-plugin-react-hooks' 'react-dom' 'use-sync-external-store']",2619,151,231439,47390,2013-05-24,JavaScript,MIT License,False,1.0,0.815625,0.815625,0.0
+50,Across,Facebook Open Source,https://github.com/facebook/react,"['scheduler' 'use-sync-external-store' 'react-dom'
+ 'eslint-plugin-react-hooks' 'react-is' 'react-refresh' 'react']",2619,151,231439,47390,2013-05-24,JavaScript,MIT License,False,1.0,0.815625,0.815625,0.0
+51,Ethereum Attestation Service,Facebook Open Source,https://github.com/facebook/react,"['use-sync-external-store' 'eslint-plugin-react-hooks' 'react-dom'
+ 'react-devtools-core' 'react-is' 'react-reconciler' 'react'
+ 'react-refresh' 'scheduler']",2619,151,231439,47390,2013-05-24,JavaScript,MIT License,False,1.0,0.815625,0.815625,0.0
+52,Basepaint,Facebook Open Source,https://github.com/facebook/react,['scheduler' 'react-reconciler' 'react'],2619,151,231439,47390,2013-05-24,JavaScript,MIT License,False,1.0,0.815625,0.815625,0.0
+53,Boost Studios,Facebook Open Source,https://github.com/facebook/react,['react-is' 'react-dom' 'use-sync-external-store' 'react' 'scheduler'],2619,151,231439,47390,2013-05-24,JavaScript,MIT License,False,1.0,0.815625,0.815625,0.0
+54,Sushi,Facebook Open Source,https://github.com/facebook/react,"['react-is' 'eslint-plugin-react-hooks' 'react-test-renderer' 'scheduler'
+ 'react-dom' 'react' 'use-sync-external-store']",2619,151,231439,47390,2013-05-24,JavaScript,MIT License,False,1.0,0.815625,0.815625,0.0
+55,Agora,Facebook Open Source,https://github.com/facebook/react,"['use-sync-external-store' 'react-refresh' 'react-devtools-core'
+ 'react-is' 'eslint-plugin-react-hooks' 'react-reconciler' 'react-dom'
+ 'react' 'scheduler']",2619,151,231439,47390,2013-05-24,JavaScript,MIT License,False,1.0,0.815625,0.815625,0.0
+56,Superfluid,Facebook Open Source,https://github.com/facebook/react,"['scheduler' 'react-dom' 'react' 'react-refresh'
+ 'eslint-plugin-react-hooks' 'use-sync-external-store' 'react-is'
+ 'react-devtools-core']",2619,151,231439,47390,2013-05-24,JavaScript,MIT License,False,1.0,0.815625,0.815625,0.0
+57,Giveth,Facebook Open Source,https://github.com/facebook/react,"['react-refresh' 'eslint-plugin-react-hooks' 'react' 'react-dom'
+ 'use-subscription' 'react-is' 'scheduler' 'use-sync-external-store']",2619,151,231439,47390,2013-05-24,JavaScript,MIT License,False,1.0,0.815625,0.815625,0.0
+58,Sound.xyz,Facebook Open Source,https://github.com/facebook/react,['react' 'react-dom'],2619,151,231439,47390,2013-05-24,JavaScript,MIT License,False,1.0,0.815625,0.815625,0.0
+59,Velodrome,Facebook Open Source,https://github.com/facebook/react,['react-is'],2619,151,231439,47390,2013-05-24,JavaScript,MIT License,False,1.0,0.815625,0.815625,0.0
+60,Sushi,EthereumJS,https://github.com/ethereumjs/ethereumjs-monorepo,"['@ethereumjs/ethash' '@nomicfoundation/ethereumjs-ethash'
+ '@nomicfoundation/ethereumjs-statemanager' 'rlp' '@ethereumjs/tx'
+ '@ethereumjs/blockchain' '@ethereumjs/common'
+ '@nomicfoundation/ethereumjs-tx' '@nomicfoundation/ethereumjs-rlp'
+ '@nomicfoundation/ethereumjs-block' '@nomicfoundation/ethereumjs-evm'
+ '@ethereumjs/rlp' '@nomicfoundation/ethereumjs-util' '@ethereumjs/util'
+ '@ethereumjs/vm' '@nomicfoundation/ethereumjs-trie' '@ethereumjs/block'
+ '@nomicfoundation/ethereumjs-blockchain' 'merkle-patricia-tree'
+ '@nomicfoundation/ethereumjs-common' 'ethereumjs-util'
+ '@nomicfoundation/ethereumjs-vm']",2290,170,2622,776,2015-07-10,TypeScript,,True,1.0,0.9129746835443038,0.9509493670886076,0.03797468354430378
+61,Across,EthereumJS,https://github.com/ethereumjs/ethereumjs-monorepo,"['@nomicfoundation/ethereumjs-common' '@nomicfoundation/ethereumjs-ethash'
+ '@nomicfoundation/ethereumjs-util' '@ethereumjs/vm' '@ethereumjs/block'
+ '@nomicfoundation/ethereumjs-evm' '@nomicfoundation/ethereumjs-vm'
+ '@nomicfoundation/ethereumjs-trie' 'merkle-patricia-tree'
+ '@nomicfoundation/ethereumjs-block' '@ethereumjs/tx' 'rlp'
+ '@ethereumjs/util' '@ethereumjs/rlp' '@nomicfoundation/ethereumjs-rlp'
+ '@nomicfoundation/ethereumjs-statemanager' '@ethereumjs/blockchain'
+ '@ethereumjs/common' '@ethereumjs/ethash' 'ethereumjs-util'
+ '@nomicfoundation/ethereumjs-tx' '@nomicfoundation/ethereumjs-blockchain']",2290,170,2622,776,2015-07-10,TypeScript,,True,1.0,0.9129746835443038,0.9509493670886076,0.03797468354430378
+62,Giveth,EthereumJS,https://github.com/ethereumjs/ethereumjs-monorepo,"['@ethereumjs/common' '@nomicfoundation/ethereumjs-verkle'
+ '@nomicfoundation/ethereumjs-evm' '@ethereumjs/util'
+ '@nomicfoundation/ethereumjs-common'
+ '@nomicfoundation/ethereumjs-blockchain' '@ethereumjs/rlp'
+ '@nomicfoundation/ethereumjs-vm' '@ethereumjs/blockchain'
+ '@ethereumjs/ethash' '@ethereumjs/vm' '@nomicfoundation/ethereumjs-tx'
+ 'ethereumjs-util' '@nomicfoundation/ethereumjs-statemanager'
+ '@nomicfoundation/ethereumjs-util' '@nomicfoundation/ethereumjs-block'
+ '@nomicfoundation/ethereumjs-rlp' '@nomicfoundation/ethereumjs-ethash'
+ 'rlp' '@nomicfoundation/ethereumjs-trie' 'merkle-patricia-tree'
+ '@ethereumjs/tx' '@ethereumjs/block']",2290,170,2622,776,2015-07-10,TypeScript,,True,1.0,0.9129746835443038,0.9509493670886076,0.03797468354430378
+63,Boost Studios,EthereumJS,https://github.com/ethereumjs/ethereumjs-monorepo,"['@nomicfoundation/ethereumjs-rlp' 'merkle-patricia-tree'
+ '@ethereumjs/util' '@ethereumjs/common' 'rlp'
+ '@nomicfoundation/ethereumjs-tx' '@ethereumjs/tx'
+ '@nomicfoundation/ethereumjs-util' 'ethereumjs-util'
+ '@nomicfoundation/ethereumjs-common' '@ethereumjs/rlp'
+ '@ethereumjs/block']",2290,170,2622,776,2015-07-10,TypeScript,,True,1.0,0.9129746835443038,0.9509493670886076,0.03797468354430378
+64,Synthetix,EthereumJS,https://github.com/ethereumjs/ethereumjs-monorepo,"['@nomicfoundation/ethereumjs-tx' 'merkle-patricia-tree' 'ethereumjs-util'
+ '@ethereumjs/util' 'rlp' '@nomicfoundation/ethereumjs-block'
+ '@nomicfoundation/ethereumjs-blockchain'
+ '@nomicfoundation/ethereumjs-common' '@nomicfoundation/ethereumjs-evm'
+ '@nomicfoundation/ethereumjs-util' '@nomicfoundation/ethereumjs-trie'
+ '@ethereumjs/rlp' '@nomicfoundation/ethereumjs-ethash' '@ethereumjs/tx'
+ '@nomicfoundation/ethereumjs-rlp'
+ '@nomicfoundation/ethereumjs-statemanager'
+ '@nomicfoundation/ethereumjs-vm' '@ethereumjs/common']",2290,170,2622,776,2015-07-10,TypeScript,,True,1.0,0.9129746835443038,0.9509493670886076,0.03797468354430378
+65,Superfluid,EthereumJS,https://github.com/ethereumjs/ethereumjs-monorepo,"['@ethereumjs/tx' '@ethereumjs/rlp' '@nomicfoundation/ethereumjs-tx'
+ '@nomicfoundation/ethereumjs-rlp' '@ethereumjs/common'
+ '@nomicfoundation/ethereumjs-util' 'ethereumjs-util' 'rlp'
+ 'merkle-patricia-tree' '@nomicfoundation/ethereumjs-common'
+ '@ethereumjs/util']",2290,170,2622,776,2015-07-10,TypeScript,,True,1.0,0.9129746835443038,0.9509493670886076,0.03797468354430378
+66,Ethereum Attestation Service,EthereumJS,https://github.com/ethereumjs/ethereumjs-monorepo,"['ethereumjs-util' '@nomicfoundation/ethereumjs-ethash'
+ '@nomicfoundation/ethereumjs-vm' '@nomicfoundation/ethereumjs-blockchain'
+ '@nomicfoundation/ethereumjs-evm' '@ethereumjs/rlp'
+ '@nomicfoundation/ethereumjs-rlp'
+ '@nomicfoundation/ethereumjs-statemanager'
+ '@nomicfoundation/ethereumjs-block' '@nomicfoundation/ethereumjs-trie'
+ '@nomicfoundation/ethereumjs-common' '@nomicfoundation/ethereumjs-tx'
+ '@ethereumjs/util' 'rlp' '@nomicfoundation/ethereumjs-util']",2290,170,2622,776,2015-07-10,TypeScript,,True,1.0,0.9129746835443038,0.9509493670886076,0.03797468354430378
+67,Velodrome,EthereumJS,https://github.com/ethereumjs/ethereumjs-monorepo,"['ethereumjs-util' '@nomicfoundation/ethereumjs-vm'
+ '@nomicfoundation/ethereumjs-trie' '@nomicfoundation/ethereumjs-block'
+ '@nomicfoundation/ethereumjs-blockchain'
+ '@nomicfoundation/ethereumjs-rlp' '@nomicfoundation/ethereumjs-tx'
+ '@nomicfoundation/ethereumjs-evm' 'rlp'
+ '@nomicfoundation/ethereumjs-common' '@nomicfoundation/ethereumjs-util'
+ 'merkle-patricia-tree' '@nomicfoundation/ethereumjs-statemanager'
+ '@nomicfoundation/ethereumjs-ethash']",2290,170,2622,776,2015-07-10,TypeScript,,True,1.0,0.9129746835443038,0.9509493670886076,0.03797468354430378
+68,Smol Dapp,EthereumJS,https://github.com/ethereumjs/ethereumjs-monorepo,"['@ethereumjs/common' '@ethereumjs/util' '@ethereumjs/tx'
+ '@ethereumjs/rlp']",2290,170,2622,776,2015-07-10,TypeScript,,True,1.0,0.9129746835443038,0.9509493670886076,0.03797468354430378
+69,Agora,EthereumJS,https://github.com/ethereumjs/ethereumjs-monorepo,"['@nomicfoundation/ethereumjs-common' '@nomicfoundation/ethereumjs-rlp'
+ '@ethereumjs/tx' '@nomicfoundation/ethereumjs-tx' '@ethereumjs/common'
+ '@ethereumjs/util' 'ethereumjs-util' '@nomicfoundation/ethereumjs-util'
+ '@ethereumjs/rlp' 'rlp']",2290,170,2622,776,2015-07-10,TypeScript,,True,1.0,0.9129746835443038,0.9509493670886076,0.03797468354430378
+70,Sushi,Tenderly,https://github.com/tenderly/hardhat-tenderly,['@tenderly/hardhat-tenderly' 'tenderly'],201,28,166,41,2020-09-09,TypeScript,Other,True,1.0,0.14082278481012658,0.1439873417721519,0.0031645569620253056
+71,Velodrome,Tenderly,https://github.com/tenderly/hardhat-tenderly,['@tenderly/hardhat-tenderly' 'tenderly'],201,28,166,41,2020-09-09,TypeScript,Other,True,1.0,0.14082278481012658,0.1439873417721519,0.0031645569620253056
+72,Ethereum Attestation Service,gas-reporter,https://github.com/cgewecke/hardhat-gas-reporter,['hardhat-gas-reporter'],1341,139,413,60,2019-06-20,TypeScript,MIT License,True,1.0,0.7183544303797469,0.8291139240506329,0.110759493670886
+73,Sushi,gas-reporter,https://github.com/cgewecke/hardhat-gas-reporter,['hardhat-gas-reporter'],1341,139,413,60,2019-06-20,TypeScript,MIT License,True,1.0,0.7183544303797469,0.8291139240506329,0.110759493670886
+74,Synthetix,gas-reporter,https://github.com/cgewecke/hardhat-gas-reporter,['hardhat-gas-reporter'],1341,139,413,60,2019-06-20,TypeScript,MIT License,True,1.0,0.7183544303797469,0.8291139240506329,0.110759493670886
+75,Velodrome,gas-reporter,https://github.com/cgewecke/hardhat-gas-reporter,['hardhat-gas-reporter'],1341,139,413,60,2019-06-20,TypeScript,MIT License,True,1.0,0.7183544303797469,0.8291139240506329,0.110759493670886
+76,Giveth,gas-reporter,https://github.com/cgewecke/hardhat-gas-reporter,['hardhat-gas-reporter'],1341,139,413,60,2019-06-20,TypeScript,MIT License,True,1.0,0.7183544303797469,0.8291139240506329,0.110759493670886
+77,Superfluid,gas-reporter,https://github.com/cgewecke/hardhat-gas-reporter,['hardhat-gas-reporter'],1341,139,413,60,2019-06-20,TypeScript,MIT License,True,1.0,0.7183544303797469,0.8291139240506329,0.110759493670886
+78,Across,gas-reporter,https://github.com/cgewecke/hardhat-gas-reporter,['hardhat-gas-reporter'],1341,139,413,60,2019-06-20,TypeScript,MIT License,True,1.0,0.7183544303797469,0.8291139240506329,0.110759493670886
+79,Sushi,Babel,https://github.com/babel/babel-polyfills,"['babel-plugin-polyfill-corejs2' 'babel-plugin-polyfill-corejs3'
+ 'babel-plugin-polyfill-regenerator'
+ '@babel/helper-define-polyfill-provider']",1947,105,340,59,2019-06-06,TypeScript,MIT License,False,3.0,0.884493670886076,0.6487341772151899,-0.2357594936708861
+80,Giveth,Babel,https://github.com/babel/babel-polyfills,"['babel-plugin-polyfill-corejs3' 'babel-plugin-polyfill-corejs2'
+ '@babel/helper-define-polyfill-provider'
+ 'babel-plugin-polyfill-regenerator']",1947,105,340,59,2019-06-06,TypeScript,MIT License,False,3.0,0.884493670886076,0.6487341772151899,-0.2357594936708861
+81,Synthetix,Babel,https://github.com/babel/babel-polyfills,"['@babel/helper-define-polyfill-provider' 'babel-plugin-polyfill-corejs3'
+ 'babel-plugin-polyfill-corejs2' 'babel-plugin-polyfill-regenerator']",1947,105,340,59,2019-06-06,TypeScript,MIT License,False,3.0,0.884493670886076,0.6487341772151899,-0.2357594936708861
+82,Across,Babel,https://github.com/babel/babel-polyfills,"['babel-plugin-polyfill-corejs3' 'babel-plugin-polyfill-corejs2'
+ '@babel/helper-define-polyfill-provider'
+ 'babel-plugin-polyfill-regenerator']",1947,105,340,59,2019-06-06,TypeScript,MIT License,False,3.0,0.884493670886076,0.6487341772151899,-0.2357594936708861
+83,Smol Dapp,Babel,https://github.com/babel/babel-polyfills,"['babel-plugin-polyfill-corejs2' 'babel-plugin-polyfill-corejs3'
+ '@babel/helper-define-polyfill-provider'
+ 'babel-plugin-polyfill-regenerator']",1947,105,340,59,2019-06-06,TypeScript,MIT License,False,3.0,0.884493670886076,0.6487341772151899,-0.2357594936708861
+84,Superfluid,Babel,https://github.com/babel/babel-polyfills,"['babel-plugin-polyfill-corejs2' '@babel/helper-define-polyfill-provider'
+ 'babel-plugin-polyfill-corejs3' 'babel-plugin-polyfill-regenerator']",1947,105,340,59,2019-06-06,TypeScript,MIT License,False,2.0,0.884493670886076,0.6487341772151899,-0.2357594936708861
+85,Ethereum Attestation Service,Babel,https://github.com/babel/babel-polyfills,"['@babel/helper-define-polyfill-provider'
+ 'babel-plugin-polyfill-regenerator' 'babel-plugin-polyfill-corejs3'
+ 'babel-plugin-polyfill-corejs2']",1947,105,340,59,2019-06-06,TypeScript,MIT License,False,3.0,0.884493670886076,0.6487341772151899,-0.2357594936708861
+86,Agora,Babel,https://github.com/babel/babel-polyfills,"['babel-plugin-polyfill-regenerator' 'babel-plugin-polyfill-corejs3'
+ '@babel/helper-define-polyfill-provider' 'babel-plugin-polyfill-corejs2']",1947,105,340,59,2019-06-06,TypeScript,MIT License,False,2.0,0.884493670886076,0.6487341772151899,-0.2357594936708861
+87,Synthetix,Webpack,https://github.com/webpack/webpack-cli,"['@webpack-cli/configtest' '@webpack-cli/info' 'webpack-cli'
+ '@webpack-cli/serve']",797,47,2576,619,2016-12-15,JavaScript,MIT License,False,3.0,0.2375,0.16875,-0.06874999999999998
+88,Giveth,Webpack,https://github.com/webpack/webpack-cli,"['@webpack-cli/info' '@webpack-cli/configtest' '@webpack-cli/serve'
+ 'webpack-cli']",797,47,2576,619,2016-12-15,JavaScript,MIT License,False,2.0,0.2375,0.16875,-0.06874999999999998
+89,Superfluid,Webpack,https://github.com/webpack/webpack-cli,"['@webpack-cli/configtest' 'webpack-cli' '@webpack-cli/serve'
+ '@webpack-cli/info']",797,47,2576,619,2016-12-15,JavaScript,MIT License,False,2.0,0.2375,0.16875,-0.06874999999999998
+90,Sushi,Multiformats,https://github.com/multiformats/js-multiaddr-to-uri,['multiaddr-to-uri'],792,56,7,11,2018-03-20,TypeScript,Other,False,3.0,0.4272151898734177,0.24050632911392406,-0.18670886075949367
+91,Across,Multiformats,https://github.com/multiformats/js-multiaddr-to-uri,['multiaddr-to-uri'],792,56,7,11,2018-03-20,TypeScript,Other,False,3.0,0.4272151898734177,0.24050632911392406,-0.18670886075949367
+92,Synthetix,Multiformats,https://github.com/multiformats/js-multiaddr-to-uri,['multiaddr-to-uri'],792,56,7,11,2018-03-20,TypeScript,Other,False,3.0,0.4272151898734177,0.24050632911392406,-0.18670886075949367
+93,Superfluid,Multiformats,https://github.com/multiformats/js-multiaddr-to-uri,['multiaddr-to-uri'],792,56,7,11,2018-03-20,TypeScript,Other,False,3.0,0.4272151898734177,0.24050632911392406,-0.18670886075949367
+94,Giveth,Multiformats,https://github.com/multiformats/js-multiaddr-to-uri,['multiaddr-to-uri'],792,56,7,11,2018-03-20,TypeScript,Other,False,3.0,0.4272151898734177,0.24050632911392406,-0.18670886075949367
+95,Across,Webpack,https://github.com/webpack/webpack-sources,['webpack-sources'],1935,102,262,71,2016-01-03,JavaScript,MIT License,False,4.0,0.58125,0.44375,-0.13750000000000007
+96,Superfluid,Webpack,https://github.com/webpack/webpack-sources,['webpack-sources'],1935,102,262,71,2016-01-03,JavaScript,MIT License,False,5.0,0.58125,0.44375,-0.13750000000000007
+97,Smol Dapp,Webpack,https://github.com/webpack/webpack-sources,['webpack-sources'],1935,102,262,71,2016-01-03,JavaScript,MIT License,False,3.0,0.58125,0.44375,-0.13750000000000007
+98,Boost Studios,Webpack,https://github.com/webpack/webpack-sources,['webpack-sources'],1935,102,262,71,2016-01-03,JavaScript,MIT License,False,4.0,0.58125,0.44375,-0.13750000000000007
+99,Synthetix,Webpack,https://github.com/webpack/webpack-sources,['webpack-sources'],1935,102,262,71,2016-01-03,JavaScript,MIT License,False,7.0,0.58125,0.44375,-0.13750000000000007
+100,Giveth,Webpack,https://github.com/webpack/webpack-sources,['webpack-sources'],1935,102,262,71,2016-01-03,JavaScript,MIT License,False,6.0,0.58125,0.44375,-0.13750000000000007
+101,Agora,Webpack,https://github.com/webpack/webpack-sources,['webpack-sources'],1935,102,262,71,2016-01-03,JavaScript,MIT License,False,2.0,0.58125,0.44375,-0.13750000000000007
+102,Ethereum Attestation Service,Webpack,https://github.com/webpack/webpack-sources,['webpack-sources'],1935,102,262,71,2016-01-03,JavaScript,MIT License,False,6.0,0.58125,0.44375,-0.13750000000000007
+103,Sushi,Webpack,https://github.com/webpack/webpack-sources,['webpack-sources'],1935,102,262,71,2016-01-03,JavaScript,MIT License,False,4.0,0.58125,0.44375,-0.13750000000000007
+104,Synthetix,Webpack,https://github.com/webpack/webpack-dev-middleware,['webpack-dev-middleware'],1568,71,2501,377,2012-08-08,JavaScript,MIT License,False,4.0,0.4125,0.24375,-0.16874999999999998
+105,Ethereum Attestation Service,Webpack,https://github.com/webpack/webpack-dev-middleware,['webpack-dev-middleware'],1568,71,2501,377,2012-08-08,JavaScript,MIT License,False,3.0,0.4125,0.24375,-0.16874999999999998
+106,Giveth,Webpack,https://github.com/webpack/webpack-dev-middleware,['webpack-dev-middleware'],1568,71,2501,377,2012-08-08,JavaScript,MIT License,False,3.0,0.4125,0.24375,-0.16874999999999998
+107,Sushi,solidity-coverage,https://github.com/sc-forks/solidity-coverage,['solidity-coverage'],1401,138,988,269,2017-05-01,JavaScript,MIT License,True,1.0,0.36875,0.69375,0.32499999999999996
+108,Synthetix,solidity-coverage,https://github.com/sc-forks/solidity-coverage,['solidity-coverage'],1401,138,988,269,2017-05-01,JavaScript,MIT License,True,1.0,0.36875,0.69375,0.32499999999999996
+109,Across,solidity-coverage,https://github.com/sc-forks/solidity-coverage,['solidity-coverage'],1401,138,988,269,2017-05-01,JavaScript,MIT License,True,1.0,0.36875,0.69375,0.32499999999999996
+110,Giveth,solidity-coverage,https://github.com/sc-forks/solidity-coverage,['solidity-coverage'],1401,138,988,269,2017-05-01,JavaScript,MIT License,True,1.0,0.36875,0.69375,0.32499999999999996
+111,Velodrome,solidity-coverage,https://github.com/sc-forks/solidity-coverage,['solidity-coverage'],1401,138,988,269,2017-05-01,JavaScript,MIT License,True,1.0,0.36875,0.69375,0.32499999999999996
+112,Superfluid,solidity-coverage,https://github.com/sc-forks/solidity-coverage,['solidity-coverage'],1401,138,988,269,2017-05-01,JavaScript,MIT License,True,1.0,0.36875,0.69375,0.32499999999999996
+113,Ethereum Attestation Service,solidity-coverage,https://github.com/sc-forks/solidity-coverage,['solidity-coverage'],1401,138,988,269,2017-05-01,JavaScript,MIT License,True,1.0,0.36875,0.69375,0.32499999999999996
+114,Giveth,Wallet Connect,https://github.com/walletconnect/walletconnect-monorepo,"['@walletconnect/web3-provider' '@walletconnect/universal-provider'
+ '@walletconnect/utils' '@walletconnect/signer-connection'
+ '@walletconnect/mobile-registry' '@walletconnect/qrcode-modal'
+ '@walletconnect/types' '@walletconnect/iso-crypto'
+ '@walletconnect/browser-utils' '@walletconnect/socket-transport'
+ '@walletconnect/core' '@walletconnect/client'
+ '@walletconnect/ethereum-provider' '@walletconnect/http-connection']",1359,102,1488,727,2018-08-26,TypeScript,Apache License 2.0,True,1.0,0.7436708860759493,0.5759493670886076,-0.16772151898734178
+115,Smol Dapp,Wallet Connect,https://github.com/walletconnect/walletconnect-monorepo,"['@walletconnect/types' '@walletconnect/legacy-provider'
+ '@walletconnect/utils' '@walletconnect/legacy-modal'
+ '@walletconnect/ethereum-provider' '@walletconnect/universal-provider'
+ '@walletconnect/core']",1359,102,1488,727,2018-08-26,TypeScript,Apache License 2.0,True,1.0,0.7436708860759493,0.5759493670886076,-0.16772151898734178
+116,Agora,Wallet Connect,https://github.com/walletconnect/walletconnect-monorepo,"['@walletconnect/types' '@walletconnect/utils'
+ '@walletconnect/universal-provider' '@walletconnect/ethereum-provider'
+ '@walletconnect/core']",1359,102,1488,727,2018-08-26,TypeScript,Apache License 2.0,True,1.0,0.7436708860759493,0.5759493670886076,-0.16772151898734178
+117,Boost Studios,Wallet Connect,https://github.com/walletconnect/walletconnect-monorepo,"['@walletconnect/utils' '@walletconnect/types'
+ '@walletconnect/ethereum-provider' '@walletconnect/universal-provider'
+ '@walletconnect/core']",1359,102,1488,727,2018-08-26,TypeScript,Apache License 2.0,True,1.0,0.7436708860759493,0.5759493670886076,-0.16772151898734178
+118,Ethereum Attestation Service,Wallet Connect,https://github.com/walletconnect/walletconnect-monorepo,"['@walletconnect/legacy-modal' '@walletconnect/ethereum-provider'
+ '@walletconnect/legacy-provider' '@walletconnect/types'
+ '@walletconnect/universal-provider' '@walletconnect/utils'
+ '@walletconnect/core']",1359,102,1488,727,2018-08-26,TypeScript,Apache License 2.0,True,1.0,0.7436708860759493,0.5759493670886076,-0.16772151898734178
+119,Superfluid,Wallet Connect,https://github.com/walletconnect/walletconnect-monorepo,"['@walletconnect/ethereum-provider' '@walletconnect/core'
+ '@walletconnect/utils' '@walletconnect/universal-provider'
+ '@walletconnect/types' '@walletconnect/web3-provider'
+ '@walletconnect/legacy-provider' '@walletconnect/legacy-modal']",1359,102,1488,727,2018-08-26,TypeScript,Apache License 2.0,True,1.0,0.7436708860759493,0.5759493670886076,-0.16772151898734178
+120,Across,Wallet Connect,https://github.com/walletconnect/walletconnect-monorepo,"['@walletconnect/types' '@walletconnect/utils'
+ '@walletconnect/browser-utils' '@walletconnect/core'
+ '@walletconnect/qrcode-modal' '@walletconnect/universal-provider'
+ '@walletconnect/socket-transport' '@walletconnect/ethereum-provider'
+ '@walletconnect/iso-crypto' '@walletconnect/mobile-registry'
+ '@walletconnect/client']",1359,102,1488,727,2018-08-26,TypeScript,Apache License 2.0,True,1.0,0.7436708860759493,0.5759493670886076,-0.16772151898734178
+121,Synthetix,Wallet Connect,https://github.com/walletconnect/walletconnect-monorepo,"['@walletconnect/legacy-provider' '@walletconnect/universal-provider'
+ '@walletconnect/legacy-modal' '@walletconnect/ethereum-provider'
+ '@walletconnect/types' '@walletconnect/utils' '@walletconnect/core']",1359,102,1488,727,2018-08-26,TypeScript,Apache License 2.0,True,1.0,0.7436708860759493,0.5759493670886076,-0.16772151898734178
+122,Sushi,Wallet Connect,https://github.com/walletconnect/walletconnect-monorepo,"['@walletconnect/client' '@walletconnect/signer-connection'
+ '@walletconnect/types' '@walletconnect/ethereum-provider'
+ '@walletconnect/browser-utils' '@walletconnect/mobile-registry'
+ '@walletconnect/socket-transport' '@walletconnect/iso-crypto'
+ '@walletconnect/core' '@walletconnect/qrcode-modal'
+ '@walletconnect/utils']",1359,102,1488,727,2018-08-26,TypeScript,Apache License 2.0,True,1.0,0.7436708860759493,0.5759493670886076,-0.16772151898734178
+123,Ethereum Attestation Service,pnpm,https://github.com/pnpm/components,['@pnpm/config.env-replace' '@pnpm/network.ca-file'],537,46,2,8,2022-05-09,TypeScript,MIT License,False,1.0,0.25158227848101267,0.1819620253164557,-0.06962025316455697
+124,Sushi,pnpm,https://github.com/pnpm/components,['@pnpm/network.ca-file' '@pnpm/config.env-replace'],537,46,2,8,2022-05-09,TypeScript,MIT License,False,1.0,0.25158227848101267,0.1819620253164557,-0.06962025316455697
+125,Synthetix,pnpm,https://github.com/pnpm/components,['@pnpm/config.env-replace' '@pnpm/network.ca-file'],537,46,2,8,2022-05-09,TypeScript,MIT License,False,1.0,0.25158227848101267,0.1819620253164557,-0.06962025316455697
+126,Superfluid,pnpm,https://github.com/pnpm/components,['@pnpm/network.ca-file' '@pnpm/config.env-replace'],537,46,2,8,2022-05-09,TypeScript,MIT License,False,1.0,0.25158227848101267,0.1819620253164557,-0.06962025316455697
+127,Sushi,Metamask,https://github.com/metamask/eth-block-tracker,['eth-block-tracker'],1701,136,131,82,2017-02-04,TypeScript,MIT License,True,3.0,0.8006329113924051,0.8037974683544303,0.0031645569620252223
+128,Across,Metamask,https://github.com/metamask/eth-block-tracker,['eth-block-tracker'],1701,136,131,82,2017-02-04,TypeScript,MIT License,True,7.0,0.8006329113924051,0.8037974683544303,0.0031645569620252223
+129,Superfluid,Metamask,https://github.com/metamask/eth-block-tracker,['eth-block-tracker'],1701,136,131,82,2017-02-04,TypeScript,MIT License,True,7.0,0.8006329113924051,0.8037974683544303,0.0031645569620252223
+130,Giveth,Metamask,https://github.com/metamask/eth-block-tracker,['eth-block-tracker'],1701,136,131,82,2017-02-04,TypeScript,MIT License,True,7.0,0.8006329113924051,0.8037974683544303,0.0031645569620252223
+131,Ethereum Attestation Service,Metamask,https://github.com/metamask/eth-block-tracker,['eth-block-tracker'],1701,136,131,82,2017-02-04,TypeScript,MIT License,True,2.0,0.8006329113924051,0.8037974683544303,0.0031645569620252223
+132,Velodrome,Metamask,https://github.com/metamask/eth-block-tracker,['eth-block-tracker'],1701,136,131,82,2017-02-04,TypeScript,MIT License,True,3.0,0.8006329113924051,0.8037974683544303,0.0031645569620252223
+133,Agora,Metamask,https://github.com/metamask/eth-block-tracker,['eth-block-tracker'],1701,136,131,82,2017-02-04,TypeScript,MIT License,True,6.0,0.8006329113924051,0.8037974683544303,0.0031645569620252223
+134,Synthetix,Metamask,https://github.com/metamask/eth-block-tracker,['eth-block-tracker'],1701,136,131,82,2017-02-04,TypeScript,MIT License,True,5.0,0.8006329113924051,0.8037974683544303,0.0031645569620252223
+135,Smol Dapp,Metamask,https://github.com/metamask/eth-block-tracker,['eth-block-tracker'],1701,136,131,82,2017-02-04,TypeScript,MIT License,True,5.0,0.8006329113924051,0.8037974683544303,0.0031645569620252223
+136,Agora,Metamask,https://github.com/metamask/metamask-sdk,"['@metamask/sdk' '@metamask/sdk-install-modal-web'
+ '@metamask/sdk-communication-layer']",453,64,209,138,2022-03-10,TypeScript,Other,True,4.0,0.1962025316455696,0.26582278481012656,0.06962025316455694
+137,Giveth,Metamask,https://github.com/metamask/metamask-sdk,"['@metamask/sdk' '@metamask/sdk-install-modal-web'
+ '@metamask/sdk-communication-layer']",453,64,209,138,2022-03-10,TypeScript,Other,True,4.0,0.1962025316455696,0.26582278481012656,0.06962025316455694
+138,Smol Dapp,Metamask,https://github.com/metamask/metamask-sdk,"['@metamask/sdk-install-modal-web' '@metamask/sdk'
+ '@metamask/sdk-communication-layer']",453,64,209,138,2022-03-10,TypeScript,Other,True,3.0,0.1962025316455696,0.26582278481012656,0.06962025316455694
+139,Superfluid,Metamask,https://github.com/metamask/metamask-sdk,"['@metamask/sdk-communication-layer' '@metamask/sdk-install-modal-web'
+ '@metamask/sdk']",453,64,209,138,2022-03-10,TypeScript,Other,True,4.0,0.1962025316455696,0.26582278481012656,0.06962025316455694
+140,Across,Metamask,https://github.com/metamask/metamask-sdk,"['@metamask/sdk-communication-layer' '@metamask/sdk-install-modal-web'
+ '@metamask/sdk']",453,64,209,138,2022-03-10,TypeScript,Other,True,4.0,0.1962025316455696,0.26582278481012656,0.06962025316455694
+141,Sushi,Webpack,https://github.com/webpack/enhanced-resolve,['enhanced-resolve'],2178,117,943,192,2012-08-13,JavaScript,MIT License,False,2.0,0.6875,0.64375,-0.043749999999999956
+142,Smol Dapp,Webpack,https://github.com/webpack/enhanced-resolve,['enhanced-resolve'],2178,117,943,192,2012-08-13,JavaScript,MIT License,False,1.0,0.6875,0.64375,-0.043749999999999956
+143,Across,Webpack,https://github.com/webpack/enhanced-resolve,['enhanced-resolve'],2178,117,943,192,2012-08-13,JavaScript,MIT License,False,2.0,0.6875,0.64375,-0.043749999999999956
+144,Boost Studios,Webpack,https://github.com/webpack/enhanced-resolve,['enhanced-resolve'],2178,117,943,192,2012-08-13,JavaScript,MIT License,False,2.0,0.6875,0.64375,-0.043749999999999956
+145,Agora,Webpack,https://github.com/webpack/enhanced-resolve,['enhanced-resolve'],2178,117,943,192,2012-08-13,JavaScript,MIT License,False,1.0,0.6875,0.64375,-0.043749999999999956
+146,Giveth,Webpack,https://github.com/webpack/enhanced-resolve,['enhanced-resolve'],2178,117,943,192,2012-08-13,JavaScript,MIT License,False,4.0,0.6875,0.64375,-0.043749999999999956
+147,Synthetix,Webpack,https://github.com/webpack/enhanced-resolve,['enhanced-resolve'],2178,117,943,192,2012-08-13,JavaScript,MIT License,False,5.0,0.6875,0.64375,-0.043749999999999956
+148,Ethereum Attestation Service,Webpack,https://github.com/webpack/enhanced-resolve,['enhanced-resolve'],2178,117,943,192,2012-08-13,JavaScript,MIT License,False,4.0,0.6875,0.64375,-0.043749999999999956
+149,Superfluid,Webpack,https://github.com/webpack/enhanced-resolve,['enhanced-resolve'],2178,117,943,192,2012-08-13,JavaScript,MIT License,False,3.0,0.6875,0.64375,-0.043749999999999956
+150,Across,Anza,https://github.com/anza-xyz/agave,"['solana-frozen-abi' 'solana-logger' 'solana-sdk' 'solana-program'
+ 'solana-sdk-macro' 'solana-frozen-abi-macro' 'solana-zk-token-sdk']",255,14,572,293,2024-01-30,Rust,Apache License 2.0,False,1.0,0.16666666666666666,0.16666666666666666,0.0
+151,Superfluid,Metamask,https://github.com/metamask/eth-sig-util,['eth-sig-util' '@metamask/eth-sig-util'],1899,153,583,229,2017-02-21,TypeScript,ISC License,True,1.0,0.8575949367088608,0.8829113924050633,0.025316455696202556
+152,Synthetix,Metamask,https://github.com/metamask/eth-sig-util,['eth-sig-util' '@metamask/eth-sig-util'],1899,153,583,229,2017-02-21,TypeScript,ISC License,True,1.0,0.8575949367088608,0.8829113924050633,0.025316455696202556
+153,Velodrome,Metamask,https://github.com/metamask/eth-sig-util,['@metamask/eth-sig-util' 'eth-sig-util'],1899,153,583,229,2017-02-21,TypeScript,ISC License,True,1.0,0.8575949367088608,0.8829113924050633,0.025316455696202556
+154,Boost Studios,Metamask,https://github.com/metamask/eth-sig-util,['@metamask/eth-sig-util'],1899,153,583,229,2017-02-21,TypeScript,ISC License,True,1.0,0.8575949367088608,0.8829113924050633,0.025316455696202556
+155,Across,Metamask,https://github.com/metamask/eth-sig-util,['@metamask/eth-sig-util' 'eth-sig-util'],1899,153,583,229,2017-02-21,TypeScript,ISC License,True,1.0,0.8575949367088608,0.8829113924050633,0.025316455696202556
+156,Agora,Metamask,https://github.com/metamask/eth-sig-util,['@metamask/eth-sig-util'],1899,153,583,229,2017-02-21,TypeScript,ISC License,True,1.0,0.8575949367088608,0.8829113924050633,0.025316455696202556
+157,Sushi,Metamask,https://github.com/metamask/eth-sig-util,['eth-sig-util' '@metamask/eth-sig-util'],1899,153,583,229,2017-02-21,TypeScript,ISC License,True,1.0,0.8575949367088608,0.8829113924050633,0.025316455696202556
+158,Ethereum Attestation Service,Metamask,https://github.com/metamask/eth-sig-util,['@metamask/eth-sig-util'],1899,153,583,229,2017-02-21,TypeScript,ISC License,True,1.0,0.8575949367088608,0.8829113924050633,0.025316455696202556
+159,Giveth,Metamask,https://github.com/metamask/eth-sig-util,['@metamask/eth-sig-util' 'eth-sig-util'],1899,153,583,229,2017-02-21,TypeScript,ISC License,True,1.0,0.8575949367088608,0.8829113924050633,0.025316455696202556
+160,Velodrome,Metamask,https://github.com/metamask/eth-json-rpc-middleware,['eth-json-rpc-middleware'],1315,112,179,91,2017-04-24,TypeScript,ISC License,True,2.0,0.6977848101265823,0.7674050632911392,0.06962025316455689
+161,Superfluid,Metamask,https://github.com/metamask/eth-json-rpc-middleware,['eth-json-rpc-middleware'],1315,112,179,91,2017-04-24,TypeScript,ISC License,True,5.0,0.6977848101265823,0.7674050632911392,0.06962025316455689
+162,Sushi,Metamask,https://github.com/metamask/eth-json-rpc-middleware,['eth-json-rpc-middleware'],1315,112,179,91,2017-04-24,TypeScript,ISC License,True,2.0,0.6977848101265823,0.7674050632911392,0.06962025316455689
+163,Across,Metamask,https://github.com/metamask/eth-json-rpc-middleware,['eth-json-rpc-middleware'],1315,112,179,91,2017-04-24,TypeScript,ISC License,True,5.0,0.6977848101265823,0.7674050632911392,0.06962025316455689
+164,Synthetix,Metamask,https://github.com/metamask/eth-json-rpc-middleware,['eth-json-rpc-middleware'],1315,112,179,91,2017-04-24,TypeScript,ISC License,True,3.0,0.6977848101265823,0.7674050632911392,0.06962025316455689
+165,Giveth,Metamask,https://github.com/metamask/eth-json-rpc-middleware,['eth-json-rpc-middleware'],1315,112,179,91,2017-04-24,TypeScript,ISC License,True,5.0,0.6977848101265823,0.7674050632911392,0.06962025316455689
+166,Ethereum Attestation Service,Babel,https://github.com/babel/babel-loader,['babel-loader'],1652,78,4834,448,2014-10-08,JavaScript,MIT License,False,2.0,0.440625,0.271875,-0.16875
+167,Across,Babel,https://github.com/babel/babel-loader,['babel-loader'],1652,78,4834,448,2014-10-08,JavaScript,MIT License,False,2.0,0.440625,0.271875,-0.16875
+168,Giveth,Babel,https://github.com/babel/babel-loader,['babel-loader'],1652,78,4834,448,2014-10-08,JavaScript,MIT License,False,2.0,0.440625,0.271875,-0.16875
+169,Smol Dapp,Babel,https://github.com/babel/babel-loader,['babel-loader'],1652,78,4834,448,2014-10-08,JavaScript,MIT License,False,2.0,0.440625,0.271875,-0.16875
+170,Sushi,Babel,https://github.com/babel/babel-loader,['babel-loader'],1652,78,4834,448,2014-10-08,JavaScript,MIT License,False,2.0,0.440625,0.271875,-0.16875
+171,Synthetix,Babel,https://github.com/babel/babel-loader,['babel-loader'],1652,78,4834,448,2014-10-08,JavaScript,MIT License,False,2.0,0.440625,0.271875,-0.16875
+172,Across,zkSync Era,https://github.com/matter-labs/hardhat-zksync,"['@matterlabs/hardhat-zksync-deploy' '@matterlabs/hardhat-zksync-solc'
+ '@matterlabs/hardhat-zksync-verify'
+ '@matterlabs/hardhat-zksync-upgradable']",149,27,279,226,2021-11-17,TypeScript,Apache License 2.0,False,1.0,0.11708860759493671,0.13924050632911392,0.02215189873417721
+173,Superfluid,IPFS,https://github.com/ipfs/js-stores,['interface-store' 'interface-datastore'],714,48,30,15,2021-05-14,TypeScript,Other,True,2.0,0.34651898734177217,0.20094936708860758,-0.14556962025316458
+174,Sushi,IPFS,https://github.com/ipfs/js-stores,['interface-datastore' 'interface-store'],714,48,30,15,2021-05-14,TypeScript,Other,True,2.0,0.34651898734177217,0.20094936708860758,-0.14556962025316458
+175,Giveth,IPFS,https://github.com/ipfs/js-stores,['interface-datastore' 'interface-store'],714,48,30,15,2021-05-14,TypeScript,Other,True,3.0,0.34651898734177217,0.20094936708860758,-0.14556962025316458
+176,Synthetix,IPFS,https://github.com/ipfs/js-stores,['interface-datastore' 'interface-store'],714,48,30,15,2021-05-14,TypeScript,Other,True,2.0,0.34651898734177217,0.20094936708860758,-0.14556962025316458
+177,Giveth,OpenZeppelin,https://github.com/openzeppelin/openzeppelin-upgrades,['@openzeppelin/upgrades-core' '@openzeppelin/hardhat-upgrades'],716,87,634,270,2020-06-19,TypeScript,MIT License,True,2.0,0.3575949367088608,0.47468354430379744,0.11708860759493667
+178,Boost Studios,OpenZeppelin,https://github.com/openzeppelin/openzeppelin-upgrades,['@openzeppelin/upgrades-core'],716,87,634,270,2020-06-19,TypeScript,MIT License,True,2.0,0.3575949367088608,0.47468354430379744,0.11708860759493667
+179,Across,OpenZeppelin,https://github.com/openzeppelin/openzeppelin-upgrades,['@openzeppelin/upgrades-core' '@openzeppelin/hardhat-upgrades'],716,87,634,270,2020-06-19,TypeScript,MIT License,True,3.0,0.3575949367088608,0.47468354430379744,0.11708860759493667
+180,Ethereum Attestation Service,Webpack,https://github.com/webpack/schema-utils,['schema-utils'],1876,96,248,40,2017-01-28,JavaScript,MIT License,False,7.0,0.484375,0.340625,-0.14375
+181,Synthetix,Webpack,https://github.com/webpack/schema-utils,['schema-utils'],1876,96,248,40,2017-01-28,JavaScript,MIT License,False,8.0,0.484375,0.340625,-0.14375
+182,Giveth,Webpack,https://github.com/webpack/schema-utils,['schema-utils'],1876,96,248,40,2017-01-28,JavaScript,MIT License,False,7.0,0.484375,0.340625,-0.14375
+183,Across,Webpack,https://github.com/webpack/schema-utils,['schema-utils'],1876,96,248,40,2017-01-28,JavaScript,MIT License,False,5.0,0.484375,0.340625,-0.14375
+184,Smol Dapp,Webpack,https://github.com/webpack/schema-utils,['schema-utils'],1876,96,248,40,2017-01-28,JavaScript,MIT License,False,4.0,0.484375,0.340625,-0.14375
+185,Boost Studios,Webpack,https://github.com/webpack/schema-utils,['schema-utils'],1876,96,248,40,2017-01-28,JavaScript,MIT License,False,5.0,0.484375,0.340625,-0.14375
+186,Sushi,Webpack,https://github.com/webpack/schema-utils,['schema-utils'],1876,96,248,40,2017-01-28,JavaScript,MIT License,False,5.0,0.484375,0.340625,-0.14375
+187,Superfluid,Webpack,https://github.com/webpack/schema-utils,['schema-utils'],1876,96,248,40,2017-01-28,JavaScript,MIT License,False,6.0,0.484375,0.340625,-0.14375
+188,Synthetix,InterPlanetary Linked Data (IPLD),https://github.com/ipld/js-dag-cbor,['@ipld/dag-cbor'],662,45,31,17,2020-05-12,JavaScript,Other,False,1.0,0.159375,0.134375,-0.024999999999999994
+189,Superfluid,InterPlanetary Linked Data (IPLD),https://github.com/ipld/js-dag-cbor,['@ipld/dag-cbor'],662,45,31,17,2020-05-12,JavaScript,Other,False,1.0,0.159375,0.134375,-0.024999999999999994
+190,Giveth,InterPlanetary Linked Data (IPLD),https://github.com/ipld/js-dag-cbor,['@ipld/dag-cbor'],662,45,31,17,2020-05-12,JavaScript,Other,False,1.0,0.159375,0.134375,-0.024999999999999994
+191,Sushi,InterPlanetary Linked Data (IPLD),https://github.com/ipld/js-dag-cbor,['@ipld/dag-cbor'],662,45,31,17,2020-05-12,JavaScript,Other,False,1.0,0.159375,0.134375,-0.024999999999999994
+192,Ethereum Attestation Service,Facebook Open Source,https://github.com/facebook/watchman,['bser' 'fb-watchman'],1932,114,12875,1014,2012-11-29,C++,MIT License,False,2.0,0.65,0.65,0.0
+193,Across,Facebook Open Source,https://github.com/facebook/watchman,['fb-watchman' 'bser'],1932,114,12875,1014,2012-11-29,C++,MIT License,False,3.0,0.65,0.65,0.0
+194,Velodrome,Facebook Open Source,https://github.com/facebook/watchman,['bser' 'fb-watchman'],1932,114,12875,1014,2012-11-29,C++,MIT License,False,2.0,0.65,0.65,0.0
+195,Giveth,Facebook Open Source,https://github.com/facebook/watchman,['fb-watchman' 'bser'],1932,114,12875,1014,2012-11-29,C++,MIT License,False,3.0,0.65,0.65,0.0
+196,Sushi,Facebook Open Source,https://github.com/facebook/watchman,['fb-watchman' 'bser'],1932,114,12875,1014,2012-11-29,C++,MIT License,False,2.0,0.65,0.65,0.0
+197,Superfluid,Facebook Open Source,https://github.com/facebook/watchman,['fb-watchman' 'bser'],1932,114,12875,1014,2012-11-29,C++,MIT License,False,5.0,0.65,0.65,0.0
+198,Agora,Facebook Open Source,https://github.com/facebook/watchman,['fb-watchman' 'bser'],1932,114,12875,1014,2012-11-29,C++,MIT License,False,4.0,0.65,0.65,0.0
+199,Synthetix,Facebook Open Source,https://github.com/facebook/watchman,['fb-watchman' 'bser'],1932,114,12875,1014,2012-11-29,C++,MIT License,False,4.0,0.65,0.65,0.0
+200,Velodrome,Hardhat,https://github.com/nomicfoundation/hardhat,"['@nomicfoundation/hardhat-foundry'
+ '@nomicfoundation/hardhat-network-helpers'
+ '@nomicfoundation/hardhat-chai-matchers'
+ '@nomicfoundation/hardhat-toolbox']",1111,121,7445,1470,2018-04-14,TypeScript,Other,True,1.0,0.634493670886076,0.7832278481012658,0.14873417721518978
+201,Ethereum Attestation Service,Hardhat,https://github.com/nomicfoundation/hardhat,"['@nomicfoundation/hardhat-ethers'
+ '@nomicfoundation/hardhat-network-helpers'
+ '@nomicfoundation/hardhat-toolbox' '@nomicfoundation/hardhat-verify'
+ '@nomicfoundation/hardhat-chai-matchers']",1111,121,7445,1470,2018-04-14,TypeScript,Other,True,1.0,0.634493670886076,0.7832278481012658,0.14873417721518978
+202,Superfluid,Hardhat,https://github.com/nomicfoundation/hardhat,"['@nomicfoundation/hardhat-ethers'
+ '@nomicfoundation/hardhat-chai-matchers'
+ '@nomicfoundation/hardhat-toolbox']",1111,121,7445,1470,2018-04-14,TypeScript,Other,True,1.0,0.634493670886076,0.7832278481012658,0.14873417721518978
+203,Across,Hardhat,https://github.com/nomicfoundation/hardhat,['@nomicfoundation/hardhat-verify'],1111,121,7445,1470,2018-04-14,TypeScript,Other,True,1.0,0.634493670886076,0.7832278481012658,0.14873417721518978
+204,Across,Metamask,https://github.com/metamask/eth-json-rpc-infura,['eth-json-rpc-infura'],1228,107,54,54,2017-12-13,TypeScript,ISC License,True,8.0,0.6503164556962026,0.7199367088607594,0.06962025316455689
+205,Velodrome,Metamask,https://github.com/metamask/eth-json-rpc-infura,['eth-json-rpc-infura'],1228,107,54,54,2017-12-13,TypeScript,ISC License,True,4.0,0.6503164556962026,0.7199367088607594,0.06962025316455689
+206,Superfluid,Metamask,https://github.com/metamask/eth-json-rpc-infura,['eth-json-rpc-infura'],1228,107,54,54,2017-12-13,TypeScript,ISC License,True,8.0,0.6503164556962026,0.7199367088607594,0.06962025316455689
+207,Synthetix,Metamask,https://github.com/metamask/eth-json-rpc-infura,['eth-json-rpc-infura'],1228,107,54,54,2017-12-13,TypeScript,ISC License,True,6.0,0.6503164556962026,0.7199367088607594,0.06962025316455689
+208,Giveth,Metamask,https://github.com/metamask/eth-json-rpc-infura,['eth-json-rpc-infura'],1228,107,54,54,2017-12-13,TypeScript,ISC License,True,8.0,0.6503164556962026,0.7199367088607594,0.06962025316455689
+209,Sushi,Metamask,https://github.com/metamask/eth-json-rpc-infura,['eth-json-rpc-infura'],1228,107,54,54,2017-12-13,TypeScript,ISC License,True,4.0,0.6503164556962026,0.7199367088607594,0.06962025316455689
+210,Across,Ethereum Miscellenia,https://github.com/ethereum/solc-js,['solc'],1791,149,1469,479,2016-04-04,TypeScript,MIT License,True,1.0,0.8291139240506329,0.8544303797468354,0.025316455696202556
+211,Giveth,Ethereum Miscellenia,https://github.com/ethereum/solc-js,['solc'],1791,149,1469,479,2016-04-04,TypeScript,MIT License,True,1.0,0.8291139240506329,0.8544303797468354,0.025316455696202556
+212,Superfluid,Ethereum Miscellenia,https://github.com/ethereum/solc-js,['solc'],1791,149,1469,479,2016-04-04,TypeScript,MIT License,True,1.0,0.8291139240506329,0.8544303797468354,0.025316455696202556
+213,Synthetix,Ethereum Miscellenia,https://github.com/ethereum/solc-js,['solc'],1791,149,1469,479,2016-04-04,TypeScript,MIT License,True,1.0,0.8291139240506329,0.8544303797468354,0.025316455696202556
+214,Sushi,Ethereum Miscellenia,https://github.com/ethereum/solc-js,['solc'],1791,149,1469,479,2016-04-04,TypeScript,MIT License,True,1.0,0.8291139240506329,0.8544303797468354,0.025316455696202556
+215,Boost Studios,Ethereum Miscellenia,https://github.com/ethereum/solc-js,['solc'],1791,149,1469,479,2016-04-04,TypeScript,MIT License,True,1.0,0.8291139240506329,0.8544303797468354,0.025316455696202556
+216,Velodrome,Ethereum Miscellenia,https://github.com/ethereum/solc-js,['solc'],1791,149,1469,479,2016-04-04,TypeScript,MIT License,True,1.0,0.8291139240506329,0.8544303797468354,0.025316455696202556
+217,Ethereum Attestation Service,Ethereum Miscellenia,https://github.com/ethereum/solc-js,['solc'],1791,149,1469,479,2016-04-04,TypeScript,MIT License,True,1.0,0.8291139240506329,0.8544303797468354,0.025316455696202556
+218,Agora,Ethereum Miscellenia,https://github.com/ethereum/solc-js,['solc'],1791,149,1469,479,2016-04-04,TypeScript,MIT License,True,1.0,0.8291139240506329,0.8544303797468354,0.025316455696202556
+219,Basepaint,wevm,https://github.com/wevm/isows,['isows'],802,92,49,5,2023-10-08,TypeScript,Other,True,4.0,0.4509493670886076,0.5205696202531646,0.06962025316455694
+220,Ethereum Attestation Service,wevm,https://github.com/wevm/isows,['isows'],802,92,49,5,2023-10-08,TypeScript,Other,True,5.0,0.4509493670886076,0.5205696202531646,0.06962025316455694
+221,Smol Dapp,wevm,https://github.com/wevm/isows,['isows'],802,92,49,5,2023-10-08,TypeScript,Other,True,4.0,0.4509493670886076,0.5205696202531646,0.06962025316455694
+222,Agora,wevm,https://github.com/wevm/isows,['isows'],802,92,49,5,2023-10-08,TypeScript,Other,True,6.0,0.4509493670886076,0.5205696202531646,0.06962025316455694
+223,Across,wevm,https://github.com/wevm/isows,['isows'],802,92,49,5,2023-10-08,TypeScript,Other,True,5.0,0.4509493670886076,0.5205696202531646,0.06962025316455694
+224,Giveth,wevm,https://github.com/wevm/isows,['isows'],802,92,49,5,2023-10-08,TypeScript,Other,True,6.0,0.4509493670886076,0.5205696202531646,0.06962025316455694
+225,Boost Studios,wevm,https://github.com/wevm/isows,['isows'],802,92,49,5,2023-10-08,TypeScript,Other,True,4.0,0.4509493670886076,0.5205696202531646,0.06962025316455694
+226,Synthetix,wevm,https://github.com/wevm/isows,['isows'],802,92,49,5,2023-10-08,TypeScript,Other,True,5.0,0.4509493670886076,0.5205696202531646,0.06962025316455694
+227,Sushi,wevm,https://github.com/wevm/isows,['isows'],802,92,49,5,2023-10-08,TypeScript,Other,True,3.0,0.4509493670886076,0.5205696202531646,0.06962025316455694
+228,Superfluid,wevm,https://github.com/wevm/isows,['isows'],802,92,49,5,2023-10-08,TypeScript,Other,True,5.0,0.4509493670886076,0.5205696202531646,0.06962025316455694
+229,Superfluid,Wallet Connect,https://github.com/walletconnect/walletconnect-utils,"['@walletconnect/keyvaluestorage' '@walletconnect/jsonrpc-utils'
+ '@walletconnect/relay-api' '@walletconnect/window-getters'
+ '@walletconnect/jsonrpc-types' '@walletconnect/encoding'
+ '@walletconnect/environment' '@walletconnect/crypto'
+ '@walletconnect/jsonrpc-http-connection'
+ '@walletconnect/jsonrpc-ws-connection' '@walletconnect/relay-auth'
+ '@walletconnect/logger' '@walletconnect/time' '@walletconnect/safe-json'
+ '@walletconnect/window-metadata' '@walletconnect/jsonrpc-provider'
+ '@walletconnect/heartbeat' '@walletconnect/events'
+ '@walletconnect/randombytes']",1299,103,113,80,2021-07-08,TypeScript,MIT License,True,2.0,0.6740506329113924,0.6044303797468354,-0.069620253164557
+230,Giveth,Wallet Connect,https://github.com/walletconnect/walletconnect-utils,"['@walletconnect/environment' '@walletconnect/logger'
+ '@walletconnect/time' '@walletconnect/safe-json'
+ '@walletconnect/keyvaluestorage' '@walletconnect/encoding'
+ '@walletconnect/relay-auth' '@walletconnect/relay-api'
+ '@walletconnect/jsonrpc-http-connection' '@walletconnect/crypto'
+ '@walletconnect/jsonrpc-ws-connection' '@walletconnect/heartbeat'
+ '@walletconnect/window-getters' '@walletconnect/jsonrpc-utils'
+ '@walletconnect/window-metadata' '@walletconnect/jsonrpc-types'
+ '@walletconnect/randombytes' '@walletconnect/jsonrpc-provider'
+ '@walletconnect/events']",1299,103,113,80,2021-07-08,TypeScript,MIT License,True,2.0,0.6740506329113924,0.6044303797468354,-0.069620253164557
+231,Synthetix,Wallet Connect,https://github.com/walletconnect/walletconnect-utils,"['@walletconnect/window-metadata' '@walletconnect/events'
+ '@walletconnect/safe-json' '@walletconnect/logger'
+ '@walletconnect/jsonrpc-utils' '@walletconnect/encoding'
+ '@walletconnect/jsonrpc-provider' '@walletconnect/crypto'
+ '@walletconnect/jsonrpc-types' '@walletconnect/relay-auth'
+ '@walletconnect/window-getters' '@walletconnect/relay-api'
+ '@walletconnect/keyvaluestorage' '@walletconnect/jsonrpc-http-connection'
+ '@walletconnect/heartbeat' '@walletconnect/randombytes'
+ '@walletconnect/environment' '@walletconnect/time'
+ '@walletconnect/jsonrpc-ws-connection']",1299,103,113,80,2021-07-08,TypeScript,MIT License,True,2.0,0.6740506329113924,0.6044303797468354,-0.069620253164557
+232,Across,Wallet Connect,https://github.com/walletconnect/walletconnect-utils,"['@walletconnect/jsonrpc-provider' '@walletconnect/window-metadata'
+ '@walletconnect/jsonrpc-types' '@walletconnect/randombytes'
+ '@walletconnect/jsonrpc-ws-connection' '@walletconnect/crypto'
+ '@walletconnect/encoding' '@walletconnect/environment'
+ '@walletconnect/safe-json' '@walletconnect/window-getters'
+ '@walletconnect/jsonrpc-utils' '@walletconnect/relay-api'
+ '@walletconnect/heartbeat' '@walletconnect/logger'
+ '@walletconnect/events' '@walletconnect/time' '@walletconnect/relay-auth'
+ '@walletconnect/jsonrpc-http-connection' '@walletconnect/keyvaluestorage']",1299,103,113,80,2021-07-08,TypeScript,MIT License,True,2.0,0.6740506329113924,0.6044303797468354,-0.069620253164557
+233,Boost Studios,Wallet Connect,https://github.com/walletconnect/walletconnect-utils,"['@walletconnect/logger' '@walletconnect/keyvaluestorage'
+ '@walletconnect/jsonrpc-http-connection' '@walletconnect/heartbeat'
+ '@walletconnect/relay-auth' '@walletconnect/window-metadata'
+ '@walletconnect/jsonrpc-ws-connection' '@walletconnect/jsonrpc-provider'
+ '@walletconnect/safe-json' '@walletconnect/environment'
+ '@walletconnect/jsonrpc-types' '@walletconnect/jsonrpc-utils'
+ '@walletconnect/events' '@walletconnect/time' '@walletconnect/relay-api'
+ '@walletconnect/window-getters']",1299,103,113,80,2021-07-08,TypeScript,MIT License,True,2.0,0.6740506329113924,0.6044303797468354,-0.069620253164557
+234,Smol Dapp,Wallet Connect,https://github.com/walletconnect/walletconnect-utils,"['@walletconnect/time' '@walletconnect/keyvaluestorage'
+ '@walletconnect/jsonrpc-utils' '@walletconnect/window-metadata'
+ '@walletconnect/jsonrpc-ws-connection'
+ '@walletconnect/jsonrpc-http-connection' '@walletconnect/crypto'
+ '@walletconnect/encoding' '@walletconnect/relay-auth'
+ '@walletconnect/logger' '@walletconnect/heartbeat'
+ '@walletconnect/relay-api' '@walletconnect/jsonrpc-types'
+ '@walletconnect/environment' '@walletconnect/randombytes'
+ '@walletconnect/jsonrpc-provider' '@walletconnect/window-getters'
+ '@walletconnect/safe-json' '@walletconnect/events']",1299,103,113,80,2021-07-08,TypeScript,MIT License,True,2.0,0.6740506329113924,0.6044303797468354,-0.069620253164557
+235,Agora,Wallet Connect,https://github.com/walletconnect/walletconnect-utils,"['@walletconnect/window-metadata' '@walletconnect/jsonrpc-ws-connection'
+ '@walletconnect/relay-auth' '@walletconnect/events'
+ '@walletconnect/relay-api' '@walletconnect/jsonrpc-utils'
+ '@walletconnect/safe-json' '@walletconnect/jsonrpc-provider'
+ '@walletconnect/window-getters' '@walletconnect/environment'
+ '@walletconnect/heartbeat' '@walletconnect/time' '@walletconnect/logger'
+ '@walletconnect/jsonrpc-http-connection' '@walletconnect/keyvaluestorage'
+ '@walletconnect/jsonrpc-types']",1299,103,113,80,2021-07-08,TypeScript,MIT License,True,2.0,0.6740506329113924,0.6044303797468354,-0.069620253164557
+236,Ethereum Attestation Service,Wallet Connect,https://github.com/walletconnect/walletconnect-utils,"['@walletconnect/relay-auth' '@walletconnect/jsonrpc-utils'
+ '@walletconnect/logger' '@walletconnect/crypto'
+ '@walletconnect/environment' '@walletconnect/events'
+ '@walletconnect/randombytes' '@walletconnect/window-getters'
+ '@walletconnect/window-metadata' '@walletconnect/heartbeat'
+ '@walletconnect/time' '@walletconnect/jsonrpc-types'
+ '@walletconnect/encoding' '@walletconnect/keyvaluestorage'
+ '@walletconnect/jsonrpc-provider' '@walletconnect/jsonrpc-ws-connection'
+ '@walletconnect/relay-api' '@walletconnect/safe-json'
+ '@walletconnect/jsonrpc-http-connection']",1299,103,113,80,2021-07-08,TypeScript,MIT License,True,2.0,0.6740506329113924,0.6044303797468354,-0.069620253164557
+237,Sushi,Wallet Connect,https://github.com/walletconnect/walletconnect-utils,"['@walletconnect/window-getters' '@walletconnect/safe-json'
+ '@walletconnect/encoding' '@walletconnect/jsonrpc-http-connection'
+ '@walletconnect/environment' '@walletconnect/jsonrpc-provider'
+ '@walletconnect/crypto' '@walletconnect/randombytes'
+ '@walletconnect/window-metadata' '@walletconnect/jsonrpc-types'
+ '@walletconnect/jsonrpc-utils']",1299,103,113,80,2021-07-08,TypeScript,MIT License,True,2.0,0.6740506329113924,0.6044303797468354,-0.069620253164557
+238,Across,OpenZeppelin,https://github.com/openzeppelin/openzeppelin-contracts-upgradeable,['@openzeppelin/contracts-upgradeable'],912,99,1019,442,2018-07-20,JavaScript,MIT License,True,2.0,0.25,0.4125,0.16249999999999998
+239,Synthetix,wevm,https://github.com/wevm/webauthn-p256,['webauthn-p256'],461,66,50,6,2024-06-24,TypeScript,Other,True,4.0,0.21518987341772153,0.3037974683544304,0.08860759493670886
+240,Across,wevm,https://github.com/wevm/webauthn-p256,['webauthn-p256'],461,66,50,6,2024-06-24,TypeScript,Other,True,4.0,0.21518987341772153,0.3037974683544304,0.08860759493670886
+241,Agora,wevm,https://github.com/wevm/webauthn-p256,['webauthn-p256'],461,66,50,6,2024-06-24,TypeScript,Other,True,5.0,0.21518987341772153,0.3037974683544304,0.08860759493670886
+242,Giveth,wevm,https://github.com/wevm/webauthn-p256,['webauthn-p256'],461,66,50,6,2024-06-24,TypeScript,Other,True,5.0,0.21518987341772153,0.3037974683544304,0.08860759493670886
+243,Superfluid,wevm,https://github.com/wevm/webauthn-p256,['webauthn-p256'],461,66,50,6,2024-06-24,TypeScript,Other,True,4.0,0.21518987341772153,0.3037974683544304,0.08860759493670886
+244,Ethereum Attestation Service,wevm,https://github.com/wevm/webauthn-p256,['webauthn-p256'],461,66,50,6,2024-06-24,TypeScript,Other,True,4.0,0.21518987341772153,0.3037974683544304,0.08860759493670886
+245,Basepaint,wevm,https://github.com/wevm/webauthn-p256,['webauthn-p256'],461,66,50,6,2024-06-24,TypeScript,Other,True,3.0,0.21518987341772153,0.3037974683544304,0.08860759493670886
+246,Agora,ESLint,https://github.com/eslint/eslint,['@eslint/js' 'eslint'],2768,152,25431,4624,2013-06-29,JavaScript,MIT License,False,1.0,0.965625,0.890625,-0.07499999999999996
+247,Sushi,ESLint,https://github.com/eslint/eslint,['@eslint/js' 'eslint'],2768,152,25431,4624,2013-06-29,JavaScript,MIT License,False,1.0,0.965625,0.890625,-0.07499999999999996
+248,Boost Studios,ESLint,https://github.com/eslint/eslint,['eslint' '@eslint/js'],2768,152,25431,4624,2013-06-29,JavaScript,MIT License,False,1.0,0.965625,0.890625,-0.07499999999999996
+249,Giveth,ESLint,https://github.com/eslint/eslint,['eslint' '@eslint/js'],2768,152,25431,4624,2013-06-29,JavaScript,MIT License,False,1.0,0.965625,0.890625,-0.07499999999999996
+250,Sound.xyz,ESLint,https://github.com/eslint/eslint,['eslint'],2768,152,25431,4624,2013-06-29,JavaScript,MIT License,False,1.0,0.965625,0.890625,-0.07499999999999996
+251,Across,ESLint,https://github.com/eslint/eslint,['@eslint/js' 'eslint'],2768,152,25431,4624,2013-06-29,JavaScript,MIT License,False,1.0,0.965625,0.890625,-0.07499999999999996
+252,Superfluid,ESLint,https://github.com/eslint/eslint,['@eslint/js' 'eslint'],2768,152,25431,4624,2013-06-29,JavaScript,MIT License,False,1.0,0.965625,0.890625,-0.07499999999999996
+253,Basepaint,ESLint,https://github.com/eslint/eslint,['@eslint/js' 'eslint'],2768,152,25431,4624,2013-06-29,JavaScript,MIT License,False,1.0,0.965625,0.890625,-0.07499999999999996
+254,Synthetix,ESLint,https://github.com/eslint/eslint,['@eslint/js' 'eslint'],2768,152,25431,4624,2013-06-29,JavaScript,MIT License,False,1.0,0.965625,0.890625,-0.07499999999999996
+255,Ethereum Attestation Service,ESLint,https://github.com/eslint/eslint,['eslint' '@eslint/js'],2768,152,25431,4624,2013-06-29,JavaScript,MIT License,False,1.0,0.965625,0.890625,-0.07499999999999996
+256,Smol Dapp,ESLint,https://github.com/eslint/eslint,['@eslint/js' 'eslint'],2768,152,25431,4624,2013-06-29,JavaScript,MIT License,False,1.0,0.965625,0.890625,-0.07499999999999996
+257,Velodrome,ESLint,https://github.com/eslint/eslint,['eslint'],2768,152,25431,4624,2013-06-29,JavaScript,MIT License,False,1.0,0.965625,0.890625,-0.07499999999999996
+258,Synthetix,Webpack,https://github.com/webpack/webpack-dev-server,['webpack-dev-server'],1484,66,7814,1449,2012-09-17,JavaScript,MIT License,False,2.0,0.396875,0.228125,-0.16874999999999998
+259,Ethereum Attestation Service,Webpack,https://github.com/webpack/webpack-dev-server,['webpack-dev-server'],1484,66,7814,1449,2012-09-17,JavaScript,MIT License,False,2.0,0.396875,0.228125,-0.16874999999999998
+260,Boost Studios,Multiformats,https://github.com/multiformats/js-multiformats,['multiformats'],1464,111,239,54,2020-04-22,TypeScript,Other,False,1.0,0.7721518987341772,0.7436708860759493,-0.02848101265822789
+261,Across,Multiformats,https://github.com/multiformats/js-multiformats,['multiformats'],1464,111,239,54,2020-04-22,TypeScript,Other,False,1.0,0.7721518987341772,0.7436708860759493,-0.02848101265822789
+262,Smol Dapp,Multiformats,https://github.com/multiformats/js-multiformats,['multiformats'],1464,111,239,54,2020-04-22,TypeScript,Other,False,1.0,0.7721518987341772,0.7436708860759493,-0.02848101265822789
+263,Ethereum Attestation Service,Multiformats,https://github.com/multiformats/js-multiformats,['multiformats'],1464,111,239,54,2020-04-22,TypeScript,Other,False,1.0,0.7721518987341772,0.7436708860759493,-0.02848101265822789
+264,Superfluid,Multiformats,https://github.com/multiformats/js-multiformats,['multiformats'],1464,111,239,54,2020-04-22,TypeScript,Other,False,1.0,0.7721518987341772,0.7436708860759493,-0.02848101265822789
+265,Giveth,Multiformats,https://github.com/multiformats/js-multiformats,['multiformats'],1464,111,239,54,2020-04-22,TypeScript,Other,False,1.0,0.7721518987341772,0.7436708860759493,-0.02848101265822789
+266,Agora,Multiformats,https://github.com/multiformats/js-multiformats,['multiformats'],1464,111,239,54,2020-04-22,TypeScript,Other,False,1.0,0.7721518987341772,0.7436708860759493,-0.02848101265822789
+267,Sushi,Multiformats,https://github.com/multiformats/js-multiformats,['multiformats'],1464,111,239,54,2020-04-22,TypeScript,Other,False,1.0,0.7721518987341772,0.7436708860759493,-0.02848101265822789
+268,Synthetix,Multiformats,https://github.com/multiformats/js-multiformats,['multiformats'],1464,111,239,54,2020-04-22,TypeScript,Other,False,1.0,0.7721518987341772,0.7436708860759493,-0.02848101265822789
+269,Synthetix,Blocknative,https://github.com/blocknative/web3-onboard,"['@web3-onboard/common' '@web3-onboard/trust'
+ '@web3-onboard/injected-wallets' '@web3-onboard/walletconnect'
+ '@web3-onboard/react' '@web3-onboard/core' '@web3-onboard/trezor'
+ '@web3-onboard/torus' '@web3-onboard/portis' '@web3-onboard/hw-common'
+ '@web3-onboard/gnosis' '@web3-onboard/coinbase']",98,16,872,520,2019-08-16,TypeScript,MIT License,True,1.0,0.09651898734177215,0.09651898734177215,0.0
+270,Across,Blocknative,https://github.com/blocknative/web3-onboard,"['@web3-onboard/react' '@web3-onboard/phantom' '@web3-onboard/gnosis'
+ '@web3-onboard/coinbase' '@web3-onboard/metamask'
+ '@web3-onboard/walletconnect' '@web3-onboard/core' '@web3-onboard/common'
+ '@web3-onboard/injected-wallets']",98,16,872,520,2019-08-16,TypeScript,MIT License,True,1.0,0.09651898734177215,0.09651898734177215,0.0
+271,Smol Dapp,Webpack,https://github.com/webpack/watchpack,['watchpack'],2037,104,380,107,2014-09-16,JavaScript,MIT License,False,2.0,0.634375,0.496875,-0.1375
+272,Boost Studios,Webpack,https://github.com/webpack/watchpack,['watchpack'],2037,104,380,107,2014-09-16,JavaScript,MIT License,False,3.0,0.634375,0.496875,-0.1375
+273,Synthetix,Webpack,https://github.com/webpack/watchpack,['watchpack-chokidar2' 'watchpack'],2037,104,380,107,2014-09-16,JavaScript,MIT License,False,6.0,0.634375,0.496875,-0.1375
+274,Giveth,Webpack,https://github.com/webpack/watchpack,['watchpack-chokidar2' 'watchpack'],2037,104,380,107,2014-09-16,JavaScript,MIT License,False,5.0,0.634375,0.496875,-0.1375
+275,Superfluid,Webpack,https://github.com/webpack/watchpack,['watchpack'],2037,104,380,107,2014-09-16,JavaScript,MIT License,False,4.0,0.634375,0.496875,-0.1375
+276,Across,Webpack,https://github.com/webpack/watchpack,['watchpack'],2037,104,380,107,2014-09-16,JavaScript,MIT License,False,3.0,0.634375,0.496875,-0.1375
+277,Ethereum Attestation Service,Webpack,https://github.com/webpack/watchpack,['watchpack'],2037,104,380,107,2014-09-16,JavaScript,MIT License,False,5.0,0.634375,0.496875,-0.1375
+278,Sushi,Webpack,https://github.com/webpack/watchpack,['watchpack'],2037,104,380,107,2014-09-16,JavaScript,MIT License,False,3.0,0.634375,0.496875,-0.1375
+279,Superfluid,Metamask,https://github.com/metamask/core,"['@metamask/eth-json-rpc-provider' '@metamask/json-rpc-engine'
+ '@metamask/json-rpc-middleware-stream']",540,68,295,201,2018-05-29,TypeScript,MIT License,True,2.0,0.2848101265822785,0.34177215189873417,0.05696202531645567
+280,Smol Dapp,Metamask,https://github.com/metamask/core,['@metamask/eth-json-rpc-provider' '@metamask/json-rpc-engine'],540,68,295,201,2018-05-29,TypeScript,MIT License,True,1.0,0.2848101265822785,0.34177215189873417,0.05696202531645567
+281,Giveth,Metamask,https://github.com/metamask/core,"['@metamask/json-rpc-engine' '@metamask/eth-json-rpc-provider'
+ '@metamask/json-rpc-middleware-stream']",540,68,295,201,2018-05-29,TypeScript,MIT License,True,2.0,0.2848101265822785,0.34177215189873417,0.05696202531645567
+282,Agora,Metamask,https://github.com/metamask/core,"['@metamask/json-rpc-engine' '@metamask/eth-json-rpc-provider'
+ '@metamask/json-rpc-middleware-stream']",540,68,295,201,2018-05-29,TypeScript,MIT License,True,2.0,0.2848101265822785,0.34177215189873417,0.05696202531645567
+283,Across,Metamask,https://github.com/metamask/core,['@metamask/json-rpc-engine' '@metamask/json-rpc-middleware-stream'],540,68,295,201,2018-05-29,TypeScript,MIT License,True,2.0,0.2848101265822785,0.34177215189873417,0.05696202531645567
+284,Synthetix,ESLint,https://github.com/eslint/eslintrc,['@eslint/eslintrc'],2405,145,129,43,2020-08-20,JavaScript,MIT License,False,4.0,0.746875,0.746875,0.0
+285,Ethereum Attestation Service,ESLint,https://github.com/eslint/eslintrc,['@eslint/eslintrc'],2405,145,129,43,2020-08-20,JavaScript,MIT License,False,4.0,0.746875,0.746875,0.0
+286,Giveth,ESLint,https://github.com/eslint/eslintrc,['@eslint/eslintrc'],2405,145,129,43,2020-08-20,JavaScript,MIT License,False,4.0,0.746875,0.746875,0.0
+287,Smol Dapp,ESLint,https://github.com/eslint/eslintrc,['@eslint/eslintrc'],2405,145,129,43,2020-08-20,JavaScript,MIT License,False,3.0,0.746875,0.746875,0.0
+288,Agora,ESLint,https://github.com/eslint/eslintrc,['@eslint/eslintrc'],2405,145,129,43,2020-08-20,JavaScript,MIT License,False,3.0,0.746875,0.746875,0.0
+289,Across,ESLint,https://github.com/eslint/eslintrc,['@eslint/eslintrc'],2405,145,129,43,2020-08-20,JavaScript,MIT License,False,4.0,0.746875,0.746875,0.0
+290,Sushi,ESLint,https://github.com/eslint/eslintrc,['@eslint/eslintrc'],2405,145,129,43,2020-08-20,JavaScript,MIT License,False,3.0,0.746875,0.746875,0.0
+291,Boost Studios,ESLint,https://github.com/eslint/eslintrc,['@eslint/eslintrc'],2405,145,129,43,2020-08-20,JavaScript,MIT License,False,3.0,0.746875,0.746875,0.0
+292,Superfluid,ESLint,https://github.com/eslint/eslintrc,['@eslint/eslintrc'],2405,145,129,43,2020-08-20,JavaScript,MIT License,False,3.0,0.746875,0.746875,0.0
+293,Basepaint,ESLint,https://github.com/eslint/eslintrc,['@eslint/eslintrc'],2405,145,129,43,2020-08-20,JavaScript,MIT License,False,3.0,0.746875,0.746875,0.0
+294,Ethereum Attestation Service,Solhint,https://github.com/protofire/solhint,['solhint'],1011,111,1054,169,2017-10-16,JavaScript,MIT License,True,1.0,0.278125,0.590625,0.31249999999999994
+295,Across,Solhint,https://github.com/protofire/solhint,['solhint'],1011,111,1054,169,2017-10-16,JavaScript,MIT License,True,1.0,0.278125,0.590625,0.31249999999999994
+296,Superfluid,Solhint,https://github.com/protofire/solhint,['solhint'],1011,111,1054,169,2017-10-16,JavaScript,MIT License,True,1.0,0.278125,0.590625,0.31249999999999994
+297,Sushi,Solhint,https://github.com/protofire/solhint,['solhint'],1011,111,1054,169,2017-10-16,JavaScript,MIT License,True,1.0,0.278125,0.590625,0.31249999999999994
+298,Velodrome,Solhint,https://github.com/protofire/solhint,['solhint'],1011,111,1054,169,2017-10-16,JavaScript,MIT License,True,1.0,0.278125,0.590625,0.31249999999999994
+299,Sound.xyz,Solhint,https://github.com/protofire/solhint,['solhint'],1011,111,1054,169,2017-10-16,JavaScript,MIT License,True,1.0,0.278125,0.590625,0.31249999999999994
+300,Synthetix,Solhint,https://github.com/protofire/solhint,['solhint'],1011,111,1054,169,2017-10-16,JavaScript,MIT License,True,1.0,0.278125,0.590625,0.31249999999999994
+301,Boost Studios,Solhint,https://github.com/protofire/solhint,['solhint'],1011,111,1054,169,2017-10-16,JavaScript,MIT License,True,1.0,0.278125,0.590625,0.31249999999999994
+302,Agora,wevm,https://github.com/wevm/viem,['viem'],970,105,2689,948,2022-07-22,TypeScript,Other,True,2.0,0.560126582278481,0.6487341772151899,0.08860759493670889
+303,Superfluid,wevm,https://github.com/wevm/viem,['viem'],970,105,2689,948,2022-07-22,TypeScript,Other,True,2.0,0.560126582278481,0.6487341772151899,0.08860759493670889
+304,Smol Dapp,wevm,https://github.com/wevm/viem,['viem'],970,105,2689,948,2022-07-22,TypeScript,Other,True,2.0,0.560126582278481,0.6487341772151899,0.08860759493670889
+305,Boost Studios,wevm,https://github.com/wevm/viem,['viem'],970,105,2689,948,2022-07-22,TypeScript,Other,True,2.0,0.560126582278481,0.6487341772151899,0.08860759493670889
+306,Giveth,wevm,https://github.com/wevm/viem,['viem'],970,105,2689,948,2022-07-22,TypeScript,Other,True,2.0,0.560126582278481,0.6487341772151899,0.08860759493670889
+307,Basepaint,wevm,https://github.com/wevm/viem,['viem'],970,105,2689,948,2022-07-22,TypeScript,Other,True,1.0,0.560126582278481,0.6487341772151899,0.08860759493670889
+308,Across,wevm,https://github.com/wevm/viem,['viem'],970,105,2689,948,2022-07-22,TypeScript,Other,True,1.0,0.560126582278481,0.6487341772151899,0.08860759493670889
+309,Sound.xyz,wevm,https://github.com/wevm/viem,['viem'],970,105,2689,948,2022-07-22,TypeScript,Other,True,2.0,0.560126582278481,0.6487341772151899,0.08860759493670889
+310,Sushi,wevm,https://github.com/wevm/viem,['viem'],970,105,2689,948,2022-07-22,TypeScript,Other,True,1.0,0.560126582278481,0.6487341772151899,0.08860759493670889
+311,Ethereum Attestation Service,wevm,https://github.com/wevm/viem,['viem'],970,105,2689,948,2022-07-22,TypeScript,Other,True,2.0,0.560126582278481,0.6487341772151899,0.08860759493670889
+312,Synthetix,wevm,https://github.com/wevm/viem,['viem'],970,105,2689,948,2022-07-22,TypeScript,Other,True,2.0,0.560126582278481,0.6487341772151899,0.08860759493670889
+313,Superfluid,Metamask,https://github.com/metamask/rpc-errors,['@metamask/rpc-errors'],604,70,166,33,2019-08-06,TypeScript,MIT License,True,6.0,0.31170886075949367,0.35917721518987344,0.04746835443037978
+314,Smol Dapp,Metamask,https://github.com/metamask/rpc-errors,['@metamask/rpc-errors'],604,70,166,33,2019-08-06,TypeScript,MIT License,True,4.0,0.31170886075949367,0.35917721518987344,0.04746835443037978
+315,Across,Metamask,https://github.com/metamask/rpc-errors,['@metamask/rpc-errors'],604,70,166,33,2019-08-06,TypeScript,MIT License,True,6.0,0.31170886075949367,0.35917721518987344,0.04746835443037978
+316,Synthetix,Metamask,https://github.com/metamask/rpc-errors,['@metamask/rpc-errors'],604,70,166,33,2019-08-06,TypeScript,MIT License,True,4.0,0.31170886075949367,0.35917721518987344,0.04746835443037978
+317,Giveth,Metamask,https://github.com/metamask/rpc-errors,['@metamask/rpc-errors'],604,70,166,33,2019-08-06,TypeScript,MIT License,True,6.0,0.31170886075949367,0.35917721518987344,0.04746835443037978
+318,Agora,Metamask,https://github.com/metamask/rpc-errors,['@metamask/rpc-errors'],604,70,166,33,2019-08-06,TypeScript,MIT License,True,5.0,0.31170886075949367,0.35917721518987344,0.04746835443037978
+319,Across,Solana Labs,https://github.com/solana-labs/solana-program-library,"['spl-tlv-account-resolution' '@solana/spl-token'
+ 'spl-program-error-derive' 'spl-discriminator-derive'
+ 'spl-transfer-hook-interface' 'spl-token-group-interface'
+ 'spl-program-error' '@solana/spl-token-group'
+ '@solana/spl-type-length-value' 'spl-discriminator-syn' 'spl-memo'
+ 'spl-token' 'spl-associated-token-account' 'spl-type-length-value'
+ '@solana/spl-token-metadata' 'spl-pod' 'spl-token-metadata-interface']",404,30,3726,2178,2020-05-29,Rust,Apache License 2.0,False,1.0,0.5833333333333334,0.9166666666666666,0.33333333333333326
+320,Giveth,Solana Labs,https://github.com/solana-labs/solana-program-library,"['@solana/spl-token-metadata' '@solana/spl-type-length-value'
+ '@solana/spl-token' '@solana/spl-token-group']",404,30,3726,2178,2020-05-29,Rust,Apache License 2.0,False,1.0,0.5833333333333334,0.9166666666666666,0.33333333333333326
+321,Giveth,ENS Support for Filecoin Addresses,https://github.com/ensdomains/ensjs,['@ensdomains/ensjs'],569,59,134,60,2022-03-16,TypeScript,MIT License,False,1.0,0.2974683544303797,0.25316455696202533,-0.04430379746835439
+322,Superfluid,ENS Support for Filecoin Addresses,https://github.com/ensdomains/ensjs,['@ensdomains/ensjs'],569,59,134,60,2022-03-16,TypeScript,MIT License,False,1.0,0.2974683544303797,0.25316455696202533,-0.04430379746835439
+323,Across,ENS Support for Filecoin Addresses,https://github.com/ensdomains/ensjs,['@ensdomains/ensjs'],569,59,134,60,2022-03-16,TypeScript,MIT License,False,1.0,0.2974683544303797,0.25316455696202533,-0.04430379746835439
+324,Velodrome,Prettier Solidity,https://github.com/prettier-solidity/prettier-plugin-solidity,['prettier-plugin-solidity'],1090,117,731,75,2018-05-15,Solidity,MIT License,True,1.0,0.375,0.375,0.0
+325,Superfluid,Prettier Solidity,https://github.com/prettier-solidity/prettier-plugin-solidity,['prettier-plugin-solidity'],1090,117,731,75,2018-05-15,Solidity,MIT License,True,1.0,0.375,0.375,0.0
+326,Sound.xyz,Prettier Solidity,https://github.com/prettier-solidity/prettier-plugin-solidity,['prettier-plugin-solidity'],1090,117,731,75,2018-05-15,Solidity,MIT License,True,1.0,0.375,0.375,0.0
+327,Across,Prettier Solidity,https://github.com/prettier-solidity/prettier-plugin-solidity,['prettier-plugin-solidity'],1090,117,731,75,2018-05-15,Solidity,MIT License,True,1.0,0.375,0.375,0.0
+328,Agora,Prettier Solidity,https://github.com/prettier-solidity/prettier-plugin-solidity,['prettier-plugin-solidity'],1090,117,731,75,2018-05-15,Solidity,MIT License,True,1.0,0.375,0.375,0.0
+329,Sushi,Prettier Solidity,https://github.com/prettier-solidity/prettier-plugin-solidity,['prettier-plugin-solidity'],1090,117,731,75,2018-05-15,Solidity,MIT License,True,1.0,0.375,0.375,0.0
+330,Synthetix,Prettier Solidity,https://github.com/prettier-solidity/prettier-plugin-solidity,['prettier-plugin-solidity'],1090,117,731,75,2018-05-15,Solidity,MIT License,True,1.0,0.375,0.375,0.0
+331,Ethereum Attestation Service,Prettier Solidity,https://github.com/prettier-solidity/prettier-plugin-solidity,['prettier-plugin-solidity'],1090,117,731,75,2018-05-15,Solidity,MIT License,True,1.0,0.375,0.375,0.0
+332,Boost Studios,Prettier Solidity,https://github.com/prettier-solidity/prettier-plugin-solidity,['prettier-plugin-solidity'],1090,117,731,75,2018-05-15,Solidity,MIT License,True,1.0,0.375,0.375,0.0
+333,Giveth,Prettier Solidity,https://github.com/prettier-solidity/prettier-plugin-solidity,['prettier-plugin-solidity'],1090,117,731,75,2018-05-15,Solidity,MIT License,True,1.0,0.375,0.375,0.0
+334,Giveth,Safe,https://github.com/safe-global/safe-apps-sdk,['@safe-global/safe-apps-sdk' '@safe-global/safe-apps-provider'],762,82,277,135,2020-04-17,TypeScript,MIT License,True,1.0,0.40822784810126583,0.4224683544303797,0.014240506329113889
+335,Synthetix,Safe,https://github.com/safe-global/safe-apps-sdk,['@safe-global/safe-apps-provider' '@safe-global/safe-apps-sdk'],762,82,277,135,2020-04-17,TypeScript,MIT License,True,1.0,0.40822784810126583,0.4224683544303797,0.014240506329113889
+336,Agora,Safe,https://github.com/safe-global/safe-apps-sdk,['@safe-global/safe-apps-provider' '@safe-global/safe-apps-sdk'],762,82,277,135,2020-04-17,TypeScript,MIT License,True,1.0,0.40822784810126583,0.4224683544303797,0.014240506329113889
+337,Across,Safe,https://github.com/safe-global/safe-apps-sdk,['@safe-global/safe-apps-provider' '@safe-global/safe-apps-sdk'],762,82,277,135,2020-04-17,TypeScript,MIT License,True,1.0,0.40822784810126583,0.4224683544303797,0.014240506329113889
+338,Superfluid,Safe,https://github.com/safe-global/safe-apps-sdk,['@safe-global/safe-apps-sdk' '@safe-global/safe-apps-provider'],762,82,277,135,2020-04-17,TypeScript,MIT License,True,1.0,0.40822784810126583,0.4224683544303797,0.014240506329113889
+339,Ethereum Attestation Service,Safe,https://github.com/safe-global/safe-apps-sdk,['@safe-global/safe-apps-sdk' '@safe-global/safe-apps-provider'],762,82,277,135,2020-04-17,TypeScript,MIT License,True,1.0,0.40822784810126583,0.4224683544303797,0.014240506329113889
+340,Smol Dapp,Safe,https://github.com/safe-global/safe-apps-sdk,['@safe-global/safe-apps-sdk' '@safe-global/safe-apps-provider'],762,82,277,135,2020-04-17,TypeScript,MIT License,True,1.0,0.40822784810126583,0.4224683544303797,0.014240506329113889
+341,Smol Dapp,Metamask,https://github.com/metamask/post-message-stream,['@metamask/post-message-stream'],219,21,56,27,2016-08-11,TypeScript,ISC License,True,6.0,0.14556962025316456,0.12183544303797468,-0.023734177215189875
+342,Ethereum Attestation Service,wevm,https://github.com/wevm/wagmi,['@wagmi/core' '@wagmi/connectors' 'wagmi'],885,92,6127,1121,2021-11-23,TypeScript,MIT License,True,1.0,0.47943037974683544,0.5205696202531646,0.04113924050632911
+343,Superfluid,wevm,https://github.com/wevm/wagmi,['@wagmi/cli' 'wagmi' '@wagmi/connectors' '@wagmi/core'],885,92,6127,1121,2021-11-23,TypeScript,MIT License,True,1.0,0.47943037974683544,0.5205696202531646,0.04113924050632911
+344,Agora,wevm,https://github.com/wevm/wagmi,['@wagmi/connectors' '@wagmi/core' 'wagmi'],885,92,6127,1121,2021-11-23,TypeScript,MIT License,True,1.0,0.47943037974683544,0.5205696202531646,0.04113924050632911
+345,Synthetix,wevm,https://github.com/wevm/wagmi,['@wagmi/core' 'wagmi' '@wagmi/connectors'],885,92,6127,1121,2021-11-23,TypeScript,MIT License,True,1.0,0.47943037974683544,0.5205696202531646,0.04113924050632911
+346,Boost Studios,wevm,https://github.com/wevm/wagmi,['@wagmi/cli'],885,92,6127,1121,2021-11-23,TypeScript,MIT License,True,1.0,0.47943037974683544,0.5205696202531646,0.04113924050632911
+347,Smol Dapp,wevm,https://github.com/wevm/wagmi,['@wagmi/core' 'wagmi' '@wagmi/connectors'],885,92,6127,1121,2021-11-23,TypeScript,MIT License,True,1.0,0.47943037974683544,0.5205696202531646,0.04113924050632911
+348,Giveth,wevm,https://github.com/wevm/wagmi,['wagmi' '@wagmi/connectors' '@wagmi/core'],885,92,6127,1121,2021-11-23,TypeScript,MIT License,True,1.0,0.47943037974683544,0.5205696202531646,0.04113924050632911
+349,Sound.xyz,wevm,https://github.com/wevm/wagmi,['wagmi'],885,92,6127,1121,2021-11-23,TypeScript,MIT License,True,1.0,0.47943037974683544,0.5205696202531646,0.04113924050632911
+350,Giveth,OpenZeppelin,https://github.com/openzeppelin/solidity-ast,['solidity-ast'],734,89,93,28,2020-05-15,JavaScript,MIT License,True,3.0,0.215625,0.303125,0.08749999999999997
+351,Synthetix,OpenZeppelin,https://github.com/openzeppelin/solidity-ast,['solidity-ast'],734,89,93,28,2020-05-15,JavaScript,MIT License,True,2.0,0.215625,0.303125,0.08749999999999997
+352,Across,OpenZeppelin,https://github.com/openzeppelin/solidity-ast,['solidity-ast'],734,89,93,28,2020-05-15,JavaScript,MIT License,True,4.0,0.215625,0.303125,0.08749999999999997
+353,Superfluid,OpenZeppelin,https://github.com/openzeppelin/solidity-ast,['solidity-ast'],734,89,93,28,2020-05-15,JavaScript,MIT License,True,2.0,0.215625,0.303125,0.08749999999999997
+354,Across,coral xyz,https://github.com/coral-xyz/anchor,"['@coral-xyz/anchor' 'anchor-attribute-account' 'anchor-derive-space'
+ 'anchor-attribute-constant' 'anchor-attribute-event' 'anchor-lang-idl'
+ 'anchor-attribute-error' 'anchor-lang-idl-spec' 'anchor-derive-serde'
+ 'anchor-attribute-program' 'anchor-derive-accounts' 'anchor-syn'
+ 'anchor-attribute-access-control' 'anchor-lang']",332,23,3909,1420,2021-01-01,Rust,Apache License 2.0,False,1.0,0.3333333333333333,0.3333333333333333,0.0
+355,Superfluid,Facebook Open Source,https://github.com/facebook/react-native,"['@react-native/dev-middleware' '@react-native/debugger-frontend'
+ '@react-native/normalize-colors' '@react-native/assets-registry'
+ '@react-native/js-polyfills' '@react-native/gradle-plugin'
+ '@react-native/metro-babel-transformer' '@react-native/codegen'
+ '@react-native/babel-plugin-codegen' '@react-native/community-cli-plugin'
+ '@react-native/virtualized-lists' 'react-native'
+ '@react-native/babel-preset']",588,57,120193,24435,2015-01-09,C++,MIT License,False,2.0,0.15,0.15,0.0
+356,Agora,Facebook Open Source,https://github.com/facebook/react-native,"['@react-native/babel-preset' '@react-native/assets-registry'
+ '@react-native/dev-middleware' '@react-native/virtualized-lists'
+ '@react-native/js-polyfills' 'react-native'
+ '@react-native/metro-babel-transformer' '@react-native/normalize-colors'
+ '@react-native/codegen' '@react-native/community-cli-plugin'
+ '@react-native/babel-plugin-codegen' '@react-native/debugger-frontend'
+ '@react-native/gradle-plugin']",588,57,120193,24435,2015-01-09,C++,MIT License,False,2.0,0.15,0.15,0.0
+357,Boost Studios,Solady (by Vectorized),https://github.com/vectorized/solady,['solady'],79,15,2710,365,2022-07-16,Solidity,MIT License,True,1.0,0.1,0.1,0.0
+358,Boost Studios,Webpack,https://github.com/webpack/webpack,['webpack'],1934,97,64959,8926,2012-03-10,JavaScript,MIT License,False,1.0,0.53125,0.3875,-0.14375
+359,Ethereum Attestation Service,Webpack,https://github.com/webpack/webpack,['webpack'],1934,97,64959,8926,2012-03-10,JavaScript,MIT License,False,1.0,0.53125,0.3875,-0.14375
+360,Superfluid,Webpack,https://github.com/webpack/webpack,['webpack'],1934,97,64959,8926,2012-03-10,JavaScript,MIT License,False,1.0,0.53125,0.3875,-0.14375
+361,Sushi,Webpack,https://github.com/webpack/webpack,['webpack'],1934,97,64959,8926,2012-03-10,JavaScript,MIT License,False,1.0,0.53125,0.3875,-0.14375
+362,Synthetix,Webpack,https://github.com/webpack/webpack,['webpack'],1934,97,64959,8926,2012-03-10,JavaScript,MIT License,False,1.0,0.53125,0.3875,-0.14375
+363,Giveth,Webpack,https://github.com/webpack/webpack,['webpack'],1934,97,64959,8926,2012-03-10,JavaScript,MIT License,False,1.0,0.53125,0.3875,-0.14375
+364,Across,Webpack,https://github.com/webpack/webpack,['webpack'],1934,97,64959,8926,2012-03-10,JavaScript,MIT License,False,1.0,0.53125,0.3875,-0.14375
+365,Velodrome,Jolly Roger and Hardhat-deploy,https://github.com/wighawag/hardhat-deploy,['hardhat-deploy'],733,80,1206,298,2020-03-19,TypeScript,MIT License,True,1.0,0.3686708860759494,0.3939873417721519,0.0253164556962025
+366,Sushi,Jolly Roger and Hardhat-deploy,https://github.com/wighawag/hardhat-deploy,['hardhat-deploy'],733,80,1206,298,2020-03-19,TypeScript,MIT License,True,1.0,0.3686708860759494,0.3939873417721519,0.0253164556962025
+367,Superfluid,Jolly Roger and Hardhat-deploy,https://github.com/wighawag/hardhat-deploy,['hardhat-deploy'],733,80,1206,298,2020-03-19,TypeScript,MIT License,True,1.0,0.3686708860759494,0.3939873417721519,0.0253164556962025
+368,Across,Jolly Roger and Hardhat-deploy,https://github.com/wighawag/hardhat-deploy,['hardhat-deploy'],733,80,1206,298,2020-03-19,TypeScript,MIT License,True,1.0,0.3686708860759494,0.3939873417721519,0.0253164556962025
+369,Superfluid,Rainbow,https://github.com/rainbow-me/rainbowkit,['@rainbow-me/rainbowkit'],530,59,2498,687,2021-08-04,MDX,MIT License,True,1.0,0.6666666666666666,0.6666666666666666,0.0
+370,Synthetix,Rainbow,https://github.com/rainbow-me/rainbowkit,['@rainbow-me/rainbowkit'],530,59,2498,687,2021-08-04,MDX,MIT License,True,1.0,0.6666666666666666,0.6666666666666666,0.0
+371,Smol Dapp,Rainbow,https://github.com/rainbow-me/rainbowkit,['@rainbow-me/rainbowkit'],530,59,2498,687,2021-08-04,MDX,MIT License,True,1.0,0.6666666666666666,0.6666666666666666,0.0
+372,Giveth,Metamask,https://github.com/metamask/obs-store,['@metamask/obs-store'],198,21,30,24,2017-01-15,TypeScript,ISC License,True,10.5,0.1360759493670886,0.12183544303797468,-0.01424050632911393
+373,Across,Scroll,https://github.com/scroll-tech/scroll,['@scroll-tech/contracts'],46,3,725,617,2022-09-07,Go,MIT License,False,1.0,0.25,0.25,0.0
+374,Giveth,Stellar,https://github.com/stellar/js-stellar-sdk,['@stellar/stellar-sdk'],63,3,650,316,2015-04-09,JavaScript,Apache License 2.0,False,1.0,0.05625,0.021875,-0.034375
+375,Synthetix,Coinbase,https://github.com/coinbase/coinbase-wallet-sdk,['@coinbase/wallet-sdk'],958,92,1534,604,2019-05-01,TypeScript,MIT License,False,1.0,0.5300632911392406,0.5205696202531646,-0.009493670886076
+376,Superfluid,Coinbase,https://github.com/coinbase/coinbase-wallet-sdk,['@coinbase/wallet-sdk'],958,92,1534,604,2019-05-01,TypeScript,MIT License,False,1.0,0.5300632911392406,0.5205696202531646,-0.009493670886076
+377,Giveth,Coinbase,https://github.com/coinbase/coinbase-wallet-sdk,['@coinbase/wallet-sdk'],958,92,1534,604,2019-05-01,TypeScript,MIT License,False,1.0,0.5300632911392406,0.5205696202531646,-0.009493670886076
+378,Across,Coinbase,https://github.com/coinbase/coinbase-wallet-sdk,['@coinbase/wallet-sdk'],958,92,1534,604,2019-05-01,TypeScript,MIT License,False,1.0,0.5300632911392406,0.5205696202531646,-0.009493670886076
+379,Sushi,Coinbase,https://github.com/coinbase/coinbase-wallet-sdk,['@coinbase/wallet-sdk'],958,92,1534,604,2019-05-01,TypeScript,MIT License,False,1.0,0.5300632911392406,0.5205696202531646,-0.009493670886076
+380,Ethereum Attestation Service,Coinbase,https://github.com/coinbase/coinbase-wallet-sdk,['@coinbase/wallet-sdk'],958,92,1534,604,2019-05-01,TypeScript,MIT License,False,1.0,0.5300632911392406,0.5205696202531646,-0.009493670886076
+381,Smol Dapp,Coinbase,https://github.com/coinbase/coinbase-wallet-sdk,['@coinbase/wallet-sdk'],958,92,1534,604,2019-05-01,TypeScript,MIT License,False,1.0,0.5300632911392406,0.5205696202531646,-0.009493670886076
+382,Agora,Coinbase,https://github.com/coinbase/coinbase-wallet-sdk,['@coinbase/wallet-sdk'],958,92,1534,604,2019-05-01,TypeScript,MIT License,False,1.0,0.5300632911392406,0.5205696202531646,-0.009493670886076
+383,Superfluid,Facebook Open Source,https://github.com/facebook/relay,['relay-runtime' '@ardatan/relay-compiler'],454,29,18470,1839,2015-08-10,Rust,MIT License,False,4.0,0.9166666666666666,0.5833333333333334,-0.33333333333333326
+384,Synthetix,Facebook Open Source,https://github.com/facebook/relay,['@ardatan/relay-compiler' 'relay-runtime'],454,29,18470,1839,2015-08-10,Rust,MIT License,False,3.0,0.9166666666666666,0.5833333333333334,-0.33333333333333326
+385,Boost Studios,Lens Protocol,https://github.com/lens-protocol/lens-sdk,"['@lens-protocol/gated-content' '@lens-protocol/shared-kernel'
+ '@lens-protocol/domain' '@lens-protocol/client'
+ '@lens-protocol/blockchain-bindings' '@lens-protocol/storage']",43,3,238,81,2022-11-29,TypeScript,MIT License,False,1.0,0.04430379746835443,0.020569620253164556,-0.023734177215189875
+386,Superfluid,Sequence,https://github.com/0xsequence/sequence.js,"['@0xsequence/network' '@0xsequence/abi' '@0xsequence/utils'
+ '@0xsequence/multicall']",69,8,305,60,2020-02-27,TypeScript,Other,True,1.0,0.08544303797468354,0.08227848101265822,-0.0031645569620253194
+387,Agora,Ponder,https://github.com/ponder-sh/ponder,['@ponder/utils' '@ponder/core'],32,6,719,116,2022-08-17,TypeScript,MIT License,False,1.0,0.030063291139240507,0.04746835443037975,0.017405063291139243
+388,Ethereum Attestation Service,Ponder,https://github.com/ponder-sh/ponder,['@ponder/core'],32,6,719,116,2022-08-17,TypeScript,MIT License,False,1.0,0.030063291139240507,0.04746835443037975,0.017405063291139243
+389,Basepaint,Ponder,https://github.com/ponder-sh/ponder,['@ponder/utils' '@ponder/core'],32,6,719,116,2022-08-17,TypeScript,MIT License,False,1.0,0.030063291139240507,0.04746835443037975,0.017405063291139243
+390,Sushi,OpenZeppelin,https://github.com/openzeppelin/openzeppelin-contracts,['@openzeppelin/contracts'],1766,146,25210,11867,2016-08-01,Solidity,MIT License,True,1.0,0.825,0.825,0.0
+391,Giveth,OpenZeppelin,https://github.com/openzeppelin/openzeppelin-contracts,['@openzeppelin/contracts'],1766,146,25210,11867,2016-08-01,Solidity,MIT License,True,1.0,0.825,0.825,0.0
+392,Ethereum Attestation Service,OpenZeppelin,https://github.com/openzeppelin/openzeppelin-contracts,['@openzeppelin/contracts'],1766,146,25210,11867,2016-08-01,Solidity,MIT License,True,1.0,0.825,0.825,0.0
+393,Across,OpenZeppelin,https://github.com/openzeppelin/openzeppelin-contracts,['@openzeppelin/contracts'],1766,146,25210,11867,2016-08-01,Solidity,MIT License,True,1.0,0.825,0.825,0.0
+394,Synthetix,OpenZeppelin,https://github.com/openzeppelin/openzeppelin-contracts,['openzeppelin-solidity' '@openzeppelin/contracts'],1766,146,25210,11867,2016-08-01,Solidity,MIT License,True,1.0,0.825,0.825,0.0
+395,Boost Studios,OpenZeppelin,https://github.com/openzeppelin/openzeppelin-contracts,['@openzeppelin/contracts'],1766,146,25210,11867,2016-08-01,Solidity,MIT License,True,1.0,0.825,0.825,0.0
+396,Velodrome,OpenZeppelin,https://github.com/openzeppelin/openzeppelin-contracts,['@openzeppelin/contracts'],1766,146,25210,11867,2016-08-01,Solidity,MIT License,True,1.0,0.825,0.825,0.0
+397,Superfluid,OpenZeppelin,https://github.com/openzeppelin/openzeppelin-contracts,['@openzeppelin/contracts'],1766,146,25210,11867,2016-08-01,Solidity,MIT License,True,1.0,0.825,0.825,0.0
+398,Boost Studios,wevm,https://github.com/wevm/abitype,['abitype'],1110,106,493,49,2022-08-03,TypeScript,MIT License,True,3.0,0.6123417721518988,0.694620253164557,0.08227848101265822
+399,Ethereum Attestation Service,wevm,https://github.com/wevm/abitype,['abitype'],1110,106,493,49,2022-08-03,TypeScript,MIT License,True,3.0,0.6123417721518988,0.694620253164557,0.08227848101265822
+400,Giveth,wevm,https://github.com/wevm/abitype,['abitype'],1110,106,493,49,2022-08-03,TypeScript,MIT License,True,3.0,0.6123417721518988,0.694620253164557,0.08227848101265822
+401,Superfluid,wevm,https://github.com/wevm/abitype,['abitype'],1110,106,493,49,2022-08-03,TypeScript,MIT License,True,3.0,0.6123417721518988,0.694620253164557,0.08227848101265822
+402,Agora,wevm,https://github.com/wevm/abitype,['abitype'],1110,106,493,49,2022-08-03,TypeScript,MIT License,True,3.0,0.6123417721518988,0.694620253164557,0.08227848101265822
+403,Synthetix,wevm,https://github.com/wevm/abitype,['abitype'],1110,106,493,49,2022-08-03,TypeScript,MIT License,True,3.0,0.6123417721518988,0.694620253164557,0.08227848101265822
+404,Basepaint,wevm,https://github.com/wevm/abitype,['abitype'],1110,106,493,49,2022-08-03,TypeScript,MIT License,True,2.0,0.6123417721518988,0.694620253164557,0.08227848101265822
+405,Smol Dapp,wevm,https://github.com/wevm/abitype,['abitype'],1110,106,493,49,2022-08-03,TypeScript,MIT License,True,3.0,0.6123417721518988,0.694620253164557,0.08227848101265822
+406,Sushi,wevm,https://github.com/wevm/abitype,['abitype'],1110,106,493,49,2022-08-03,TypeScript,MIT License,True,2.0,0.6123417721518988,0.694620253164557,0.08227848101265822
+407,Across,wevm,https://github.com/wevm/abitype,['abitype'],1110,106,493,49,2022-08-03,TypeScript,MIT License,True,2.0,0.6123417721518988,0.694620253164557,0.08227848101265822
+408,Giveth,Safe,https://github.com/safe-global/safe-deployments,['@safe-global/safe-deployments'],176,26,142,298,2021-04-14,TypeScript,MIT License,True,3.0,0.13132911392405064,0.13132911392405064,0.0
+409,Superfluid,Safe,https://github.com/safe-global/safe-deployments,['@safe-global/safe-deployments'],176,26,142,298,2021-04-14,TypeScript,MIT License,True,3.0,0.13132911392405064,0.13132911392405064,0.0
+410,Across,ESLint,https://github.com/eslint/rewrite,['@eslint/compat' '@eslint/config-array' '@eslint/object-schema'],358,23,185,13,2024-04-24,JavaScript,Apache License 2.0,False,3.0,0.071875,0.071875,0.0
+411,Synthetix,ESLint,https://github.com/eslint/rewrite,['@eslint/config-array' '@eslint/plugin-kit' '@eslint/object-schema'],358,23,185,13,2024-04-24,JavaScript,Apache License 2.0,False,3.0,0.071875,0.071875,0.0
+412,Giveth,ESLint,https://github.com/eslint/rewrite,"['@eslint/compat' '@eslint/object-schema' '@eslint/migrate-config'
+ '@eslint/config-array']",358,23,185,13,2024-04-24,JavaScript,Apache License 2.0,False,3.0,0.071875,0.071875,0.0
+413,Ethereum Attestation Service,ESLint,https://github.com/eslint/rewrite,"['@eslint/core' '@eslint/config-array' '@eslint/object-schema'
+ '@eslint/plugin-kit']",358,23,185,13,2024-04-24,JavaScript,Apache License 2.0,False,3.0,0.071875,0.071875,0.0
+414,Across,Offchain Labs,https://github.com/offchainlabs/arbitrum-sdk,['@arbitrum/sdk'],73,15,245,189,2022-03-14,TypeScript,Apache License 2.0,False,1.0,0.08860759493670886,0.09177215189873418,0.0031645569620253194
+415,Sushi,InterPlanetary Linked Data (IPLD),https://github.com/ipld/js-dag-pb,['@ipld/dag-pb'],642,45,16,6,2020-09-02,JavaScript,Other,False,3.0,0.134375,0.134375,0.0
+416,Synthetix,InterPlanetary Linked Data (IPLD),https://github.com/ipld/js-dag-pb,['@ipld/dag-pb'],642,45,16,6,2020-09-02,JavaScript,Other,False,3.0,0.134375,0.134375,0.0
+417,Superfluid,InterPlanetary Linked Data (IPLD),https://github.com/ipld/js-dag-pb,['@ipld/dag-pb'],642,45,16,6,2020-09-02,JavaScript,Other,False,3.0,0.134375,0.134375,0.0
+418,Giveth,InterPlanetary Linked Data (IPLD),https://github.com/ipld/js-dag-pb,['@ipld/dag-pb'],642,45,16,6,2020-09-02,JavaScript,Other,False,3.0,0.134375,0.134375,0.0
+419,Agora,Ethereum Attestation Service,https://github.com/ethereum-attestation-service/eas-sdk,['@ethereum-attestation-service/eas-sdk'],60,7,103,48,2020-10-21,TypeScript,MIT License,True,2.0,0.07753164556962025,0.0680379746835443,-0.009493670886075944
+421,Giveth,Ethereum Attestation Service,https://github.com/ethereum-attestation-service/eas-sdk,['@ethereum-attestation-service/eas-sdk'],60,7,103,48,2020-10-21,TypeScript,MIT License,True,2.0,0.07753164556962025,0.0680379746835443,-0.009493670886075944
+422,Giveth,Torus,https://github.com/torusresearch/eccrypto,['@toruslabs/eccrypto'],337,31,9,6,2020-07-02,TypeScript,Creative Commons Zero v1.0 Universal,False,1.0,0.17405063291139242,0.15822784810126583,-0.015822784810126583
+423,Synthetix,Cannon,https://github.com/usecannon/cannon,['hardhat-cannon' '@usecannon/builder' '@usecannon/cli'],7,2,106,24,2022-07-12,JavaScript,GNU General Public License v3.0,True,1.0,0.00625,0.00625,0.0
+424,Sushi,Hardhat Tracer,https://github.com/zemse/hardhat-tracer,['hardhat-tracer'],152,20,357,36,2020-12-20,TypeScript,MIT License,True,1.0,0.12658227848101267,0.11708860759493671,-0.009493670886075958
+425,Giveth,Safe,https://github.com/safe-global/safe-core-sdk,"['@safe-global/api-kit' '@safe-global/protocol-kit'
+ '@safe-global/safe-core-sdk-types']",225,31,266,221,2021-02-10,TypeScript,MIT License,True,2.0,0.15031645569620253,0.15822784810126583,0.007911392405063306
+426,Superfluid,Safe,https://github.com/safe-global/safe-core-sdk,"['@safe-global/safe-core-sdk-utils' '@safe-global/safe-service-client'
+ '@safe-global/safe-core-sdk' '@safe-global/safe-web3-lib'
+ '@safe-global/safe-core-sdk-types']",225,31,266,221,2021-02-10,TypeScript,MIT License,True,2.0,0.15031645569620253,0.15822784810126583,0.007911392405063306
+427,Synthetix,Facebook Open Source,https://github.com/facebook/jscodeshift,['jscodeshift'],674,60,9450,482,2015-03-07,JavaScript,MIT License,False,5.0,0.1875,0.20625,0.01874999999999999
+428,Agora,Facebook Open Source,https://github.com/facebook/jscodeshift,['jscodeshift'],674,60,9450,482,2015-03-07,JavaScript,MIT License,False,5.0,0.1875,0.20625,0.01874999999999999
+429,Superfluid,Facebook Open Source,https://github.com/facebook/jscodeshift,['jscodeshift'],674,60,9450,482,2015-03-07,JavaScript,MIT License,False,6.0,0.1875,0.20625,0.01874999999999999
+430,Across,Facebook Open Source,https://github.com/facebook/jscodeshift,['jscodeshift'],674,60,9450,482,2015-03-07,JavaScript,MIT License,False,4.0,0.1875,0.20625,0.01874999999999999
+431,Giveth,Facebook Open Source,https://github.com/facebook/jscodeshift,['jscodeshift'],674,60,9450,482,2015-03-07,JavaScript,MIT License,False,4.0,0.1875,0.20625,0.01874999999999999
+432,Across,OpenZeppelin,https://github.com/openzeppelin/defender-client,"['@openzeppelin/platform-deploy-client'
+ '@openzeppelin/defender-base-client']",252,34,56,47,2020-07-09,TypeScript,MIT License,True,5.0,0.1550632911392405,0.16455696202531644,0.009493670886075944
+433,Giveth,IPFS,https://github.com/ipfs/protons,['protons'],649,55,34,23,2016-06-08,TypeScript,Other,True,2.0,0.32436708860759494,0.22943037974683544,-0.0949367088607595
+434,Across,IPFS,https://github.com/ipfs/protons,['protons'],649,55,34,23,2016-06-08,TypeScript,Other,True,1.0,0.32436708860759494,0.22943037974683544,-0.0949367088607595
+435,Smol Dapp,Safe,https://github.com/safe-global/safe-gateway-typescript-sdk,['@safe-global/safe-gateway-typescript-sdk'],759,82,21,24,2021-07-07,TypeScript,MIT License,True,2.0,0.3860759493670886,0.4224683544303797,0.03639240506329111
+436,Agora,Safe,https://github.com/safe-global/safe-gateway-typescript-sdk,['@safe-global/safe-gateway-typescript-sdk'],759,82,21,24,2021-07-07,TypeScript,MIT License,True,2.0,0.3860759493670886,0.4224683544303797,0.03639240506329111
+437,Across,Safe,https://github.com/safe-global/safe-gateway-typescript-sdk,['@safe-global/safe-gateway-typescript-sdk'],759,82,21,24,2021-07-07,TypeScript,MIT License,True,2.0,0.3860759493670886,0.4224683544303797,0.03639240506329111
+438,Ethereum Attestation Service,Safe,https://github.com/safe-global/safe-gateway-typescript-sdk,['@safe-global/safe-gateway-typescript-sdk'],759,82,21,24,2021-07-07,TypeScript,MIT License,True,2.0,0.3860759493670886,0.4224683544303797,0.03639240506329111
+439,Synthetix,Safe,https://github.com/safe-global/safe-gateway-typescript-sdk,['@safe-global/safe-gateway-typescript-sdk'],759,82,21,24,2021-07-07,TypeScript,MIT License,True,2.0,0.3860759493670886,0.4224683544303797,0.03639240506329111
+440,Giveth,Safe,https://github.com/safe-global/safe-gateway-typescript-sdk,['@safe-global/safe-gateway-typescript-sdk'],759,82,21,24,2021-07-07,TypeScript,MIT License,True,4.0,0.3860759493670886,0.4224683544303797,0.03639240506329111
+441,Superfluid,Safe,https://github.com/safe-global/safe-gateway-typescript-sdk,['@safe-global/safe-gateway-typescript-sdk'],759,82,21,24,2021-07-07,TypeScript,MIT License,True,4.0,0.3860759493670886,0.4224683544303797,0.03639240506329111
+442,Synthetix,Optimism,https://github.com/ethereum-optimism/ecosystem,['@eth-optimism/sdk'],108,17,102,55,2023-09-11,TypeScript,MIT License,True,2.0,0.10443037974683544,0.10759493670886076,0.0031645569620253194
+443,Across,Optimism,https://github.com/ethereum-optimism/ecosystem,['@eth-optimism/sdk'],108,17,102,55,2023-09-11,TypeScript,MIT License,True,2.0,0.10443037974683544,0.10759493670886076,0.0031645569620253194
+444,Boost Studios,Optimism,https://github.com/ethereum-optimism/ecosystem,['@eth-optimism/sdk'],108,17,102,55,2023-09-11,TypeScript,MIT License,True,2.0,0.10443037974683544,0.10759493670886076,0.0031645569620253194
+445,Synthetix,Optimism,https://github.com/ethereum-optimism/optimism,['@eth-optimism/contracts' '@eth-optimism/core-utils'],417,53,5876,3423,2020-02-06,Go,MIT License,True,1.0,0.75,0.75,0.0
+446,Boost Studios,Optimism,https://github.com/ethereum-optimism/optimism,"['@eth-optimism/core-utils' '@eth-optimism/contracts'
+ '@eth-optimism/contracts-ts']",417,53,5876,3423,2020-02-06,Go,MIT License,True,1.0,0.75,0.75,0.0
+447,Across,Optimism,https://github.com/ethereum-optimism/optimism,['@eth-optimism/contracts' '@eth-optimism/core-utils'],417,53,5876,3423,2020-02-06,Go,MIT License,True,1.0,0.75,0.75,0.0
+448,Superfluid,zkSync SDK,https://github.com/zksync-sdk/zksync-ethers,['zksync-ethers'],150,26,28,36,2023-11-29,TypeScript,Apache License 2.0,False,1.0,0.12183544303797468,0.13132911392405064,0.009493670886075958
+449,Across,zkSync SDK,https://github.com/zksync-sdk/zksync-ethers,['zksync-ethers'],150,26,28,36,2023-11-29,TypeScript,Apache License 2.0,False,1.0,0.12183544303797468,0.13132911392405064,0.009493670886075958
+450,Giveth,Solana Mobile,https://github.com/solana-mobile/mobile-wallet-adapter,"['@solana-mobile/mobile-wallet-adapter-protocol-web3js'
+ '@solana-mobile/wallet-adapter-mobile'
+ '@solana-mobile/mobile-wallet-adapter-protocol']",140,14,252,110,2022-05-12,Java,Other,False,1.0,1.0,1.0,0.0
+452,Superfluid,InterPlanetary Linked Data (IPLD),https://github.com/ipld/js-dag-json,['@ipld/dag-json'],480,37,17,9,2018-08-14,JavaScript,Other,False,2.0,0.096875,0.096875,0.0
+453,Sushi,InterPlanetary Linked Data (IPLD),https://github.com/ipld/js-dag-json,['@ipld/dag-json'],480,37,17,9,2018-08-14,JavaScript,Other,False,2.0,0.096875,0.096875,0.0
+454,Synthetix,InterPlanetary Linked Data (IPLD),https://github.com/ipld/js-dag-json,['@ipld/dag-json'],480,37,17,9,2018-08-14,JavaScript,Other,False,2.0,0.096875,0.096875,0.0
+455,Giveth,InterPlanetary Linked Data (IPLD),https://github.com/ipld/js-dag-json,['@ipld/dag-json'],480,37,17,9,2018-08-14,JavaScript,Other,False,2.0,0.096875,0.096875,0.0
+457,Giveth,Superfluid,https://github.com/superfluid-finance/protocol-monorepo,"['@superfluid-finance/sdk-core' '@superfluid-finance/ethereum-contracts'
+ '@superfluid-finance/metadata']",33,2,874,239,2020-03-09,TypeScript,Other,True,1.0,0.0379746835443038,0.011075949367088608,-0.02689873417721519
+458,Across,Metamask,https://github.com/metamask/superstruct,['@metamask/superstruct'],386,52,2,0,2024-02-09,TypeScript,MIT License,True,11.0,0.1819620253164557,0.2199367088607595,0.037974683544303806
+459,Agora,Metamask,https://github.com/metamask/superstruct,['@metamask/superstruct'],386,52,2,0,2024-02-09,TypeScript,MIT License,True,10.0,0.1819620253164557,0.2199367088607595,0.037974683544303806
+460,Giveth,Metamask,https://github.com/metamask/superstruct,['@metamask/superstruct'],386,52,2,0,2024-02-09,TypeScript,MIT License,True,13.0,0.1819620253164557,0.2199367088607595,0.037974683544303806
+461,Superfluid,Metamask,https://github.com/metamask/superstruct,['@metamask/superstruct'],386,52,2,0,2024-02-09,TypeScript,MIT License,True,12.0,0.1819620253164557,0.2199367088607595,0.037974683544303806
+462,Superfluid,Metamask,https://github.com/metamask/eth-json-rpc-filters,['eth-json-rpc-filters'],1243,106,30,39,2017-06-14,JavaScript,ISC License,True,10.0,0.325,0.54375,0.21874999999999994
+463,Ethereum Attestation Service,Metamask,https://github.com/metamask/eth-json-rpc-filters,['eth-json-rpc-filters'],1243,106,30,39,2017-06-14,JavaScript,ISC License,True,4.0,0.325,0.54375,0.21874999999999994
+464,Giveth,Metamask,https://github.com/metamask/eth-json-rpc-filters,['eth-json-rpc-filters'],1243,106,30,39,2017-06-14,JavaScript,ISC License,True,10.5,0.325,0.54375,0.21874999999999994
+465,Agora,Metamask,https://github.com/metamask/eth-json-rpc-filters,['eth-json-rpc-filters'],1243,106,30,39,2017-06-14,JavaScript,ISC License,True,8.0,0.325,0.54375,0.21874999999999994
+466,Sushi,Metamask,https://github.com/metamask/eth-json-rpc-filters,['eth-json-rpc-filters'],1243,106,30,39,2017-06-14,JavaScript,ISC License,True,6.0,0.325,0.54375,0.21874999999999994
+467,Smol Dapp,Metamask,https://github.com/metamask/eth-json-rpc-filters,['eth-json-rpc-filters'],1243,106,30,39,2017-06-14,JavaScript,ISC License,True,8.0,0.325,0.54375,0.21874999999999994
+468,Synthetix,Metamask,https://github.com/metamask/eth-json-rpc-filters,['eth-json-rpc-filters'],1243,106,30,39,2017-06-14,JavaScript,ISC License,True,8.0,0.325,0.54375,0.21874999999999994
+469,Superfluid,The Graph,https://github.com/graphprotocol/graph-client,"['@graphprotocol/client-add-source-name'
+ '@graphprotocol/client-polling-live'
+ '@graphprotocol/client-auto-pagination'
+ '@graphprotocol/client-auto-type-merging'
+ '@graphprotocol/client-block-tracking' '@graphprotocol/client-cli']",51,5,178,44,2022-02-03,TypeScript,MIT License,False,1.0,0.05063291139240506,0.03322784810126582,-0.017405063291139243
+470,Giveth,Stellar,https://github.com/stellar/js-xdr,['@stellar/js-xdr'],62,3,26,31,2015-03-18,JavaScript,Apache License 2.0,False,3.0,0.05,0.021875,-0.028125000000000004
+471,Across,Polygon,https://github.com/maticnetwork/matic.js,['@maticnetwork/maticjs'],56,7,545,259,2018-08-23,TypeScript,MIT License,False,1.0,0.061708860759493674,0.0680379746835443,0.006329113924050632
+472,Boost Studios,Polygon,https://github.com/maticnetwork/matic.js,['@maticnetwork/maticjs'],56,7,545,259,2018-08-23,TypeScript,MIT License,False,1.0,0.061708860759493674,0.0680379746835443,0.006329113924050632
+473,Giveth,Ethereum Attestation Service,https://github.com/ethereum-attestation-service/eas-contracts,['@ethereum-attestation-service/eas-contracts'],59,7,256,83,2020-10-03,TypeScript,MIT License,True,1.0,0.06962025316455696,0.0680379746835443,-0.0015822784810126528
+475,Agora,Ethereum Attestation Service,https://github.com/ethereum-attestation-service/eas-contracts,['@ethereum-attestation-service/eas-contracts'],59,7,256,83,2020-10-03,TypeScript,MIT License,True,1.0,0.06962025316455696,0.0680379746835443,-0.0015822784810126528
+476,Giveth,Facebook Open Source,https://github.com/facebook/flow,['flow-parser'],694,61,22109,1863,2014-10-28,OCaml,MIT License,False,2.0,0.6,0.6,0.0
+477,Agora,Facebook Open Source,https://github.com/facebook/flow,['flow-enums-runtime' 'flow-parser' 'babel-plugin-transform-flow-enums'],694,61,22109,1863,2014-10-28,OCaml,MIT License,False,3.0,0.6,0.6,0.0
+478,Superfluid,Facebook Open Source,https://github.com/facebook/flow,['flow-parser' 'babel-plugin-transform-flow-enums' 'flow-enums-runtime'],694,61,22109,1863,2014-10-28,OCaml,MIT License,False,3.0,0.6,0.6,0.0
+479,Across,Facebook Open Source,https://github.com/facebook/flow,['flow-parser'],694,61,22109,1863,2014-10-28,OCaml,MIT License,False,2.0,0.6,0.6,0.0
+480,Synthetix,Facebook Open Source,https://github.com/facebook/flow,['flow-parser'],694,61,22109,1863,2014-10-28,OCaml,MIT License,False,2.0,0.6,0.6,0.0
+481,Sushi,Uniswap,https://github.com/uniswap/token-lists,['@uniswap/token-lists'],270,29,1491,1027,2020-06-10,TypeScript,MIT License,True,1.0,0.15981012658227847,0.15031645569620253,-0.009493670886075944
+482,Superfluid,Uniswap,https://github.com/uniswap/token-lists,['@uniswap/token-lists'],270,29,1491,1027,2020-06-10,TypeScript,MIT License,True,1.0,0.15981012658227847,0.15031645569620253,-0.009493670886075944
+483,Across,DePay,https://github.com/depayfi/web3-mock,['@depay/web3-mock'],16,5,90,21,2021-06-13,JavaScript,MIT License,False,1.0,0.028125,0.046875,0.01875
+484,Superfluid,DePay,https://github.com/depayfi/web3-mock,['@depay/web3-mock'],16,5,90,21,2021-06-13,JavaScript,MIT License,False,1.0,0.028125,0.046875,0.01875
+485,Ethereum Attestation Service,Metamask,https://github.com/metamask/utils,['@metamask/utils'],904,86,33,11,2022-02-23,TypeScript,ISC License,True,3.0,0.504746835443038,0.4572784810126582,-0.04746835443037978
+486,Smol Dapp,Metamask,https://github.com/metamask/utils,['@metamask/utils'],904,86,33,11,2022-02-23,TypeScript,ISC License,True,7.0,0.504746835443038,0.4572784810126582,-0.04746835443037978
+487,Sushi,Metamask,https://github.com/metamask/utils,['@metamask/utils'],904,86,33,11,2022-02-23,TypeScript,ISC License,True,5.0,0.504746835443038,0.4572784810126582,-0.04746835443037978
+488,Synthetix,Metamask,https://github.com/metamask/utils,['@metamask/utils'],904,86,33,11,2022-02-23,TypeScript,ISC License,True,7.0,0.504746835443038,0.4572784810126582,-0.04746835443037978
+489,Superfluid,Metamask,https://github.com/metamask/utils,['@metamask/utils'],904,86,33,11,2022-02-23,TypeScript,ISC License,True,9.0,0.504746835443038,0.4572784810126582,-0.04746835443037978
+490,Agora,Metamask,https://github.com/metamask/utils,['@metamask/utils'],904,86,33,11,2022-02-23,TypeScript,ISC License,True,7.0,0.504746835443038,0.4572784810126582,-0.04746835443037978
+491,Across,Metamask,https://github.com/metamask/utils,['@metamask/utils'],904,86,33,11,2022-02-23,TypeScript,ISC License,True,9.0,0.504746835443038,0.4572784810126582,-0.04746835443037978
+492,Giveth,Metamask,https://github.com/metamask/utils,['@metamask/utils'],904,86,33,11,2022-02-23,TypeScript,ISC License,True,9.0,0.504746835443038,0.4572784810126582,-0.04746835443037978
+493,Synthetix,Notifi Network,https://github.com/notifi-network/notifi-sdk-ts,"['@notifi-network/notifi-axios-adapter'
+ '@notifi-network/notifi-axios-utils' '@notifi-network/notifi-react-card'
+ '@notifi-network/notifi-core' '@notifi-network/notifi-graphql'
+ '@notifi-network/notifi-frontend-client'
+ '@notifi-network/notifi-react-hooks']",10,1,68,24,2022-03-01,TypeScript,MIT License,False,1.0,0.004746835443037975,0.004746835443037975,0.0
+494,Boost Studios,Lit Protocol,https://github.com/lit-protocol/js-sdk,"['@lit-protocol/crypto' '@lit-protocol/constants'
+ '@lit-protocol/misc-browser' '@lit-protocol/types'
+ '@lit-protocol/auth-browser' '@lit-protocol/node-client'
+ '@lit-protocol/lit-third-party-libs' '@lit-protocol/bls-sdk'
+ '@lit-protocol/uint8arrays' '@lit-protocol/misc'
+ '@lit-protocol/encryption' '@lit-protocol/nacl' '@lit-protocol/ecdsa-sdk'
+ '@lit-protocol/access-control-conditions']",67,3,115,72,2022-08-19,TypeScript,MIT License,False,1.0,0.08227848101265822,0.020569620253164556,-0.06170886075949367
+495,Across,Metamask,https://github.com/metamask/providers,['@metamask/providers'],526,65,239,128,2018-08-09,TypeScript,MIT License,True,3.0,0.23575949367088608,0.28322784810126583,0.04746835443037975
+496,Synthetix,Metamask,https://github.com/metamask/providers,['@metamask/providers'],526,65,239,128,2018-08-09,TypeScript,MIT License,True,2.0,0.23575949367088608,0.28322784810126583,0.04746835443037975
+497,Agora,Metamask,https://github.com/metamask/providers,['@metamask/providers'],526,65,239,128,2018-08-09,TypeScript,MIT License,True,3.0,0.23575949367088608,0.28322784810126583,0.04746835443037975
+498,Superfluid,Metamask,https://github.com/metamask/providers,['@metamask/providers'],526,65,239,128,2018-08-09,TypeScript,MIT License,True,3.0,0.23575949367088608,0.28322784810126583,0.04746835443037975
+499,Smol Dapp,Metamask,https://github.com/metamask/providers,['@metamask/providers'],526,65,239,128,2018-08-09,TypeScript,MIT License,True,2.0,0.23575949367088608,0.28322784810126583,0.04746835443037975
+500,Giveth,Metamask,https://github.com/metamask/providers,['@metamask/providers'],526,65,239,128,2018-08-09,TypeScript,MIT License,True,3.0,0.23575949367088608,0.28322784810126583,0.04746835443037975
+501,Agora,Metamask,https://github.com/metamask/object-multiplex,['@metamask/object-multiplex'],538,67,14,15,2017-09-08,TypeScript,ISC License,True,9.0,0.2674050632911392,0.32436708860759494,0.05696202531645572
+502,Giveth,Metamask,https://github.com/metamask/object-multiplex,['@metamask/object-multiplex'],538,67,14,15,2017-09-08,TypeScript,ISC License,True,12.0,0.2674050632911392,0.32436708860759494,0.05696202531645572
+503,Smol Dapp,Metamask,https://github.com/metamask/object-multiplex,['@metamask/object-multiplex'],538,67,14,15,2017-09-08,TypeScript,ISC License,True,9.0,0.2674050632911392,0.32436708860759494,0.05696202531645572
+504,Across,Metamask,https://github.com/metamask/object-multiplex,['@metamask/object-multiplex'],538,67,14,15,2017-09-08,TypeScript,ISC License,True,10.0,0.2674050632911392,0.32436708860759494,0.05696202531645572
+505,Superfluid,Metamask,https://github.com/metamask/object-multiplex,['@metamask/object-multiplex'],538,67,14,15,2017-09-08,TypeScript,ISC License,True,11.0,0.2674050632911392,0.32436708860759494,0.05696202531645572
+506,Synthetix,Metamask,https://github.com/metamask/object-multiplex,['@metamask/object-multiplex'],538,67,14,15,2017-09-08,TypeScript,ISC License,True,9.0,0.2674050632911392,0.32436708860759494,0.05696202531645572
+507,Agora,wevm,https://github.com/wevm/ox,['ox'],273,42,127,10,2024-08-13,TypeScript,MIT License,True,4.0,0.16772151898734178,0.17088607594936708,0.0031645569620253056
+508,Across,wevm,https://github.com/wevm/ox,['ox'],273,42,127,10,2024-08-13,TypeScript,MIT License,True,3.0,0.16772151898734178,0.17088607594936708,0.0031645569620253056
+509,Giveth,wevm,https://github.com/wevm/ox,['ox'],273,42,127,10,2024-08-13,TypeScript,MIT License,True,4.0,0.16772151898734178,0.17088607594936708,0.0031645569620253056
+510,Boost Studios,Zora,https://github.com/ourzora/zora-protocol,"['@zoralabs/zora-1155-contracts' '@zoralabs/protocol-sdk'
+ '@zoralabs/protocol-rewards' '@zoralabs/protocol-deployments']",11,6,153,108,2023-02-01,Solidity,MIT License,True,1.0,0.05,0.05,0.0
+511,Boost Studios,Paraswap,https://github.com/paraswap/paraswap-sdk,['@paraswap/sdk'],30,5,721,106,2019-10-08,TypeScript,Other,True,1.0,0.022151898734177215,0.03322784810126582,0.011075949367088604
+512,Sound.xyz,pnpm,https://github.com/pnpm/pnpm,"['@pnpm/write-project-manifest' '@pnpm/constants' '@pnpm/graceful-fs'
+ '@pnpm/read-project-manifest' '@pnpm/error' '@pnpm/types'
+ '@pnpm/exportable-manifest']",59,6,30510,1055,2016-01-28,TypeScript,MIT License,False,1.0,0.06962025316455696,0.04746835443037975,-0.02215189873417721
+513,Agora,OpenZeppelin,https://github.com/openzeppelin/merkle-tree,['@openzeppelin/merkle-tree'],133,17,472,112,2022-10-24,TypeScript,MIT License,True,1.0,0.11234177215189874,0.10759493670886076,-0.004746835443037972
+514,Ethereum Attestation Service,OpenZeppelin,https://github.com/openzeppelin/merkle-tree,['@openzeppelin/merkle-tree'],133,17,472,112,2022-10-24,TypeScript,MIT License,True,2.0,0.11234177215189874,0.10759493670886076,-0.004746835443037972
+515,Boost Studios,Uniswap,https://github.com/uniswap/universal-router,['@uniswap/universal-router'],74,10,422,226,2022-07-27,TypeScript,GNU General Public License v3.0,True,1.0,0.09177215189873418,0.08860759493670886,-0.0031645569620253194
+516,Across,Synpress,https://github.com/synthetixio/synpress,['@synthetixio/synpress'],51,7,621,201,2020-11-18,TypeScript,,True,1.0,0.05063291139240506,0.0680379746835443,0.017405063291139243
+517,Superfluid,Synpress,https://github.com/synthetixio/synpress,['@synthetixio/synpress'],51,7,621,201,2020-11-18,TypeScript,,True,1.0,0.05063291139240506,0.0680379746835443,0.017405063291139243
+518,Agora,Alchemy,https://github.com/alchemyplatform/aa-sdk,"['@account-kit/logging' '@alchemy/aa-alchemy' '@alchemy/aa-accounts'
+ '@account-kit/infra' '@alchemy/aa-core' '@aa-sdk/core'
+ '@account-kit/smart-contracts']",35,6,238,135,2023-05-19,TypeScript,MIT License,True,1.0,0.04113924050632911,0.04746835443037975,0.006329113924050639
+520,Synthetix,Snapshot,https://github.com/snapshot-labs/snapshot.js,['@snapshot-labs/snapshot.js'],53,9,239,579,2020-09-05,TypeScript,MIT License,True,1.0,0.056962025316455694,0.08544303797468354,0.028481012658227847
+521,Giveth,Stellar,https://github.com/stellar/js-stellar-base,['@stellar/stellar-base'],61,3,109,137,2015-04-02,JavaScript,Apache License 2.0,False,2.0,0.04375,0.021875,-0.021875
+522,Agora,Pinata,https://github.com/pinatacloud/pinata-web3,['pinata-web3'],12,1,2,1,2024-08-24,TypeScript,MIT License,False,1.0,0.012658227848101266,0.004746835443037975,-0.007911392405063292
+523,Boost Studios,Lens Protocol,https://github.com/lens-protocol/metadata,['@lens-protocol/metadata'],27,3,8,6,2023-08-14,TypeScript,MIT License,False,2.0,0.015822784810126583,0.020569620253164556,0.004746835443037972
+527,Boost Studios,Paraswap,https://github.com/paraswap/paraswap-core,['@paraswap/core'],29,5,3,7,2021-07-30,TypeScript,,True,2.0,0.0189873417721519,0.03322784810126582,0.01424050632911392
+528,Across,UMA,https://github.com/umaprotocol/protocol,"['@uma/core' '@uma/contracts-node' '@uma/contracts-frontend'
+ '@uma/merkle-distributor' '@uma/logger' '@uma/common']",12,3,388,184,2018-07-24,JavaScript,GNU Affero General Public License v3.0,False,1.0,0.0125,0.021875,0.009374999999999998
+529,Across,DePay,https://github.com/depayfi/web3-blockchains,['@depay/web3-blockchains'],16,5,6,5,2021-06-21,JavaScript,MIT License,False,2.0,0.028125,0.046875,0.01875
+530,Superfluid,DePay,https://github.com/depayfi/web3-blockchains,['@depay/web3-blockchains'],16,5,6,5,2021-06-21,JavaScript,MIT License,False,2.0,0.028125,0.046875,0.01875
+531,Synthetix,Socket,https://github.com/socketdottech/plugin,['@socket.tech/plugin'],10,5,40,16,2022-06-24,TypeScript,MIT License,True,1.0,0.004746835443037975,0.03322784810126582,0.028481012658227844
+533,Boost Studios,Hop Protocol,https://github.com/hop-protocol/hop,['@hop-protocol/sdk'],11,2,2847,195,2020-10-19,TypeScript,MIT License,True,1.0,0.00949367088607595,0.011075949367088608,0.001582278481012658
