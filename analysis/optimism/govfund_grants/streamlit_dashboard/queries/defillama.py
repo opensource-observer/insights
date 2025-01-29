@@ -6,7 +6,11 @@ from config import BIGQUERY_PROJECT_NAME
 from processing import tvl_col_to_df, chain_tvls_col_to_df, tokens_col_to_df, tokens_in_usd_col_to_df
 
 # query protocol data from bigquery
-def query_tvl(client: bigquery.Client, protocol: str) -> pd.DataFrame:
+def query_tvl(
+    client: bigquery.Client,
+    protocol: str,
+    bigquery_project_name: str = BIGQUERY_PROJECT_NAME,
+) -> pd.DataFrame:
     sql_query = f"""
         select
             name,
@@ -17,7 +21,7 @@ def query_tvl(client: bigquery.Client, protocol: str) -> pd.DataFrame:
             current_chain_tvls,
             raises,
             metrics
-        from `{BIGQUERY_PROJECT_NAME}.defillama_tvl.{protocol}`
+        from `{bigquery_project_name}.defillama_tvl.{protocol}`
     """
 
     # execute the query
@@ -27,10 +31,14 @@ def query_tvl(client: bigquery.Client, protocol: str) -> pd.DataFrame:
     return protocol_df
 
 # take in a bigquery client and target protocol and return it's tvl data
-def query_tvl_data_from_bq(client: bigquery.Client, protocol: Any) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+def query_tvl_data_from_bq(
+    client: bigquery.Client,
+    protocol: Any,
+    bigquery_project_name: str = BIGQUERY_PROJECT_NAME,
+) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
 
     # query the tvl dataset
-    protocol_df = query_tvl(client=client, protocol=protocol)
+    protocol_df = query_tvl(client=client, protocol=protocol, bigquery_project_name=bigquery_project_name)
 
     # the tvl data is stored by column, so each of the following functions unravel the relevant columns into it's respective dataset
     chain_tvls_df = chain_tvls_col_to_df(df=protocol_df)
