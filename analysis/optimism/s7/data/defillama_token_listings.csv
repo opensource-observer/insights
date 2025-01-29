@@ -1,0 +1,99 @@
+,token,chain,protocol,usd_value
+94,WSTETH,"Base, Base-borrowed, Fraxtal, Optimism, Optimism-borrowed","aave_v3, velodrome",17674305493
+85,WBTC,"BOB, Mode, Optimism, Optimism-borrowed","aave_v3, velodrome",7976433241
+89,WETH,"Base, Base-borrowed, Lisk, Mode, Optimism, Optimism-borrowed","aave_v3, velodrome",4282000497
+81,USDT,"BOB, Base, Base-staking, Fraxtal, Lisk, Mode, Optimism, Optimism-borrowed, Optimism-staking","aave_v3, beefy, velodrome",2551659871
+9,CBBTC,"Base, Base-borrowed",aave_v3,1524236617
+76,USDC,"BOB, Base, Base-borrowed, Fraxtal, Mode, Optimism, Optimism-borrowed","aave_v3, velodrome",1117159825
+36,LINK,"Optimism, Optimism-borrowed",aave_v3,824129204
+52,RETH,"BOB, Optimism, Optimism-borrowed","aave_v3, velodrome",374261815
+0,AAVE,Optimism,"aave_v3, velodrome",373034498
+87,WEETH.BASE,"Base, Base-borrowed",aave_v3,329400340
+10,CBETH,"Base, Base-borrowed",aave_v3,68394870
+46,OP,"Optimism, Optimism-borrowed","aave_v3, velodrome",59697968
+12,DAI,"Optimism, Optimism-borrowed","aave_v3, velodrome",38986817
+66,SUSD,"Optimism, Optimism-borrowed","aave_v3, velodrome",15780011
+77,USDC.E,"Lisk, Optimism, Optimism-borrowed","aave_v3, velodrome",14126340
+17,DOLA,Optimism,velodrome,7704761
+38,LUSD,"Optimism, Optimism-borrowed","aave_v3, velodrome",4165044
+24,FRAX,"Fraxtal, Optimism",velodrome,3995667
+72,UNIBTC,Mode,velodrome,3765607
+40,MBTC,Mode,velodrome,3752228
+2,ALUSD,Optimism,velodrome,3414786
+1,ALETH,Optimism,velodrome,2765729
+25,FRXETH,Optimism,velodrome,2114277
+69,TBTC,"BOB, Optimism",velodrome,1586697
+28,HAI,Optimism,velodrome,1148374
+37,LSK,Lisk,velodrome,678223
+86,WEETH,Optimism,velodrome,666991
+60,SFRXETH,"Fraxtal, Optimism",velodrome,657289
+32,IUSD,Mode,velodrome,590796
+82,USX,Optimism,velodrome,580980
+39,MAI,"Optimism, Optimism-borrowed","aave_v3, velodrome",496703
+90,WFRXETH,Fraxtal,velodrome,394966
+42,MODE,Mode,velodrome,318503
+67,SUSDE,"Fraxtal, Mode",velodrome,286980
+75,USDBC,"Base, Base-borrowed",aave_v3,248861
+74,USDA,Optimism,velodrome,207808
+79,USDE,Fraxtal,velodrome,190606
+21,ETH,BOB,velodrome,186083
+29,ICL,Mode,velodrome,160974
+57,SETH,Optimism,velodrome,117519
+15,DF,Optimism,velodrome,111074
+6,BMX,Mode,velodrome,108098
+27,FXS,"Fraxtal, Optimism",velodrome,81273
+92,WMLT,Mode,velodrome,78828
+22,EZETH,"Mode, Optimism",velodrome,65767
+54,SAIL,Optimism,velodrome,55966
+88,WEETH.M,Mode,velodrome,52364
+26,FXB_20261231,Fraxtal,velodrome,37820
+11,COMP,Optimism,velodrome,26951
+59,SFRAX,Optimism,velodrome,17375
+34,KWENTA,Optimism,velodrome,11232
+83,UTS,Optimism,velodrome,10825
+73,USD+,Optimism,velodrome,9944
+80,USDGLO,Optimism,velodrome,8779
+31,ION,Mode,velodrome,6800
+64,STERN,Optimism,velodrome,4739
+13,DAI+,Optimism,velodrome,3722
+30,INETH,Optimism,velodrome,3047
+95,XOPENX,Optimism,velodrome,3044
+65,STONE,"Mode, Optimism",velodrome,2906
+58,SEUR,Optimism,velodrome,2549
+61,SNX,Optimism,velodrome,1910
+49,PEPE,Optimism,velodrome,1519
+47,OPENX,Optimism,velodrome,1362
+18,DUSD,Optimism,velodrome,1315
+56,SDAI,Optimism,velodrome,1142
+44,MOOBIFI,Optimism,velodrome,1114
+91,WLD,Optimism,velodrome,1004
+48,OVN,Optimism,velodrome,815
+63,SOLVBTC.BBN,BOB,velodrome,723
+84,VELO,Optimism,velodrome,547
+70,TUSD,Optimism,velodrome,542
+20,ERN,Optimism,velodrome,385
+93,WRSETH,Optimism,velodrome,354
+43,MONEY,Optimism,velodrome,197
+68,T,Optimism,velodrome,133
+96,XZOOMER,Optimism,velodrome,120
+55,SBTC,Optimism,velodrome,64
+35,LDO,Optimism,velodrome,46
+7,BOB,Optimism,velodrome,35
+14,DCN,Optimism,velodrome,31
+78,USDD,Optimism,velodrome,14
+5,BITCOIN,Optimism,velodrome,12
+4,BITANT,Optimism,velodrome,9
+8,BUSD,Optimism,velodrome,5
+51,PREMIA,Optimism,velodrome,4
+45,NUSD2,Optimism,velodrome,2
+3,AXLUSDC,Optimism,velodrome,1
+53,RSETH,Mode,velodrome,0
+71,TUX,Optimism,velodrome,0
+41,MMY,Optimism,velodrome,0
+62,SOLVBTC,BOB,velodrome,0
+16,DHT,Optimism,velodrome,0
+50,PERP,Optimism,velodrome,0
+19,ENS,Optimism,velodrome,0
+23,FIS,Optimism,velodrome,0
+33,KROM,Optimism,velodrome,0
+97,YVOP,Optimism,velodrome,0
