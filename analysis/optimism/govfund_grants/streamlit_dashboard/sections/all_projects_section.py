@@ -9,7 +9,7 @@ def high_level_overview_table(df: pd.DataFrame, alpha: float) -> None:
     st.markdown(
         """
         <p style="color: grey; font-style: italic;">
-        Projects are ordered, left to right, by their average percent change across all metrics
+        Projects are ordered, left to right, based on the number of metrics that saw statistically significant increases
         </p>
         """,
         unsafe_allow_html=True,
@@ -79,16 +79,11 @@ def high_level_overview_table(df: pd.DataFrame, alpha: float) -> None:
     # create a ranking dictionary to store mean percent change for each project
     ranking = {}
     for project_name, row in simplified_df.iterrows():
-        vals = []
+        cnt = 0
         for col in simplified_df.columns:
-            if "%" in str(row[col]):
-                try:
-                    num = float(row[col].split('%')[0].lstrip('+-'))
-                    vals.append(num)
-                except ValueError:
-                    continue
-        if len(vals) > 0:
-            ranking[project_name] = sum(vals) / len(vals)  # calculate the mean percent change
+            if "increase" in str(row[col]):
+                cnt += 1
+        ranking[project_name] = cnt
 
     # rank projects based on mean percent change (highest to lowest)
     ranked_projects = sorted(ranking, key=ranking.get, reverse=True)

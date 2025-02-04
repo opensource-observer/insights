@@ -134,7 +134,10 @@ def forecast_project(datasets: Dict[str, pd.DataFrame], grant_date: datetime) ->
 
     if len(pre_grant_df) >= 10:
         # identify target columns for forecasting
-        target_cols = aggregated_dataset.drop(['date', 'grant_label'], axis=1).columns
+        if 'protocol' in aggregated_dataset.columns:
+            target_cols = aggregated_dataset.drop(['date', 'grant_label', 'protocol'], axis=1).columns
+        else:
+            target_cols = aggregated_dataset.drop(['date', 'grant_label'], axis=1).columns
 
         # initialize the forecasted dataframe
         forecasted_df = None
@@ -142,32 +145,55 @@ def forecast_project(datasets: Dict[str, pd.DataFrame], grant_date: datetime) ->
         for col in target_cols:
             # adjust forecasting parameters based on the column
             if col == 'TVL':
-                col_forecasted_df2 = forecast_based_on_chain_tvl(
-                    chain_tvl=optimism_bridge_tvl, 
-                    target_protocol=aggregated_dataset,
-                    grant_date=grant_date
-                )
+                protocols = aggregated_dataset["protocol"].dropna().unique().tolist()
 
-                col_forecasted_df = forecast_based_on_pregrant(
-                    pre_grant_df, 
-                    post_grant_df, 
-                    bootstrap_ratio=0, 
-                    noise_std=0.05, 
-                    target_col=col
-                )
+                for protocol in protocols:
+                    curr_protocol_aggregated_dataset = aggregated_dataset[aggregated_dataset["protocol"] == protocol].drop("protocol", axis=1)
+                    curr_protocol_pre_grant_df = pre_grant_df[pre_grant_df["protocol"] == protocol].drop("protocol", axis=1)
+                    curr_protocol_post_grant_df = post_grant_df[post_grant_df["protocol"] == protocol].drop("protocol", axis=1)
 
-                if col_forecasted_df is not None and col_forecasted_df2 is not None:
-                    col_forecasted_df = col_forecasted_df.merge(col_forecasted_df2, how='outer', on='date')
-                elif col_forecasted_df2 is not None and col_forecasted_df is None:
-                    col_forecasted_df = col_forecasted_df2
+                    if len(curr_protocol_aggregated_dataset) > 10 and len(curr_protocol_pre_grant_df) > 10 and len(curr_protocol_post_grant_df) > 10:
+                        
+                        col_forecasted_df2 = forecast_based_on_chain_tvl(
+                            chain_tvl=optimism_bridge_tvl, 
+                            target_protocol=curr_protocol_aggregated_dataset,
+                            grant_date=grant_date
+                        )
+
+                        col_forecasted_df = forecast_based_on_pregrant(
+                            curr_protocol_pre_grant_df, 
+                            curr_protocol_post_grant_df, 
+                            bootstrap_ratio=0, 
+                            noise_std=0.05, 
+                            target_col=col
+                        )
+
+                        if col_forecasted_df is not None and col_forecasted_df2 is not None:
+                            col_forecasted_df.rename(columns={"forecasted_TVL": f"forecasted_TVL-{protocol}"}, inplace=True)
+                            col_forecasted_df2.rename(columns={"forecasted_TVL_opchain": f"forecasted_TVL_opchain-{protocol}"}, inplace=True)
+                            col_forecasted_df = col_forecasted_df.merge(col_forecasted_df2, how='outer', on='date')
+                        elif col_forecasted_df2 is not None and col_forecasted_df is None:
+                            col_forecasted_df = col_forecasted_df2
+                            col_forecasted_df2.rename(columns={"forecasted_TVL_opchain": f"forecasted_TVL_opchain-{protocol}"}, inplace=True)
+                        else:
+                            col_forecasted_df = None
 
             else:
-                col_forecasted_df = forecast_based_on_pregrant(
-                    pre_grant_df, 
-                    post_grant_df, 
-                    bootstrap_ratio=0.33, 
-                    target_col=col
-                )
+
+                if 'protocol' in pre_grant_df.columns:
+                    col_forecasted_df = forecast_based_on_pregrant(
+                        pre_grant_df.drop("protocol", axis=1), 
+                        post_grant_df.drop("protocol", axis=1), 
+                        bootstrap_ratio=0.33, 
+                        target_col=col
+                    )
+                else:
+                    col_forecasted_df = forecast_based_on_pregrant(
+                        pre_grant_df, 
+                        post_grant_df, 
+                        bootstrap_ratio=0.33, 
+                        target_col=col
+                    )
 
             # merge the forecasts for each column
             if forecasted_df is None:
@@ -175,6 +201,7 @@ def forecast_project(datasets: Dict[str, pd.DataFrame], grant_date: datetime) ->
             else:
                 forecasted_df = forecasted_df.merge(col_forecasted_df, on='date', how='outer')
 
+        print(forecasted_df)
         return forecasted_df
 
     return None
@@ -230,9 +257,8 @@ def forecast_based_on_chain_tvl(
     y_post_grant = target_protocol_post_grant["TVL_normalized"].values
 
     if len(X_pre_grant) < 20 or len(y_pre_grant) < 20:
-        print('here')
         return None
-
+    
     predictions = []
     model = LinearRegression()
     rng = np.random.RandomState(random_state)
@@ -253,7 +279,8 @@ def forecast_based_on_chain_tvl(
         y_pre_grant_curr = np.nan_to_num(y_pre_grant_curr, nan=0.0, posinf=0.0, neginf=0.0)
 
         # train the Linear Regression model
-        model.fit(X=X_pre_grant_curr, y=y_pre_grant_curr)
+        pre_grant_min = min(len(X_pre_grant_curr), len(y_pre_grant_curr))
+        model.fit(X=X_pre_grant_curr[:pre_grant_min], y=y_pre_grant_curr[:pre_grant_min])
 
         # predict post-grant TVL
         pred = model.predict(X_post_grant_curr[:forecast_window])

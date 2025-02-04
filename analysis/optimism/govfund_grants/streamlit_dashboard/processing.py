@@ -63,7 +63,7 @@ def make_net_transaction_dataset(transaction_flow_df: pd.DataFrame) -> pd.DataFr
     return transaction_direction_df
 
 # create a dataframe for TVL data by chain
-def chain_tvls_col_to_df(df: pd.DataFrame) -> pd.DataFrame:
+def chain_tvls_col_to_df(df: pd.DataFrame, protocol: str) -> pd.DataFrame:
     try:
         # grab the data from the respective column
         chain_tvls = pd.DataFrame(json.loads(df.iloc[0, 1]))
@@ -100,6 +100,7 @@ def chain_tvls_col_to_df(df: pd.DataFrame) -> pd.DataFrame:
             lambda x: datetime.fromtimestamp(x, tz=timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
         )
         cleaned_df['readable_date'] = pd.to_datetime(cleaned_df['readable_date'])
+        cleaned_df['protocol'] = protocol
 
         return cleaned_df
     except Exception as e:
@@ -107,7 +108,7 @@ def chain_tvls_col_to_df(df: pd.DataFrame) -> pd.DataFrame:
         return pd.DataFrame()  # return an empty DataFrame if there's an error
 
 # Create a dataframe for aggregate TVL data
-def tvl_col_to_df(df: pd.DataFrame) -> pd.DataFrame:
+def tvl_col_to_df(df: pd.DataFrame, protocol: str) -> pd.DataFrame:
     try:
         # Extract TVL data from its respective column
         tvl_data = json.loads(df.iloc[0, 2])
@@ -122,6 +123,7 @@ def tvl_col_to_df(df: pd.DataFrame) -> pd.DataFrame:
             lambda x: datetime.fromtimestamp(x, tz=timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
         )
         tvl_df['readable_date'] = pd.to_datetime(tvl_df['readable_date'])
+        tvl_df['protocol'] = protocol
 
         return tvl_df
     except Exception as e:
@@ -129,7 +131,7 @@ def tvl_col_to_df(df: pd.DataFrame) -> pd.DataFrame:
         return pd.DataFrame()  # Return an empty DataFrame if there's an error
 
 # create a dataframe for token data (in USD)
-def tokens_in_usd_col_to_df(df: pd.DataFrame) -> pd.DataFrame:
+def tokens_in_usd_col_to_df(df: pd.DataFrame, protocol: str) -> pd.DataFrame:
     try:
         # extract tokens_in_usd data from the column
         tokens_data = json.loads(df.iloc[0, 3])
@@ -157,6 +159,7 @@ def tokens_in_usd_col_to_df(df: pd.DataFrame) -> pd.DataFrame:
             lambda x: datetime.fromtimestamp(x, tz=timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
         )
         flattened_tokens_df['readable_date'] = pd.to_datetime(flattened_tokens_df['readable_date'])
+        flattened_tokens_df['protocol'] = protocol
 
         return flattened_tokens_df
     except Exception as e:
@@ -164,7 +167,7 @@ def tokens_in_usd_col_to_df(df: pd.DataFrame) -> pd.DataFrame:
         return pd.DataFrame()  # return an empty dataframe if there's an error
 
 # create a dataframe for token data
-def tokens_col_to_df(df: pd.DataFrame) -> pd.DataFrame:
+def tokens_col_to_df(df: pd.DataFrame, protocol: str) -> pd.DataFrame:
     try:
         # extract tokens data from the column
         tokens_data = json.loads(df.iloc[0, 4])
@@ -192,6 +195,7 @@ def tokens_col_to_df(df: pd.DataFrame) -> pd.DataFrame:
             lambda x: datetime.fromtimestamp(x, tz=timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
         )
         flattened_tokens_df['readable_date'] = pd.to_datetime(flattened_tokens_df['readable_date'])
+        flattened_tokens_df['protocol'] = protocol
 
         return flattened_tokens_df
     except Exception as e:

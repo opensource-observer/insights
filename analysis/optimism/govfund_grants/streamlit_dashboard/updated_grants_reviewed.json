@@ -1,6 +1,97 @@
 [
     {
         "round": "Grants Season 6",
+        "cycle": "Cycle 25",
+        "project_name": "Renzo Optimism Season 6 Mission Request - Optimism as base for LRTs",
+        "chain": "op",
+        "status": "Sent",
+        "proposal_link": "https://app.charmverse.io/op-grants/renzo-optimism-season-6-mission-request-optimism-as-base-for-lrts-10206774269051233",
+        "amount": 120000,
+        "amount_comment": null,
+        "meta": {
+            "Initial Delivery Date": "2024-09-01T00:00:00",
+            "(OP) Delivered": 48000.0,
+            "Intent": "Intent 3A",
+            "Incentive Program Launched?": "Growth"
+        },
+        "relevant_metrics": {
+            "select the metric specified in the mission request": "(Intent 3 Growth) TVL in grantee\u2019s protocol",
+            "fill out your metric objective": "$22M TVL -  doubling our current TVL on OP Mainnet, putting OP in the top 5 of chains we support within two months "
+        },
+        "relevant_dates": {
+            "OP deployment date": [
+                ""
+            ],
+            "Incentives due date": [
+                ""
+            ]
+        },
+        "relevant_chains": [],
+        "contract_urls": [],
+        "addresses": [
+            {
+                "0xdbdfd5b04fc3a19c40f2b12f6ca29bd772ccb822": {
+                    "networks": [
+                        "optimism"
+                    ],
+                    "tags": [
+                        "safe",
+                        "wallet"
+                    ],
+                    "name": "renzo-protocol",
+                    "count_txns": 2
+                }
+            },
+            {
+                "0xdbdfd5b04fc3a19c40f2b12f6ca29bd772ccb822": {
+                    "networks": [
+                        "optimism"
+                    ],
+                    "tags": [
+                        "safe",
+                        "wallet"
+                    ],
+                    "name": "renzo-protocol",
+                    "count_txns": 2
+                }
+            },
+            {
+                "0x2416092f143378750bb29b79ed961ab195cceea5": {
+                    "networks": [
+                        "zora",
+                        "fraxtal",
+                        "optimism",
+                        "base",
+                        "mode"
+                    ],
+                    "tags": [
+                        "contract"
+                    ],
+                    "name": "pyth-network",
+                    "count_txns": 175067
+                }
+            },
+            {
+                "0xbf5495efe5db9ce00f80364c8b423567e58d2110": {
+                    "networks": [
+                        "optimism"
+                    ],
+                    "tags": [
+                        "contract"
+                    ],
+                    "count_txns": 1
+                }
+            }
+        ],
+        "funds_recieved_date": "2024-11-14",
+        "grant_wallet": "0xdBdfd5b04fc3a19C40f2B12F6Ca29Bd772CCB822",
+        "starting_balance": 0,
+        "inflow_total_todate": 120000,
+        "recieve_todate": true,
+        "balance_left_todate": 0
+    },
+    {
+        "round": "Grants Season 6",
         "cycle": "Cycle 26",
         "chain": "fraxtal",
         "project_name": "Fraxtal Application",
@@ -483,97 +574,6 @@
         "inflow_total_todate": 0,
         "recieve_todate": false,
         "balance_left_todate": 5000
-    },
-    {
-        "round": "Grants Season 6",
-        "cycle": "Cycle 25",
-        "project_name": "Renzo Optimism Season 6 Mission Request - Optimism as base for LRTs",
-        "chain": "op",
-        "status": "Sent",
-        "proposal_link": "https://app.charmverse.io/op-grants/renzo-optimism-season-6-mission-request-optimism-as-base-for-lrts-10206774269051233",
-        "amount": 120000,
-        "amount_comment": null,
-        "meta": {
-            "Initial Delivery Date": "2024-09-01T00:00:00",
-            "(OP) Delivered": 48000.0,
-            "Intent": "Intent 3A",
-            "Incentive Program Launched?": "Growth"
-        },
-        "relevant_metrics": {
-            "select the metric specified in the mission request": "(Intent 3 Growth) TVL in grantee\u2019s protocol",
-            "fill out your metric objective": "$22M TVL -  doubling our current TVL on OP Mainnet, putting OP in the top 5 of chains we support within two months "
-        },
-        "relevant_dates": {
-            "OP deployment date": [
-                ""
-            ],
-            "Incentives due date": [
-                ""
-            ]
-        },
-        "relevant_chains": [],
-        "contract_urls": [],
-        "addresses": [
-            {
-                "0xdbdfd5b04fc3a19c40f2b12f6ca29bd772ccb822": {
-                    "networks": [
-                        "optimism"
-                    ],
-                    "tags": [
-                        "safe",
-                        "wallet"
-                    ],
-                    "name": "renzo-protocol",
-                    "count_txns": 2
-                }
-            },
-            {
-                "0xdbdfd5b04fc3a19c40f2b12f6ca29bd772ccb822": {
-                    "networks": [
-                        "optimism"
-                    ],
-                    "tags": [
-                        "safe",
-                        "wallet"
-                    ],
-                    "name": "renzo-protocol",
-                    "count_txns": 2
-                }
-            },
-            {
-                "0x2416092f143378750bb29b79ed961ab195cceea5": {
-                    "networks": [
-                        "zora",
-                        "fraxtal",
-                        "optimism",
-                        "base",
-                        "mode"
-                    ],
-                    "tags": [
-                        "contract"
-                    ],
-                    "name": "pyth-network",
-                    "count_txns": 175067
-                }
-            },
-            {
-                "0xbf5495efe5db9ce00f80364c8b423567e58d2110": {
-                    "networks": [
-                        "optimism"
-                    ],
-                    "tags": [
-                        "contract"
-                    ],
-                    "count_txns": 1
-                }
-            }
-        ],
-        "funds_recieved_date": "2024-11-14",
-        "grant_wallet": "0xdBdfd5b04fc3a19C40f2B12F6Ca29Bd772CCB822",
-        "starting_balance": 0,
-        "inflow_total_todate": 120000,
-        "recieve_todate": true,
-        "balance_left_todate": 0
     },
     {
         "round": "Grants Season 6",

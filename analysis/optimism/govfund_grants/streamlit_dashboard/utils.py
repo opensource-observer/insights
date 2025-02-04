@@ -127,7 +127,7 @@ def connect_bq_client(service_account_path: str=None, use_streamlit_secrets: boo
     return client
 
 # read in already stored datasets at the respective path
-def read_in_stored_dfs_for_projects(project_name: str, data_path: str, protocol: Any) -> Dict[str, Any]:
+def read_in_stored_dfs_for_projects(project_name: str, data_path: str, protocols: Any) -> Dict[str, Any]:
     # get the clean name of the project
     clean_name = project_name.lower().replace(" ", "_").replace(".", "-").replace("/","-")
 
@@ -152,7 +152,7 @@ def read_in_stored_dfs_for_projects(project_name: str, data_path: str, protocol:
         pass
 
     # read in TVL datasets if protocol is provided
-    if protocol is not None:
+    if protocols is not None:
         try:
             chain_tvls_df = pd.read_csv(f"{data_path}{clean_name}/{clean_name}_chain_tvls.csv")
         except Exception:

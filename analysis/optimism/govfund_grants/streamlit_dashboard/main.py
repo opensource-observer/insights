@@ -91,7 +91,7 @@ def main() -> None:
     # read in a dictionary of each project's corresponding defi llama protocol
     defi_llama_protocols = read_in_defi_llama_protocols(path=DEFI_LLAMA_PROTOCOLS_PATH)
 
-    ttest_results = pd.read_csv("data/ttest_results2.csv", header=[0, 1])
+    ttest_results = pd.read_csv("data/ttest_results.csv", header=[0, 1])
 
     by_project, overview_table = st.tabs(["By Project Drill Down", "High-Level Overview Table"])
 
@@ -131,7 +131,7 @@ def main() -> None:
         # get the relevant wallet/contract addresses associated with the selected project
         just_addresses, project_addresses = extract_addresses(project_dict=project) 
         # check if the selected project has an associated defi llama protocol
-        project_protocol = return_protocol(defi_llama_protocols=defi_llama_protocols, project=selected_project_name)
+        project_protocols = return_protocol(defi_llama_protocols=defi_llama_protocols, project=selected_project_name)
         
         # if pull from bigquery is true, pull the necessary datasets directly from bigquery
         if pull_from_bigquery:
@@ -143,7 +143,6 @@ def main() -> None:
 
             # query transaction count, active users, unique users, and total transferred for the passed project based on the target chain
             if chain == "op":
-    
                 project_daily_transactions_df, project_transaction_flow_df = query_transaction_data_from_bq_superchain_sandbox(client=client, project_addresses=just_addresses, grant_date=grant_date, token_conversion=token_conversion, chain=chain)
                 
                 # use the transaction flow dataset (which looks at abs(op amount)) to create a dataset that considers the direction of the transactions
@@ -156,8 +155,8 @@ def main() -> None:
             datasets['daily_transactions'] = project_daily_transactions_df
 
             # only query the tvl data if the project has an associated defi llama protocol
-            if project_protocol and project_protocol is not None:
-                project_chain_tvls_df, project_tvl_df, project_tokens_in_usd_df, project_tokens_df = query_tvl_data_from_bq(client=client, protocol=project_protocol)
+            if project_protocols and project_protocols is not None:
+                project_chain_tvls_df, project_tvl_df, project_tokens_in_usd_df, project_tokens_df = query_tvl_data_from_bq(client=client, protocols=project_protocols)
 
                 datasets['chain_tvls'] = project_chain_tvls_df
                 datasets['tvl'] = project_tvl_df
@@ -171,7 +170,7 @@ def main() -> None:
 
         else:
             # otherwise pull the datasets from the stored database at the passed path
-            project_datasets = read_in_stored_dfs_for_projects(project_name=project_name, data_path=STORED_DATA_PATH, protocol=project_protocol)
+            project_datasets = read_in_stored_dfs_for_projects(project_name=project_name, data_path=STORED_DATA_PATH, protocols=project_protocols)
             project_daily_transactions_df = project_datasets['daily_transactions']
             project_net_transaction_flow_df = project_datasets['net_transaction_flow']
             project_chain_tvls_df = project_datasets['chain_tvls']
@@ -180,7 +179,7 @@ def main() -> None:
             project_forecasted_df = project_datasets['forecasted']
 
         # define the tabs that will be displayed
-        if project_protocol and project_protocol is not None:
+        if project_protocols and project_protocols is not None:
             overview, core_metrics, tvl, stat_analysis = st.tabs(['Project Overview', 'Core Metrics', 'TVL', 'Statistical Analysis'])
 
         else:
@@ -200,7 +199,7 @@ def main() -> None:
                                  grant_amount=grant_amount)
 
         # if the project has a corresponding defi llama protocol display the tvl related charts
-        if project_protocol and project_protocol is not None:
+        if project_protocols and project_protocols is not None:
             with tvl:
                 tvl_section(chain_tvls_df=project_chain_tvls_df, tvl_df=project_tvl_df, tokens_in_usd_df=project_tokens_in_usd_df, grant_date=grant_date)
 
@@ -209,7 +208,7 @@ def main() -> None:
             # if data is being pulled from bigquery, pass none for the project forecasted data so a new one will get generated in the stat_analysis_section function
             project_forecasted_df = None if pull_from_bigquery else project_forecasted_df
                     
-            if project_protocol and project_protocol is not None:
+            if project_protocols and project_protocols is not None:
                 stat_analysis_section(
                     daily_transactions_df = project_daily_transactions_df,
                     net_transaction_flow_df = project_net_transaction_flow_df,
