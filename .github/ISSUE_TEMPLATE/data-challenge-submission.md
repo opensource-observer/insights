@@ -12,11 +12,5 @@ assignees: ccerv1
 ## Brief description 
 Describe your submission 2-3 sentences:
 
-## SQL code block
-Insert the SQL that we should run to replicate your query:
-```sql
-
-```
-
 ## Link
 Add a link to script/notebook or longer form write-up about your submission:
