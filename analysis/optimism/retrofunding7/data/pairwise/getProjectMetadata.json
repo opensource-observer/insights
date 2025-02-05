@@ -1,485 +1,604 @@
 {
-  "https:\/\/github.com\/ethereum\/solc-js":{
-    "Dependency Maintainer":"Ethereum Miscellenia",
-    "Stars":1469,
-    "Forks":479,
-    "Created Date":"2016-04-04",
+  "https://github.com/blocknative/web3-onboard":{
+    "Dependency Maintainer":"Blocknative",
+    "Stars":876,
+    "Forks":527,
+    "Created Date":"2019-08-16",
     "Language":"TypeScript"
   },
-  "https:\/\/github.com\/ethereumjs\/ethereumjs-monorepo":{
-    "Dependency Maintainer":"EthereumJS",
-    "Stars":2622,
-    "Forks":776,
-    "Created Date":"2015-07-10",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/nomicfoundation\/hardhat":{
-    "Dependency Maintainer":"Hardhat",
-    "Stars":7445,
-    "Forks":1470,
-    "Created Date":"2018-04-14",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/wighawag\/hardhat-deploy":{
-    "Dependency Maintainer":"Jolly Roger and Hardhat-deploy",
-    "Stars":1206,
-    "Forks":298,
-    "Created Date":"2020-03-19",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/metamask\/core":{
-    "Dependency Maintainer":"Metamask",
-    "Stars":295,
-    "Forks":201,
-    "Created Date":"2018-05-29",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/metamask\/eth-block-tracker":{
-    "Dependency Maintainer":"Metamask",
-    "Stars":131,
-    "Forks":82,
-    "Created Date":"2017-02-04",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/metamask\/eth-json-rpc-infura":{
-    "Dependency Maintainer":"Metamask",
-    "Stars":54,
-    "Forks":54,
-    "Created Date":"2017-12-13",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/metamask\/eth-json-rpc-middleware":{
-    "Dependency Maintainer":"Metamask",
-    "Stars":179,
-    "Forks":91,
-    "Created Date":"2017-04-24",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/metamask\/eth-sig-util":{
-    "Dependency Maintainer":"Metamask",
-    "Stars":583,
-    "Forks":229,
-    "Created Date":"2017-02-21",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/metamask\/object-multiplex":{
-    "Dependency Maintainer":"Metamask",
-    "Stars":14,
-    "Forks":15,
-    "Created Date":"2017-09-08",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/metamask\/providers":{
-    "Dependency Maintainer":"Metamask",
-    "Stars":239,
-    "Forks":128,
-    "Created Date":"2018-08-09",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/metamask\/rpc-errors":{
-    "Dependency Maintainer":"Metamask",
-    "Stars":166,
-    "Forks":33,
-    "Created Date":"2019-08-06",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/metamask\/utils":{
-    "Dependency Maintainer":"Metamask",
-    "Stars":33,
-    "Forks":11,
-    "Created Date":"2022-02-23",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/openzeppelin\/openzeppelin-contracts":{
-    "Dependency Maintainer":"OpenZeppelin",
-    "Stars":25210,
-    "Forks":11867,
-    "Created Date":"2016-08-01",
-    "Language":"Solidity"
-  },
-  "https:\/\/github.com\/openzeppelin\/openzeppelin-contracts-upgradeable":{
-    "Dependency Maintainer":"OpenZeppelin",
-    "Stars":1019,
-    "Forks":442,
-    "Created Date":"2018-07-20",
-    "Language":"JavaScript"
-  },
-  "https:\/\/github.com\/openzeppelin\/openzeppelin-upgrades":{
-    "Dependency Maintainer":"OpenZeppelin",
-    "Stars":634,
-    "Forks":270,
-    "Created Date":"2020-06-19",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/openzeppelin\/solidity-ast":{
-    "Dependency Maintainer":"OpenZeppelin",
-    "Stars":93,
-    "Forks":28,
-    "Created Date":"2020-05-15",
-    "Language":"JavaScript"
-  },
-  "https:\/\/github.com\/prettier-solidity\/prettier-plugin-solidity":{
-    "Dependency Maintainer":"Prettier Solidity",
-    "Stars":731,
-    "Forks":75,
-    "Created Date":"2018-05-15",
-    "Language":"Solidity"
-  },
-  "https:\/\/github.com\/safe-global\/safe-apps-sdk":{
-    "Dependency Maintainer":"Safe",
-    "Stars":277,
-    "Forks":135,
-    "Created Date":"2020-04-17",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/safe-global\/safe-gateway-typescript-sdk":{
-    "Dependency Maintainer":"Safe",
-    "Stars":21,
-    "Forks":24,
-    "Created Date":"2021-07-07",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/protofire\/solhint":{
-    "Dependency Maintainer":"Solhint",
-    "Stars":1054,
-    "Forks":169,
-    "Created Date":"2017-10-16",
-    "Language":"JavaScript"
-  },
-  "https:\/\/github.com\/walletconnect\/walletconnect-monorepo":{
-    "Dependency Maintainer":"Wallet Connect",
-    "Stars":1488,
-    "Forks":727,
-    "Created Date":"2018-08-26",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/walletconnect\/walletconnect-utils":{
-    "Dependency Maintainer":"Wallet Connect",
-    "Stars":113,
-    "Forks":80,
-    "Created Date":"2021-07-08",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/ethers-io\/ethers.js":{
-    "Dependency Maintainer":"ethers.js",
-    "Stars":8071,
-    "Forks":1916,
-    "Created Date":"2016-07-16",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/cgewecke\/hardhat-gas-reporter":{
-    "Dependency Maintainer":"gas-reporter",
-    "Stars":413,
-    "Forks":60,
-    "Created Date":"2019-06-20",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/sc-forks\/solidity-coverage":{
-    "Dependency Maintainer":"solidity-coverage",
-    "Stars":988,
-    "Forks":269,
-    "Created Date":"2017-05-01",
-    "Language":"JavaScript"
-  },
-  "https:\/\/github.com\/wevm\/abitype":{
-    "Dependency Maintainer":"wevm",
-    "Stars":493,
-    "Forks":49,
-    "Created Date":"2022-08-03",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/wevm\/isows":{
-    "Dependency Maintainer":"wevm",
-    "Stars":49,
-    "Forks":5,
-    "Created Date":"2023-10-08",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/wevm\/viem":{
-    "Dependency Maintainer":"wevm",
-    "Stars":2689,
-    "Forks":948,
-    "Created Date":"2022-07-22",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/wevm\/webauthn-p256":{
-    "Dependency Maintainer":"wevm",
-    "Stars":50,
-    "Forks":6,
-    "Created Date":"2024-06-24",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/alchemyplatform\/aa-sdk":{
-    "Dependency Maintainer":"Alchemy",
-    "Stars":238,
-    "Forks":135,
-    "Created Date":"2023-05-19",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/eslint\/js":{
-    "Dependency Maintainer":"ESLint",
-    "Stars":2300,
-    "Forks":206,
-    "Created Date":"2014-12-06",
-    "Language":"JavaScript"
-  },
-  "https:\/\/github.com\/ethereum-attestation-service\/eas-contracts":{
-    "Dependency Maintainer":"Ethereum Attestation Service",
-    "Stars":256,
-    "Forks":83,
-    "Created Date":"2020-10-03",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/ethereum-attestation-service\/eas-sdk":{
-    "Dependency Maintainer":"Ethereum Attestation Service",
-    "Stars":103,
-    "Forks":48,
-    "Created Date":"2020-10-21",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/facebook\/metro":{
-    "Dependency Maintainer":"Facebook Open Source",
-    "Stars":5279,
-    "Forks":636,
-    "Created Date":"2016-12-14",
-    "Language":"JavaScript"
-  },
-  "https:\/\/github.com\/metamask\/eth-json-rpc-filters":{
-    "Dependency Maintainer":"Metamask",
-    "Stars":30,
-    "Forks":39,
-    "Created Date":"2017-06-14",
-    "Language":"JavaScript"
-  },
-  "https:\/\/github.com\/metamask\/metamask-sdk":{
-    "Dependency Maintainer":"Metamask",
-    "Stars":209,
-    "Forks":138,
-    "Created Date":"2022-03-10",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/metamask\/superstruct":{
-    "Dependency Maintainer":"Metamask",
-    "Stars":2,
-    "Forks":0,
-    "Created Date":"2024-02-09",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/openzeppelin\/merkle-tree":{
-    "Dependency Maintainer":"OpenZeppelin",
-    "Stars":472,
-    "Forks":112,
-    "Created Date":"2022-10-24",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/wevm\/ox":{
-    "Dependency Maintainer":"wevm",
-    "Stars":127,
-    "Forks":10,
-    "Created Date":"2024-08-13",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/wevm\/wagmi":{
-    "Dependency Maintainer":"wevm",
-    "Stars":6127,
-    "Forks":1121,
-    "Created Date":"2021-11-23",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/babel\/babel":{
-    "Dependency Maintainer":"Babel",
-    "Stars":43364,
-    "Forks":5658,
-    "Created Date":"2014-09-28",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/facebook\/react":{
-    "Dependency Maintainer":"Facebook Open Source",
-    "Stars":231439,
-    "Forks":47390,
-    "Created Date":"2013-05-24",
-    "Language":"JavaScript"
-  },
-  "https:\/\/github.com\/ponder-sh\/ponder":{
-    "Dependency Maintainer":"Ponder",
-    "Stars":719,
-    "Forks":116,
-    "Created Date":"2022-08-17",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/hop-protocol\/hop":{
-    "Dependency Maintainer":"Hop Protocol",
-    "Stars":2847,
-    "Forks":195,
-    "Created Date":"2020-10-19",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/lens-protocol\/metadata":{
-    "Dependency Maintainer":"Lens Protocol",
-    "Stars":8,
-    "Forks":6,
-    "Created Date":"2023-08-14",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/lit-protocol\/js-sdk":{
-    "Dependency Maintainer":"Lit Protocol",
-    "Stars":115,
-    "Forks":72,
-    "Created Date":"2022-08-19",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/multiformats\/js-multiformats":{
-    "Dependency Maintainer":"Multiformats",
-    "Stars":239,
-    "Forks":54,
-    "Created Date":"2020-04-22",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/ethereum-optimism\/ecosystem":{
-    "Dependency Maintainer":"Optimism",
-    "Stars":102,
-    "Forks":55,
-    "Created Date":"2023-09-11",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/ethereum-optimism\/optimism":{
-    "Dependency Maintainer":"Optimism",
-    "Stars":5876,
-    "Forks":3423,
-    "Created Date":"2020-02-06",
-    "Language":"Go"
-  },
-  "https:\/\/github.com\/paraswap\/paraswap-core":{
-    "Dependency Maintainer":"Paraswap",
-    "Stars":3,
-    "Forks":7,
-    "Created Date":"2021-07-30",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/paraswap\/paraswap-sdk":{
-    "Dependency Maintainer":"Paraswap",
-    "Stars":721,
-    "Forks":106,
-    "Created Date":"2019-10-08",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/maticnetwork\/matic.js":{
-    "Dependency Maintainer":"Polygon",
-    "Stars":545,
-    "Forks":259,
-    "Created Date":"2018-08-23",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/vectorized\/solady":{
-    "Dependency Maintainer":"Solady (by Vectorized)",
-    "Stars":2710,
-    "Forks":365,
-    "Created Date":"2022-07-16",
-    "Language":"Solidity"
-  },
-  "https:\/\/github.com\/uniswap\/universal-router":{
-    "Dependency Maintainer":"Uniswap",
-    "Stars":422,
-    "Forks":226,
-    "Created Date":"2022-07-27",
-    "Language":"TypeScript"
-  },
-  "https:\/\/github.com\/webpack\/enhanced-resolve":{
-    "Dependency Maintainer":"Webpack",
-    "Stars":943,
-    "Forks":192,
-    "Created Date":"2012-08-13",
-    "Language":"JavaScript"
-  },
-  "https:\/\/github.com\/ourzora\/zora-protocol":{
-    "Dependency Maintainer":"Zora",
-    "Stars":153,
-    "Forks":108,
-    "Created Date":"2023-02-01",
-    "Language":"Solidity"
-  },
-  "https:\/\/github.com\/coinbase\/coinbase-wallet-sdk":{
+  "https://github.com/coinbase/coinbase-wallet-sdk":{
     "Dependency Maintainer":"Coinbase",
-    "Stars":1534,
-    "Forks":604,
+    "Stars":1540,
+    "Forks":613,
     "Created Date":"2019-05-01",
     "Language":"TypeScript"
   },
-  "https:\/\/github.com\/facebook\/watchman":{
-    "Dependency Maintainer":"Facebook Open Source",
-    "Stars":12875,
-    "Forks":1014,
-    "Created Date":"2012-11-29",
-    "Language":"C++"
+  "https://github.com/ethereum/solc-js":{
+    "Dependency Maintainer":"Ethereum Miscellenia",
+    "Stars":1470,
+    "Forks":481,
+    "Created Date":"2016-04-04",
+    "Language":"TypeScript"
   },
-  "https:\/\/github.com\/ipfs\/protons":{
+  "https://github.com/ethereumjs/ethereumjs-monorepo":{
+    "Dependency Maintainer":"EthereumJS",
+    "Stars":2631,
+    "Forks":783,
+    "Created Date":"2015-07-10",
+    "Language":"TypeScript"
+  },
+  "https://github.com/nomicfoundation/hardhat":{
+    "Dependency Maintainer":"Hardhat",
+    "Stars":7470,
+    "Forks":1474,
+    "Created Date":"2018-04-14",
+    "Language":"TypeScript"
+  },
+  "https://github.com/ipfs/protons":{
     "Dependency Maintainer":"IPFS",
     "Stars":34,
     "Forks":23,
     "Created Date":"2016-06-08",
     "Language":"TypeScript"
   },
-  "https:\/\/github.com\/metamask\/post-message-stream":{
+  "https://github.com/wighawag/hardhat-deploy":{
+    "Dependency Maintainer":"Jolly Roger and Hardhat-deploy",
+    "Stars":1206,
+    "Forks":298,
+    "Created Date":"2020-03-19",
+    "Language":"TypeScript"
+  },
+  "https://github.com/metamask/core":{
     "Dependency Maintainer":"Metamask",
+    "Stars":300,
+    "Forks":203,
+    "Created Date":"2018-05-29",
+    "Language":"TypeScript"
+  },
+  "https://github.com/metamask/eth-block-tracker":{
+    "Dependency Maintainer":"Metamask",
+    "Stars":131,
+    "Forks":82,
+    "Created Date":"2017-02-04",
+    "Language":"TypeScript"
+  },
+  "https://github.com/openzeppelin/defender-client":{
+    "Dependency Maintainer":"OpenZeppelin",
     "Stars":56,
-    "Forks":27,
-    "Created Date":"2016-08-11",
+    "Forks":47,
+    "Created Date":"2020-07-09",
     "Language":"TypeScript"
   },
-  "https:\/\/github.com\/rainbow-me\/rainbowkit":{
-    "Dependency Maintainer":"Rainbow",
-    "Stars":2498,
-    "Forks":687,
-    "Created Date":"2021-08-04",
-    "Language":"MDX"
+  "https://github.com/openzeppelin/openzeppelin-contracts":{
+    "Dependency Maintainer":"OpenZeppelin",
+    "Stars":25275,
+    "Forks":11910,
+    "Created Date":"2016-08-01",
+    "Language":"Solidity"
   },
-  "https:\/\/github.com\/pnpm\/pnpm":{
-    "Dependency Maintainer":"pnpm",
-    "Stars":30510,
-    "Forks":1055,
-    "Created Date":"2016-01-28",
+  "https://github.com/ethereum-optimism/ecosystem":{
+    "Dependency Maintainer":"Optimism",
+    "Stars":105,
+    "Forks":55,
+    "Created Date":"2023-09-11",
     "Language":"TypeScript"
   },
-  "https:\/\/github.com\/zemse\/hardhat-tracer":{
-    "Dependency Maintainer":"Hardhat Tracer",
-    "Stars":357,
-    "Forks":36,
-    "Created Date":"2020-12-20",
+  "https://github.com/ethereum-optimism/optimism":{
+    "Dependency Maintainer":"Optimism",
+    "Stars":5915,
+    "Forks":3465,
+    "Created Date":"2020-02-06",
+    "Language":"Go"
+  },
+  "https://github.com/paulmillr/noble-curves":{
+    "Dependency Maintainer":"Paul Miller",
+    "Stars":734,
+    "Forks":69,
+    "Created Date":"2022-12-03",
+    "Language":"JavaScript"
+  },
+  "https://github.com/prettier-solidity/prettier-plugin-solidity":{
+    "Dependency Maintainer":"Prettier Solidity",
+    "Stars":731,
+    "Forks":75,
+    "Created Date":"2018-05-15",
+    "Language":"Solidity"
+  },
+  "https://github.com/rollup/rollup":{
+    "Dependency Maintainer":"Rollup",
+    "Stars":25560,
+    "Forks":1548,
+    "Created Date":"2015-05-14",
+    "Language":"JavaScript"
+  },
+  "https://github.com/safe-global/safe-apps-sdk":{
+    "Dependency Maintainer":"Safe",
+    "Stars":279,
+    "Forks":138,
+    "Created Date":"2020-04-17",
     "Language":"TypeScript"
   },
-  "https:\/\/github.com\/ipfs\/js-ipfs-unixfs":{
+  "https://github.com/safe-global/safe-gateway-typescript-sdk":{
+    "Dependency Maintainer":"Safe",
+    "Stars":21,
+    "Forks":24,
+    "Created Date":"2021-07-07",
+    "Language":"TypeScript"
+  },
+  "https://github.com/solana-labs/solana-program-library":{
+    "Dependency Maintainer":"Solana Labs",
+    "Stars":3749,
+    "Forks":2184,
+    "Created Date":"2020-05-29",
+    "Language":"Rust"
+  },
+  "https://github.com/protofire/solhint":{
+    "Dependency Maintainer":"Solhint",
+    "Stars":1055,
+    "Forks":172,
+    "Created Date":"2017-10-16",
+    "Language":"JavaScript"
+  },
+  "https://github.com/synthetixio/synpress":{
+    "Dependency Maintainer":"Synpress",
+    "Stars":625,
+    "Forks":204,
+    "Created Date":"2020-11-18",
+    "Language":"TypeScript"
+  },
+  "https://github.com/unjs/crossws":{
+    "Dependency Maintainer":"UnJS",
+    "Stars":439,
+    "Forks":18,
+    "Created Date":"2023-12-07",
+    "Language":"TypeScript"
+  },
+  "https://github.com/walletconnect/walletconnect-monorepo":{
+    "Dependency Maintainer":"Wallet Connect",
+    "Stars":1495,
+    "Forks":732,
+    "Created Date":"2018-08-26",
+    "Language":"TypeScript"
+  },
+  "https://github.com/walletconnect/walletconnect-utils":{
+    "Dependency Maintainer":"Wallet Connect",
+    "Stars":117,
+    "Forks":80,
+    "Created Date":"2021-07-08",
+    "Language":"TypeScript"
+  },
+  "https://github.com/ethers-io/ethers.js":{
+    "Dependency Maintainer":"ethers.js",
+    "Stars":8086,
+    "Forks":1925,
+    "Created Date":"2016-07-16",
+    "Language":"TypeScript"
+  },
+  "https://github.com/cgewecke/hardhat-gas-reporter":{
+    "Dependency Maintainer":"gas-reporter",
+    "Stars":416,
+    "Forks":64,
+    "Created Date":"2019-06-20",
+    "Language":"TypeScript"
+  },
+  "https://github.com/sc-forks/solidity-coverage":{
+    "Dependency Maintainer":"solidity-coverage",
+    "Stars":989,
+    "Forks":269,
+    "Created Date":"2017-05-01",
+    "Language":"JavaScript"
+  },
+  "https://github.com/wevm/abitype":{
+    "Dependency Maintainer":"wevm",
+    "Stars":498,
+    "Forks":48,
+    "Created Date":"2022-08-03",
+    "Language":"TypeScript"
+  },
+  "https://github.com/wevm/isows":{
+    "Dependency Maintainer":"wevm",
+    "Stars":49,
+    "Forks":5,
+    "Created Date":"2023-10-08",
+    "Language":"TypeScript"
+  },
+  "https://github.com/matter-labs/hardhat-zksync":{
+    "Dependency Maintainer":"zkSync Era",
+    "Stars":281,
+    "Forks":228,
+    "Created Date":"2021-11-17",
+    "Language":"TypeScript"
+  },
+  "https://github.com/alchemyplatform/aa-sdk":{
+    "Dependency Maintainer":"Alchemy",
+    "Stars":240,
+    "Forks":140,
+    "Created Date":"2023-05-19",
+    "Language":"TypeScript"
+  },
+  "https://github.com/babel/babel":{
+    "Dependency Maintainer":"Babel",
+    "Stars":43379,
+    "Forks":5661,
+    "Created Date":"2014-09-28",
+    "Language":"TypeScript"
+  },
+  "https://github.com/definitelytyped/definitelytyped":{
+    "Dependency Maintainer":"DefinitelyTyped",
+    "Stars":49096,
+    "Forks":30292,
+    "Created Date":"2012-10-05",
+    "Language":"TypeScript"
+  },
+  "https://github.com/eslint/js":{
+    "Dependency Maintainer":"ESLint",
+    "Stars":2301,
+    "Forks":207,
+    "Created Date":"2014-12-06",
+    "Language":"JavaScript"
+  },
+  "https://github.com/ethereum-attestation-service/eas-contracts":{
+    "Dependency Maintainer":"Ethereum Attestation Service",
+    "Stars":262,
+    "Forks":87,
+    "Created Date":"2020-10-03",
+    "Language":"TypeScript"
+  },
+  "https://github.com/ethereum-attestation-service/eas-sdk":{
+    "Dependency Maintainer":"Ethereum Attestation Service",
+    "Stars":104,
+    "Forks":49,
+    "Created Date":"2020-10-21",
+    "Language":"TypeScript"
+  },
+  "https://github.com/facebook/metro":{
+    "Dependency Maintainer":"Facebook Open Source",
+    "Stars":5285,
+    "Forks":637,
+    "Created Date":"2016-12-14",
+    "Language":"JavaScript"
+  },
+  "https://github.com/jaredwray/keyv":{
+    "Dependency Maintainer":"Jared Wray",
+    "Stars":2727,
+    "Forks":158,
+    "Created Date":"2017-07-07",
+    "Language":"TypeScript"
+  },
+  "https://github.com/multiformats/js-multiformats":{
+    "Dependency Maintainer":"Multiformats",
+    "Stars":242,
+    "Forks":54,
+    "Created Date":"2020-04-22",
+    "Language":"TypeScript"
+  },
+  "https://github.com/openzeppelin/merkle-tree":{
+    "Dependency Maintainer":"OpenZeppelin",
+    "Stars":474,
+    "Forks":113,
+    "Created Date":"2022-10-24",
+    "Language":"TypeScript"
+  },
+  "https://github.com/pinatacloud/pinata-web3":{
+    "Dependency Maintainer":"Pinata",
+    "Stars":2,
+    "Forks":1,
+    "Created Date":"2024-08-24",
+    "Language":"TypeScript"
+  },
+  "https://github.com/ponder-sh/ponder":{
+    "Dependency Maintainer":"Ponder",
+    "Stars":730,
+    "Forks":119,
+    "Created Date":"2022-08-17",
+    "Language":"TypeScript"
+  },
+  "https://github.com/swc-project/swc":{
+    "Dependency Maintainer":"swc",
+    "Stars":31569,
+    "Forks":1254,
+    "Created Date":"2017-12-22",
+    "Language":"Rust"
+  },
+  "https://github.com/typescript-eslint/typescript-eslint":{
+    "Dependency Maintainer":"typescript-eslint",
+    "Stars":15470,
+    "Forks":2764,
+    "Created Date":"2019-01-13",
+    "Language":"TypeScript"
+  },
+  "https://github.com/ardatan/graphql-tools":{
+    "Dependency Maintainer":"Arda TANRIKULU",
+    "Stars":5364,
+    "Forks":822,
+    "Created Date":"2016-03-22",
+    "Language":"TypeScript"
+  },
+  "https://github.com/facebook/react":{
+    "Dependency Maintainer":"Facebook Open Source",
+    "Stars":231896,
+    "Forks":47467,
+    "Created Date":"2013-05-24",
+    "Language":"JavaScript"
+  },
+  "https://github.com/unjs/pathe":{
+    "Dependency Maintainer":"UnJS",
+    "Stars":458,
+    "Forks":21,
+    "Created Date":"2021-09-22",
+    "Language":"TypeScript"
+  },
+  "https://github.com/hop-protocol/hop":{
+    "Dependency Maintainer":"Hop Protocol",
+    "Stars":2851,
+    "Forks":195,
+    "Created Date":"2020-10-19",
+    "Language":"TypeScript"
+  },
+  "https://github.com/lens-protocol/metadata":{
+    "Dependency Maintainer":"Lens Protocol",
+    "Stars":8,
+    "Forks":6,
+    "Created Date":"2023-08-14",
+    "Language":"TypeScript"
+  },
+  "https://github.com/metamask/eth-sig-util":{
+    "Dependency Maintainer":"Metamask",
+    "Stars":583,
+    "Forks":229,
+    "Created Date":"2017-02-21",
+    "Language":"TypeScript"
+  },
+  "https://github.com/openzeppelin/openzeppelin-upgrades":{
+    "Dependency Maintainer":"OpenZeppelin",
+    "Stars":634,
+    "Forks":270,
+    "Created Date":"2020-06-19",
+    "Language":"TypeScript"
+  },
+  "https://github.com/paraswap/paraswap-core":{
+    "Dependency Maintainer":"Paraswap",
+    "Stars":3,
+    "Forks":7,
+    "Created Date":"2021-07-30",
+    "Language":"TypeScript"
+  },
+  "https://github.com/paraswap/paraswap-sdk":{
+    "Dependency Maintainer":"Paraswap",
+    "Stars":721,
+    "Forks":106,
+    "Created Date":"2019-10-08",
+    "Language":"TypeScript"
+  },
+  "https://github.com/maticnetwork/matic.js":{
+    "Dependency Maintainer":"Polygon",
+    "Stars":545,
+    "Forks":259,
+    "Created Date":"2018-08-23",
+    "Language":"TypeScript"
+  },
+  "https://github.com/vectorized/solady":{
+    "Dependency Maintainer":"Solady (by Vectorized)",
+    "Stars":2735,
+    "Forks":372,
+    "Created Date":"2022-07-16",
+    "Language":"Solidity"
+  },
+  "https://github.com/uniswap/universal-router":{
+    "Dependency Maintainer":"Uniswap",
+    "Stars":423,
+    "Forks":227,
+    "Created Date":"2022-07-27",
+    "Language":"TypeScript"
+  },
+  "https://github.com/vercel/turborepo":{
+    "Dependency Maintainer":"Vercel",
+    "Stars":26874,
+    "Forks":1889,
+    "Created Date":"2021-10-05",
+    "Language":"Rust"
+  },
+  "https://github.com/ourzora/zora-protocol":{
+    "Dependency Maintainer":"Zora",
+    "Stars":154,
+    "Forks":111,
+    "Created Date":"2023-02-01",
+    "Language":"Solidity"
+  },
+  "https://github.com/omnidan/node-emoji":{
+    "Dependency Maintainer":"Daniel Bugl",
+    "Stars":1324,
+    "Forks":242,
+    "Created Date":"2014-08-13",
+    "Language":"TypeScript"
+  },
+  "https://github.com/facebook/watchman":{
+    "Dependency Maintainer":"Facebook Open Source",
+    "Stars":12904,
+    "Forks":1018,
+    "Created Date":"2012-11-29",
+    "Language":"C++"
+  },
+  "https://github.com/metamask/abi-utils":{
+    "Dependency Maintainer":"Metamask",
+    "Stars":22,
+    "Forks":6,
+    "Created Date":"2022-09-29",
+    "Language":"TypeScript"
+  },
+  "https://github.com/facebook/jscodeshift":{
+    "Dependency Maintainer":"Facebook Open Source",
+    "Stars":9470,
+    "Forks":482,
+    "Created Date":"2015-03-07",
+    "Language":"JavaScript"
+  },
+  "https://github.com/ipfs/js-ipfs-unixfs":{
     "Dependency Maintainer":"IPFS",
     "Stars":87,
     "Forks":35,
     "Created Date":"2016-02-10",
     "Language":"TypeScript"
   },
-  "https:\/\/github.com\/ipfs\/js-stores":{
+  "https://github.com/ipfs/js-stores":{
     "Dependency Maintainer":"IPFS",
     "Stars":30,
     "Forks":15,
     "Created Date":"2021-05-14",
     "Language":"TypeScript"
   },
-  "https:\/\/github.com\/ipld\/js-dag-json":{
+  "https://github.com/ipld/js-dag-pb":{
     "Dependency Maintainer":"InterPlanetary Linked Data (IPLD)",
-    "Stars":17,
-    "Forks":9,
-    "Created Date":"2018-08-14",
+    "Stars":16,
+    "Forks":6,
+    "Created Date":"2020-09-02",
     "Language":"JavaScript"
   },
-  "https:\/\/github.com\/tenderly\/hardhat-tenderly":{
+  "https://github.com/safe-global/safe-core-sdk":{
+    "Dependency Maintainer":"Safe",
+    "Stars":268,
+    "Forks":226,
+    "Created Date":"2021-02-10",
+    "Language":"TypeScript"
+  },
+  "https://github.com/superfluid-finance/protocol-monorepo":{
+    "Dependency Maintainer":"Superfluid",
+    "Stars":877,
+    "Forks":239,
+    "Created Date":"2020-03-09",
+    "Language":"TypeScript"
+  },
+  "https://github.com/rainbow-me/rainbowkit":{
+    "Dependency Maintainer":"Rainbow",
+    "Stars":2508,
+    "Forks":692,
+    "Created Date":"2021-08-04",
+    "Language":"MDX"
+  },
+  "https://github.com/solana-labs/solana-web3.js":{
+    "Dependency Maintainer":"Solana Labs",
+    "Stars":2384,
+    "Forks":925,
+    "Created Date":"2018-08-22",
+    "Language":"TypeScript"
+  },
+  "https://github.com/webpack/enhanced-resolve":{
+    "Dependency Maintainer":"Webpack",
+    "Stars":946,
+    "Forks":192,
+    "Created Date":"2012-08-13",
+    "Language":"JavaScript"
+  },
+  "https://github.com/import-js/eslint-import-resolver-typescript":{
+    "Dependency Maintainer":"import-js",
+    "Stars":747,
+    "Forks":64,
+    "Created Date":"2017-09-24",
+    "Language":"TypeScript"
+  },
+  "https://github.com/fastify/fastify-cors":{
+    "Dependency Maintainer":"Fastify",
+    "Stars":426,
+    "Forks":59,
+    "Created Date":"2018-08-11",
+    "Language":"JavaScript"
+  },
+  "https://github.com/pnpm/pnpm":{
+    "Dependency Maintainer":"pnpm",
+    "Stars":30644,
+    "Forks":1061,
+    "Created Date":"2016-01-28",
+    "Language":"TypeScript"
+  },
+  "https://github.com/wevm/viem":{
+    "Dependency Maintainer":"wevm",
+    "Stars":2715,
+    "Forks":962,
+    "Created Date":"2022-07-22",
+    "Language":"TypeScript"
+  },
+  "https://github.com/wevm/wagmi":{
+    "Dependency Maintainer":"wevm",
+    "Stars":6153,
+    "Forks":1124,
+    "Created Date":"2021-11-23",
+    "Language":"TypeScript"
+  },
+  "https://github.com/openzeppelin/solidity-ast":{
+    "Dependency Maintainer":"OpenZeppelin",
+    "Stars":93,
+    "Forks":28,
+    "Created Date":"2020-05-15",
+    "Language":"JavaScript"
+  },
+  "https://github.com/0xsequence/sequence.js":{
+    "Dependency Maintainer":"Sequence",
+    "Stars":305,
+    "Forks":59,
+    "Created Date":"2020-02-27",
+    "Language":"TypeScript"
+  },
+  "https://github.com/uniswap/token-lists":{
+    "Dependency Maintainer":"Uniswap",
+    "Stars":1495,
+    "Forks":1032,
+    "Created Date":"2020-06-10",
+    "Language":"TypeScript"
+  },
+  "https://github.com/zemse/hardhat-tracer":{
+    "Dependency Maintainer":"Hardhat Tracer",
+    "Stars":356,
+    "Forks":36,
+    "Created Date":"2020-12-20",
+    "Language":"TypeScript"
+  },
+  "https://github.com/metamask/eth-json-rpc-filters":{
+    "Dependency Maintainer":"Metamask",
+    "Stars":30,
+    "Forks":39,
+    "Created Date":"2017-06-14",
+    "Language":"JavaScript"
+  },
+  "https://github.com/tenderly/hardhat-tenderly":{
     "Dependency Maintainer":"Tenderly",
     "Stars":166,
-    "Forks":41,
+    "Forks":45,
     "Created Date":"2020-09-09",
     "Language":"TypeScript"
   },
-  "https:\/\/github.com\/uniswap\/token-lists":{
-    "Dependency Maintainer":"Uniswap",
-    "Stars":1491,
-    "Forks":1027,
-    "Created Date":"2020-06-10",
+  "https://github.com/usecannon/cannon":{
+    "Dependency Maintainer":"Cannon",
+    "Stars":105,
+    "Forks":24,
+    "Created Date":"2022-07-12",
+    "Language":"JavaScript"
+  },
+  "https://github.com/snapshot-labs/snapshot.js":{
+    "Dependency Maintainer":"Snapshot",
+    "Stars":239,
+    "Forks":580,
+    "Created Date":"2020-09-05",
     "Language":"TypeScript"
+  },
+  "https://github.com/socketdottech/plugin":{
+    "Dependency Maintainer":"Socket",
+    "Stars":40,
+    "Forks":16,
+    "Created Date":"2022-06-24",
+    "Language":"TypeScript"
+  },
+  "https://github.com/metamask/eth-json-rpc-infura":{
+    "Dependency Maintainer":"Metamask",
+    "Stars":54,
+    "Forks":54,
+    "Created Date":"2017-12-13",
+    "Language":"TypeScript"
+  },
+  "https://github.com/paulmillr/noble-hashes":{
+    "Dependency Maintainer":"Paul Miller",
+    "Stars":631,
+    "Forks":48,
+    "Created Date":"2021-10-06",
+    "Language":"JavaScript"
   }
 }
