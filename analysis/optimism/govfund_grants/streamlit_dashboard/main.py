@@ -92,13 +92,14 @@ def main() -> None:
     defi_llama_protocols = read_in_defi_llama_protocols(path=DEFI_LLAMA_PROTOCOLS_PATH)
 
     ttest_results = pd.read_csv("data/ttest_results.csv", header=[0, 1])
+    tvl_ttest_results = pd.read_csv("data/tvl_ttest_results.csv")
 
     by_project, overview_table = st.tabs(["By Project Drill Down", "High-Level Overview Table"])
 
     st.divider()
 
     with overview_table:
-        all_projects_section(ttest_results=ttest_results)
+        all_projects_section(ttest_results=ttest_results, tvl_ttest_results=tvl_ttest_results)
 
     with by_project: 
 

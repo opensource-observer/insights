@@ -4,6 +4,22 @@ import streamlit as st
 import plotly.express as px
 
 
+# helper function to format percent change
+def format_percent_change(value: float) -> str:
+    if abs(value) >= 1e6:  # use scientific notation for very large values
+        return f"{value:.2e}"
+    else:  # use standard formatting for smaller values
+        return f"{value:.2f}"
+    
+# helper function to style cells in the second table
+def style_table(row):
+    return [
+        'background-color: green; color: white' if "increase" in cell else
+        'background-color: red; color: white' if "decrease" in cell else ''
+        for cell in row
+        ]
+
+
 def high_level_overview_table(df: pd.DataFrame, alpha: float) -> None:
     
     st.markdown(
@@ -14,13 +30,6 @@ def high_level_overview_table(df: pd.DataFrame, alpha: float) -> None:
         """,
         unsafe_allow_html=True,
     )
-    
-    # Helper function to format percent change
-    def format_percent_change(value: float) -> str:
-        if abs(value) >= 1e6:  # Use scientific notation for very large values
-            return f"{value:.2e}"
-        else:  # Use standard formatting for smaller values
-            return f"{value:.2f}"
 
     # Flatten the column names to simplify processing
     df = df.copy()
@@ -40,7 +49,7 @@ def high_level_overview_table(df: pd.DataFrame, alpha: float) -> None:
     }
     
     # define metric groups
-    metric_list = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Net Transferred", "TVL", "Retained Daily Active Users", "DAA/MAA"]
+    metric_list = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Net Transferred", "Retained Daily Active Users", "DAA/MAA"]
 
     # iterate over all metrics (including forecasted ones)
     for metric in metric_list:
@@ -118,14 +127,6 @@ def high_level_overview_table(df: pd.DataFrame, alpha: float) -> None:
         unsafe_allow_html=True,
     )
 
-    # Define a function to style cells in the second table
-    def style_table(row):
-        return [
-            'background-color: green; color: white' if "increase" in cell else
-            'background-color: red; color: white' if "decrease" in cell else ''
-            for cell in row
-        ]
-
     # Display the first table
     st.dataframe(project_details, use_container_width=True)
 
@@ -160,6 +161,50 @@ def high_level_overview_table(df: pd.DataFrame, alpha: float) -> None:
     forecasted_results_styled = forecasted_results.style.apply(style_table, axis=1)
     st.dataframe(forecasted_results_styled, use_container_width=True)
 
+
+
+def by_protocol_table(df: pd.DataFrame, alpha: float) -> None:
+    # current format of table:
+    # protocol,TVL-pvalue,TVL-percent_change,TVL-tstat,TVL_opchain-pvalue,TVL_opchain-percent_change,TVL_opchain-tstat
+    
+    # desired new format:
+    # each protocol as columns
+    # 2 rows for each (TVL results and then TVL_opchain results)
+    # results are determined by comparing the p-value to the alpha value passed
+    # if not significant, the cell should say "no statistically significant change"
+    # otherwise, the cell should say "#% daily average decrease" or "#% daily average increase", where # is the rounded % change
+
+    # dictionary to store results in the new format
+    formatted_results = {}
+    
+    for _, row in df.iterrows():
+        protocol = row['protocol']
+        
+        # process tvl results
+        if row['TVL-pvalue'] < alpha:
+            sign = "increase" if row['TVL-percent_change'] > 0 else "decrease"
+            tvl_result = f"{format_percent_change(abs(row['TVL-percent_change']))}% daily average {sign}"
+        else:
+            tvl_result = "no statistically significant change"
+        
+        # process tvl_opchain results
+        if row['TVL_opchain-pvalue'] < alpha:
+            sign = "increase" if row['TVL_opchain-percent_change'] > 0 else "decrease"
+            tvl_opchain_result = f"{format_percent_change(abs(row['TVL_opchain-percent_change']))}% daily average {sign}"
+        else:
+            tvl_opchain_result = "no statistically significant change"
+        
+        formatted_results[protocol] = {'Pre-Grant as Control Group': tvl_result, 'OP Chain Trends as Control Group': tvl_opchain_result}
+    
+    # create the formatted dataframe
+    result_df = pd.DataFrame.from_dict(formatted_results, orient='index')
+    result_df.index.name = 'Protocol'
+
+    result_df_styled = result_df.style.apply(style_table, axis=1)
+    st.dataframe(result_df_styled, height=29*len(df)+13, use_container_width=True)
+
+    return
+
 # flatten and prepare the dataframe for the scatterplots
 def prepare_data_for_scatterplots(df: pd.DataFrame, alpha: float) -> pd.DataFrame:
     # flatten the column names to simplify processing
@@ -167,7 +212,7 @@ def prepare_data_for_scatterplots(df: pd.DataFrame, alpha: float) -> pd.DataFram
     df.columns = [f"{col[0]}: {col[1]}" for col in df.columns]
     
     # define the list of metrics
-    metric_list = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Net Transferred", "TVL", "Retained Daily Active Users", "DAA/MAA"]
+    metric_list = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Net Transferred", "Retained Daily Active Users", "DAA/MAA"]
 
     # select relevant columns
     target_cols = ["General Info: Project Name", "General Info: Grant Amount"]
@@ -221,7 +266,7 @@ def prepare_data_for_scatterplots(df: pd.DataFrame, alpha: float) -> pd.DataFram
 def display_scatterplots(df: pd.DataFrame, alpha: float) -> None:
     st.subheader("Impact Across Projects By Metric")
 
-    metric_list = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Net Transferred", "TVL", "Retained Daily Active Users", "DAA/MAA"]
+    metric_list = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Net Transferred", "Retained Daily Active Users", "DAA/MAA"]
     selected_metric = st.selectbox("Select desired metric", metric_list)
 
     df = df[df["Metric"] == selected_metric]
@@ -376,7 +421,7 @@ def display_stacked_bar_chart(df: pd.DataFrame) -> None:
     st.plotly_chart(fig)
 
 # display all of the tables and visualizations that compare impact across all projects
-def all_projects_section(ttest_results: pd.DataFrame):
+def all_projects_section(ttest_results: pd.DataFrame, tvl_ttest_results: pd.DataFrame) -> None:
     st.subheader("High-Level of All Projects")
 
     st.markdown(
@@ -405,8 +450,13 @@ def all_projects_section(ttest_results: pd.DataFrame):
     # flatten the data so it can be easily graphed
     simplified_project_table = prepare_data_for_scatterplots(ttest_results, alpha=alpha)
 
-    # create and display the high level table
-    high_level_overview_table(df=ttest_results, alpha=alpha)
+    by_project, by_protocol = st.tabs(["View By Project", "View By Protocol"])
+    with by_project:
+        # create and display the high level table
+        high_level_overview_table(df=ttest_results, alpha=alpha)
+    
+    with by_protocol:
+        by_protocol_table(df=tvl_ttest_results, alpha=alpha)
 
     st.divider()
 

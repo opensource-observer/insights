@@ -396,7 +396,6 @@ def tvl_section(grant_date: datetime, chain_tvls_df: Optional[pd.DataFrame] = No
     selected_protocol = st.selectbox("Select the desired DeFi-Llama protocol", protocols)
 
     if chain_tvls_df is not None and not chain_tvls_df.empty:
-        st.dataframe(chain_tvls_df)
         chain_tvls_df_selected = chain_tvls_df[chain_tvls_df["protocol"] == selected_protocol]
 
     if tvl_df is not None and not tvl_df.empty:
