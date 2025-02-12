@@ -4,7 +4,7 @@ import plotly.express as px
 import streamlit as st
 import pandas as pd
 import numpy as np
-from typing import Tuple, Optional, List
+from typing import Tuple, Optional
 from scipy.stats import t
 
 from processing import split_dataset_by_date
@@ -137,6 +137,28 @@ def ttest(t_stat: float, df: float) -> float:
     p_value = 2 * (1 - t.cdf(abs(t_stat), df))
 
     return p_value
+
+
+def ttest_helper(sample1_df: pd.DataFrame, sample2_df:pd.DataFrame) -> Tuple[float, float, float, str]:
+    # calculate t-statistic and degrees of freedom
+    t_stat, df = test_statistic(sample1_df.iloc[0,:], sample2_df.iloc[0,:])
+
+    # handle division by zero in percent_change
+    sample1_grant_mean = sample1_df["mean"][0]
+    sample2_grant_mean = sample2_df["mean"][0]
+    
+    if sample1_grant_mean != 0:
+        percent_change = round(((sample2_grant_mean - sample1_grant_mean) / sample1_grant_mean), 4)
+    else:
+        percent_change = None  # avoid division by zero
+
+    p_value = ttest(t_stat, df)
+    if p_value < 1e-4:  # adjust to the desired threshold
+        p_value_formatted = f"{p_value:.2e}"  # scientific notation
+    else:
+        p_value_formatted = f"{p_value:.4f}"  # standard decimal format
+
+    return t_stat, percent_change, p_value, p_value_formatted
 
 # conduct the t-stat tests and result a dataframe of the results
 def determine_statistics(sample1_df: pd.DataFrame, sample2_df: pd.DataFrame) -> pd.DataFrame:

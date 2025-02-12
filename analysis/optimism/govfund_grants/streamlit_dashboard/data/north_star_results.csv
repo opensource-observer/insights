@@ -1,0 +1,12 @@
+project,north_star,synthetic_control_group,post_grant_actual,percent_change,p_value
+WannaBet Weekly Tournaments,active_users,0.5,0.06944444444444445,-0.8611,0.5472581112876025
+Enable High-Frequency Execution Across the Superchain,active_users,0.48148148148148145,0.08333333333333333,-0.8269,0.0004533869572223015
+Swan Superchain Application,transaction_cnt,37236.22222222222,12871.425,-0.6543,5.342589229684336e-06
+Cyber,transaction_cnt,43258.12280701754,13641.036697247706,-0.6847,0.0
+Mode,transaction_cnt,16678.164835164836,7497.064748201439,-0.5505,0.0
+Lisk - Intent 3B Grant Application,transaction_cnt,129.7840909090909,47964.159420289856,368.5689,1.5543122344752192e-15
+DelegateMatch: Governance incentives for a delegation Farcaster frame.,active_users,0.05,0.007633587786259542,-0.8473,0.41219292577159017
+Mint Blockchain- grow the Superchain NFT economy,transaction_cnt,51799.13636363636,74654.7868852459,0.4412,6.391731588450966e-11
+Pyth Network: Infrastructure Subsidies,active_users,0.0,0.0,,
+Pyth Network: Decentralized Solvers (Pyth Express Relay),transaction_cnt,0.0,0.0,,
+Kroma Intent 3B Grants Application,active_users,101061.07692307692,163183.48920863308,0.6147,0.015030665853001945

@@ -12,7 +12,7 @@ from utils import (read_in_stored_dfs_for_projects,
 from config import (DEFI_LLAMA_PROTOCOLS_PATH,
                     STORED_DATA_PATH)
 
-from sections.statistical_analysis_section import (ttest, test_statistic)
+from sections.statistical_analysis_section import ttest_helper
 
 from utils import (extract_addresses,
                    read_in_defi_llama_protocols, 
@@ -94,22 +94,7 @@ for project_name, project in projects.items():
                             sample1_df["count"] = sample1[[target]].count()
                             sample1_df["var"] = sample1[[target]].var()
 
-                            # calculate t-statistic and degrees of freedom
-                            t_stat, df = test_statistic(sample1_df.iloc[0,:], sample2_df.iloc[0,:])
-
-                            # handle division by zero in percent_change
-                            sample1_grant_mean = sample1_df["mean"][0]
-                            sample2_grant_mean = sample2_df["mean"][0]
-                            if sample1_grant_mean != 0:
-                                percent_change = round(((sample2_grant_mean - sample1_grant_mean) / sample1_grant_mean), 4)
-                            else:
-                                percent_change = None  # avoid division by zero
-
-                            p_value = ttest(t_stat, df)
-                            if p_value < 1e-4:  # adjust to the desired threshold
-                                p_value_formatted = f"{p_value:.2e}"  # scientific notation
-                            else:
-                                p_value_formatted = f"{p_value:.4f}"  # standard decimal format
+                            t_stat, percent_change, p_value, p_value_formatted = ttest_helper(sample1_df=sample1_df, sample2_df=sample2_df)
 
                             if target == "TVL":
                                 ttest_results["TVL-percent_change"].append(percent_change)

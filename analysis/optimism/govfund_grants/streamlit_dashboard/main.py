@@ -93,13 +93,15 @@ def main() -> None:
 
     ttest_results = pd.read_csv("data/ttest_results.csv", header=[0, 1])
     tvl_ttest_results = pd.read_csv("data/tvl_ttest_results.csv")
+    north_star_metrics = pd.read_csv("data/north_star_results.csv")
+    tvl_north_star_metrics = pd.read_csv("data/tvl_north_star_results.csv")
 
     by_project, overview_table = st.tabs(["By Project Drill Down", "High-Level Overview Table"])
 
     st.divider()
 
     with overview_table:
-        all_projects_section(ttest_results=ttest_results, tvl_ttest_results=tvl_ttest_results)
+        all_projects_section(ttest_results=ttest_results, tvl_ttest_results=tvl_ttest_results, north_star_metrics=north_star_metrics, tvl_north_star_metrics=tvl_north_star_metrics)
 
     with by_project: 
 

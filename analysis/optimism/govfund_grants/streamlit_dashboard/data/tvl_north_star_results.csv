@@ -1,0 +1,22 @@
+project,protocol,north_star,synthetic_control_group,post_grant_actual,percent_change,p_value
+Renzo Optimism Season 6 Mission Request - Optimism as base for LRTs,renzo_protocol,TVL,1464053945.523667,801947022.1196147,-0.4522,0.0
+Fraxtal Application,frax_swap_protocol,TVL,152661442.69250566,41360241.000342175,-0.7291,0.0
+Ether.fi OP Mainnet LRT Grant,ether__dot__fi_vaults_protocol,TVL,2627276218.94375,402325642.6549786,-0.8469,0.0
+Expanding restaking on Optimism,kelp_rseth_protocol,TVL,1045398410.127144,852701861.5773045,-0.1843,1.9437099485486442e-08
+Boosting LRT adoption with Compound Finance,compound_v2_protocol,TVL,882639763.591501,668864912.0238601,-0.2422,9.387593448817455e-06
+TLX - Leveraged Tokens Protocol,tlx_finance_protocol,TVL,2362494.451073825,5498639.9890612075,1.3275,0.0
+OETH on OP (2 of 3),origin_protocol,TVL,89318958.33335856,149382957.25487465,0.6725,0.0
+Extra Finance S6 Mission Application,extra_finance_leverage_farming_protocol,TVL,122313890.5661692,128274366.76737791,0.0487,0.20824096407433723
+Let's Get HAI,lets_get_hai_protocol,TVL,3378572.3274769797,3408324.938371895,0.0088,0.718912933135579
+Derive (Formerly Lyra) Chain - Intent 3B,derive_v2_protocol,TVL,47941900.60133227,55073054.917920224,0.1487,0.00046282199117131384
+Yield Bearing asset utility with Compound,compound_v2_protocol,TVL,882639763.591501,664551841.4626524,-0.2471,6.566447814604359e-06
+Beefy - mooBIFI,beefy,TVL,278068949.93874484,265457372.7655883,-0.0454,2.679763305923899e-06
+OETH on OP 4,origin_protocol,TVL,89318958.33335856,150195205.7950081,0.6816,0.0
+Contango ,contango_v1_protocol,TVL,20975374.941356145,383095.66156744823,-0.9817,0.0
+Velodrome Finance,velodrome_v3_protocol,TVL,42685768.92711841,7446292.27670176,-0.8256,0.0
+Uniswap: YBA Grant,uniswap_v1_protocol,TVL,7934365.8720210735,7907696.8564388845,-0.0034,0.7973423018759336
+Uniswap: LRT Grant,uniswap_v1_protocol,TVL,7934365.8720210735,7868039.895433474,-0.0084,0.4965163118461775
+Idle - Credit Vaults III,idle_protocol,TVL,12443989.300977783,18480895.19049433,0.4851,1.1546319456101628e-14
+dForce on OP (Resubmission II),dforce,TVL,2887201.088813761,1194659.5022168062,-0.5862,1.2951724137622023e-09
+Ionic Superchain Borrow/Lend Aggregator,ionic_protocol_protocol,TVL,113307285.78531665,155479285.3567593,0.3722,0.0
+Derive (Formerly Lyra) Chain - Intent 3B Take 2,derive_v2_protocol,TVL,47941900.60133227,52383150.952691965,0.0926,0.029145095893720496
