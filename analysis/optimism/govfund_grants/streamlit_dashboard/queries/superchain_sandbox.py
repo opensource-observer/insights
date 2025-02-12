@@ -8,7 +8,7 @@ from processing import make_dates_df, generate_dates
 from utils import get_addresses_condition
 
 # query the daily transaction data of the project addresses over the interval and store it in a dataframe
-def query_optimism_daily_transactions_superchain_sandbox(client: bigquery.Client, project_addresses: Tuple[str, ...], dates_df: pd.DataFrame, start_date: str, token_conversion: int, chain: str) -> pd.DataFrame:
+def query_optimism_daily_transactions_superchain_sandbox(client: bigquery.Client, project_addresses: Tuple[str, ...], dates_df: pd.DataFrame, start_date: str, chain: str, token_conversion: int = 1e15) -> pd.DataFrame:
     try:
         # handle single or multiple addresses in the query
         addresses_condition = get_addresses_condition(project_addresses=project_addresses)
@@ -20,7 +20,8 @@ def query_optimism_daily_transactions_superchain_sandbox(client: bigquery.Client
                 to_address AS address,
                 COUNT(*) AS transaction_cnt,
                 COUNT(DISTINCT from_address) AS active_users,
-                SUM(SAFE_CAST(value_64 AS FLOAT64)) AS total_transferred
+                SUM(SAFE_CAST(value_64 AS FLOAT64)) AS total_transferred,
+                SUM(gas_fee) AS gas_fee
             FROM `{BIGQUERY_PROJECT_NAME}.oso_production.int_superchain_transactions_sandbox`
             WHERE dt >= '{start_date}' 
                 AND to_address {addresses_condition}
@@ -102,15 +103,15 @@ def query_optimism_daily_transactions_superchain_sandbox(client: bigquery.Client
         )
 
         # fill missing numeric values with 0, but leave other columns (e.g., transaction_date) unchanged
-        numeric_columns = ['transaction_cnt', 'active_users', 'unique_users', 'total_transferred']
+        numeric_columns = ['transaction_cnt', 'active_users', 'unique_users', 'total_transferred', 'gas_fee']
         daily_transactions_merged_df[numeric_columns] = daily_transactions_merged_df[numeric_columns].fillna(0).astype(float)
 
         # remove duplicated rows
         daily_transactions_merged_df = daily_transactions_merged_df.drop_duplicates(subset=['transaction_date']).reset_index(drop=True)
 
         # add a column for the total transferred represented in tokens
-        if token_conversion is not None:
-            daily_transactions_merged_df['total_transferred_in_tokens'] = daily_transactions_merged_df['total_transferred'] / token_conversion
+        #if token_conversion is not None and token_conversion != "N/A" and token_conversion != 0:
+        #    daily_transactions_merged_df['total_transferred_in_tokens'] = daily_transactions_merged_df['total_transferred'] / token_conversion
         # add a column for the cumulative total transferred (by address)
         daily_transactions_merged_df['cum_transferred'] = (daily_transactions_merged_df['total_transferred'].cumsum())
 
@@ -128,7 +129,8 @@ def query_chainwide_daily_transactions_superchain_sandbox(client: bigquery.Clien
                 dt AS transaction_date,
                 COUNT(*) AS transaction_cnt,
                 COUNT(DISTINCT from_address) AS active_users,
-                SUM(total_transferred) AS total_transferred
+                SUM(total_transferred) AS total_transferred,
+                SUM(total_gas_fee) AS gas_fee
             FROM `{BIGQUERY_PROJECT_NAME}.oso_production.int_superchain_transactions_chain_summary`
             WHERE dt >= '{start_date}' 
                 AND chain = "{chain}"
@@ -288,7 +290,7 @@ def query_chainwide_daily_transactions_superchain_sandbox(client: bigquery.Clien
         )
 
         # fill missing numeric values with 0, but leave other columns (e.g., transaction_date) unchanged
-        numeric_columns = ['transaction_cnt', 'active_users', 'unique_users', 'total_transferred', 'retained_percent','daa_to_maa_ratio']
+        numeric_columns = ['transaction_cnt', 'active_users', 'unique_users', 'total_transferred', 'retained_percent', 'daa_to_maa_ratio', 'gas_fee']
         daily_transactions_merged_df[numeric_columns] = daily_transactions_merged_df[numeric_columns].fillna(0).astype(float)
         daily_transactions_merged_df = daily_transactions_merged_df[daily_transactions_merged_df["retained_percent"] > 0]
 
@@ -296,8 +298,8 @@ def query_chainwide_daily_transactions_superchain_sandbox(client: bigquery.Clien
         daily_transactions_merged_df = daily_transactions_merged_df.drop_duplicates(subset=['transaction_date']).reset_index(drop=True)
 
         # add a column for the total transferred represented in tokens
-        if token_conversion is not None:
-            daily_transactions_merged_df['total_transferred_in_tokens'] = daily_transactions_merged_df['total_transferred'] / token_conversion
+        #if token_conversion is not None:
+        #    daily_transactions_merged_df['total_transferred_in_tokens'] = daily_transactions_merged_df['total_transferred'] / token_conversion
         # add a column for the cumulative total transferred (by address)
         daily_transactions_merged_df['cum_transferred'] = (daily_transactions_merged_df['total_transferred'].cumsum())
 
@@ -356,8 +358,8 @@ def query_optimism_transaction_flow_superchain_sandbox(client: bigquery.Client, 
         transaction_flow_df = transaction_flow_result.to_dataframe()
 
         # add a column for the total transferred represented in tokens
-        if token_conversion is not None:
-            transaction_flow_df['total_transferred_in_tokens'] = transaction_flow_df['total_transferred'] / token_conversion
+        #if token_conversion is not None:
+        #    transaction_flow_df['total_transferred_in_tokens'] = transaction_flow_df['total_transferred'] / token_conversion
 
         return transaction_flow_df
 

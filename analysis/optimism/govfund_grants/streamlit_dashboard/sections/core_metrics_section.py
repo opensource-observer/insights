@@ -10,8 +10,8 @@ from utils import safe_execution, compute_growth
 
 # normalize the metrics by grant amount
 def add_normalized_metrics(project_daily_transactions: pd.DataFrame, grant_amount: int, project_net_transaction_flow: pd.DataFrame = None) -> Tuple[pd.DataFrame, pd.DataFrame]:
-    daily_transaction_cols = ["transaction_cnt", "active_users", "total_transferred", "unique_users", "total_transferred_in_tokens", "cum_transferred"]
-    net_transaction_flow_cols = ["total_transferred", "total_transferred_in_tokens", "net_transferred", "net_transferred_in_tokens"]
+    daily_transaction_cols = ["transaction_cnt", "active_users", "total_transferred", "unique_users", "cum_transferred", "gas_fee"]
+    net_transaction_flow_cols = ["total_transferred", "net_transferred", "net_transferred_in_tokens"]
 
     # normalize the metrics
     project_daily_transactions_normalized = project_daily_transactions[daily_transaction_cols] / grant_amount
@@ -48,15 +48,17 @@ def display_op_kpis_and_vis_for_core_metrics(
         "unique_users": "Unique Users", 
         "total_transferred": "Total Transferred",
         "cum_transferred": "Cumulative Transferred",
+        "gas_fee": "Gas Fees",
         "transaction_cnt_normalized": "Transaction Count (Normalized by Grant Amount)", 
         "active_users_normalized": "Active Users (Normalized by Grant Amount)", 
         "unique_users_normalized": "Unique Users (Normalized by Grant Amount)", 
         "total_transferred_normalized": "Total Transferred (Normalized by Grant Amount)",
-        "cum_transferred_normalized": "Cumulative Transferred (Normalized by Grant Amount)"
+        "cum_transferred_normalized": "Cumulative Transferred (Normalized by Grant Amount)",
+        "gas_fee_normalized": "Gas Fees (Normalized by Grant Amount)"
     }, inplace=True)
 
     # fill nulls for numeric columns
-    target_cols = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred",
+    target_cols = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Gas Fees", "Gas Fees (Normalized by Grant Amount)",
                    "Transaction Count (Normalized by Grant Amount)", "Active Users (Normalized by Grant Amount)", "Unique Users (Normalized by Grant Amount)", "Total Transferred (Normalized by Grant Amount)"]
     data_merged["Cumulative Transferred"] = data_merged["Cumulative Transferred"].fillna(method="ffill")
     data_merged["Cumulative Transferred (Normalized by Grant Amount)"] = data_merged["Cumulative Transferred (Normalized by Grant Amount)"].fillna(method="ffill")
@@ -71,7 +73,7 @@ def display_op_kpis_and_vis_for_core_metrics(
     grouped_by_date = data_merged.groupby('transaction_date')[target_cols].sum().reset_index()
 
     # user selects a metric
-    metrics = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Cumulative Transferred"]
+    metrics = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Cumulative Transferred", "Gas Fees"]
     selected_metric = st.selectbox("Select a metric", metrics)
     normalized = st.checkbox("Normalize by Grant Amount")
 
@@ -230,17 +232,19 @@ def display_superchain_kpis_and_vis_for_core_metrics(
         "cum_transferred": "Cumulative Transferred",
         "retained_percent": "Retained Daily Active Users",
         "daa_to_maa_ratio": "DAA/MAA",
+        "gas_fee": "Gas Fees",
         "transaction_cnt_normalized": "Transaction Count (Normalized by Grant Amount)", 
         "active_users_normalized": "Active Users (Normalized by Grant Amount)", 
         "unique_users_normalized": "Unique Users (Normalized by Grant Amount)", 
         "total_transferred_normalized": "Total Transferred (Normalized by Grant Amount)",
         "net_transferred_normalized": "Net Transferred (Normalized by Grant Amount)",
-        "cum_transferred_normalized": "Cumulative Transferred (Normalized by Grant Amount)"
+        "cum_transferred_normalized": "Cumulative Transferred (Normalized by Grant Amount)",
+        "gas_fee_normalized": "Gas Fees (Normalized by Grant Amount)"
     }, inplace=True)
 
     target_cols = [
         "Transaction Count", "Active Users", "Unique Users", "Total Transferred",
-        "Cumulative Transferred", "Retained Daily Active Users", "DAA/MAA"]
+        "Cumulative Transferred", "Retained Daily Active Users", "DAA/MAA", "Gas Fees"]
 
     # fill nulls for cumulative columns using forward fill
     cumulative_cols = ["Cumulative Transferred", "Retained Daily Active Users", "DAA/MAA"]
@@ -380,13 +384,12 @@ def core_metrics_section(daily_transactions_df: pd.DataFrame, project_addresses:
 
     if chain == "op":
         daily_transactions_df = daily_transactions_df.groupby(['transaction_date', 'address'])[
-            ['transaction_cnt', 'active_users', 'total_transferred', 'unique_users', 'total_transferred_in_tokens', 'cum_transferred']
+            ['transaction_cnt', 'active_users', 'total_transferred', 'unique_users', 'cum_transferred', 'gas_fee']
         ].sum().reset_index()
 
         net_transaction_flow_df = net_transaction_flow_df.groupby(['transaction_date', 'address']).agg({
             'cnt': 'sum',
             'total_transferred': 'sum',
-            'total_transferred_in_tokens': 'sum',
             'net_transferred': 'sum',
             'net_transferred_in_tokens': 'sum'
         }).reset_index()
@@ -398,7 +401,7 @@ def core_metrics_section(daily_transactions_df: pd.DataFrame, project_addresses:
     
     else:
         daily_transactions_df = daily_transactions_df.groupby('transaction_date')[
-            ['transaction_cnt', 'active_users', 'total_transferred', 'unique_users', 'total_transferred_in_tokens', 'cum_transferred', 'retained_percent', 'daa_to_maa_ratio']
+            ['transaction_cnt', 'active_users', 'total_transferred', 'unique_users', 'cum_transferred', 'retained_percent', 'daa_to_maa_ratio', 'gas_fee']
         ].sum().reset_index()
     
         daily_transactions_df_normalized, _ = add_normalized_metrics(project_daily_transactions=daily_transactions_df, project_net_transaction_flow=net_transaction_flow_df, grant_amount=grant_amount)

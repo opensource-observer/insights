@@ -93,71 +93,6 @@
     },
     {
         "round": "Grants Season 6",
-        "cycle": "Cycle 26",
-        "chain": "fraxtal",
-        "project_name": "Fraxtal Application",
-        "status": "Sent",
-        "proposal_link": "https://app.charmverse.io/op-grants/fraxtal-application-2593578457179595",
-        "amount": 900000,
-        "amount_comment": null,
-        "meta": {
-            "Initial Delivery Date": "2024-09-01T00:00:00",
-            "(OP) Delivered": 900000.0,
-            "Intent": "Intent 3B",
-            "Incentive Program Launched?": "Growth"
-        },
-        "relevant_metrics": {
-            "target metrics": "Growth: TVL in the grantee\u2019s protocol Number of transactions emitting event logs Number of active addresses FXTL Points Stickiness: Percentage of retained active addresses interacting with the grantee\u2019s contracts",
-            "impact analysis": "Impact Assessment:\n\nThe impact of the grants program will be assessed through a combination of key performance indicators (KPIs), periodic reviews, and continuous monitoring. The primary metrics for assessment will include TVL, transaction volumes, user engagement, and protocol adoption rates. Specific milestones will serve as benchmarks for success.\n\nReporting:\n\nTo ensure transparency and accountability, the following reporting mechanisms will be implemented:\n\nMonthly Reports: Detailed monthly reports will be provided, outlining the progress of the grants program, the utilization of funds, and the achievement of key milestones. These reports will include data on TVL growth, transaction volumes, and other relevant KPIs.\n\nReal-Time Dashboard: A real-time dashboard will be available for stakeholders to monitor the grants program's performance continuously. This dashboard will provide up-to-date information on TVL, transaction volumes, and other key metrics, ensuring full transparency.\n\nExample of Reporting:\n\nFor reference, we have implemented similar reporting mechanisms for the Arbitrum STIP grant for liquidity incentivization grant. An example of this reporting can be found bellow. This example showcases our commitment to transparency and detailed reporting. https://forum.arbitrum.foundation/t/frax-finance-bi-weekly-update-final-update/22960 "
-        },
-        "relevant_dates": {
-            "OP deployment date": [
-                "Jul 23",
-                "Jul 24"
-            ],
-            "Incentives due date": [
-                "Jul 23 -> Jun 29, 2025",
-                "Jul 20 -> Jun 29, 2025"
-            ]
-        },
-        "addresses": [
-            {
-                "0x0df840dcbf1229262a4125c1fc559bd338ec9491": {
-                    "networks": [
-                        "optimism"
-                    ],
-                    "tags": [
-                        "safe",
-                        "wallet"
-                    ],
-                    "name": "fraxfinance",
-                    "count_txns": 4
-                }
-            },
-            {
-                "0x0df840dcbf1229262a4125c1fc559bd338ec9491": {
-                    "networks": [
-                        "optimism"
-                    ],
-                    "tags": [
-                        "safe",
-                        "wallet"
-                    ],
-                    "name": "fraxfinance",
-                    "count_txns": 4
-                }
-            }
-        ],
-        "funds_recieved_date": "2024-09-01",
-        "grant_wallet": "0x0dF840dCbf1229262A4125C1fc559bd338eC9491",
-        "starting_balance": 0,
-        "inflow_total_todate": 0,
-        "recieve_todate": false,
-        "balance_left_todate": 900000,
-        "north_star": "TVL"
-    },
-    {
-        "round": "Grants Season 6",
         "cycle": "Cycle 25",
         "project_name": "WannaBet Weekly Tournaments",
         "chain": "op",
@@ -935,7 +870,7 @@
         "inflow_total_todate": 0,
         "recieve_todate": false,
         "balance_left_todate": 50000,
-        "north_star": "gas_fees"
+        "north_star": "gas_fee"
     },
     {
         "round": "Grants Season 6",
@@ -2101,7 +2036,72 @@
         "inflow_total_todate": 1,
         "recieve_todate": false,
         "balance_left_todate": 19999,
-        "north_star":"gas_fees"
+        "north_star":"gas_fee"
+    },
+    {
+        "round": "Grants Season 6",
+        "cycle": "Cycle 26",
+        "chain": "fraxtal",
+        "project_name": "Fraxtal Application",
+        "status": "Sent",
+        "proposal_link": "https://app.charmverse.io/op-grants/fraxtal-application-2593578457179595",
+        "amount": 900000,
+        "amount_comment": null,
+        "meta": {
+            "Initial Delivery Date": "2024-09-01T00:00:00",
+            "(OP) Delivered": 900000.0,
+            "Intent": "Intent 3B",
+            "Incentive Program Launched?": "Growth"
+        },
+        "relevant_metrics": {
+            "target metrics": "Growth: TVL in the grantee\u2019s protocol Number of transactions emitting event logs Number of active addresses FXTL Points Stickiness: Percentage of retained active addresses interacting with the grantee\u2019s contracts",
+            "impact analysis": "Impact Assessment:\n\nThe impact of the grants program will be assessed through a combination of key performance indicators (KPIs), periodic reviews, and continuous monitoring. The primary metrics for assessment will include TVL, transaction volumes, user engagement, and protocol adoption rates. Specific milestones will serve as benchmarks for success.\n\nReporting:\n\nTo ensure transparency and accountability, the following reporting mechanisms will be implemented:\n\nMonthly Reports: Detailed monthly reports will be provided, outlining the progress of the grants program, the utilization of funds, and the achievement of key milestones. These reports will include data on TVL growth, transaction volumes, and other relevant KPIs.\n\nReal-Time Dashboard: A real-time dashboard will be available for stakeholders to monitor the grants program's performance continuously. This dashboard will provide up-to-date information on TVL, transaction volumes, and other key metrics, ensuring full transparency.\n\nExample of Reporting:\n\nFor reference, we have implemented similar reporting mechanisms for the Arbitrum STIP grant for liquidity incentivization grant. An example of this reporting can be found bellow. This example showcases our commitment to transparency and detailed reporting. https://forum.arbitrum.foundation/t/frax-finance-bi-weekly-update-final-update/22960 "
+        },
+        "relevant_dates": {
+            "OP deployment date": [
+                "Jul 23",
+                "Jul 24"
+            ],
+            "Incentives due date": [
+                "Jul 23 -> Jun 29, 2025",
+                "Jul 20 -> Jun 29, 2025"
+            ]
+        },
+        "addresses": [
+            {
+                "0x0df840dcbf1229262a4125c1fc559bd338ec9491": {
+                    "networks": [
+                        "optimism"
+                    ],
+                    "tags": [
+                        "safe",
+                        "wallet"
+                    ],
+                    "name": "fraxfinance",
+                    "count_txns": 4
+                }
+            },
+            {
+                "0x0df840dcbf1229262a4125c1fc559bd338ec9491": {
+                    "networks": [
+                        "optimism"
+                    ],
+                    "tags": [
+                        "safe",
+                        "wallet"
+                    ],
+                    "name": "fraxfinance",
+                    "count_txns": 4
+                }
+            }
+        ],
+        "funds_recieved_date": "2024-09-01",
+        "grant_wallet": "0x0dF840dCbf1229262A4125C1fc559bd338eC9491",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 900000,
+        "north_star": "TVL"
     },
     {
         "round": "Grants Season 6",
@@ -3349,7 +3349,7 @@
         "inflow_total_todate": 0,
         "recieve_todate": false,
         "balance_left_todate": 50000,
-        "north_star":"gas_fees"
+        "north_star":"gas_fee"
     },
     {
         "round": "Grants Season 6",
@@ -3671,7 +3671,7 @@
         "inflow_total_todate": 0,
         "recieve_todate": false,
         "balance_left_todate": 50000,
-        "north_star":"gas_fees"
+        "north_star":"gas_fee"
     },
     {
         "round": "Grants Season 6",

@@ -69,9 +69,9 @@ def aggregate_datasets(daily_transactions_df: pd.DataFrame, tvl_df: pd.DataFrame
 
     # sum each day's metric over all of the relevant addresses
     if "retained_percent" in daily_transactions_df:
-        daily_transactions_df = daily_transactions_df.groupby('date')[['transaction_cnt', 'active_users', 'unique_users', 'total_transferred', 'retained_percent', 'daa_to_maa_ratio']].sum().reset_index()
+        daily_transactions_df = daily_transactions_df.groupby('date')[['transaction_cnt', 'active_users', 'unique_users', 'total_transferred', 'gas_fee', 'retained_percent', 'daa_to_maa_ratio']].sum().reset_index()
     else:
-        daily_transactions_df = daily_transactions_df.groupby('date')[['transaction_cnt', 'active_users', 'unique_users', 'total_transferred']].sum().reset_index()
+        daily_transactions_df = daily_transactions_df.groupby('date')[['transaction_cnt', 'active_users', 'unique_users', 'gas_fee', 'total_transferred']].sum().reset_index()
     
     if net_transaction_flow_df is not None and not net_transaction_flow_df.empty: 
         net_transaction_flow_df = net_transaction_flow_df.groupby('date')[['net_transferred_in_tokens']].sum().reset_index()
@@ -86,6 +86,7 @@ def aggregate_datasets(daily_transactions_df: pd.DataFrame, tvl_df: pd.DataFrame
                             'active_users': 'Active Users', 
                             'unique_users': 'Unique Users',
                             'total_transferred': 'Total Transferred',
+                            'gas_fee': 'Gas Fees',
                             'cum_transferred': 'Cumulative Transferred',
                             'retained_percent': "Retained Daily Active Users",
                             "daa_to_maa_ratio": "DAA/MAA"}, inplace=True)
@@ -101,7 +102,7 @@ def aggregate_datasets(daily_transactions_df: pd.DataFrame, tvl_df: pd.DataFrame
         agg_df['totalLiquidityUSD'].fillna(0, inplace=True)
         agg_df.rename(columns={'totalLiquidityUSD': 'TVL'}, inplace=True)
 
-    agg_df[['Transaction Count', 'Active Users', 'Unique Users', 'Total Transferred']].fillna(0, inplace=True)
+    agg_df[['Transaction Count', 'Active Users', 'Unique Users', 'Total Transferred', 'Gas Fees']].fillna(0, inplace=True)
     agg_df['date'] = pd.to_datetime(agg_df['date'])
     
     # label rows based on whether they were pre or post grant
@@ -366,6 +367,7 @@ def concat_aggregate_with_forecasted(aggregated_dataset: pd.DataFrame, forecaste
     forecasted_df.rename(columns={'transaction_cnt': 'Transaction Count', 
                            'active_users': 'Active Users', 
                            'unique_users': 'Unique Users',
+                           'gas_fee': 'Gas Fees',
                            'total_transferred': 'Total Transferred',
                            'net_transferred_in_tokens': 'Net Transferred'}, inplace=True)
     if 'cum_transferred_in_tokens' in forecasted_df.columns:
@@ -678,7 +680,6 @@ def stat_analysis_section(daily_transactions_df: pd.DataFrame, forecasted_df: pd
 
             if selected_comparison == "Based on OP chain trends":
                 selected_metric_df = combined_df[['date', "TVL", "TVL_opchain", 'grant_label']]
-
                 selected_metric_df.loc[selected_metric_df["grant_label"] == "forecast", "TVL"] = selected_metric_df["TVL_opchain"]
                 selected_metric_df.drop("TVL_opchain", axis=1, inplace=True)
 
@@ -702,7 +703,6 @@ def stat_analysis_section(daily_transactions_df: pd.DataFrame, forecasted_df: pd
     )
 
     start_date, end_date = dates[0], dates[1]
-
     curr_selection_df = selected_metric_df[(selected_metric_df['date'] >= start_date) & (selected_metric_df['date'] <= end_date)]
 
     st.divider()

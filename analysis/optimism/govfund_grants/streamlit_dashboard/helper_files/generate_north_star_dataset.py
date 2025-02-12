@@ -9,7 +9,7 @@ import pandas as pd
 projects = read_in_grants(GRANTS_PATH)
 defi_llama_protocols = read_in_defi_llama_protocols(path=DEFI_LLAMA_PROTOCOLS_PATH)
 
-target_metrics = ["TVL", "active_users", "DAA/MAA", "transaction_cnt"]
+target_metrics = ["TVL", "active_users", "DAA/MAA", "transaction_cnt", "gas_fee"]
 
 ttest_results = pd.read_csv("data/ttest_results.csv", header=[0,1])
 tvl_ttest_results = pd.read_csv("data/tvl_ttest_results.csv")

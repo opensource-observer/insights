@@ -36,6 +36,7 @@ data = {
     "TVL" : [],
     "Retained Daily Active Users": [],
     "DAA/MAA" : [],
+    "Gas Fees" : [],
     "Transaction Count (forecasted)" : [], 
     "Active Users (forecasted)" : [], 
     "Unique Users (forecasted)" : [], 
@@ -43,7 +44,8 @@ data = {
     "Net Transferred (forecasted)" : [],
     "TVL (forecasted)" : [],
     "Retained Daily Active Users (forecasted)": [],
-    "DAA/MAA (forecasted)" : []
+    "DAA/MAA (forecasted)" : [],
+    "Gas Fees (forecasted)" : []
 }
 
 projects = read_in_grants(grants_path=GRANTS_PATH)
@@ -62,7 +64,7 @@ header = [
 ]
 
 # define metric groups
-metric_list = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Net Transferred", "TVL", "Retained Daily Active Users", "DAA/MAA"]
+metric_list = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Net Transferred", "TVL", "Retained Daily Active Users", "DAA/MAA", "Gas Fees"]
 
 # unified loop for both metric groups
 for metric in metric_list:
@@ -103,7 +105,7 @@ for project_name, project in projects.items():
     project_datasets = read_in_stored_dfs_for_projects(
         project_name=project_name,
         data_path=STORED_DATA_PATH,
-        protocol=project_protocol
+        protocols=project_protocol
     )
     project_daily_transactions_df = project_datasets['daily_transactions']
     project_net_transaction_flow_df = project_datasets['net_transaction_flow']

@@ -1,4 +1,4 @@
-from deprecated_files.superchain_sandbox2 import query_transaction_data_from_bq_superchain_sandbox
+from queries.superchain_sandbox import query_transaction_data_from_bq_superchain_sandbox
 from utils import connect_bq_client, read_in_grants, extract_addresses, return_protocol, read_in_defi_llama_protocols
 
 from config import GRANTS_PATH, DEFI_LLAMA_PROTOCOLS_PATH, SERVICE_ACCOUNT_PATH
@@ -7,12 +7,10 @@ projects = read_in_grants(grants_path=GRANTS_PATH)
 defi_llama_protocols = read_in_defi_llama_protocols(path=DEFI_LLAMA_PROTOCOLS_PATH)
 
 for project_name, project in projects.items():
-    clean_name = project_name.lower().replace(" ", "_").replace(".", "-")
+    clean_name = project_name.lower().replace(" ", "_").replace(".", "-").replace("/","-")
+    print(f"project: {clean_name} starting")
+    
     chain = project['chain']
-
-    if chain == "optimism":
-        continue
-
     token_conversion = project['token_conversion']
     grant_date = project['funds_recieved_date']
 
@@ -21,6 +19,8 @@ for project_name, project in projects.items():
 
     client = connect_bq_client(service_account_path=SERVICE_ACCOUNT_PATH)
 
-    project_daily_transactions_df = query_transaction_data_from_bq_superchain_sandbox(client=client, project_addresses=just_addresses, grant_date=grant_date, token_conversion=token_conversion, chain=chain)
-    project_daily_transactions_df.drop("address", axis=1, inplace=True)
-    project_daily_transactions_df.to_csv(f"data/{clean_name}/{clean_name}_daily_transactions2.csv", index=False)
+    project_daily_transactions_df, _ = query_transaction_data_from_bq_superchain_sandbox(client=client, project_addresses=just_addresses, grant_date=grant_date, token_conversion=token_conversion, chain=chain)
+
+    project_daily_transactions_df.to_csv(f"data/{clean_name}/{clean_name}_daily_transactions.csv", index=False)
+
+    print(f"project: {clean_name} finished")

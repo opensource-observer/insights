@@ -49,7 +49,7 @@ def high_level_overview_table(df: pd.DataFrame, alpha: float) -> None:
     }
     
     # define metric groups
-    metric_list = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Net Transferred", "Retained Daily Active Users", "DAA/MAA"]
+    metric_list = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Net Transferred", "Retained Daily Active Users", "DAA/MAA", "Gas Fees"]
 
     # iterate over all metrics (including forecasted ones)
     for metric in metric_list:
@@ -215,6 +215,12 @@ def display_north_star_metrics(df1: pd.DataFrame, df2: pd.DataFrame, alpha: floa
                         "post_grant_actual":"Post Grant Actual",
                         "percent_change": "Percent Change"}, inplace=True)
     
+    df1["North Star"] = df1["North Star"].replace({
+        "active_users": "Daily Active Users",
+        "transaction_cnt": "Daily Transactions",
+        "gas_fee": "Daily Gas Fees"
+    })
+
     df1_results = []
     for _, row in df1.iterrows():
         if row['p_value'] < alpha:
@@ -274,7 +280,7 @@ def prepare_data_for_scatterplots(df: pd.DataFrame, alpha: float) -> pd.DataFram
     df.columns = [f"{col[0]}: {col[1]}" for col in df.columns]
     
     # define the list of metrics
-    metric_list = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Net Transferred", "Retained Daily Active Users", "DAA/MAA"]
+    metric_list = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Net Transferred", "Retained Daily Active Users", "DAA/MAA", "Gas Fees"]
 
     # select relevant columns
     target_cols = ["General Info: Project Name", "General Info: Grant Amount"]
@@ -328,7 +334,7 @@ def prepare_data_for_scatterplots(df: pd.DataFrame, alpha: float) -> pd.DataFram
 def display_scatterplots(df: pd.DataFrame, alpha: float) -> None:
     st.subheader("Impact Across Projects By Metric")
 
-    metric_list = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Net Transferred", "Retained Daily Active Users", "DAA/MAA"]
+    metric_list = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Net Transferred", "Retained Daily Active Users", "DAA/MAA", "Gas Fees"]
     selected_metric = st.selectbox("Select desired metric", metric_list)
 
     df = df[df["Metric"] == selected_metric]
