@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "retro-funding"
+version = "0.1.0"
+description = "Data and evaluation algorithms for Retro Funding"
+authors = ["Friends of Sunny"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = ">=3.11,<3.13"
+pandas = "^2.0.3"
+google-cloud-bigquery = "^3.18.0"
+db-dtypes = "^1.4.0"
+pyyaml = "^6.0.2"
+networkx = "^3.4.2"
+openrank-sdk = "^0.4.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api" 

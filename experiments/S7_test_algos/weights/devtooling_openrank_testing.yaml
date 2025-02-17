@@ -1,0 +1,65 @@
+# ----------------------------------------------------
+# Devtooling - OpenRank (Testing)
+# ----------------------------------------------------
+
+data_snapshot:
+  data_dir: 'eval-algos/S7/data/devtooling_testing'
+  onchain_projects: 'onchain_projects.csv'
+  devtooling_projects: 'devtooling_projects.csv'
+  project_dependencies: 'project_dependencies.csv'
+  developers_to_projects: 'developers_to_projects.csv'
+
+simulation:
+  alpha: 0.2
+    
+  time_decay:
+    commit_to_onchain_repo: 1.0
+    event_to_devtooling_repo: 0.5
+
+  onchain_project_pretrust_weights:
+    transaction_count_all_levels: 0.05
+    transaction_count_txn_level_only: 0.35
+    gas_fees_all_levels: 0.05
+    gas_fees_txn_level_only: 0.35
+    user_count: 0.1
+    bot_filtered_user_count: 0.1
+
+  devtooling_project_pretrust_weights:
+    star_count: 0.3
+    fork_count: 0.3
+    num_packages_in_deps_dev: 0.4
+
+  link_type_weights:
+    PACKAGE_DEPENDENCY: 5.0
+    ONCHAIN_PROJECT_TO_DEVELOPER: 1.0
+    DEVELOPER_TO_DEVTOOLING_PROJECT: 1.0
+
+  event_type_weights:
+    CARGO: 5.0
+    NPM: 2.0
+    PYPI: 1.0
+    GOLANG: 1.0
+    FORKED: 1.0
+    STARRED: 1.0
+    COMMIT_CODE: 2.0
+    ISSUE_CLOSED: 0.0
+    ISSUE_COMMENT: 0.5
+    ISSUE_OPENED: 1.0
+    ISSUE_REOPENED: 0.0
+    PULL_REQUEST_CLOSED: 0.0
+    PULL_REQUEST_MERGED: 1.0
+    PULL_REQUEST_OPENED: 1.0
+    PULL_REQUEST_REOPENED: 0.0
+    PULL_REQUEST_REVIEW_COMMENT: 0.5
+
+  eligibility_thresholds:
+    num_projects_with_package_links: 3
+    num_projects_with_dev_links: 3
+    num_onchain_developers_with_links: 10
+
+# Allocation constraints
+allocation:
+  budget: 1000000              # Total budget to allocate
+  min_amount_per_project: 200  # Minimum allocation if funded
+  max_share_per_project: 0.05  # Maximum % of budget per project
+  max_iterations: 50           # Max iterations for convergence 

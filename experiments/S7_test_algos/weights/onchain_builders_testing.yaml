@@ -1,0 +1,41 @@
+# ----------------------------------------------------
+# Onchain Builders - Testing
+# ----------------------------------------------------
+
+data_snapshot:
+  data_dir: 'eval-algos/S7/data/onchain_testing'
+  projects_file: 'projects_v1.csv'
+  metrics_file: 'onchain_metrics_by_project.csv'
+
+simulation:
+  periods:
+    'Dec 2024': 'previous'
+    'Jan 2025': 'current'
+  
+  # Chain weights (1.0 = full weight)
+  chains:
+    BASE: 1.0
+    OPTIMISM: 1.0
+  
+  # Metric weights must sum to 1.0
+  metrics:
+    transaction_count_bot_filtered: 0.30
+    transaction_gas_fee: 0.30
+    monthly_active_farcaster_users: 0.10
+    trace_count: 0.30             
+  
+  # Variant weights must sum to 1.0
+  metric_variants:
+    Adoption: 0.70    # Current period value
+    Growth: 0.00      # Change from previous period
+    Retention: 0.30   # Minimum of current and previous
+  
+  aggregation:
+    method: power_mean
+    p: 2
+
+allocation:
+  budget: 1000000              # Total budget to allocate
+  min_amount_per_project: 200  # Minimum allocation if funded
+  max_share_per_project: 0.05  # Maximum % of budget per project
+  max_iterations: 50           # Max iterations for convergence 
