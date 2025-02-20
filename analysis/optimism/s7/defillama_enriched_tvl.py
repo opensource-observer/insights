@@ -30,12 +30,10 @@ def extract_chain_tvl_events(protocol):
     """
     Extract aggregated TVL events from the chainTvls field.
     For each chain, each event is expected to have a date and a totalLiquidityUSD value.
-    No token-level unrolling is performed.
     """
     events = []
     chain_tvls = protocol.get("chainTvls", {})
     for chain_name, tvl_data in chain_tvls.items():
-        # Get the TVL list from the nested structure
         tvl_list = tvl_data.get("tvl", [])
         if not tvl_list:
             continue
@@ -45,7 +43,6 @@ def extract_chain_tvl_events(protocol):
                 date = entry.get("date")
                 if date is None:
                     continue
-                # Use a uniform readable date format
                 readable_time = datetime.fromtimestamp(date, tz=timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
                 amount = float(entry.get("totalLiquidityUSD", 0))
                 event = {
@@ -57,8 +54,7 @@ def extract_chain_tvl_events(protocol):
                     "event_type": "TVL"
                 }
                 events.append(event)
-            else:
-                # Skip non-dictionary entries
+            else:            
                 continue
     return events
 
@@ -104,7 +100,6 @@ def build_enriched_events_dataframe(events):
     df = pl.DataFrame(events)
 
     df = df.with_columns([
-        # Use the event_type provided in the event dictionaries
         pl.col("event_type"),
         pl.concat_str([
             pl.col("time"),
@@ -113,7 +108,6 @@ def build_enriched_events_dataframe(events):
             pl.col("token")
         ], separator="_").alias("event_source_id"),
         pl.lit("defillama").str.to_uppercase().alias("event_source"),
-        # to_artifact corresponds to the protocol
         pl.col("slug").alias("to_artifact_name"),
         pl.col("chain").alias("to_artifact_namespace"),
         pl.lit("protocol").str.to_uppercase().alias("to_artifact_type"),
@@ -125,7 +119,6 @@ def build_enriched_events_dataframe(events):
             pl.col("chain"),
             pl.col("slug")
         ], separator="_").alias("to_artifact_source_id"),
-        # from_artifact corresponds to the token (always "usd")
         pl.col("token").alias("from_artifact_name"),
         pl.col("chain").alias("from_artifact_namespace"),
         pl.lit("token").str.to_uppercase().alias("from_artifact_type"),
@@ -151,7 +144,7 @@ def build_enriched_events_dataframe(events):
 
 
 def main():
-    # Load all protocol JSON files
+    # Load all protocol JSON files (stored locally for testing purposes)
     protocols = load_protocol_data(directory="data/protocols")
     all_events = []
 
@@ -169,7 +162,7 @@ def main():
 
     enriched_df = build_enriched_events_dataframe(all_events)
 
-    # --- Apply filtering based on chain and protocol slug ---
+    # --- Apply OP Labs filtering ---
     ENDING_PATTERNS_TO_FILTER = ["-borrowed", "-vesting", "-staking", "-pool2", "-treasury", "-cex"]
     EXACT_PATTERNS_TO_FILTER = ["treasury", "borrowed", "staking", "pool2", "polygon-bridge-&-staking"]
     RELEVANT_CHAINS = [
@@ -186,14 +179,12 @@ def main():
         'world chain'
     ]
 
-    # First filter for relevant chains
     chain_filtered_df = enriched_df.filter(
         pl.col("to_artifact_namespace").str.to_lowercase().is_in(
             pl.Series(RELEVANT_CHAINS).str.to_lowercase()
         )
     )
 
-    # Then apply the exclusion filters
     endings_pattern = "|".join(re.escape(e) for e in ENDING_PATTERNS_TO_FILTER)
     namespace_ending_mask = pl.col("to_artifact_namespace").str.to_lowercase().str.contains(rf"({endings_pattern})$")
     namespace_exact_mask = pl.col("to_artifact_namespace").str.to_lowercase().is_in(
@@ -206,10 +197,8 @@ def main():
     filter_mask = namespace_ending_mask | namespace_exact_mask | polygon_bridge_mask | cex_mask
     filtered_enriched_df = chain_filtered_df.filter(~filter_mask)
 
-    # Create data directory if it doesn't exist
     os.makedirs("data", exist_ok=True)
-    
-    # Save as Parquet file
+
     output_path = "data/enriched_tvl_events.parquet"
     filtered_enriched_df.write_parquet(output_path)
     print(f"Enriched TVL events saved to {output_path}")
