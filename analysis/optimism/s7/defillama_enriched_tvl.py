@@ -165,25 +165,6 @@ def main():
     # --- Apply OP Labs filtering ---
     ENDING_PATTERNS_TO_FILTER = ["-borrowed", "-vesting", "-staking", "-pool2", "-treasury", "-cex"]
     EXACT_PATTERNS_TO_FILTER = ["treasury", "borrowed", "staking", "pool2", "polygon-bridge-&-staking"]
-    RELEVANT_CHAINS = [
-        'optimism',
-        'base',
-        'bob',
-        'ink',
-        'fraxtal',
-        'lisk',
-        'mode',
-        'polynomial',
-        'soneium',
-        'unichain',
-        'world chain'
-    ]
-
-    chain_filtered_df = enriched_df.filter(
-        pl.col("to_artifact_namespace").str.to_lowercase().is_in(
-            pl.Series(RELEVANT_CHAINS).str.to_lowercase()
-        )
-    )
 
     endings_pattern = "|".join(re.escape(e) for e in ENDING_PATTERNS_TO_FILTER)
     namespace_ending_mask = pl.col("to_artifact_namespace").str.to_lowercase().str.contains(rf"({endings_pattern})$")
@@ -195,7 +176,7 @@ def main():
     cex_mask = pl.col("to_artifact_name").str.ends_with("-cex")
 
     filter_mask = namespace_ending_mask | namespace_exact_mask | polygon_bridge_mask | cex_mask
-    filtered_enriched_df = chain_filtered_df.filter(~filter_mask)
+    filtered_enriched_df = enriched_df.filter(~filter_mask)
 
     os.makedirs("data", exist_ok=True)
 
