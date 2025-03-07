@@ -1,0 +1,282 @@
+[
+  {
+    "project_id":"0x0008577196fa6ec286440b418e2f6305fc10e62ce759625d826be272ee6b45a3",
+    "name":"CreateX",
+    "open_source_observer_slug":"createx",
+    "oso_project_name":"createx",
+    "valid":true
+  },
+  {
+    "project_id":"0x08df6e20a3cfabbaf8f34d4f4d048fe7da40447c24be0f3ad513db6f13c755dd",
+    "name":"Velodrome Finance",
+    "open_source_observer_slug":"velodrome",
+    "oso_project_name":"velodrome",
+    "valid":true
+  },
+  {
+    "project_id":"0x1335476de5a24573f3fa1297827fbeb02921948d678b399c7367fb956d08a6cc",
+    "name":"Opstack For Cats Dream \u2611\ufe0f",
+    "open_source_observer_slug":"Opstack For Cats Dream \u2611\ufe0f",
+    "oso_project_name":null,
+    "valid":false
+  },
+  {
+    "project_id":"0x1480383a90f1ab95cfedee6ea130dca700e5236eceb7dcf3f08a0e96b43c90aa",
+    "name":"MonstersOnBase",
+    "open_source_observer_slug":"MonstersOnBase",
+    "oso_project_name":null,
+    "valid":false
+  },
+  {
+    "project_id":"0x17fb589e599fe05e532b90c121eccc55b1249301e783dae226bad698872322da",
+    "name":"The Ethernaut",
+    "open_source_observer_slug":"ethernaut-openzeppelin",
+    "oso_project_name":"ethernaut-openzeppelin",
+    "valid":false
+  },
+  {
+    "project_id":"0x1a26744683129e6e36c790c4d9ed2aba3fa08b02a1a127c5805241b9a442de3a",
+    "name":"Dspyt",
+    "open_source_observer_slug":"dspytdao",
+    "oso_project_name":"dspytdao",
+    "valid":false
+  },
+  {
+    "project_id":"0x1aacb85f1d87039696b876ddcae98c56d38ea9eed07b265409fdb256c8f8172a",
+    "name":"Blockhead",
+    "open_source_observer_slug":"blockhead-darryl-yeo",
+    "oso_project_name":"blockhead-darryl-yeo",
+    "valid":true
+  },
+  {
+    "project_id":"0x229bbc8163bdee3891cde1c18c74ab3afc72e8683692fc7f1b767570cbe7c4a7",
+    "name":"EVM Explorer",
+    "open_source_observer_slug":"evm-explorer-pfed-prog",
+    "oso_project_name":"evm-explorer-pfed-prog",
+    "valid":true
+  },
+  {
+    "project_id":"0x45a05710ec665203dc05dfb3024e42532468fa6b75e6927c2da539d7fcac4f4f",
+    "name":"Open Labels Initiative",
+    "open_source_observer_slug":"openlabelsinitiative",
+    "oso_project_name":"openlabelsinitiative",
+    "valid":true
+  },
+  {
+    "project_id":"0x4dd10ba330a4a21459e2ba72f15fb5da2a63f7492e2b1567e6669c3d47fe6308",
+    "name":"Web3j",
+    "open_source_observer_slug":"hyperledger-web3j",
+    "oso_project_name":"hyperledger-web3j",
+    "valid":true
+  },
+  {
+    "project_id":"0x50159544ec22884b777a997a625c75bb02e55b1dc8934aad3b78678e7c11d039",
+    "name":"\ud83d\udc0d snekmate",
+    "open_source_observer_slug":"snekmate",
+    "oso_project_name":"snekmate",
+    "valid":true
+  },
+  {
+    "project_id":"0x513265758a3804184b6a0771d99c1a4b04d3267bacd4b914e89ff991de229f6a",
+    "name":"Create2Deployer",
+    "open_source_observer_slug":"create2deployer",
+    "oso_project_name":"create2deployer",
+    "valid":true
+  },
+  {
+    "project_id":"0x51504348243d8e8fa59cf2ba983d9255373e5eb23fe22a0d18c0d36028561ace",
+    "name":"Test Project",
+    "open_source_observer_slug":"jonassft",
+    "oso_project_name":null,
+    "valid":false
+  },
+  {
+    "project_id":"0x517eaa9c56951de89261f2d7830ea49aae92f2a903104a17d9c5c2edd4959806",
+    "name":"LI.FI",
+    "open_source_observer_slug":"lifinance",
+    "oso_project_name":"lifinance",
+    "valid":true
+  },
+  {
+    "project_id":"0x52b74da84ea50e0a6ddb28c1c78e0baaa284b7a95298cf23bf65dafd7b0c6d19",
+    "name":"Skeleton ERA \ud83d\udc80",
+    "open_source_observer_slug":" Skeleton ERA \ud83d\udc80",
+    "oso_project_name":null,
+    "valid":false
+  },
+  {
+    "project_id":"0x537097f27d55cb52d39b95c3ed65076349ab68aac48051d742d715456e0884d8",
+    "name":"xdeployer",
+    "open_source_observer_slug":"xdeployer",
+    "oso_project_name":"xdeployer",
+    "valid":true
+  },
+  {
+    "project_id":"0x55bff36906b3e55bff995b4a7d73fd6651eeba4274ad49e269b29157bbf2fee2",
+    "name":"8 Bit Cats\u2611\ufe0f",
+    "open_source_observer_slug":"UGOTRh7FFbKjwvHdPEvfUTJ",
+    "oso_project_name":null,
+    "valid":false
+  },
+  {
+    "project_id":"0x5cfdb8c453a7eede1946071e9d7417d01cc2116f57563b87dc0094a6bdb9a081",
+    "name":"Optimism \u00d7 Filecoin: Enabling Scalable Storage, On-Chain Compute & Cross-Chain Interoperability",
+    "open_source_observer_slug":"Manusheel Gupta",
+    "oso_project_name":"emttr-aspiringsecurity",
+    "valid":false
+  },
+  {
+    "project_id":"0x62e37e96aa6e1cbfb6bd24b97c4b8f1e12cc3fe35d5388d2f041c42a12b40745",
+    "name":"Stargate Finance",
+    "open_source_observer_slug":"stargate-finance",
+    "oso_project_name":"stargate-finance",
+    "valid":true
+  },
+  {
+    "project_id":"0x663e4d25ca3f327365240471b4831ea3c989cb132bbf6ae8f5c1e15268591795",
+    "name":"Blockscout open-source block explorer",
+    "open_source_observer_slug":"blockscout",
+    "oso_project_name":"blockscout",
+    "valid":true
+  },
+  {
+    "project_id":"0x6bd057da522918a4675396313ae33a2f2788a1ceeb3bd7ae228015e3eb317a7d",
+    "name":"Viem: TypeScript Interface for Ethereum",
+    "open_source_observer_slug":"wevm",
+    "oso_project_name":"wevm",
+    "valid":true
+  },
+  {
+    "project_id":"0x6ee546715053790bda72f913925b782461830ccdcc14ad12a2f288641510f448",
+    "name":"Dragons On Op Stack \ud83d\udd34",
+    "open_source_observer_slug":"Dragons On Op Stack \ud83d\udd34",
+    "oso_project_name":null,
+    "valid":false
+  },
+  {
+    "project_id":"0x754c37e401e2527ab24b9d7ca3e042bfcbfebeef54a533f8833d46242d2c3017",
+    "name":"Remix Project",
+    "open_source_observer_slug":"remix-ethereum",
+    "oso_project_name":"remix-ethereum",
+    "valid":true
+  },
+  {
+    "project_id":"0x7a4bb37bc7997b8e9b34775164682ff1f441b716cd235f2e7cdce76677b66007",
+    "name":"zkCodex",
+    "open_source_observer_slug":"zkcodex",
+    "oso_project_name":"zkcodex",
+    "valid":true
+  },
+  {
+    "project_id":"0x808b31862cec6dccf3894bb0e76ce4ca298e4c2820e2ccbf4816da740463b220",
+    "name":"Fractal Visions",
+    "open_source_observer_slug":"fractal-visions",
+    "oso_project_name":"fractal-visions",
+    "valid":true
+  },
+  {
+    "project_id":"0x8bfdc42f26bf691d378d2073ae509c46b85c0eed8db8abc6987b6725dd0d056a",
+    "name":"Superfluid ",
+    "open_source_observer_slug":"Superfluid",
+    "oso_project_name":"safe-global & third-web",
+    "valid":false
+  },
+  {
+    "project_id":"0x939241afa4c4b9e1dda6b8250baa8f04fa8b0debce738cfd324c0b18f9926d25",
+    "name":"OpenZeppelin Contracts",
+    "open_source_observer_slug":"openzeppelin",
+    "oso_project_name":"openzeppelin",
+    "valid":true
+  },
+  {
+    "project_id":"0xa08c7ab7824d147d6cb87ffb4e86cec454a030d48b8c395bad6d64456be3d911",
+    "name":"Aragon OSx",
+    "open_source_observer_slug":"aragon",
+    "oso_project_name":"aragon",
+    "valid":true
+  },
+  {
+    "project_id":"0xa38f3efb4fb8f6fcefb80f0262645ac05d5548cad0308ee49520c48c4e8cbd1f",
+    "name":"growthepie \ud83e\udd67\ud83d\udccf Ethereum and Superchain Analytics",
+    "open_source_observer_slug":"growthepie",
+    "oso_project_name":"growthepie",
+    "valid":true
+  },
+  {
+    "project_id":"0xa88844cea135382e3484e39c3172033437121b35ca0bc8b10b9b8253984876b5",
+    "name":"Ethereum Attestation Service (EAS)",
+    "open_source_observer_slug":"ethereum-attestation-service",
+    "oso_project_name":"ethereum-attestation-service",
+    "valid":true
+  },
+  {
+    "project_id":"0xabdfa10e699db5127100da1dd2403692afe8d86e793d57780f1c7e93437a73a0",
+    "name":"WhatsABI",
+    "open_source_observer_slug":"whatsabi-shazow",
+    "oso_project_name":"whatsabi-shazow",
+    "valid":true
+  },
+  {
+    "project_id":"0xaec1c406b2a124ec90aeebdde35c6c0cd9a90f0c7730b0911d2f648c8b99d062",
+    "name":"Variance_dart",
+    "open_source_observer_slug":"vaariance",
+    "oso_project_name":"vaariance",
+    "valid":true
+  },
+  {
+    "project_id":"0xb773733e55b7267302f2622ae410a65a89552689387d0b86bce0f0cb833119d0",
+    "name":"Callthis",
+    "open_source_observer_slug":"callthis-shazow",
+    "oso_project_name":"callthis-shazow",
+    "valid":true
+  },
+  {
+    "project_id":"0xbb067b01988521110c91737f058e7301f608be231d850a72af1516bd034d161c",
+    "name":"Synpress",
+    "open_source_observer_slug":"synpress-synthetixio",
+    "oso_project_name":"synpress-synthetixio",
+    "valid":true
+  },
+  {
+    "project_id":"0xc0ad090a80d748c19dce84d17f85d7b0016daa1c35f72ada2d92f469f8a77067",
+    "name":"rotki",
+    "open_source_observer_slug":"rotki",
+    "oso_project_name":"rotki",
+    "valid":true
+  },
+  {
+    "project_id":"0xc6052138bbdae5976fa2866f46b0537182d4126c4bb97485738d1b43f2276134",
+    "name":"thirdweb",
+    "open_source_observer_slug":"third-web",
+    "oso_project_name":"third-web",
+    "valid":true
+  },
+  {
+    "project_id":"0xc7798704a6d730cea776c4866a9636bfa04c1201e29b6b0c99cc3603bc1bca25",
+    "name":"Cannon",
+    "open_source_observer_slug":"usecannon",
+    "oso_project_name":"usecannon",
+    "valid":true
+  },
+  {
+    "project_id":"0xcb0434aaf86a5dca68f96edefc22bf04a16bbfaa48b0a4a40c844f1afb8d7b1e",
+    "name":"BASE BTC EARTH \ud83c\udf0d",
+    "open_source_observer_slug":"BASE BTC EARTH \ud83c\udf0d",
+    "oso_project_name":null,
+    "valid":false
+  },
+  {
+    "project_id":"0xcbfdcf8f724d73504d1518d5ecd7d7256b12d37e68cd84569b383bfb6e2eeea4",
+    "name":"Dmail Network",
+    "open_source_observer_slug":"Dmail Network",
+    "oso_project_name":"dmailofficial",
+    "valid":false
+  },
+  {
+    "project_id":"0xe6eb4d61eff4e2dc2d8dba01ac1b84c1683bdb1e8d677a66fa44a72e3f8b1faf",
+    "name":"Zabi",
+    "open_source_observer_slug":"zabi-raiden1411",
+    "oso_project_name":"zabi-raiden1411",
+    "valid":true
+  }
+]
