@@ -69,16 +69,16 @@ def aggregate_datasets(daily_transactions_df: pd.DataFrame, tvl_df: pd.DataFrame
 
     # sum each day's metric over all of the relevant addresses
     if "retained_percent" in daily_transactions_df:
-        daily_transactions_df = daily_transactions_df.groupby('date')[['transaction_cnt', 'active_users', 'unique_users', 'total_transferred', 'retained_percent', 'daa_to_maa_ratio']].sum().reset_index()
+        daily_transactions_df = daily_transactions_df.groupby('date')[['transaction_cnt', 'active_users', 'unique_users', 'total_transferred', 'gas_fee', 'retained_percent', 'daa_to_maa_ratio']].sum().reset_index()
     else:
-        daily_transactions_df = daily_transactions_df.groupby('date')[['transaction_cnt', 'active_users', 'unique_users', 'total_transferred']].sum().reset_index()
+        daily_transactions_df = daily_transactions_df.groupby('date')[['transaction_cnt', 'active_users', 'unique_users', 'gas_fee', 'total_transferred']].sum().reset_index()
     
     if net_transaction_flow_df is not None and not net_transaction_flow_df.empty: 
         net_transaction_flow_df = net_transaction_flow_df.groupby('date')[['net_transferred_in_tokens']].sum().reset_index()
         net_transaction_flow_df['date'] = pd.to_datetime(net_transaction_flow_df['date'])
     
     if tvl_df is not None and not tvl_df.empty: 
-        tvl_df = tvl_df.groupby('date')['totalLiquidityUSD'].sum().reset_index()
+        tvl_df = tvl_df.groupby(['date', 'protocol'])['totalLiquidityUSD'].sum().reset_index()
 
     # rename columns so for when they're displayed
     agg_df = daily_transactions_df.copy()
@@ -86,6 +86,7 @@ def aggregate_datasets(daily_transactions_df: pd.DataFrame, tvl_df: pd.DataFrame
                             'active_users': 'Active Users', 
                             'unique_users': 'Unique Users',
                             'total_transferred': 'Total Transferred',
+                            'gas_fee': 'Gas Fees',
                             'cum_transferred': 'Cumulative Transferred',
                             'retained_percent': "Retained Daily Active Users",
                             "daa_to_maa_ratio": "DAA/MAA"}, inplace=True)
@@ -101,10 +102,10 @@ def aggregate_datasets(daily_transactions_df: pd.DataFrame, tvl_df: pd.DataFrame
         agg_df['totalLiquidityUSD'].fillna(0, inplace=True)
         agg_df.rename(columns={'totalLiquidityUSD': 'TVL'}, inplace=True)
 
-    agg_df[['Transaction Count', 'Active Users', 'Unique Users', 'Total Transferred']].fillna(0, inplace=True)
+    agg_df[['Transaction Count', 'Active Users', 'Unique Users', 'Total Transferred', 'Gas Fees']].fillna(0, inplace=True)
     agg_df['date'] = pd.to_datetime(agg_df['date'])
+    
     # label rows based on whether they were pre or post grant
-
     agg_df['grant_label'] = agg_df.apply(lambda row: assign_grant_label(row, grant_date), axis=1)
 
     return agg_df
@@ -137,6 +138,28 @@ def ttest(t_stat: float, df: float) -> float:
     p_value = 2 * (1 - t.cdf(abs(t_stat), df))
 
     return p_value
+
+
+def ttest_helper(sample1_df: pd.DataFrame, sample2_df:pd.DataFrame) -> Tuple[float, float, float, str]:
+    # calculate t-statistic and degrees of freedom
+    t_stat, df = test_statistic(sample1_df.iloc[0,:], sample2_df.iloc[0,:])
+
+    # handle division by zero in percent_change
+    sample1_grant_mean = sample1_df["mean"][0]
+    sample2_grant_mean = sample2_df["mean"][0]
+    
+    if sample1_grant_mean != 0:
+        percent_change = round(((sample2_grant_mean - sample1_grant_mean) / sample1_grant_mean), 4)
+    else:
+        percent_change = None  # avoid division by zero
+
+    p_value = ttest(t_stat, df)
+    if p_value < 1e-4:  # adjust to the desired threshold
+        p_value_formatted = f"{p_value:.2e}"  # scientific notation
+    else:
+        p_value_formatted = f"{p_value:.4f}"  # standard decimal format
+
+    return t_stat, percent_change, p_value, p_value_formatted
 
 # conduct the t-stat tests and result a dataframe of the results
 def determine_statistics(sample1_df: pd.DataFrame, sample2_df: pd.DataFrame) -> pd.DataFrame:
@@ -344,6 +367,7 @@ def concat_aggregate_with_forecasted(aggregated_dataset: pd.DataFrame, forecaste
     forecasted_df.rename(columns={'transaction_cnt': 'Transaction Count', 
                            'active_users': 'Active Users', 
                            'unique_users': 'Unique Users',
+                           'gas_fee': 'Gas Fees',
                            'total_transferred': 'Total Transferred',
                            'net_transferred_in_tokens': 'Net Transferred'}, inplace=True)
     if 'cum_transferred_in_tokens' in forecasted_df.columns:
@@ -351,16 +375,36 @@ def concat_aggregate_with_forecasted(aggregated_dataset: pd.DataFrame, forecaste
     if 'totalLiquidityUSD' in forecasted_df.columns:
         forecasted_df.rename(columns={'totalLiquidityUSD': 'TVL'}, inplace=True)
 
-    # concat the datasets
-    combined_df = pd.concat([aggregated_dataset, forecasted_df], ignore_index=True)
+    # handle TVL procotols
+    protocols = set([col.split("-")[1] for col in forecasted_df.columns if "TVL" in col])
+    protocol_dfs = []
+
+    # date, TVL, protocol
+    for protocol in protocols:
+        curr_df = forecasted_df[["date", f"TVL-{protocol}", f"TVL_opchain-{protocol}"]]
+        curr_df.rename(columns={f"TVL-{protocol}":"TVL", f"TVL_opchain-{protocol}":"TVL_opchain"}, inplace=True)
+        curr_df["protocol"] = protocol
+        curr_df["grant_label"] = "forecast"
+        protocol_dfs.append(curr_df)
+
+    if protocol_dfs:
+        protocol_df = pd.concat(protocol_dfs)
+        df_merged = forecasted_df.merge(protocol_df, on=['date', 'grant_label'], how='left', suffixes=('', '_fill'))
+        df_merged.drop([f"TVL-{protocol}", f"TVL_opchain-{protocol}"], axis=1, inplace=True)
+        # concat the datasets
+        combined_df = pd.concat([aggregated_dataset, df_merged], ignore_index=True)
+    else:
+        combined_df = pd.concat([aggregated_dataset, forecasted_df], ignore_index=True)
+
     combined_df['date'] = pd.to_datetime(combined_df['date'])
     combined_df['date'] = combined_df['date'].dt.date
     combined_df = combined_df.sort_values('date')
+    #combined_df.dropna(subset=["Transaction Count"], axis=1, inplace=True)
 
     return combined_df
 
 # plot the forecasted data against the pre and post grant data as a line chart
-def plot_forecast(curr_selection_df: pd.DataFrame, selected_metric: str, grant_date: datetime, dates: Tuple[datetime.date, datetime.date]) -> None:   
+def plot_forecast(curr_selection_df: pd.DataFrame, selected_metric: str, grant_date: datetime, dates: Tuple[datetime.date, datetime.date]) -> None:  
     # check if all forecast data for the selected metric is missing
     if curr_selection_df.loc[curr_selection_df['grant_label'] == 'forecast', selected_metric].isna().all():
         st.warning("No forecast data available for the selected metric.")
@@ -448,9 +492,12 @@ def display_ttest_table(metric_table: pd.DataFrame, alpha: float, selected_metri
 
     # display the percentage change of the chosen metric over the pre to post grant period
     with perc_change:
-        first_percent_change = metric_table['percent_change'].iloc[0]
-        pos = '+' if first_percent_change > 0 else ''
-        st.metric(label="Percent Change", value=f"{pos}{round(first_percent_change * 100, 2)}%")
+        if metric_table['percent_change'].iloc[0]:
+            first_percent_change = metric_table['percent_change'].iloc[0]
+            pos = '+' if first_percent_change > 0 else ''
+            st.metric(label="Percent Change", value=f"{pos}{round(first_percent_change * 100, 2)}%")
+        else:
+            st.metric(label="Percent Change", value=f"N/A")
 
      # display the test statistic of the t-test
     with test_stat:
@@ -612,23 +659,35 @@ def stat_analysis_section(daily_transactions_df: pd.DataFrame, forecasted_df: pd
     combined_df['date'] = combined_df['date'].dt.date
     
     # allow user to select a target metric
-    if 'TVL_opchain' in combined_df.columns: 
-        metric_options = combined_df.columns.drop(['date', 'grant_label', 'TVL_opchain'])
-    else:
-        metric_options = combined_df.columns.drop(['date', 'grant_label'])
+    metric_options = list(combined_df.columns.drop(['date', 'grant_label']))
+
+    if 'TVL_opchain' in metric_options: 
+        metric_options.remove('TVL_opchain')
+
+    if 'protocol' in metric_options:
+        metric_options.remove('protocol')        
 
     selected_metric = st.selectbox("Select a target metric", metric_options)
     
     if selected_metric == "TVL":
-        comparison_methods = ["Based on previous chain TVL trends", "Based on OP chain trends"]
-        selected_comparison = st.selectbox("Select a forecast method", comparison_methods)
+        
+        protocols = combined_df['protocol'].dropna().unique().tolist()
+        selected_protocol = st.selectbox("Select the desired DeFi-Llama protocol", protocols, key='stat_analysis_protocol')
 
-        if selected_comparison == "Based on OP chain trends":
-            selected_metric_df = combined_df[['date', "TVL", "TVL_opchain", 'grant_label']]
+        if tvl_df is not None and not tvl_df.empty:
+            combined_df = combined_df[combined_df["protocol"] == selected_protocol]
 
-            selected_metric_df.loc[selected_metric_df["grant_label"] == "forecast", "TVL"] = selected_metric_df["TVL_opchain"]
-            selected_metric_df.drop("TVL_opchain", axis=1, inplace=True)
+        if "TVL_opchain" in combined_df.columns:
+            comparison_methods = ["Based on previous chain TVL trends", "Based on OP chain trends"]
+            selected_comparison = st.selectbox("Select a forecast method", comparison_methods)
 
+            if selected_comparison == "Based on OP chain trends":
+                selected_metric_df = combined_df[['date', "TVL", "TVL_opchain", 'grant_label']]
+                selected_metric_df.loc[selected_metric_df["grant_label"] == "forecast", "TVL"] = selected_metric_df["TVL_opchain"]
+                selected_metric_df.drop("TVL_opchain", axis=1, inplace=True)
+
+            else:
+                selected_metric_df = combined_df[['date', selected_metric, 'grant_label']]
         else:
             selected_metric_df = combined_df[['date', selected_metric, 'grant_label']]
     else:
@@ -647,7 +706,6 @@ def stat_analysis_section(daily_transactions_df: pd.DataFrame, forecasted_df: pd
     )
 
     start_date, end_date = dates[0], dates[1]
-
     curr_selection_df = selected_metric_df[(selected_metric_df['date'] >= start_date) & (selected_metric_df['date'] <= end_date)]
 
     st.divider()

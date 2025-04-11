@@ -3,24 +3,32 @@ import numpy as np
 import streamlit as st
 import plotly.express as px
 
+# helper function to format percent change
+def format_percent_change(value: float) -> str:
+    if abs(value) >= 1e6:  # use scientific notation for very large values
+        return f"{value:.2e}"
+    else:  # use standard formatting for smaller values
+        return f"{value:.2f}"
+    
+# helper function to style cells in the second table
+def style_table(row):
+    return [
+        'background-color: green; color: white' if isinstance(cell, str) and "increase" in cell else
+        'background-color: red; color: white' if isinstance(cell, str) and "decrease" in cell else ''
+        for cell in row
+    ]
+
 
 def high_level_overview_table(df: pd.DataFrame, alpha: float) -> None:
     
     st.markdown(
         """
         <p style="color: grey; font-style: italic;">
-        Projects are ordered, left to right, by their average percent change across all metrics
+        Projects are ordered, left to right, based on the number of metrics that saw statistically significant increases
         </p>
         """,
         unsafe_allow_html=True,
     )
-    
-    # Helper function to format percent change
-    def format_percent_change(value: float) -> str:
-        if abs(value) >= 1e6:  # Use scientific notation for very large values
-            return f"{value:.2e}"
-        else:  # Use standard formatting for smaller values
-            return f"{value:.2f}"
 
     # Flatten the column names to simplify processing
     df = df.copy()
@@ -40,7 +48,7 @@ def high_level_overview_table(df: pd.DataFrame, alpha: float) -> None:
     }
     
     # define metric groups
-    metric_list = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Net Transferred", "TVL", "Retained Daily Active Users", "DAA/MAA"]
+    metric_list = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Net Transferred", "Retained Daily Active Users", "DAA/MAA", "Gas Fees"]
 
     # iterate over all metrics (including forecasted ones)
     for metric in metric_list:
@@ -79,16 +87,11 @@ def high_level_overview_table(df: pd.DataFrame, alpha: float) -> None:
     # create a ranking dictionary to store mean percent change for each project
     ranking = {}
     for project_name, row in simplified_df.iterrows():
-        vals = []
+        cnt = 0
         for col in simplified_df.columns:
-            if "%" in str(row[col]):
-                try:
-                    num = float(row[col].split('%')[0].lstrip('+-'))
-                    vals.append(num)
-                except ValueError:
-                    continue
-        if len(vals) > 0:
-            ranking[project_name] = sum(vals) / len(vals)  # calculate the mean percent change
+            if "increase" in str(row[col]):
+                cnt += 1
+        ranking[project_name] = cnt
 
     # rank projects based on mean percent change (highest to lowest)
     ranked_projects = sorted(ranking, key=ranking.get, reverse=True)
@@ -123,14 +126,6 @@ def high_level_overview_table(df: pd.DataFrame, alpha: float) -> None:
         unsafe_allow_html=True,
     )
 
-    # Define a function to style cells in the second table
-    def style_table(row):
-        return [
-            'background-color: green; color: white' if "increase" in cell else
-            'background-color: red; color: white' if "decrease" in cell else ''
-            for cell in row
-        ]
-
     # Display the first table
     st.dataframe(project_details, use_container_width=True)
 
@@ -155,7 +150,7 @@ def high_level_overview_table(df: pd.DataFrame, alpha: float) -> None:
     st.markdown(
         """
         <p style="color: grey; font-style: italic;">
-        This analysis also uses a 2-sample T-Test, but here the first sample is forecasted data. The forecast is generated using a SARIMA model, trained on trends from the pre-grant period. For TVL specifically, we use a separate linear regression model trained on trends from the entire OP Chain. Additional details can be found in the Statistical Analysis section.
+        This analysis also uses a 2-sample T-Test, but here the first sample is forecasted data. The forecast is generated using a SARIMA model, trained on trends from the pre-grant period. Additional details can be found in the Statistical Analysis section.
         </p>
         """,
         unsafe_allow_html=True,
@@ -165,6 +160,131 @@ def high_level_overview_table(df: pd.DataFrame, alpha: float) -> None:
     forecasted_results_styled = forecasted_results.style.apply(style_table, axis=1)
     st.dataframe(forecasted_results_styled, use_container_width=True)
 
+
+def by_protocol_table(df: pd.DataFrame, alpha: float) -> None:
+    # dictionary to store results in the new format
+    formatted_results = {}
+    
+    for _, row in df.iterrows():
+        protocol = row['protocol']
+        
+        # process tvl results
+        if row['TVL-pvalue'] < alpha:
+            sign = "increase" if row['TVL-percent_change'] > 0 else "decrease"
+            tvl_result = f"{format_percent_change(abs(row['TVL-percent_change'] * 100))}% daily average {sign}"
+        else:
+            tvl_result = "no statistically significant change"
+        
+        # process tvl_opchain results
+        if row['TVL_opchain-pvalue'] < alpha:
+            sign = "increase" if row['TVL_opchain-percent_change'] > 0 else "decrease"
+            tvl_opchain_result = f"{format_percent_change(abs(row['TVL_opchain-percent_change'] * 100))}% daily average {sign}"
+        else:
+            tvl_opchain_result = "no statistically significant change"
+        
+        formatted_results[protocol] = {'Pre-Grant as Control Group': tvl_result, 'OP Chain Trends as Control Group': tvl_opchain_result}
+    
+    # create the formatted dataframe
+    result_df = pd.DataFrame.from_dict(formatted_results, orient='index')
+    result_df.index.name = 'Protocol'
+
+    result_df_styled = result_df.style.apply(style_table, axis=1)
+    st.dataframe(result_df_styled, height=29*len(df)+13, use_container_width=True)
+
+    return
+
+
+def display_north_star_metrics(df1: pd.DataFrame, df2: pd.DataFrame, alpha: float) -> None:
+    st.markdown('<div class="hypothesis-row">North Star Metrics</div>', unsafe_allow_html=True)
+
+    st.markdown(
+        """
+        <p style="color: grey; font-style: italic;">
+        The results below are based on a 2-sample T-Test, a statistical method used to compare the metrics and distributions of two samples. The synthetic control group for TVL is a linear regression model trained on trends from the entire OP Chain (additional details can be found in the Statistical Analysis section). The synthetic control group for other metrics are the period prior to the grant occurence.
+        </p>
+        """,
+        unsafe_allow_html=True,
+    )
+    
+    df1.rename(columns={"project":"Project", 
+                        "north_star":"North Star", 
+                        "synthetic_control_group":"Synthetic Control Group", 
+                        "post_grant_actual":"Post Grant Actual",
+                        "percent_change": "Percent Change"}, inplace=True)
+    
+    df1["North Star"] = df1["North Star"].replace({
+        "active_users": "Daily Active Users",
+        "transaction_cnt": "Daily Transactions",
+        "gas_fee": "Daily Gas Fees",
+        "new_delegators": "New Delegators",
+        "new_voters": "New Voters"
+    })
+
+    df1_results = []
+    for _, row in df1.iterrows():
+        if row['p_value'] < alpha:
+            sign = "increase" if row['Percent Change'] > 0 else "decrease"
+            result = f"{format_percent_change(abs(row['Percent Change'] * 100))}% daily average {sign}"
+        else:
+            result = "no statistically significant change"
+        df1_results.append(result)
+
+    df1["Results"] = df1_results
+
+    df1 = df1.drop(["p_value", "Percent Change"], axis=1)
+
+    df2["Project"] = df2["project"] + ": '" + df2["protocol"] + "' defillama protocol"
+    df2["North Star"] = "TVL"
+
+    #df2.index = df2[['project', 'protocol']]
+    df2 = df2.drop(["project", "protocol", 'north_star'], axis=1)
+    df2.rename(columns={"synthetic_control_group":"Synthetic Control Group", 
+                        "post_grant_actual":"Post Grant Actual",
+                        "percent_change": "Percent Change"}, inplace=True)
+    
+    df2_results = []
+    for _, row in df2.iterrows():
+        if row['p_value'] < alpha:
+            sign = "increase" if row['Percent Change'] > 0 else "decrease"
+            result = f"{format_percent_change(abs(row['Percent Change'] * 100))}% daily average {sign}"
+        else:
+            result = "no statistically significant change"
+        df2_results.append(result)
+
+    df2["Results"] = df2_results
+
+    df2 = df2.drop(["p_value", "Percent Change"], axis=1)
+
+    concatted_df = pd.concat([df1, df2])
+
+    concatted_df.index = concatted_df["Project"]
+    concatted_df.drop("Project", axis=1, inplace=True)
+    concatted_df["Results"].sort_values()
+
+    # define a custom function to extract the numeric percentage
+    def extract_percentage(val):
+        if "increase" in val:
+            return -float(val.split('%')[0])  # negate to sort descending
+        elif "decrease" in val:
+            return float(val.split('%')[0])
+        else:
+            return np.inf  # put "not statistically significant" at the bottom
+
+    # apply the custom key function to create a sort key
+    concatted_df['sort_key'] = concatted_df['Results'].apply(extract_percentage)
+
+    # sort by the sort_key
+    sorted_df = concatted_df.sort_values('sort_key')
+
+    # drop the helper column if no longer needed
+    sorted_df = sorted_df.drop(columns='sort_key')
+
+    styled_concatted_df = sorted_df.style.apply(style_table)
+
+    st.dataframe(styled_concatted_df, height=35*len(sorted_df)+38, use_container_width=True)
+
+    return
+
 # flatten and prepare the dataframe for the scatterplots
 def prepare_data_for_scatterplots(df: pd.DataFrame, alpha: float) -> pd.DataFrame:
     # flatten the column names to simplify processing
@@ -172,7 +292,7 @@ def prepare_data_for_scatterplots(df: pd.DataFrame, alpha: float) -> pd.DataFram
     df.columns = [f"{col[0]}: {col[1]}" for col in df.columns]
     
     # define the list of metrics
-    metric_list = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Net Transferred", "TVL", "Retained Daily Active Users", "DAA/MAA"]
+    metric_list = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Net Transferred", "Retained Daily Active Users", "DAA/MAA", "Gas Fees"]
 
     # select relevant columns
     target_cols = ["General Info: Project Name", "General Info: Grant Amount"]
@@ -223,13 +343,28 @@ def prepare_data_for_scatterplots(df: pd.DataFrame, alpha: float) -> pd.DataFram
     return df
 
 # display the 2 metric-specific impact scatterplots
-def display_scatterplots(df: pd.DataFrame, alpha: float) -> None:
+def display_scatterplots(df: pd.DataFrame, tvl_df: pd.DataFrame, alpha: float) -> None:
     st.subheader("Impact Across Projects By Metric")
 
-    metric_list = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Net Transferred", "TVL", "Retained Daily Active Users", "DAA/MAA"]
+    metric_list = ["Transaction Count", "Active Users", "Unique Users", "Total Transferred", "Net Transferred", "Retained Daily Active Users", "DAA/MAA", "Gas Fees", "TVL"]
     selected_metric = st.selectbox("Select desired metric", metric_list)
 
-    df = df[df["Metric"] == selected_metric]
+    if selected_metric == "TVL":
+        prv_df = df[["Project", "Grant Amount"]]
+        df = tvl_df
+        df.rename(columns={"percent_change":"Percent Change", "p_value": "P Value"}, inplace=True)
+
+        conditions = [
+            (df["P Value"] <= alpha) & (df["Percent Change"] > 0),
+            (df["P Value"] <= alpha) & (df["Percent Change"] < 0),
+        ]
+        choices = ["increase", "decrease"]
+        df["Change"] = np.select(conditions, choices, default="no change")
+        df = pd.merge(df, prv_df, left_on="project", right_on="Project", how="left")
+        df.rename(columns={"project":"Project"}, inplace=True)
+
+    else:
+        df = df[df["Metric"] == selected_metric]
 
     # ensure proper scaling
     df["Percent Change"] *= 100
@@ -293,7 +428,6 @@ def display_scatterplots(df: pd.DataFrame, alpha: float) -> None:
     )
 
     st.plotly_chart(fig1)
-
 
     fig2 = px.scatter(
         df,
@@ -381,7 +515,7 @@ def display_stacked_bar_chart(df: pd.DataFrame) -> None:
     st.plotly_chart(fig)
 
 # display all of the tables and visualizations that compare impact across all projects
-def all_projects_section(ttest_results: pd.DataFrame):
+def all_projects_section(ttest_results: pd.DataFrame, tvl_ttest_results: pd.DataFrame, north_star_metrics: pd.DataFrame, tvl_north_star_metrics: pd.DataFrame) -> None:
     st.subheader("High-Level of All Projects")
 
     st.markdown(
@@ -410,16 +544,23 @@ def all_projects_section(ttest_results: pd.DataFrame):
     # flatten the data so it can be easily graphed
     simplified_project_table = prepare_data_for_scatterplots(ttest_results, alpha=alpha)
 
-    # create and display the high level table
-    high_level_overview_table(df=ttest_results, alpha=alpha)
+    by_project, by_protocol, north_star = st.tabs(["View By Project", "View By Protocol", "North Star Metrics"])
+    with by_project:
+        # create and display the high level table
+        high_level_overview_table(df=ttest_results, alpha=alpha)
+    
+    with by_protocol:
+        by_protocol_table(df=tvl_ttest_results, alpha=alpha)
+
+    with north_star:
+        display_north_star_metrics(df1=north_star_metrics, df2=tvl_north_star_metrics, alpha=alpha)
 
     st.divider()
 
     # display the 2 metric-specific impact scatterplots
-    display_scatterplots(df=simplified_project_table, alpha=alpha)
+    display_scatterplots(df=simplified_project_table, tvl_df=tvl_north_star_metrics, alpha=alpha)
 
     st.divider()
 
     # display a bar chart of measured change by metric
     display_stacked_bar_chart(df=simplified_project_table) 
-    
