@@ -1,36 +1,36 @@
 [
     {
         "round": "Grants Season 6",
-        "cycle": "Cycle 26",
-        "chain": "fraxtal",
-        "project_name": "Fraxtal Application",
+        "cycle": "Cycle 25",
+        "project_name": "Renzo Optimism Season 6 Mission Request - Optimism as base for LRTs",
+        "chain": "op",
         "status": "Sent",
-        "proposal_link": "https://app.charmverse.io/op-grants/fraxtal-application-2593578457179595",
-        "amount": 900000,
+        "proposal_link": "https://app.charmverse.io/op-grants/renzo-optimism-season-6-mission-request-optimism-as-base-for-lrts-10206774269051233",
+        "amount": 120000,
         "amount_comment": null,
         "meta": {
             "Initial Delivery Date": "2024-09-01T00:00:00",
-            "(OP) Delivered": 900000.0,
-            "Intent": "Intent 3B",
+            "(OP) Delivered": 48000.0,
+            "Intent": "Intent 3A",
             "Incentive Program Launched?": "Growth"
         },
         "relevant_metrics": {
-            "target metrics": "Growth: TVL in the grantee\u2019s protocol Number of transactions emitting event logs Number of active addresses FXTL Points Stickiness: Percentage of retained active addresses interacting with the grantee\u2019s contracts",
-            "impact analysis": "Impact Assessment:\n\nThe impact of the grants program will be assessed through a combination of key performance indicators (KPIs), periodic reviews, and continuous monitoring. The primary metrics for assessment will include TVL, transaction volumes, user engagement, and protocol adoption rates. Specific milestones will serve as benchmarks for success.\n\nReporting:\n\nTo ensure transparency and accountability, the following reporting mechanisms will be implemented:\n\nMonthly Reports: Detailed monthly reports will be provided, outlining the progress of the grants program, the utilization of funds, and the achievement of key milestones. These reports will include data on TVL growth, transaction volumes, and other relevant KPIs.\n\nReal-Time Dashboard: A real-time dashboard will be available for stakeholders to monitor the grants program's performance continuously. This dashboard will provide up-to-date information on TVL, transaction volumes, and other key metrics, ensuring full transparency.\n\nExample of Reporting:\n\nFor reference, we have implemented similar reporting mechanisms for the Arbitrum STIP grant for liquidity incentivization grant. An example of this reporting can be found bellow. This example showcases our commitment to transparency and detailed reporting. https://forum.arbitrum.foundation/t/frax-finance-bi-weekly-update-final-update/22960 "
+            "select the metric specified in the mission request": "(Intent 3 Growth) TVL in grantee\u2019s protocol",
+            "fill out your metric objective": "$22M TVL -  doubling our current TVL on OP Mainnet, putting OP in the top 5 of chains we support within two months "
         },
         "relevant_dates": {
             "OP deployment date": [
-                "Jul 23",
-                "Jul 24"
+                ""
             ],
             "Incentives due date": [
-                "Jul 23 -> Jun 29, 2025",
-                "Jul 20 -> Jun 29, 2025"
+                ""
             ]
         },
+        "relevant_chains": [],
+        "contract_urls": [],
         "addresses": [
             {
-                "0x0df840dcbf1229262a4125c1fc559bd338ec9491": {
+                "0xdbdfd5b04fc3a19c40f2b12f6ca29bd772ccb822": {
                     "networks": [
                         "optimism"
                     ],
@@ -38,12 +38,12 @@
                         "safe",
                         "wallet"
                     ],
-                    "name": "fraxfinance",
-                    "count_txns": 4
+                    "name": "renzo-protocol",
+                    "count_txns": 2
                 }
             },
             {
-                "0x0df840dcbf1229262a4125c1fc559bd338ec9491": {
+                "0xdbdfd5b04fc3a19c40f2b12f6ca29bd772ccb822": {
                     "networks": [
                         "optimism"
                     ],
@@ -51,17 +51,45 @@
                         "safe",
                         "wallet"
                     ],
-                    "name": "fraxfinance",
-                    "count_txns": 4
+                    "name": "renzo-protocol",
+                    "count_txns": 2
+                }
+            },
+            {
+                "0x2416092f143378750bb29b79ed961ab195cceea5": {
+                    "networks": [
+                        "zora",
+                        "fraxtal",
+                        "optimism",
+                        "base",
+                        "mode"
+                    ],
+                    "tags": [
+                        "contract"
+                    ],
+                    "name": "pyth-network",
+                    "count_txns": 175067
+                }
+            },
+            {
+                "0xbf5495efe5db9ce00f80364c8b423567e58d2110": {
+                    "networks": [
+                        "optimism"
+                    ],
+                    "tags": [
+                        "contract"
+                    ],
+                    "count_txns": 1
                 }
             }
         ],
-        "funds_recieved_date": "2024-09-01",
-        "grant_wallet": "0x0dF840dCbf1229262A4125C1fc559bd338eC9491",
+        "funds_recieved_date": "2024-11-14",
+        "grant_wallet": "0xdBdfd5b04fc3a19C40f2B12F6Ca29Bd772CCB822",
         "starting_balance": 0,
-        "inflow_total_todate": 0,
-        "recieve_todate": false,
-        "balance_left_todate": 900000
+        "inflow_total_todate": 120000,
+        "recieve_todate": true,
+        "balance_left_todate": 0,
+        "north_star": "TVL"
     },
     {
         "round": "Grants Season 6",
@@ -127,7 +155,8 @@
         "starting_balance": 0,
         "inflow_total_todate": 0,
         "recieve_todate": false,
-        "balance_left_todate": 35000
+        "balance_left_todate": 35000,
+        "north_star": "active_users"
     },
     {
         "round": "Grants Season 6",
@@ -217,7 +246,8 @@
         "starting_balance": 0,
         "inflow_total_todate": 0,
         "recieve_todate": false,
-        "balance_left_todate": 96000
+        "balance_left_todate": 96000,
+        "north_star":"TVL"
     },
     {
         "round": "Grants Season 6",
@@ -326,7 +356,8 @@
         "starting_balance": 0,
         "inflow_total_todate": 0,
         "recieve_todate": false,
-        "balance_left_todate": 120000
+        "balance_left_todate": 120000,
+        "north_star":"TVL"
     },
     {
         "round": "Grants Season 6",
@@ -402,7 +433,8 @@
         "starting_balance": 0,
         "inflow_total_todate": 0,
         "recieve_todate": false,
-        "balance_left_todate": 2000
+        "balance_left_todate": 2000,
+        "north_star": "daa_to_maa_ratio"
     },
     {
         "round": "Grants Season 6",
@@ -482,98 +514,8 @@
         "starting_balance": 66286053359878,
         "inflow_total_todate": 0,
         "recieve_todate": false,
-        "balance_left_todate": 5000
-    },
-    {
-        "round": "Grants Season 6",
-        "cycle": "Cycle 25",
-        "project_name": "Renzo Optimism Season 6 Mission Request - Optimism as base for LRTs",
-        "chain": "op",
-        "status": "Sent",
-        "proposal_link": "https://app.charmverse.io/op-grants/renzo-optimism-season-6-mission-request-optimism-as-base-for-lrts-10206774269051233",
-        "amount": 120000,
-        "amount_comment": null,
-        "meta": {
-            "Initial Delivery Date": "2024-09-01T00:00:00",
-            "(OP) Delivered": 48000.0,
-            "Intent": "Intent 3A",
-            "Incentive Program Launched?": "Growth"
-        },
-        "relevant_metrics": {
-            "select the metric specified in the mission request": "(Intent 3 Growth) TVL in grantee\u2019s protocol",
-            "fill out your metric objective": "$22M TVL -  doubling our current TVL on OP Mainnet, putting OP in the top 5 of chains we support within two months "
-        },
-        "relevant_dates": {
-            "OP deployment date": [
-                ""
-            ],
-            "Incentives due date": [
-                ""
-            ]
-        },
-        "relevant_chains": [],
-        "contract_urls": [],
-        "addresses": [
-            {
-                "0xdbdfd5b04fc3a19c40f2b12f6ca29bd772ccb822": {
-                    "networks": [
-                        "optimism"
-                    ],
-                    "tags": [
-                        "safe",
-                        "wallet"
-                    ],
-                    "name": "renzo-protocol",
-                    "count_txns": 2
-                }
-            },
-            {
-                "0xdbdfd5b04fc3a19c40f2b12f6ca29bd772ccb822": {
-                    "networks": [
-                        "optimism"
-                    ],
-                    "tags": [
-                        "safe",
-                        "wallet"
-                    ],
-                    "name": "renzo-protocol",
-                    "count_txns": 2
-                }
-            },
-            {
-                "0x2416092f143378750bb29b79ed961ab195cceea5": {
-                    "networks": [
-                        "zora",
-                        "fraxtal",
-                        "optimism",
-                        "base",
-                        "mode"
-                    ],
-                    "tags": [
-                        "contract"
-                    ],
-                    "name": "pyth-network",
-                    "count_txns": 175067
-                }
-            },
-            {
-                "0xbf5495efe5db9ce00f80364c8b423567e58d2110": {
-                    "networks": [
-                        "optimism"
-                    ],
-                    "tags": [
-                        "contract"
-                    ],
-                    "count_txns": 1
-                }
-            }
-        ],
-        "funds_recieved_date": "2024-11-14",
-        "grant_wallet": "0xdBdfd5b04fc3a19C40f2B12F6Ca29Bd772CCB822",
-        "starting_balance": 0,
-        "inflow_total_todate": 120000,
-        "recieve_todate": true,
-        "balance_left_todate": 0
+        "balance_left_todate": 5000,
+        "north_star": "new_delegators"
     },
     {
         "round": "Grants Season 6",
@@ -698,7 +640,8 @@
         "starting_balance": 0,
         "inflow_total_todate": 0,
         "recieve_todate": false,
-        "balance_left_todate": 15000
+        "balance_left_todate": 15000,
+        "north_star": "new_delegators"
     },
     {
         "round": "Grants Season 6",
@@ -772,7 +715,8 @@
         "starting_balance": 0,
         "inflow_total_todate": 0,
         "recieve_todate": false,
-        "balance_left_todate": 1250
+        "balance_left_todate": 1250,
+        "north_star": "new_voters"
     },
     {
         "round": "Grants Season 6",
@@ -845,7 +789,8 @@
         "starting_balance": 20000000000000000,
         "inflow_total_todate": 0,
         "recieve_todate": false,
-        "balance_left_todate": 120000
+        "balance_left_todate": 120000,
+        "north_star":"TVL"
     },
     {
         "round": "Grants Season 6",
@@ -924,7 +869,8 @@
         "starting_balance": 0,
         "inflow_total_todate": 0,
         "recieve_todate": false,
-        "balance_left_todate": 50000
+        "balance_left_todate": 50000,
+        "north_star": "gas_fee"
     },
     {
         "round": "Grants Season 6",
@@ -998,7 +944,8 @@
         "starting_balance": 0,
         "inflow_total_todate": 0,
         "recieve_todate": false,
-        "balance_left_todate": 29978
+        "balance_left_todate": 29978,
+        "north_star": "TVL"
     },
     {
         "round": "Grants Season 6",
@@ -1166,7 +1113,8 @@
         "starting_balance": 0,
         "inflow_total_todate": 0,
         "recieve_todate": false,
-        "balance_left_todate": 136000
+        "balance_left_todate": 136000,
+        "north_star": "TVL"
     },
     {
         "round": "Grants Season 6",
@@ -1321,7 +1269,8 @@
         "starting_balance": 0,
         "inflow_total_todate": 0,
         "recieve_todate": false,
-        "balance_left_todate": 115000
+        "balance_left_todate": 115000,
+        "north_star": "TVL"
     },
     {
         "round": "Grants Season 6",
@@ -1386,7 +1335,8 @@
         "starting_balance": 0,
         "inflow_total_todate": 0,
         "recieve_todate": false,
-        "balance_left_todate": 400000
+        "balance_left_todate": 400000,
+        "north_star": "TVL"
     },
     {
         "round": "Grants Season 6",
@@ -1516,7 +1466,8 @@
         "starting_balance": 20000000000000000,
         "inflow_total_todate": 0,
         "recieve_todate": false,
-        "balance_left_todate": 180000
+        "balance_left_todate": 180000,
+        "north_star":"TVL"
     },
     {
         "round": "Grants Season 6",
@@ -1608,7 +1559,8 @@
         "starting_balance": 0,
         "inflow_total_todate": 0,
         "recieve_todate": false,
-        "balance_left_todate": 70000
+        "balance_left_todate": 70000,
+        "north_star": "TVL"
     },
     {
         "round": "Grants Season 6",
@@ -1683,7 +1635,8 @@
         "starting_balance": 0,
         "inflow_total_todate": 0,
         "recieve_todate": false,
-        "balance_left_todate": 2500
+        "balance_left_todate": 2500,
+        "north_star": "active_users"
     },
     {
         "round": "Grants Season 6",
@@ -1746,7 +1699,8 @@
         "starting_balance": 0,
         "inflow_total_todate": 250000,
         "recieve_todate": true,
-        "balance_left_todate": 0
+        "balance_left_todate": 0,
+        "north_star": "transaction_cnt"
     },
     {
         "round": "Grants Season 6",
@@ -1804,7 +1758,8 @@
         "starting_balance": 0,
         "inflow_total_todate": 375000,
         "recieve_todate": true,
-        "balance_left_todate": 0
+        "balance_left_todate": 0,
+        "north_star": "transaction_cnt"
     },
     {
         "round": "Grants Season 6",
@@ -1864,7 +1819,8 @@
         "starting_balance": 0,
         "inflow_total_todate": 0,
         "recieve_todate": false,
-        "balance_left_todate": 900000
+        "balance_left_todate": 900000,
+        "north_star": "transaction_cnt"
     },
     {
         "round": "Grants Season 6",
@@ -1933,7 +1889,8 @@
         "starting_balance": 0,
         "inflow_total_todate": 0,
         "recieve_todate": false,
-        "balance_left_todate": 500000
+        "balance_left_todate": 500000,
+        "north_star": "transaction_cnt"
     },
     {
         "round": "Grants Season 6",
@@ -2015,7 +1972,8 @@
         "starting_balance": 0,
         "inflow_total_todate": 2500,
         "recieve_todate": true,
-        "balance_left_todate": 0
+        "balance_left_todate": 0,
+        "north_star":"active_users"
     },
     {
         "round": "Grants Season 6",
@@ -2077,7 +2035,73 @@
         "starting_balance": 1000000000000000,
         "inflow_total_todate": 1,
         "recieve_todate": false,
-        "balance_left_todate": 19999
+        "balance_left_todate": 19999,
+        "north_star":"gas_fee"
+    },
+    {
+        "round": "Grants Season 6",
+        "cycle": "Cycle 26",
+        "chain": "fraxtal",
+        "project_name": "Fraxtal Application",
+        "status": "Sent",
+        "proposal_link": "https://app.charmverse.io/op-grants/fraxtal-application-2593578457179595",
+        "amount": 900000,
+        "amount_comment": null,
+        "meta": {
+            "Initial Delivery Date": "2024-09-01T00:00:00",
+            "(OP) Delivered": 900000.0,
+            "Intent": "Intent 3B",
+            "Incentive Program Launched?": "Growth"
+        },
+        "relevant_metrics": {
+            "target metrics": "Growth: TVL in the grantee\u2019s protocol Number of transactions emitting event logs Number of active addresses FXTL Points Stickiness: Percentage of retained active addresses interacting with the grantee\u2019s contracts",
+            "impact analysis": "Impact Assessment:\n\nThe impact of the grants program will be assessed through a combination of key performance indicators (KPIs), periodic reviews, and continuous monitoring. The primary metrics for assessment will include TVL, transaction volumes, user engagement, and protocol adoption rates. Specific milestones will serve as benchmarks for success.\n\nReporting:\n\nTo ensure transparency and accountability, the following reporting mechanisms will be implemented:\n\nMonthly Reports: Detailed monthly reports will be provided, outlining the progress of the grants program, the utilization of funds, and the achievement of key milestones. These reports will include data on TVL growth, transaction volumes, and other relevant KPIs.\n\nReal-Time Dashboard: A real-time dashboard will be available for stakeholders to monitor the grants program's performance continuously. This dashboard will provide up-to-date information on TVL, transaction volumes, and other key metrics, ensuring full transparency.\n\nExample of Reporting:\n\nFor reference, we have implemented similar reporting mechanisms for the Arbitrum STIP grant for liquidity incentivization grant. An example of this reporting can be found bellow. This example showcases our commitment to transparency and detailed reporting. https://forum.arbitrum.foundation/t/frax-finance-bi-weekly-update-final-update/22960 "
+        },
+        "relevant_dates": {
+            "OP deployment date": [
+                "Jul 23",
+                "Jul 24"
+            ],
+            "Incentives due date": [
+                "Jul 23 -> Jun 29, 2025",
+                "Jul 20 -> Jun 29, 2025"
+            ]
+        },
+        "addresses": [
+            {
+                "0x0df840dcbf1229262a4125c1fc559bd338ec9491": {
+                    "networks": [
+                        "optimism"
+                    ],
+                    "tags": [
+                        "safe",
+                        "wallet"
+                    ],
+                    "name": "fraxfinance",
+                    "count_txns": 4
+                }
+            },
+            {
+                "0x0df840dcbf1229262a4125c1fc559bd338ec9491": {
+                    "networks": [
+                        "optimism"
+                    ],
+                    "tags": [
+                        "safe",
+                        "wallet"
+                    ],
+                    "name": "fraxfinance",
+                    "count_txns": 4
+                }
+            }
+        ],
+        "funds_recieved_date": "2024-09-01",
+        "grant_wallet": "0x0dF840dCbf1229262A4125C1fc559bd338eC9491",
+        "starting_balance": 0,
+        "inflow_total_todate": 0,
+        "recieve_todate": false,
+        "balance_left_todate": 900000,
+        "north_star": "TVL"
     },
     {
         "round": "Grants Season 6",
@@ -2151,7 +2175,8 @@
         "starting_balance": 0,
         "inflow_total_todate": 0,
         "recieve_todate": false,
-        "balance_left_todate": 29978
+        "balance_left_todate": 29978,
+        "north_star": "TVL"
     },
     {
         "round": "Grants Season 6",
@@ -2249,7 +2274,8 @@
         "starting_balance": 0,
         "inflow_total_todate": 0,
         "recieve_todate": false,
-        "balance_left_todate": 100000
+        "balance_left_todate": 100000,
+        "north_star": "TVL"
     },
     {
         "round": "Grants Season 6",
@@ -2327,7 +2353,8 @@
         "starting_balance": 0,
         "inflow_total_todate": 0,
         "recieve_todate": false,
-        "balance_left_todate": 200000
+        "balance_left_todate": 200000,
+        "north_star":"TVL"
     },
     {
         "round": "Grants Season 6",
@@ -2622,7 +2649,8 @@
         "starting_balance": 0,
         "inflow_total_todate": 0,
         "recieve_todate": false,
-        "balance_left_todate": 180000
+        "balance_left_todate": 180000,
+        "north_star":"TVL"
     },
     {
         "round": "Grants Season 6",
@@ -2915,7 +2943,8 @@
         "starting_balance": 0,
         "inflow_total_todate": 0,
         "recieve_todate": false,
-        "balance_left_todate": 120000
+        "balance_left_todate": 120000,
+        "north_star":"TVL"
     },
     {
         "round": "Grants Season 6",
@@ -2973,7 +3002,8 @@
         "starting_balance": 0,
         "inflow_total_todate": 250000,
         "recieve_todate": true,
-        "balance_left_todate": 0
+        "balance_left_todate": 0,
+        "north_star":"transaction_cnt"
     },
     {
         "round": "Grants Season 6",
@@ -3066,7 +3096,8 @@
         "starting_balance": 0,
         "inflow_total_todate": 0,
         "recieve_todate": false,
-        "balance_left_todate": 140000
+        "balance_left_todate": 140000,
+        "north_star":"TVL"
     },
     {
         "round": "Grants Season 6",
@@ -3157,7 +3188,8 @@
         "starting_balance": 0,
         "inflow_total_todate": 0,
         "recieve_todate": false,
-        "balance_left_todate": 70000
+        "balance_left_todate": 70000,
+        "north_star":"TVL"
     },
     {
         "round": "Grants Season 6",
@@ -3255,7 +3287,8 @@
         "starting_balance": 0,
         "inflow_total_todate": 50000,
         "recieve_todate": true,
-        "balance_left_todate": 0
+        "balance_left_todate": 0,
+        "north_star":"TVL"
     },
     {
         "round": "Grants Season 6",
@@ -3315,7 +3348,8 @@
         "starting_balance": 0,
         "inflow_total_todate": 0,
         "recieve_todate": false,
-        "balance_left_todate": 50000
+        "balance_left_todate": 50000,
+        "north_star":"gas_fee"
     },
     {
         "round": "Grants Season 6",
@@ -3636,7 +3670,8 @@
         "starting_balance": 0,
         "inflow_total_todate": 0,
         "recieve_todate": false,
-        "balance_left_todate": 50000
+        "balance_left_todate": 50000,
+        "north_star":"gas_fee"
     },
     {
         "round": "Grants Season 6",
@@ -3741,7 +3776,8 @@
         "starting_balance": 0,
         "inflow_total_todate": 0,
         "recieve_todate": false,
-        "balance_left_todate": 70000
+        "balance_left_todate": 70000,
+        "north_star":"active_users"
     },
     {
         "round": "Grants Season 6",
@@ -3805,7 +3841,8 @@
         "starting_balance": 0,
         "inflow_total_todate": 0,
         "recieve_todate": false,
-        "balance_left_todate": 3000
+        "balance_left_todate": 3000,
+        "north_star":"TVL"
     },
     {
         "round": "Grants Season 6",
@@ -3893,7 +3930,8 @@
         "starting_balance": 0,
         "inflow_total_todate": 0,
         "recieve_todate": false,
-        "balance_left_todate": 70000
+        "balance_left_todate": 70000,
+        "north_star":"transaction_cnt"
     },
     {
         "round": "Grants Season 6",
@@ -3970,7 +4008,8 @@
         "starting_balance": 0,
         "inflow_total_todate": 0,
         "recieve_todate": false,
-        "balance_left_todate": 100000
+        "balance_left_todate": 100000,
+        "north_star":"TVL"
     },
     {
         "round": "Grants Season 6",
@@ -4031,7 +4070,8 @@
         "starting_balance": 0,
         "inflow_total_todate": 0,
         "recieve_todate": false,
-        "balance_left_todate": 500000
+        "balance_left_todate": 500000,
+        "north_star": "active_users"
     },
     {
         "round": "Grants Season 6",
@@ -4093,7 +4133,8 @@
         "starting_balance": 0,
         "inflow_total_todate": 0,
         "recieve_todate": false,
-        "balance_left_todate": 700000
+        "balance_left_todate": 700000,
+        "north_star":"TVL"
     },
     {
         "round": "Grants Season 6",
@@ -4155,7 +4196,8 @@
         "starting_balance": 0,
         "inflow_total_todate": 0,
         "recieve_todate": false,
-        "balance_left_todate": 400000
+        "balance_left_todate": 400000,
+        "north_star":"TVL"
     },
     {
         "round": "Grants Season 6",
@@ -4269,7 +4311,7 @@
         "starting_balance": 0,
         "inflow_total_todate": 0,
         "recieve_todate": false,
-        "balance_left_todate": 39022
+        "balance_left_todate": 39022    
     },
     {
         "round": "Grants Season 6",

@@ -45,7 +45,8 @@ def read_in_grants(grants_path: str) -> Dict[str, Dict[str, Union[str, List[str]
             "inflow_total": project.get("inflow_total_todate", "N/A"),
             "recieved_todate": project.get("recieve_todate", "N/A"),
             "balance_left": project.get("balance_left_todate", "N/A"),
-            "intent": project["meta"].get("Intent", "N/A")
+            "intent": project["meta"].get("Intent", "N/A"),
+            "north_star": project.get("north_star", "N/A")
         }
 
     return clean_grants
@@ -127,7 +128,7 @@ def connect_bq_client(service_account_path: str=None, use_streamlit_secrets: boo
     return client
 
 # read in already stored datasets at the respective path
-def read_in_stored_dfs_for_projects(project_name: str, data_path: str, protocol: Any) -> Dict[str, Any]:
+def read_in_stored_dfs_for_projects(project_name: str, data_path: str, protocols: Any) -> Dict[str, Any]:
     # get the clean name of the project
     clean_name = project_name.lower().replace(" ", "_").replace(".", "-").replace("/","-")
 
@@ -138,6 +139,7 @@ def read_in_stored_dfs_for_projects(project_name: str, data_path: str, protocol:
     tvl_df = None
     tokens_in_usd_df = None
     forecasted_df = None
+    delegators_and_voters_df = None
 
     # read in daily transactions dataset
     try:
@@ -152,7 +154,7 @@ def read_in_stored_dfs_for_projects(project_name: str, data_path: str, protocol:
         pass
 
     # read in TVL datasets if protocol is provided
-    if protocol is not None:
+    if protocols is not None:
         try:
             chain_tvls_df = pd.read_csv(f"{data_path}{clean_name}/{clean_name}_chain_tvls.csv")
         except Exception:
@@ -174,6 +176,12 @@ def read_in_stored_dfs_for_projects(project_name: str, data_path: str, protocol:
     except Exception:
         pass
 
+    # read in delegators and voters dataset
+    try:
+        delegators_and_voters_df = pd.read_csv(f"{data_path}{clean_name}/{clean_name}_delegators_and_voters.csv")
+    except Exception:
+        pass
+
     # return a dict with each key = dataframe or None
     return {
         "daily_transactions": daily_transactions,
@@ -181,7 +189,8 @@ def read_in_stored_dfs_for_projects(project_name: str, data_path: str, protocol:
         "forecasted" : forecasted_df,
         "chain_tvls" : chain_tvls_df,
         "tvl": tvl_df,
-        "tokens_in_usd": tokens_in_usd_df
+        "tokens_in_usd": tokens_in_usd_df,
+        "delegators_and_voters": delegators_and_voters_df
     }
 
 # helper function used to create KPIs that determine the amount of growth that occurred between two metrics 

@@ -158,7 +158,8 @@ def tvl_across_chains_chart(chain_tvls_df: pd.DataFrame, grant_date: datetime) -
     )
 
     # display the chart
-    st.plotly_chart(fig)
+    if chain_tvl_summary is not None and not chain_tvl_summary.empty:
+        st.plotly_chart(fig)
 
 # plot tvl of each token as a bar chart
 def tvl_across_tokens_chart(tokens_in_usd_df: pd.DataFrame, grant_date: datetime) -> None:
@@ -199,7 +200,8 @@ def tvl_across_tokens_chart(tokens_in_usd_df: pd.DataFrame, grant_date: datetime
         yaxis_title='Log of TVL (USD)',
     )
 
-    st.plotly_chart(fig)
+    if token_tvl_summary is not None and not token_tvl_summary.empty:
+        st.plotly_chart(fig)
 
 # plot the distribution of how tvl changes with each consecutive day as a histogram
 def tvl_daily_changes_chart(tvl_df: pd.DataFrame) -> None:
@@ -226,8 +228,9 @@ def tvl_daily_changes_chart(tvl_df: pd.DataFrame) -> None:
         template="plotly_white"
     )
 
-    # display in streamlit
-    st.plotly_chart(fig)
+    if tvl_df is not None and not tvl_df.empty:
+        # display in streamlit
+        st.plotly_chart(fig)
 
 # plot the distribution of how tvl changes with each consecutive day as a line chart
 def daily_tvl_changes_chart(tvl_df: pd.DataFrame) -> None:
@@ -318,7 +321,11 @@ def tvl_distribution_section(chain_tvls_df: pd.DataFrame, tvl_df: pd.DataFrame, 
     st.subheader("Distribution of Relative Daily Changes in TVL (YTD)")
 
     # filter dates to compare pre- and post-grant date
-    tvl_df['readable_date'] = pd.to_datetime(tvl_df['readable_date'])
+    tvl_df['readable_date'] = pd.to_datetime(
+            tvl_df['readable_date'], 
+            format='%Y-%m-%d %H:%M:%S', 
+            errors='coerce'
+        )
 
     # filter data to start at the beginning of the year
     tvl_df = tvl_df[tvl_df['readable_date'] >= datetime(2024, 1, 1)]
@@ -354,20 +361,54 @@ def tvl_distribution_section(chain_tvls_df: pd.DataFrame, tvl_df: pd.DataFrame, 
 # main function to visualize the full tvl section
 def tvl_section(grant_date: datetime, chain_tvls_df: Optional[pd.DataFrame] = None, tvl_df: Optional[pd.DataFrame] = None, tokens_in_usd_df: Optional[pd.DataFrame] = None) -> None:
 
+    protocols = []
+
     if chain_tvls_df is not None and not chain_tvls_df.empty:
-        chain_tvls_df['readable_date'] = pd.to_datetime(chain_tvls_df['readable_date'])
+        chain_tvls_df['readable_date'] = pd.to_datetime(
+            chain_tvls_df['readable_date'], 
+            format='%Y-%m-%d %H:%M:%S', 
+            errors='coerce'
+        )
+        protocols.extend(chain_tvls_df["protocol"].values)
     
     if tvl_df is not None and not tvl_df.empty:
-        tvl_df['readable_date'] = pd.to_datetime(tvl_df['readable_date'])
+        tvl_df['readable_date'] = pd.to_datetime(
+            tvl_df['readable_date'], 
+            format='%Y-%m-%d %H:%M:%S', 
+            errors='coerce'
+        )
+        protocols.extend(tvl_df["protocol"].values)
     
     if tokens_in_usd_df is not None and not tokens_in_usd_df.empty:
-        tokens_in_usd_df['readable_date'] = pd.to_datetime(tokens_in_usd_df['readable_date'], format='%Y-%m-%d %H:%M:%S', errors='coerce')
+        tokens_in_usd_df['readable_date'] = pd.to_datetime(
+            tokens_in_usd_df['readable_date'], 
+            format='%Y-%m-%d %H:%M:%S', 
+            errors='coerce'
+        )
+        protocols.extend(tokens_in_usd_df["protocol"].values)
     
+    protocols = list(set(protocols))
+
+    for target_protocol in protocols:
+        if (len(tvl_df[tvl_df["protocol"] == target_protocol]) < 2) and (len(chain_tvls_df[chain_tvls_df["protocol"] == target_protocol]) < 2) and (len(tokens_in_usd_df[tokens_in_usd_df["protocol"] == target_protocol]) < 2):
+            protocols.remove(target_protocol)
+
+    selected_protocol = st.selectbox("Select the desired DeFi-Llama protocol", protocols)
+
+    if chain_tvls_df is not None and not chain_tvls_df.empty:
+        chain_tvls_df_selected = chain_tvls_df[chain_tvls_df["protocol"] == selected_protocol]
+
+    if tvl_df is not None and not tvl_df.empty:
+        tvl_df_selected = tvl_df[tvl_df["protocol"] == selected_protocol]
+    
+    if tokens_in_usd_df is not None and not tokens_in_usd_df.empty:
+        tokens_in_usd_df_selected = tokens_in_usd_df[tokens_in_usd_df["protocol"] == selected_protocol]
+
     try:
     # execute each section safely (don't display and skip the plot if the execution fails)
-        safe_execution(tvl_over_time_section, tvl_df, chain_tvls_df, grant_date)
-        safe_execution(tvl_across_chains_chart, chain_tvls_df, grant_date)
-        safe_execution(tvl_across_tokens_chart, tokens_in_usd_df, grant_date)
-        safe_execution(tvl_distribution_section, chain_tvls_df, tvl_df, grant_date)
+        safe_execution(tvl_over_time_section, tvl_df_selected, chain_tvls_df_selected, grant_date)
+        safe_execution(tvl_across_chains_chart, chain_tvls_df_selected, grant_date)
+        safe_execution(tvl_across_tokens_chart, tokens_in_usd_df_selected, grant_date)
+        safe_execution(tvl_distribution_section, chain_tvls_df_selected, tvl_df_selected, grant_date)
     except Exception:
         pass

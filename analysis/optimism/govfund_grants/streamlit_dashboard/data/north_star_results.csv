@@ -1,0 +1,18 @@
+project,north_star,synthetic_control_group,post_grant_actual,percent_change,p_value
+WannaBet Weekly Tournaments,active_users,0.004524886877828055,0.05405405405405406,10.9459,0.004115348408572972
+Optimism GovQuests,new_delegators,0.0,0.0,,
+Event Horizon Public Access Voter Pool,new_delegators,0.19444444444444445,0.19090909090909092,-0.0182,0.9634081973022552
+Aragon <> RISC Zero - Joint partnership on crosschain voting,new_voters,0.0,0.0,,
+Enable High-Frequency Execution Across the Superchain,active_users,0.48148148148148145,0.05405405405405406,-0.8877,0.0001905811456737183
+Swan Superchain Application,transaction_cnt,9372.9625,4210.422764227642,-0.5508,0.0026373838128126437
+Cyber,transaction_cnt,41566.652892561986,8862.432291666666,-0.7868,0.0
+Mode,transaction_cnt,16678.164835164836,5319.995495495496,-0.681,0.0
+Lisk - Intent 3B Grant Application,transaction_cnt,125.50549450549451,43591.00900900901,346.3235,0.0
+DelegateMatch: Governance incentives for a delegation Farcaster frame.,active_users,0.05,0.004784688995215311,-0.9043,0.3790846259200231
+Scout Game: onchain gamified talent referral platform,gas_fee,2.7690532258064515e-11,1.5808531578947367e-10,4.709,0.41790074657713383
+Mint Blockchain- grow the Superchain NFT economy,transaction_cnt,37122.85593220339,41008.21527777778,0.1047,0.3394442590375397
+Toros Finance,gas_fee,0.0,9.505811915029008e-07,,0.05040706272425055
+Strands,gas_fee,0.0,0.0,,
+Pyth Network: Infrastructure Subsidies,active_users,0.0,0.009009009009009009,,0.1577672758936357
+Pyth Network: Decentralized Solvers (Pyth Express Relay),transaction_cnt,0.0,0.0,,
+Kroma Intent 3B Grants Application,active_users,101061.07692307692,109297.14864864865,0.0815,0.7017415817920836

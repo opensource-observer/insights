@@ -1,5 +1,3 @@
-from datetime import datetime
-
 # whether or not to pull al the data live from bigquery 
 #PULL_FROM_BIGQUERY = False
 # whether or not there's a live streamlit instance connected to this repo

@@ -1,7 +1,7 @@
 from datetime import datetime
 import pandas as pd
 import numpy as np
-from typing import Dict, Optional
+from typing import Dict
 from pmdarima import auto_arima
 from sklearn.linear_model import LinearRegression
 
@@ -26,53 +26,86 @@ def bootstrap_series(series: np.ndarray, rng: np.random.Generator, bootstrap_rat
 
     return bootstrapped_series
 
+
 def forecast_based_on_pregrant(
-        pre_grant_df: pd.DataFrame,
-        post_grant_df: pd.DataFrame,
-        target_col: str,
-        bootstrap_ratio: float,
-        seasonality: int = 0,
-        chunk_size: int = 3,
-        noise_std: float = 0.25,
-        random_state: np.random.RandomState = None,
-        handle_negative: bool = False
+    pre_grant_df: pd.DataFrame,
+    post_grant_df: pd.DataFrame,
+    target_col: str,
+    bootstrap_ratio: float,
+    seasonality: int = 0,
+    chunk_size: int = 3,
+    noise_std: float = 0.25,
+    random_state: np.random.RandomState = None,
+    handle_negative: bool = False
 ) -> pd.DataFrame:
+    """
+    This version uses only the most recent X rows of pre-grant data, 
+    where X = number of rows in the post-grant dataframe.
+    """
+
     rng = np.random.RandomState(random_state)
 
+    # Identify the date column
     date_col = determine_date_col(df=pre_grant_df)
+
+    # Group both pre- and post-grant by date (summing the target col)
     pre_grant_df = pre_grant_df.groupby(date_col)[target_col].sum().reset_index()
     post_grant_df = post_grant_df.groupby(date_col)[target_col].sum().reset_index()
 
+    # Ensure we sort by date in ascending order
+    pre_grant_df = pre_grant_df.sort_values(by=date_col).reset_index(drop=True)
+    post_grant_df = post_grant_df.sort_values(by=date_col).reset_index(drop=True)
+
+    # Determine how many rows to use from pre-grant
+    n_post = len(post_grant_df)
+    n_pre = len(pre_grant_df)
+    n_take = min(n_pre, n_post)
+
+    # Take only the *most recent* n_take rows of pre-grant
+    pre_grant_df = pre_grant_df.tail(n_take).copy()
+
+    # Extract the raw pre-grant series y
     y = pre_grant_df[target_col].values
 
     if len(y) == 0:
-        raise ValueError(f"The input series for '{target_col}' is empty.")
+        raise ValueError(f"The input series for '{target_col}' is empty or invalid.")
 
+    # If the pre-grant series is constant, skip ARIMA and forecast a constant
     if pre_grant_df[target_col].nunique() <= 1:
         print(f"Time-series for '{target_col}' is constant. Skipping ARIMA modeling.")
         constant_value = y[0] if len(y) > 0 else 0
         predictions = [constant_value] * len(post_grant_df)
         return pd.DataFrame({'date': post_grant_df[date_col], f'forecasted_{target_col}': predictions})
 
+    # Handle potential negative values by shifting up if needed
+    offset = 0
     if handle_negative:
-        offset = abs(y.min()) + 1 if y.min() < 0 else 0
-        y = y + offset
+        min_val = y.min()
+        if min_val < 0:
+            offset = abs(min_val) + 1
+            y = y + offset
 
+    # Log-transform in the offset domain
     y_train_trans = np.log1p(y)
     y_train_trans = np.nan_to_num(y_train_trans, nan=0.0, posinf=0.0, neginf=0.0)
 
     predictions = []
     predictions_left = len(post_grant_df)
+
+    # Iteratively forecast in chunks
     while predictions_left > 0:
         forecast_window = min(chunk_size, predictions_left)
 
+        # Optionally bootstrap a portion of the training data
         if bootstrap_ratio > 0:
             y_curr = bootstrap_series(y_train_trans, rng, bootstrap_ratio)
         else:
             y_curr = y_train_trans
 
+        # Ensure no NaNs or inf
         y_curr = np.nan_to_num(y_curr, nan=0.0, posinf=0.0, neginf=0.0)
 
+        # Fit ARIMA model on the log-transformed data
         model = auto_arima(
             y_curr,
             seasonal=(seasonality > 0),
@@ -84,22 +117,35 @@ def forecast_based_on_pregrant(
             ensure_all_finite=True
         )
 
+        # Forecast in the log-transformed domain
         forecasted_log = model.predict(n_periods=forecast_window)
         forecasted_vals = np.expm1(forecasted_log)
 
+        # Add noise
         noise_factors = rng.normal(loc=1.0, scale=noise_std, size=forecast_window)
         forecasted_vals_noisy = forecasted_vals * noise_factors
 
-        if handle_negative:
+        # Shift back to original domain if negative handling was used
+        if handle_negative and offset > 0:
             forecasted_vals_noisy = forecasted_vals_noisy - offset
 
+        # Store the chunk's forecasts
         predictions.extend(forecasted_vals_noisy)
-        forecasted_log_noisy = np.log1p(np.clip(forecasted_vals_noisy, 1e-9, None))
+
+        # Convert back to the "log1p + offset" domain for continuing the loop
+        # Clip at a small positive value to avoid NaNs in log
+        forecasted_log_noisy = np.log1p(np.clip(forecasted_vals_noisy + offset if handle_negative else forecasted_vals_noisy, 1e-9, None))
         y_train_trans = np.concatenate([y_train_trans, forecasted_log_noisy])
 
         predictions_left -= forecast_window
 
-    return pd.DataFrame({'date': post_grant_df[date_col], f'forecasted_{target_col}': predictions})
+    # Build final DataFrame
+    df_result = pd.DataFrame({
+        'date': post_grant_df[date_col],
+        f'forecasted_{target_col}': predictions
+    })
+
+    return df_result
 
 # generate the forecasted dataset for the target project
 def forecast_project(datasets: Dict[str, pd.DataFrame], grant_date: datetime) -> pd.DataFrame:
@@ -108,6 +154,8 @@ def forecast_project(datasets: Dict[str, pd.DataFrame], grant_date: datetime) ->
     # extract the relevant datasets
     if 'daily_transactions' in datasets.keys() and datasets['daily_transactions'] is not None:
         daily_transactions_df = datasets.get('daily_transactions').copy()
+        daily_transactions_df["transaction_date"] = pd.to_datetime(daily_transactions_df['transaction_date'])
+        daily_transactions_df = daily_transactions_df[daily_transactions_df["transaction_date"] <= datetime(2025, 2, 11)]
     else:
         daily_transactions_df = pd.DataFrame()
 
@@ -134,46 +182,80 @@ def forecast_project(datasets: Dict[str, pd.DataFrame], grant_date: datetime) ->
 
     if len(pre_grant_df) >= 10:
         # identify target columns for forecasting
-        target_cols = aggregated_dataset.drop(['date', 'grant_label'], axis=1).columns
+        if 'protocol' in aggregated_dataset.columns:
+            target_cols = aggregated_dataset.drop(['date', 'grant_label', 'protocol'], axis=1).columns
+        else:
+            target_cols = aggregated_dataset.drop(['date', 'grant_label'], axis=1).columns
 
-        # initialize the forecasted dataframe
         forecasted_df = None
 
         for col in target_cols:
-            # adjust forecasting parameters based on the column
             if col == 'TVL':
-                col_forecasted_df2 = forecast_based_on_chain_tvl(
-                    chain_tvl=optimism_bridge_tvl, 
-                    target_protocol=aggregated_dataset,
-                    grant_date=grant_date
-                )
+                protocols = aggregated_dataset["protocol"].dropna().unique().tolist()
+                protocol_forecasts = []
 
-                col_forecasted_df = forecast_based_on_pregrant(
-                    pre_grant_df, 
-                    post_grant_df, 
-                    bootstrap_ratio=0, 
-                    noise_std=0.05, 
-                    target_col=col
-                )
+                for protocol in protocols:
+                    curr_protocol_aggregated_dataset = aggregated_dataset[aggregated_dataset["protocol"] == protocol].drop("protocol", axis=1)
+                    curr_protocol_pre_grant_df = pre_grant_df[pre_grant_df["protocol"] == protocol].drop("protocol", axis=1)
+                    curr_protocol_post_grant_df = post_grant_df[post_grant_df["protocol"] == protocol].drop("protocol", axis=1)
 
-                if col_forecasted_df is not None and col_forecasted_df2 is not None:
-                    col_forecasted_df = col_forecasted_df.merge(col_forecasted_df2, how='outer', on='date')
-                elif col_forecasted_df2 is not None and col_forecasted_df is None:
-                    col_forecasted_df = col_forecasted_df2
+                    if len(curr_protocol_aggregated_dataset) > 10 and len(curr_protocol_pre_grant_df) > 10 and len(curr_protocol_post_grant_df) > 10:
+                        col_forecasted_df = forecast_based_on_pregrant(
+                            curr_protocol_pre_grant_df, 
+                            curr_protocol_post_grant_df, 
+                            bootstrap_ratio=0, 
+                            noise_std=0.05, 
+                            target_col=col
+                        )
+
+                        col_forecasted_df2 = forecast_based_on_chain_tvl(
+                            chain_tvl=optimism_bridge_tvl, 
+                            target_protocol=curr_protocol_aggregated_dataset,
+                            grant_date=grant_date
+                        )
+
+                        if col_forecasted_df is not None:
+                            col_forecasted_df.rename(columns={"forecasted_TVL": f"forecasted_TVL-{protocol}"}, inplace=True)
+                        if col_forecasted_df2 is not None:
+                            col_forecasted_df2.rename(columns={"forecasted_TVL_opchain": f"forecasted_TVL_opchain-{protocol}"}, inplace=True)
+
+                        if col_forecasted_df is not None and col_forecasted_df2 is not None:
+                            combined_df = col_forecasted_df.merge(col_forecasted_df2, on="date", how="outer")
+                            protocol_forecasts.append(combined_df)
+                        elif col_forecasted_df is not None:
+                            protocol_forecasts.append(col_forecasted_df)
+                        elif col_forecasted_df2 is not None:
+                            protocol_forecasts.append(col_forecasted_df2)
+
+                # merge all protocol forecasts
+                if protocol_forecasts:
+                    col_forecasted_df = protocol_forecasts[0]
+                    for df in protocol_forecasts[1:]:
+                        col_forecasted_df = col_forecasted_df.merge(df, on="date", how="outer")
+                else:
+                    col_forecasted_df = None
 
             else:
-                col_forecasted_df = forecast_based_on_pregrant(
-                    pre_grant_df, 
-                    post_grant_df, 
-                    bootstrap_ratio=0.33, 
-                    target_col=col
-                )
+                if 'protocol' in pre_grant_df.columns:
+                    col_forecasted_df = forecast_based_on_pregrant(
+                        pre_grant_df.drop("protocol", axis=1), 
+                        post_grant_df.drop("protocol", axis=1), 
+                        bootstrap_ratio=0.33, 
+                        target_col=col
+                    )
+                else:
+                    col_forecasted_df = forecast_based_on_pregrant(
+                        pre_grant_df, 
+                        post_grant_df, 
+                        bootstrap_ratio=0.33, 
+                        target_col=col
+                    )
 
-            # merge the forecasts for each column
+            # merge into the full forecasted_df
             if forecasted_df is None:
                 forecasted_df = col_forecasted_df
-            else:
-                forecasted_df = forecasted_df.merge(col_forecasted_df, on='date', how='outer')
+            elif col_forecasted_df is not None:
+                forecasted_df = forecasted_df.merge(col_forecasted_df, on="date", how="outer")
 
         return forecasted_df
 
@@ -185,108 +267,115 @@ def forecast_based_on_chain_tvl(
     target_protocol: pd.DataFrame,
     grant_date: datetime,
     chunk_size: int = 3,
-    random_state: np.random.RandomState = None,
+    random_state: int = None,
     noise_std: float = 0.05,
-) -> Optional[pd.DataFrame | None]:
+) -> pd.DataFrame | None:
+    """
+    Use a linear regression model to forecast the target protocol's TVL 
+    based on the growth of a reference chain's TVL. Data is aligned by date,
+    normalized, then chunk-forecasted post-grant. 
+    """
 
-    chain_tvl_date_col = determine_date_col(df=chain_tvl)
-    target_protocol_date_col = determine_date_col(df=target_protocol)
+    def determine_date_col(df: pd.DataFrame) -> str:
+        # Identify which column is a date column; adapt this logic as needed
+        for col in df.columns:
+            if 'date' in col.lower():
+                return col
+        raise ValueError("No date column found")
 
-    # convert dates to datetime format
+    # Identify date columns
+    chain_tvl_date_col = determine_date_col(chain_tvl)
+    target_protocol_date_col = determine_date_col(target_protocol)
+
+    # Convert to datetime
     chain_tvl[chain_tvl_date_col] = pd.to_datetime(chain_tvl[chain_tvl_date_col], errors="coerce")
     target_protocol[target_protocol_date_col] = pd.to_datetime(target_protocol[target_protocol_date_col], errors="coerce")
 
+    # Identify TVL column names
     chain_tvl_col = "totalLiquidityUSD" if "totalLiquidityUSD" in chain_tvl.columns else "TVL"
     target_protocol_col = "totalLiquidityUSD" if "totalLiquidityUSD" in target_protocol.columns else "TVL"
 
-    # normalize the TVL data
-    chain_tvl_max = chain_tvl[chain_tvl_col].max()
-    chain_tvl["TVL_normalized"] = chain_tvl[chain_tvl_col] / chain_tvl_max
+    # Rename columns to standardize
+    chain_df = chain_tvl[[chain_tvl_date_col, chain_tvl_col]].copy()
+    chain_df.columns = ["date", "chain_tvl"]
 
-    target_protocol_max = target_protocol[target_protocol_col].max()
-    target_protocol["TVL_normalized"] = target_protocol[target_protocol_col] / target_protocol_max
+    protocol_df = target_protocol[[target_protocol_date_col, target_protocol_col]].copy()
+    protocol_df.columns = ["date", "protocol_tvl"]
 
-    # determine the common date range
-    chain_tvl_min_date = chain_tvl[chain_tvl_date_col].min()
-    target_protocol_min_date = target_protocol[target_protocol_date_col].min()
-    min_date = max(chain_tvl_min_date, target_protocol_min_date)
+    # Merge on date so X and Y align properly
+    merged_df = pd.merge(chain_df, protocol_df, on="date", how="inner").dropna(subset=["chain_tvl","protocol_tvl"])
 
-    chain_tvl_max_date = chain_tvl[chain_tvl_date_col].max()
-    target_protocol_max_date = target_protocol[target_protocol_date_col].max()
-    max_date = min(chain_tvl_max_date, target_protocol_max_date)
-
-    # filter pre- and post-grant data with dates preserved
-    chain_tvl_pre_grant = chain_tvl[(chain_tvl[chain_tvl_date_col] < grant_date) & (chain_tvl[chain_tvl_date_col] >= min_date)]
-    chain_tvl_post_grant = chain_tvl[(chain_tvl[chain_tvl_date_col] >= grant_date) & (chain_tvl[chain_tvl_date_col] <= max_date)]
-
-    target_protocol_pre_grant = target_protocol[(target_protocol[target_protocol_date_col] < grant_date) & (target_protocol[target_protocol_date_col] >= min_date)]
-    target_protocol_post_grant = target_protocol[(target_protocol[target_protocol_date_col] >= grant_date) & (target_protocol[target_protocol_date_col] <= max_date)]
-
-    # extract normalized TVL values
-    X_pre_grant = chain_tvl_pre_grant["TVL_normalized"].values.reshape(-1, 1)
-    X_post_grant = chain_tvl_post_grant["TVL_normalized"].values.reshape(-1, 1)
-
-    y_pre_grant = target_protocol_pre_grant["TVL_normalized"].values
-    y_post_grant = target_protocol_post_grant["TVL_normalized"].values
-
-    if len(X_pre_grant) < 20 or len(y_pre_grant) < 20:
-        print('here')
+    if merged_df.empty:
+        print(1)
         return None
 
-    predictions = []
+    # Normalize across the entire dataset
+    chain_tvl_max = merged_df["chain_tvl"].max()
+    protocol_tvl_max = merged_df["protocol_tvl"].max()
+    if chain_tvl_max == 0 or protocol_tvl_max == 0:
+        print(2)
+        return None  # Cannot normalize if max is 0
+
+    merged_df["chain_norm"] = merged_df["chain_tvl"] / chain_tvl_max
+    merged_df["proto_norm"] = merged_df["protocol_tvl"] / protocol_tvl_max
+
+    # Split into pre-grant and post-grant
+    pre_grant = merged_df[merged_df["date"] < grant_date].copy()
+    post_grant = merged_df[merged_df["date"] >= grant_date].copy()
+    if pre_grant.empty or post_grant.empty:
+        print(3)
+        return None
+
+    # Extract X, y for training
+    X_pre = pre_grant[["chain_norm"]].values
+    y_pre = pre_grant["proto_norm"].values
+
+    # Must have enough data
+    if len(X_pre) < 20 or len(y_pre) < 20:
+        print(4)
+        return None
+
+    # Fit model on pre-grant data
     model = LinearRegression()
+    model.fit(X_pre, y_pre)
+
+    # Prepare post-grant exogenous data
+    X_post = post_grant[["chain_norm"]].values
+
+    # Forecast in chunks
+    predictions = []
     rng = np.random.RandomState(random_state)
-    # iterate until predictions are made for every day of the post-grant period
-    predictions_left = len(X_post_grant)
 
-    X_pre_grant_curr = X_pre_grant.copy()
-    X_post_grant_curr = X_post_grant.copy()
-    y_pre_grant_curr = y_pre_grant.copy()
-    y_post_grant_curr = y_post_grant.copy()
+    n_left = len(X_post)
+    idx_start = 0
+    while n_left > 0:
+        forecast_window = min(chunk_size, n_left)
+        # Slice out the next chunk
+        X_chunk = X_post[idx_start : idx_start + forecast_window]
 
-    while predictions_left > 0:
-        # how much to forecast
-        forecast_window = min(chunk_size, predictions_left)
+        # Predict
+        pred_chunk = model.predict(X_chunk)
 
-        # ensure all values in X_pre_grant and y_pre_grant are finite
-        X_pre_grant_curr = np.nan_to_num(X_pre_grant_curr, nan=0.0, posinf=0.0, neginf=0.0)
-        y_pre_grant_curr = np.nan_to_num(y_pre_grant_curr, nan=0.0, posinf=0.0, neginf=0.0)
+        # Add noise
+        noise_factors = rng.normal(loc=1.0, scale=noise_std, size=len(pred_chunk))
+        pred_chunk_noisy = pred_chunk * noise_factors
 
-        # train the Linear Regression model
-        model.fit(X=X_pre_grant_curr, y=y_pre_grant_curr)
+        # Store
+        predictions.extend(pred_chunk_noisy)
 
-        # predict post-grant TVL
-        pred = model.predict(X_post_grant_curr[:forecast_window])
+        # Move index
+        idx_start += forecast_window
+        n_left -= forecast_window
 
-        # add variability with noise
-        noise_factors = rng.normal(loc=1.0, scale=noise_std, size=forecast_window)
-        pred_noisy = pred * noise_factors
-
-        predictions.extend(pred_noisy)
-        # update the training set with the forecast
-        X_pre_grant_curr = np.concatenate([X_pre_grant_curr, pred_noisy.reshape(-1, 1)])
-        y_pre_grant_curr = np.concatenate([y_pre_grant_curr, y_post_grant_curr[:forecast_window]])
-
-        predictions_left -= forecast_window
-        X_post_grant_curr = X_post_grant_curr[forecast_window:]
-        y_post_grant_curr = y_post_grant_curr[forecast_window:]
-
-    min_length = min(len(predictions), len(y_post_grant), len(X_post_grant))
-
+    # Build result DataFrame
+    # Align length in case of any mismatch
     predictions = np.array(predictions)
+    n_pred = len(predictions)
+    post_grant = post_grant.iloc[:n_pred].copy()
 
-    # ensure lengths align
-    y_post_grant = y_post_grant[:min_length]
-    X_post_grant = X_post_grant[:min_length]
-    predictions = predictions[:min_length]
-    dates_post_grant = chain_tvl_post_grant[chain_tvl_date_col].values[:len(X_post_grant)]
+    # Denormalize
+    post_grant["forecasted_TVL_opchain"] = predictions * protocol_tvl_max
+    print(post_grant)
 
-    # create a dataframe for results
-    post_grant_df = pd.DataFrame({
-        'date': dates_post_grant,
-        'chain_tvl_tvl': X_post_grant.flatten() * chain_tvl_max,
-        'forecasted_TVL_opchain': predictions * target_protocol_max,
-        'actual_tvl': y_post_grant * target_protocol_max
-    })
-
-    return post_grant_df[["date", "forecasted_TVL_opchain"]]
+    # Return just date & forecast, or more if you like
+    return post_grant[["date", "forecasted_TVL_opchain"]]
