@@ -9,70 +9,71 @@ You can also find our folder of public Colab notebooks, [here](https://drive.goo
 
 Notebooks are included so others can get inspiration and understand/improve upon our analysis. Where practical, copies of data used to generate insights has been saved in CSV or JSON format. However, many of the notebooks rely on direct queries to the data warehouse and therefore will not run locally without a live connection. Note: not all of these notebooks are actively maintained, so some queries may go stale over time.
 
+## pyoso
+
+You can access the full OSO data lake via our `pyoso` Python library.
+
+The following boiler plate is helpful for starting a new notebook that uses pyoso.
+
+```
+from dotenv import load_dotenv
+import os
+import pandas as pd
+from pyoso import Client
+
+load_dotenv()
+OSO_API_KEY = os.environ['OSO_API_KEY']
+client = Client(api_key=OSO_API_KEY)
+
+client.to_pandas("SELECT * FROM models_v0 LIMIT 5")
+```
+
+Here are more detailed steps if it's your first time using pyoso.
+
 ## Getting Started
 
-For most local queries, you'll want to connect directly to BigQuery and query OSO's versioned mart models (anything that ends in a v0 or v1).
+> [!IMPORTANT]  
+> The OSO data warehouse has evolved considerably since the start of this project. We have kept old notebooks (eg, that connect to BigQuery directly) for reference and inspiration. Currently, we strongly recommend all users to access data via pyoso.
 
-Virtually every notebook begins with the following:
+### Generate an API key
 
-```
-from google.cloud import bigquery
-import pandas as pd
-import os
+First, go to [www.opensource.observer](https://www.opensource.observer) and create a new account.
 
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = # PATH TO YOUR CREDENTIALS JSON
-GCP_PROJECT = # YOUR GCP PROJECT NAME
+If you already have an account, log in. Then create a new personal API key:
 
-client = bigquery.Client(GCP_PROJECT)
-```
+1. Go to [Account settings](https://www.opensource.observer/app/settings)
+2. In the "API Keys" section, click "+ New"
+3. Give your key a label - this is just for you, usually to describe a key's purpose.
+4. You should see your brand new key. **Immediately** save this value, as you'll **never** see it again after refreshing the page.
+5. Click "Create" to save the key.
 
-Once you've connected, here are some sample queries. These examples pull from `oso_playground` (a small subset of all data) for testing purposes. Use `oso` for the full dataset (many terabytes).
+### Install pyoso
 
-Get all the GitHub repos by project:
+You can install pyoso using pip:
 
-```
-results = client.query("""
-    select
-        project_name,
-        artifact_namespace,
-        artifact_name
-    from `oso_playground.artifacts_by_project_v1`
-    where artifact_source = 'GITHUB'
-""")
-df = results.to_dataframe()
+```bash
+pip install pyoso
 ```
 
-Get a snapshot of all of OSO's static onchain metrics:
+### Issue your first query
 
-```
-results = client.query("""
-    select *
-    from `oso_playground.onchain_metrics_by_project_v1`
-""")
-df = results.to_dataframe()
-```
+Here is a basic example of how to use pyoso:
 
-Get timeseries metrics for Uniswap:
+```python
+from pyoso import Client
 
-```
-results = client.query("""
-    select
-        m.metric_name,
-        p.project_name,
-        tsm.sample_date,
-        tsm.amount
-    from `oso_playground.timeseries_metrics_by_project_v0` as tsm
-    join `oso_playground.metrics_v0` as m
-        on tsm.metric_id = m.metric_id
-    join `oso_playground.projects_v1` as p
-        on tsm.project_id = p.project_id
-    where p.project_name = 'uniswap'
-    order by sample_date
-""")
-df = results.to_dataframe()
+# Initialize the client
+os.environ["OSO_API_KEY"] = 'your_api_key'
+client = Client()
+
+# Fetch artifacts
+query = "SELECT * FROM artifacts_v1 LIMIT 5"
+artifacts = client.query(query)
+
+print(artifacts)
 ```
 
-When you are ready to move to a larger dataset, remember to swap out `oso_playground` for `oso`.
+Once things are working, we recommend saving your API key in your .env file.
 
 ## Repository Structure
 
