@@ -1,27 +1,27 @@
-title,project_name,org
-Pyth Network,pyth-network,pyth-network
-WakeUp Labs,wakeuplabs,wakeuplabs
+display_name,project_name,artifact_namespace
+Walnut,walnuthq,walnuthq
+Angel,angel,
+9Lives,9lives-fluidity-money,fluidity-money
+CoBuilders,cobuilders-xyz,cobuilders-xyz
+Nuffle Labs,nuffle-labs,
 Redstone Finance,redstone-finance,redstone-finance
 Open Source Observer,opensource-observer,opensource-observer
-Debid - Fairblock,fairblock,fairblock
-Arbos Foundry,arbos-foundry-bernard-wagner,bernard-wagner
 Sylow,sylow-warlock-labs,warlock-labs
-Solang,solang-hyperledger-solang,hyperledger-solang
-StylusPort,stylusport-teamscanworks,teamscanworks
-Trail of Bits Security Reviews,trailofbits,trailofbits
-Remix IDE plugin for Arbitrum Stylus,remix-arbitrum-welldonestudio,dsrvlabs
-Passport XYZ,passportxyz,passportxyz
 Runtime Verification,runtimeverification,runtimeverification
-Moving Stylus,rather_labs,rather-labs
-CoBuilders,cobuilders-xyz,cobuilders-xyz
-Syndicate Protocol,syndicateprotocol,syndicateprotocol
 Enclave,enclave-gnosisguild,gnosisguild
 thirdweb,third-web,thirdweb-dev
-Walnut,walnuthq,walnuthq
 Ember,ember-shahankhatch,shahankhatch
-CodeTracer,codetracer-metacraft-labs,metacraft-labs
-9Lives,9lives-fluidity-money,fluidity-money
 Remix IDE plugin for Arbitrum Stylus,remix-arbitrum-welldonestudio,welldonestudio
+CodeTracer,codetracer-metacraft-labs,metacraft-labs
+Moving Stylus,rather_labs,rather-labs
+Passport XYZ,passportxyz,passportxyz
+Syndicate Protocol,syndicateprotocol,syndicateprotocol
+StylusPort,stylusport-teamscanworks,teamscanworks
+Solang,solang-hyperledger-solang,hyperledger-solang
 Fiet Protocol,fiet-protocol-usherlabs,
-Angel,angel,
-Nuffle Labs,nuffle-labs,
+Pyth Network,pyth-network,pyth-network
+Arbos Foundry,arbos-foundry-bernard-wagner,bernard-wagner
+Debid - Fairblock,fairblock,fairblock
+Trail of Bits Security Reviews,trailofbits,trailofbits
+Remix IDE plugin for Arbitrum Stylus,remix-arbitrum-welldonestudio,dsrvlabs
+WakeUp Labs,wakeuplabs,wakeuplabs
