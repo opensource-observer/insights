@@ -1,149 +1,341 @@
-Name,Metric,Date,Value
+display_name,metric_name,sample_date,amount
+Solide Smart Contract Knowledge Hub,GITHUB_active_developers_monthly,2025-03-01,1
+Solide Smart Contract Knowledge Hub,GITHUB_active_developers_monthly,2024-08-01,1
+CryptoSmartNow,GITHUB_active_developers_monthly,2023-07-01,1
+Fracton Research,GITHUB_active_developers_monthly,2023-05-01,1
+theblokc,GITHUB_active_developers_monthly,2024-03-01,1
+dsrvlabs,GITHUB_active_developers_monthly,2024-11-01,10
+dsrvlabs,GITHUB_active_developers_monthly,2022-01-01,2
+Altlayer,GITHUB_active_developers_monthly,2024-03-01,6
+Altlayer,GITHUB_active_developers_monthly,2025-02-01,3
+Blockscout,GITHUB_active_developers_monthly,2024-12-01,20
+Blockscout,GITHUB_active_developers_monthly,2022-04-01,2
+Blockscout,GITHUB_active_developers_monthly,2022-05-01,6
+Lit Protocol,GITHUB_active_developers_monthly,2022-02-01,2
+Lit Protocol,GITHUB_active_developers_monthly,2023-02-01,8
+Lit Protocol,GITHUB_active_developers_monthly,2023-05-01,9
+Offchain Labs,GITHUB_active_developers_monthly,2024-12-01,27
+Offchain Labs,GITHUB_active_developers_monthly,2025-01-01,25
+Offchain Labs,GITHUB_active_developers_monthly,2023-07-01,15
+LimeChain,GITHUB_active_developers_monthly,2024-07-01,10
+LimeChain,GITHUB_active_developers_monthly,2022-05-01,10
 CryptoSmartNow,GITHUB_active_developers_monthly,2024-01-01,2
-CryptoSmartNow,GITHUB_active_developers_monthly,2025-03-01,2
-CryptoSmartNow,GITHUB_active_developers_monthly,2024-12-01,1
-CryptoSmartNow,GITHUB_active_developers_monthly,2024-05-01,4
-Solide Smart Contract Knowledge Hub,GITHUB_active_developers_monthly,2024-03-01,1
-Solide Smart Contract Knowledge Hub,GITHUB_active_developers_monthly,2024-01-01,1
-Solide Smart Contract Knowledge Hub,GITHUB_active_developers_monthly,2024-10-01,1
-Solide Smart Contract Knowledge Hub,GITHUB_active_developers_monthly,2024-09-01,1
-theblokc,GITHUB_active_developers_monthly,2024-04-01,1
-dsrvlabs,GITHUB_active_developers_monthly,2025-02-01,2
-dsrvlabs,GITHUB_active_developers_monthly,2024-03-01,2
-dsrvlabs,GITHUB_active_developers_monthly,2024-07-01,5
-dsrvlabs,GITHUB_active_developers_monthly,2025-01-01,3
 dsrvlabs,GITHUB_active_developers_monthly,2024-06-01,5
-dsrvlabs,GITHUB_active_developers_monthly,2025-03-01,5
-dsrvlabs,GITHUB_active_developers_monthly,2024-10-01,8
-Altlayer,GITHUB_active_developers_monthly,2024-08-01,10
-Altlayer,GITHUB_active_developers_monthly,2025-03-01,6
-Altlayer,GITHUB_active_developers_monthly,2024-10-01,8
+dsrvlabs,GITHUB_active_developers_monthly,2023-03-01,7
+dsrvlabs,GITHUB_active_developers_monthly,2023-01-01,11
+dsrvlabs,GITHUB_active_developers_monthly,2023-07-01,5
 Altlayer,GITHUB_active_developers_monthly,2024-04-01,7
+Altlayer,GITHUB_active_developers_monthly,2024-08-01,10
+Altlayer,GITHUB_active_developers_monthly,2023-08-01,4
 BasketSwap,GITHUB_active_developers_monthly,2024-10-01,1
-Blockscout,GITHUB_active_developers_monthly,2025-02-01,19
-Blockscout,GITHUB_active_developers_monthly,2025-03-01,17
-Fluidity Money,GITHUB_active_developers_monthly,2024-06-01,1
-Fluidity Money,GITHUB_active_developers_monthly,2024-02-01,2
-Fluidity Money,GITHUB_active_developers_monthly,2024-11-01,3
-Fluidity Money,GITHUB_active_developers_monthly,2024-10-01,3
-Fluidity Money,GITHUB_active_developers_monthly,2024-05-01,2
-Fluidity Money,GITHUB_active_developers_monthly,2024-09-01,3
+Fluidity Money,GITHUB_active_developers_monthly,2022-01-01,2
 Lit Protocol,GITHUB_active_developers_monthly,2024-07-01,13
-Lit Protocol,GITHUB_active_developers_monthly,2024-05-01,12
-Lit Protocol,GITHUB_active_developers_monthly,2024-09-01,13
-Offchain Labs,GITHUB_active_developers_monthly,2025-02-01,25
-Offchain Labs,GITHUB_active_developers_monthly,2024-01-01,27
-Offchain Labs,GITHUB_active_developers_monthly,2025-03-01,21
-Offchain Labs,GITHUB_active_developers_monthly,2024-02-01,26
-Offchain Labs,GITHUB_active_developers_monthly,2024-10-01,20
-SeaBrick by Kelp Island,GITHUB_active_developers_monthly,2024-12-01,1
+Offchain Labs,GITHUB_active_developers_monthly,2023-01-01,13
 LimeChain,GITHUB_active_developers_monthly,2025-02-01,9
-LimeChain,GITHUB_active_developers_monthly,2024-08-01,15
-LimeChain,GITHUB_active_developers_monthly,2025-01-01,11
-LimeChain,GITHUB_active_developers_monthly,2025-03-01,12
-LimeChain,GITHUB_active_developers_monthly,2024-09-01,12
-CryptoSmartNow,GITHUB_active_developers_monthly,2024-08-01,1
-CryptoSmartNow,GITHUB_active_developers_monthly,2024-06-01,2
-CryptoSmartNow,GITHUB_active_developers_monthly,2024-02-01,1
 CryptoSmartNow,GITHUB_active_developers_monthly,2024-10-01,1
-CryptoSmartNow,GITHUB_active_developers_monthly,2024-04-01,2
-Solide Smart Contract Knowledge Hub,GITHUB_active_developers_monthly,2024-07-01,1
-Solide Smart Contract Knowledge Hub,GITHUB_active_developers_monthly,2024-06-01,1
-Solide Smart Contract Knowledge Hub,GITHUB_active_developers_monthly,2024-12-01,1
-Solide Smart Contract Knowledge Hub,GITHUB_active_developers_monthly,2024-02-01,1
-theblokc,GITHUB_active_developers_monthly,2024-12-01,1
-theblokc,GITHUB_active_developers_monthly,2024-02-01,1
 dsrvlabs,GITHUB_active_developers_monthly,2024-01-01,4
-dsrvlabs,GITHUB_active_developers_monthly,2024-12-01,5
-dsrvlabs,GITHUB_active_developers_monthly,2024-05-01,3
-Altlayer,GITHUB_active_developers_monthly,2025-01-01,5
-Altlayer,GITHUB_active_developers_monthly,2024-06-01,7
+dsrvlabs,GITHUB_active_developers_monthly,2023-02-01,10
+dsrvlabs,GITHUB_active_developers_monthly,2022-11-01,9
 Altlayer,GITHUB_active_developers_monthly,2024-12-01,4
-Altlayer,GITHUB_active_developers_monthly,2024-09-01,6
-BasketSwap,GITHUB_active_developers_monthly,2024-08-01,1
-Blockscout,GITHUB_active_developers_monthly,2024-02-01,16
-Blockscout,GITHUB_active_developers_monthly,2024-05-01,16
-Blockscout,GITHUB_active_developers_monthly,2024-04-01,15
-Fluidity Money,GITHUB_active_developers_monthly,2024-01-01,2
-Fluidity Money,GITHUB_active_developers_monthly,2025-01-01,5
-Fluidity Money,GITHUB_active_developers_monthly,2024-04-01,3
-Lit Protocol,GITHUB_active_developers_monthly,2024-03-01,8
-Lit Protocol,GITHUB_active_developers_monthly,2025-03-01,9
-Offchain Labs,GITHUB_active_developers_monthly,2024-06-01,30
-Offchain Labs,GITHUB_active_developers_monthly,2024-05-01,30
-SeaBrick by Kelp Island,GITHUB_active_developers_monthly,2024-08-01,1
+Altlayer,GITHUB_active_developers_monthly,2022-11-01,4
+Fluidity Money,GITHUB_active_developers_monthly,2023-06-01,3
+Fluidity Money,GITHUB_active_developers_monthly,2023-05-01,6
+Offchain Labs,GITHUB_active_developers_monthly,2022-12-01,12
+Offchain Labs,GITHUB_active_developers_monthly,2022-01-01,7
 SeaBrick by Kelp Island,GITHUB_active_developers_monthly,2024-09-01,1
 LimeChain,GITHUB_active_developers_monthly,2024-12-01,8
-LimeChain,GITHUB_active_developers_monthly,2024-11-01,12
-LimeChain,GITHUB_active_developers_monthly,2024-05-01,15
-CryptoSmartNow,GITHUB_active_developers_monthly,2025-02-01,1
-CryptoSmartNow,GITHUB_active_developers_monthly,2024-03-01,3
-CryptoSmartNow,GITHUB_active_developers_monthly,2025-01-01,1
-CryptoSmartNow,GITHUB_active_developers_monthly,2024-09-01,2
 Solide Smart Contract Knowledge Hub,GITHUB_active_developers_monthly,2024-04-01,1
-theblokc,GITHUB_active_developers_monthly,2024-01-01,1
-dsrvlabs,GITHUB_active_developers_monthly,2024-08-01,5
-dsrvlabs,GITHUB_active_developers_monthly,2024-09-01,5
+CryptoSmartNow,GITHUB_active_developers_monthly,2023-05-01,2
 dsrvlabs,GITHUB_active_developers_monthly,2024-04-01,5
 Altlayer,GITHUB_active_developers_monthly,2024-07-01,9
-Altlayer,GITHUB_active_developers_monthly,2024-11-01,4
-Blockscout,GITHUB_active_developers_monthly,2024-03-01,14
 Blockscout,GITHUB_active_developers_monthly,2024-01-01,13
-Blockscout,GITHUB_active_developers_monthly,2024-08-01,14
-Blockscout,GITHUB_active_developers_monthly,2024-07-01,15
-Blockscout,GITHUB_active_developers_monthly,2024-06-01,14
-Blockscout,GITHUB_active_developers_monthly,2024-11-01,20
-Blockscout,GITHUB_active_developers_monthly,2024-10-01,18
-Fluidity Money,GITHUB_active_developers_monthly,2025-02-01,4
-Lit Protocol,GITHUB_active_developers_monthly,2024-01-01,10
+Blockscout,GITHUB_active_developers_monthly,2022-06-01,7
+Blockscout,GITHUB_active_developers_monthly,2023-10-01,12
+Fluidity Money,GITHUB_active_developers_monthly,2023-09-01,4
+Fluidity Money,GITHUB_active_developers_monthly,2023-04-01,5
 Lit Protocol,GITHUB_active_developers_monthly,2025-01-01,10
 Lit Protocol,GITHUB_active_developers_monthly,2024-06-01,13
-Lit Protocol,GITHUB_active_developers_monthly,2024-02-01,9
-Lit Protocol,GITHUB_active_developers_monthly,2024-11-01,9
+Lit Protocol,GITHUB_active_developers_monthly,2023-06-01,8
+Offchain Labs,GITHUB_active_developers_monthly,2023-05-01,13
 Offchain Labs,GITHUB_active_developers_monthly,2024-07-01,30
-Offchain Labs,GITHUB_active_developers_monthly,2024-09-01,27
+Offchain Labs,GITHUB_active_developers_monthly,2022-03-01,9
+LimeChain,GITHUB_active_developers_monthly,2022-07-01,5
+LimeChain,GITHUB_active_developers_monthly,2023-09-01,11
+CryptoSmartNow,GITHUB_active_developers_monthly,2024-03-01,3
+CryptoSmartNow,GITHUB_active_developers_monthly,2023-06-01,2
+CryptoSmartNow,GITHUB_active_developers_monthly,2024-09-01,2
+dsrvlabs,GITHUB_active_developers_monthly,2023-08-01,5
+dsrvlabs,GITHUB_active_developers_monthly,2022-03-01,7
+Altlayer,GITHUB_active_developers_monthly,2024-11-01,4
+Blockscout,GITHUB_active_developers_monthly,2024-08-01,14
+Blockscout,GITHUB_active_developers_monthly,2024-11-01,20
+Blockscout,GITHUB_active_developers_monthly,2023-04-01,8
+Blockscout,GITHUB_active_developers_monthly,2023-07-01,8
+Blockscout,GITHUB_active_developers_monthly,2023-05-01,10
+Fluidity Money,GITHUB_active_developers_monthly,2023-10-01,1
 Offchain Labs,GITHUB_active_developers_monthly,2024-04-01,27
+LimeChain,GITHUB_active_developers_monthly,2023-07-01,9
+Solide Smart Contract Knowledge Hub,GITHUB_active_developers_monthly,2025-01-01,1
+Solide Smart Contract Knowledge Hub,GITHUB_active_developers_monthly,2025-02-01,1
+Solide Smart Contract Knowledge Hub,GITHUB_active_developers_monthly,2024-11-01,1
+Fracton Research,GITHUB_active_developers_monthly,2024-01-01,1
+theblokc,GITHUB_active_developers_monthly,2023-09-01,2
+dsrvlabs,GITHUB_active_developers_monthly,2022-09-01,1
+Altlayer,GITHUB_active_developers_monthly,2024-01-01,7
+Altlayer,GITHUB_active_developers_monthly,2022-09-01,4
+Altlayer,GITHUB_active_developers_monthly,2023-05-01,6
+Altlayer,GITHUB_active_developers_monthly,2022-07-01,3
+Fluidity Money,GITHUB_active_developers_monthly,2025-03-01,4
+Fluidity Money,GITHUB_active_developers_monthly,2023-08-01,2
+Fluidity Money,GITHUB_active_developers_monthly,2023-11-01,2
+Lit Protocol,GITHUB_active_developers_monthly,2022-10-01,8
+Lit Protocol,GITHUB_active_developers_monthly,2025-02-01,10
+Lit Protocol,GITHUB_active_developers_monthly,2024-04-01,13
+Solide Smart Contract Knowledge Hub,GITHUB_active_developers_monthly,2025-04-01,1
+Solide Smart Contract Knowledge Hub,GITHUB_active_developers_monthly,2024-06-01,1
+Solide Smart Contract Knowledge Hub,GITHUB_active_developers_monthly,2024-07-01,1
+CryptoSmartNow,GITHUB_active_developers_monthly,2024-04-01,2
+CryptoSmartNow,GITHUB_active_developers_monthly,2023-04-01,3
+theblokc,GITHUB_active_developers_monthly,2024-12-01,1
+theblokc,GITHUB_active_developers_monthly,2024-02-01,1
+dsrvlabs,GITHUB_active_developers_monthly,2022-10-01,5
+dsrvlabs,GITHUB_active_developers_monthly,2022-07-01,3
+dsrvlabs,GITHUB_active_developers_monthly,2023-09-01,3
+Altlayer,GITHUB_active_developers_monthly,2025-01-01,5
+Altlayer,GITHUB_active_developers_monthly,2024-09-01,6
+Altlayer,GITHUB_active_developers_monthly,2023-03-01,2
+BasketSwap,GITHUB_active_developers_monthly,2024-08-01,1
+Blockscout,GITHUB_active_developers_monthly,2025-04-01,20
+Blockscout,GITHUB_active_developers_monthly,2023-02-01,8
+Blockscout,GITHUB_active_developers_monthly,2024-04-01,15
+Blockscout,GITHUB_active_developers_monthly,2022-07-01,7
+Fluidity Money,GITHUB_active_developers_monthly,2022-12-01,9
+Fluidity Money,GITHUB_active_developers_monthly,2023-03-01,5
+Fluidity Money,GITHUB_active_developers_monthly,2022-05-01,2
+Lit Protocol,GITHUB_active_developers_monthly,2024-03-01,8
+Lit Protocol,GITHUB_active_developers_monthly,2022-07-01,4
+Lit Protocol,GITHUB_active_developers_monthly,2023-07-01,6
+Offchain Labs,GITHUB_active_developers_monthly,2022-11-01,15
+Offchain Labs,GITHUB_active_developers_monthly,2024-05-01,30
+LimeChain,GITHUB_active_developers_monthly,2022-12-01,7
+CryptoSmartNow,GITHUB_active_developers_monthly,2024-12-01,1
+theblokc,GITHUB_active_developers_monthly,2024-04-01,1
+dsrvlabs,GITHUB_active_developers_monthly,2024-10-01,8
+Altlayer,GITHUB_active_developers_monthly,2024-10-01,8
+Altlayer,GITHUB_active_developers_monthly,2023-10-01,1
+Altlayer,GITHUB_active_developers_monthly,2022-10-01,4
+Blockscout,GITHUB_active_developers_monthly,2022-03-01,2
+Blockscout,GITHUB_active_developers_monthly,2025-02-01,19
+Blockscout,GITHUB_active_developers_monthly,2023-09-01,9
+Blockscout,GITHUB_active_developers_monthly,2023-01-01,7
+Fluidity Money,GITHUB_active_developers_monthly,2024-10-01,3
+Fluidity Money,GITHUB_active_developers_monthly,2024-09-01,3
+Fluidity Money,GITHUB_active_developers_monthly,2023-12-01,2
+Lit Protocol,GITHUB_active_developers_monthly,2023-08-01,8
+Offchain Labs,GITHUB_active_developers_monthly,2023-08-01,24
+Offchain Labs,GITHUB_active_developers_monthly,2022-08-01,13
+SeaBrick by Kelp Island,GITHUB_active_developers_monthly,2024-12-01,1
+LimeChain,GITHUB_active_developers_monthly,2025-01-01,11
+LimeChain,GITHUB_active_developers_monthly,2023-06-01,10
+LimeChain,GITHUB_active_developers_monthly,2023-03-01,10
+LimeChain,GITHUB_active_developers_monthly,2022-08-01,6
+Solide Smart Contract Knowledge Hub,GITHUB_active_developers_monthly,2023-12-01,1
+Solide Smart Contract Knowledge Hub,GITHUB_active_developers_monthly,2024-05-01,2
+theblokc,GITHUB_active_developers_monthly,2023-06-01,1
+Altlayer,GITHUB_active_developers_monthly,2025-04-01,8
+Blockscout,GITHUB_active_developers_monthly,2022-12-01,6
+Fluidity Money,GITHUB_active_developers_monthly,2024-12-01,3
+Fluidity Money,GITHUB_active_developers_monthly,2024-03-01,2
+Fluidity Money,GITHUB_active_developers_monthly,2024-08-01,3
+Fluidity Money,GITHUB_active_developers_monthly,2023-02-01,4
+Lit Protocol,GITHUB_active_developers_monthly,2024-12-01,11
+Offchain Labs,GITHUB_active_developers_monthly,2025-04-01,34
+Offchain Labs,GITHUB_active_developers_monthly,2023-10-01,24
+CryptoSmartNow,GITHUB_active_developers_monthly,2025-03-01,2
+dsrvlabs,GITHUB_active_developers_monthly,2024-07-01,5
+Altlayer,GITHUB_active_developers_monthly,2023-09-01,3
+Blockscout,GITHUB_active_developers_monthly,2025-03-01,17
+Fluidity Money,GITHUB_active_developers_monthly,2022-06-01,1
+Fluidity Money,GITHUB_active_developers_monthly,2024-06-01,1
+Lit Protocol,GITHUB_active_developers_monthly,2025-04-01,12
+Offchain Labs,GITHUB_active_developers_monthly,2025-03-01,21
+Offchain Labs,GITHUB_active_developers_monthly,2023-11-01,23
+Offchain Labs,GITHUB_active_developers_monthly,2024-10-01,20
+Offchain Labs,GITHUB_active_developers_monthly,2022-05-01,9
+LimeChain,GITHUB_active_developers_monthly,2024-08-01,15
+LimeChain,GITHUB_active_developers_monthly,2022-09-01,6
+LimeChain,GITHUB_active_developers_monthly,2025-03-01,12
+LimeChain,GITHUB_active_developers_monthly,2023-12-01,12
+LimeChain,GITHUB_active_developers_monthly,2023-08-01,14
+CryptoSmartNow,GITHUB_active_developers_monthly,2025-01-01,1
+Fracton Research,GITHUB_active_developers_monthly,2023-12-01,1
+theblokc,GITHUB_active_developers_monthly,2024-01-01,1
+theblokc,GITHUB_active_developers_monthly,2023-10-01,1
+dsrvlabs,GITHUB_active_developers_monthly,2022-05-01,2
+Altlayer,GITHUB_active_developers_monthly,2023-06-01,3
+Altlayer,GITHUB_active_developers_monthly,2022-04-01,6
+Blockscout,GITHUB_active_developers_monthly,2024-06-01,14
+Blockscout,GITHUB_active_developers_monthly,2024-03-01,14
+Blockscout,GITHUB_active_developers_monthly,2022-11-01,5
+Blockscout,GITHUB_active_developers_monthly,2024-07-01,15
+Fluidity Money,GITHUB_active_developers_monthly,2022-09-01,1
+Lit Protocol,GITHUB_active_developers_monthly,2022-08-01,4
+Lit Protocol,GITHUB_active_developers_monthly,2023-03-01,9
+Lit Protocol,GITHUB_active_developers_monthly,2023-09-01,9
+Offchain Labs,GITHUB_active_developers_monthly,2023-09-01,22
+LimeChain,GITHUB_active_developers_monthly,2024-04-01,14
+LimeChain,GITHUB_active_developers_monthly,2024-02-01,13
+LimeChain,GITHUB_active_developers_monthly,2022-01-01,7
+LimeChain,GITHUB_active_developers_monthly,2023-02-01,10
+LimeChain,GITHUB_active_developers_monthly,2022-04-01,16
+LimeChain,GITHUB_active_developers_monthly,2022-11-01,8
+CryptoSmartNow,GITHUB_active_developers_monthly,2025-04-01,2
+CryptoSmartNow,GITHUB_active_developers_monthly,2024-02-01,1
+CryptoSmartNow,GITHUB_active_developers_monthly,2024-08-01,1
+dsrvlabs,GITHUB_active_developers_monthly,2023-04-01,8
+dsrvlabs,GITHUB_active_developers_monthly,2022-08-01,2
+Altlayer,GITHUB_active_developers_monthly,2023-12-01,4
+Altlayer,GITHUB_active_developers_monthly,2023-02-01,2
+Altlayer,GITHUB_active_developers_monthly,2022-06-01,1
+Blockscout,GITHUB_active_developers_monthly,2024-02-01,16
+Blockscout,GITHUB_active_developers_monthly,2024-05-01,16
+Fluidity Money,GITHUB_active_developers_monthly,2024-04-01,3
+Fluidity Money,GITHUB_active_developers_monthly,2023-01-01,7
+Lit Protocol,GITHUB_active_developers_monthly,2025-03-01,9
+Offchain Labs,GITHUB_active_developers_monthly,2022-07-01,12
+Offchain Labs,GITHUB_active_developers_monthly,2022-04-01,10
+CryptoSmartNow,GITHUB_active_developers_monthly,2023-09-01,1
+theblokc,GITHUB_active_developers_monthly,2023-05-01,1
+theblokc,GITHUB_active_developers_monthly,2023-11-01,1
+dsrvlabs,GITHUB_active_developers_monthly,2024-09-01,5
+dsrvlabs,GITHUB_active_developers_monthly,2022-12-01,8
+dsrvlabs,GITHUB_active_developers_monthly,2022-02-01,1
+Altlayer,GITHUB_active_developers_monthly,2022-12-01,6
+Altlayer,GITHUB_active_developers_monthly,2023-11-01,4
+Blockscout,GITHUB_active_developers_monthly,2022-02-01,2
+Blockscout,GITHUB_active_developers_monthly,2022-09-01,7
+Blockscout,GITHUB_active_developers_monthly,2023-03-01,8
+Blockscout,GITHUB_active_developers_monthly,2023-06-01,9
+Fluidity Money,GITHUB_active_developers_monthly,2022-08-01,1
+Fluidity Money,GITHUB_active_developers_monthly,2023-07-01,4
+Lit Protocol,GITHUB_active_developers_monthly,2024-11-01,9
+Lit Protocol,GITHUB_active_developers_monthly,2023-12-01,7
+Lit Protocol,GITHUB_active_developers_monthly,2022-05-01,3
+Lit Protocol,GITHUB_active_developers_monthly,2022-11-01,7
+Offchain Labs,GITHUB_active_developers_monthly,2024-09-01,27
+LimeChain,GITHUB_active_developers_monthly,2023-10-01,18
+LimeChain,GITHUB_active_developers_monthly,2022-06-01,8
+Solide Smart Contract Knowledge Hub,GITHUB_active_developers_monthly,2024-10-01,1
+Solide Smart Contract Knowledge Hub,GITHUB_active_developers_monthly,2024-03-01,1
+Solide Smart Contract Knowledge Hub,GITHUB_active_developers_monthly,2024-09-01,1
+CryptoSmartNow,GITHUB_active_developers_monthly,2024-05-01,4
+dsrvlabs,GITHUB_active_developers_monthly,2024-03-01,2
+dsrvlabs,GITHUB_active_developers_monthly,2025-02-01,2
+dsrvlabs,GITHUB_active_developers_monthly,2023-06-01,6
+dsrvlabs,GITHUB_active_developers_monthly,2023-12-01,4
+Blockscout,GITHUB_active_developers_monthly,2022-10-01,6
+Fluidity Money,GITHUB_active_developers_monthly,2025-04-01,3
+Fluidity Money,GITHUB_active_developers_monthly,2024-02-01,2
+Fluidity Money,GITHUB_active_developers_monthly,2024-05-01,2
+Lit Protocol,GITHUB_active_developers_monthly,2024-05-01,12
+Lit Protocol,GITHUB_active_developers_monthly,2023-10-01,9
+LimeChain,GITHUB_active_developers_monthly,2023-11-01,16
+LimeChain,GITHUB_active_developers_monthly,2023-04-01,8
+CryptoSmartNow,GITHUB_active_developers_monthly,2024-07-01,2
+Blockscout,GITHUB_active_developers_monthly,2023-11-01,15
+Blockscout,GITHUB_active_developers_monthly,2024-09-01,17
+Fluidity Money,GITHUB_active_developers_monthly,2024-07-01,3
+Lit Protocol,GITHUB_active_developers_monthly,2024-10-01,13
+Lit Protocol,GITHUB_active_developers_monthly,2023-04-01,7
+Lit Protocol,GITHUB_active_developers_monthly,2024-08-01,16
+Lit Protocol,GITHUB_active_developers_monthly,2023-01-01,8
+Offchain Labs,GITHUB_active_developers_monthly,2023-06-01,18
+Offchain Labs,GITHUB_active_developers_monthly,2024-11-01,19
+LimeChain,GITHUB_active_developers_monthly,2024-10-01,15
+LimeChain,GITHUB_active_developers_monthly,2024-03-01,11
+CryptoSmartNow,GITHUB_active_developers_monthly,2024-06-01,2
+theblokc,GITHUB_active_developers_monthly,2023-12-01,1
+dsrvlabs,GITHUB_active_developers_monthly,2023-11-01,4
+dsrvlabs,GITHUB_active_developers_monthly,2023-05-01,10
+dsrvlabs,GITHUB_active_developers_monthly,2023-10-01,8
+Altlayer,GITHUB_active_developers_monthly,2022-02-01,1
+Altlayer,GITHUB_active_developers_monthly,2024-06-01,7
+Altlayer,GITHUB_active_developers_monthly,2023-04-01,4
+Altlayer,GITHUB_active_developers_monthly,2023-01-01,4
+Blockscout,GITHUB_active_developers_monthly,2023-12-01,15
+Fluidity Money,GITHUB_active_developers_monthly,2024-01-01,2
+Lit Protocol,GITHUB_active_developers_monthly,2023-11-01,8
+Lit Protocol,GITHUB_active_developers_monthly,2022-01-01,3
+Lit Protocol,GITHUB_active_developers_monthly,2022-04-01,3
+Offchain Labs,GITHUB_active_developers_monthly,2023-03-01,16
+SeaBrick by Kelp Island,GITHUB_active_developers_monthly,2024-08-01,1
+LimeChain,GITHUB_active_developers_monthly,2024-11-01,12
+LimeChain,GITHUB_active_developers_monthly,2025-04-01,12
+LimeChain,GITHUB_active_developers_monthly,2024-05-01,15
+Solide Smart Contract Knowledge Hub,GITHUB_active_developers_monthly,2024-12-01,1
+Solide Smart Contract Knowledge Hub,GITHUB_active_developers_monthly,2024-02-01,1
+CryptoSmartNow,GITHUB_active_developers_monthly,2023-11-01,2
+Fracton Research,GITHUB_active_developers_monthly,2022-06-01,1
+theblokc,GITHUB_active_developers_monthly,2023-08-01,1
+dsrvlabs,GITHUB_active_developers_monthly,2024-12-01,5
+dsrvlabs,GITHUB_active_developers_monthly,2024-05-01,3
+Blockscout,GITHUB_active_developers_monthly,2023-08-01,9
+Fluidity Money,GITHUB_active_developers_monthly,2022-11-01,8
+Fluidity Money,GITHUB_active_developers_monthly,2025-01-01,5
+Offchain Labs,GITHUB_active_developers_monthly,2022-10-01,11
+Offchain Labs,GITHUB_active_developers_monthly,2024-06-01,30
+Offchain Labs,GITHUB_active_developers_monthly,2023-12-01,24
+LimeChain,GITHUB_active_developers_monthly,2023-01-01,5
+CryptoSmartNow,GITHUB_active_developers_monthly,2025-02-01,1
+CryptoSmartNow,GITHUB_active_developers_monthly,2023-02-01,4
+Fracton Research,GITHUB_active_developers_monthly,2022-03-01,1
+theblokc,GITHUB_active_developers_monthly,2023-07-01,1
+dsrvlabs,GITHUB_active_developers_monthly,2024-08-01,5
+Altlayer,GITHUB_active_developers_monthly,2022-08-01,4
+Altlayer,GITHUB_active_developers_monthly,2022-01-01,1
+Blockscout,GITHUB_active_developers_monthly,2024-10-01,18
+Blockscout,GITHUB_active_developers_monthly,2022-01-01,2
+Fluidity Money,GITHUB_active_developers_monthly,2025-02-01,4
+Lit Protocol,GITHUB_active_developers_monthly,2022-12-01,8
+Lit Protocol,GITHUB_active_developers_monthly,2022-06-01,4
+Lit Protocol,GITHUB_active_developers_monthly,2024-02-01,9
+Lit Protocol,GITHUB_active_developers_monthly,2024-01-01,10
+Offchain Labs,GITHUB_active_developers_monthly,2023-04-01,13
 SeaBrick by Kelp Island,GITHUB_active_developers_monthly,2024-10-01,2
 LimeChain,GITHUB_active_developers_monthly,2024-06-01,15
-LimeChain,GITHUB_active_developers_monthly,2024-02-01,13
-LimeChain,GITHUB_active_developers_monthly,2024-04-01,14
-Fracton Research,GITHUB_active_developers_monthly,2024-01-01,1
-CryptoSmartNow,GITHUB_active_developers_monthly,2024-07-01,2
-Solide Smart Contract Knowledge Hub,GITHUB_active_developers_monthly,2025-02-01,1
-Solide Smart Contract Knowledge Hub,GITHUB_active_developers_monthly,2024-08-01,1
-Solide Smart Contract Knowledge Hub,GITHUB_active_developers_monthly,2025-01-01,1
-Solide Smart Contract Knowledge Hub,GITHUB_active_developers_monthly,2025-03-01,1
-Solide Smart Contract Knowledge Hub,GITHUB_active_developers_monthly,2024-11-01,1
-Solide Smart Contract Knowledge Hub,GITHUB_active_developers_monthly,2024-05-01,2
-theblokc,GITHUB_active_developers_monthly,2024-03-01,1
+Solide Smart Contract Knowledge Hub,GITHUB_active_developers_monthly,2024-01-01,1
+Fracton Research,GITHUB_active_developers_monthly,2022-02-01,2
+dsrvlabs,GITHUB_active_developers_monthly,2025-01-01,3
+dsrvlabs,GITHUB_active_developers_monthly,2025-03-01,5
+dsrvlabs,GITHUB_active_developers_monthly,2025-04-01,6
+Altlayer,GITHUB_active_developers_monthly,2022-03-01,2
+Altlayer,GITHUB_active_developers_monthly,2025-03-01,6
+Altlayer,GITHUB_active_developers_monthly,2023-07-01,4
+Altlayer,GITHUB_active_developers_monthly,2022-05-01,3
+Fluidity Money,GITHUB_active_developers_monthly,2024-11-01,3
+Lit Protocol,GITHUB_active_developers_monthly,2024-09-01,13
+Lit Protocol,GITHUB_active_developers_monthly,2022-09-01,3
+Offchain Labs,GITHUB_active_developers_monthly,2022-06-01,10
+Offchain Labs,GITHUB_active_developers_monthly,2025-02-01,25
+Offchain Labs,GITHUB_active_developers_monthly,2024-01-01,27
+Offchain Labs,GITHUB_active_developers_monthly,2024-02-01,26
+LimeChain,GITHUB_active_developers_monthly,2024-09-01,12
+LimeChain,GITHUB_active_developers_monthly,2022-03-01,15
+LimeChain,GITHUB_active_developers_monthly,2022-10-01,4
+LimeChain,GITHUB_active_developers_monthly,2023-05-01,6
+CryptoSmartNow,GITHUB_active_developers_monthly,2023-03-01,4
 theblokc,GITHUB_active_developers_monthly,2024-07-01,2
 dsrvlabs,GITHUB_active_developers_monthly,2024-02-01,3
-dsrvlabs,GITHUB_active_developers_monthly,2024-11-01,10
-Altlayer,GITHUB_active_developers_monthly,2025-02-01,3
-Altlayer,GITHUB_active_developers_monthly,2024-03-01,6
-Altlayer,GITHUB_active_developers_monthly,2024-01-01,7
 Altlayer,GITHUB_active_developers_monthly,2024-02-01,4
 Altlayer,GITHUB_active_developers_monthly,2024-05-01,5
 Blockscout,GITHUB_active_developers_monthly,2025-01-01,22
-Blockscout,GITHUB_active_developers_monthly,2024-12-01,20
-Blockscout,GITHUB_active_developers_monthly,2024-09-01,17
-Fluidity Money,GITHUB_active_developers_monthly,2024-03-01,2
-Fluidity Money,GITHUB_active_developers_monthly,2024-08-01,3
-Fluidity Money,GITHUB_active_developers_monthly,2024-07-01,3
-Fluidity Money,GITHUB_active_developers_monthly,2025-03-01,4
-Fluidity Money,GITHUB_active_developers_monthly,2024-12-01,3
-Lit Protocol,GITHUB_active_developers_monthly,2025-02-01,10
-Lit Protocol,GITHUB_active_developers_monthly,2024-08-01,16
-Lit Protocol,GITHUB_active_developers_monthly,2024-12-01,11
-Lit Protocol,GITHUB_active_developers_monthly,2024-10-01,13
-Lit Protocol,GITHUB_active_developers_monthly,2024-04-01,13
+Blockscout,GITHUB_active_developers_monthly,2022-08-01,8
+Lit Protocol,GITHUB_active_developers_monthly,2022-03-01,3
 Offchain Labs,GITHUB_active_developers_monthly,2024-03-01,25
+Offchain Labs,GITHUB_active_developers_monthly,2023-02-01,17
 Offchain Labs,GITHUB_active_developers_monthly,2024-08-01,26
-Offchain Labs,GITHUB_active_developers_monthly,2025-01-01,25
-Offchain Labs,GITHUB_active_developers_monthly,2024-12-01,27
-Offchain Labs,GITHUB_active_developers_monthly,2024-11-01,19
+Offchain Labs,GITHUB_active_developers_monthly,2022-02-01,7
+Offchain Labs,GITHUB_active_developers_monthly,2022-09-01,12
 SeaBrick by Kelp Island,GITHUB_active_developers_monthly,2024-11-01,5
-LimeChain,GITHUB_active_developers_monthly,2024-03-01,11
 LimeChain,GITHUB_active_developers_monthly,2024-01-01,14
-LimeChain,GITHUB_active_developers_monthly,2024-07-01,10
-LimeChain,GITHUB_active_developers_monthly,2024-10-01,15
+LimeChain,GITHUB_active_developers_monthly,2022-02-01,7
