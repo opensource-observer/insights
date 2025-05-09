@@ -1,0 +1,52 @@
+name: Generate Cursor Rule for Tutorials
+
+on:
+  push:
+    paths:
+      - 'tutorials/**.ipynb'
+      - 'tutorials/**.md'
+
+jobs:
+  generate_rule:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Identify new or changed tutorials
+      id: find_tutorials
+      run: |
+        # Extract added/modified tutorial files
+        files=$(jq -r \
+          '(.commits[] | (.added + .modified)[]) \
+           | select(test("tutorials/.*\\.(ipynb|md)$"))' \
+          $GITHUB_EVENT_PATH \
+        )
+        # Derive slug (filename without path or extension)
+        slugs=$(printf "%s\n" "$files" \
+                 | sed -E 's#.*/##; s/\.[^.]+$//' \
+                 | paste -sd " ")
+        echo "TUTORIAL_FILES=$files" >> $GITHUB_ENV
+        echo "TUTORIAL_SLUGS=$slugs" >> $GITHUB_ENV
+
+    - name: Install dependencies
+      run: pip install dotenv pydantic nbformat google-genai
+
+    - name: Generate .mdc Rule
+      env:
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      run: |
+        python .github/scripts/generate_rule_from_tutorial.py \
+          --paths $TUTORIAL_FILES \
+          --slugs $TUTORIAL_SLUGS
+
+    - name: Commit generated rules
+      run: |
+        git config --global user.name "github-actions"
+        git config --global user.email "github-actions@github.com"
+        git add .cursor/rules/tutorial-*.mdc
+        git commit -m "Auto-generate tutorial rules" || echo "No changes"
+        git push
+
+
