@@ -1,0 +1,158 @@
+---
+description: Base knowledge & troubleshooting workflows for writing **pyoso** queries against the OSO BigQuery warehouse
+alwaysApply: true          # Inject this context automatically in the insights repo
+globs: []                  # No specific file triggers required
+
+---
+
+## 1 – Pyoso Quick-Start
+
+```python
+from dotenv import load_dotenv
+import os, pandas as pd
+from pyoso import Client
+
+load_dotenv()
+client = Client(api_key=os.environ["OSO_API_KEY"])
+
+df = client.to_pandas("""
+    SELECT *
+    FROM oso_dataset.core_mart_events_v1
+    LIMIT 10
+""")
+````
+
+* Get a **free API key** → [https://www.opensource.observer/settings/api](https://www.opensource.observer/settings/api)
+* `client.to_pandas("<BQ-SQL>")` returns a **pandas.DataFrame**.
+
+---
+
+## 2 – Warehouse at a Glance
+
+| Model group    | Purpose                       | Examples (v1 = stable)                              |
+| -------------- | ----------------------------- | --------------------------------------------------- |
+| **Directory**  | Entity lookup & relationships | `mart_projects_v1`, `mart_artifacts_v1`             |
+| **Metrics**    | Pre-computed metric values    | `mart_metrics_summary_v1`                           |
+| **Timeseries** | Historical metric snapshots   | `mart_metrics_timeseries_v1`, `mart_events_daily_*` |
+
+> Stable, production-ready models end in `_v1`; work-in-progress prototypes end in `_v0`.
+
+---
+
+### Key Identifiers & Naming Pattern
+
+`<SOURCE>_<namespace>_<name>` → *hashed ID*
+
+| Field               | Sample values                         |
+| ------------------- | ------------------------------------- |
+| `collection_source` | `OSS_DIRECTORY`, `OP_ATLAS`           |
+| `project_source`    | `OSS_DIRECTORY`                       |
+| `artifact_source`   | `GITHUB`, `BASE`, `DEFILLAMA`         |
+| `metric_source`     | `OSO`                                 |
+| `metric_name`       | `GITHUB_opened_pull_requests_monthly` |
+
+Use these IDs for **joins** (`collection_id`, `project_id`, `artifact_id`, `metric_id`).
+
+---
+
+## 3 – Event Sources & Common Metrics
+
+| Source              | Raw event examples                                    | Typical derived metrics               |
+| ------------------- | ----------------------------------------------------- | ------------------------------------- |
+| **GITHUB**          | `COMMIT_CODE`, `PULL_REQUEST_MERGED`                  | commit frequency, PR merge rate       |
+| **OPTIMISM / BASE** | `CONTRACT_INVOCATION`, `CONTRACT_INTERNAL_INVOCATION` | active addresses, gas fees            |
+| **4337**            | `CONTRACT_INVOCATION_VIA_USEROP`                      | user-op volume, paymaster usage       |
+| **FUNDING**         | `GRANT_RECEIVED_USD`, `DEBIT`                         | total funding, sustainability ratio   |
+| **DEPS\_DEV**       | `ADD_DEPENDENCY`, `DOWNLOADS`                         | dependency growth, package popularity |
+
+Metric tables follow the pattern
+`<SOURCE>_<event_or_agg>_<period>` (e.g. `GITHUB_stars_over_all_time`).
+
+---
+
+## 4 – Canonical Join Patterns
+
+```sql
+    -- Project-level metrics
+    FROM mart_metrics_timeseries_v1 m
+    JOIN mart_projects_v1 p USING (project_id);
+
+    -- Artifact-level metrics
+    FROM mart_metrics_timeseries_v1 m
+    JOIN mart_artifacts_v1 a USING (artifact_id);
+```
+
+*Date filters*: use `as_of_date` (timeseries) or `event_date` (raw events).
+
+---
+
+## 5 – Example Query Template
+
+```sql
+WITH commits AS (
+  SELECT project_id,
+         metric_value AS commit_cnt,
+         as_of_date
+  FROM   mart_metrics_timeseries_v1
+  WHERE  metric_name = 'GITHUB_commit_code_daily'
+    AND  as_of_date BETWEEN @start AND @end
+)
+SELECT p.project_name,
+       SUM(commit_cnt) AS total_commits
+FROM   commits c
+JOIN   mart_projects_v1 p USING (project_id)
+GROUP  BY 1
+ORDER  BY 2 DESC
+LIMIT  50;
+```
+
+---
+
+## 6 – Best Practices Checklist
+
+* **Start small**: add `LIMIT 100` while prototyping.
+* **Avoid `SELECT *`**—specify columns in production queries.
+* **Parameterize** filters (`@start`, `@end`) for reuse.
+* Join on **hashed IDs**, not names, to prevent duplicates.
+* Save outputs with meaningful filenames (`metric_trend_2025-Q1.csv`).
+
+---
+
+## 7 – Troubleshooting & Workflow Shortcuts  🚦
+
+1. **Table-Not-Found?**
+   *Immediately query* `models_v0` — it is the **catalog of every model** (tables & views). Use it as a fallback reference when you can’t locate a dataset.
+
+2. **Which time-series metrics exist?**
+   Look in `metrics_v0`. It enumerates **all available timeseries metric definitions**; grab the metric names you need, then pull data from `mart_metrics_timeseries_v1`.
+
+3. **Artifact naming looks weird?**
+   OSO uses a **semantic layer**: columns share the same naming pattern across tables, but the *meaning* depends on context (collection vs. project vs. artifact level).
+   → When users seem confused, **explain the hierarchy** and clarify that the IDs (not just names) guarantee uniqueness.
+
+4. **Aggregation hierarchy**
+   Nearly every metric or artifact can be viewed at **all three levels**:
+   *collection → project → artifact*.
+   Remember: **collections contain projects; projects contain artifacts**.
+
+5. **Default workflow**
+
+   * If a query keeps failing, verify the model path in `models_v0`.
+   * If you need metric names or periods, inspect `metrics_v0`.
+   * Use ID joins (`collection_id`, `project_id`, `artifact_id`) to roll metrics up or down the hierarchy.
+
+5. **Lost & constant errors?**
+   If the above shortcuts still leave you with errors, **stop and teach**:
+   *Summarize the relevant context from this rule for the user*—model groups, ID conventions, semantic layer, fallback datasets—so they can debug on their own. When the LLM cannot resolve an error, it **must at least return this explanatory context** rather than a silent failure.
+
+> **Default flow**
+> 1. If it's not an obvious or already know model, then validate model path via `models_v0`.
+> 2. If it's not an obvious or already know metric, then validate metric availability via `metrics_v0`.
+> 3. Check joins on IDs.
+> 4. If unresolved, explain context per point 5.
+
+> **Tip**: keep these shortcuts in mind to reduce back-and-forth when helping users debug their queries.
+
+---
+
+Need advanced guidance (ETL, ML, visualization)?  Load the relevant `tutorial-*.mdc` rule for a step-by-step workflow.

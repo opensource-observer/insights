@@ -1,0 +1,36 @@
+---
+description: Walk through the ForecastingTVL tutorial with your own data
+globs:
+  - "tutorials/data-science/ForecastingTVL.ipynb"
+alwaysApply: false
+---
+
+1. **Connect to PyOSO and grab data**
+   - Load the API key, instantiate a Client, and pull daily TVL data using a SQL query with specified protocol, chain, start date, and end date.
+
+2. **Explore the data**
+   - Explore the data and get familiar with its trends by plotting a line chart of the TVL data.
+
+3. **Model selection logic**
+   - Choose between SARIMA and Linear Regression based on the characteristics of the protocol and market trends. SARIMA is suitable when the protocol's past behavior is the sole driver, while Linear Regression is better when TVL closely follows overall market sentiment.
+
+4. **Forecast with SARIMA**
+   - Forecast TVL using the SARIMA model with configurable parameters like chunk_size, bootstrap_ratio, noise_std, and seasonality. Generate multiple scenarios to reflect the impact of parameter changes.
+
+5. **Compare SARIMA forecasts to reality**
+   - Compare the SARIMA forecasts to the actual TVL data over the forecasted period to evaluate the model's performance. Access and plot the actual TVL data to compare against historical TVL and each SARIMA variant.
+
+6. **Add market context with Linear Regression**
+   - Incorporate market context by using Linear Regression with 'optimism-bridge' on mainnet as the market proxy. Plot the market proxy data to understand its trends.
+
+7. **Forecast with Linear Regression**
+   - Forecast TVL using a recursive Linear Regression model with different parameter configurations for chunk size and noise. Compare the forecasts against the actual TVL data.
+
+8. **Key Observations**
+   - Summarize the key observations from the Linear Regression forecasts, focusing on noise amplification, chunk size trade-offs, and protocol vs. market performance.
+---
+
+**How to use this rule**
+
+This tutorial is intended as a *manual* workflow. Replace all `{placeholders}` with your own values.
+If a step is not applicable to your problem, you may skip it—just make sure to tell the user *which* step you are omitting and **why**.
