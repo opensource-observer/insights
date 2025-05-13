@@ -1,0 +1,7 @@
+{
+    "output_dir": "/Users/cerv1/Dropbox/Kariba/Github/insights/experiments/devtooling_labels/output",
+    "test_mode": false,
+    "test_mode_limit": 30,
+    "batch_size_summaries": 10,
+    "batch_size_categorization": 10
+}
