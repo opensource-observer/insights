@@ -15,7 +15,7 @@ def render_overview():
     - 👩‍💻 **Developer Ecosystem Health**: Uncover how developer activity is shaping the future of Stylus and Arbitrum.
     - 📈 **Stylus Sprint Activity Analysis**: Dive into engagement trends and surface signals of momentum across projects.
     - 🔍 **Project Deep Dive**: Zoom in on any project to decode its development velocity and community dynamics.
-    - ⚠️ **Risk Assessment**: Spot early warning signs in project health.
+    - 🎯 **Project Adoption & Dependencies**: Explore hierarchical relationship between project owners, their packages, and the projects that depend on them.
     - 🕸️ **Network Analysis**: Trace the growing influence of Stylus through a web of SDK dependencies.
     """)
 

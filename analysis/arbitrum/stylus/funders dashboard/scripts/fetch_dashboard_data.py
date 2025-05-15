@@ -93,7 +93,7 @@ def fetch_dependencies_by_project(client):
 
     # First, get projects dependent on grantees in Stylus Sprint and then get no. of active developers for each project.
     query = f"""
-    WITH sbom_links AS (
+    -- WITH sbom_links AS (
         SELECT distinct
             sboms.from_artifact_namespace,
             sboms.from_artifact_name,
@@ -107,30 +107,30 @@ def fetch_dependencies_by_project(client):
             ON sboms.to_package_artifact_name = po.package_artifact_name
             AND sboms.to_package_artifact_source = po.package_artifact_source
         WHERE pc.collection_name = 'arb-stylus'
-    )
+    -- )
 
-    SELECT  
-        ap.artifact_name,
-        ap.project_name,
-        m.metric_name,
-        ts.sample_date,
-        ts.amount,
-        sb.from_artifact_namespace,
-        sb.from_artifact_name,
-        sb.to_package_artifact_name,
-        sb.to_package_artifact_source,
-        sb.package_owner_artifact_namespace
-    FROM sbom_links sb
-    JOIN artifacts_by_project_v1 ap
-        ON sb.from_artifact_namespace = ap.artifact_namespace
-        AND sb.from_artifact_name = ap.artifact_name
-    JOIN timeseries_metrics_by_artifact_v0 ts
-        ON ts.artifact_id = ap.artifact_id
-    JOIN metrics_v0 m
-        ON m.metric_id = ts.metric_id
-    WHERE ap.artifact_source = 'GITHUB'
-      AND m.metric_name = 'GITHUB_active_developers_monthly'
-      AND ts.sample_date BETWEEN DATE '{first_day_of_prev_month}' AND DATE '{last_day_of_prev_month}'
+    --SELECT  
+    --    ap.artifact_name,
+    --    ap.project_name,
+    --    m.metric_name,
+    --    ts.sample_date,
+    --    ts.amount,
+    --    sb.from_artifact_namespace,
+    --    sb.from_artifact_name,
+    --    sb.to_package_artifact_name,
+    --    sb.to_package_artifact_source,
+    --    sb.package_owner_artifact_namespace
+    --FROM sbom_links sb
+    --LEFT JOIN artifacts_by_project_v1 ap
+    --    ON sb.from_artifact_namespace = ap.artifact_namespace
+    --    AND sb.from_artifact_name = ap.artifact_name
+    --LEFT JOIN timeseries_metrics_by_artifact_v0 ts
+    --    ON ts.artifact_id = ap.artifact_id
+    --LEFT JOIN metrics_v0 m
+    --    ON m.metric_id = ts.metric_id
+    -- WHERE (ap.artifact_source = 'GITHUB' OR ap.artifact_source IS NULL)
+    --   AND (m.metric_name = 'GITHUB_active_developers_monthly' OR m.metric_name IS NULL)
+    --   AND (ts.sample_date BETWEEN DATE '{first_day_of_prev_month}' AND DATE '{last_day_of_prev_month}' OR ts.sample_date IS NULL)
     """
     return client.to_pandas(query)
 
@@ -189,6 +189,7 @@ def fetch_stylus_deps_active_devs(client):
         AND sboms.to_package_artifact_source = package_owners.package_artifact_source
       WHERE package_owners.package_owner_artifact_namespace = 'offchainlabs'
         AND package_owners.package_owner_artifact_name = 'stylus-sdk-rs'
+        AND sboms.from_artifact_namespace != 'offchainlabs'  -- Exclude dependencies within Offchain Labs
       )
        SELECT  distinct p.display_name as display_name,
                 m.metric_name as metric_name,

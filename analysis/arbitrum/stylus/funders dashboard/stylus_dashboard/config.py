@@ -43,5 +43,6 @@ DATA_PATHS = {
     "dependencies": "./data/stylus_dependencies_active_dev_monthly.csv",
     "sdk_dependencies": "./data/stylus-sdk-rs-dependencies.csv",
     "active_devs_by_repo": "./data/stylus_github_metrics_repo.csv",
-    "downstream_dependencies": "./data/project_dependencies.csv"
+    "downstream_dependencies": "./data/project_dependencies.csv",
+    "project_attributes": "./data/project_attributes.csv"
 } 

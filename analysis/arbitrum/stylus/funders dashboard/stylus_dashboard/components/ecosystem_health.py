@@ -24,7 +24,7 @@ def render_ecosystem_health():
         "Select Time Window",
         options=list(TIME_WINDOWS.keys()),
         horizontal=True,
-        index=4  # Default to 36 months
+        index=1  # Default to 36 months
     )
     
     # Load data from all three sources
@@ -169,6 +169,7 @@ def render_ecosystem_health():
         st.markdown("**Arbitrum Ecosystem**")
         if arb_projects is not None:
             display_df = arb_projects.copy()
+            display_df['Avg Devs/Month'] = display_df['Avg Devs/Month'].map('{:.1f}'.format)
             display_df['Monthly Growth %'] = display_df['Monthly Growth %'].map('{:.1f}%'.format)
             styled_df = display_df.style.applymap(style_growth, subset=['Monthly Growth %'])
             st.dataframe(styled_df, hide_index=True)
@@ -179,6 +180,7 @@ def render_ecosystem_health():
         st.markdown("**Stylus Grantees**")
         if stylus_projects is not None:
             display_df = stylus_projects.copy()
+            display_df['Avg Devs/Month'] = display_df['Avg Devs/Month'].map('{:.1f}'.format)
             display_df['Monthly Growth %'] = display_df['Monthly Growth %'].map('{:.1f}%'.format)
             styled_df = display_df.style.applymap(style_growth, subset=['Monthly Growth %'])
             st.dataframe(styled_df, hide_index=True)
@@ -189,6 +191,7 @@ def render_ecosystem_health():
         st.markdown("**Stylus SDK Dependents**")
         if deps_projects is not None:
             display_df = deps_projects.copy()
+            display_df['Avg Devs/Month'] = display_df['Avg Devs/Month'].map('{:.1f}'.format)
             display_df['Monthly Growth %'] = display_df['Monthly Growth %'].map('{:.1f}%'.format)
             styled_df = display_df.style.applymap(style_growth, subset=['Monthly Growth %'])
             st.dataframe(styled_df, hide_index=True)

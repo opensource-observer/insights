@@ -6,6 +6,7 @@ from .components.activity_analysis import render_activity_analysis
 from .components.project_deep_dive import render_project_deep_dive
 from .components.risk_assessment import render_risk_assessment
 from .components.network_analysis import render_network_analysis
+from .components.grantee_impact import render_grantee_impact
 
 def main():
     # Set page configuration
@@ -28,12 +29,12 @@ def main():
     """)
 
     # Create tabs
-    tab0, tab1, tab2, tab3, tab5 = st.tabs([
+    tab0, tab1, tab2, tab3, tab4, tab5 = st.tabs([
         "Overview",
         "Developer Ecosystem Health",
         "Stylus Sprint Activity Analysis",
         "Project Deep Dive",
-        #"Risk Assessment",
+        "Project Adoption & Dependencies",
         "Network Analysis"
     ])
 
@@ -50,9 +51,8 @@ def main():
     with tab3:
         render_project_deep_dive()
 
-    # Risk Assessment is disabled for now
-    #with tab4:
-    #    render_risk_assessment()
+    with tab4:
+        render_grantee_impact()
 
     with tab5:
         render_network_analysis()
