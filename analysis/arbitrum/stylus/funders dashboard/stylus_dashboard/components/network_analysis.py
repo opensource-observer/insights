@@ -9,7 +9,7 @@ def render_network_analysis():
     st.header("Dependency Network Analysis")
     st.markdown("""
     ### Stylus SDK Dependency Flow
-    This analysis tracks the network of dependencies for projects using the Stylus SDK for Rust. By examining package relationships and ownership patterns, we can understand how the Stylus ecosystem is growing and evolving. 
+    This visualization maps the relationship between Stylus SDK users and their external dependencies. The Sankey diagram shows how package owners (on the left) are connected to repositories that use their packages (on the right). This helps us understand which external packages are most commonly used alongside the Stylus SDK and identify key package maintainers in the ecosystem. 
     """)
 
     # Load dependency data
