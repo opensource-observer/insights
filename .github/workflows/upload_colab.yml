@@ -130,24 +130,17 @@ jobs:
     - name: Open / update pull request in oso
       if: steps.list.outputs.notebooks != ''
       env:
-        GH_TOKEN: ${{ secrets.TARGET_PAT }}
+        GH_TOKEN: ${{ secrets.TARGET_PAT }}   # PAT with write access to oso
       run: |
         set -euo pipefail
         BRANCH="auto/tutorial-mdx-${{ github.run_id }}"
         OSO="opensource-observer/oso"
 
-        echo "authenticating gh"
-        gh auth login --with-token <<<"$GH_TOKEN"
-
-        echo "Creating or updating PR"
+        echo "📝 Creating (or updating) PR in $OSO"
         gh pr create \
           --repo "$OSO" \
           --head "$BRANCH" \
           --base main \
           --title "Add MDX tutorial(s) - run ${{ github.run_id }}" \
           --body "Auto-generated MDX files created from notebooks merged into **${{ github.repository }}**.\n\nPlease review; oso-repo CI must pass before merge." \
-          --fill || true   # exits 1 if PR already exists
-
-        # If the PR exists, gh pr create exits with status 1.
-        # Optionally you can 'gh pr edit' here to append to the body, etc.
-
+          --fill || true   # non-zero if PR already exists – that's fine
