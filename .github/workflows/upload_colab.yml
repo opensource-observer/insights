@@ -13,9 +13,10 @@ permissions:
 jobs:
   process:
     runs-on: ubuntu-latest
+    environment: deploy
     env:
       GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
-      COLAB_FOLDER_ID:    ${{ secrets.COLAB_FOLDER_ID }}
+      COLAB_FOLDER_ID:    ${{ vars.COLAB_FOLDER_ID }}
 
     steps:
     - uses: actions/checkout@v4
@@ -45,7 +46,7 @@ jobs:
         mkdir -p mdx_build
         while read -r NB; do
           [ -z "$NB" ] && continue
-          echo "▶ Processing $NB"
+          echo "Processing $NB"
 
           BASENAME="$(basename "$NB" .ipynb)"
 
