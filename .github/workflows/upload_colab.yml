@@ -38,7 +38,7 @@ jobs:
     - name: Find notebooks changed in this push
       id: list
       run: |
-        NOTEBOOKS=$(git diff --name-only --diff-filter=AM \
+        NOTEBOOKS=$(git diff -M --name-only --diff-filter=AMR \
           ${{ github.event.before }} ${{ github.sha }} \
           | grep '\.ipynb$' || true)
         echo "notebooks<<EOF" >> $GITHUB_OUTPUT
