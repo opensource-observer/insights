@@ -65,8 +65,7 @@ jobs:
 
           # Upload to Drive → Colab link
           LINK=$(python scripts/upload_to_drive.py "$NB" \
-                  --folder "$COLAB_FOLDER_ID" \
-                  --drive  "$COLAB_DRIVE_ID")
+                  --folder "$COLAB_FOLDER_ID")
 
           # ipynb → markdown
           jupyter nbconvert "$NB" --to markdown --output "$BASENAME"
