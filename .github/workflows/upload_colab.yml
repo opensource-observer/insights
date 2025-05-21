@@ -2,16 +2,19 @@ name: Upload Notebook → Colab → MDX → PR to oso repo
 
 on:
   push:
-    branches: [main]                       # only after PRs merge to main
+    branches:
+      - main                      # run only after PRs merge to main
+    tags-ignore:
+      - "**"                      # never fire for tag pushes
     paths:
-      - "tutorials/data-science/**/*.ipynb"  # notebooks to watch
+      - "tutorials/data-science/**/*.ipynb"
 
 permissions:
   contents: write
   pull-requests: write
 
 jobs:
-  process:
+  send-pull-requests:
     runs-on: ubuntu-latest
     environment: deploy
     env:
@@ -19,11 +22,14 @@ jobs:
       COLAB_FOLDER_ID:    ${{ vars.COLAB_FOLDER_ID }}
       COLAB_DRIVE_ID:     ${{ vars.COLAB_DRIVE_ID }}
       GEMINI_API_KEY:     ${{ secrets.GEMINI_API_KEY }}
-
+      TARGET_PAT:         ${{ secrets.TARGET_PAT }}
 
     steps:
-    - uses: actions/checkout@v4
-      with: { fetch-depth: 0 }
+    # Full-depth checkout so tags & history are present
+    - name: Checkout repo
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0            # important for tag / diff look-ups
 
     - uses: actions/setup-python@v5
       with: { python-version: "3.10" }
@@ -35,26 +41,26 @@ jobs:
                    google-auth google-auth-httplib2 google-auth-oauthlib \
                    google-genai
 
-    #  list notebooks modified in this push
+    # List .ipynb files touched in this push
     - name: Find notebooks changed in this push
       id: list
       run: |
         NOTEBOOKS=$(git diff -M --name-only --diff-filter=AMR \
           "${{ github.event.before }}" "${{ github.sha }}" \
           | grep '\.ipynb$' || true)
-    
-        echo "notebooks<<EOF"   >> "$GITHUB_OUTPUT"
-        echo "$NOTEBOOKS"        >> "$GITHUB_OUTPUT"
-        echo "EOF"               >> "$GITHUB_OUTPUT"
-    
+
+        echo "notebooks<<EOF" >> "$GITHUB_OUTPUT"
+        echo "$NOTEBOOKS" >> "$GITHUB_OUTPUT"
+        echo "EOF" >> "$GITHUB_OUTPUT"
+
         if [ -z "$NOTEBOOKS" ]; then
           echo "No new or modified .ipynb files; skipping workflow."
           exit 0
         fi
 
-    # upload each notebook to colab + build MDX files 
+    # Upload each notebook → Colab & create .mdx
     - name: Upload & convert to MDX
-      if: steps.list.outputs.notebooks != '' 
+      if: steps.list.outputs.notebooks != ''
       run: |
         mkdir -p mdx_build
         while read -r NB; do
@@ -63,84 +69,51 @@ jobs:
 
           BASENAME="$(basename "$NB" .ipynb)"
 
-          # Upload to Drive → Colab link
+          # Upload to Drive ⇒ Colab link
           LINK=$(python scripts/upload_to_drive.py "$NB" \
                   --folder "$COLAB_FOLDER_ID")
 
-          # ipynb → markdown
+          # ipynb ⇒ markdown
           jupyter nbconvert "$NB" --to markdown --output "$BASENAME"
 
           MARKDOWN_PATH="$(dirname "$NB")/$BASENAME.md"
           MDX_OUT="mdx_build/${BASENAME}.mdx"
 
-          printf '<a href="%s" target="_blank">Open in Colab</a>\n\n' "$LINK" >  "$MDX_OUT"
+          printf '<a href="%s" target="_blank">Open in Colab</a>\n\n' "$LINK" > "$MDX_OUT"
           cat "$MARKDOWN_PATH" >> "$MDX_OUT"
         done <<< "${{ steps.list.outputs.notebooks }}"
 
-        # Stage into the folder structure that must exist in oso repo
+        # Stage for oso repo layout
         mkdir -p mdx_build/apps/docs/docs/tutorials
         mv mdx_build/*.mdx mdx_build/apps/docs/docs/tutorials/
 
-    # grab the current index.md from oso repo
+    # Update tutorials index with Gemini
     - name: Update tutorials index with Gemini
       if: steps.list.outputs.notebooks != ''
-      env:
-        TARGET_PAT: ${{ secrets.TARGET_PAT }}
       run: python scripts/update_tutorial_index.py
 
-    # clone oso, copy files, push branch
-    - name: Push MDX files to oso repo
+    # Checkout the oso docs repo (as a workspace sub-dir)
+    - name: Checkout oso repo
       if: steps.list.outputs.notebooks != ''
-      env:
-        PAT: ${{ secrets.TARGET_PAT }}
-      run: |
-        set -euo pipefail
-        BRANCH="auto/tutorial-mdx-${{ github.run_id }}"
-        OSO="opensource-observer/oso"
+      uses: actions/checkout@v4
+      with:
+        repository: opensource-observer/oso          # target repo
+        token: ${{ secrets.TARGET_PAT }}             # PAT must write to oso
+        path:   oso                                  # work in ./oso
+        fetch-depth: 0                               # keep full history
 
-        echo "Cloning $OSO"
-        git clone --depth=1 --branch main "https://${GITHUB_ACTOR}:${PAT}@github.com/${OSO}.git" oso-work
-        cd oso-work
-
-        git config user.email "github-actions@github.com"
-        git config user.name  "github-actions"
-
-        echo "Creating/updating branch $BRANCH"
-        if git rev-parse --verify "origin/$BRANCH" >/dev/null 2>&1; then
-          git checkout "$BRANCH"
-        else
-          git checkout -b "$BRANCH"
-        fi
-
-        echo "Copying MDX files into repo"
-        rsync -a --delete \
-          ../mdx_build/apps/docs/docs/tutorials/ \
-          apps/docs/docs/tutorials/
-
-        echo "Committing changes (if any)"
-        if ! git diff --quiet; then
-          git add apps/docs/docs/tutorials/
-          git commit -m "docs: add auto-generated MDX tutorial(s)"
-          git push --set-upstream origin "$BRANCH"
-        else
-          echo "No diff - nothing to commit."
-        fi
-
-    # open or update PR 
-    - name: Open / update pull request in oso
+    # Copy MDX, then auto-commit & open/update PR
+    - name: Create PR in oso with new tutorials
       if: steps.list.outputs.notebooks != ''
-      env:
-        GH_TOKEN: ${{ secrets.TARGET_PAT }}   # PAT with write access to oso
-      run: |
-        set -euo pipefail
-        BRANCH="auto/tutorial-mdx-${{ github.run_id }}"
-        OSO="opensource-observer/oso"
-
-        echo "📝 Creating (or updating) PR in $OSO"
-        gh pr create \
-          --repo "$OSO" \
-          --head "$BRANCH" \
-          --base main \
-          --title "Add MDX tutorial(s) - run ${{ github.run_id }}" \
-          --body "Auto-generated MDX files created from notebooks merged into **${{ github.repository }}**.\n\nPlease review; oso-repo CI must pass before merge." \
-          --fill || true   # non-zero if PR already exists – that's fine
+      uses: peter-evans/create-pull-request@v5       # or latest tag
+      with:
+        token: ${{ secrets.TARGET_PAT }}
+        commit-message: |
+          docs: add auto-generated MDX tutorial(s)
+        title: "Add MDX tutorial(s) - run ${{ github.run_id }}"
+        body: "Auto-generated MDX files from **${{ github.repository }}**."
+        branch: auto/tutorial-mdx-${{ github.run_id }}
+        base: main
+        path: oso                            # <-- run inside ./oso
+        add-paths: |
+          apps/docs/docs/tutorials/*.mdx # files to track
