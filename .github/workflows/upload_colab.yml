@@ -33,7 +33,7 @@ jobs:
         pip install nbconvert \
                    google-api-python-client \
                    google-auth google-auth-httplib2 google-auth-oauthlib \
-                   google-generativeai
+                   google-genai
 
     #  list notebooks modified in this push
     - name: Find notebooks changed in this push
