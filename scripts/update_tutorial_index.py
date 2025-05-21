@@ -73,7 +73,8 @@ def main():
         if link in existing_links:
             continue
         bullet = execute_query(client, link, existing_titles)
-        new_bullets.append(bullet)
+        if bullet:
+            new_bullets.append(bullet)
 
     if not new_bullets:
         print("No new bullets to insert.")
@@ -89,6 +90,7 @@ def main():
     if insertion_point is None:
         insertion_point = len(lines)
 
+    print(lines[:insertion_point], new_bullets, lines[insertion_point:])
     updated_text = "\n".join(lines[:insertion_point] +
                              new_bullets +
                              lines[insertion_point:])
