@@ -39,17 +39,17 @@ jobs:
       id: list
       run: |
         NOTEBOOKS=$(git diff -M --name-only --diff-filter=AMR \
-          ${{ github.event.before }} ${{ github.sha }} \
+          "${{ github.event.before }}" "${{ github.sha }}" \
           | grep '\.ipynb$' || true)
-        echo "notebooks<<EOF" >> $GITHUB_OUTPUT
-        echo "$NOTEBOOKS"        >> $GITHUB_OUTPUT
-        echo "EOF"               >> $GITHUB_OUTPUT
     
-        if [ -z "${{ steps.list.outputs.notebooks }}" ]; then
+        echo "notebooks<<EOF"   >> "$GITHUB_OUTPUT"
+        echo "$NOTEBOOKS"        >> "$GITHUB_OUTPUT"
+        echo "EOF"               >> "$GITHUB_OUTPUT"
+    
+        if [ -z "$NOTEBOOKS" ]; then
           echo "No new or modified .ipynb files; skipping workflow."
           exit 0
         fi
-
 
     # upload each notebook to colab + build MDX files 
     - name: Upload & convert to MDX
