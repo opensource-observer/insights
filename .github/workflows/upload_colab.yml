@@ -13,9 +13,11 @@ permissions:
 jobs:
   process:
     runs-on: ubuntu-latest
+    environment: deploy
     env:
       GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
-      COLAB_FOLDER_ID:    ${{ secrets.COLAB_FOLDER_ID }}
+      COLAB_FOLDER_ID:    ${{ vars.COLAB_FOLDER_ID }}
+      GEMINI_API_KEY:     ${{ secrets.GEMINI_API_KEY }}
 
     steps:
     - uses: actions/checkout@v4
@@ -28,16 +30,19 @@ jobs:
       run: |
         pip install nbconvert \
                    google-api-python-client \
-                   google-auth google-auth-httplib2 google-auth-oauthlib
+                   google-auth google-auth-httplib2 google-auth-oauthlib \
+                   google-genai
 
     #  list notebooks modified in this push
     - name: Find notebooks changed in this push
       id: list
       run: |
-        NOTEBOOKS=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '\.ipynb$' || true)
+        NOTEBOOKS=$(git diff --name-only --diff-filter=AM \
+          ${{ github.event.before }} ${{ github.sha }} \
+          | grep '\.ipynb$' || true)
         echo "notebooks<<EOF" >> $GITHUB_OUTPUT
-        echo "$NOTEBOOKS"          >> $GITHUB_OUTPUT
-        echo "EOF"                 >> $GITHUB_OUTPUT
+        echo "$NOTEBOOKS"        >> $GITHUB_OUTPUT
+        echo "EOF"               >> $GITHUB_OUTPUT
 
     # upload each notebook to colab + build MDX files 
     - name: Upload & convert to MDX
@@ -45,7 +50,7 @@ jobs:
         mkdir -p mdx_build
         while read -r NB; do
           [ -z "$NB" ] && continue
-          echo "▶ Processing $NB"
+          echo "Processing $NB"
 
           BASENAME="$(basename "$NB" .ipynb)"
 
@@ -63,15 +68,22 @@ jobs:
         done <<< "${{ steps.list.outputs.notebooks }}"
 
         # Stage into the folder structure that must exist in oso repo
-        mkdir -p mdx_build/app/docs/docs/tutorials
-        mv mdx_build/*.mdx mdx_build/app/docs/docs/tutorials/
+        mkdir -p mdx_build/apps/docs/docs/tutorials
+        mv mdx_build/*.mdx mdx_build/apps/docs/docs/tutorials/
+
+    # grab the current index.md from oso repo 
+    - name: Update tutorials index with Gemini
+      env:
+        TARGET_PAT: ${{ secrets.TARGET_PAT }}      # passed to the script
+      run: |
+        python scripts/update_tutorial_index.py
 
     # open a PR in the oso repo with those MDX files 
     - name: Open PR in oso repo
       uses: peter-evans/create-pull-request@v7
       with:
         token:      ${{ secrets.TARGET_PAT }}      # PAT w/ push rights to the oso repo
-        repository: oso/oso             
+        repository: opensource-observer/oso             
         base:       main                          # PR base branch in oso
         branch:     auto/tutorial-mdx-${{ github.run_id }}
         commit-message: "docs: add auto-generated MDX tutorial(s)"
@@ -81,6 +93,7 @@ jobs:
           Please review; oso-repo CI must pass before merge.
         path: mdx_build                           # directory containing the staged change set
         add-paths: |
-          app/docs/docs/tutorials/*.mdx           # the actual files to stage/commit
+          apps/docs/docs/tutorials/*.mdx           # the actual files to stage/commit
+          apps/docs/docs/tutorials/index.md
         author-name:  github-actions
         author-email: github-actions@github.com
