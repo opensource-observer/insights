@@ -94,7 +94,16 @@ jobs:
       if: steps.list.outputs.notebooks != ''
       uses: peter-evans/create-pull-request@v7
       with:
-        token:  ${{ secrets.TARGET_PAT }}
+        # where to push & merge 
+        push-to-fork: opensource-observer/oso    
+        base: main                               
+
+        # what files to commit 
+        path: mdx_build                   
+
+        add-paths: |
+          apps/docs/docs/tutorials/*.mdx
+          apps/docs/docs/tutorials/index.md
         branch: auto/tutorial-mdx-${{ github.run_id }}
         commit-message: "docs: add auto-generated MDX tutorial(s)"
         author: "github-actions <github-actions@github.com>"
@@ -102,9 +111,7 @@ jobs:
         body: |
           Auto-generated MDX files created from notebooks merged into **${{ github.repository }}**.
           Please review; oso-repo CI must pass before merge.
-        add-paths: |
-          apps/docs/docs/tutorials/*.mdx
-          apps/docs/docs/tutorials/index.md
-        # Optional: keep the temp branch around
         delete-branch: false
+        token: ${{ secrets.TARGET_PAT }}          # PAT must have write access to oso
+
 

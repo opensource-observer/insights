@@ -70,8 +70,8 @@ def execute_query(client, link, existing_titles):
         contents=prompt
     )
 
-    print(response, response.parsed)
-    return response.parsed
+    print(response, response.text)
+    return response.text.strip()
 
 def main():
     args = parse_args()
