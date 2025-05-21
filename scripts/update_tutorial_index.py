@@ -1,5 +1,10 @@
-import argparse, os, re, pathlib, requests
+import argparse, os, re, pathlib, requests, base64
 from google import genai
+
+OWNER = "opensource-observer"
+REPO = "oso"
+BRANCH = "main"
+PATH = "apps/docs/docs/tutorials/index.md"
 
 def parse_args():
     p = argparse.ArgumentParser()
@@ -8,13 +13,21 @@ def parse_args():
     p.add_argument("--index-path",default="mdx_build/apps/docs/docs/tutorials/index.md")
     return p.parse_args()
 
-def download_index(url, dest, pat):
-    hdrs = {"Authorization": f"token {pat}", "Accept": "application/vnd.github.raw"}
-    r = requests.get(url, headers=hdrs, timeout=30)
-    r.raise_for_status()
+def download_index(dest: str, pat: str) -> str:
+    api_url = (
+        f"https://api.github.com/repos/{OWNER}/{REPO}/contents/{PATH}"
+        f"?ref={BRANCH}"
+    )
+    headers = {"Authorization": f"token {pat}"}
+    resp = requests.get(api_url, headers=headers, timeout=30)
+    resp.raise_for_status()
+
+    content_b64 = resp.json()["content"]
+    content = base64.b64decode(content_b64).decode("utf-8")
+
     pathlib.Path(dest).parent.mkdir(parents=True, exist_ok=True)
-    pathlib.Path(dest).write_bytes(r.content)
-    return r.text
+    pathlib.Path(dest).write_text(content, encoding="utf-8")
+    return content
 
 def execute_query(client, link, existing_titles):
     prompt = f"""
@@ -57,7 +70,7 @@ def execute_query(client, link, existing_titles):
         contents=prompt
     )
 
-    print(response, response.status_code, response.parsed)
+    print(response, response.parsed)
     return response.parsed
 
 def main():
@@ -65,7 +78,7 @@ def main():
     pat = os.environ["TARGET_PAT"]
     client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
 
-    index_text = download_index(args.index_url, args.index_path, pat)
+    index_text = download_index(args.index_path, pat)
     existing_titles = set(re.findall(r'\] \- (.*?)$', index_text, flags=re.M))
     existing_links  = set(re.findall(r'\((.*?)\)',      index_text))
 
