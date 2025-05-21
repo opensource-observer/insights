@@ -32,7 +32,7 @@ jobs:
         pip install nbconvert \
                    google-api-python-client \
                    google-auth google-auth-httplib2 google-auth-oauthlib \
-                   google-genai
+                   google-generativeai
 
     #  list notebooks modified in this push
     - name: Find notebooks changed in this push
@@ -44,6 +44,12 @@ jobs:
         echo "notebooks<<EOF" >> $GITHUB_OUTPUT
         echo "$NOTEBOOKS"        >> $GITHUB_OUTPUT
         echo "EOF"               >> $GITHUB_OUTPUT
+    
+        if [ -z "${{ steps.list.outputs.notebooks }}" ]; then
+          echo "No new or modified .ipynb files; skipping workflow."
+          exit 0
+        fi
+
 
     # upload each notebook to colab + build MDX files 
     - name: Upload & convert to MDX
