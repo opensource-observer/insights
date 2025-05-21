@@ -1,4 +1,4 @@
-import argparse, os, re, pathlib, textwrap, requests
+import argparse, os, re, pathlib, requests
 from google import genai
 
 def parse_args():
@@ -17,7 +17,7 @@ def download_index(url, dest, pat):
     return r.text
 
 def execute_query(client, link, existing_titles):
-    prompt = textwrap.dedent(f"""
+    prompt = f"""
         You are updating an **index.md** file that lists OSO data-science tutorials.
         Each line follows this exact pattern:
 
@@ -49,13 +49,15 @@ def execute_query(client, link, existing_titles):
         5. Output **only** the bullet line—no extra text.
 
         Produce your answer now:
-    """)
+    """
 
+    print(prompt)
     response = client.models.generate_content(
         model="gemini-2.0-flash",
         contents=prompt
     )
 
+    print(response, response.status_code, response.parsed)
     return response.parsed
 
 def main():
@@ -67,13 +69,22 @@ def main():
     existing_titles = set(re.findall(r'\] \- (.*?)$', index_text, flags=re.M))
     existing_links  = set(re.findall(r'\((.*?)\)',      index_text))
 
+    print(f"[DEBUG] Existing titles ({len(existing_titles)}): {sorted(existing_titles)}")
+    print(f"[DEBUG] Existing links  ({len(existing_links)}): {sorted(existing_links)[:5]} ...")
+
     new_bullets = []
     for mdx in pathlib.Path(args.mdx_dir).glob("*.mdx"):
         link = f"./{mdx.name}"
+        print(f"[DEBUG] Checking {link}")
+
         if link in existing_links:
+            print("  ↳ already in index, skipping.")
             continue
+        
+        print(client, link, existing_titles)
         bullet = execute_query(client, link, existing_titles)
         if bullet:
+            print(f"  ↳ Gemini bullet: {bullet}")
             new_bullets.append(bullet)
 
     if not new_bullets:
