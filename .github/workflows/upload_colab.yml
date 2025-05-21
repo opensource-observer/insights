@@ -73,11 +73,16 @@ jobs:
           LINK=$(python scripts/upload_to_drive.py "$NB" \
                   --folder "$COLAB_FOLDER_ID")
 
+<<<<<<< HEAD
           # ipynb ⇒ markdown (save images as seperate folder)
           jupyter nbconvert "$NB" \
                 --to markdown \
                 --output     "$BASENAME" \
                 --output-dir mdx_build
+=======
+          # ipynb ⇒ markdown
+          jupyter nbconvert "$NB" --to markdown --output "$BASENAME"
+>>>>>>> 74c57bc (test: trigger workflow)
 
           MARKDOWN_PATH="mdx_build/${BASENAME}.md"
           MDX_OUT="mdx_build/${BASENAME}.mdx"
@@ -91,6 +96,7 @@ jobs:
         mv mdx_build/*.mdx mdx_build/apps/docs/docs/tutorials/
         mv mdx_build/*_files           mdx_build/apps/docs/docs/tutorials/ 2>/dev/null || true
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     # Update tutorials index with Gemini
     - name: Update tutorials index with Gemini
@@ -135,53 +141,27 @@ jobs:
         path: oso                            # run inside ./oso
 =======
     # grab the current index.md from oso repo
+=======
+    # Update tutorials index with Gemini
+>>>>>>> 74c57bc (test: trigger workflow)
     - name: Update tutorials index with Gemini
       if: steps.list.outputs.notebooks != ''
-      env:
-        TARGET_PAT: ${{ secrets.TARGET_PAT }}
       run: python scripts/update_tutorial_index.py
 
-    # clone oso, copy files, push branch
-    - name: Push MDX files to oso repo
+    # Checkout the oso docs repo (as a workspace sub-dir)
+    - name: Checkout oso repo
       if: steps.list.outputs.notebooks != ''
-      env:
-        PAT: ${{ secrets.TARGET_PAT }}
-      run: |
-        set -euo pipefail
-        BRANCH="auto/tutorial-mdx-${{ github.run_id }}"
-        OSO="opensource-observer/oso"
+      uses: actions/checkout@v4
+      with:
+        repository: opensource-observer/oso          # target repo
+        token: ${{ secrets.TARGET_PAT }}             # PAT must write to oso
+        path:   oso                                  # work in ./oso
+        fetch-depth: 0                               # keep full history
 
-        echo "Cloning $OSO"
-        git clone --depth=1 --branch main "https://${GITHUB_ACTOR}:${PAT}@github.com/${OSO}.git" oso-work
-        cd oso-work
-
-        git config user.email "github-actions@github.com"
-        git config user.name  "github-actions"
-
-        echo "Creating/updating branch $BRANCH"
-        if git rev-parse --verify "origin/$BRANCH" >/dev/null 2>&1; then
-          git checkout "$BRANCH"
-        else
-          git checkout -b "$BRANCH"
-        fi
-
-        echo "Copying MDX files into repo"
-        rsync -a --delete \
-          ../mdx_build/apps/docs/docs/tutorials/ \
-          apps/docs/docs/tutorials/
-
-        echo "Committing changes (if any)"
-        if ! git diff --quiet; then
-          git add apps/docs/docs/tutorials/
-          git commit -m "docs: add auto-generated MDX tutorial(s)"
-          git push --set-upstream origin "$BRANCH"
-        else
-          echo "No diff - nothing to commit."
-        fi
-
-    # open or update PR 
-    - name: Open / update pull request in oso
+    # Copy MDX, then auto-commit & open/update PR
+    - name: Create PR in oso with new tutorials
       if: steps.list.outputs.notebooks != ''
+<<<<<<< HEAD
       env:
         GH_TOKEN: ${{ secrets.TARGET_PAT }}   # PAT with write access to oso
       run: |
@@ -206,3 +186,17 @@ jobs:
 =======
           --fill || true   # non-zero if PR already exists – that's fine
 >>>>>>> 1b6943f (test: trigger workflow)
+=======
+      uses: peter-evans/create-pull-request@v5       # or latest tag
+      with:
+        token: ${{ secrets.TARGET_PAT }}
+        commit-message: |
+          docs: add auto-generated MDX tutorial(s)
+        title: "Add MDX tutorial(s) - run ${{ github.run_id }}"
+        body: "Auto-generated MDX files from **${{ github.repository }}**."
+        branch: auto/tutorial-mdx-${{ github.run_id }}
+        base: main
+        path: oso                            # <-- run inside ./oso
+        add-paths: |
+          apps/docs/docs/tutorials/*.mdx # files to track
+>>>>>>> 74c57bc (test: trigger workflow)
