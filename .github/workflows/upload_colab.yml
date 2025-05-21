@@ -17,6 +17,7 @@ jobs:
     env:
       GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
       COLAB_FOLDER_ID:    ${{ vars.COLAB_FOLDER_ID }}
+      COLAB_DRIVE_ID:     ${{ vars.COLAB_DRIVE_ID }}
       GEMINI_API_KEY:     ${{ secrets.GEMINI_API_KEY }}
 
 
@@ -53,6 +54,7 @@ jobs:
 
     # upload each notebook to colab + build MDX files 
     - name: Upload & convert to MDX
+      if: steps.list.outputs.notebooks != '' 
       run: |
         mkdir -p mdx_build
         while read -r NB; do
@@ -62,7 +64,9 @@ jobs:
           BASENAME="$(basename "$NB" .ipynb)"
 
           # Upload to Drive → Colab link
-          LINK=$(python scripts/upload_to_drive.py "$NB" --folder "$COLAB_FOLDER_ID")
+          LINK=$(python scripts/upload_to_drive.py "$NB" \
+                  --folder "$COLAB_FOLDER_ID" \
+                  --drive  "$COLAB_DRIVE_ID")
 
           # ipynb → markdown
           jupyter nbconvert "$NB" --to markdown --output "$BASENAME"
@@ -80,6 +84,7 @@ jobs:
 
     # grab the current index.md from oso repo 
     - name: Update tutorials index with Gemini
+      if: steps.list.outputs.notebooks != '' 
       env:
         TARGET_PAT: ${{ secrets.TARGET_PAT }}      # passed to the script
       run: |
@@ -87,6 +92,7 @@ jobs:
 
     # open a PR in the oso repo with those MDX files 
     - name: Open PR in oso repo
+      if: steps.list.outputs.notebooks != '' 
       uses: peter-evans/create-pull-request@v7
       with:
         token:      ${{ secrets.TARGET_PAT }}      # PAT w/ push rights to the oso repo
