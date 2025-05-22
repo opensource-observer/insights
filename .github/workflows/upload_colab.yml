@@ -74,15 +74,21 @@ jobs:
                   --folder "$COLAB_FOLDER_ID")
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 8e4a2bc (test: trigger workflow)
           # ipynb ⇒ markdown (save images as seperate folder)
           jupyter nbconvert "$NB" \
                 --to markdown \
                 --output     "$BASENAME" \
                 --output-dir mdx_build
+<<<<<<< HEAD
 =======
           # ipynb ⇒ markdown
           jupyter nbconvert "$NB" --to markdown --output "$BASENAME"
 >>>>>>> 74c57bc (test: trigger workflow)
+=======
+>>>>>>> 8e4a2bc (test: trigger workflow)
 
           MARKDOWN_PATH="mdx_build/${BASENAME}.md"
           MDX_OUT="mdx_build/${BASENAME}.mdx"
@@ -98,6 +104,22 @@ jobs:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    # place this immediately after generating mdx_build/
+    - name: Copy new MDX files into oso repo
+      if: steps.list.outputs.notebooks != ''
+      run: |
+        # copy files to keep existing content
+        rsync -a mdx_build/apps/docs/docs/tutorials/ \
+              oso/apps/docs/docs/tutorials/
+
+        # explicitly copy the regenerated index so it always overwrites
+        rsync -a mdx_build/apps/docs/docs/tutorials/index.* \
+              oso/apps/docs/docs/tutorials/
+
+
+>>>>>>> 8e4a2bc (test: trigger workflow)
     # Update tutorials index with Gemini
     - name: Update tutorials index with Gemini
       if: steps.list.outputs.notebooks != ''
@@ -196,7 +218,11 @@ jobs:
         body: "Auto-generated MDX files from **${{ github.repository }}**."
         branch: auto/tutorial-mdx-${{ github.run_id }}
         base: main
-        path: oso                            # <-- run inside ./oso
+        path: oso                            # run inside ./oso
         add-paths: |
           apps/docs/docs/tutorials/*.mdx # files to track
+<<<<<<< HEAD
 >>>>>>> 74c57bc (test: trigger workflow)
+=======
+          apps/docs/docs/tutorials/*_files/**   # track all extracted images
+>>>>>>> 8e4a2bc (test: trigger workflow)
