@@ -132,6 +132,3 @@ jobs:
         branch: auto/tutorial-mdx-${{ github.run_id }}
         base: main
         path: oso                            # run inside ./oso
-        add-paths: |
-          apps/docs/docs/tutorials/*.mdx # files to track
-          apps/docs/docs/tutorials/*_files/**   # track all extracted images
