@@ -165,6 +165,7 @@ jobs:
         branch: auto/tutorial-mdx-${{ github.run_id }}
         base: main
         path: oso                            # run inside ./oso
+<<<<<<< HEAD
 =======
     # grab the current index.md from oso repo
 =======
@@ -232,3 +233,5 @@ jobs:
 =======
           apps/docs/docs/tutorials/*_files/**   # track all extracted images
 >>>>>>> 8e4a2bc (test: trigger workflow)
+=======
+>>>>>>> 8ef33c3 (test: trigger workflow)
