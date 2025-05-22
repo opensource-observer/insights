@@ -73,11 +73,22 @@ jobs:
           LINK=$(python scripts/upload_to_drive.py "$NB" \
                   --folder "$COLAB_FOLDER_ID")
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 8e4a2bc (test: trigger workflow)
           # ipynb ⇒ markdown (save images as seperate folder)
           jupyter nbconvert "$NB" \
                 --to markdown \
                 --output     "$BASENAME" \
                 --output-dir mdx_build
+<<<<<<< HEAD
+=======
+          # ipynb ⇒ markdown
+          jupyter nbconvert "$NB" --to markdown --output "$BASENAME"
+>>>>>>> 74c57bc (test: trigger workflow)
+=======
+>>>>>>> 8e4a2bc (test: trigger workflow)
 
           MARKDOWN_PATH="mdx_build/${BASENAME}.md"
           MDX_OUT="mdx_build/${BASENAME}.mdx"
@@ -90,7 +101,28 @@ jobs:
         mkdir -p mdx_build/apps/docs/docs/tutorials
         mv mdx_build/*.mdx mdx_build/apps/docs/docs/tutorials/
         mv mdx_build/*_files           mdx_build/apps/docs/docs/tutorials/ 2>/dev/null || true
+<<<<<<< HEAD
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    # place this immediately after generating mdx_build/
+    - name: Copy new MDX files into oso repo
+      if: steps.list.outputs.notebooks != ''
+      run: |
+        # copy files to keep existing content
+        rsync -a mdx_build/apps/docs/docs/tutorials/ \
+              oso/apps/docs/docs/tutorials/
+
+        # explicitly copy the regenerated index so it always overwrites
+        rsync -a mdx_build/apps/docs/docs/tutorials/index.* \
+              oso/apps/docs/docs/tutorials/
+
+=======
+>>>>>>> 32e1353 (test: trigger workflow)
+
+>>>>>>> 8e4a2bc (test: trigger workflow)
     # Update tutorials index with Gemini
     - name: Update tutorials index with Gemini
       if: steps.list.outputs.notebooks != ''
@@ -118,6 +150,7 @@ jobs:
         # explicitly copy the regenerated index so it always overwrites
         rsync -a mdx_build/apps/docs/docs/tutorials/index.* \
               oso/apps/docs/docs/tutorials/
+<<<<<<< HEAD
 
     # Copy MDX, then auto-commit & open/update PR
     - name: Create PR in oso with new tutorials
@@ -132,3 +165,73 @@ jobs:
         branch: auto/tutorial-mdx-${{ github.run_id }}
         base: main
         path: oso                            # run inside ./oso
+<<<<<<< HEAD
+=======
+    # grab the current index.md from oso repo
+=======
+    # Update tutorials index with Gemini
+>>>>>>> 74c57bc (test: trigger workflow)
+    - name: Update tutorials index with Gemini
+      if: steps.list.outputs.notebooks != ''
+      run: python scripts/update_tutorial_index.py
+
+    # Checkout the oso docs repo (as a workspace sub-dir)
+    - name: Checkout oso repo
+      if: steps.list.outputs.notebooks != ''
+      uses: actions/checkout@v4
+      with:
+        repository: opensource-observer/oso          # target repo
+        token: ${{ secrets.TARGET_PAT }}             # PAT must write to oso
+        path:   oso                                  # work in ./oso
+        fetch-depth: 0                               # keep full history
+=======
+>>>>>>> 32e1353 (test: trigger workflow)
+
+    # Copy MDX, then auto-commit & open/update PR
+    - name: Create PR in oso with new tutorials
+      if: steps.list.outputs.notebooks != ''
+<<<<<<< HEAD
+      env:
+        GH_TOKEN: ${{ secrets.TARGET_PAT }}   # PAT with write access to oso
+      run: |
+        set -euo pipefail
+        BRANCH="auto/tutorial-mdx-${{ github.run_id }}"
+        OSO="opensource-observer/oso"
+
+        echo "📝 Creating (or updating) PR in $OSO"
+        gh pr create \
+          --repo "$OSO" \
+          --head "$BRANCH" \
+          --base main \
+          --title "Add MDX tutorial(s) - run ${{ github.run_id }}" \
+          --body "Auto-generated MDX files created from notebooks merged into **${{ github.repository }}**.\n\nPlease review; oso-repo CI must pass before merge." \
+<<<<<<< HEAD
+          --fill || true   # exits 1 if PR already exists
+
+        # If the PR exists, gh pr create exits with status 1.
+        # Optionally you can 'gh pr edit' here to append to the body, etc.
+
+>>>>>>> 5183ad7 (test: trigger workflow)
+=======
+          --fill || true   # non-zero if PR already exists – that's fine
+>>>>>>> 1b6943f (test: trigger workflow)
+=======
+      uses: peter-evans/create-pull-request@v5       # or latest tag
+      with:
+        token: ${{ secrets.TARGET_PAT }}
+        commit-message: |
+          docs: add auto-generated MDX tutorial(s)
+        title: "Add MDX tutorial(s) - run ${{ github.run_id }}"
+        body: "Auto-generated MDX files from **${{ github.repository }}**."
+        branch: auto/tutorial-mdx-${{ github.run_id }}
+        base: main
+        path: oso                            # run inside ./oso
+        add-paths: |
+          apps/docs/docs/tutorials/*.mdx # files to track
+<<<<<<< HEAD
+>>>>>>> 74c57bc (test: trigger workflow)
+=======
+          apps/docs/docs/tutorials/*_files/**   # track all extracted images
+>>>>>>> 8e4a2bc (test: trigger workflow)
+=======
+>>>>>>> 8ef33c3 (test: trigger workflow)

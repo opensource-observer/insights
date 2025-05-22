@@ -69,7 +69,6 @@ def execute_query(client, link, existing_titles):
         model="gemini-2.0-flash",
         contents=prompt
     )
-
     print(response, response.text)
     return response.text.strip()
 
