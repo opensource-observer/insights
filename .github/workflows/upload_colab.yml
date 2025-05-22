@@ -79,7 +79,7 @@ jobs:
                 --output     "$BASENAME" \
                 --output-dir mdx_build
 
-          MARKDOWN_PATH="$(dirname "$NB")/$BASENAME.md"
+          MARKDOWN_PATH="mdx_build/${BASENAME}.md"
           MDX_OUT="mdx_build/${BASENAME}.mdx"
 
           printf '<a href="%s" target="_blank">Open in Colab</a>\n\n' "$LINK" > "$MDX_OUT"
@@ -89,19 +89,7 @@ jobs:
         # Stage for oso repo layout
         mkdir -p mdx_build/apps/docs/docs/tutorials
         mv mdx_build/*.mdx mdx_build/apps/docs/docs/tutorials/
-
-    # place this immediately after generating mdx_build/
-    - name: Copy new MDX files into oso repo
-      if: steps.list.outputs.notebooks != ''
-      run: |
-        # copy files to keep existing content
-        rsync -a mdx_build/apps/docs/docs/tutorials/ \
-              oso/apps/docs/docs/tutorials/
-
-        # explicitly copy the regenerated index so it always overwrites
-        rsync -a mdx_build/apps/docs/docs/tutorials/index.* \
-              oso/apps/docs/docs/tutorials/
-
+        mv mdx_build/*_files           mdx_build/apps/docs/docs/tutorials/ 2>/dev/null || true
 
     # Update tutorials index with Gemini
     - name: Update tutorials index with Gemini
@@ -117,6 +105,19 @@ jobs:
         token: ${{ secrets.TARGET_PAT }}             # PAT must write to oso
         path:   oso                                  # work in ./oso
         fetch-depth: 0                               # keep full history
+    
+    - name: Copy new MDX files into oso repo
+      if: steps.list.outputs.notebooks != ''
+      run: |
+        mkdir -p oso/apps/docs/docs/tutorials    # safety
+
+        # copy files to keep existing content
+        rsync -a mdx_build/apps/docs/docs/tutorials/ \
+              oso/apps/docs/docs/tutorials/
+
+        # explicitly copy the regenerated index so it always overwrites
+        rsync -a mdx_build/apps/docs/docs/tutorials/index.* \
+              oso/apps/docs/docs/tutorials/
 
     # Copy MDX, then auto-commit & open/update PR
     - name: Create PR in oso with new tutorials
