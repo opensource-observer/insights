@@ -101,6 +101,7 @@ jobs:
         mkdir -p mdx_build/apps/docs/docs/tutorials
         mv mdx_build/*.mdx mdx_build/apps/docs/docs/tutorials/
         mv mdx_build/*_files           mdx_build/apps/docs/docs/tutorials/ 2>/dev/null || true
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -118,6 +119,8 @@ jobs:
         rsync -a mdx_build/apps/docs/docs/tutorials/index.* \
               oso/apps/docs/docs/tutorials/
 
+=======
+>>>>>>> 32e1353 (test: trigger workflow)
 
 >>>>>>> 8e4a2bc (test: trigger workflow)
     # Update tutorials index with Gemini
@@ -147,6 +150,7 @@ jobs:
         # explicitly copy the regenerated index so it always overwrites
         rsync -a mdx_build/apps/docs/docs/tutorials/index.* \
               oso/apps/docs/docs/tutorials/
+<<<<<<< HEAD
 
     # Copy MDX, then auto-commit & open/update PR
     - name: Create PR in oso with new tutorials
@@ -179,6 +183,8 @@ jobs:
         token: ${{ secrets.TARGET_PAT }}             # PAT must write to oso
         path:   oso                                  # work in ./oso
         fetch-depth: 0                               # keep full history
+=======
+>>>>>>> 32e1353 (test: trigger workflow)
 
     # Copy MDX, then auto-commit & open/update PR
     - name: Create PR in oso with new tutorials
