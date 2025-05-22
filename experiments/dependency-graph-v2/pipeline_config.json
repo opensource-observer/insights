@@ -1,0 +1,8 @@
+{
+    "output_dir": "/Users/cerv1/GitHub/dependency-graph-v2/output",
+    "gemini_model": "gemini-2.0-flash",
+    "summary_prompt_template": "You are an analyst preparing short, neutral briefs on open-source projects.  Read the README below and write a **concise, 2- to 3-sentence summary** that:\n\u2022 states the project\u2019s core purpose / problem it solves\n\u2022 lists its main capabilities or components (1\u20133 key points only)\n\u2022 mentions the primary intended users or systems (e.g., smart-contract developers, node operators)\n\u2022 notes any strongly signalled context such as supported programming language, network, or runtime\n\n**Style constraints**\n\u2022 Use plain, factual language in third person (no hype, no marketing adjectives).\n\u2022 **Do not** guess or invent details that are not explicit in the README.\n\u2022 **Do not** label the project with, or copy wording from, the taxonomy below (to avoid category leakage).\n\u2022 Limit the summary to <100 words; avoid bullet lists or line breaks.\n\nReturn your answer as **exactly one valid JSON object** in this form (nothing extra):\n{{\n  \"summary\": \"your summary here\"\n}}\n\nREADME:\n{readme_md}",
+    "test_mode": false,
+    "test_mode_limit": 5,
+    "batch_size_summaries": 10
+}

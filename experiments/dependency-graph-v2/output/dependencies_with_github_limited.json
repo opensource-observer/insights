@@ -1,0 +1,202 @@
+[
+  {
+    "repo_url": "https://github.com/ethereum/remix-project",
+    "dependencies": [
+      {
+        "packageName": "content-disposition",
+        "packageManager": "NPM",
+        "requirements": "0.5.4",
+        "relationship": "transitive",
+        "packageUrl": "pkg:npm/content-disposition@0.5.4",
+        "source_type": "spdx_sbom",
+        "github_repo": "https://github.com/jshttp/content-disposition"
+      },
+      {
+        "packageName": "mime",
+        "packageManager": "NPM",
+        "requirements": "1.6.0",
+        "relationship": "transitive",
+        "packageUrl": "pkg:npm/mime@1.6.0",
+        "source_type": "spdx_sbom",
+        "github_repo": "https://github.com/broofa/node-mime"
+      },
+      {
+        "packageName": "get-intrinsic",
+        "packageManager": "NPM",
+        "requirements": "1.2.4",
+        "relationship": "transitive",
+        "packageUrl": "pkg:npm/get-intrinsic@1.2.4",
+        "source_type": "spdx_sbom",
+        "github_repo": "https://github.com/ljharb/get-intrinsic"
+      },
+      {
+        "packageName": "mime-db",
+        "packageManager": "NPM",
+        "requirements": "1.52.0",
+        "relationship": "transitive",
+        "packageUrl": "pkg:npm/mime-db@1.52.0",
+        "source_type": "spdx_sbom",
+        "github_repo": "https://github.com/jshttp/mime-db"
+      },
+      {
+        "packageName": "utils-merge",
+        "packageManager": "NPM",
+        "requirements": "1.0.1",
+        "relationship": "transitive",
+        "packageUrl": "pkg:npm/utils-merge@1.0.1",
+        "source_type": "spdx_sbom",
+        "github_repo": "https://github.com/jaredhanson/utils-merge"
+      },
+      {
+        "packageName": "send",
+        "packageManager": "NPM",
+        "requirements": "0.19.0",
+        "relationship": "transitive",
+        "packageUrl": "pkg:npm/send@0.19.0",
+        "source_type": "spdx_sbom",
+        "github_repo": "https://github.com/pillarjs/send"
+      },
+      {
+        "packageName": "content-type",
+        "packageManager": "NPM",
+        "requirements": "1.0.5",
+        "relationship": "transitive",
+        "packageUrl": "pkg:npm/content-type@1.0.5",
+        "source_type": "spdx_sbom",
+        "github_repo": "https://github.com/jshttp/content-type"
+      },
+      {
+        "packageName": "setprototypeof",
+        "packageManager": "NPM",
+        "requirements": "1.2.0",
+        "relationship": "transitive",
+        "packageUrl": "pkg:npm/setprototypeof@1.2.0",
+        "source_type": "spdx_sbom",
+        "github_repo": "https://github.com/wesleytodd/setprototypeof"
+      },
+      {
+        "packageName": "function-bind",
+        "packageManager": "NPM",
+        "requirements": "1.1.2",
+        "relationship": "transitive",
+        "packageUrl": "pkg:npm/function-bind@1.1.2",
+        "source_type": "spdx_sbom",
+        "github_repo": "https://github.com/raynos/function-bind"
+      },
+      {
+        "packageName": "media-typer",
+        "packageManager": "NPM",
+        "requirements": "0.3.0",
+        "relationship": "transitive",
+        "packageUrl": "pkg:npm/media-typer@0.3.0",
+        "source_type": "spdx_sbom",
+        "github_repo": "https://github.com/jshttp/media-typer"
+      }
+    ]
+  },
+  {
+    "repo_url": "https://github.com/prysmaticlabs/prysm",
+    "dependencies": [
+      {
+        "hasDependencies": true,
+        "packageName": "github.com/aristanetworks/goarista",
+        "packageManager": "GO",
+        "packageUrl": "pkg:golang/github.com/aristanetworks/goarista@0.0.0-20200805130819-fd197cf57d96",
+        "requirements": "= 0.0.0-20200805130819-fd197cf57d96",
+        "relationship": "unknown",
+        "source_type": "github_api",
+        "github_repo": "https://github.com/aristanetworks/goarista"
+      },
+      {
+        "hasDependencies": false,
+        "packageName": "github.com/bazelbuild/rules_go",
+        "packageManager": "GO",
+        "packageUrl": "pkg:golang/github.com/bazelbuild/rules_go@0.23.2",
+        "requirements": "= 0.23.2",
+        "relationship": "unknown",
+        "source_type": "github_api",
+        "github_repo": "https://github.com/bazelbuild/rules_go"
+      },
+      {
+        "hasDependencies": false,
+        "packageName": "github.com/benbjohnson/clock",
+        "packageManager": "GO",
+        "packageUrl": "pkg:golang/github.com/benbjohnson/clock@1.3.5",
+        "requirements": "= 1.3.5",
+        "relationship": "unknown",
+        "source_type": "github_api",
+        "github_repo": "https://github.com/benbjohnson/clock"
+      },
+      {
+        "hasDependencies": false,
+        "packageName": "github.com/beorn7/perks",
+        "packageManager": "GO",
+        "packageUrl": "pkg:golang/github.com/beorn7/perks@1.0.1",
+        "requirements": "= 1.0.1",
+        "relationship": "unknown",
+        "source_type": "github_api",
+        "github_repo": "https://github.com/beorn7/perks"
+      },
+      {
+        "hasDependencies": false,
+        "packageName": "github.com/bits-and-blooms/bitset",
+        "packageManager": "GO",
+        "packageUrl": "pkg:golang/github.com/bits-and-blooms/bitset@1.17.0",
+        "requirements": "= 1.17.0",
+        "relationship": "unknown",
+        "source_type": "github_api",
+        "github_repo": "https://github.com/bits-and-blooms/bitset"
+      },
+      {
+        "hasDependencies": true,
+        "packageName": "github.com/btcsuite/btcd/btcec/v2",
+        "packageManager": "GO",
+        "packageUrl": "pkg:golang/github.com/btcsuite/btcd/btcec/v2@2.3.4",
+        "requirements": "= 2.3.4",
+        "relationship": "unknown",
+        "source_type": "github_api",
+        "github_repo": "https://github.com/btcsuite/btcd/btcec/v2"
+      },
+      {
+        "hasDependencies": false,
+        "packageName": "github.com/BurntSushi/toml",
+        "packageManager": "GO",
+        "packageUrl": "pkg:golang/github.com/BurntSushi/toml@1.4.1-0.20240526193622-a339e1f7089c",
+        "requirements": "= 1.4.1-0.20240526193622-a339e1f7089c",
+        "relationship": "unknown",
+        "source_type": "github_api",
+        "github_repo": "https://github.com/BurntSushi/toml"
+      },
+      {
+        "hasDependencies": false,
+        "packageName": "github.com/cenkalti/backoff/v4",
+        "packageManager": "GO",
+        "packageUrl": "pkg:golang/github.com/cenkalti/backoff/v4@4.3.0",
+        "requirements": "= 4.3.0",
+        "relationship": "unknown",
+        "source_type": "github_api",
+        "github_repo": "https://github.com/cenkalti/backoff/v4"
+      },
+      {
+        "hasDependencies": false,
+        "packageName": "github.com/cespare/cp",
+        "packageManager": "GO",
+        "packageUrl": "pkg:golang/github.com/cespare/cp@1.1.1",
+        "requirements": "= 1.1.1",
+        "relationship": "unknown",
+        "source_type": "github_api",
+        "github_repo": "https://github.com/cespare/cp"
+      },
+      {
+        "hasDependencies": false,
+        "packageName": "github.com/cespare/xxhash/v2",
+        "packageManager": "GO",
+        "packageUrl": "pkg:golang/github.com/cespare/xxhash/v2@2.3.0",
+        "requirements": "= 2.3.0",
+        "relationship": "unknown",
+        "source_type": "github_api",
+        "github_repo": "https://github.com/cespare/xxhash/v2"
+      }
+    ]
+  }
+]

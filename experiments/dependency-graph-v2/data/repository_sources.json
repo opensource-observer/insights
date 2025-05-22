@@ -1,0 +1,1038 @@
+[
+  {
+    "repo_url": "https://github.com/ethereum/remix-project",
+    "sources": [
+      {
+        "type": "github_api",
+        "enabled": true,
+        "priority": 1
+      },
+      {
+        "type": "package_files",
+        "enabled": true,
+        "priority": 2,
+        "files": []
+      },
+      {
+        "type": "sbom",
+        "enabled": true,
+        "priority": 3,
+        "format": "json",
+        "location": {
+          "type": "local",
+          "path": "data/sbom_exports/ethereum_remix-project_c16596.json"
+        }
+      }
+    ],
+    "last_updated": null
+  },
+  {
+    "repo_url": "https://github.com/prysmaticlabs/prysm",
+    "sources": [
+      {
+        "type": "github_api",
+        "enabled": true,
+        "priority": 1
+      },
+      {
+        "type": "package_files",
+        "enabled": true,
+        "priority": 2,
+        "files": []
+      },
+      {
+        "type": "sbom",
+        "enabled": false,
+        "priority": 3,
+        "format": "json",
+        "location": {
+          "type": "local",
+          "path": ""
+        }
+      }
+    ],
+    "last_updated": null
+  },
+  {
+    "repo_url": "https://github.com/ethereum/go-ethereum",
+    "sources": [
+      {
+        "type": "github_api",
+        "enabled": true,
+        "priority": 1
+      },
+      {
+        "type": "package_files",
+        "enabled": true,
+        "priority": 2,
+        "files": []
+      },
+      {
+        "type": "sbom",
+        "enabled": false,
+        "priority": 3,
+        "format": "json",
+        "location": {
+          "type": "local",
+          "path": ""
+        }
+      }
+    ],
+    "last_updated": null
+  },
+  {
+    "repo_url": "https://github.com/sigp/lighthouse",
+    "sources": [
+      {
+        "type": "github_api",
+        "enabled": true,
+        "priority": 1
+      },
+      {
+        "type": "package_files",
+        "enabled": true,
+        "priority": 2,
+        "files": []
+      },
+      {
+        "type": "sbom",
+        "enabled": false,
+        "priority": 3,
+        "format": "json",
+        "location": {
+          "type": "local",
+          "path": ""
+        }
+      }
+    ],
+    "last_updated": null
+  },
+  {
+    "repo_url": "https://github.com/consensys/teku",
+    "sources": [
+      {
+        "type": "github_api",
+        "enabled": true,
+        "priority": 1
+      },
+      {
+        "type": "package_files",
+        "enabled": true,
+        "priority": 2,
+        "files": [
+          "https://github.com/consensys/teku/blob/master/gradle/versions.gradle"
+        ]
+      },
+      {
+        "type": "sbom",
+        "enabled": false,
+        "priority": 3,
+        "format": "json",
+        "location": {
+          "type": "local",
+          "path": ""
+        }
+      }
+    ],
+    "last_updated": null
+  },
+  {
+    "repo_url": "https://github.com/status-im/nimbus-eth2",
+    "sources": [
+      {
+        "type": "github_api",
+        "enabled": true,
+        "priority": 1
+      },
+      {
+        "type": "package_files",
+        "enabled": true,
+        "priority": 2,
+        "files": [
+          "https://github.com/status-im/nimbus-eth2/blob/stable/beacon_chain.nimble"
+        ]
+      },
+      {
+        "type": "sbom",
+        "enabled": false,
+        "priority": 3,
+        "format": "json",
+        "location": {
+          "type": "local",
+          "path": ""
+        }
+      }
+    ],
+    "last_updated": null
+  },
+  {
+    "repo_url": "https://github.com/chainsafe/lodestar",
+    "sources": [
+      {
+        "type": "github_api",
+        "enabled": true,
+        "priority": 1
+      },
+      {
+        "type": "package_files",
+        "enabled": true,
+        "priority": 2,
+        "files": []
+      },
+      {
+        "type": "sbom",
+        "enabled": false,
+        "priority": 3,
+        "format": "json",
+        "location": {
+          "type": "local",
+          "path": ""
+        }
+      }
+    ],
+    "last_updated": null
+  },
+  {
+    "repo_url": "https://github.com/ethers-io/ethers.js",
+    "sources": [
+      {
+        "type": "github_api",
+        "enabled": true,
+        "priority": 1
+      },
+      {
+        "type": "package_files",
+        "enabled": true,
+        "priority": 2,
+        "files": []
+      },
+      {
+        "type": "sbom",
+        "enabled": false,
+        "priority": 3,
+        "format": "json",
+        "location": {
+          "type": "local",
+          "path": ""
+        }
+      }
+    ],
+    "last_updated": null
+  },
+  {
+    "repo_url": "https://github.com/ethereumjs/ethereumjs-monorepo",
+    "sources": [
+      {
+        "type": "github_api",
+        "enabled": true,
+        "priority": 1
+      },
+      {
+        "type": "package_files",
+        "enabled": true,
+        "priority": 2,
+        "files": []
+      },
+      {
+        "type": "sbom",
+        "enabled": false,
+        "priority": 3,
+        "format": "json",
+        "location": {
+          "type": "local",
+          "path": ""
+        }
+      }
+    ],
+    "last_updated": null
+  },
+  {
+    "repo_url": "https://github.com/grandinetech/grandine",
+    "sources": [
+      {
+        "type": "github_api",
+        "enabled": true,
+        "priority": 1
+      },
+      {
+        "type": "package_files",
+        "enabled": true,
+        "priority": 2,
+        "files": []
+      },
+      {
+        "type": "sbom",
+        "enabled": false,
+        "priority": 3,
+        "format": "json",
+        "location": {
+          "type": "local",
+          "path": ""
+        }
+      }
+    ],
+    "last_updated": null
+  },
+  {
+    "repo_url": "https://github.com/nethermindeth/nethermind",
+    "sources": [
+      {
+        "type": "github_api",
+        "enabled": true,
+        "priority": 1
+      },
+      {
+        "type": "package_files",
+        "enabled": true,
+        "priority": 2,
+        "files": []
+      },
+      {
+        "type": "sbom",
+        "enabled": false,
+        "priority": 3,
+        "format": "json",
+        "location": {
+          "type": "local",
+          "path": ""
+        }
+      }
+    ],
+    "last_updated": null
+  },
+  {
+    "repo_url": "https://github.com/hyperledger/besu",
+    "sources": [
+      {
+        "type": "github_api",
+        "enabled": true,
+        "priority": 1
+      },
+      {
+        "type": "package_files",
+        "enabled": true,
+        "priority": 2,
+        "files": [
+          "https://github.com/hyperledger/besu/blob/main/build.gradle"
+        ]
+      },
+      {
+        "type": "sbom",
+        "enabled": false,
+        "priority": 3,
+        "format": "json",
+        "location": {
+          "type": "local",
+          "path": ""
+        }
+      }
+    ],
+    "last_updated": null
+  },
+  {
+    "repo_url": "https://github.com/erigontech/erigon",
+    "sources": [
+      {
+        "type": "github_api",
+        "enabled": true,
+        "priority": 1
+      },
+      {
+        "type": "package_files",
+        "enabled": true,
+        "priority": 2,
+        "files": []
+      },
+      {
+        "type": "sbom",
+        "enabled": false,
+        "priority": 3,
+        "format": "json",
+        "location": {
+          "type": "local",
+          "path": ""
+        }
+      }
+    ],
+    "last_updated": null
+  },
+  {
+    "repo_url": "https://github.com/paradigmxyz/reth",
+    "sources": [
+      {
+        "type": "github_api",
+        "enabled": true,
+        "priority": 1
+      },
+      {
+        "type": "package_files",
+        "enabled": true,
+        "priority": 2,
+        "files": []
+      },
+      {
+        "type": "sbom",
+        "enabled": false,
+        "priority": 3,
+        "format": "json",
+        "location": {
+          "type": "local",
+          "path": ""
+        }
+      }
+    ],
+    "last_updated": null
+  },
+  {
+    "repo_url": "https://github.com/ethereum/py-evm",
+    "sources": [
+      {
+        "type": "github_api",
+        "enabled": true,
+        "priority": 1
+      },
+      {
+        "type": "package_files",
+        "enabled": true,
+        "priority": 2,
+        "files": []
+      },
+      {
+        "type": "sbom",
+        "enabled": false,
+        "priority": 3,
+        "format": "json",
+        "location": {
+          "type": "local",
+          "path": ""
+        }
+      }
+    ],
+    "last_updated": null
+  },
+  {
+    "repo_url": "https://github.com/eth-infinitism/account-abstraction",
+    "sources": [
+      {
+        "type": "github_api",
+        "enabled": true,
+        "priority": 1
+      },
+      {
+        "type": "package_files",
+        "enabled": true,
+        "priority": 2,
+        "files": []
+      },
+      {
+        "type": "sbom",
+        "enabled": false,
+        "priority": 3,
+        "format": "json",
+        "location": {
+          "type": "local",
+          "path": ""
+        }
+      }
+    ],
+    "last_updated": null
+  },
+  {
+    "repo_url": "https://github.com/nomicfoundation/hardhat",
+    "sources": [
+      {
+        "type": "github_api",
+        "enabled": true,
+        "priority": 1
+      },
+      {
+        "type": "package_files",
+        "enabled": true,
+        "priority": 2,
+        "files": []
+      },
+      {
+        "type": "sbom",
+        "enabled": true,
+        "priority": 3,
+        "format": "json",
+        "location": {
+          "type": "local",
+          "path": "/Users/cerv1/GitHub/dependency-graph-v2/data/sbom_exports/NomicFoundation_hardhat_2ee89f.json"
+        }
+      }
+    ],
+    "last_updated": null
+  },
+  {
+    "repo_url": "https://github.com/safe-global/safe-smart-account",
+    "sources": [
+      {
+        "type": "github_api",
+        "enabled": true,
+        "priority": 1
+      },
+      {
+        "type": "package_files",
+        "enabled": true,
+        "priority": 2,
+        "files": []
+      },
+      {
+        "type": "sbom",
+        "enabled": false,
+        "priority": 3,
+        "format": "json",
+        "location": {
+          "type": "local",
+          "path": ""
+        }
+      }
+    ],
+    "last_updated": null
+  },
+  {
+    "repo_url": "https://github.com/a16z/helios",
+    "sources": [
+      {
+        "type": "github_api",
+        "enabled": true,
+        "priority": 1
+      },
+      {
+        "type": "package_files",
+        "enabled": true,
+        "priority": 2,
+        "files": []
+      },
+      {
+        "type": "sbom",
+        "enabled": false,
+        "priority": 3,
+        "format": "json",
+        "location": {
+          "type": "local",
+          "path": ""
+        }
+      }
+    ],
+    "last_updated": null
+  },
+  {
+    "repo_url": "https://github.com/ethereum/web3.py",
+    "sources": [
+      {
+        "type": "github_api",
+        "enabled": true,
+        "priority": 1
+      },
+      {
+        "type": "package_files",
+        "enabled": true,
+        "priority": 2,
+        "files": []
+      },
+      {
+        "type": "sbom",
+        "enabled": false,
+        "priority": 3,
+        "format": "json",
+        "location": {
+          "type": "local",
+          "path": ""
+        }
+      }
+    ],
+    "last_updated": null
+  },
+  {
+    "repo_url": "https://github.com/hyperledger-web3j/web3j",
+    "sources": [
+      {
+        "type": "github_api",
+        "enabled": true,
+        "priority": 1
+      },
+      {
+        "type": "package_files",
+        "enabled": true,
+        "priority": 2,
+        "files": [
+          "https://github.com/hyperledger-web3j/web3j/blob/main/build.gradle"
+        ]
+      },
+      {
+        "type": "sbom",
+        "enabled": false,
+        "priority": 3,
+        "format": "json",
+        "location": {
+          "type": "local",
+          "path": ""
+        }
+      }
+    ],
+    "last_updated": null
+  },
+  {
+    "repo_url": "https://github.com/alloy-rs/alloy",
+    "sources": [
+      {
+        "type": "github_api",
+        "enabled": true,
+        "priority": 1
+      },
+      {
+        "type": "package_files",
+        "enabled": true,
+        "priority": 2,
+        "files": []
+      },
+      {
+        "type": "sbom",
+        "enabled": false,
+        "priority": 3,
+        "format": "json",
+        "location": {
+          "type": "local",
+          "path": ""
+        }
+      }
+    ],
+    "last_updated": null
+  },
+  {
+    "repo_url": "https://github.com/nethereum/nethereum",
+    "sources": [
+      {
+        "type": "github_api",
+        "enabled": true,
+        "priority": 1
+      },
+      {
+        "type": "package_files",
+        "enabled": true,
+        "priority": 2,
+        "files": []
+      },
+      {
+        "type": "sbom",
+        "enabled": false,
+        "priority": 3,
+        "format": "json",
+        "location": {
+          "type": "local",
+          "path": ""
+        }
+      }
+    ],
+    "last_updated": null
+  },
+  {
+    "repo_url": "https://github.com/wevm/viem",
+    "sources": [
+      {
+        "type": "github_api",
+        "enabled": true,
+        "priority": 1
+      },
+      {
+        "type": "package_files",
+        "enabled": true,
+        "priority": 2,
+        "files": []
+      },
+      {
+        "type": "sbom",
+        "enabled": true,
+        "priority": 3,
+        "format": "json",
+        "location": {
+          "type": "local",
+          "path": "/Users/cerv1/GitHub/dependency-graph-v2/data/sbom_exports/wevm_viem_c14f65.json"
+        }
+      }
+    ],
+    "last_updated": null
+  },
+  {
+    "repo_url": "https://github.com/foundry-rs/foundry",
+    "sources": [
+      {
+        "type": "github_api",
+        "enabled": true,
+        "priority": 1
+      },
+      {
+        "type": "package_files",
+        "enabled": true,
+        "priority": 2,
+        "files": []
+      },
+      {
+        "type": "sbom",
+        "enabled": false,
+        "priority": 3,
+        "format": "json",
+        "location": {
+          "type": "local",
+          "path": ""
+        }
+      }
+    ],
+    "last_updated": null
+  },
+  {
+    "repo_url": "https://github.com/apeworx/ape",
+    "sources": [
+      {
+        "type": "github_api",
+        "enabled": true,
+        "priority": 1
+      },
+      {
+        "type": "package_files",
+        "enabled": true,
+        "priority": 2,
+        "files": []
+      },
+      {
+        "type": "sbom",
+        "enabled": false,
+        "priority": 3,
+        "format": "json",
+        "location": {
+          "type": "local",
+          "path": ""
+        }
+      }
+    ],
+    "last_updated": null
+  },
+  {
+    "repo_url": "https://github.com/vyperlang/titanoboa",
+    "sources": [
+      {
+        "type": "github_api",
+        "enabled": true,
+        "priority": 1
+      },
+      {
+        "type": "package_files",
+        "enabled": true,
+        "priority": 2,
+        "files": []
+      },
+      {
+        "type": "sbom",
+        "enabled": false,
+        "priority": 3,
+        "format": "json",
+        "location": {
+          "type": "local",
+          "path": ""
+        }
+      }
+    ],
+    "last_updated": null
+  },
+  {
+    "repo_url": "https://github.com/vyperlang/vyper",
+    "sources": [
+      {
+        "type": "github_api",
+        "enabled": true,
+        "priority": 1
+      },
+      {
+        "type": "package_files",
+        "enabled": true,
+        "priority": 2,
+        "files": []
+      },
+      {
+        "type": "sbom",
+        "enabled": false,
+        "priority": 3,
+        "format": "json",
+        "location": {
+          "type": "local",
+          "path": ""
+        }
+      }
+    ],
+    "last_updated": null
+  },
+  {
+    "repo_url": "https://github.com/ethereum-lists/chains",
+    "sources": [
+      {
+        "type": "github_api",
+        "enabled": true,
+        "priority": 1
+      },
+      {
+        "type": "package_files",
+        "enabled": true,
+        "priority": 2,
+        "files": []
+      },
+      {
+        "type": "sbom",
+        "enabled": false,
+        "priority": 3,
+        "format": "json",
+        "location": {
+          "type": "local",
+          "path": ""
+        }
+      }
+    ],
+    "last_updated": null
+  },
+  {
+    "repo_url": "https://github.com/ethereum/solidity",
+    "sources": [
+      {
+        "type": "github_api",
+        "enabled": true,
+        "priority": 1
+      },
+      {
+        "type": "package_files",
+        "enabled": true,
+        "priority": 2,
+        "files": []
+      },
+      {
+        "type": "sbom",
+        "enabled": false,
+        "priority": 3,
+        "format": "json",
+        "location": {
+          "type": "local",
+          "path": ""
+        }
+      }
+    ],
+    "last_updated": null
+  },
+  {
+    "repo_url": "https://github.com/ethereum/fe",
+    "sources": [
+      {
+        "type": "github_api",
+        "enabled": true,
+        "priority": 1
+      },
+      {
+        "type": "package_files",
+        "enabled": true,
+        "priority": 2,
+        "files": []
+      },
+      {
+        "type": "sbom",
+        "enabled": false,
+        "priority": 3,
+        "format": "json",
+        "location": {
+          "type": "local",
+          "path": ""
+        }
+      }
+    ],
+    "last_updated": null
+  },
+  {
+    "repo_url": "https://github.com/ethereum/evmone",
+    "sources": [
+      {
+        "type": "github_api",
+        "enabled": true,
+        "priority": 1
+      },
+      {
+        "type": "package_files",
+        "enabled": true,
+        "priority": 2,
+        "files": [
+          "https://github.com/ethereum/evmone/blob/master/lib/evmone_precompiles/cmakelists.txt"
+        ]
+      },
+      {
+        "type": "sbom",
+        "enabled": false,
+        "priority": 3,
+        "format": "json",
+        "location": {
+          "type": "local",
+          "path": ""
+        }
+      }
+    ],
+    "last_updated": null
+  },
+  {
+    "repo_url": "https://github.com/ethereum/execution-apis",
+    "sources": [
+      {
+        "type": "github_api",
+        "enabled": true,
+        "priority": 1
+      },
+      {
+        "type": "package_files",
+        "enabled": true,
+        "priority": 2,
+        "files": []
+      },
+      {
+        "type": "sbom",
+        "enabled": false,
+        "priority": 3,
+        "format": "json",
+        "location": {
+          "type": "local",
+          "path": ""
+        }
+      }
+    ],
+    "last_updated": null
+  },
+  {
+    "repo_url": "https://github.com/ethereum/consensus-specs",
+    "sources": [
+      {
+        "type": "github_api",
+        "enabled": true,
+        "priority": 1
+      },
+      {
+        "type": "package_files",
+        "enabled": true,
+        "priority": 2,
+        "files": []
+      },
+      {
+        "type": "sbom",
+        "enabled": false,
+        "priority": 3,
+        "format": "json",
+        "location": {
+          "type": "local",
+          "path": ""
+        }
+      }
+    ],
+    "last_updated": null
+  },
+  {
+    "repo_url": "https://github.com/ethereum/eips",
+    "sources": [
+      {
+        "type": "github_api",
+        "enabled": true,
+        "priority": 1
+      },
+      {
+        "type": "package_files",
+        "enabled": true,
+        "priority": 2,
+        "files": []
+      },
+      {
+        "type": "sbom",
+        "enabled": false,
+        "priority": 3,
+        "format": "json",
+        "location": {
+          "type": "local",
+          "path": ""
+        }
+      }
+    ],
+    "last_updated": null
+  },
+  {
+    "repo_url": "https://github.com/ethereum/sourcify",
+    "sources": [
+      {
+        "type": "github_api",
+        "enabled": true,
+        "priority": 1
+      },
+      {
+        "type": "package_files",
+        "enabled": true,
+        "priority": 2,
+        "files": []
+      },
+      {
+        "type": "sbom",
+        "enabled": false,
+        "priority": 3,
+        "format": "json",
+        "location": {
+          "type": "local",
+          "path": ""
+        }
+      }
+    ],
+    "last_updated": null
+  },
+  {
+    "repo_url": "https://github.com/openzeppelin/openzeppelin-contracts",
+    "sources": [
+      {
+        "type": "github_api",
+        "enabled": true,
+        "priority": 1
+      },
+      {
+        "type": "package_files",
+        "enabled": true,
+        "priority": 2,
+        "files": []
+      },
+      {
+        "type": "sbom",
+        "enabled": false,
+        "priority": 3,
+        "format": "json",
+        "location": {
+          "type": "local",
+          "path": ""
+        }
+      }
+    ],
+    "last_updated": null
+  },
+  {
+    "repo_url": "https://github.com/scaffold-eth/scaffold-eth-2",
+    "sources": [
+      {
+        "type": "github_api",
+        "enabled": true,
+        "priority": 1
+      },
+      {
+        "type": "package_files",
+        "enabled": true,
+        "priority": 2,
+        "files": []
+      },
+      {
+        "type": "sbom",
+        "enabled": false,
+        "priority": 3,
+        "format": "json",
+        "location": {
+          "type": "local",
+          "path": ""
+        }
+      }
+    ],
+    "last_updated": null
+  }
+]
