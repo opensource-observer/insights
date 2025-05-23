@@ -145,23 +145,33 @@ dependency-graph-v2/
 
 The dependency processing pipeline consists of the following steps:
 
-1. **Fetch Dependencies**: Fetch dependencies from various sources (GitHub API, package files, SBOM)
-2. **Map to GitHub**: Map dependencies to their source GitHub repositories using OSO
-3. **Clean Dependencies**: Clean and flatten the dependency data
-4. **Generate Snapshot**: Generate a snapshot of dependencies across all repositories
+1. **Identify Seed Repos**: Define the repositories to analyze for dependencies
+2. **Dependency Sources**: Extract dependencies from multiple sources:
+   - **GitHub API**: Query dependency manifests directly from GitHub using GraphQL
+   - **SBOM Files**: Import from SPDX SBOM files (JSON and CSV formats)
+   - **Package Files**: Analyze package files using AI (Gemini) for complex parsing
+3. **Map to GitHub**: Map dependencies to their source GitHub repositories using OSO's deps.dev API
+4. **Clean Dependencies**: Clean, flatten, and standardize the dependency data
+5. **Generate Snapshot**: Create comprehensive snapshots with statistics and aggregated data
 
 ```mermaid
 graph TD
-    S[Identify Seed Repos] --> A[Fetch Dependencies]
-    A --> B[Map to GitHub]
-    B --> C[Clean Dependencies]
-    C --> D[Generate Snapshot]
+  IdentifySeedRepos["Seed Repos"] --> DS["Dependency Sources"]
+
+  subgraph DS["Dependency Sources"]
+    direction TB
+    GitHubAPI["GitHub API"]
+    SBOMFiles["Raw SBOM Files"]
+    PackageURIs["Package URIs"]
     
-    subgraph "Dependency Sources"
-    E[GitHub API] --> A
-    F[Package Files] --> A
-    G[SBOM Files] --> A
-    end
+    SBOMFiles --> Parser["File Parsers"] --> Consolidated
+    GitHubAPI --> Metadata["JSON Payload"] --> Consolidated["Consolidated Dependencies"]
+    PackageURIs --> AI["AI Agent Parser"] --> Consolidated
+  end
+
+  DS --> MapToGitHub["Query OSO Package Maintainer Registry"]
+  MapToGitHub --> CleanDependencies["Assign a GitHub Repo to the Dependency"]
+  CleanDependencies --> GenerateSnapshot["Generate Snapshot"]
 ```
 
 ## Output Files
