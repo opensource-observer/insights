@@ -20,7 +20,7 @@ A tool for analyzing and visualizing dependencies across multiple repositories. 
 2. Install dependencies with Poetry:
    ```bash
    poetry install
-   poetry shell
+   poetry env activate
    ```
 3. Create a `.env` file with the following variables (see `.env.example`):
    ```
