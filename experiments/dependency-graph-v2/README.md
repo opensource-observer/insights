@@ -152,7 +152,7 @@ The dependency processing pipeline consists of the following steps:
 
 ```mermaid
 graph TD
-    Identify Seed Repos --> A[Fetch Dependencies]
+    S[Identify Seed Repos] --> A[Fetch Dependencies]
     A --> B[Map to GitHub]
     B --> C[Clean Dependencies]
     C --> D[Generate Snapshot]
