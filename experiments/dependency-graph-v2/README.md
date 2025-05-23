@@ -152,16 +152,10 @@ The dependency processing pipeline consists of the following steps:
 
 ```mermaid
 graph TD
-    S[Identify Seed Repositories] --> A[Fetch Dependencies]
+    Identify Seed Repos --> A[Fetch Dependencies]
     A --> B[Map to GitHub]
     B --> C[Clean Dependencies]
     C --> D[Generate Snapshot]
-    
-    subgraph "Repository Sources"
-    S1[Manual Addition] --> S
-    S2[Repository Lists] --> S
-    S3[SBOM Imports] --> S
-    end
     
     subgraph "Dependency Sources"
     E[GitHub API] --> A
