@@ -24,3 +24,7 @@ GITHUB_HEADERS = {"Authorization": f"token {GITHUB_TOKEN}"}
 
 # Gemini model settings
 GEMINI_MODEL = "gemini-2.0-flash"
+
+# Pipeline configuration
+TEST_MODE = False
+TEST_MODE_LIMIT = 5
