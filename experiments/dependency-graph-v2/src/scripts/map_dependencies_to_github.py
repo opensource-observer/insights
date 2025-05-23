@@ -7,21 +7,31 @@ dependency information with the GitHub repo URL or marks it as unknown if not fo
 
 The script uses a DataFrame-based approach to process dependencies in batches by package system,
 and implements semver range matching to find the appropriate GitHub repository for each dependency.
+
+Usage:
+    python -m src.scripts.map_dependencies_to_github
+
+Output:
+    Creates output/dependencies_with_github.json with GitHub repository information added
+    to each dependency.
 """
 import json
 import os
-import sys
 import re
+import sys
+import time
 from pathlib import Path
 from typing import Dict, List, Optional, Any, Tuple
+
 import pandas as pd
 import semver
 from dotenv import load_dotenv
 from pyoso import Client
-import time
 
 # Add the project root to the Python path
 sys.path.append(str(Path(__file__).parent.parent.parent))
+
+from src.config.config_manager import ConfigManager
 
 # Constants
 DEPENDENCIES_FILE = "output/dependencies.json"
@@ -71,7 +81,15 @@ PACKAGE_MANAGER_TO_SYSTEM = {
 }
 
 def setup_oso_client() -> Client:
-    """Set up and return an OSO client."""
+    """
+    Set up and return an OSO client.
+    
+    Returns:
+        Client: Configured OSO client instance.
+        
+    Raises:
+        ValueError: If OSO_API_KEY environment variable is not set.
+    """
     load_dotenv()
     oso_api_key = os.environ.get('OSO_API_KEY')
     if not oso_api_key:
@@ -79,29 +97,66 @@ def setup_oso_client() -> Client:
     
     return Client(api_key=oso_api_key)
 
-def stringify(arr):
-    """Convert an array to a SQL string format for IN clauses."""
+def stringify(arr: List[str]) -> str:
+    """
+    Convert an array to a SQL string format for IN clauses.
+    
+    Args:
+        arr: List of strings to convert.
+        
+    Returns:
+        String formatted for SQL IN clause.
+    """
     return "'" + "','".join([x.lower() for x in arr]) + "'"
 
-def parse_semver(v):
-    """Parse a version string to a semver.VersionInfo object."""
+def parse_semver(v: str) -> Optional[semver.VersionInfo]:
+    """
+    Parse a version string to a semver.VersionInfo object.
+    
+    Args:
+        v: Version string to parse.
+        
+    Returns:
+        Parsed semver.VersionInfo object or None if parsing fails.
+    """
     try:
         return semver.VersionInfo.parse(v)
     except ValueError:
         return None
 
 def extract_version(req_str: str) -> Optional[str]:
-    """Extract version from a requirement string."""
+    """
+    Extract version from a requirement string.
+    
+    Args:
+        req_str: Requirement string (e.g., ">=1.2.3").
+        
+    Returns:
+        Extracted version string or '0' if no version found.
+    """
     versions = re.findall(r'\d+(?:\.\d+)+', req_str or '')
     return versions[-1] if versions else '0'
 
 def extract_operator(req_str: str) -> str:
-    """Extract operator from a requirement string."""
+    """
+    Extract operator from a requirement string.
+    
+    Args:
+        req_str: Requirement string (e.g., ">=1.2.3").
+        
+    Returns:
+        Extracted operator or '=' if no operator found.
+    """
     ops = re.findall(r'(>=|<=|==|~=|!=|=|>|<)', req_str or '')
     return ops[-1] if ops else '='
 
 def load_cache() -> pd.DataFrame:
-    """Load the package-to-GitHub mappings cache."""
+    """
+    Load the package-to-GitHub mappings cache.
+    
+    Returns:
+        DataFrame containing cached package-to-GitHub mappings.
+    """
     cache_path = Path(MAPPING_CACHE_FILE)
     if not cache_path.exists():
         print(f"Mapping cache file not found at {cache_path}, will create a new one")
@@ -119,8 +174,13 @@ def load_cache() -> pd.DataFrame:
         print(f"Error loading mapping cache: {str(e)}")
         return pd.DataFrame(columns=['package_name', 'dependency_github_url', 'package_source', 'min_version', 'max_version'])
 
-def save_cache(df: pd.DataFrame):
-    """Save the package-to-GitHub mappings cache."""
+def save_cache(df: pd.DataFrame) -> None:
+    """
+    Save the package-to-GitHub mappings cache.
+    
+    Args:
+        df: DataFrame containing package-to-GitHub mappings to cache.
+    """
     cache_path = Path(MAPPING_CACHE_FILE)
     try:
         # Save the DataFrame to CSV
@@ -129,8 +189,16 @@ def save_cache(df: pd.DataFrame):
     except Exception as e:
         print(f"Error saving mapping cache: {str(e)}")
 
-def build_semver_ranges(df_pkg_raw):
-    """Build semver ranges for packages."""
+def build_semver_ranges(df_pkg_raw: pd.DataFrame) -> pd.DataFrame:
+    """
+    Build semver ranges for packages.
+    
+    Args:
+        df_pkg_raw: DataFrame containing raw package version data.
+        
+    Returns:
+        DataFrame with min and max versions for each package.
+    """
     df = df_pkg_raw.copy()
     df['_parsed'] = df['package_version'].apply(parse_semver)
     df = df[df['_parsed'].notnull()]
@@ -144,8 +212,17 @@ def build_semver_ranges(df_pkg_raw):
     )
     return agg
 
-def merge_dependency_urls(deps_df, packages_df):
-    """Merge dependency URLs based on version constraints."""
+def merge_dependency_urls(deps_df: pd.DataFrame, packages_df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Merge dependency URLs based on version constraints.
+    
+    Args:
+        deps_df: DataFrame containing dependency information.
+        packages_df: DataFrame containing package information.
+        
+    Returns:
+        DataFrame with merged dependency and package information.
+    """
     print("Merging dependency URLs based on version constraints...")
     
     deps = deps_df.copy()
@@ -195,8 +272,16 @@ def merge_dependency_urls(deps_df, packages_df):
 
     return merged.drop(columns=['version_str', 'min_version_str', 'max_version_str', 'latest_dependency_github_url'], errors='ignore')
 
-def process_dependencies(data):
-    """Process dependencies to add GitHub repository information."""
+def process_dependencies(data: List[Dict[str, Any]]) -> pd.DataFrame:
+    """
+    Process dependencies to add GitHub repository information.
+    
+    Args:
+        data: List of repository data dictionaries.
+        
+    Returns:
+        DataFrame containing processed dependency information.
+    """
     print("Processing dependencies...")
     
     # Extract records from the data
@@ -242,8 +327,18 @@ def process_dependencies(data):
     
     return df
 
-def query_oso_for_packages(client, df_deps, cache_df):
-    """Query OSO for package GitHub repositories."""
+def query_oso_for_packages(client: Client, df_deps: pd.DataFrame, cache_df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Query OSO for package GitHub repositories.
+    
+    Args:
+        client: OSO client instance.
+        df_deps: DataFrame containing dependency information.
+        cache_df: DataFrame containing cached package-to-GitHub mappings.
+        
+    Returns:
+        DataFrame containing package information with GitHub URLs.
+    """
     print("Querying OSO for package GitHub repositories...")
     
     # Create a list to store package DataFrames
@@ -350,8 +445,18 @@ def query_oso_for_packages(client, df_deps, cache_df):
         print("No packages found.")
         return pd.DataFrame(columns=['package_name', 'dependency_github_url', 'package_source', 'min_version', 'max_version'])
 
-def main():
-    """Main entry point."""
+def main() -> None:
+    """
+    Main entry point for mapping dependencies to GitHub repositories.
+    
+    This function:
+    1. Sets up the OSO client
+    2. Loads dependencies from dependencies.json
+    3. Processes dependencies to extract package information
+    4. Queries OSO for GitHub repository information
+    5. Merges dependency information with GitHub repository information
+    6. Saves the updated dependencies to dependencies_with_github.json
+    """
     print("Mapping dependencies to GitHub repositories using OSO...")
     
     try:

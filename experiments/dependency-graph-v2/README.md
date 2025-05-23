@@ -12,6 +12,7 @@ A tool for analyzing and visualizing dependencies across multiple repositories. 
 - **Dependency Snapshots**: Generate snapshots of dependencies across all repositories
 - **Interactive Workflow**: Guided workflow for analyzing repositories
 - **GitHub Repository Mapping**: Map dependencies to their source GitHub repositories using OSO's deps.dev package model
+- **Dependency Cleaning**: Clean and flatten dependency data for easier analysis
 
 ## Setup
 
@@ -19,9 +20,9 @@ A tool for analyzing and visualizing dependencies across multiple repositories. 
 2. Install dependencies with Poetry:
    ```bash
    poetry install
-   poetry env activate
+   poetry shell
    ```
-3. Create a `.env` file with the following variables:
+3. Create a `.env` file with the following variables (see `.env.example`):
    ```
    OSO_API_KEY=your_oso_api_key
    GITHUB_TOKEN=your_github_token
@@ -32,124 +33,142 @@ To get an OSO API key, go [here](https://docs.opensource.observer/docs/get-start
 
 ## Usage
 
+### CLI Commands
+
+All functionality is available through the CLI interface:
+
+```bash
+python -m src.cli.main_cli [COMMAND] [OPTIONS]
+```
+
 ### Initialize Repository Sources
 
 ```bash
 python -m src.scripts.initialize_repository_sources
 ```
 
-### Analyze a Repository
+### Repository Analysis Workflow
+
+The interactive workflow guides you through analyzing a repository:
 
 ```bash
 python -m src.cli.main_cli dependencies analyze-repo https://github.com/username/repo
 ```
 
-### Import SBOM Files
+### Dependency Management
 
-#### JSON Format
+#### Fetch Dependencies
 
 ```bash
-python -m src.cli.main_cli dependencies import-sbom path/to/sbom.json https://github.com/username/repo
+# Fetch from all sources
+python -m src.cli.main_cli dependencies fetch --repo-url https://github.com/username/repo
+
+# Fetch from a specific source
+python -m src.cli.main_cli dependencies fetch --repo-url https://github.com/username/repo --source github_api
 ```
 
-#### CSV Format
+#### Import SBOM Files
 
 ```bash
+# JSON Format
+python -m src.cli.main_cli dependencies import-sbom path/to/sbom.json https://github.com/username/repo
+
+# CSV Format
 python -m src.cli.main_cli dependencies import-csv path/to/sbom.csv https://github.com/username/repo
 ```
 
-### Generate Dependency Snapshot
+#### Map Dependencies to GitHub
 
-The dependency snapshot is automatically generated after analyzing a repository or importing an SBOM file. You can also generate it manually:
+Map dependencies to their source GitHub repositories:
+
+```bash
+python -m src.cli.main_cli dependencies map-to-github
+```
+
+#### Clean Dependencies
+
+Clean and flatten the dependency data:
+
+```bash
+python -m src.cli.main_cli dependencies clean
+```
+
+#### Generate Dependency Snapshot
 
 ```bash
 python -m src.cli.main_cli dependencies generate-snapshot
 ```
 
-### Analyze Dependencies
+### Repository Management
 
 ```bash
-python -m src.cli.main_cli dependencies analyze --repos https://github.com/username/repo --sources github_api package_files sbom
+# List all repositories
+python -m src.cli.main_cli dependencies list-repos
+
+# Show repository status
+python -m src.cli.main_cli dependencies status
+
+# Add a dependency file to a repository
+python -m src.cli.main_cli dependencies add-file https://github.com/username/repo https://github.com/username/repo/blob/master/package.json
 ```
 
-## Repository Sources
+## Project Structure
 
-Repository sources are stored in `data/repository_sources.json`. Each repository can have multiple sources:
+```
+dependency-graph-v2/
+├── data/                      # Data storage
+│   ├── package_github_mappings.csv  # Cache for package-to-GitHub mappings
+│   ├── repository_sources.json      # Repository source configurations
+│   └── sbom_exports/               # SBOM export files
+├── output/                    # Output files
+│   ├── cleaned_dependencies.json    # Cleaned dependency data
+│   ├── dependencies.json            # Raw dependency data
+│   ├── dependencies_with_github.json # Dependencies with GitHub mappings
+│   ├── dependency_snapshot.json     # Dependency snapshot
+│   └── repo_status.txt              # Repository status
+├── src/                       # Source code
+│   ├── cli/                   # Command-line interface
+│   ├── config/                # Configuration and settings
+│   │   └── prompts/           # AI prompts for analysis
+│   ├── pipeline/              # Core pipeline components
+│   ├── processing/            # Dependency source implementations
+│   ├── scripts/               # Standalone scripts
+│   └── utils/                 # Utility functions
+├── .env.example               # Example environment variables
+├── poetry.lock                # Poetry lock file
+├── pyproject.toml             # Poetry project configuration
+└── README.md                  # Project documentation
+```
 
-```json
-[
-  {
-    "repo_url": "https://github.com/username/repo",
-    "sources": [
-      {
-        "type": "github_api",
-        "enabled": true,
-        "priority": 1
-      },
-      {
-        "type": "package_files",
-        "enabled": true,
-        "priority": 2,
-        "files": [
-          "https://github.com/username/repo/blob/master/package.json"
-        ]
-      },
-      {
-        "type": "sbom",
-        "enabled": true,
-        "priority": 3,
-        "format": "json",
-        "location": {
-          "type": "local",
-          "path": "data/sbom_exports/username_repo_123456.json"
-        }
-      }
-    ],
-    "last_updated": null
-  }
-]
+## Dependency Processing Pipeline
+
+The dependency processing pipeline consists of the following steps:
+
+1. **Fetch Dependencies**: Fetch dependencies from various sources (GitHub API, package files, SBOM)
+2. **Map to GitHub**: Map dependencies to their source GitHub repositories using OSO
+3. **Clean Dependencies**: Clean and flatten the dependency data
+4. **Generate Snapshot**: Generate a snapshot of dependencies across all repositories
+
+```mermaid
+graph TD
+    A[Fetch Dependencies] --> B[Map to GitHub]
+    B --> C[Clean Dependencies]
+    C --> D[Generate Snapshot]
+    
+    subgraph "Dependency Sources"
+    E[GitHub API] --> A
+    F[Package Files] --> A
+    G[SBOM Files] --> A
+    end
 ```
 
 ## Output Files
 
-- `output/dependencies.json`: Contains all dependencies for all repositories
-- `output/dependency_snapshot.json`: Contains a snapshot of dependencies across all repositories
-- `output/repo_status.txt`: Contains the status of each repository
-
-## Architecture
-
-The codebase is organized into several modules:
-
-- `src/cli`: Command-line interface for dependency management
-- `src/config`: Configuration and settings
-- `src/pipeline`: Core pipeline components
-- `src/processing`: Dependency source implementations
-- `src/utils`: Utility functions
-- `src/scripts`: Standalone scripts for various operations
-
-## Dependency Sources
-
-### GitHub API
-
-Uses GitHub's GraphQL API to fetch dependencies from the dependency graph.
-
-### Package Files
-
-Analyzes package files (e.g., package.json, build.gradle) using Gemini AI to extract dependencies.
-
-### SPDX SBOM
-
-Imports dependencies from SPDX SBOM files in JSON or CSV format.
-
-## Mapping Dependencies to GitHub Repositories
-
-The project uses OSO's deps.dev package model to map dependencies to their source GitHub repositories. This mapping is performed by:
-
-```bash
-python -m src.scripts.map_dependencies_to_github
-```
-
-This creates a mapping cache in `data/package_github_mappings.csv` to speed up future lookups.
+- `output/dependencies.json`: Raw dependency data from all sources
+- `output/dependencies_with_github.json`: Dependencies with GitHub repository mappings
+- `output/cleaned_dependencies.json`: Cleaned and flattened dependency data
+- `output/dependency_snapshot.json`: Snapshot of dependencies across all repositories
+- `output/repo_status.txt`: Status of each repository
 
 ## Contributing
 

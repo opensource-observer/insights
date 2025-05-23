@@ -310,6 +310,173 @@ def generate_snapshot(ctx):
     except Exception as e:
         print(f"Error generating dependency snapshot: {str(e)}")
 
+@dependencies_group.command("map-to-github")
+@click.option('--input-file', default="output/dependencies.json", help='Input dependencies file path.')
+@click.option('--output-file', default="output/dependencies_with_github.json", help='Output file path for dependencies with GitHub URLs.')
+@click.pass_context
+def map_to_github(ctx, input_file, output_file):
+    """Map dependencies to their source GitHub repositories using OSO."""
+    from ..scripts.map_dependencies_to_github import setup_oso_client, process_dependencies, load_cache, query_oso_for_packages, merge_dependency_urls
+    import json
+    
+    print("Mapping dependencies to GitHub repositories using OSO...")
+    data_manager = ctx.obj['data_manager']
+    
+    try:
+        # Set up OSO client
+        print("Setting up OSO client...")
+        client = setup_oso_client()
+        print("OSO client setup complete.")
+        
+        # Load dependencies
+        dependencies_path = Path(input_file)
+        if not dependencies_path.exists():
+            print(f"Error: Dependencies file not found at {dependencies_path}")
+            return
+        
+        print(f"Loading dependencies from {dependencies_path}...")
+        with open(dependencies_path, 'r') as f:
+            data = json.load(f)
+        print(f"Loaded {len(data)} repositories with dependencies.")
+        
+        # Process dependencies
+        df_deps = process_dependencies(data)
+        
+        # Load cache
+        cache_df = load_cache()
+        
+        # Query OSO for packages
+        df_packages = query_oso_for_packages(client, df_deps, cache_df)
+        
+        # Merge dependency URLs
+        result = merge_dependency_urls(df_deps, df_packages)
+        
+        # Convert back to original format
+        print("Converting results back to original format...")
+        updated_data = []
+        mapped_count = 0
+        unknown_count = 0
+        
+        for seed_node in data:
+            repo_url = seed_node.get('repo_url', 'Unknown')
+            updated_seed_node = seed_node.copy()
+            updated_dependencies = []
+            
+            deps = seed_node.get('dependencies', [])
+            repo_mapped = 0
+            repo_unknown = 0
+            
+            for dep in deps:
+                updated_dep = dep.copy()
+                
+                # Find the corresponding row in the result DataFrame
+                package_name = dep.get('packageName', '').lower()
+                package_source = dep.get('packageManager', '')
+                
+                if package_name and package_source:
+                    matches = result[
+                        (result['package_name'] == package_name) & 
+                        (result['package_source'] == package_source)
+                    ]
+                    
+                    if not matches.empty:
+                        # Get the first match (there should only be one)
+                        match = matches.iloc[0]
+                        github_url = match.get('dependency_github_url')
+                        if github_url and pd.notna(github_url):
+                            updated_dep['github_repo'] = github_url
+                            mapped_count += 1
+                            repo_mapped += 1
+                        else:
+                            updated_dep['github_repo'] = "unknown"
+                            unknown_count += 1
+                            repo_unknown += 1
+                    else:
+                        updated_dep['github_repo'] = "unknown"
+                        unknown_count += 1
+                        repo_unknown += 1
+                else:
+                    updated_dep['github_repo'] = "unknown"
+                    unknown_count += 1
+                    repo_unknown += 1
+                
+                updated_dependencies.append(updated_dep)
+            
+            updated_seed_node['dependencies'] = updated_dependencies
+            updated_data.append(updated_seed_node)
+            
+            print(f"Repository {repo_url}: {repo_mapped} mapped, {repo_unknown} unknown")
+        
+        # Save updated dependencies
+        output_path = Path(output_file)
+        with open(output_path, 'w') as f:
+            json.dump(updated_data, f, indent=2)
+        
+        print(f"\nDone! Updated dependencies saved to {output_path}")
+        
+        # Print summary
+        total_deps = sum(len(repo_data.get("dependencies", [])) for repo_data in updated_data)
+        mapped_deps = sum(
+            sum(1 for dep in repo_data.get("dependencies", []) if dep.get("github_repo") != "unknown")
+            for repo_data in updated_data
+        )
+        unknown_deps = total_deps - mapped_deps
+        
+        print(f"\nSummary:")
+        print(f"  Total dependencies: {total_deps}")
+        mapped_percentage = (mapped_deps / total_deps) * 100 if total_deps > 0 else 0
+        unknown_percentage = (unknown_deps / total_deps) * 100 if total_deps > 0 else 0
+        print(f"  Mapped to GitHub: {mapped_deps} ({mapped_percentage:.1f}%)")
+        print(f"  Unknown: {unknown_deps} ({unknown_percentage:.1f}%)")
+        
+    except Exception as e:
+        print(f"Error: {str(e)}")
+
+@dependencies_group.command("clean")
+@click.option('--input-file', default="output/dependencies_with_github.json", help='Input dependencies file path.')
+@click.option('--output-file', default="output/cleaned_dependencies.json", help='Output file path for cleaned dependencies.')
+@click.pass_context
+def clean_dependencies(ctx, input_file, output_file):
+    """Clean and flatten the dependencies data."""
+    from ..scripts.clean_dependencies import process_dependencies
+    import json
+    
+    print("Cleaning dependencies data...")
+    data_manager = ctx.obj['data_manager']
+    
+    try:
+        # Load input file
+        input_path = Path(input_file)
+        if not input_path.exists():
+            print(f"Error: Input file not found at {input_path}")
+            return
+        
+        print(f"Loading dependencies from {input_path}...")
+        with open(input_path, 'r') as f:
+            data = json.load(f)
+        print(f"Loaded {len(data)} repositories with dependencies.")
+        
+        # Process and flatten data
+        cleaned_records = process_dependencies(data)
+        total_dependencies = sum(len(repo_data.get('dependencies', [])) for repo_data in data)
+        
+        # Write output file
+        output_path = Path(output_file)
+        with open(output_path, 'w') as f:
+            json.dump(cleaned_records, f, indent=2)
+        
+        print(f"\nDone! Cleaned {len(cleaned_records)} dependency records.")
+        print(f"Output saved to {output_path}")
+        
+        # Print summary
+        print(f"\nSummary:")
+        print(f"  Total repositories: {len(data)}")
+        print(f"  Total dependencies: {total_dependencies}")
+        print(f"  Cleaned records: {len(cleaned_records)}")
+        
+    except Exception as e:
+        print(f"Error: {str(e)}")
+
 @dependencies_group.command("analyze-repo")
 @click.argument('repo_url', required=False)
 @click.pass_context

@@ -1,6 +1,14 @@
 """
 Script for analyzing dependencies from multiple sources.
-Supports selective updates for specific repositories and sources.
+
+This script analyzes dependencies from multiple sources (GitHub API, package files, SBOM)
+for specified repositories or all repositories. It supports selective updates for
+specific repositories and sources.
+
+Usage:
+    python -m src.scripts.analyze_dependencies [--repos REPO_URL [REPO_URL ...]] 
+                                              [--sources SOURCE [SOURCE ...]]
+                                              [--no-merge] [--initialize]
 """
 import argparse
 import json
@@ -17,7 +25,12 @@ from src.config.config_manager import ConfigManager
 
 
 def parse_args():
-    """Parse command line arguments."""
+    """
+    Parse command line arguments.
+    
+    Returns:
+        argparse.Namespace: Parsed command line arguments.
+    """
     parser = argparse.ArgumentParser(description="Analyze dependencies from multiple sources.")
     parser.add_argument("--repos", nargs="+", help="List of repository URLs to analyze. If not provided, analyze all repositories.")
     parser.add_argument("--sources", nargs="+", choices=["github_api", "package_files", "sbom"], 
@@ -28,14 +41,27 @@ def parse_args():
 
 
 def initialize_repository_sources():
-    """Initialize repository sources from seed repositories."""
+    """
+    Initialize repository sources from seed repositories.
+    
+    This function calls the initialize_repository_sources script to set up
+    repository sources from seed repositories.
+    """
     from src.scripts.initialize_repository_sources import main as initialize_main
     print("Initializing repository sources...")
     initialize_main()
 
 
 def main():
-    """Main entry point."""
+    """
+    Main entry point for analyzing dependencies.
+    
+    This function:
+    1. Parses command line arguments
+    2. Initializes repository sources if requested
+    3. Fetches dependencies from specified sources
+    4. Saves dependencies and updates repository status
+    """
     args = parse_args()
     
     # Initialize repository sources if requested

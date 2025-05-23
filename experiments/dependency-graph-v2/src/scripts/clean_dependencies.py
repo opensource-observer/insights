@@ -7,27 +7,46 @@ mapping. The cleaned data is written to a new file.
 
 Field mapping:
 - repo_url -> seed_repo
-- github_repo -> dependent_repo
+- github_repo -> dependency_repo
 - packageName -> package_name
 - packageManager -> package_manager
 - requirements -> package_requirements
 - packageUrl -> package_url
 - relationship (unchanged)
 - source_type -> methodology
+
+Usage:
+    python -m src.scripts.clean_dependencies
+
+Input:
+    output/dependencies_with_github.json
+
+Output:
+    output/cleaned_dependencies.json
 """
 import json
 import sys
 from pathlib import Path
+from typing import Dict, List, Any
 
 # Add the project root to the Python path
 sys.path.append(str(Path(__file__).parent.parent.parent))
+
+from src.config.config_manager import ConfigManager
 
 # Constants
 INPUT_FILE = "output/dependencies_with_github.json"
 OUTPUT_FILE = "output/cleaned_dependencies.json"
 
-def main():
-    """Main entry point."""
+def main() -> None:
+    """
+    Main entry point for cleaning dependencies data.
+    
+    This function:
+    1. Loads dependencies from dependencies_with_github.json
+    2. Flattens the structure and renames fields
+    3. Saves the cleaned data to cleaned_dependencies.json
+    """
     print("Cleaning dependencies data...")
     
     try:
@@ -43,29 +62,8 @@ def main():
         print(f"Loaded {len(data)} repositories with dependencies.")
         
         # Process and flatten data
-        cleaned_records = []
-        total_dependencies = 0
-        
-        for repo_data in data:
-            seed_repo = repo_data.get('repo_url', 'Unknown')
-            dependencies = repo_data.get('dependencies', [])
-            total_dependencies += len(dependencies)
-            
-            print(f"Processing {len(dependencies)} dependencies from {seed_repo}")
-            
-            for dep in dependencies:
-                # Create flattened record with renamed fields
-                cleaned_record = {
-                    'seed_repo': seed_repo,
-                    'dependent_repo': dep.get('github_repo', 'unknown'),
-                    'package_name': dep.get('packageName', ''),
-                    'package_manager': dep.get('packageManager', ''),
-                    'package_requirements': dep.get('requirements', ''),
-                    'package_url': dep.get('packageUrl', ''),
-                    'relationship': dep.get('relationship', ''),
-                    'methodology': dep.get('source_type', '')
-                }
-                cleaned_records.append(cleaned_record)
+        cleaned_records = process_dependencies(data)
+        total_dependencies = sum(len(repo_data.get('dependencies', [])) for repo_data in data)
         
         # Write output file
         output_path = Path(OUTPUT_FILE)
@@ -83,6 +81,40 @@ def main():
         
     except Exception as e:
         print(f"Error: {str(e)}")
+
+def process_dependencies(data: List[Dict[str, Any]]) -> List[Dict[str, str]]:
+    """
+    Process dependencies data by flattening the structure and renaming fields.
+    
+    Args:
+        data: List of repository data dictionaries.
+        
+    Returns:
+        List of flattened dependency records.
+    """
+    cleaned_records = []
+    
+    for repo_data in data:
+        seed_repo = repo_data.get('repo_url', 'Unknown')
+        dependencies = repo_data.get('dependencies', [])
+        
+        print(f"Processing {len(dependencies)} dependencies from {seed_repo}")
+        
+        for dep in dependencies:
+            # Create flattened record with renamed fields
+            cleaned_record = {
+                'seed_repo': seed_repo,
+                'dependency_repo': dep.get('github_repo', 'unknown'),
+                'package_name': dep.get('packageName', ''),
+                'package_manager': dep.get('packageManager', ''),
+                'package_requirements': dep.get('requirements', ''),
+                'package_url': dep.get('packageUrl', ''),
+                'relationship': dep.get('relationship', ''),
+                'methodology': dep.get('source_type', '')
+            }
+            cleaned_records.append(cleaned_record)
+    
+    return cleaned_records
 
 if __name__ == "__main__":
     main()
