@@ -15,7 +15,7 @@ from pathlib import Path
 # Add the project root to the Python path
 sys.path.append(str(Path(__file__).parent.parent.parent))
 
-from src.pipeline.repository_source_manager import RepositorySourceManager
+from src.core.repository_source_manager import RepositorySourceManager
 
 
 def create_empty_sources_file():

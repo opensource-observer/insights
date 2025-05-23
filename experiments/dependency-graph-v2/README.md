@@ -44,7 +44,7 @@ python -m src.cli.main_cli [COMMAND] [OPTIONS]
 ### Initialize Repository Sources
 
 ```bash
-python -m src.scripts.initialize_repository_sources
+python -m src.core.initialize_repository_sources
 ```
 
 ### Repository Analysis Workflow
@@ -130,9 +130,10 @@ dependency-graph-v2/
 │   ├── cli/                   # Command-line interface
 │   ├── config/                # Configuration and settings
 │   │   └── prompts/           # AI prompts for analysis
-│   ├── pipeline/              # Core pipeline components
-│   ├── processing/            # Dependency source implementations
-│   ├── scripts/               # Standalone scripts
+│   ├── core/                  # Core domain logic and data management
+│   ├── services/              # External services and integrations
+│   ├── dependency/            # Dependency-specific operations
+│   ├── importers/             # Data import functionality
 │   └── utils/                 # Utility functions
 ├── .env.example               # Example environment variables
 ├── poetry.lock                # Poetry lock file
@@ -151,9 +152,16 @@ The dependency processing pipeline consists of the following steps:
 
 ```mermaid
 graph TD
-    A[Fetch Dependencies] --> B[Map to GitHub]
+    S[Identify Seed Repositories] --> A[Fetch Dependencies]
+    A --> B[Map to GitHub]
     B --> C[Clean Dependencies]
     C --> D[Generate Snapshot]
+    
+    subgraph "Repository Sources"
+    S1[Manual Addition] --> S
+    S2[Repository Lists] --> S
+    S3[SBOM Imports] --> S
+    end
     
     subgraph "Dependency Sources"
     E[GitHub API] --> A

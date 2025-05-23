@@ -6,7 +6,7 @@ import os
 from pathlib import Path
 from typing import Dict, List, Optional, Any, Set, Union
 
-from ..processing.dependency_sources import (
+from ..dependency.sources import (
     DependencySource,
     GitHubApiSource,
     PackageFileSource,

@@ -10,10 +10,10 @@ from typing import List, Dict, Any, Optional
 
 import click
 
-from ..pipeline.repository_manager import RepositoryManager
-from ..pipeline.data_manager import DataManager
-from ..pipeline.dependency_snapshot import DependencySnapshot
-from ..processing.dependency_sources import GitHubApiSource, PackageFileSource, SpdxSbomSource
+from ..core.repository import RepositoryManager
+from ..core.data_manager import DataManager
+from ..core.snapshot import DependencySnapshot
+from ..dependency.sources import GitHubApiSource, PackageFileSource, SpdxSbomSource
 from ..utils.timeout import timeout, TimeoutError
 
 

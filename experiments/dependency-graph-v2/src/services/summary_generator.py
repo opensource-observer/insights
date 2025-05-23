@@ -1,8 +1,8 @@
 import pandas as pd
 from tqdm import tqdm
-from .data_manager import DataManager
+from ..core.data_manager import DataManager
 from ..config.config_manager import ConfigManager
-from ..processing.ai_service import AIService, SummaryOutput
+from .ai import AIService, SummaryOutput
 
 class SummaryGeneratorStep:
     def __init__(self, data_manager: DataManager, config_manager: ConfigManager, ai_service: AIService):

@@ -2,9 +2,9 @@ import click
 from pathlib import Path
 
 from ..config.config_manager import ConfigManager
-from ..pipeline.data_manager import DataManager
-from ..pipeline.repository_manager import RepositoryManager
-from .interactive_workflow import InteractiveWorkflow
+from ..core.data_manager import DataManager
+from ..core.repository import RepositoryManager
+from .interactive import InteractiveWorkflow
 
 # Initialize ConfigManager globally or pass as context
 config_manager = ConfigManager() 
@@ -263,7 +263,7 @@ def repo_status(ctx, repo_url):
 @click.pass_context
 def generate_snapshot(ctx):
     """Generate a dependency snapshot across all repositories."""
-    from ..pipeline.dependency_snapshot import DependencySnapshot
+    from ..core.snapshot import DependencySnapshot
     import json
     import os
     
@@ -317,7 +317,7 @@ def generate_snapshot(ctx):
 @click.pass_context
 def map_to_github(ctx, input_file, output_file):
     """Map dependencies to their source GitHub repositories using OSO."""
-    from ..scripts.map_dependencies_to_github import setup_oso_client, process_dependencies, load_cache, query_oso_for_packages, merge_dependency_urls
+    from ..dependency.mapper import setup_oso_client, process_dependencies, load_cache, query_oso_for_packages, merge_dependency_urls
     import json
     import pandas as pd
     
@@ -440,7 +440,7 @@ def map_to_github(ctx, input_file, output_file):
 @click.pass_context
 def clean_dependencies(ctx, input_file, output_file):
     """Clean and flatten the dependencies data."""
-    from ..scripts.clean_dependencies import process_dependencies
+    from ..dependency.cleaner import process_dependencies
     import json
     
     print("Cleaning dependencies data...")
