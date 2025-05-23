@@ -37,6 +37,7 @@ from src.config.config_manager import ConfigManager
 DEPENDENCIES_FILE = "output/dependencies.json"
 OUTPUT_FILE = "output/dependencies_with_github.json"
 MAPPING_CACHE_FILE = "data/package_github_mappings.csv"
+MAX_BATCH_SIZE = 500  # Maximum number of packages to query at once
 
 # GitHub repositories are mapped to package managers: 
 # NPM, GO, PIP, RUST, GRADLE, RUBYGEMS, NUGET, GITHUBACTIONS, ACTIONS
@@ -108,6 +109,19 @@ def stringify(arr: List[str]) -> str:
         String formatted for SQL IN clause.
     """
     return "'" + "','".join([x.lower() for x in arr]) + "'"
+
+def chunk_list(lst: List[str], chunk_size: int) -> List[List[str]]:
+    """
+    Split a list into chunks of specified size.
+    
+    Args:
+        lst: List to split.
+        chunk_size: Maximum size of each chunk.
+        
+    Returns:
+        List of chunks.
+    """
+    return [lst[i:i + chunk_size] for i in range(0, len(lst), chunk_size)]
 
 def parse_semver(v: str) -> Optional[semver.VersionInfo]:
     """
@@ -401,33 +415,49 @@ def query_oso_for_packages(client: Client, df_deps: pd.DataFrame, cache_df: pd.D
                 processed_names = set(go_df['package_name'])
                 pkg_names = [name for name in pkg_names if name not in processed_names]
         
-        # Query OSO for remaining packages
+        # Query OSO for remaining packages in batches
         if pkg_names:
-            try:
-                query = f"""
-                SELECT
-                  package_artifact_name AS package_name,
-                  CONCAT('https://github.com/',package_github_owner,'/',package_github_repo) AS dependency_github_url,
-                  package_version AS package_version,
-                  '{pkg_source}' AS package_source
-                FROM int_packages
-                WHERE
-                  package_artifact_name IN ({stringify(pkg_names)})
-                  AND package_artifact_source = '{pkg_system}'
-                  AND is_current_owner = TRUE
-                """
+            # Split packages into batches of MAX_BATCH_SIZE
+            package_batches = chunk_list(pkg_names, MAX_BATCH_SIZE)
+            print(f"Processing {len(package_batches)} batches of up to {MAX_BATCH_SIZE} packages each...")
+            
+            batch_results = []
+            for i, batch in enumerate(package_batches):
+                print(f"Processing batch {i+1}/{len(package_batches)} with {len(batch)} packages...")
                 
-                raw = client.to_pandas(query)
-                
-                if raw is not None and not raw.empty:
-                    print(f"Found {len(raw)} unique packages from OSO.")
-                    df_pkg = build_semver_ranges(raw)
-                    print(f"Built {len(df_pkg)} summary packages with semver ranges.")
-                    packages.append(df_pkg)
-                else:
-                    print(f"No packages found in OSO for {pkg_source}.")
-            except Exception as e:
-                print(f"Error querying OSO for {pkg_source} packages: {str(e)}")
+                try:
+                    query = f"""
+                    SELECT
+                      package_artifact_name AS package_name,
+                      CONCAT('https://github.com/',package_github_owner,'/',package_github_repo) AS dependency_github_url,
+                      package_version AS package_version,
+                      '{pkg_source}' AS package_source
+                    FROM int_packages
+                    WHERE
+                      package_artifact_name IN ({stringify(batch)})
+                      AND package_artifact_source = '{pkg_system}'
+                      AND is_current_owner = TRUE
+                    """
+                    
+                    raw = client.to_pandas(query)
+                    
+                    if raw is not None and not raw.empty:
+                        print(f"Found {len(raw)} unique packages from OSO for batch {i+1}.")
+                        batch_results.append(raw)
+                    else:
+                        print(f"No packages found in OSO for batch {i+1}.")
+                        
+                except Exception as e:
+                    print(f"Error querying OSO for {pkg_source} packages in batch {i+1}: {str(e)}")
+                    continue
+            
+            # Combine all batch results
+            if batch_results:
+                combined_raw = pd.concat(batch_results, ignore_index=True)
+                print(f"Combined {len(combined_raw)} total packages from all batches.")
+                df_pkg = build_semver_ranges(combined_raw)
+                print(f"Built {len(df_pkg)} summary packages with semver ranges.")
+                packages.append(df_pkg)
     
     # Combine all package DataFrames
     if packages:

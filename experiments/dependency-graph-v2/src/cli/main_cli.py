@@ -7,7 +7,7 @@ from ..pipeline.repository_manager import RepositoryManager
 from .interactive_workflow import InteractiveWorkflow
 
 # Initialize ConfigManager globally or pass as context
-config_manager = ConfigManager() # Loads default or existing pipeline_config.json
+config_manager = ConfigManager() 
 
 @click.group()
 @click.option('--test-mode', is_flag=True, help='Run in test mode (limits fetched repos, uses test_mode_limit from config).')
@@ -16,13 +16,14 @@ def cli(ctx, test_mode):
     """Dependency Graph CLI for analyzing repository dependencies."""
     ctx.ensure_object(dict)
     
-    # Update config if test_mode flag is set via CLI
+    # Handle test mode flag
     if test_mode:
-        config_manager.set("test_mode", True) 
         print(f"CLI flag --test-mode is set. Running in test mode. Limit: {config_manager.get_test_mode_limit()} repos.")
+        # Note: Test mode is now controlled by settings.py, not runtime configuration
     else:
-        # If not set by CLI, respect the config file's test_mode setting
-        pass # Current behavior: respects config file if CLI flag is absent.
+        # Test mode is controlled by the TEST_MODE setting in settings.py
+        if config_manager.is_test_mode():
+            print(f"Test mode is enabled in settings. Limit: {config_manager.get_test_mode_limit()} repos.")
 
     # Initialize services and pass them via context
     output_dir = config_manager.get_output_dir()
@@ -318,6 +319,7 @@ def map_to_github(ctx, input_file, output_file):
     """Map dependencies to their source GitHub repositories using OSO."""
     from ..scripts.map_dependencies_to_github import setup_oso_client, process_dependencies, load_cache, query_oso_for_packages, merge_dependency_urls
     import json
+    import pandas as pd
     
     print("Mapping dependencies to GitHub repositories using OSO...")
     data_manager = ctx.obj['data_manager']

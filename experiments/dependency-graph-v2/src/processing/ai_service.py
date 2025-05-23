@@ -20,7 +20,7 @@ class AIService:
     def __init__(self, config_manager: ConfigManager):
         self.config_manager = config_manager
         self.api_key = self.config_manager.get_gemini_api_key() 
-        self.model_name = self.config_manager.get("gemini_model")
+        self.model_name = self.config_manager.get_gemini_model()
         
         if not self.api_key:
             raise ValueError("GEMINI_API_KEY not found in configuration.")
@@ -104,7 +104,16 @@ class AIService:
         if not readme_md or not readme_md.strip():
             return SummaryOutput(summary="This appears to be an empty repository without a README file.")
         
-        prompt_template = self.config_manager.get_summary_prompt_template()
+        # Simple hardcoded prompt template since summary functionality was removed
+        prompt_template = """You are an analyst preparing short, neutral briefs on open-source projects. Read the README below and write a concise, 2- to 3-sentence summary that states the project's core purpose and main capabilities.
+
+Return your answer as exactly one valid JSON object in this form:
+{{
+  "summary": "your summary here"
+}}
+
+README:
+{readme_md}"""
         prompt = prompt_template.format(readme_md=readme_md)
         return self.execute_query(prompt, SummaryOutput)
 

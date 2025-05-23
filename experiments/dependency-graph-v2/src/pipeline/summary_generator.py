@@ -15,7 +15,7 @@ class SummaryGeneratorStep:
         Generate summaries for repositories.
         Uses batch_size_summaries from config.
         """
-        batch_size = self.config_manager.get_batch_size_summaries()
+        batch_size = 10
         
         if force_refresh:
             print("Force refresh enabled for summaries. Wiping existing summarized data.")
