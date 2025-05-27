@@ -21,6 +21,7 @@ jobs:
   upload-to-colab:
     if: inputs.command == 'upload'
     runs-on: ubuntu-latest
+    environment: deploy
     env:
       GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
       COLAB_FOLDER_ID:    ${{ vars.COLAB_FOLDER_ID }}
@@ -147,7 +148,7 @@ jobs:
         path:  oso
         branch: auto/tutorial-mdx-${{ github.run_id }}
         base: main
-        title: "Add MDX tutorial(s) – run ${{ github.run_id }}"
+        title: "Add MDX tutorial(s) - run ${{ github.run_id }}"
         commit-message: |
           docs: add auto-generated MDX tutorial(s)
         body: |
