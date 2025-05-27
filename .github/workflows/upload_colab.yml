@@ -150,6 +150,6 @@ jobs:
         base: main
         title: "Add MDX tutorial(s) - run ${{ github.run_id }}"
         commit-message: |
-          docs: add auto-generated MDX tutorial(s)
+          docs: add auto-generated MDX tutorial(s) [skip ci]
         body: |
           Auto-generated MDX files from **${{ github.repository }}**.
