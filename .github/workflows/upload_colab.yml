@@ -78,6 +78,7 @@ jobs:
   send-pull-requests:
     if: inputs.command == 'push'
     runs-on: ubuntu-latest
+    environment: deploy
     env:
       GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
       COLAB_FOLDER_ID:    ${{ vars.COLAB_FOLDER_ID }}
