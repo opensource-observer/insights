@@ -1,38 +1,95 @@
-name: Upload Notebook → Colab → MDX → PR to oso repo
+name: Notebook Ops - Upload or Push
 
 on:
-  push:
-    branches:
-      - main                      # run only after PRs merge to main
-    tags-ignore:
-      - "**"                      # never fire for tag pushes
-    paths:
-      - "tutorials/data-science/**/*.ipynb"
+  workflow_dispatch:
+    inputs:
+      command:
+        description: "upload → add Colab link to .ipynb  |  push → convert to MDX & PR to oso repo"
+        required: true
+        type: choice
+        options: [upload, push]
+      notebook:
+        description: "Path (relative to repo root) to the .ipynb you want to process"
+        required: true
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: write          # commit back to this repo
+  pull-requests: write     # create / update a PR in the oso repo
 
 jobs:
-  send-pull-requests:
+  # Upload notebook to Colab
+  upload-to-colab:
+    if: inputs.command == 'upload'
     runs-on: ubuntu-latest
-    environment: deploy
+    env:
+      GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+      COLAB_FOLDER_ID:    ${{ vars.COLAB_FOLDER_ID }}
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: actions/setup-python@v5
+      with: { python-version: '3.10' }
+
+    - name: Install deps
+      run: |
+        pip install google-api-python-client \
+                    google-auth google-auth-httplib2 google-auth-oauthlib
+
+    - name: Upload & embed Colab link
+      run: |
+        NB="${{ inputs.notebook }}"
+        echo "Uploading $NB to Colab Drive…"
+        LINK=$(python scripts/upload_to_drive.py "$NB" --folder "$COLAB_FOLDER_ID")
+
+        echo "Embedding link into notebook…"
+        python - <<'PY'
+        import json, pathlib, os, sys
+        nb_path = pathlib.Path(os.environ["NB"])
+        link     = os.environ["LINK"]
+        nb = json.loads(nb_path.read_text())
+        link_cell = {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [f'[Open in Colab]({link})\n']
+        }
+        # Only add if we haven't added it before
+        first_src = nb["cells"][0]["source"] if nb["cells"] else []
+        if isinstance(first_src, list):
+            already = any("open in colab" in line.lower() for line in first_src)
+        else:
+            already = "open in colab" in first_src.lower()
+        if not already:
+            nb["cells"].insert(0, link_cell)
+            nb_path.write_text(json.dumps(nb, indent=1, ensure_ascii=False))
+        else:
+            print("Link already present; skipping insert.")
+        PY
+
+    - name: Commit updated notebook
+      run: |
+        git config user.name  "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git add "${{ inputs.notebook }}"
+        git commit -m "chore: embed Colab link in ${{ inputs.notebook }}" || echo "No changes to commit"
+        git push
+
+  # Convert → MDX → PR to oso repo
+  send-pull-requests:
+    if: inputs.command == 'push'
+    runs-on: ubuntu-latest
     env:
       GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
       COLAB_FOLDER_ID:    ${{ vars.COLAB_FOLDER_ID }}
       COLAB_DRIVE_ID:     ${{ vars.COLAB_DRIVE_ID }}
       GEMINI_API_KEY:     ${{ secrets.GEMINI_API_KEY }}
       TARGET_PAT:         ${{ secrets.TARGET_PAT }}
-
+      NOTEBOOKS:          ${{ inputs.notebook }}        # single-file mode
     steps:
-    # Full-depth checkout so tags & history are present
-    - name: Checkout repo
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0            # important for tag / diff look-ups
+    - uses: actions/checkout@v4
+      with: { fetch-depth: 0 }
 
     - uses: actions/setup-python@v5
-      with: { python-version: "3.10" }
+      with: { python-version: '3.10' }
 
     - name: Install deps
       run: |
@@ -41,94 +98,57 @@ jobs:
                    google-auth google-auth-httplib2 google-auth-oauthlib \
                    google-genai
 
-    # List .ipynb files touched in this push
-    - name: Find notebooks changed in this push
-      id: list
-      run: |
-        NOTEBOOKS=$(git diff -M --name-only --diff-filter=AMR \
-          "${{ github.event.before }}" "${{ github.sha }}" \
-          | grep '\.ipynb$' || true)
-
-        echo "notebooks<<EOF" >> "$GITHUB_OUTPUT"
-        echo "$NOTEBOOKS" >> "$GITHUB_OUTPUT"
-        echo "EOF" >> "$GITHUB_OUTPUT"
-
-        if [ -z "$NOTEBOOKS" ]; then
-          echo "No new or modified .ipynb files; skipping workflow."
-          exit 0
-        fi
-
-    # Upload each notebook → Colab & create .mdx
-    - name: Upload & convert to MDX
-      if: steps.list.outputs.notebooks != ''
+    - name: Upload notebook & convert to MDX
       run: |
         mkdir -p mdx_build
-        while read -r NB; do
-          [ -z "$NB" ] && continue
-          echo "Processing $NB"
+        NB="$NOTEBOOKS"
+        BASENAME="$(basename "$NB" .ipynb)"
+        echo "Processing $NB"
 
-          BASENAME="$(basename "$NB" .ipynb)"
+        LINK=$(python scripts/upload_to_drive.py "$NB" --folder "$COLAB_FOLDER_ID")
 
-          # Upload to Drive ⇒ Colab link
-          LINK=$(python scripts/upload_to_drive.py "$NB" \
-                  --folder "$COLAB_FOLDER_ID")
+        jupyter nbconvert "$NB" \
+              --to markdown \
+              --output     "$BASENAME" \
+              --output-dir mdx_build
 
-          # ipynb ⇒ markdown (save images as seperate folder)
-          jupyter nbconvert "$NB" \
-                --to markdown \
-                --output     "$BASENAME" \
-                --output-dir mdx_build
+        MARKDOWN_PATH="mdx_build/${BASENAME}.md"
+        MDX_OUT="mdx_build/${BASENAME}.mdx"
+        printf '<a href="%s" target="_blank">Open in Colab</a>\n\n' "$LINK" > "$MDX_OUT"
+        cat "$MARKDOWN_PATH" >> "$MDX_OUT"
 
-          MARKDOWN_PATH="mdx_build/${BASENAME}.md"
-          MDX_OUT="mdx_build/${BASENAME}.mdx"
-
-          printf '<a href="%s" target="_blank">Open in Colab</a>\n\n' "$LINK" > "$MDX_OUT"
-          cat "$MARKDOWN_PATH" >> "$MDX_OUT"
-        done <<< "${{ steps.list.outputs.notebooks }}"
-
-        # Stage for oso repo layout
         mkdir -p mdx_build/apps/docs/docs/tutorials
         mv mdx_build/*.mdx mdx_build/apps/docs/docs/tutorials/
-        mv mdx_build/*_files           mdx_build/apps/docs/docs/tutorials/ 2>/dev/null || true
+        mv mdx_build/*_files mdx_build/apps/docs/docs/tutorials/ 2>/dev/null || true
 
-    # Update tutorials index with Gemini
     - name: Update tutorials index with Gemini
-      if: steps.list.outputs.notebooks != ''
       run: python scripts/update_tutorial_index.py
 
-    # Checkout the oso docs repo (as a workspace sub-dir)
     - name: Checkout oso repo
-      if: steps.list.outputs.notebooks != ''
       uses: actions/checkout@v4
       with:
-        repository: opensource-observer/oso          # target repo
-        token: ${{ secrets.TARGET_PAT }}             # PAT must write to oso
-        path:   oso                                  # work in ./oso
-        fetch-depth: 0                               # keep full history
-    
-    - name: Copy new MDX files into oso repo
-      if: steps.list.outputs.notebooks != ''
-      run: |
-        mkdir -p oso/apps/docs/docs/tutorials    # safety
+        repository: opensource-observer/oso
+        token: ${{ secrets.TARGET_PAT }}
+        path:   oso
+        fetch-depth: 0
 
-        # copy files to keep existing content
+    - name: Copy new MDX files into oso repo
+      run: |
+        mkdir -p oso/apps/docs/docs/tutorials
         rsync -a mdx_build/apps/docs/docs/tutorials/ \
               oso/apps/docs/docs/tutorials/
-
-        # explicitly copy the regenerated index so it always overwrites
         rsync -a mdx_build/apps/docs/docs/tutorials/index.* \
               oso/apps/docs/docs/tutorials/
 
-    # Copy MDX, then auto-commit & open/update PR
-    - name: Create PR in oso with new tutorials
-      if: steps.list.outputs.notebooks != ''
-      uses: peter-evans/create-pull-request@v5       # or latest tag
+    - name: Create or update PR
+      uses: peter-evans/create-pull-request@v5
       with:
         token: ${{ secrets.TARGET_PAT }}
-        commit-message: |
-          docs: add auto-generated MDX tutorial(s)
-        title: "Add MDX tutorial(s) - run ${{ github.run_id }}"
-        body: "Auto-generated MDX files from **${{ github.repository }}**."
+        path:  oso
         branch: auto/tutorial-mdx-${{ github.run_id }}
         base: main
-        path: oso                            # run inside ./oso
+        title: "Add MDX tutorial(s) – run ${{ github.run_id }}"
+        commit-message: |
+          docs: add auto-generated MDX tutorial(s)
+        body: |
+          Auto-generated MDX files from **${{ github.repository }}**.
