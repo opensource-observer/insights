@@ -38,9 +38,9 @@ jobs:
 
     - name: Upload & embed Colab link
       run: |
-        NB="${{ inputs.notebook }}"
+        export NB="${{ inputs.notebook }}"
         echo "Uploading $NB to Colab Drive…"
-        LINK=$(python scripts/upload_to_drive.py "$NB" --folder "$COLAB_FOLDER_ID")
+        export LINK=$(python scripts/upload_to_drive.py "$NB" --folder "$COLAB_FOLDER_ID")
 
         echo "Embedding link into notebook…"
         python - <<'PY'
@@ -82,7 +82,6 @@ jobs:
     env:
       GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
       COLAB_FOLDER_ID:    ${{ vars.COLAB_FOLDER_ID }}
-      COLAB_DRIVE_ID:     ${{ vars.COLAB_DRIVE_ID }}
       GEMINI_API_KEY:     ${{ secrets.GEMINI_API_KEY }}
       TARGET_PAT:         ${{ secrets.TARGET_PAT }}
       NOTEBOOKS:          ${{ inputs.notebook }}        # single-file mode
