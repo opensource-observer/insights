@@ -74980,12 +74980,719 @@
       {
         "packageName": "org.hyperledger.besu:besu-errorprone-checks",
         "packageManager": "GRADLE",
-        "requirements": null,
+        "requirements": "1.0.0",
         "relationship": "direct",
         "source_type": "package_files"
       },
       {
         "packageName": "org.slf4j:slf4j-api",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "com.google.errorprone:javac",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "indirect",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.checkerframework:dataflow-shaded",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "indirect",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.checkerframework:dataflow-errorprone",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "indirect",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "com.squareup.okio:okio",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "indirect",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.jetbrains.kotlinx:kotlinx-coroutines-core",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "indirect",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "com.fasterxml.jackson:jackson-bom",
+        "packageManager": "GRADLE",
+        "requirements": "2.18.2",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "io.grpc:grpc-bom",
+        "packageManager": "GRADLE",
+        "requirements": "1.70.0",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "io.netty:netty-bom",
+        "packageManager": "GRADLE",
+        "requirements": "4.1.118.Final",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "io.opentelemetry:opentelemetry-bom",
+        "packageManager": "GRADLE",
+        "requirements": "1.47.0",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "io.prometheus:prometheus-metrics-bom",
+        "packageManager": "GRADLE",
+        "requirements": "1.3.5",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "io.vertx:vertx-stack-depchain",
+        "packageManager": "GRADLE",
+        "requirements": "4.5.13",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.apache.logging.log4j:log4j-bom",
+        "packageManager": "GRADLE",
+        "requirements": "2.24.3",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.assertj:assertj-bom",
+        "packageManager": "GRADLE",
+        "requirements": "3.27.3",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.immutables:bom",
+        "packageManager": "GRADLE",
+        "requirements": "2.10.1",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.junit:junit-bom",
+        "packageManager": "GRADLE",
+        "requirements": "5.11.4",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.mockito:mockito-bom",
+        "packageManager": "GRADLE",
+        "requirements": "5.15.2",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.slf4j:slf4j-bom",
+        "packageManager": "GRADLE",
+        "requirements": "2.0.16",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "com.github.ben-manes.caffeine:caffeine",
+        "packageManager": "GRADLE",
+        "requirements": "3.2.0",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "com.github.oshi:oshi-core",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "com.google.auto.service:auto-service",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "com.google.dagger:dagger-compiler",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "com.google.dagger:dagger",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "com.google.guava:guava",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "com.google.protobuf:protobuf-java",
+        "packageManager": "GRADLE",
+        "requirements": "3.25.5",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "com.graphql-java:graphql-java",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "com.splunk.logging:splunk-library-javalogging",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "com.squareup.okhttp3:okhttp",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "commons-io:commons-io",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "commons-net:commons-net",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "dnsjava:dnsjava",
+        "packageManager": "GRADLE",
+        "requirements": "3.6.3",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "info.picocli:picocli",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "info.picocli:picocli-codegen",
+        "packageManager": "GRADLE",
+        "requirements": "4.7.6",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "io.opentelemetry.instrumentation:opentelemetry-okhttp-3.0",
+        "packageManager": "GRADLE",
+        "requirements": "2.13.1-alpha",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "io.opentelemetry.proto:opentelemetry-proto",
+        "packageManager": "GRADLE",
+        "requirements": "1.5.0-alpha",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "io.opentelemetry.semconv:opentelemetry-semconv",
+        "packageManager": "GRADLE",
+        "requirements": "1.30.0",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "io.opentelemetry.semconv:opentelemetry-semconv-incubating",
+        "packageManager": "GRADLE",
+        "requirements": "1.30.0-alpha",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "io.opentracing:opentracing-api",
+        "packageManager": "GRADLE",
+        "requirements": "0.33.0",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "io.opentracing:opentracing-util",
+        "packageManager": "GRADLE",
+        "requirements": "0.33.0",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "io.opentracing.contrib:opentracing-okhttp3",
+        "packageManager": "GRADLE",
+        "requirements": "3.0.0",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "io.pkts:pkts-core",
+        "packageManager": "GRADLE",
+        "requirements": "3.0.10",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "io.consensys.tuweni:tuweni-bytes",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "io.consensys.tuweni:tuweni-config",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "io.consensys.tuweni:tuweni-concurrent",
+        "packageManager": "GRADLE",
+        "requirements": "2.7.0",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "io.consensys.tuweni:tuweni-crypto",
+        "packageManager": "GRADLE",
+        "requirements": "2.7.0",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "io.consensys.tuweni:tuweni-io",
+        "packageManager": "GRADLE",
+        "requirements": "2.7.0",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "io.consensys.tuweni:tuweni-net",
+        "packageManager": "GRADLE",
+        "requirements": "2.7.0",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "io.consensys.tuweni:tuweni-rlp",
+        "packageManager": "GRADLE",
+        "requirements": "2.7.0",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "io.consensys.tuweni:tuweni-toml",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "io.consensys.tuweni:tuweni-units",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "javax.inject:javax.inject",
+        "packageManager": "GRADLE",
+        "requirements": "1",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "net.java.dev.jna:jna",
+        "packageManager": "GRADLE",
+        "requirements": "5.16.0",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.antlr:antlr4",
+        "packageManager": "GRADLE",
+        "requirements": "4.11.1",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.antlr:antlr4-runtime",
+        "packageManager": "GRADLE",
+        "requirements": "4.11.1",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.apache.commons:commons-collections4",
+        "packageManager": "GRADLE",
+        "requirements": "4.4",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.apache.commons:commons-compress",
+        "packageManager": "GRADLE",
+        "requirements": "1.27.1",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.apache.commons:commons-lang3",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.apache.commons:commons-text",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.apache.maven:maven-artifact",
+        "packageManager": "GRADLE",
+        "requirements": "3.9.9",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.awaitility:awaitility",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.bouncycastle:bcpkix-jdk18on",
+        "packageManager": "GRADLE",
+        "requirements": "1.80",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.bouncycastle:bcprov-jdk18on",
+        "packageManager": "GRADLE",
+        "requirements": "1.80",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.fusesource.jansi:jansi",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.hibernate.validator:hibernate-validator",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.hyperledger.besu:besu-native-common",
+        "packageManager": "GRADLE",
+        "requirements": "1.3.0",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.hyperledger.besu:arithmetic",
+        "packageManager": "GRADLE",
+        "requirements": "1.3.0",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.hyperledger.besu:blake2bf",
+        "packageManager": "GRADLE",
+        "requirements": "1.3.0",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.hyperledger.besu:gnark",
+        "packageManager": "GRADLE",
+        "requirements": "1.3.0",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.hyperledger.besu:ipa-multipoint",
+        "packageManager": "GRADLE",
+        "requirements": "1.3.0",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.hyperledger.besu:secp256k1",
+        "packageManager": "GRADLE",
+        "requirements": "1.3.0",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.hyperledger.besu:secp256r1",
+        "packageManager": "GRADLE",
+        "requirements": "1.3.0",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.jacoco:org.jacoco.agent",
+        "packageManager": "GRADLE",
+        "requirements": "0.8.12",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.jacoco:org.jacoco.core",
+        "packageManager": "GRADLE",
+        "requirements": "0.8.12",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.junit.platform:junit-platform-runner",
+        "packageManager": "GRADLE",
+        "requirements": "1.12.0",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.jupnp:org.jupnp",
+        "packageManager": "GRADLE",
+        "requirements": "3.0.3",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.jupnp:org.jupnp.support",
+        "packageManager": "GRADLE",
+        "requirements": "3.0.3",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.openjdk.jmh:jmh-core",
+        "packageManager": "GRADLE",
+        "requirements": "1.37",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.openjdk.jmh:jmh-generator-annprocess",
+        "packageManager": "GRADLE",
+        "requirements": "1.37",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.openjdk.jol:jol-core",
+        "packageManager": "GRADLE",
+        "requirements": "0.17",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.owasp.encoder:encoder",
+        "packageManager": "GRADLE",
+        "requirements": "1.3.1",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.rocksdb:rocksdbjni",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.springframework.security:spring-security-crypto",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.web3j:abi",
+        "packageManager": "GRADLE",
+        "requirements": "4.12.3",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.web3j:besu",
+        "packageManager": "GRADLE",
+        "requirements": "4.12.3",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.web3j:core",
+        "packageManager": "GRADLE",
+        "requirements": "4.12.3",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.web3j:crypto",
+        "packageManager": "GRADLE",
+        "requirements": "4.12.3",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.web3j:quorum",
+        "packageManager": "GRADLE",
+        "requirements": "4.10.0",
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.xerial.snappy:snappy-java",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "io.consensys.protocols:jc-kzg-4844",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "tech.pegasys.discovery:discovery",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "com.fasterxml.jackson.core:jackson-databind",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "com.fasterxml.jackson.datatype:jackson-datatype-jdk8",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "io.vertx:vertx-core",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "io.vertx:vertx-web",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.apache.logging.log4j:log4j-core",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.apache.logging.log4j:log4j-jul",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "io.opentelemetry:opentelemetry-api",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.mockito:mockito-junit-jupiter",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.assertj:assertj-core",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.junit.jupiter:junit-jupiter",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "org.mockito:mockito-core",
+        "packageManager": "GRADLE",
+        "requirements": null,
+        "relationship": "direct",
+        "source_type": "package_files"
+      },
+      {
+        "packageName": "gradlePluginPortal",
         "packageManager": "GRADLE",
         "requirements": null,
         "relationship": "direct",

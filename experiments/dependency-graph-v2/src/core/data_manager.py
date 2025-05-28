@@ -250,8 +250,9 @@ class DataManager:
         # Write updated status
         try:
             with open(self.repo_status_path, 'w') as f:
-                for url, stat in status_data.items():
-                    f.write(f"{url}: {stat}\n")
+                # Sort the URLs alphabetically before writing
+                for url in sorted(status_data.keys()):
+                    f.write(f"{url}: {status_data[url]}\n")
             print(f"Updated status for {repo_url}: {status}")
         except Exception as e:
             print(f"Error updating repo status: {str(e)}")

@@ -313,7 +313,10 @@
         "enabled": true,
         "priority": 2,
         "files": [
-          "https://github.com/hyperledger/besu/blob/main/build.gradle"
+          "https://github.com/hyperledger/besu/blob/main/build.gradle",
+          "https://github.com/hyperledger/besu/blob/main/platform/build.gradle",
+          "https://github.com/hyperledger/besu/blob/main/besu/build.gradle",
+          "https://github.com/hyperledger/besu/blob/main/settings.gradle"
         ]
       },
       {
@@ -327,7 +330,7 @@
         }
       }
     ],
-    "last_updated": null
+    "last_updated": "2025-05-28T09:56:15.664249"
   },
   {
     "repo_url": "https://github.com/erigontech/erigon",
@@ -558,7 +561,8 @@
         "enabled": true,
         "priority": 2,
         "files": [
-          "https://github.com/hyperledger-web3j/web3j/blob/main/build.gradle"
+          "https://github.com/hyperledger-web3j/web3j/blob/main/build.gradle",
+          "https://github.com/LFDT-web3j/web3j/blob/main/core/build.gradle"
         ]
       },
       {
@@ -857,7 +861,7 @@
         "enabled": true,
         "priority": 2,
         "files": [
-          "https://github.com/ethereum/evmone/blob/master/lib/evmone_precompiles/cmakelists.txt"
+          "https://github.com/ethereum/evmone/blob/master/README.md"
         ]
       },
       {

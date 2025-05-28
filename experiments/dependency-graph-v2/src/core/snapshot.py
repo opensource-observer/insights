@@ -102,7 +102,8 @@ class DependencySnapshot:
             
             repo_stats[repo_url] = dict(package_managers)
         
-        return repo_stats
+        # Sort the repositories alphabetically
+        return dict(sorted(repo_stats.items()))
     
     def generate_full_snapshot(self) -> Dict[str, Any]:
         """
