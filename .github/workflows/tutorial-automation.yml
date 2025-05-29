@@ -1,4 +1,8 @@
-name: Notebook Ops - Upload or Push
+name: Tutorial Automation
+description: |
+  Automates the process of uploading Jupyter notebooks to Google Colab,
+  embedding Colab links, converting notebooks to MDX, and creating PRs
+  in the oso repository.
 
 on:
   workflow_dispatch:
@@ -38,33 +42,9 @@ jobs:
 
     - name: Upload & embed Colab link
       run: |
-        export NB="${{ inputs.notebook }}"
-        echo "Uploading $NB to Colab Drive…"
-        export LINK=$(python scripts/upload_to_drive.py "$NB" --folder "$COLAB_FOLDER_ID")
-
-        echo "Embedding link into notebook…"
-        python - <<'PY'
-        import json, pathlib, os, sys
-        nb_path = pathlib.Path(os.environ["NB"])
-        link     = os.environ["LINK"]
-        nb = json.loads(nb_path.read_text())
-        link_cell = {
-            "cell_type": "markdown",
-            "metadata": {},
-            "source": [f'[Open in Colab]({link})\n']
-        }
-        # Only add if we haven't added it before
-        first_src = nb["cells"][0]["source"] if nb["cells"] else []
-        if isinstance(first_src, list):
-            already = any("open in colab" in line.lower() for line in first_src)
-        else:
-            already = "open in colab" in first_src.lower()
-        if not already:
-            nb["cells"].insert(0, link_cell)
-            nb_path.write_text(json.dumps(nb, indent=1, ensure_ascii=False))
-        else:
-            print("Link already present; skipping insert.")
-        PY
+        python scripts/embed_colab_link.py \
+          --notebook "${{ inputs.notebook }}" \
+          --folder   "$COLAB_FOLDER_ID"
 
     - name: Commit updated notebook
       run: |
@@ -73,7 +53,7 @@ jobs:
         git add "${{ inputs.notebook }}"
         git commit -m "chore: embed Colab link in ${{ inputs.notebook }}" || echo "No changes to commit"
         git push
-
+  
   # Convert → MDX → PR to oso repo
   send-pull-requests:
     if: inputs.command == 'push'
@@ -84,7 +64,7 @@ jobs:
       COLAB_FOLDER_ID:    ${{ vars.COLAB_FOLDER_ID }}
       GEMINI_API_KEY:     ${{ secrets.GEMINI_API_KEY }}
       TARGET_PAT:         ${{ secrets.TARGET_PAT }}
-      NOTEBOOKS:          ${{ inputs.notebook }}        # single-file mode
+      NOTEBOOKS:          ${{ inputs.notebook }}
     steps:
     - uses: actions/checkout@v4
       with: { fetch-depth: 0 }
@@ -92,35 +72,32 @@ jobs:
     - uses: actions/setup-python@v5
       with: { python-version: '3.10' }
 
+    - uses: actions/setup-node@v4
+      with: { node-version: '20.x' }
+
     - name: Install deps
       run: |
         pip install nbconvert \
                    google-api-python-client \
                    google-auth google-auth-httplib2 google-auth-oauthlib \
                    google-genai
+        npm install --global prettier
 
     - name: Upload notebook & convert to MDX
       run: |
-        mkdir -p mdx_build
-        NB="$NOTEBOOKS"
-        BASENAME="$(basename "$NB" .ipynb)"
-        echo "Processing $NB"
+        python scripts/nb_to_mdx.py \
+          --notebook "$NOTEBOOKS" \
+          --folder   "$COLAB_FOLDER_ID" \
+          --outdir   "mdx_build"
 
-        LINK=$(python scripts/upload_to_drive.py "$NB" --folder "$COLAB_FOLDER_ID")
+    - name: Strip HTML from MDX
+      run: python scripts/sanitize_mdx_html.py mdx_build
 
-        jupyter nbconvert "$NB" \
-              --to markdown \
-              --output     "$BASENAME" \
-              --output-dir mdx_build
+    - name: Add MDX front-matter / imports
+      run: python scripts/add_mdx_header.py mdx_build/apps/docs/docs/tutorials
 
-        MARKDOWN_PATH="mdx_build/${BASENAME}.md"
-        MDX_OUT="mdx_build/${BASENAME}.mdx"
-        printf '<a href="%s" target="_blank">Open in Colab</a>\n\n' "$LINK" > "$MDX_OUT"
-        cat "$MARKDOWN_PATH" >> "$MDX_OUT"
-
-        mkdir -p mdx_build/apps/docs/docs/tutorials
-        mv mdx_build/*.mdx mdx_build/apps/docs/docs/tutorials/
-        mv mdx_build/*_files mdx_build/apps/docs/docs/tutorials/ 2>/dev/null || true
+    - name: Format with Prettier
+      run: npx prettier --write "mdx_build/apps/docs/docs/tutorials/**/*.mdx"
 
     - name: Update tutorials index with Gemini
       run: python scripts/update_tutorial_index.py
