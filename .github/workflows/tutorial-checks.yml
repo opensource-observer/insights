@@ -74,13 +74,19 @@ jobs:
       with:
         python-version: '3.11'
 
-    - run: pip install nbconvert
+    - name: Install Jupyter tooling + kernel        
       if: steps.filter.outputs.notebooks == 'true'
+      run: |
+        pip install --quiet nbconvert ipykernel     
+        python -m ipykernel install --name python3 --display-name "Python 3 (CI)" --user
 
     - name: Execute notebooks
       if: steps.filter.outputs.notebooks == 'true'
       run: |
         for nb in ${{ steps.list.outputs.files }}; do
-          echo "Running $nb"
-          jupyter nbconvert --execute --to notebook "$nb" --output /tmp/out.ipynb
+            echo "Running $nb"
+            jupyter nbconvert --execute \
+            --ExecutePreprocessor.kernel_name=python3 \   # <── explicit for clarity
+            --to notebook "$nb" --output /tmp/out.ipynb
         done
+        
