@@ -118,6 +118,9 @@ jobs:
     - name: Update tutorials index with Gemini
       run: python scripts/update_tutorial_index.py
 
+    - name: Format with Prettier
+      run: npx prettier --write "mdx_build/apps/docs/docs/tutorials/**/*.{md,mdx}"
+
     - name: Checkout oso repo
       uses: actions/checkout@v4
       with:
@@ -139,16 +142,6 @@ jobs:
         NEW_FILES=$(find mdx_build/apps/docs/docs/tutorials \
                       -type f \( -name '*.md' -o -name '*.mdx' \) \
                       -printf '%P\n')
-
-        for f in $NEW_FILES; do
-          npx prettier --write "oso/apps/docs/docs/tutorials/$f"
-        done
-
-    # run prettier write on the new files
-    - name: Format new tutorials with Prettier
-      run: |
-        cd mdx_build/apps/docs/docs/tutorials
-        NEW_FILES=$(find . -type f \( -name '*.md' -o -name '*.mdx' \) -print)
 
         for f in $NEW_FILES; do
           npx prettier --write "oso/apps/docs/docs/tutorials/$f"
