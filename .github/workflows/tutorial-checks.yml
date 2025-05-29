@@ -16,7 +16,7 @@ jobs:
     # list all files (in tutorials/) to ignore here
     env:
       IGNORED_FILES: |
-        tutorials/instructions.md
+        tutorials/readme.md
     steps:
     - name: Check out PR branch
       uses: actions/checkout@v4
