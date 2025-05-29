@@ -10,6 +10,7 @@ import openpyxl
 # -------------------------------------------------------------------------
 # Configuration
 # -------------------------------------------------------------------------
+
 # Sheets to skip entirely
 SKIP_SHEETS = {"status key", "statuskey"}
 
@@ -63,7 +64,7 @@ SUMMARY_SUBSTRINGS = [
     "season %",
     "% of op",
     "% of season total",
-    "cycle",
+    "cycle total",
     "token house governance pool",
     "op allocated",
     "season total op approved",
@@ -73,15 +74,30 @@ SUMMARY_SUBSTRINGS = [
 # Global variable to store summary data
 season_summaries = {}
 
+# Add test links for debugging
+TEST_LINKS = [
+    "https://app.charmverse.io/op-grants/page-7215315141818317",
+    "https://app.charmverse.io/op-grants/page-11908812258760593",
+    "https://app.charmverse.io/op-grants/proposals?id=bcaedc5b-fbc5-46af-a9e4-d292bbf1cde2",
+    "https://app.charmverse.io/op-grants/page-11674564580610602"
+]
+
 # -------------------------------------------------------------------------
 # Helpers
 # -------------------------------------------------------------------------
+
 def is_summary_row(project_name: str) -> bool:
     """Check if a row is a summary row based on its project name."""
     if pd.isna(project_name):
         return False
     project_name = str(project_name).lower()
-    return any([s in project_name for s in SUMMARY_SUBSTRINGS])
+    
+    # First check if it matches the regex pattern
+    if SUMMARY_RE.search(project_name):
+        return True
+        
+    # Then check for specific substrings
+    return any(s in project_name for s in SUMMARY_SUBSTRINGS)
 
 
 def detect_header_row(xlsx: Path, sheet: str, lookahead: int = 5) -> Optional[int]:
@@ -101,9 +117,6 @@ def detect_header_row(xlsx: Path, sheet: str, lookahead: int = 5) -> Optional[in
 def standardize_columns(df: pd.DataFrame) -> pd.DataFrame:
     """Standardize column names across different sheets."""
     
-    # Print original columns for debugging
-    print("\nOriginal columns in sheet:", list(df.columns))
-    
     # Define column mappings
     column_mappings = {
         'Project Name': 'Project Name',
@@ -114,8 +127,8 @@ def standardize_columns(df: pd.DataFrame) -> pd.DataFrame:
         'Delivered (OP)': 'OP Delivered',
         'Total Amount (OP)': 'OP Total Amount',
         'Amount (OP)': 'OP Total Amount',
-        'Proposal Link': 'Link',
-        'Intent ': 'Intent',  # Note the space
+        'Proposal Link': 'Proposal Link',
+        'Intent ': 'Intent',
         'Intent': 'Intent'
     }
     
@@ -128,16 +141,8 @@ def standardize_columns(df: pd.DataFrame) -> pd.DataFrame:
         if old_col in column_mappings:
             renamed_cols[old_col] = column_mappings[old_col]
     
-    # Print renamed columns for debugging
-    print("Renamed columns:", renamed_cols)
-    
     # Apply the renaming
     df = df.rename(columns=renamed_cols)
-    
-    # Check for missing required columns
-    for col in ['OP Delivered']:
-        if col not in df.columns:
-            print(f"Warning: Column '{col}' not found in the dataframe")
     
     return df
 
@@ -145,6 +150,7 @@ def standardize_columns(df: pd.DataFrame) -> pd.DataFrame:
 # -------------------------------------------------------------------------
 # Main ingestion function
 # -------------------------------------------------------------------------
+
 def clean_workbook(xlsx_path: str) -> pd.DataFrame:
     # Load the workbook directly with openpyxl
     wb = openpyxl.load_workbook(xlsx_path, read_only=False, data_only=True)
@@ -157,8 +163,6 @@ def clean_workbook(xlsx_path: str) -> pd.DataFrame:
     summary_data = {}
     
     for sheet in sheets:
-        print(f"\nProcessing sheet: {sheet}")
-        
         # Read first few rows to determine the correct header
         df_peek = pd.read_excel(
             xlsx_path,
@@ -178,8 +182,6 @@ def clean_workbook(xlsx_path: str) -> pd.DataFrame:
             print(f"Warning: Could not find header row in {sheet}")
             continue
             
-        print(f"Using header row {header_row} for {sheet}")
-        
         # Read the sheet with the correct header
         df = pd.read_excel(
             xlsx_path,
@@ -187,7 +189,7 @@ def clean_workbook(xlsx_path: str) -> pd.DataFrame:
             header=header_row
         )
         
-        # Extract hyperlinks from Project Name column if they exist
+        # Handle both Proposal Link column and Project Name hyperlinks
         if 'Project Name' in df.columns:
             ws = wb[sheet]
             
@@ -208,6 +210,15 @@ def clean_workbook(xlsx_path: str) -> pd.DataFrame:
                 
                 # Add hyperlinks to Link column where available
                 df['Link'] = df.index.map(lambda x: hyperlinks.get(x, pd.NA))
+        
+        # Handle Proposal Link column
+        if 'Proposal Link' in df.columns:
+            if sheet == 'Grants Season 6':
+                # For Season 6, use Proposal Link only for rows that don't have a Project Name hyperlink
+                df.loc[df['Link'].isna(), 'Link'] = df.loc[df['Link'].isna(), 'Proposal Link']
+            else:
+                # For other sheets, only use Proposal Link to fill in missing links
+                df.loc[df['Link'].isna(), 'Link'] = df.loc[df['Link'].isna(), 'Proposal Link']
         
         # Drop duplicate columns before standardization
         df = df.loc[:, ~df.columns.duplicated()].copy()
@@ -272,7 +283,6 @@ def clean_workbook(xlsx_path: str) -> pd.DataFrame:
                 df[col] = pd.NA
         df = df[final_cols]
             
-        
         # Convert numeric columns
         for col in NUMERIC_COLS:
             if col in df.columns:
@@ -281,15 +291,17 @@ def clean_workbook(xlsx_path: str) -> pd.DataFrame:
                 # Remove commas and convert to numeric
                 df[col] = pd.to_numeric(df[col].str.replace(',', ''), errors='coerce')
         
+        # Set OP Total Amount to 0 for Not-passed projects in Missions Season 4
+        if sheet == 'Missions Season 4' and 'OP Total Amount' in df.columns and 'Status' in df.columns:
+            df.loc[df['Status'] == 'Not-passed', 'OP Total Amount'] = 0
+        
         frames.append(df)
 
     # Store summary data in a global variable or return it separately
     global season_summaries
     season_summaries = summary_data
 
-    # Close the workbook
     wb.close()
 
-    # Concatenate all frames and remove any duplicate columns
     result = pd.concat(frames, ignore_index=True)
     return result.loc[:, ~result.columns.duplicated()]

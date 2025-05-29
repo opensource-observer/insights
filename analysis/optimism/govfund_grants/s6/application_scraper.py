@@ -3,6 +3,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 from typing import Dict, Any
 import requests
@@ -13,13 +14,11 @@ import os
 
 
 # Path to your ChromeDriver
-chrome_driver_path = ""
-template_path = "application_template.md"
+template_path = "data/application_template.md"
 output_path = "data/proposals"
 
 # Set up Selenium WebDriver
-service = Service(chrome_driver_path)
-driver = webdriver.Chrome(service=service)
+driver = webdriver.Chrome()
 
 # Define relevant OP Chains
 op_chains = [
@@ -263,4 +262,6 @@ def main(grant_path, output_path, comparator):
     with open(final_grants_path, "w", encoding="utf-8") as output_file:
         json.dump(final_grants, output_file, ensure_ascii=False, indent=4)
 
-main('govgrants.json', output_path, growth_season_six)
+
+if __name__ == "__main__":
+    main('data/govgrants.json', output_path, growth_season_six)
