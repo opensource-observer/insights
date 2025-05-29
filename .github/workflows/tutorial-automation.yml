@@ -144,6 +144,16 @@ jobs:
           npx prettier --write "oso/apps/docs/docs/tutorials/$f"
         done
 
+    # run prettier write on the new files
+    - name: Format new tutorials with Prettier
+      run: |
+        cd mdx_build/apps/docs/docs/tutorials
+        NEW_FILES=$(find . -type f \( -name '*.md' -o -name '*.mdx' \) -print)
+
+        for f in $NEW_FILES; do
+          npx prettier --write "oso/apps/docs/docs/tutorials/$f"
+        done
+
     - name: Create or update PR
       uses: peter-evans/create-pull-request@v5
       with:
