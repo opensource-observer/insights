@@ -115,9 +115,6 @@ jobs:
           --dir  mdx_build/apps/docs/docs/tutorials \
           --pos  "$SIDEBAR_POS"
 
-    - name: Format with Prettier
-      run: npx prettier --write "mdx_build/apps/docs/docs/tutorials/**/*.{md,mdx}"
-
     - name: Update tutorials index with Gemini
       run: python scripts/update_tutorial_index.py
 
@@ -136,6 +133,16 @@ jobs:
               oso/apps/docs/docs/tutorials/
         rsync -a mdx_build/apps/docs/docs/tutorials/index.* \
               oso/apps/docs/docs/tutorials/
+
+    # run prettier write on the new files
+    - name: Format new tutorials with Prettier
+      run: |
+        cd mdx_build/apps/docs/docs/tutorials
+        NEW_FILES=$(find . -type f \( -name '*.md' -o -name '*.mdx' \) -print)
+
+        for f in $NEW_FILES; do
+          npx prettier --write "oso/apps/docs/docs/tutorials/$f"
+        done
 
     - name: Create or update PR
       uses: peter-evans/create-pull-request@v5
