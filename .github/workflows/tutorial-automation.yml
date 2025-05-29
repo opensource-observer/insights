@@ -15,6 +15,10 @@ on:
       notebook:
         description: "Path (relative to repo root) to the .ipynb you want to process"
         required: true
+      sidebar_position:       
+        description: "Number shown in docs sidebar (1 = top)"
+        required: true
+        type: number
 
 permissions:
   contents: write          # commit back to this repo
@@ -65,6 +69,7 @@ jobs:
       GEMINI_API_KEY:     ${{ secrets.GEMINI_API_KEY }}
       TARGET_PAT:         ${{ secrets.TARGET_PAT }}
       NOTEBOOKS:          ${{ inputs.notebook }}
+      SIDEBAR_POS:        ${{ inputs.sidebar_position }}
     steps:
     - uses: actions/checkout@v4
       with: { fetch-depth: 0 }
@@ -93,8 +98,11 @@ jobs:
     - name: Strip HTML from MDX
       run: python scripts/sanitize_mdx_html.py mdx_build
 
-    - name: Add MDX front-matter / imports
-      run: python scripts/add_mdx_header.py mdx_build/apps/docs/docs/tutorials
+    - name: Add MDX front-matter / imports                       
+      run: |
+        python scripts/add_mdx_header.py \
+          --dir  mdx_build/apps/docs/docs/tutorials \
+          --pos  "$SIDEBAR_POS"
 
     - name: Format with Prettier
       run: npx prettier --write "mdx_build/apps/docs/docs/tutorials/**/*.mdx"

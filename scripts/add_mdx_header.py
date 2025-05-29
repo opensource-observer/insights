@@ -1,24 +1,29 @@
-import pathlib, re, sys
+import argparse, pathlib, re
 
-tut_dir = pathlib.Path(sys.argv[1]).resolve()
-index_md = tut_dir / "index.md"
-if not index_md.exists():
-    sys.exit("index.md not found")
+parser = argparse.ArgumentParser()
+parser.add_argument("--dir", required=True, help="Directory that contains *.mdx")
+parser.add_argument("--pos", required=True, type=int, help="Sidebar position")
+args = parser.parse_args()
 
-mapping = {}
-for pos, line in enumerate(index_md.read_text().splitlines(), start=1):
-    m = re.match(r"- .*?\[(.+?)\]\(\./(.+?)\.mdx\)", line.strip())
-    if m:
-        mapping[f"{m.group(2)}.mdx"] = (pos, m.group(1))
+tut_dir = pathlib.Path(args.dir).resolve()
+sidebar_pos = args.pos
 
 for mdx in tut_dir.glob("*.mdx"):
-    sidebar, title = mapping.get(mdx.name, (0, mdx.stem.title()))
-    header = f"""---\ntitle: {title}\nsidebar_position: {sidebar}\n---\n\nimport Tabs from '@theme/Tabs';\nimport TabItem from '@theme/TabItem';\n\n"""
-    body = mdx.read_text()
+    title = mdx.stem.replace("-", " ").title()
+    header = (
+        f"---\n"
+        f"title: {title}\n"
+        f"sidebar_position: {sidebar_pos}\n"
+        f"---\n\n"
+        "import Tabs from '@theme/Tabs';\n"
+        "import TabItem from '@theme/TabItem';\n\n"
+    )
 
-    if body.lstrip().startswith("---"):
+    body = mdx.read_text()
+    if body.lstrip().startswith("---"):                      # replace, don't double-insert
         body = re.sub(r"^---[\s\S]+?---\s+", header, body, count=1, flags=re.M)
     else:
         body = header + body
     mdx.write_text(body)
-print("✓ Front-matter injected")
+
+print("✓ Front-matter (pos =", sidebar_pos, ") injected into", tut_dir)
