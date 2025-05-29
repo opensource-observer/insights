@@ -84,9 +84,10 @@ jobs:
       if: steps.filter.outputs.notebooks == 'true'
       run: |
         for nb in ${{ steps.list.outputs.files }}; do
-            echo "Running $nb"
-            jupyter nbconvert --execute \
-            --ExecutePreprocessor.kernel_name=python3 \   # <── explicit for clarity
-            --to notebook "$nb" --output /tmp/out.ipynb
+          echo "Running $nb"
+          jupyter nbconvert --execute --to notebook \
+            --ExecutePreprocessor.kernel_name=python3 \
+            --output /tmp/out.ipynb "$nb"
         done
+
         
