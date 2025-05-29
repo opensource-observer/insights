@@ -30,13 +30,16 @@ jobs:
         filters: |
           notebooks:
             - added|modified: "tutorials/**"
+
     - name: Enforce *.ipynb-only rule
       if: steps.filter.outputs.notebooks == 'true'
       run: |
         # get everything under tutorials/ that changed
         raw=$(git diff --name-only ${{github.event.pull_request.base.sha}} ${{github.sha}} -- tutorials)
-        # filter out .ipynb files
+        
+        # filter out non .ipynb files
         not_ipynb=$(printf "%s\n" "$raw" | grep -vE '\.ipynb$' || true)
+        
         # filter out any ignored files
         bad=$(printf "%s\n" "$not_ipynb" | grep -vFf <(echo "$IGNORED_FILES") || true)
         if [ -n "$bad" ]; then
@@ -44,11 +47,15 @@ jobs:
           echo "$bad"
           exit 1
         fi
+
     - name: Export notebook list
       if: steps.filter.outputs.notebooks == 'true'
       id: list
       run: |
-        echo "files=$(git diff --name-only ${{github.event.pull_request.base.sha}} ${{github.sha}} -- '*.ipynb' -- tutorials)" >> "$GITHUB_OUTPUT"
+        files=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} -- '*.ipynb' -- tutorials \
+                | paste -sd ' ' -)
+        echo "files=$files" >> "$GITHUB_OUTPUT"
+
     - name: Set up Node & Prettier
       if: steps.filter.outputs.notebooks == 'true'
       uses: actions/setup-node@v4
@@ -62,6 +69,7 @@ jobs:
       if: steps.filter.outputs.notebooks == 'true'
       run: |
         prettier --check ${{ steps.list.outputs.files }}
+    
     - name: Set up Python and Jupyter
       if: steps.filter.outputs.notebooks == 'true'
       uses: actions/setup-python@v5
