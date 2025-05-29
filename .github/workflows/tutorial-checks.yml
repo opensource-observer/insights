@@ -14,7 +14,7 @@ jobs:
   check-notebooks:
     runs-on: ubuntu-latest
 
-    # ─── List all files (in tutorials/) to ignore here ───
+    # list all files (in tutorials/) to ignore here
     env:
       IGNORED_FILES: |
         tutorials/instructions.md
@@ -22,6 +22,8 @@ jobs:
     steps:
     - name: Check out PR branch
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
 
     - name: Detect files added or modified in tutorials/
       id: filter
