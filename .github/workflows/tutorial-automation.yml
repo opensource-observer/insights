@@ -95,6 +95,12 @@ jobs:
           --folder   "$COLAB_FOLDER_ID" \
           --outdir   "mdx_build"
 
+    - name: Place MDX under docs/tutorials tree
+      run: |
+        mkdir -p mdx_build/apps/docs/docs/tutorials
+        mv mdx_build/*.mdx             mdx_build/apps/docs/docs/tutorials/
+        mv mdx_build/*_files 2>/dev/null || true
+
     - name: Strip HTML from MDX
       run: python scripts/sanitize_mdx_html.py mdx_build
 
