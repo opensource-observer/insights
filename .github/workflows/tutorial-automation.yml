@@ -23,7 +23,7 @@ permissions:
 jobs:
   # Upload notebook to Colab
   upload-to-colab:
-    if: inputs.command == 'upload'
+    if: inputs.command == 'colab'
     runs-on: ubuntu-latest
     environment: deploy
     env:
@@ -56,7 +56,7 @@ jobs:
   
   # Convert → MDX → PR to oso repo
   send-pull-requests:
-    if: inputs.command == 'push'
+    if: inputs.command == 'docs'
     runs-on: ubuntu-latest
     environment: deploy
     env:
