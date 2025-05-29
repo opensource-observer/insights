@@ -8,10 +8,10 @@ on:
   workflow_dispatch:
     inputs:
       command:
-        description: "upload → add Colab link to .ipynb  |  push → convert to MDX & PR to oso repo"
+        description: "colab → add Colab link to .ipynb  |  docs → convert to MDX & PR to oso repo"
         required: true
         type: choice
-        options: [upload, push]
+        options: [colab, docs]
       notebook:
         description: "Path (relative to repo root) to the .ipynb you want to process"
         required: true
