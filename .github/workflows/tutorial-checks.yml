@@ -35,10 +35,7 @@ jobs:
       if: steps.filter.outputs.notebooks == 'true'
       run: |
         # get everything under tutorials/ that changed
-        raw=$(git diff --name-only ${{github.event.pull_request.base.sha}} ${{github.sha}} -- tutorials)
-        
-        # filter out non .ipynb files
-        not_ipynb=$(printf "%s\n" "$raw" | grep -vE '\.ipynb$' || true)
+        raw=$(git diff --name-only ${{github.event.pull_request.base.sha}} ${{github.sha}} -- tutorials/**/*.ipynb)
         
         # filter out any ignored files
         bad=$(printf "%s\n" "$not_ipynb" | grep -vFf <(echo "$IGNORED_FILES") || true)
@@ -52,7 +49,7 @@ jobs:
       if: steps.filter.outputs.notebooks == 'true'
       id: list
       run: |
-        files=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} -- '*.ipynb' -- tutorials \
+        files=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} -- tutorials/**/*.ipynb \
                 | paste -sd ' ' -)
         echo "files=$files" >> "$GITHUB_OUTPUT"
 
