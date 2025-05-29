@@ -33,14 +33,14 @@ jobs:
           notebooks:
             - added|modified: "tutorials/**"
 
+    # enforce *.ipynb-only rule (except IGNORED_FILES)
     - name: Enforce *.ipynb-only rule
       if: steps.filter.outputs.notebooks == 'true'
       run: |
-        # get everything under tutorials/ that changed
-        raw=$(git diff --name-only ${{github.event.pull_request.base.sha}} ${{github.sha}} -- tutorials)
-        # filter out .ipynb files
+        raw=$(git diff --name-only \
+                "${{ github.event.pull_request.base.sha }}" "${{ github.sha }}" \
+                -- 'tutorials/**')
         not_ipynb=$(printf "%s\n" "$raw" | grep -vE '\.ipynb$' || true)
-        # filter out any ignored files
         bad=$(printf "%s\n" "$not_ipynb" | grep -vFf <(echo "$IGNORED_FILES") || true)
         if [ -n "$bad" ]; then
           echo "::error::The following files are not allowed in tutorials/:"
@@ -48,36 +48,46 @@ jobs:
           exit 1
         fi
 
+    # export newline-separated list of tutorial notebooks
     - name: Export notebook list
       if: steps.filter.outputs.notebooks == 'true'
       id: list
       run: |
-        echo "files=$(git diff --name-only ${{github.event.pull_request.base.sha}} ${{github.sha}} -- '*.ipynb' -- tutorials)" >> "$GITHUB_OUTPUT"
+        changed=$(git diff --name-only \
+                  "${{ github.event.pull_request.base.sha }}" "${{ github.sha }}" \
+                  -- ':(glob)tutorials/**/*.ipynb')
+        {
+          echo 'files<<EOF'
+          echo "$changed"
+          echo 'EOF'
+        } >> "$GITHUB_OUTPUT"
 
+    # prettier formatting
     - name: Set up Node & Prettier
       if: steps.filter.outputs.notebooks == 'true'
       uses: actions/setup-node@v4
       with:
         node-version: '20'
 
-    - run: npm install --global prettier
+    - run: npm install --global prettier prettier-plugin-ipynb
       if: steps.filter.outputs.notebooks == 'true'
 
     - name: Prettier --check
       if: steps.filter.outputs.notebooks == 'true'
       run: |
-        prettier --check ${{ steps.list.outputs.files }}
+        echo "${{ steps.list.outputs.files }}" | xargs prettier --check
 
+    # execute notebooks
     - name: Set up Python and Jupyter
       if: steps.filter.outputs.notebooks == 'true'
       uses: actions/setup-python@v5
       with:
         python-version: '3.11'
 
-    - name: Install Jupyter tooling + kernel        
+    - name: Install Jupyter tooling + kernel
       if: steps.filter.outputs.notebooks == 'true'
       run: |
-        pip install --quiet nbconvert ipykernel     
+        pip install --quiet nbconvert ipykernel
         python -m ipykernel install --name python3 --display-name "Python 3 (CI)" --user
 
     - name: Execute notebooks
@@ -89,5 +99,3 @@ jobs:
             --ExecutePreprocessor.kernel_name=python3 \
             --output /tmp/out.ipynb "$nb"
         done
-
-        
