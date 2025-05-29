@@ -133,12 +133,12 @@ jobs:
               oso/apps/docs/docs/tutorials/
         rsync -a mdx_build/apps/docs/docs/tutorials/index.* \
               oso/apps/docs/docs/tutorials/
-
-    # run prettier write on the new files
+  
     - name: Format new tutorials with Prettier
       run: |
-        cd mdx_build/apps/docs/docs/tutorials
-        NEW_FILES=$(find . -type f \( -name '*.md' -o -name '*.mdx' \) -print)
+        NEW_FILES=$(find mdx_build/apps/docs/docs/tutorials \
+                      -type f \( -name '*.md' -o -name '*.mdx' \) \
+                      -printf '%P\n')
 
         for f in $NEW_FILES; do
           npx prettier --write "oso/apps/docs/docs/tutorials/$f"
