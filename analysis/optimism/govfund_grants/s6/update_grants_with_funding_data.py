@@ -5,7 +5,7 @@ from streamlit_dashboard.utils import connect_bq_client
 QUERY_ON = True
 
 def main() -> None:
-    with open("updated_grants_reviewed.json", "r") as f:
+    with open("data/updated_grants_reviewed.json", "r") as f:
         grants = json.load(f)
 
     client = connect_bq_client("oso_gcp_credentials.json", False)
@@ -57,7 +57,7 @@ def main() -> None:
             print(f"project {grant['project_name']} minimum date: {min_date} | starting balance: {starting_balance} | inflow total: {inflow_total}")
 
     # save the updated grants to a new json file
-    with open("new_grants_reviewed.json", "w") as f:
+    with open("data/new_grants_reviewed.json", "w") as f:
         json.dump(grants, f, indent=4)
 
 if __name__ == "__main__":
