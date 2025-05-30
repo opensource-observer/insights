@@ -1,0 +1,287 @@
+[
+  {
+    "cluster_id": 0,
+    "size": 11393,
+    "dependecies by category": [
+      [
+        "Execution Clients",
+        0.983
+      ],
+      [
+        "L2s & Scaling Solutions",
+        0.033
+      ],
+      [
+        "Testing & Verification Tools",
+        0.029
+      ],
+      [
+        "Development Frameworks",
+        0.026
+      ],
+      [
+        "Core Protocol Interfaces",
+        0.023
+      ],
+      [
+        "DeFi Protocols",
+        0.001
+      ],
+      [
+        "Data Indexing & Analytics",
+        0.001
+      ],
+      [
+        "Interoperability & Cross-chain",
+        0.0
+      ],
+      [
+        "Infrastructure & Node Operations",
+        0.0
+      ],
+      [
+        "Cryptography & Primitives",
+        0.0
+      ],
+      [
+        "Consensus Clients",
+        0.0
+      ],
+      [
+        "Language & Compilation Tools",
+        0.0
+      ],
+      [
+        "On-chain Applications & DApps",
+        0.0
+      ],
+      [
+        "Deployment & Lifecycle Management",
+        0.0
+      ],
+      [
+        "Developer Experience Tools",
+        0.0
+      ]
+    ],
+    "languages": {
+      "TypeScript": 5202,
+      "JavaScript": 2601,
+      "Solidity": 2100,
+      "Go": 456,
+      "": 217,
+      "Vue": 185,
+      "HTML": 129,
+      "Rust": 112,
+      "CSS": 87,
+      "Python": 76
+    },
+    "stars": {
+      "mean": 48,
+      "median": 2,
+      "max": 43749,
+      "std": 615.9
+    },
+    "forks": {
+      "mean": 21,
+      "median": 2,
+      "max": 5268,
+      "std": 145.5
+    },
+    "years": {
+      "repo_created_mean": 2021.7,
+      "repo_updated_mean": 2023.6,
+      "repo_updated_std": 1.4
+    }
+  },
+  {
+    "cluster_id": 1,
+    "size": 1160,
+    "dependecies by category": [
+      [
+        "Core Protocol Interfaces",
+        0.993
+      ],
+      [
+        "Execution Clients",
+        0.007
+      ],
+      [
+        "L2s & Scaling Solutions",
+        0.005
+      ],
+      [
+        "Development Frameworks",
+        0.003
+      ],
+      [
+        "Infrastructure & Node Operations",
+        0.001
+      ],
+      [
+        "Testing & Verification Tools",
+        0.001
+      ],
+      [
+        "Interoperability & Cross-chain",
+        0.0
+      ],
+      [
+        "Language & Compilation Tools",
+        0.0
+      ],
+      [
+        "On-chain Applications & DApps",
+        0.0
+      ],
+      [
+        "DeFi Protocols",
+        0.0
+      ],
+      [
+        "Consensus Clients",
+        0.0
+      ],
+      [
+        "Deployment & Lifecycle Management",
+        0.0
+      ],
+      [
+        "Developer Experience Tools",
+        0.0
+      ],
+      [
+        "Data Indexing & Analytics",
+        0.0
+      ],
+      [
+        "Cryptography & Primitives",
+        0.0
+      ]
+    ],
+    "languages": {
+      "TypeScript": 792,
+      "JavaScript": 104,
+      "Solidity": 82,
+      "Rust": 55,
+      "Go": 40,
+      "C#": 19,
+      "": 15,
+      "HTML": 11,
+      "MDX": 9,
+      "Vue": 9
+    },
+    "stars": {
+      "mean": 44,
+      "median": 2,
+      "max": 13118,
+      "std": 450.3
+    },
+    "forks": {
+      "mean": 16,
+      "median": 1,
+      "max": 2443,
+      "std": 104.7
+    },
+    "years": {
+      "repo_created_mean": 2023.1,
+      "repo_updated_mean": 2024.3,
+      "repo_updated_std": 0.9
+    }
+  },
+  {
+    "cluster_id": 2,
+    "size": 516,
+    "dependecies by category": [
+      [
+        "Development Frameworks",
+        0.462
+      ],
+      [
+        "Testing & Verification Tools",
+        0.445
+      ],
+      [
+        "L2s & Scaling Solutions",
+        0.139
+      ],
+      [
+        "DeFi Protocols",
+        0.02
+      ],
+      [
+        "Core Protocol Interfaces",
+        0.008
+      ],
+      [
+        "Cryptography & Primitives",
+        0.008
+      ],
+      [
+        "Interoperability & Cross-chain",
+        0.006
+      ],
+      [
+        "Data Indexing & Analytics",
+        0.004
+      ],
+      [
+        "On-chain Applications & DApps",
+        0.002
+      ],
+      [
+        "Execution Clients",
+        0.002
+      ],
+      [
+        "Consensus Clients",
+        0.0
+      ],
+      [
+        "Language & Compilation Tools",
+        0.0
+      ],
+      [
+        "Deployment & Lifecycle Management",
+        0.0
+      ],
+      [
+        "Infrastructure & Node Operations",
+        0.0
+      ],
+      [
+        "Developer Experience Tools",
+        0.0
+      ]
+    ],
+    "languages": {
+      "Solidity": 190,
+      "JavaScript": 112,
+      "TypeScript": 94,
+      "Python": 60,
+      "Rust": 22,
+      "Go": 15,
+      "HTML": 9,
+      "": 6,
+      "C++": 2,
+      "Vyper": 2
+    },
+    "stars": {
+      "mean": 43,
+      "median": 2,
+      "max": 7763,
+      "std": 358.0
+    },
+    "forks": {
+      "mean": 12,
+      "median": 2,
+      "max": 441,
+      "std": 42.0
+    },
+    "years": {
+      "repo_created_mean": 2021.7,
+      "repo_updated_mean": 2023.6,
+      "repo_updated_std": 1.5
+    }
+  }
+]
