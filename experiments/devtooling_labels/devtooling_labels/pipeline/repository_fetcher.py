@@ -9,10 +9,14 @@ class RepositoryFetcherStep:
         self.config_manager = config_manager
         self.fetcher = DataFetcher() # Assuming DataFetcher doesn't need config for initialization
 
-    def run(self, force_refresh: bool = False):
+    def run(self, force_refresh: bool = False, fetch_new_only: bool = False):
         """
         Fetch repositories and READMEs.
         Uses test_mode and test_mode_limit from config if test_mode is enabled.
+        
+        Args:
+            force_refresh: If True, wipe existing data and fetch everything fresh
+            fetch_new_only: If True, only fetch repositories that don't exist in current data
         """
         limit = None
         sort_by_stars_in_test = False
@@ -26,54 +30,84 @@ class RepositoryFetcherStep:
         if force_refresh:
             print("Force refresh enabled for repository data. Wiping existing raw data.")
             self.data_manager.wipe_repos_data()
-        
-        # Check if data already exists and not forcing refresh
-        if not force_refresh:
+            existing_df = pd.DataFrame()
+        else:
             existing_df = self.data_manager.get_repos_data()
             if not existing_df.empty:
-                print("Repository data already exists and force_refresh is false.")
-                if is_test:
-                    if 'star_count' in existing_df.columns:
-                        print(f"Applying test mode (sort by stars, limit {limit}) to existing data.")
-                        sorted_df = existing_df.sort_values(by='star_count', ascending=False)
-                        return sorted_df.head(limit)
-                    else:
-                        print(f"Warning: 'star_count' not in existing data. Using first {limit} entries for test mode.")
-                        return existing_df.head(limit)
-                return existing_df # Not test mode, return all existing
+                if fetch_new_only:
+                    print("Fetching only new repositories while keeping existing ones...")
+                else:
+                    print("Repository data already exists and force_refresh is false.")
+                    if is_test:
+                        if 'star_count' in existing_df.columns:
+                            print(f"Applying test mode (sort by stars, limit {limit}) to existing data.")
+                            sorted_df = existing_df.sort_values(by='star_count', ascending=False)
+                            return sorted_df.head(limit)
+                        else:
+                            print(f"Warning: 'star_count' not in existing data. Using first {limit} entries for test mode.")
+                            return existing_df.head(limit)
+                    return existing_df # Not test mode, return all existing
 
         # If here, either force_refresh is true or data doesn't exist.
         print("Fetching repositories from OSO...")
         # Pass sort_by_stars only if in test_mode, limit is passed anyway (None if not test)
-        repos_df = self.fetcher.fetch_repositories(limit=limit, sort_by_stars=sort_by_stars_in_test)
+        new_repos_df = self.fetcher.fetch_repositories(limit=limit, sort_by_stars=sort_by_stars_in_test)
         
-        if repos_df.empty:
+        if new_repos_df.empty:
             print("No repositories found from OSO fetch.")
             # Save an empty DataFrame to indicate the step ran
             self.data_manager.save_repos_data(pd.DataFrame())
             return pd.DataFrame()
             
-        print(f"Found {len(repos_df)} repositories.")
+        print(f"Found {len(new_repos_df)} repositories from OSO.")
+
+        if fetch_new_only and not existing_df.empty:
+            # Filter out repositories that already exist
+            existing_repos = set(zip(existing_df['repo_artifact_namespace'], existing_df['repo_artifact_name']))
+            new_repos_df = new_repos_df[~new_repos_df.apply(
+                lambda x: (x['repo_artifact_namespace'], x['repo_artifact_name']) in existing_repos, 
+                axis=1
+            )]
+            print(f"Found {len(new_repos_df)} new repositories to process.")
+
+        if new_repos_df.empty:
+            print("No new repositories to process.")
+            return existing_df
 
         print("Fetching READMEs from GitHub...")
         # Ensure 'repo_artifact_namespace' and 'repo_artifact_name' exist
-        if 'repo_artifact_namespace' not in repos_df.columns or 'repo_artifact_name' not in repos_df.columns:
+        if 'repo_artifact_namespace' not in new_repos_df.columns or 'repo_artifact_name' not in new_repos_df.columns:
             print("Error: 'repo_artifact_namespace' or 'repo_artifact_name' not in fetched data.")
             # Save what we have so far
-            self.data_manager.save_repos_data(repos_df)
-            return repos_df # Or handle error more gracefully
+            self.data_manager.save_repos_data(new_repos_df)
+            return new_repos_df # Or handle error more gracefully
 
-        repos_df = self.fetcher.get_all_readmes(repos_df)
-        print(f"Retrieved READMEs for {len(repos_df[repos_df['readme_md'] != ''])} repositories.")
+        new_repos_df = self.fetcher.get_all_readmes(new_repos_df)
+        print(f"Retrieved READMEs for {len(new_repos_df[new_repos_df['readme_md'] != ''])} repositories.")
 
-        self.data_manager.save_repos_data(repos_df)
-        
-        # If in test mode and fetched more than limit (e.g. limit was on OSO query but get_all_readmes changed row count)
-        # This scenario is less likely if limit is applied correctly in fetch_repositories
-        if limit is not None and len(repos_df) > limit:
-            return repos_df.head(limit)
+        # Combine existing and new data
+        if not existing_df.empty:
+            combined_df = pd.concat([existing_df, new_repos_df], ignore_index=True)
+            # Remove any duplicates that might have been introduced
+            combined_df = combined_df.drop_duplicates(
+                subset=['repo_artifact_namespace', 'repo_artifact_name'],
+                keep='first'
+            )
+            print(f"Combined data now contains {len(combined_df)} repositories.")
+            self.data_manager.save_repos_data(combined_df)
             
-        return repos_df
+            # If in test mode and combined data exceeds limit
+            if limit is not None and len(combined_df) > limit:
+                if 'star_count' in combined_df.columns:
+                    return combined_df.sort_values(by='star_count', ascending=False).head(limit)
+                return combined_df.head(limit)
+            return combined_df
+        else:
+            self.data_manager.save_repos_data(new_repos_df)
+            # If in test mode and fetched more than limit
+            if limit is not None and len(new_repos_df) > limit:
+                return new_repos_df.head(limit)
+            return new_repos_df
 
 if __name__ == '__main__':
     # Example Usage (requires .env file and OSO/GitHub credentials)
