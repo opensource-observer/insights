@@ -48,8 +48,9 @@ def cli(ctx, test_mode):
 
 @cli.command("fetch_repos")
 @click.option('--force-refresh', is_flag=True, help='Force refresh repository data, ignoring existing.')
+@click.option('--fetch-new-only', is_flag=True, help='Only fetch repositories that don\'t exist in current data.')
 @click.pass_context
-def fetch_repos_command(ctx, force_refresh):
+def fetch_repos_command(ctx, force_refresh, fetch_new_only):
     """Fetches repositories and their READMEs."""
     print("Executing: Fetch Repositories")
     data_manager = ctx.obj['data_manager']
@@ -57,14 +58,15 @@ def fetch_repos_command(ctx, force_refresh):
     config_mgr = ctx.obj['config_manager'] 
     
     repo_fetcher_step = RepositoryFetcherStep(data_manager=data_manager, config_manager=config_mgr)
-    repo_fetcher_step.run(force_refresh=force_refresh)
+    repo_fetcher_step.run(force_refresh=force_refresh, fetch_new_only=fetch_new_only)
     print("Repository fetching complete.")
 
 
 @cli.command("generate_summaries")
 @click.option('--force-refresh', is_flag=True, help='Force refresh summaries, ignoring existing.')
+@click.option('--new-only', is_flag=True, help='Generate summaries only for repositories that don\'t have summaries yet.')
 @click.pass_context
-def generate_summaries_command(ctx, force_refresh):
+def generate_summaries_command(ctx, force_refresh, new_only):
     """Generates summaries for the fetched repositories."""
     print("Executing: Generate Summaries")
     data_manager = ctx.obj['data_manager']
@@ -76,17 +78,18 @@ def generate_summaries_command(ctx, force_refresh):
         config_manager=config_mgr, 
         ai_service=ai_service
     )
-    summary_generator_step.run(force_refresh=force_refresh)
+    summary_generator_step.run(force_refresh=force_refresh, new_only=new_only)
     print("Summary generation complete.")
 
 
 @cli.command("categorize")
 @click.option('--force-refresh', is_flag=True, help='Force refresh categories, ignoring existing.')
-@click.option('--persona', 'target_persona_name', default=None, type=str, help='Process only a specific persona by name.')
+@click.option('--persona', help='Process only the specified persona.')
+@click.option('--new-only', is_flag=True, help='Categorize only repositories that don\'t have categories yet.')
 @click.pass_context
-def categorize_command(ctx, force_refresh, target_persona_name):
-    """Categorizes projects using AI personas based on summaries."""
-    print("Executing: Categorize Projects")
+def categorize_command(ctx, force_refresh, persona, new_only):
+    """Categorizes projects using AI personas."""
+    print("Executing: Categorize")
     data_manager = ctx.obj['data_manager']
     config_mgr = ctx.obj['config_manager']
     ai_service = ctx.obj['ai_service']
@@ -96,7 +99,7 @@ def categorize_command(ctx, force_refresh, target_persona_name):
         config_manager=config_mgr, 
         ai_service=ai_service
     )
-    categorizer_step.run(force_refresh=force_refresh, target_persona_name=target_persona_name)
+    categorizer_step.run(force_refresh=force_refresh, target_persona_name=persona, new_only=new_only)
     print("Categorization complete.")
 
 
@@ -132,7 +135,7 @@ def run_all_command(ctx, force_refresh_all, force_refresh_repos, force_refresh_s
     # The --test-mode flag from the main group is implicitly handled by ConfigManager
     ctx.invoke(fetch_repos_command, force_refresh=fr_repos)
     ctx.invoke(generate_summaries_command, force_refresh=fr_summaries)
-    ctx.invoke(categorize_command, force_refresh=fr_categories, target_persona_name=None) # Process all personas
+    ctx.invoke(categorize_command, force_refresh=fr_categories, persona=None, new_only=False) # Process all personas
     ctx.invoke(consolidate_command)
     
     print("Full pipeline execution complete.")

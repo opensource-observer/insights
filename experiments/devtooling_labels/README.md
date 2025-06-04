@@ -104,27 +104,19 @@ python -m devtooling_labels [GLOBAL_OPTIONS] COMMAND [COMMAND_OPTIONS]
 
 **Main Commands:**
 
--   **`run_all`**: Executes the entire pipeline sequentially (Fetch -> Summarize -> Categorize -> Consolidate).
-    ```bash
-    python -m devtooling_labels run_all
-    ```
-    -   Force refresh options for `run_all`:
-        -   `--force-refresh-all`: Forces refresh for all data stages.
-        -   `--force-refresh-repos`: Forces refresh for repository data only.
-        -   `--force-refresh-summaries`: Forces refresh for summaries only.
-        -   `--force-refresh-categories`: Forces refresh for categorizations only.
-
 -   **`fetch_repos`**: Fetches repository data from OSO and READMEs from GitHub.
     ```bash
     python -m devtooling_labels fetch_repos
     ```
     -   `--force-refresh`: Wipes existing raw repository data and re-fetches.
+    -   `--fetch-new-only`: Only fetches repositories that don't exist in current data.
 
 -   **`generate_summaries`**: Generates AI summaries for fetched repositories.
     ```bash
     python -m devtooling_labels generate_summaries
     ```
     -   `--force-refresh`: Wipes existing summaries and regenerates them.
+    -   `--new-only`: Only generates summaries for repositories that don't have summaries yet.
 
 -   **`categorize`**: Categorizes projects using all defined AI personas.
     ```bash
@@ -135,6 +127,7 @@ python -m devtooling_labels [GLOBAL_OPTIONS] COMMAND [COMMAND_OPTIONS]
         ```bash
         python -m devtooling_labels categorize --persona keyword_spotter --force-refresh
         ```
+    -   `--new-only`: Only categorizes repositories that don't have categories yet.
 
 -   **`consolidate`**: Consolidates categorizations from all personas and generates final project recommendations.
     ```bash

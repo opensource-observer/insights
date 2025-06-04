@@ -10,11 +10,15 @@ class CategorizerStep:
         self.config_manager = config_manager
         self.ai_service = ai_service
 
-    def run(self, force_refresh: bool = False, target_persona_name: str = None):
+    def run(self, force_refresh: bool = False, target_persona_name: str = None, new_only: bool = False):
         """
         Categorize projects using AI personas.
         Uses batch_size_categorization from config.
-        If target_persona_name is specified, only that persona is processed.
+        
+        Args:
+            force_refresh: If True, wipe existing categories and regenerate all
+            target_persona_name: If specified, only process this persona
+            new_only: If True, only categorize repositories that don't have categories yet
         """
         batch_size = self.config_manager.get_batch_size_categorization()
         
@@ -35,51 +39,60 @@ class CategorizerStep:
         if 'summary' not in summaries_df.columns:
             print("Error: 'summary' column not found in summarized data. Cannot categorize.")
             return pd.DataFrame()
-        if 'repo_artifact_id' not in summaries_df.columns: # or 'project_id'
-            print("Error: 'repo_artifact_id' (or 'project_id') not found in summarized data.")
+        if 'repo_artifact_id' not in summaries_df.columns:
+            print("Error: 'repo_artifact_id' not found in summarized data.")
             return pd.DataFrame()
 
+        # Get personas to process
         personas_to_process = []
         if target_persona_name:
-            persona = next((p for p in self.config_manager.get_personas() if p['name'] == target_persona_name), None)
+            persona = self.config_manager.get_persona(target_persona_name)
             if persona:
-                personas_to_process.append(persona)
+                personas_to_process = [persona]
             else:
-                print(f"Persona '{target_persona_name}' not found in configuration.")
-                return self.data_manager.get_categories_data() # Return existing data
+                print(f"Error: Persona '{target_persona_name}' not found.")
+                return pd.DataFrame()
         else:
             personas_to_process = self.config_manager.get_personas()
 
         if not personas_to_process:
-            print("No personas configured or specified for categorization.")
-            return self.data_manager.get_categories_data()
+            print("No personas found to process.")
+            return pd.DataFrame()
 
-        print(f"Categorizing {len(summaries_df)} projects using {len(personas_to_process)} persona(s) in batches of {batch_size}...")
-
-        # This will hold the dataframe with all persona classifications
-        # Start with the summaries_df and add columns for each persona
-        # This is complex because each persona's data is saved separately.
-        # The DataManager's get_categories_data(persona_name=None) handles merging.
-        
-        for persona in tqdm(personas_to_process, desc="Processing Personas"):
-            persona_name = persona["name"]
-            
-            # Skip if already processed for this persona and not forcing refresh
-            if not force_refresh and self.data_manager.has_categories_for_persona(persona_name):
-                print(f"Category data for persona '{persona_name}' already exists and force_refresh is false. Skipping.")
-                continue
-
+        # Process each persona
+        for persona in personas_to_process:
+            persona_name = persona['name']
             print(f"\nProcessing persona: {persona_name}")
             
-            # Dataframe for this persona's results
-            # We need to select relevant columns from summaries_df to avoid large duplications.
-            # Key identifier (e.g. repo_artifact_id) and summary are important.
-            # Other columns from summaries_df might also be useful context.
-            persona_results_df_list = []
+            # Get existing categories for this persona if any
+            existing_categories_df = pd.DataFrame()
+            if not force_refresh:
+                try:
+                    existing_categories_df = self.data_manager.get_categories_data(persona_name)
+                except FileNotFoundError:
+                    pass  # No existing categories for this persona
 
-            for start_idx in tqdm(range(0, len(summaries_df), batch_size), desc=f"Categorizing ({persona_name})", leave=False):
-                end_idx = min(start_idx + batch_size, len(summaries_df))
-                batch_df = summaries_df.iloc[start_idx:end_idx]
+            # If we have existing categories and not forcing refresh
+            if not existing_categories_df.empty and not force_refresh:
+                if new_only:
+                    # Filter out repositories that already have categories
+                    existing_repos = set(existing_categories_df['repo_artifact_id'])
+                    repos_to_process = summaries_df[~summaries_df['repo_artifact_id'].isin(existing_repos)]
+                    if repos_to_process.empty:
+                        print(f"No new repositories found to categorize for persona '{persona_name}'.")
+                        continue
+                    print(f"Found {len(repos_to_process)} new repositories to categorize for persona '{persona_name}'.")
+                else:
+                    print(f"Categories already exist for persona '{persona_name}' and force_refresh is false. Skipping.")
+                    continue
+            else:
+                repos_to_process = summaries_df
+
+            # Process in batches
+            all_categorized_data = []
+            for start_idx in tqdm(range(0, len(repos_to_process), batch_size), desc=f"Categorizing ({persona_name})", leave=False):
+                end_idx = min(start_idx + batch_size, len(repos_to_process))
+                batch_df = repos_to_process.iloc[start_idx:end_idx]
                 
                 # Prepare list of dicts, each containing summary and metadata for a project
                 project_data_batch = []
@@ -98,39 +111,37 @@ class CategorizerStep:
                     classifications = [ClassificationOutput(assigned_tag="N/A", reason="Empty summary or batch")] * len(project_data_batch)
                 else:
                     classifications: List[ClassificationOutput] = self.ai_service.classify_projects_batch_for_persona(
-                        project_data_batch, # Pass list of dicts
+                        project_data_batch,
                         persona
                     )
                 
                 # Create a temporary DataFrame for this batch's results
-                # batch_df is the slice of summaries_df, so it's suitable as a base
                 temp_batch_df = batch_df.copy() 
                 temp_batch_df[f"{persona_name}_tag"] = [c.assigned_tag for c in classifications]
                 temp_batch_df[f"{persona_name}_reason"] = [c.reason for c in classifications]
-                
-                persona_results_df_list.append(temp_batch_df)
+                all_categorized_data.append(temp_batch_df)
+
+            if not all_categorized_data:
+                print(f"No categories were generated for persona '{persona_name}'.")
+                continue
+
+            new_categories_df = pd.concat(all_categorized_data, ignore_index=True)
             
-            if persona_results_df_list:
-                # Concatenate all batch results for the current persona
-                full_persona_df = pd.concat(persona_results_df_list, ignore_index=True)
-                # Select only necessary columns to save for this persona to avoid massive duplication
-                # Key ID, summary, and this persona's tag/reason.
-                # Other columns from summaries_df can be joined back during consolidation.
-                cols_to_save = ['repo_artifact_id', 'project_id', 'summary', f"{persona_name}_tag", f"{persona_name}_reason"]
-                # Filter out columns not present in full_persona_df
-                cols_to_save = [col for col in cols_to_save if col in full_persona_df.columns]
-
-                self.data_manager.save_categories_data(full_persona_df[cols_to_save], persona_name=persona_name)
+            # If we have existing categories and not forcing refresh, combine with new ones
+            if not existing_categories_df.empty and not force_refresh:
+                final_categories_df = pd.concat([existing_categories_df, new_categories_df], ignore_index=True)
+                # Remove any duplicates that might have been introduced
+                final_categories_df = final_categories_df.drop_duplicates(
+                    subset=['repo_artifact_id'],
+                    keep='last'  # Keep the new categorization if there was a duplicate
+                )
+                print(f"Combined data now contains {len(final_categories_df)} repositories with categories for persona '{persona_name}'.")
             else:
-                print(f"No categorization results generated for persona '{persona_name}'.")
-                # Save an empty df for this persona if force_refresh was true, to mark it as "processed"
-                if force_refresh:
-                     self.data_manager.save_categories_data(pd.DataFrame(columns=['repo_artifact_id', 'project_id', 'summary', f"{persona_name}_tag", f"{persona_name}_reason"]), persona_name=persona_name)
+                final_categories_df = new_categories_df
+                
+            self.data_manager.save_categories_data(final_categories_df, persona_name)
 
-
-        print("Categorization step complete.")
-        # The DataManager will handle merging these when get_categories_data() is called without a persona name.
-        return self.data_manager.get_categories_data()
+        return pd.DataFrame()  # Return empty DataFrame as we've saved the data
 
 
 if __name__ == '__main__':
