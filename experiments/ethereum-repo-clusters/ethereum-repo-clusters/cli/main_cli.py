@@ -160,6 +160,7 @@ def process_unified_command(ctx, force_refresh, include_forks, include_inactive,
 @click.option('--use-unified', is_flag=True, help='Use the new unified processor instead of the legacy pipeline.')
 @click.option('--include-forks', is_flag=True, help='Include forked repositories (only with --use-unified).')
 @click.option('--include-inactive', is_flag=True, help='Include inactive repositories (only with --use-unified).')
+@click.option('--limit', type=int, help='Limit the number of repositories to process (only with --use-unified).')
 @click.pass_context
 def run_all_command(ctx, force_refresh_all, force_refresh_repos, force_refresh_summaries, 
                    force_refresh_categories, use_unified, include_forks, include_inactive):
@@ -172,7 +173,7 @@ def run_all_command(ctx, force_refresh_all, force_refresh_repos, force_refresh_s
             force_refresh=force_refresh_all, 
             include_forks=include_forks,
             include_inactive=include_inactive,
-            limit=None
+            limit=limit
         )
     else:
         print("Executing: Run All Pipeline Steps (Legacy)")

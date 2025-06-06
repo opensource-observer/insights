@@ -17,11 +17,19 @@ class DataFetcher:
             limit: Optional limit on number of repositories to fetch.
             sort_by_stars: If True, sort repositories by star_count descending.
         """
-        query = """
+
+        where_keywords = """
+                collection_name LIKE '%ethereum%'
+                OR collection_name LIKE '%arbitrum%'
+                OR collection_name LIKE '%optimism%'
+                OR collection_name LIKE '%scroll%'
+                OR collection_name LIKE '%polygon%'
+        """
+        query = f"""
         SELECT DISTINCT
           re.artifact_id AS repo_artifact_id,
           p.project_id,
-          p.project_name AS atlas_id,
+          p.project_name,
           p.display_name,
           re.artifact_namespace AS repo_artifact_namespace,
           re.artifact_name AS repo_artifact_name,
@@ -30,16 +38,13 @@ class DataFetcher:
           re.star_count,
           re.fork_count,
           re.is_fork,
-          re.num_packages_in_deps_dev
-        FROM stg_op_atlas_application AS a
-        JOIN projects_v1 AS p
-          ON p.project_id = a.project_id
-        JOIN stg_op_atlas_project_repository AS pr
-          ON p.project_id = pr.project_id
-        JOIN int_repositories_enriched AS re
-          ON re.artifact_namespace = pr.artifact_namespace
-          AND re.artifact_name = pr.artifact_name
-        WHERE a.round_id = '7'
+          re.num_packages_in_deps_dev        
+        FROM int_repositories_enriched AS re
+        JOIN projects_v1 AS p ON re.project_id = p.project_id
+        WHERE p.project_id IN (
+            SELECT DISTINCT project_id FROM oso.projects_by_collection_v1
+            WHERE {where_keywords}
+        )
         """
         # The table int_superchain_s7_devtooling_repositories should have star_count
         # If not, this sort will fail or do nothing. Assuming 'r.star_count' is valid.

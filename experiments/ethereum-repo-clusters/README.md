@@ -29,6 +29,9 @@ The entire process is managed via a Command Line Interface (CLI).
 -   Outputs data at various stages in Parquet and CSV formats (with README text removed from CSV for readability).
 -   Supports easy resumption of processing and addition of new repositories.
 -   Features comprehensive progress bars at multiple levels for better visibility into processing status.
+-   **Checkpoint System**: Automatically saves progress after each step, allowing for seamless recovery from interruptions.
+-   **Incremental Saving**: Saves results after processing each repository, ensuring no work is lost if the process is interrupted.
+-   **Resume Capability**: Automatically detects partially processed repositories and continues from where it left off.
 
 ## Prerequisites
 
@@ -206,6 +209,9 @@ The unified processor offers several advantages:
 -   Timestamps for all operations for better traceability
 -   Detailed progress bars for tracking processing status at multiple levels
 -   CSV output with README text removed for improved readability
+-   Checkpoint system that saves progress after each step
+-   Incremental saving that preserves work even if interrupted
+-   Automatic resume capability that continues from where it left off
 
 ## Output Files
 
@@ -223,6 +229,7 @@ All output data is stored in the directory specified by `output_dir` in `pipelin
 
 -   **`ethereum_repos_unified.parquet`**: Comprehensive dataset containing all repositories with their metadata, summaries, and categorizations in a single structure.
 -   **`ethereum_repos_unified.csv`**: A CSV version of the unified data for easier viewing, with README text removed and long text fields truncated for readability.
+-   **`processing_checkpoint.json`**: Checkpoint file that tracks processing progress, allowing for seamless recovery from interruptions.
 
 ### Unified Data Structure
 
@@ -329,3 +336,67 @@ The unified processor handles errors gracefully:
 - API errors during categorization: The specific persona's categorization is marked as "UNCATEGORIZED" with the error reason.
 
 This approach ensures that all repositories are included in the final output, even if they couldn't be fully processed.
+
+## Checkpoint System
+
+The unified processor now includes a robust checkpoint system that makes it resilient to interruptions:
+
+### How It Works
+
+1. **Incremental Saving**: Results are saved after processing each repository, not just at the end.
+2. **Checkpoint File**: A JSON file (`output/processing_checkpoint.json`) tracks:
+   - Which repositories have been fully processed
+   - Which repositories are partially processed and their current state
+   - The last repository that was successfully processed
+
+3. **Granular Progress Tracking**: The checkpoint tracks progress at multiple levels:
+   - README fetching status
+   - Summary generation status
+   - Which personas have completed categorization
+
+4. **Resume Logic**: When restarted after an interruption, the processor:
+   - Skips repositories that have been fully processed
+   - Continues from where it left off for partially processed repositories
+   - Preserves all work that was completed before the interruption
+
+5. **Space Optimization**: Once a repository is fully processed, its partial results are removed from the checkpoint file to save space.
+
+### Benefits
+
+- **No Lost Work**: Even if interrupted during a long-running process, no work is lost.
+- **API Efficiency**: Avoids redundant API calls to GitHub and Gemini, saving rate limits and costs.
+- **Time Savings**: Picks up exactly where it left off, avoiding redundant processing.
+- **Resilience**: Handles network issues, API timeouts, and other temporary failures gracefully.
+
+### Example Checkpoint Structure
+
+```json
+{
+  "last_processed_repo_id": "ethereum/solidity",
+  "processed_repos": ["openzeppelin/openzeppelin-contracts", "ethereum/solidity"],
+  "partial_results": {
+    "ipfs/kubo": {
+      "readme_fetched": true,
+      "readme_status": "SUCCESS",
+      "summary_generated": true,
+      "personas_completed": ["protocol_architect", "ecosystem_analyst"],
+      "categorizations": [
+        {
+          "persona_name": "protocol_architect",
+          "category": "Infrastructure & Node Operations",
+          "reason": "...",
+          "timestamp": "2025-06-05T13:53:30.903574"
+        },
+        {
+          "persona_name": "ecosystem_analyst",
+          "category": "Infrastructure & Node Operations",
+          "reason": "...",
+          "timestamp": "2025-06-05T13:53:32.238039"
+        }
+      ]
+    }
+  }
+}
+```
+
+This checkpoint system ensures that the processing pipeline is robust and can handle interruptions gracefully, making it suitable for processing large numbers of repositories over extended periods.

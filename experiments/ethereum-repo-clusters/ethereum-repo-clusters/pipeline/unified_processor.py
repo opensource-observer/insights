@@ -1,7 +1,8 @@
 import pandas as pd
 import datetime
 import json
-from typing import List, Dict, Any, Optional
+import time
+from typing import List, Dict, Any, Optional, Set
 from tqdm import tqdm
 from .data_manager import DataManager
 from ..config.config_manager import ConfigManager
@@ -44,13 +45,14 @@ class UnifiedProcessor:
             self.config_manager.get_batch_size_categorization()
         )
         
-        # Get existing data if not forcing refresh
+        # Load checkpoint or initialize a new one
         if force_refresh:
-            print("Force refresh enabled. Wiping existing data.")
-            self.data_manager.wipe_repos_data()
+            print("Force refresh enabled. Wiping existing data and checkpoint.")
+            self.data_manager.wipe_unified_data()
+            self._initialize_checkpoint()
             existing_df = pd.DataFrame()
         else:
-            existing_df = self.data_manager.get_repos_data()
+            existing_df = self.data_manager.get_unified_data()
             if not existing_df.empty:
                 print(f"Found existing data with {len(existing_df)} repositories.")
         
@@ -73,34 +75,36 @@ class UnifiedProcessor:
             repos_df = repos_df[repos_df['is_actively_maintained']]
             print(f"Filtered out inactive repositories. {len(repos_df)} repositories remaining.")
         
+        # Load checkpoint to determine which repositories need processing
+        checkpoint = self.data_manager.load_checkpoint()
+        processed_repos = set(checkpoint.get("processed_repos", []))
+        
         # Determine which repositories need processing
-        if not existing_df.empty and not force_refresh:
-            # Identify repositories that have already been fully processed
-            processed_repos = set()
-            if 'categorizations' in existing_df.columns:
-                processed_repos = set(
-                    existing_df[existing_df['categorizations'].apply(lambda x: isinstance(x, list) and len(x) > 0)]['repo_artifact_id']
-                )
-            
+        if not force_refresh:
             # Filter out already processed repositories
             repos_to_process = repos_df[~repos_df['repo_artifact_id'].isin(processed_repos)]
             print(f"Found {len(repos_to_process)} repositories that need processing.")
             
-            # Combine with existing data for final output
-            combined_df = pd.concat([
-                existing_df[existing_df['repo_artifact_id'].isin(processed_repos)],
-                self._process_repositories(repos_to_process, batch_size)
-            ], ignore_index=True)
+            # Process the repositories
+            processed_df = self._process_repositories(repos_to_process, batch_size)
             
-            # Save the combined data
-            self.data_manager.save_unified_data(combined_df)
-            return combined_df
+            # Return the combined data (existing + newly processed)
+            return self.data_manager.get_unified_data()
         else:
             # Process all repositories
             processed_df = self._process_repositories(repos_df, batch_size)
-            self.data_manager.save_unified_data(processed_df)
-            return processed_df
+            return self.data_manager.get_unified_data()
     
+    def _initialize_checkpoint(self):
+        """Initialize a new checkpoint file"""
+        checkpoint = {
+            "last_processed_repo_id": None,
+            "processed_repos": [],
+            "partial_results": {}
+        }
+        self.data_manager.save_checkpoint(checkpoint)
+        print("Initialized new processing checkpoint.")
+        
     def _process_repositories(self, repos_df: pd.DataFrame, batch_size: int) -> pd.DataFrame:
         """
         Process repositories in batches: fetch READMEs, generate summaries, and categorize.
@@ -120,6 +124,11 @@ class UnifiedProcessor:
             print("No personas found for categorization.")
             return repos_df
         
+        # Load checkpoint
+        checkpoint = self.data_manager.load_checkpoint()
+        processed_repos = set(checkpoint.get("processed_repos", []))
+        partial_results = checkpoint.get("partial_results", {})
+        
         # Process in batches
         all_processed_data = []
         
@@ -127,41 +136,114 @@ class UnifiedProcessor:
             end_idx = min(start_idx + batch_size, len(repos_df))
             batch_df = repos_df.iloc[start_idx:end_idx].copy()
             
-            # Fetch READMEs for this batch
-            batch_df = self.fetcher.get_all_readmes(batch_df)
-            
-            # Initialize the categorizations column with empty lists
-            batch_df['categorizations'] = [[] for _ in range(len(batch_df))]
-            batch_df['final_recommendation'] = 'UNCATEGORIZED'
-            batch_df['processing_timestamp'] = datetime.datetime.now().isoformat()
-            batch_df['summary'] = ''
-            
             # Process each repository in the batch
             for idx, row in tqdm(batch_df.iterrows(), desc="Processing repositories in batch", total=len(batch_df), leave=False):
-                # Initialize categorizations list
+                repo_id = row.get('repo_artifact_id')
+                repo_name = row.get('repo_artifact_name', 'repo')
+                
+                # Skip if already fully processed
+                if repo_id in processed_repos:
+                    print(f"Skipping {repo_name} (already processed)")
+                    continue
+                
+                # Get partial progress for this repository
+                partial = partial_results.get(repo_id, {})
+                
+                # Initialize repository data
+                repo_data = row.to_dict()
+                repo_data['categorizations'] = []
+                repo_data['final_recommendation'] = 'UNCATEGORIZED'
+                repo_data['processing_timestamp'] = datetime.datetime.now().isoformat()
+                repo_data['summary'] = ''
+                
+                # Fetch README if needed
+                if not partial.get('readme_fetched', False):
+                    try:
+                        print(f"Fetching README for {repo_name}...")
+                        readme_content, readme_status = self.fetcher.fetch_readme(
+                            repo_data['repo_artifact_namespace'],
+                            repo_data['repo_artifact_name']
+                        )
+                        repo_data['readme_md'] = readme_content
+                        repo_data['readme_status'] = readme_status
+                        
+                        # Update checkpoint
+                        partial['readme_fetched'] = True
+                        partial['readme_status'] = repo_data['readme_status']
+                        partial_results[repo_id] = partial
+                        checkpoint['partial_results'] = partial_results
+                        self.data_manager.save_checkpoint(checkpoint)
+                    except Exception as e:
+                        print(f"Error fetching README for {repo_name}: {e}")
+                        repo_data['readme_md'] = ''
+                        repo_data['readme_status'] = 'ERROR'
+                        
+                        # Update checkpoint
+                        partial['readme_fetched'] = True
+                        partial['readme_status'] = 'ERROR'
+                        partial_results[repo_id] = partial
+                        checkpoint['partial_results'] = partial_results
+                        self.data_manager.save_checkpoint(checkpoint)
+                else:
+                    # Use README status from checkpoint
+                    repo_data['readme_status'] = partial.get('readme_status', 'ERROR')
+                
+                # Generate summary if needed
+                if not partial.get('summary_generated', False) and repo_data['readme_status'] == 'SUCCESS':
+                    try:
+                        print(f"Generating summary for {repo_name}...")
+                        readme_content = repo_data.get('readme_md', '')
+                        summary_output: SummaryOutput = self.ai_service.make_summary(readme_content)
+                        repo_data['summary'] = summary_output.summary
+                        
+                        # Update checkpoint
+                        partial['summary_generated'] = True
+                        partial['summary'] = summary_output.summary
+                        partial_results[repo_id] = partial
+                        checkpoint['partial_results'] = partial_results
+                        self.data_manager.save_checkpoint(checkpoint)
+                    except Exception as e:
+                        print(f"Error generating summary for {repo_name}: {e}")
+                        repo_data['summary'] = ''
+                        
+                        # Update checkpoint
+                        partial['summary_generated'] = True  # Mark as attempted
+                        partial_results[repo_id] = partial
+                        checkpoint['partial_results'] = partial_results
+                        self.data_manager.save_checkpoint(checkpoint)
+                elif partial.get('summary_generated', False) and 'summary' in partial:
+                    # Use summary from checkpoint
+                    repo_data['summary'] = partial.get('summary', '')
+                
+                # Initialize personas completed
+                if 'personas_completed' not in partial:
+                    partial['personas_completed'] = []
+                
+                # Initialize categorizations
                 categorizations = []
                 
-                # Get README status
-                readme_status = row.get('readme_status', 'ERROR')
-                
-                # Generate summary if README is available
-                summary = ""
-                if readme_status == "SUCCESS":
-                    readme_content = row.get('readme_md', "")
-                    summary_output: SummaryOutput = self.ai_service.make_summary(readme_content)
-                    summary = summary_output.summary
-                    
-                    # Categorize with each persona
-                    for persona in tqdm(personas, desc=f"Categorizing {row.get('repo_artifact_name', 'repo')} with personas", leave=False):
+                # Categorize with each persona if README is available
+                if repo_data['readme_status'] == 'SUCCESS':
+                    for persona in tqdm(personas, desc=f"Categorizing {repo_name} with personas", leave=False):
+                        # Skip if already categorized by this persona
+                        if persona['name'] in partial.get('personas_completed', []):
+                            # Use existing categorization from checkpoint
+                            if 'categorizations' in partial:
+                                for cat in partial['categorizations']:
+                                    if cat['persona_name'] == persona['name']:
+                                        categorizations.append(cat)
+                                        break
+                            continue
+                        
                         try:
                             # Prepare project data for categorization
                             project_data = {
-                                'summary': summary,
-                                'repo_artifact_id': row.get('repo_artifact_id', 'UNKNOWN_ID'),
-                                'star_count': row.get('star_count', 0),
-                                'fork_count': row.get('fork_count', 0),
-                                'created_at': row.get('created_at'),
-                                'updated_at': row.get('updated_at')
+                                'summary': repo_data['summary'],
+                                'repo_artifact_id': repo_id,
+                                'star_count': repo_data.get('star_count', 0),
+                                'fork_count': repo_data.get('fork_count', 0),
+                                'created_at': repo_data.get('created_at'),
+                                'updated_at': repo_data.get('updated_at')
                             }
                             
                             # Get categorization from this persona
@@ -172,53 +254,124 @@ class UnifiedProcessor:
                             
                             if classifications and len(classifications) > 0:
                                 classification = classifications[0]
-                                categorizations.append({
+                                cat_entry = {
                                     'persona_name': persona['name'],
                                     'category': classification.assigned_tag,
                                     'reason': classification.reason,
                                     'timestamp': datetime.datetime.now().isoformat()
-                                })
+                                }
+                                categorizations.append(cat_entry)
+                                
+                                # Update checkpoint
+                                if 'categorizations' not in partial:
+                                    partial['categorizations'] = []
+                                partial['categorizations'].append(cat_entry)
+                                partial['personas_completed'].append(persona['name'])
+                                partial_results[repo_id] = partial
+                                checkpoint['partial_results'] = partial_results
+                                self.data_manager.save_checkpoint(checkpoint)
                             else:
-                                categorizations.append({
+                                cat_entry = {
                                     'persona_name': persona['name'],
                                     'category': 'UNCATEGORIZED',
                                     'reason': 'Failed to get classification from AI service',
                                     'timestamp': datetime.datetime.now().isoformat()
-                                })
+                                }
+                                categorizations.append(cat_entry)
+                                
+                                # Update checkpoint
+                                if 'categorizations' not in partial:
+                                    partial['categorizations'] = []
+                                partial['categorizations'].append(cat_entry)
+                                partial['personas_completed'].append(persona['name'])
+                                partial_results[repo_id] = partial
+                                checkpoint['partial_results'] = partial_results
+                                self.data_manager.save_checkpoint(checkpoint)
                         except Exception as e:
-                            print(f"Error categorizing with persona {persona['name']}: {e}")
-                            categorizations.append({
+                            print(f"Error categorizing {repo_name} with persona {persona['name']}: {e}")
+                            cat_entry = {
                                 'persona_name': persona['name'],
                                 'category': 'UNCATEGORIZED',
                                 'reason': f'Error: {str(e)}',
                                 'timestamp': datetime.datetime.now().isoformat()
-                            })
+                            }
+                            categorizations.append(cat_entry)
+                            
+                            # Update checkpoint
+                            if 'categorizations' not in partial:
+                                partial['categorizations'] = []
+                            partial['categorizations'].append(cat_entry)
+                            partial['personas_completed'].append(persona['name'])
+                            partial_results[repo_id] = partial
+                            checkpoint['partial_results'] = partial_results
+                            self.data_manager.save_checkpoint(checkpoint)
+                            
+                        # Add a small delay to avoid rate limiting
+                        time.sleep(0.1)
                 else:
                     # If README is empty or error, mark all categorizations as UNCATEGORIZED
-                    for persona in tqdm(personas, desc=f"Marking {row.get('repo_artifact_name', 'repo')} as UNCATEGORIZED", leave=False):
-                        categorizations.append({
+                    for persona in tqdm(personas, desc=f"Marking {repo_name} as UNCATEGORIZED", leave=False):
+                        # Skip if already categorized by this persona
+                        if persona['name'] in partial.get('personas_completed', []):
+                            # Use existing categorization from checkpoint
+                            if 'categorizations' in partial:
+                                for cat in partial['categorizations']:
+                                    if cat['persona_name'] == persona['name']:
+                                        categorizations.append(cat)
+                                        break
+                            continue
+                            
+                        cat_entry = {
                             'persona_name': persona['name'],
                             'category': 'UNCATEGORIZED',
-                            'reason': f'README {readme_status}',
+                            'reason': f'README {repo_data["readme_status"]}',
                             'timestamp': datetime.datetime.now().isoformat()
-                        })
+                        }
+                        categorizations.append(cat_entry)
+                        
+                        # Update checkpoint
+                        if 'categorizations' not in partial:
+                            partial['categorizations'] = []
+                        partial['categorizations'].append(cat_entry)
+                        partial['personas_completed'].append(persona['name'])
+                        partial_results[repo_id] = partial
+                        checkpoint['partial_results'] = partial_results
+                        self.data_manager.save_checkpoint(checkpoint)
                 
                 # Determine final recommendation based on categorizations
-                final_recommendation = self._determine_final_recommendation(categorizations, row.get('star_count', 0))
+                final_recommendation = self._determine_final_recommendation(categorizations, repo_data.get('star_count', 0))
                 
-                # Update the row with processed data
-                batch_df.at[idx, 'summary'] = summary
-                batch_df.at[idx, 'categorizations'] = categorizations
-                batch_df.at[idx, 'final_recommendation'] = final_recommendation
-                batch_df.at[idx, 'processing_timestamp'] = datetime.datetime.now().isoformat()
-            
-            all_processed_data.append(batch_df)
+                # Update the repository data
+                repo_data['categorizations'] = categorizations
+                repo_data['final_recommendation'] = final_recommendation
+                repo_data['processing_timestamp'] = datetime.datetime.now().isoformat()
+                
+                # Create a DataFrame for this repository
+                repo_df = pd.DataFrame([repo_data])
+                
+                # Save this repository to the unified data
+                self.data_manager.append_unified_data(repo_df)
+                
+                # Mark as fully processed
+                processed_repos.add(repo_id)
+                checkpoint['processed_repos'] = list(processed_repos)
+                checkpoint['last_processed_repo_id'] = repo_id
+                
+                # Remove from partial results to save space
+                if repo_id in partial_results:
+                    del partial_results[repo_id]
+                    
+                checkpoint['partial_results'] = partial_results
+                self.data_manager.save_checkpoint(checkpoint)
+                
+                # Add to processed data
+                all_processed_data.append(repo_df)
         
         if not all_processed_data:
             print("No data was processed.")
             return pd.DataFrame()
         
-        return pd.concat(all_processed_data, ignore_index=True)
+        return pd.concat(all_processed_data, ignore_index=True) if all_processed_data else pd.DataFrame()
     
     def _determine_final_recommendation(self, categorizations: List[Dict[str, Any]], star_count: int) -> str:
         """

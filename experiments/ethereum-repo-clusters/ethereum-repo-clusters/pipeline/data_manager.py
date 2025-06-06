@@ -282,6 +282,62 @@ class DataManager:
             
         return data
     
+    def append_unified_data(self, new_repo_data: pd.DataFrame) -> None:
+        """
+        Append a single repository or multiple repositories to the existing unified data.
+        
+        Args:
+            new_repo_data: DataFrame containing the new repository data to append
+        """
+        if new_repo_data.empty:
+            return
+            
+        existing_data = self.get_unified_data()
+        
+        if existing_data.empty:
+            # If no existing data, just save the new data
+            self.save_unified_data(new_repo_data)
+            return
+            
+        # Combine existing and new data
+        combined_data = pd.concat([existing_data, new_repo_data], ignore_index=True)
+        
+        # Remove duplicates based on repo_artifact_id, keeping the newest version
+        combined_data = combined_data.sort_values('processing_timestamp', ascending=False)
+        combined_data = combined_data.drop_duplicates(subset=['repo_artifact_id'], keep='first')
+        
+        # Save the combined data
+        self.save_unified_data(combined_data)
+        
+    def update_unified_data(self, updated_repo_data: pd.DataFrame) -> None:
+        """
+        Update specific repositories in the existing unified data.
+        
+        Args:
+            updated_repo_data: DataFrame containing the updated repository data
+        """
+        if updated_repo_data.empty:
+            return
+            
+        existing_data = self.get_unified_data()
+        
+        if existing_data.empty:
+            # If no existing data, just save the updated data
+            self.save_unified_data(updated_repo_data)
+            return
+            
+        # Get the repo_artifact_ids of the updated repositories
+        updated_ids = set(updated_repo_data['repo_artifact_id'])
+        
+        # Remove the repositories that are being updated from the existing data
+        filtered_existing = existing_data[~existing_data['repo_artifact_id'].isin(updated_ids)]
+        
+        # Combine the filtered existing data with the updated data
+        combined_data = pd.concat([filtered_existing, updated_repo_data], ignore_index=True)
+        
+        # Save the combined data
+        self.save_unified_data(combined_data)
+    
     def wipe_unified_data(self):
         """Wipe unified data files"""
         if self.unified_parquet_path.exists():
@@ -290,3 +346,46 @@ class DataManager:
         if self.unified_csv_path.exists():
             self.unified_csv_path.unlink()
             print(f"Wiped unified CSV data: {self.unified_csv_path}")
+            
+    def get_checkpoint_path(self) -> Path:
+        """Get the path to the processing checkpoint file"""
+        local_output_dir = Path(PROJECT_ROOT) / "output"
+        local_output_dir.mkdir(parents=True, exist_ok=True)
+        return local_output_dir / "processing_checkpoint.json"
+        
+    def save_checkpoint(self, checkpoint_data: Dict[str, Any]) -> None:
+        """
+        Save the processing checkpoint data to a JSON file.
+        
+        Args:
+            checkpoint_data: Dictionary containing checkpoint information
+        """
+        checkpoint_path = self.get_checkpoint_path()
+        with open(checkpoint_path, 'w') as f:
+            json.dump(checkpoint_data, f, indent=2)
+            
+    def load_checkpoint(self) -> Dict[str, Any]:
+        """
+        Load the processing checkpoint data from a JSON file.
+        
+        Returns:
+            Dictionary containing checkpoint information, or empty dict if no checkpoint exists
+        """
+        checkpoint_path = self.get_checkpoint_path()
+        if not checkpoint_path.exists():
+            return {
+                "last_processed_repo_id": None,
+                "processed_repos": [],
+                "partial_results": {}
+            }
+            
+        try:
+            with open(checkpoint_path, 'r') as f:
+                return json.load(f)
+        except Exception as e:
+            print(f"Error loading checkpoint: {e}")
+            return {
+                "last_processed_repo_id": None,
+                "processed_repos": [],
+                "partial_results": {}
+            }
