@@ -82,7 +82,7 @@ def render_activity_analysis():
     onchain_statuses = sorted(project_attributes['onchain_status'].unique())
     stylus_usages = sorted(project_attributes['stylus_usage'].unique())
     origins = sorted(project_attributes['origin'].unique())
-    all_categories = sorted(list(set([cat.strip() for cats in project_attributes['categories'].str.split(',') for cat in cats])))
+    all_categories = sorted(list(set([cat.strip() for cats in project_attributes['categories'].fillna('').str.split(',') for cat in cats if cat.strip()])))
     
     st.info("""
     **Note:** The metrics on this page are measured at the GitHub organization level, not just the specific repositories involved in the Stylus Sprint. This means:
@@ -127,12 +127,17 @@ def render_activity_analysis():
             help="Project Type / Primary Function"
         )
     
+    # Validate that at least one option is selected for each filter
+    if not selected_onchain or not selected_stylus or not selected_origin or not selected_categories:
+        st.warning("Please select at least one option for each filter category to view the analysis.")
+        return
+    
     # Filter projects based on selected attributes
     filtered_projects = project_attributes[
         project_attributes['onchain_status'].isin(selected_onchain) &
         project_attributes['stylus_usage'].isin(selected_stylus) &
         project_attributes['origin'].isin(selected_origin) &
-        project_attributes['categories'].apply(lambda x: any(cat in x for cat in selected_categories))
+        project_attributes['categories'].fillna('').apply(lambda x: any(cat in x for cat in selected_categories))
     ]['project_name'].tolist()
     
     # Display filtered projects
