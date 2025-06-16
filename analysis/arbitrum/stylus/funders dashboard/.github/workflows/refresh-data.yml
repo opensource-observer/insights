@@ -9,6 +9,8 @@ on:
 jobs:
   refresh-data:
     runs-on: ubuntu-latest
+    env:
+      OSO_API_KEY: ${{ secrets.OSO_API_KEY }}
     
     steps:
     - uses: actions/checkout@v3

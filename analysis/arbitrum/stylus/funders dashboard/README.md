@@ -35,7 +35,15 @@ streamlit run run_dashboard.py
 - plotly >= 5.18.0
 - networkx >= 3.1
 - python-dotenv == 1.0.0
-- pyoso == 0.1.0
+- pyoso == 0.4.0
+
+## Automated Data Updates
+
+The dashboard data is automatically updated weekly via GitHub Actions. The workflow:
+- Runs every Sunday at 00:00 UTC
+- Can be triggered manually through the GitHub Actions interface
+- Updates the data files in the `data/` directory
+- Commits and pushes any changes automatically
 
 ## Project Structure
 

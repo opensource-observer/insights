@@ -3,4 +3,4 @@ pandas>=2.0.0
 plotly>=5.18.0
 networkx>=3.1
 python-dotenv==1.0.0
-pyoso==0.1.0 
+pyoso==0.4.0 

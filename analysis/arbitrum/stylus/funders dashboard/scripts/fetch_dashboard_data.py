@@ -47,7 +47,8 @@ def fetch_github_metrics_repo(client):
     where pc.collection_name = 'arb-stylus'
     and ap.artifact_source = 'GITHUB'
     and m.metric_name = 'GITHUB_active_developers_monthly'
-    and YEAR(ts.sample_date) in (2022, 2023, 2024, 2025)
+    and ts.sample_date >= date_add('month', -6, date_trunc('month', current_date))
+    AND ts.sample_date < date_trunc('month', current_date)
     """
     df = client.to_pandas(query)
     df['sample_date'] = pd.to_datetime(df['sample_date'])
