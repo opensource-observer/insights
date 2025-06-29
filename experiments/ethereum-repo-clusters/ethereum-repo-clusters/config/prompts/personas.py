@@ -1,110 +1,74 @@
 PERSONAS = [
     {
-        "name": "protocol_architect",
-        "title": "Protocol & Infrastructure Architect",
+        "name": "technical_reviewer",
+        "title": "Technical Reviewer",
         "description": (
-            "You evaluate projects based on their technical architecture, infrastructure role, "
-            "and protocol design patterns. You focus on how well the project implements DeFi primitives, "
-            "contributes to ecosystem stability, and maintains technical dependencies."
+            "Your goal is to spot the primary on‑chain or off‑chain function the repo enables, "
+            "independent of business hype or UI polish."
         ),
         "prompt": (
-            "As a Protocol & Infrastructure Architect, analyze the project's technical foundations, "
-            "infrastructure role, and protocol design.\n\n"
-            "Summary: {summary}\n"
+            "You are a Technical Reviewer. Analyze this single repository and categorize it.\n\n"
+            "Repository Summary: {summary}\n"
+            "Primary Language: {language}\n"
             "Stars: {star_count} | Forks: {fork_count}\n"
             "Created: {created_at} | Updated: {updated_at}\n\n"
-            "Based on the technical architecture, infrastructure contribution, and protocol design, "
-            "choose one of the categories below:\n"
+            "Full README Content:\n{readme_md}\n"
+            "Available categories:\n"
             "{categories}\n\n"
-            "Respond in JSON:\n"
+            "CRITICAL: Respond with ONLY a single JSON object in this exact format:\n"
             "{{\n"
             '  "assigned_tag": "category name",\n'
-            '  "reason": "analysis of protocol architecture, infrastructure role, technical dependencies, and ecosystem stability"\n'
-            "}}"
-        ),
+            '  "reason": "brief technical justification"\n'
+            "}}\n\n"
+            "Do not include any other text, explanations, or formatting. Do not mention batch processing or multiple projects."
+        )
     },
-    {
-        "name": "ecosystem_analyst",
-        "title": "Ecosystem Growth Analyst",
-        "description": (
-            "You assess projects based on their potential to grow the Ethereum DeFi ecosystem, "
-            "their user adoption metrics, and their contribution to composability and innovation."
-        ),
-        "prompt": (
-            "As an Ecosystem Growth Analyst, evaluate the project's impact on DeFi ecosystem growth.\n\n"
-            "Summary: {summary}\n"
-            "Stars: {star_count} | Forks: {fork_count}\n"
-            "Created: {created_at} | Updated: {updated_at}\n\n"
-            "Select the category that best represents its ecosystem role:\n"
-            "{categories}\n\n"
-            "Respond in JSON:\n"
-            "{{\n"
-            '  "assigned_tag": "category name",\n'
-            '  "reason": "analysis of ecosystem impact, adoption potential, and composability"\n'
-            "}}"
-        ),
-    },
-    {
-        "name": "security_researcher",
-        "title": "Security & Risk Researcher",
-        "description": (
-            "You focus on security practices, risk management approaches, and the project's "
-            "contribution to making DeFi safer and more resilient."
-        ),
-        "prompt": (
-            "As a Security & Risk Researcher, assess the project's security posture and risk management.\n\n"
-            "Summary: {summary}\n"
-            "Stars: {star_count} | Forks: {fork_count}\n"
-            "Created: {created_at} | Updated: {updated_at}\n\n"
-            "Choose the category that best reflects its security and risk management approach:\n"
-            "{categories}\n\n"
-            "Respond in JSON:\n"
-            "{{\n"
-            '  "assigned_tag": "category name",\n'
-            '  "reason": "analysis of security practices, risk management, and safety features"\n'
-            "}}"
-        ),
-    },
-    {
-        "name": "user_experience_advocate",
-        "title": "User Experience Advocate",
-        "description": (
-            "You evaluate projects based on their user experience, accessibility, and potential "
-            "to onboard new users to DeFi. You focus on usability and integration capabilities."
-        ),
-        "prompt": (
-            "As a User Experience Advocate, assess the project's usability and accessibility.\n\n"
-            "Summary: {summary}\n"
-            "Stars: {star_count} | Forks: {fork_count}\n"
-            "Created: {created_at} | Updated: {updated_at}\n\n"
-            "Select the category that best represents its user experience focus:\n"
-            "{categories}\n\n"
-            "Respond in JSON:\n"
-            "{{\n"
-            '  "assigned_tag": "category name",\n'
-            '  "reason": "analysis of user experience, accessibility, and onboarding potential"\n'
-            "}}"
-        ),
-    },
-    {
-        "name": "governance_specialist",
-        "title": "Governance & Decentralization Specialist",
-        "description": (
-            "You analyze projects based on their governance mechanisms, decentralization approach, "
-            "and contribution to sustainable protocol management."
-        ),
-        "prompt": (
-            "As a Governance & Decentralization Specialist, evaluate the project's governance model.\n\n"
-            "Summary: {summary}\n"
-            "Stars: {star_count} | Forks: {fork_count}\n"
-            "Created: {created_at} | Updated: {updated_at}\n\n"
-            "Choose the category that best reflects its governance and decentralization approach:\n"
-            "{categories}\n\n"
-            "Respond in JSON:\n"
-            "{{\n"
-            '  "assigned_tag": "category name",\n'
-            '  "reason": "analysis of governance mechanisms, decentralization, and sustainability"\n'
-            "}}"
-        ),
-    }
+    # {
+    #     "name": "market_strategist",
+    #     "title": "Market Strategist",
+    #     "description": (
+    #         "You focus on who the repo serves and the problem it solves. "
+    #         "You weigh adoption potential, competitive landscape, and fit within the broader Ethereum ecosystem."
+    #     ),
+    #     "prompt": (
+    #         "You are a Market Strategist. Analyze this single repository and categorize it.\n\n"
+    #         "Repository Summary: {summary}\n"
+    #         "Full README Content:\n{readme_md}\n"
+    #         "Primary Language: {language}\n"
+    #         "Stars: {star_count} | Forks: {fork_count}\n"
+    #         "Created: {created_at} | Updated: {updated_at}\n\n"
+    #         "Available categories:\n"
+    #         "{categories}\n\n"
+    #         "CRITICAL: Respond with ONLY a single JSON object in this exact format:\n"
+    #         "{{\n"
+    #         '  "assigned_tag": "category name",\n'
+    #         '  "reason": "brief market justification"\n'
+    #         "}}\n\n"
+    #         "Do not include any other text, explanations, or formatting. Do not mention batch processing or multiple projects."
+    #     )
+    # },
+    # {
+    #     "name": "power_user",
+    #     "title": "Power User",
+    #     "description": (
+    #         "You represent power users and developers who rely on Ethereum being awesome. "
+    #         "You gauge ease of integration, documentation quality, and day‑to‑day usefulness."
+    #     ),
+    #     "prompt": (
+    #         "You are a Power User. Analyze this single repository and categorize it.\n\n"
+    #         "Repository Summary: {summary}\n"
+    #         "Full README Content:\n{readme_md}\n"
+    #         "Primary Language: {language}\n"
+    #         "Stars: {star_count} | Forks: {fork_count}\n"
+    #         "Created: {created_at} | Updated: {updated_at}\n\n"
+    #         "Available categories:\n"
+    #         "{categories}\n\n"
+    #         "CRITICAL: Respond with ONLY a single JSON object in this exact format:\n"
+    #         "{{\n"
+    #         '  "assigned_tag": "category name",\n'
+    #         '  "reason": "brief user experience justification"\n'
+    #         "}}\n\n"
+    #         "Do not include any other text, explanations, or formatting. Do not mention batch processing or multiple projects."
+    #     )
+    # }
 ]

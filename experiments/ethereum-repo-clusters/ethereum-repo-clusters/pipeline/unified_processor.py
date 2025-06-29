@@ -58,10 +58,10 @@ class UnifiedProcessor:
         
         # Fetch repositories from OSO
         print("Fetching repositories from OSO...")
-        repos_df = self.fetcher.fetch_repositories(limit=limit, sort_by_stars=True)
+        repos_df = self.fetcher.fetch_repositories(limit=limit, sort_by_stars=True, min_stars=self.config_manager.get_min_stars())
         
         if repos_df.empty:
-            print("No repositories found from OSO fetch.")
+            print("No repositories found from OSO fetch.")  
             return pd.DataFrame()
         
         print(f"Found {len(repos_df)} repositories from OSO.")
@@ -239,9 +239,11 @@ class UnifiedProcessor:
                             # Prepare project data for categorization
                             project_data = {
                                 'summary': repo_data['summary'],
+                                'readme_md': repo_data.get('readme_md', ''),
                                 'repo_artifact_id': repo_id,
                                 'star_count': repo_data.get('star_count', 0),
                                 'fork_count': repo_data.get('fork_count', 0),
+                                'language': repo_data.get('language', 'Unknown'),
                                 'created_at': repo_data.get('created_at'),
                                 'updated_at': repo_data.get('updated_at')
                             }

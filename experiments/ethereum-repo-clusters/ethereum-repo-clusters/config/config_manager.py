@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 from typing import List, Dict, Any
 from .settings import PROJECT_ROOT, GEMINI_API_KEY, OSO_API_KEY, GITHUB_TOKEN, GEMINI_MODEL, OUTPUT_DIR
-from .prompts.summary_prompts import SUMMARY_PROMPT, TAGS_PROMPT
+from .prompts.summary_prompts import SUMMARY_PROMPT
 
 
 
@@ -44,7 +44,6 @@ class ConfigManager:
             "output_dir": str(OUTPUT_DIR),
             "gemini_model": GEMINI_MODEL,
             "summary_prompt_template": SUMMARY_PROMPT,
-            "tags_prompt_template": TAGS_PROMPT,
             "test_mode": False,
             "test_mode_limit": 5,
             "batch_size_summaries": 50,
@@ -108,6 +107,9 @@ class ConfigManager:
     def get_batch_size_categorization(self) -> int:
         return self.get("batch_size_categorization", 10)
 
+    def get_min_stars(self) -> int:
+        return self.get("min_stars", 0)
+
     def get_categories(self) -> List[Dict[str, str]]:
         """Gets the categories directly from the categories.py module."""
         from .prompts.categories import CATEGORIES
@@ -121,9 +123,6 @@ class ConfigManager:
     def get_summary_prompt_template(self) -> str:
         return self.get("summary_prompt_template", "")
 
-    def get_tags_prompt_template(self) -> str:
-        return self.get("tags_prompt_template", "")
-        
 if __name__ == "__main__":
     # Example usage:
     config_manager = ConfigManager()

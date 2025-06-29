@@ -9,16 +9,12 @@ from ..config.config_manager import ConfigManager
 # Define generic type for output classes
 T = TypeVar(
     'T',
-    bound=Union['SummaryOutput', 'TagsOutput', 'ClassificationOutput', 'BatchClassificationOutput']
+    bound=Union['SummaryOutput', 'ClassificationOutput', 'BatchClassificationOutput']
 )
 
 @dataclass
 class SummaryOutput:
     summary: str
-
-@dataclass
-class TagsOutput:
-    tags: List[str]
 
 @dataclass
 class ClassificationOutput:
@@ -73,8 +69,6 @@ class AIService:
             # Fallback for errors
             if output_class is SummaryOutput:
                 return SummaryOutput(summary="Error generating summary.")
-            if output_class is TagsOutput:
-                return TagsOutput(tags=[])
             if output_class is ClassificationOutput:
                 return ClassificationOutput(assigned_tag="Error", reason="API call failed.")
             if output_class is BatchClassificationOutput:
@@ -101,8 +95,6 @@ class AIService:
 
             if output_class is SummaryOutput:
                 return SummaryOutput(summary=data.get("summary", "Summary not found in response."))
-            if output_class is TagsOutput:
-                return TagsOutput(tags=data.get("tags", []))
             if output_class is ClassificationOutput: # For single classification
                 return ClassificationOutput(
                     assigned_tag=data.get("assigned_tag", "Other"),
@@ -124,8 +116,6 @@ class AIService:
             print(f"Error processing Gemini response: {e}. Raw text: '{response.text[:300]}...'")
             if output_class is SummaryOutput:
                 return SummaryOutput(summary="Failed to parse summary from response.")
-            if output_class is TagsOutput:
-                return TagsOutput(tags=[])
             if output_class is ClassificationOutput:
                 return ClassificationOutput(assigned_tag="Other", reason="Failed to parse classification.")
             if output_class is BatchClassificationOutput:
@@ -141,15 +131,6 @@ class AIService:
         prompt_template = self.config_manager.get_summary_prompt_template()
         prompt = prompt_template.format(readme_md=readme_md)
         return self.execute_query(prompt, SummaryOutput)
-
-    def make_tags(self, summary: str) -> TagsOutput:
-        """Generate tags for the project based on its summary."""
-        if not summary or "empty repository" in summary.lower() or "error generating summary" in summary.lower():
-            return TagsOutput(tags=[])
-
-        prompt_template = self.config_manager.get_tags_prompt_template()
-        prompt = prompt_template.format(summary=summary)
-        return self.execute_query(prompt, TagsOutput)
 
     def classify_projects_batch_for_persona(
         self,
@@ -196,6 +177,15 @@ class AIService:
             if not isinstance(summary_text, str):
                 summary_text = str(summary_text)
 
+            # Ensure language is a string
+            language_text = project_data.get('language', "Unknown")
+            if not isinstance(language_text, str):
+                language_text = str(language_text) if language_text is not None else "Unknown"
+
+            # Get full README content
+            readme_content = project_data.get('readme_md', '')
+            if not isinstance(readme_content, str):
+                readme_content = str(readme_content) if readme_content is not None else ''
 
             try:
                 # The persona_prompt_template itself contains the persona's role description.
@@ -203,6 +193,8 @@ class AIService:
                 # The {categories} placeholder in the persona prompt will be filled by this categories_list_str.
                 formatted_project_section = persona_prompt_template.format(
                     summary=summary_text,
+                    readme_md=readme_content,
+                    language=language_text,
                     star_count=formatted_star_count,
                     fork_count=formatted_fork_count,
                     created_at=formatted_created_at,

@@ -36,6 +36,7 @@ The entire process is managed via a Command Line Interface (CLI).
 ## Prerequisites
 
 -   Python 3.10+
+-   Poetry (for dependency management)
 -   Access to OSO, GitHub, and Google Gemini APIs.
 
 ## Installation
@@ -46,29 +47,38 @@ The entire process is managed via a Command Line Interface (CLI).
     cd ethereum-repo-clusters
     ```
 
-2.  **Set up a virtual environment (recommended):**
+2.  **Install Poetry (if not already installed):**
     ```bash
-    python -m venv venv
-    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+    curl -sSL https://install.python-poetry.org | python3 -
+    ```
+    Or install via pip:
+    ```bash
+    pip install poetry
     ```
 
-3.  **Install dependencies:**
+3.  **Install dependencies and activate the virtual environment:**
     ```bash
-    pip install -r requirements.txt
+    poetry install
+    poetry shell
     ```
+    This will:
+    - Create a virtual environment automatically
+    - Install all dependencies from `pyproject.toml`
+    - Activate the virtual environment
 
-4.  **Install the package in editable mode (optional, for development):**
-    ```bash
-    pip install -e .
-    ```
-
-5.  **Create a `.env` file** in the project root directory (`ethereum-repo-clusters/`) and add your API keys:
+4.  **Create a `.env` file** in the project root directory (`ethereum-repo-clusters/`) and add your API keys:
     ```env
     OSO_API_KEY="your_oso_api_key"
     GITHUB_TOKEN="your_github_token" # A GitHub Personal Access Token with repo access
     GEMINI_API_KEY="your_gemini_api_key"
     ```
     These keys are loaded via `ethereum-repo-clusters/config/settings.py`.
+
+**Alternative: Run commands without activating shell:**
+If you prefer not to activate the Poetry shell, you can run commands directly:
+```bash
+poetry run python -m ethereum-repo-clusters process_unified --force-refresh
+```
 
 ## Configuration
 
@@ -100,10 +110,15 @@ The project uses a combination of a JSON configuration file and Python modules f
 
 ## Usage (CLI)
 
-The project is operated via the command line using `python -m ethereum-repo-clusters`.
+The project is operated via the command line. **Poetry is recommended** for managing the virtual environment and dependencies.
 
 **General Command Structure:**
 ```bash
+# With Poetry (recommended)
+poetry run python -m ethereum-repo-clusters [GLOBAL_OPTIONS] COMMAND [COMMAND_OPTIONS]
+
+# Or activate Poetry shell first, then run directly
+poetry shell
 python -m ethereum-repo-clusters [GLOBAL_OPTIONS] COMMAND [COMMAND_OPTIONS]
 ```
 
@@ -114,49 +129,49 @@ python -m ethereum-repo-clusters [GLOBAL_OPTIONS] COMMAND [COMMAND_OPTIONS]
 
 -   **`fetch_repos`**: Fetches repository data from OSO and READMEs from GitHub.
     ```bash
-    python -m ethereum-repo-clusters fetch_repos
+    poetry run python -m ethereum-repo-clusters fetch_repos
     ```
     -   `--force-refresh`: Wipes existing raw repository data and re-fetches.
     -   `--fetch-new-only`: Only fetches repositories that don't exist in current data.
 
 -   **`generate_summaries`**: Generates AI summaries for fetched repositories.
     ```bash
-    python -m ethereum-repo-clusters generate_summaries
+    poetry run python -m ethereum-repo-clusters generate_summaries
     ```
     -   `--force-refresh`: Wipes existing summaries and regenerates them.
     -   `--new-only`: Only generates summaries for repositories that don't have summaries yet.
 
 -   **`categorize`**: Categorizes projects using all defined AI personas.
     ```bash
-    python -m ethereum-repo-clusters categorize
+    poetry run python -m ethereum-repo-clusters categorize
     ```
     -   `--force-refresh`: Wipes existing categorizations and re-runs.
     -   `--persona <persona_name>`: Processes only the specified persona. Can be combined with `--force-refresh`. Example:
         ```bash
-        python -m ethereum-repo-clusters categorize --persona keyword_spotter --force-refresh
+        poetry run python -m ethereum-repo-clusters categorize --persona keyword_spotter --force-refresh
         ```
     -   `--new-only`: Only categorizes repositories that don't have categories yet.
 
 -   **`consolidate`**: Consolidates categorizations from all personas and generates final project recommendations.
     ```bash
-    python -m ethereum-repo-clusters consolidate
+    poetry run python -m ethereum-repo-clusters consolidate
     ```
     *(This step does not typically require a force-refresh as it always processes the latest categorized data.)*
 
 **Persona Management (Informational):**
 The CLI includes commands related to personas, but due to refactoring, persona definitions are now managed directly in `ethereum-repo-clusters/config/prompts/personas.py`. These CLI commands are informational:
 
--   `python -m ethereum-repo-clusters personas list`: Lists personas currently defined in `personas.py`.
--   `python -m ethereum-repo-clusters personas add ...`: Provides instructions on how to add a persona by editing `personas.py`.
--   `python -m ethereum-repo-clusters personas remove <name>`: Provides instructions on how to remove a persona by editing `personas.py`.
+-   `poetry run python -m ethereum-repo-clusters personas list`: Lists personas currently defined in `personas.py`.
+-   `poetry run python -m ethereum-repo-clusters personas add ...`: Provides instructions on how to add a persona by editing `personas.py`.
+-   `poetry run python -m ethereum-repo-clusters personas remove <name>`: Provides instructions on how to remove a persona by editing `personas.py`.
 
 **Example Full Run in Test Mode with Full Refresh:**
 ```bash
 # Legacy pipeline approach
-python -m ethereum-repo-clusters --test-mode run_all --force-refresh-all
+poetry run python -m ethereum-repo-clusters --test-mode run_all --force-refresh-all
 
 # New unified processor approach (recommended)
-python -m ethereum-repo-clusters --test-mode run_all --force-refresh-all --use-unified
+poetry run python -m ethereum-repo-clusters --test-mode run_all --force-refresh-all --use-unified
 ```
 
 ## Workflow
@@ -297,7 +312,7 @@ This structure makes it easy to:
 
 ```bash
 # Process repositories with the unified processor
-python -m ethereum-repo-clusters process_unified [OPTIONS]
+poetry run python -m ethereum-repo-clusters process_unified [OPTIONS]
 
 # Options:
 #   --force-refresh      Force refresh all data, ignoring existing.
@@ -310,7 +325,7 @@ python -m ethereum-repo-clusters process_unified [OPTIONS]
 
 ```bash
 # Run the entire pipeline using the unified processor
-python -m ethereum-repo-clusters run_all --use-unified [OPTIONS]
+poetry run python -m ethereum-repo-clusters run_all --use-unified [OPTIONS]
 
 # Additional options with --use-unified:
 #   --include-forks      Include forked repositories in processing.
