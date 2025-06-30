@@ -1,207 +1,83 @@
 CATEGORIES = [
-    # DeFi Application Categories
     {
-        "category": "Lending & Borrowing Protocols",
-        "description": (
-            "Lending & Borrowing Protocols include implementations and SDKs for collateralized lending markets, "
-            "flash loans, interest rate models, and liquidation mechanisms. These tools handle asset management, "
-            "risk scoring, and pool accounting, enabling users to lend or borrow assets in a trust-minimized way."
-        )
+        "category": "Execution Clients & Core Protocol",
+        "description": "Implementations of the Ethereum execution layer (e.g., Geth, Nethermind) plus low‑level consensus or EVM research repos. Anything that validates blocks or directly extends the core protocol logic belongs here."
     },
     {
-        "category": "Decentralized Exchanges (DEXs)",
-        "description": (
-            "DEXs power peer-to-peer asset swaps and liquidity provision. This includes AMM (automated market maker) "
-            "frameworks, order book DEXes, routers, aggregators, and liquidity management libraries. They also often "
-            "support advanced trading mechanisms like TWAPs, limit orders, and MEV protection."
-        )
+        "category": "Scaling & Layer‑2 Frameworks",
+        "description": "Rollup SDKs, optimistic & zk proof systems, shared sequencers, data‑availability layers, and tooling that lets teams spin up or operate an L2 or sidechain."
     },
     {
-        "category": "Derivatives & Synthetic Assets",
-        "description": (
-            "Derivatives & Synthetic Assets frameworks implement perpetual futures, options, and collateralized synthetic "
-            "asset systems. These toolkits involve complex pricing oracles, risk engines, margin systems, and settlement layers."
-        )
+        "category": "Interoperability & Bridges",
+        "description": "Cross‑chain bridges, messaging buses, generalized state‑proof frameworks, and liquidity routers focused on moving assets or data between networks."
     },
     {
-        "category": "Stablecoin Infrastructure",
-        "description": (
-            "Stablecoin Infrastructure includes minting contracts, collateralization engines, algorithmic stabilization mechanisms, "
-            "and off-chain attestation integrations. It also encompasses tools for analyzing backing ratios and peg health."
-        )
+        "category": "Cryptography & Zero‑Knowledge Primitives",
+        "description": "Reusable cryptographic libraries—hash functions, elliptic‑curve math, SNARK/STARK circuits, proof systems, and related tooling not tied to a single application."
     },
     {
-        "category": "Oracles & Price Feeds",
-        "description": (
-            "Oracles & Price Feeds provide real-world and cross-chain data into smart contracts. This category covers push-based oracles, "
-            "pull-based on-demand queries, cryptoeconomic staking oracles, and off-chain data relayers."
-        )
+        "category": "Oracle Networks & Data Feeds",
+        "description": "Push or pull‑based oracle contracts, off‑chain reporters, commit‑reveal schemes, and services that bring real‑world or cross‑chain data onchain."
     },
     {
-        "category": "Vaults, Yield Strategies & Aggregators",
-        "description": (
-            "These tools optimize capital across yield-bearing protocols. They include yield routers, auto-compounding vaults, and rebalancers, "
-            "as well as SDKs to model risk-return profiles and dynamically allocate capital across farms and lending markets."
-        )
+        "category": "Smart‑Contract Languages & Compilers",
+        "description": "Compilers, interpreters, transpilers, language servers, and DSLs that translate high‑level code (Solidity, Vyper, Huff, etc.) into EVM bytecode."
     },
     {
-        "category": "Asset Management & Portfolio Tooling",
-        "description": (
-            "Asset Management tooling includes interfaces and libraries for building rebalancing strategies, vault-based funds, on-chain ETFs, "
-            "and automated index trackers. They often incorporate fee structures, role-based access, and compliance checks."
-        )
+        "category": "Development Frameworks & Tooling",
+        "description": "Opinionated toolchains (Hardhat, Foundry, Brownie, DappTools) that scaffold, test, and deploy contracts, including plugin ecosystems and CLIs."
     },
     {
-        "category": "DeFi Security & Monitoring",
-        "description": (
-            "Security tools for DeFi include real-time exploit detectors, anomaly detection systems, pause mechanisms, multisig enforcers, "
-            "and post-mortem forensic tools. Monitoring dashboards and alerting frameworks fall here as well."
-        )
+        "category": "Testing & Formal Verification",
+        "description": "Unit‑test harnesses, fuzzers, static analyzers, symbolic execution engines, and formal verification suites that surface correctness or security issues pre‑deployment."
     },
     {
-        "category": "Governance & DAO Tooling",
-        "description": (
-            "Governance & DAO Tooling enables on-chain proposal management, token-weighted voting, off-chain signaling, execution queues, "
-            "and guardrails for DeFi governance systems. Includes snapshot integration, timelocks, and delegate management interfaces."
-        )
+        "category": "Deployment & Upgrade Management",
+        "description": "Libraries and services that automate contract deployment, versioning, proxy patterns, CREATE2 determinism, and governance‑controlled upgrades."
     },
     {
-        "category": "Liquidity Bootstrapping & Token Distribution",
-        "description": (
-            "This includes tools for liquidity mining, airdrops, vesting contracts, bonding curves, and initial token offerings. "
-            "They facilitate community-led distribution, price discovery, and progressive decentralization of DeFi protocols."
-        )
-    },
-    {
-        "category": "DeFi Analytics & Dashboards",
-        "description": (
-            "These are SDKs, APIs, and frontends for aggregating on-chain DeFi metrics—TVL, yield, volume, and user activity. "
-            "Includes data pipelines, Dune-compatible libraries, subgraphs, and event-based ETL infrastructure tailored to DeFi."
-        )
-    },
-    {
-        "category": "Cross-chain DeFi Infrastructure",
-        "description": (
-            "These tools support multi-chain liquidity routing, cross-chain yield farming, state relays, and synthetic asset issuance. "
-            "They abstract away bridging mechanics, offering seamless user and liquidity migration across ecosystems."
-        )
-    },
-    {
-        "category": "User Interface & Integration SDKs",
-        "description": (
-            "SDKs and frontend libraries for integrating DeFi functionality into wallets, dApps, and aggregators. Includes trade UIs, "
-            "Zap interfaces, gas estimators, and batch transaction helpers to improve DeFi UX."
-        )
-    },
-    {
-        "category": "Simulation & Risk Modeling",
-        "description": (
-            "Tools that simulate user positions, economic incentives, or protocol upgrades. They model protocol resilience, agent behavior, "
-            "market shocks, and contagion scenarios, often using agent-based or Monte Carlo methods for risk-aware design."
-        )
-    },
-
-    # Developer Tool Categories
-    {
-        "category": "Language & Compilation Tools",
-        "description": (
-            "Language & Compilation Tools include compilers, interpreters, language servers, "
-            "and syntax utilities for smart-contract development. They translate high-level "
-            "source code into EVM bytecode, perform static analysis, and enable features like "
-            "symbolic execution, forming the foundation for all higher-level tooling."
-        )
-    },
-    {
-        "category": "Core Protocol Interfaces",
-        "description": (
-            "Core Protocol Interfaces are libraries and SDKs that provide reusable building blocks "
-            "for blockchain developers—smart contract libraries, JSON-RPC clients, transaction builders, "
-            "wallet and key management, authorization, signature handling, and ABI encoding/decoding. "
-            "They can power the core operations of many dApps and services."
-        )
-    },
-    {
-        "category": "Development Frameworks",
-        "description": (
-            "Development Frameworks are opinionated, end-to-end toolchains that scaffold, build, "
-            "test, and deploy smart-contract projects. They bundle CLIs, IDE integrations, task "
-            "runners, local networks, hot-reloading, and plugin ecosystems to enforce conventions "
-            "and automate workflows from project setup through to frontend integration."
-        )
-    },
-    {
-        "category": "Deployment & Lifecycle Management",
-        "description": (
-            "Deployment & Lifecycle Management tools handle contract deployment, upgrades, and "
-            "on-chain migrations. They automate predictable CREATE2 strategies, proxy pattern "
-            "management, cross-network publishes, and governance hooks, while integrating safety "
-            "checks and test-suite validations to maintain contract integrity."
-        )
-    },
-    {
-        "category": "Testing & Verification Tools",
-        "description": (
-            "Testing & Verification Tools provide frameworks for unit testing, property-based fuzzing, "
-            "symbolic execution, formal verification, and coverage analysis. They integrate vulnerability "
-            "scanners, static analyzers, and coverage reporters to identify edge-case failures and ensure "
-            "on-chain correctness."
-        )
-    },
-    {
-        "category": "Developer Experience Tools",
-        "description": (
-            "Developer Experience Tools are lightweight plugins and utilities that boost productivity "
-            "and enforce code consistency. This category includes editor extensions, linters, formatters, "
-            "code generators, documentation generators, and small CLI helpers."
-        )
-    },
-    {
-        "category": "Infrastructure & Node Operations",
-        "description": (
-            "Infrastructure & Node Operations encompass tools for running, coordinating, and scaling "
-            "blockchain nodes and peer-to-peer networks. They cover RPC providers, telemetry collectors, "
-            "log aggregators, gossip-based messaging layers, peer discovery and connection management, "
-            "and automation scripts to ensure reliable network participation."
-        )
+        "category": "Node Operations & DevOps",
+        "description": "Scripts, dashboards, container images, and orchestration tools for running or monitoring full nodes, validators, archival nodes, or RPC endpoints."
     },
     {
         "category": "Data Indexing & Analytics",
-        "description": (
-            "Data Indexing & Analytics tools ingest, process, and visualize on-chain data. They provide "
-            "GraphQL and REST APIs over processed datasets, real-time event streaming, and libraries or "
-            "dashboards for analyzing blockchain metrics."
-        )
+        "description": "Subgraph definitions, ETL pipelines, time‑series databases, and API servers that structure onchain data for querying, dashboards, or research."
     },
     {
-        "category": "Interoperability & Cross-chain",
-        "description": (
-            "Interoperability & Cross-chain covers bridging frameworks, cross-chain messaging protocols, "
-            "and Superchain interoperability tooling. These libraries enable seamless asset transfers, "
-            "state proofs, and communication across multiple networks."
-        )
+        "category": "Wallets & Account Abstraction",
+        "description": "Key‑management libraries, signature middlewares (EIP‑4337), wallet SDKs, browser extensions, mobile wallets, and transaction‑building helpers."
     },
     {
-        "category": "Cryptography & Primitives",
-        "description": (
-            "Cryptography & Primitives includes low-level cryptographic libraries and building blocks—"
-            "hash functions, signature schemes, Merkle trees, zero-knowledge proof primitives, and "
-            "encryption utilities—optimized for security and performance."
-        )
+        "category": "Identity & Credentials",
+        "description": "ENS, decentralized identity, verifiable‑credential frameworks, reputation scores, soul‑bound token standards, and onchain attestations."
     },
     {
-        "category": "Application-Specific & Niche Tools",
-        "description": (
-            "Application-Specific & Niche Tools are libraries and SDKs tailored to very narrow use cases "
-            "(e.g., DeFi adapters, NFT marketplaces, governance dashboards). They serve specific projects "
-            "but do not have broad applicability or reusability across the ecosystem."
-        )
+        "category": "DAO & Governance Systems",
+        "description": "Token‐weighted voting modules, off‑chain signaling, delegate dashboards, execution timelocks, proposal simulators, and treasury management tooling."
     },
     {
-        "category": "Others",
-        "description": (
-            "Others is a catch-all for repositories with limited usage or insufficient information—"
-            "empty projects, single-file utilities, or items that cannot be reasonably categorized."
-        )
+        "category": "DeFi Protocols & Financial Primitives",
+        "description": "Lending markets, DEXes, derivatives, yield optimizers, stablecoins, liquidity bootstrapping, onchain indices, and associated SDKs."
+    },
+    {
+        "category": "NFTs & Digital Asset Protocols",
+        "description": "ERC‑721/1155 implementations, metadata standards, onchain creators' platforms, marketplace contracts, royalty engines, and fractionalization tooling."
+    },
+    {
+        "category": "Gaming & Metaverse Applications",
+        "description": "Onchain game engines, asset composability layers, play‑to‑earn economies, and metaverse SDKs focused primarily on interactive entertainment."
+    },
+    {
+        "category": "Social & Consumer Applications",
+        "description": "Protocols or SDKs for social graphs, content platforms, messaging, ticketing, subscriptions, and other consumer‑oriented experiences."
+    },
+    {
+        "category": "Storage & Data Availability",
+        "description": "IPFS pinning tools, Filecoin/Arweave clients, EigenDA or Celestia adapters, and libraries that persist or serve large blobs and proofs."
+    },
+    {
+        "category": "Security Monitoring & Incident Response",
+        "description": "Real‑time threat detectors, alerting networks (e.g., Forta), exploit simulators, pause/kill switches, forensic analysis, and post‑mortem tooling."
     }
 ]
 

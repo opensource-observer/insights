@@ -1,71 +1,65 @@
 # Ethereum Repo Clusters
 
-A Python package for automatically clustering Ethereum development tools and libraries based on their README content using AI-driven analysis and multiple personas.
+A Python module for categorizing Ethereum repositories using AI-based analysis.
 
 ## Overview
 
 This project implements a pipeline to:
 1.  Fetch repository data from the OSO (Open Source Observer) database.
 2.  Retrieve corresponding README files from GitHub.
-3.  Generate concise project summaries using Google's Gemini AI.
-4.  Employ multiple configurable AI personas to categorize each project based on its summary and metadata.
-5.  Consolidate these categorizations, using a star-count weighted approach for projects with multiple repositories, to produce a final recommended category.
+3.  Generate concise project summaries using Gemini AI.
+4.  Employ multiple configurable AI personas to categorize each project based on its full README content, summary, and metadata.
+5.  Consolidate categorizations and produce a final recommended category.
 
 The entire process is managed via a Command Line Interface (CLI).
 
 ## Features
 
--   Fetches comprehensive repository data via OSO, including fork status and activity tracking.
+-   Quickly fetches comprehensive repository metadata via OSO.
 -   Retrieves and processes README.md files from GitHub with robust error handling.
--   Utilizes Google's Gemini AI for intelligent summary generation.
--   Employs a multi-persona approach for nuanced project categorization.
+-   Utilizes Gemini AI for intelligent summary generation.
 -   Supports an arbitrary number of configurable AI personas.
--   Calculates final project recommendations using star-count weighted consolidation.
--   Offers both modular pipeline and unified processing approaches.
 -   Provides detailed tracking of repository status (active/inactive, fork/non-fork).
 -   Handles empty or error READMEs gracefully with "UNCATEGORIZED" status.
--   Includes timestamps for all categorization operations.
 -   Test mode for quick runs on a subset of data.
--   Outputs data at various stages in Parquet and CSV formats (with README text removed from CSV for readability).
+-   Outputs data at various stages in Parquet and CSV formats.
 -   Supports easy resumption of processing and addition of new repositories.
 -   Features comprehensive progress bars at multiple levels for better visibility into processing status.
--   **Checkpoint System**: Automatically saves progress after each step, allowing for seamless recovery from interruptions.
--   **Incremental Saving**: Saves results after processing each repository, ensuring no work is lost if the process is interrupted.
--   **Resume Capability**: Automatically detects partially processed repositories and continues from where it left off.
+-   Automatically saves progress after each step, allowing for seamless recovery from interruptions and incremental processing.
 
 ## Prerequisites
 
 -   Python 3.10+
--   Access to OSO, GitHub, and Google Gemini APIs.
+-   Poetry (for dependency management)
+-   Access to OSO, GitHub, and Gemini APIs.
 
 ## Installation
 
 1.  **Clone the repository:**
     ```bash
-    git clone <your-repository-url>
+    git clone https://github.com/ethereum/ethereum-repo-clusters.git
     cd ethereum-repo-clusters
     ```
 
-2.  **Set up a virtual environment (recommended):**
+2.  **Install Poetry (if not already installed):**
     ```bash
-    python -m venv venv
-    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+    curl -sSL https://install.python-poetry.org | python3 -
     ```
 
-3.  **Install dependencies:**
+3.  **Install dependencies and activate the virtual environment:**
     ```bash
-    pip install -r requirements.txt
+    poetry install
+    poetry env activate
     ```
+    This will:
+    - Create a virtual environment automatically
+    - Install all dependencies from `pyproject.toml`
+    - Activate the virtual environment
 
-4.  **Install the package in editable mode (optional, for development):**
-    ```bash
-    pip install -e .
-    ```
-
-5.  **Create a `.env` file** in the project root directory (`ethereum-repo-clusters/`) and add your API keys:
+4.  **Create a `.env` file** in the project root directory (`ethereum-repo-clusters/`) and add your API keys:
     ```env
     OSO_API_KEY="your_oso_api_key"
-    GITHUB_TOKEN="your_github_token" # A GitHub Personal Access Token with repo access
+    GITHUB_TOKEN="your_github_personal_access_token"
     GEMINI_API_KEY="your_gemini_api_key"
     ```
     These keys are loaded via `ethereum-repo-clusters/config/settings.py`.
@@ -91,7 +85,7 @@ The project uses a combination of a JSON configuration file and Python modules f
     -   Edit this file to update the categorization taxonomy.
 
 -   **Prompt Templates (`ethereum-repo-clusters/config/prompts/summary_prompts.py`):**
-    -   Contains `SUMMARY_PROMPT` (for generating project summaries) and `TAGS_PROMPT` (for an auxiliary tag generation, currently not central to categorization).
+    -   Contains `SUMMARY_PROMPT` (for generating project summaries).
     -   These are used by the `AIService`.
 
 -   **Core Settings (`ethereum-repo-clusters/config/settings.py`):**
@@ -100,10 +94,15 @@ The project uses a combination of a JSON configuration file and Python modules f
 
 ## Usage (CLI)
 
-The project is operated via the command line using `python -m ethereum-repo-clusters`.
+The project is operated via the command line. **Poetry is recommended** for managing the virtual environment and dependencies.
 
 **General Command Structure:**
 ```bash
+# With Poetry (recommended)
+poetry run python -m ethereum-repo-clusters [GLOBAL_OPTIONS] COMMAND [COMMAND_OPTIONS]
+
+# Or activate Poetry shell first, then run directly
+poetry shell
 python -m ethereum-repo-clusters [GLOBAL_OPTIONS] COMMAND [COMMAND_OPTIONS]
 ```
 
@@ -114,79 +113,57 @@ python -m ethereum-repo-clusters [GLOBAL_OPTIONS] COMMAND [COMMAND_OPTIONS]
 
 -   **`fetch_repos`**: Fetches repository data from OSO and READMEs from GitHub.
     ```bash
-    python -m ethereum-repo-clusters fetch_repos
+    poetry run python -m ethereum-repo-clusters fetch_repos
     ```
     -   `--force-refresh`: Wipes existing raw repository data and re-fetches.
     -   `--fetch-new-only`: Only fetches repositories that don't exist in current data.
 
 -   **`generate_summaries`**: Generates AI summaries for fetched repositories.
     ```bash
-    python -m ethereum-repo-clusters generate_summaries
+    poetry run python -m ethereum-repo-clusters generate_summaries
     ```
     -   `--force-refresh`: Wipes existing summaries and regenerates them.
     -   `--new-only`: Only generates summaries for repositories that don't have summaries yet.
 
 -   **`categorize`**: Categorizes projects using all defined AI personas.
     ```bash
-    python -m ethereum-repo-clusters categorize
+    poetry run python -m ethereum-repo-clusters categorize
     ```
     -   `--force-refresh`: Wipes existing categorizations and re-runs.
     -   `--persona <persona_name>`: Processes only the specified persona. Can be combined with `--force-refresh`. Example:
         ```bash
-        python -m ethereum-repo-clusters categorize --persona keyword_spotter --force-refresh
+        poetry run python -m ethereum-repo-clusters categorize --persona technical_reviewer --force-refresh
         ```
     -   `--new-only`: Only categorizes repositories that don't have categories yet.
 
 -   **`consolidate`**: Consolidates categorizations from all personas and generates final project recommendations.
     ```bash
-    python -m ethereum-repo-clusters consolidate
+    poetry run python -m ethereum-repo-clusters consolidate
     ```
     *(This step does not typically require a force-refresh as it always processes the latest categorized data.)*
+
+-   **`run_all`**: Runs the complete pipeline from start to finish.
+    ```bash
+    poetry run python -m ethereum-repo-clusters run_all
+    ```
+    -   `--force-refresh-all`: Wipes all existing data and re-runs the entire pipeline.
+    -   `--use-unified`: Uses the unified processor approach (recommended).
 
 **Persona Management (Informational):**
 The CLI includes commands related to personas, but due to refactoring, persona definitions are now managed directly in `ethereum-repo-clusters/config/prompts/personas.py`. These CLI commands are informational:
 
--   `python -m ethereum-repo-clusters personas list`: Lists personas currently defined in `personas.py`.
--   `python -m ethereum-repo-clusters personas add ...`: Provides instructions on how to add a persona by editing `personas.py`.
--   `python -m ethereum-repo-clusters personas remove <name>`: Provides instructions on how to remove a persona by editing `personas.py`.
+-   `poetry run python -m ethereum-repo-clusters personas list`: Lists personas currently defined in `personas.py`.
+-   `poetry run python -m ethereum-repo-clusters personas add ...`: Provides instructions on how to add a persona by editing `personas.py`.
+-   `poetry run python -m ethereum-repo-clusters personas remove <name>`: Provides instructions on how to remove a persona by editing `personas.py`.
 
 **Example Full Run in Test Mode with Full Refresh:**
 ```bash
-# Legacy pipeline approach
-python -m ethereum-repo-clusters --test-mode run_all --force-refresh-all
-
-# New unified processor approach (recommended)
-python -m ethereum-repo-clusters --test-mode run_all --force-refresh-all --use-unified
+poetry run python -m ethereum-repo-clusters --test-mode run_all --force-refresh-all --use-unified
 ```
 
 ## Workflow
 
-### Legacy Pipeline (Step-by-Step)
-
-1.  **Fetch Data (`fetch_repos`):**
-    -   Repository metadata is fetched from OSO.
-    -   README.md content is fetched from GitHub for these repositories.
-    -   Output: `output/devtooling_raw.parquet`
-
-2.  **Generate Summaries (`generate_summaries`):**
-    -   READMEs are processed by Gemini AI to create concise summaries.
-    -   Output: `output/devtooling_summarized.parquet`
-
-3.  **Categorize by Persona (`categorize`):**
-    -   Each project summary (with metadata) is evaluated by every defined AI persona.
-    -   Each persona assigns a category based on its specific prompt and the global category list.
-    -   Output: Individual Parquet files per persona in `output/categorized/` (e.g., `output/categorized/keyword_spotter.parquet`).
-
-4.  **Consolidate Recommendations (`consolidate`):**
-    -   Categorizations from all personas are merged.
-    -   For each project:
-        -   If it's a single-repository project, the recommendation is based on a star-weighted aggregation of persona assignments for that repo.
-        -   If it's a multi-repository project, the recommendation is determined by a star-count weighted aggregation of all persona assignments across all its repositories. The category with the highest total star weight wins.
-    -   Output: `output/devtooling_full.parquet` and `output/devtooling_consolidated.csv`.
-
-### New Unified Processor (Recommended)
-
-The new unified processor combines all steps into a single efficient pipeline:
+The unified processor combines all steps into a single efficient pipeline:
 
 1.  **Process Repositories (`process_unified`):**
     -   Repository metadata is fetched from OSO, including fork status and activity tracking.
@@ -217,186 +194,17 @@ The unified processor offers several advantages:
 
 All output data is stored in the directory specified by `output_dir` in `pipeline_config.json` (default is `output/`).
 
-### Legacy Pipeline Output
+### Unified Processor Output
+
+-   **`ethereum_repos_unified.parquet`**: Complete dataset with all repository metadata, README content, summaries, persona categorizations, and final recommendations.
+-   **`ethereum_repos_unified.csv`**: CSV version of the unified dataset with README text removed for improved readability.
+
+### Step-by-Step Pipeline Output (Alternative)
+
+If using the step-by-step approach instead of the unified processor:
 
 -   **`devtooling_raw.parquet`**: Raw data fetched from OSO, augmented with GitHub README content.
 -   **`devtooling_summarized.parquet`**: Repositories with their AI-generated summaries.
 -   **`categorized/<persona_name>.parquet`**: Dataframe for each persona, containing the original summary data plus that persona's assigned category and reason.
 -   **`devtooling_full.parquet`**: The final consolidated dataset, with one row per project, including the overall recommendation, total stars, repo count, sample summary, and individual persona category modes.
--   **`devtooling_consolidated.csv`**: A CSV version of the final consolidated data for easier viewing.
-
-### Unified Processor Output
-
--   **`ethereum_repos_unified.parquet`**: Comprehensive dataset containing all repositories with their metadata, summaries, and categorizations in a single structure.
--   **`ethereum_repos_unified.csv`**: A CSV version of the unified data for easier viewing, with README text removed and long text fields truncated for readability.
--   **`processing_checkpoint.json`**: Checkpoint file that tracks processing progress, allowing for seamless recovery from interruptions.
-
-### Unified Data Structure
-
-The unified processor creates a comprehensive data structure with the following key fields:
-
-```json
-{
-  "repo_artifact_id": "...",
-  "project_id": "...",
-  "repo_artifact_namespace": "...",
-  "repo_artifact_name": "...",
-  "is_fork": true/false,
-  "is_actively_maintained": true/false,
-  "last_updated": "2024-12-01",
-  "star_count": 100,
-  "readme_status": "SUCCESS/EMPTY/ERROR",
-  "summary": "...",
-  "categorizations": [
-    {
-      "persona_name": "keyword_spotter",
-      "category": "Developer Tools",
-      "reason": "Contains keywords like 'CLI', 'build tool'...",
-      "timestamp": "2025-01-05T09:15:00Z"
-    },
-    {
-      "persona_name": "senior_strategist",
-      "category": "Infrastructure",
-      "reason": "Mature project with strong adoption...",
-      "timestamp": "2025-01-05T09:15:01Z"
-    },
-    {
-      "persona_name": "workflow_wizard",
-      "category": "Developer Tools",
-      "reason": "Streamlines development workflow...",
-      "timestamp": "2025-01-05T09:15:02Z"
-    }
-  ],
-  "final_recommendation": "Developer Tools",
-  "processing_timestamp": "2025-01-05T09:15:02Z"
-}
-```
-
-This structure makes it easy to:
-- Track which repositories have been processed
-- Identify repositories with errors or empty READMEs
-- See the categorization from each persona with timestamps
-- Filter repositories by fork status or activity
-- Resume processing from where you left off
-
-## Development Notes
-- The project uses `tqdm` for progress bars during long operations, with detailed progress tracking at multiple levels:
-  - Overall batch processing
-  - Repository processing within each batch
-  - README fetching for each repository
-  - Categorization with each persona
-- `DataManager` class in `ethereum-repo-clusters/pipeline/data_manager.py` handles all data persistence (reading/writing Parquet files).
-- `AIService` in `ethereum-repo-clusters/processing/ai_service.py` abstracts interactions with the Gemini API.
-- `UnifiedProcessor` in `ethereum-repo-clusters/pipeline/unified_processor.py` provides the new streamlined processing approach.
-- The CLI in `ethereum-repo-clusters/cli/main_cli.py` supports both legacy and unified processing approaches.
-- Output files are saved to the local `output/` directory in the current repository.
-
-## New CLI Commands
-
-### Unified Processing
-
-```bash
-# Process repositories with the unified processor
-python -m ethereum-repo-clusters process_unified [OPTIONS]
-
-# Options:
-#   --force-refresh      Force refresh all data, ignoring existing.
-#   --include-forks      Include forked repositories in processing.
-#   --include-inactive   Include repositories not updated in the last year.
-#   --limit INTEGER      Limit the number of repositories to process.
-```
-
-### Run All with Unified Processor
-
-```bash
-# Run the entire pipeline using the unified processor
-python -m ethereum-repo-clusters run_all --use-unified [OPTIONS]
-
-# Additional options with --use-unified:
-#   --include-forks      Include forked repositories in processing.
-#   --include-inactive   Include repositories not updated in the last year.
-```
-
-## Adding New Repositories
-
-To add new repositories to the analysis:
-
-1. The unified processor automatically detects which repositories have already been processed.
-2. New repositories from OSO will be processed automatically on the next run.
-3. To add repositories manually, you can:
-   - Update the OSO query in `fetcher.py` to include additional repositories.
-   - Create a custom script that adds repositories to the unified data structure.
-
-## Error Handling
-
-The unified processor handles errors gracefully:
-
-- Empty READMEs: Marked with `readme_status="EMPTY"` and categorized as "UNCATEGORIZED".
-- Error fetching README: Marked with `readme_status="ERROR"` and categorized as "UNCATEGORIZED".
-- API errors during categorization: The specific persona's categorization is marked as "UNCATEGORIZED" with the error reason.
-
-This approach ensures that all repositories are included in the final output, even if they couldn't be fully processed.
-
-## Checkpoint System
-
-The unified processor now includes a robust checkpoint system that makes it resilient to interruptions:
-
-### How It Works
-
-1. **Incremental Saving**: Results are saved after processing each repository, not just at the end.
-2. **Checkpoint File**: A JSON file (`output/processing_checkpoint.json`) tracks:
-   - Which repositories have been fully processed
-   - Which repositories are partially processed and their current state
-   - The last repository that was successfully processed
-
-3. **Granular Progress Tracking**: The checkpoint tracks progress at multiple levels:
-   - README fetching status
-   - Summary generation status
-   - Which personas have completed categorization
-
-4. **Resume Logic**: When restarted after an interruption, the processor:
-   - Skips repositories that have been fully processed
-   - Continues from where it left off for partially processed repositories
-   - Preserves all work that was completed before the interruption
-
-5. **Space Optimization**: Once a repository is fully processed, its partial results are removed from the checkpoint file to save space.
-
-### Benefits
-
-- **No Lost Work**: Even if interrupted during a long-running process, no work is lost.
-- **API Efficiency**: Avoids redundant API calls to GitHub and Gemini, saving rate limits and costs.
-- **Time Savings**: Picks up exactly where it left off, avoiding redundant processing.
-- **Resilience**: Handles network issues, API timeouts, and other temporary failures gracefully.
-
-### Example Checkpoint Structure
-
-```json
-{
-  "last_processed_repo_id": "ethereum/solidity",
-  "processed_repos": ["openzeppelin/openzeppelin-contracts", "ethereum/solidity"],
-  "partial_results": {
-    "ipfs/kubo": {
-      "readme_fetched": true,
-      "readme_status": "SUCCESS",
-      "summary_generated": true,
-      "personas_completed": ["protocol_architect", "ecosystem_analyst"],
-      "categorizations": [
-        {
-          "persona_name": "protocol_architect",
-          "category": "Infrastructure & Node Operations",
-          "reason": "...",
-          "timestamp": "2025-06-05T13:53:30.903574"
-        },
-        {
-          "persona_name": "ecosystem_analyst",
-          "category": "Infrastructure & Node Operations",
-          "reason": "...",
-          "timestamp": "2025-06-05T13:53:32.238039"
-        }
-      ]
-    }
-  }
-}
-```
-
-This checkpoint system ensures that the processing pipeline is robust and can handle interruptions gracefully, making it suitable for processing large numbers of repositories over extended periods.
+-   **`devtooling_consolidated.csv`**: CSV version of the final consolidated dataset.

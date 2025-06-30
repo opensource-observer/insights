@@ -9,7 +9,7 @@ class DataFetcher:
     def __init__(self):
         self.oso_client = Client(api_key=OSO_API_KEY)
 
-    def fetch_repositories(self, limit: int = None, sort_by_stars: bool = True) -> pd.DataFrame:
+    def fetch_repositories(self, limit: int = None, sort_by_stars: bool = True, min_stars: int = 0) -> pd.DataFrame:
         """
         Fetch repositories from OSO.
         
@@ -28,28 +28,25 @@ class DataFetcher:
         query = f"""
         SELECT DISTINCT
           re.artifact_id AS repo_artifact_id,
-          p.project_id,
-          p.project_name,
-          p.display_name,
           re.artifact_namespace AS repo_artifact_namespace,
           re.artifact_name AS repo_artifact_name,
           re.created_at,
           re.updated_at,
+          re.language,
           re.star_count,
           re.fork_count,
           re.is_fork,
           re.num_packages_in_deps_dev        
         FROM int_repositories_enriched AS re
-        JOIN projects_v1 AS p ON re.project_id = p.project_id
-        WHERE p.project_id IN (
+        JOIN artifacts_by_project_v1 AS ap ON re.artifact_id = ap.artifact_id
+        WHERE ap.project_id IN (
             SELECT DISTINCT project_id FROM oso.projects_by_collection_v1
             WHERE {where_keywords}
         )
+        AND re.star_count > {min_stars}
         """
-        # The table int_superchain_s7_devtooling_repositories should have star_count
-        # If not, this sort will fail or do nothing. Assuming 'r.star_count' is valid.
         if sort_by_stars:
-            query += " ORDER BY re.star_count DESC, p.project_name ASC"
+            query += " ORDER BY re.star_count DESC, re.artifact_namespace ASC"
 
         if limit is not None and isinstance(limit, int) and limit > 0:
             query += f" LIMIT {limit}"

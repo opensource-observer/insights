@@ -96,7 +96,7 @@ class CategorizerStep:
                 
                 # Prepare list of dicts, each containing summary and metadata for a project
                 project_data_batch = []
-                required_metadata_cols = ['star_count', 'fork_count', 'created_at', 'updated_at']
+                required_metadata_cols = ['star_count', 'fork_count', 'language', 'created_at', 'updated_at']
                 for _, row in batch_df.iterrows():
                     project_data = {
                         'summary': row.get('summary', ''),
