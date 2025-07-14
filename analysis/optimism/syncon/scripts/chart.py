@@ -105,5 +105,5 @@ def make_linechart(
         margin=dict(t=100)
     )
     fig.update_layout(layout_kwargs)
-
     fig.show()
+    return fig
