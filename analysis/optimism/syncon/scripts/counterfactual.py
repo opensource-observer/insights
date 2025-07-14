@@ -133,15 +133,17 @@ def create_synth_control(df: pd.DataFrame, request: SynthControlRequest):
     synthetic = synth._synthetic(Z0)
 
     # Create the data array with the new structure
-    data = [
-        {
+    data = []
+    for date, treatment, synth_val in zip(plot_dates, Z1, synthetic):
+        # pandas NA → None, otherwise cast to float
+        t_val = float(treatment) if not pd.isna(treatment) else None
+        s_val = float(synth_val) if not pd.isna(synth_val) else None
+        data.append({
             "date": date.strftime('%Y-%m-%d'),
-            "treatment": float(treatment),
-            "synthetic": float(synth)
-        }
-        for date, treatment, synth in zip(plot_dates, Z1, synthetic)
-    ]
-
+            "treatment": t_val,
+            "synthetic": s_val
+        })
+    
     response_data = SynthControlResponse(
         weights=weights_dict,
         data=data
