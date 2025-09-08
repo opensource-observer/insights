@@ -6,10 +6,12 @@ app = marimo.App(width="full")
 
 @app.cell
 def _():
-    import pyoso
+    import marimo as mo
+    import pandas as pd
+    import plotly.express as px
+    
     client = pyoso.Client()
-    pyoso_db_conn = client.dbapi_connection()
-    return (client,)
+    return client, mo, pd, px
 
 
 @app.cell
@@ -40,15 +42,12 @@ def _(mo):
 
 @app.cell
 def _():
-    import pandas as pd
-    import plotly.express as px
-
     PACKAGE = 'libp2p'
     SNAPSHOT_DATE = '2025-08-01'
     METRIC_NAME = 'GITHUB_active_developers_monthly'
 
     stringify = lambda arr: "'" + "','".join(arr) + "'"
-    return METRIC_NAME, PACKAGE, SNAPSHOT_DATE, px, stringify
+    return METRIC_NAME, PACKAGE, SNAPSHOT_DATE, stringify
 
 
 @app.cell
