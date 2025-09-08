@@ -5,6 +5,14 @@ app = marimo.App(width="full")
 
 
 @app.cell
+def _():
+    import pyoso
+    client = pyoso.Client()
+    pyoso_db_conn = client.dbapi_connection()
+    return (client,)
+
+
+@app.cell
 def _(mo):
     mo.md(
         """
@@ -32,26 +40,15 @@ def _(mo):
 
 @app.cell
 def _():
-    from dotenv import load_dotenv
-    import marimo as mo
-    import os
-    import plotly.express as px
     import pandas as pd
-    from pyoso import Client    
+    import plotly.express as px
 
-    load_dotenv()
-    OSO_API_KEY = os.environ['OSO_API_KEY']
-    client = Client(api_key=OSO_API_KEY)
-    stringify = lambda arr: "'" + "','".join(arr) + "'"
-    return client, mo, px, stringify
-
-
-@app.cell
-def _():
     PACKAGE = 'libp2p'
     SNAPSHOT_DATE = '2025-08-01'
     METRIC_NAME = 'GITHUB_active_developers_monthly'
-    return METRIC_NAME, PACKAGE, SNAPSHOT_DATE
+
+    stringify = lambda arr: "'" + "','".join(arr) + "'"
+    return METRIC_NAME, PACKAGE, SNAPSHOT_DATE, px, stringify
 
 
 @app.cell
@@ -96,7 +93,6 @@ def _(METRIC_NAME, SNAPSHOT_DATE, client, project_ids, stringify):
     GROUP BY 1,2
     ORDER BY 3 DESC
     """)
-
     return (df_developers,)
 
 
@@ -189,11 +185,6 @@ def _(PACKAGE, df_developers, px):
     )
     fig.update_yaxes(categoryorder="total ascending")
     fig
-    return
-
-
-@app.cell
-def _():
     return
 
 
