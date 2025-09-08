@@ -16,8 +16,8 @@ def _():
 
 @app.cell
 def _(mo):
-mo.md(
-    """
+    mo.md(
+        """
     # Superchain Gas Guzzlers
 
     This notebook analyzes gas fees within the Superchain ecosystem. The goal is to understand the distribution of gas fees across different chains and projects, and to track the evolution of these fees over time.
