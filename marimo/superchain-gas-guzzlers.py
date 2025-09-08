@@ -14,8 +14,10 @@ def _():
     return client, mo, pd, px
 
 
-app._unparsable_cell(
-    r"""
+@app.cell
+def _(mo):
+mo.md(
+    """
     # Superchain Gas Guzzlers
 
     This notebook analyzes gas fees within the Superchain ecosystem. The goal is to understand the distribution of gas fees across different chains and projects, and to track the evolution of these fees over time.
@@ -33,9 +35,10 @@ app._unparsable_cell(
 
     1.  **Treemap of Gas Fees:** A treemap visualizes the total gas fees, showing the hierarchical relationship between chains and projects. The size of each rectangle represents the total gas fees, and the color represents the magnitude of the fees.
     2.  **Area Chart of Daily Gas Fees:** An area chart displays the daily gas fees for each chain over time, allowing for the observation of trends and comparisons between chains.
-    """,
-    name="_"
-)
+    """
+    )
+    return
+    
 
 
 @app.cell
