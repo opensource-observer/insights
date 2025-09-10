@@ -21,8 +21,8 @@ def _():
 
 @app.cell
 def _(mo):
-    mo.md("""
-
+    mo.md(
+        """
     # OSO Coverage
 
     OSO maintains a large repository of open source projects called oss-directory. It's more than just an awesome list ... it's the starting point of the OSO data pipeline. We run indexers on every artifact linked to projects in the directory to produce metrics for our API and dashboards. We also use other project registries -- OP Atlas, Crypto Ecosystems, DefiLlama, OpenLabelsInitiative.
@@ -30,8 +30,8 @@ def _(mo):
     This dashboard provides an overview of all the labeling we and our partners have done!
 
     ![img](https://docs.opensource.observer/assets/images/project-directory-7f628a5f09a6983c43ea4da6750b8b67.png)
-
-    """)
+    """
+    )
     return
 
 
@@ -51,12 +51,13 @@ def _(mo, pyoso_db_conn):
         SELECT
             artifact_source,
             CASE
-            	WHEN artifact_source IN ('GITHUB', 'NPM', 'GO', 'PIP', 'NUGET', 'RUST', 'GEM')
-            		THEN '1. Software'
-            	WHEN chains.chain IS NOT NULL THEN '4. Superchain'
-            	WHEN artifact_source IN ('WWW', 'TWITTER', 'FARCASTER') THEN '3. Websites'
-            	WHEN artifact_source IN ('DEFILLAMA', 'OSS_DIRECTORY') THEN '2. Data Sources'
-            	ELSE '5. Other Blockchains'
+            	WHEN artifact_source = 'OSS_DIRECTORY' THEN '0. OSO'
+            	WHEN artifact_source = 'GITHUB' THEN '1. Software'
+                WHEN artifact_source IN ('NPM', 'GO', 'PIP', 'NUGET', 'RUST', 'GEM') THEN '2. Packages'
+            	WHEN artifact_source IN ('DEFILLAMA') THEN '3. Data Aggregators'
+            	WHEN artifact_source IN ('WWW', 'TWITTER', 'FARCASTER') THEN '4. Websites'	
+            	WHEN chains.chain IS NOT NULL THEN '5. Superchain'
+            	ELSE '6. Other Blockchains'
             END AS artifact_source_type,
             project_source,
             num_projects,
@@ -74,20 +75,20 @@ def _(mo, pyoso_db_conn):
 
 @app.cell
 def _(df, mo):
+    col_order = list(df.groupby('project_source')['num_artifacts'].sum().sort_values(ascending=False).index)
+    col_format = {c:'{:,.0f}' for c in col_order}
     mo.ui.table(
-        df.pivot(
+        df.pivot_table(
             columns='project_source',
             index=['artifact_source_type', 'artifact_source'],
-            values='num_artifacts'
-        ),
+            values='num_artifacts',
+            fill_value=0
+        )[col_order],
         show_data_types=False,
-        show_column_summaries=False
+        show_column_summaries=False,
+        page_size=100,
+        format_mapping=col_format
     )
-    return
-
-
-@app.cell
-def _():
     return
 
 
