@@ -34,6 +34,47 @@ def _(mo):
 
 
 @app.cell
+def _():
+    LAYOUT = dict(
+        plot_bgcolor='white',
+        paper_bgcolor='white',
+        font_family="PT Sans, sans-serif",
+        title_font_family="Lora, serif",
+        title_x=0,
+        legend_title="",
+        autosize=True,
+        margin=dict(t=50, l=0, r=0, b=0),
+        legend=dict(
+            orientation="h",
+            yanchor="middle",
+            y=1,
+            xanchor="left",
+            x=0
+        ),
+        yaxis=dict(
+            showgrid=True,
+            gridcolor='lightgray',
+            linecolor='black',
+            linewidth=1,
+            ticks='outside',
+            rangemode='tozero'
+        ),
+        xaxis=dict(
+            showgrid=False,
+            linecolor='black',
+            linewidth=1,
+            ticks='outside',
+        ),
+        hovermode="x"
+    )
+    PRIMARY_COLOR = '#FF0420'
+    SECONDARY_COLOR = '#AAA'
+
+    stringify = lambda arr: "'" + "','".join(arr) + "'"
+    return LAYOUT, PRIMARY_COLOR, SECONDARY_COLOR, stringify
+
+
+@app.cell
 def _(client):
     df_tvl_by_chain = client.to_pandas("""
     WITH tvl_events AS (
@@ -44,7 +85,7 @@ def _(client):
           WHEN tvl_events.chain = 'CELO' AND sample_date < DATE('2025-03-25') THEN 'Other chain(s)'
           WHEN c.chain IS NULL THEN 'Other chain(s)'
           ELSE 'Superchain'
-        END AS is_superchain,
+        END AS chain_group,
         tvl_events.amount
       FROM int_chain_metrics AS tvl_events
       LEFT JOIN int_superchain_chain_names AS c ON tvl_events.chain = c.chain
@@ -56,7 +97,7 @@ def _(client):
     SELECT
       sample_date,
       chain,
-      is_superchain,
+      chain_group,
       AVG(amount) AS amount
     FROM tvl_events
     GROUP BY 1, 2, 3
@@ -66,139 +107,70 @@ def _(client):
 
 
 @app.cell
-def _(df_tvl_by_chain, mo, px):
-    df_superchain = df_tvl_by_chain[df_tvl_by_chain['is_superchain'] == 'Superchain']
-    df_grouped_superchain = df_superchain.groupby('sample_date')['amount'].sum().reset_index()
-
-    fig_superchain_tvl = px.area(df_grouped_superchain, x='sample_date', y='amount',
-                                 title='Superchain TVL over time',
-                                 labels={'amount': 'TVL (USD)', 'sample_date': 'Date'},
-                                 color_discrete_sequence=['#FF0420']
-
-                                 )
-
-    fig_superchain_tvl.update_layout(
-        plot_bgcolor='white',
-        paper_bgcolor='white',
-        font_family="Arial",
-        title_font_family="Arial",
-        title_x=0,
-        xaxis_title="",
-        yaxis_title="",
-        legend_title="",
-        autosize=True,
-        margin=dict(t=50, l=0, r=0, b=0),
-        legend=dict(
-            orientation="h",
-            yanchor="bottom",
-            y=1.02,
-            xanchor="right",
-            x=1
-        ),
-        yaxis=dict(
-            showgrid=True,
-            gridcolor='lightgray',
-            linecolor='black',
-            linewidth=1,
-            ticks='outside',
-            rangemode='tozero',
-            title_text="TVL (USD)"
-        ),
-        xaxis=dict(
-            showgrid=False,
-            linecolor='black',
-            linewidth=1,
-            ticks='outside',
-            # tickformat="%b %Y",
-            # dtick="M6",
-            # tickangle=-45
-        ),
-        hovermode="x unified"
+def _(LAYOUT, PRIMARY_COLOR, SECONDARY_COLOR, df_tvl_by_chain, mo, px):
+    _df_superchain_tvl_grouped = (
+        df_tvl_by_chain[df_tvl_by_chain['chain_group'] == 'Superchain']
+        .groupby('sample_date')['amount']
+        .sum()
+        .reset_index()
     )
-
-    fig_superchain_tvl.update_traces(
-        hovertemplate="%{y:.2f}",
+    _fig_superchain_tvl = px.area(
+        data_frame=_df_superchain_tvl_grouped,
+        x='sample_date',
+        y='amount',
+        title='Superchain TVL over time',
+        labels={'amount': 'TVL (USD)', 'sample_date': 'Date'},
+        color_discrete_sequence=[PRIMARY_COLOR, SECONDARY_COLOR]
+    )
+    _fig_superchain_tvl.update_layout(
+        xaxis_title='',
+        yaxis_title='',
+        **LAYOUT
+    )
+    _fig_superchain_tvl.update_traces(
+        hovertemplate="%{x|%d %b %Y}<br><b>%{y:$,.0f}</b>",
         selector=dict(mode='lines')
     )
-    f1 = mo.ui.plotly(fig_superchain_tvl)
-    return (f1,)
+    fig_superchain_tvl = mo.ui.plotly(_fig_superchain_tvl)
+    return (fig_superchain_tvl,)
 
 
 @app.cell
-def _(df_tvl_by_chain, mo, pd, px):
-    df_grouped_market_share = df_tvl_by_chain.groupby(['sample_date', 'is_superchain'])['amount'].sum().reset_index()
-
-    # Calculate total TVL for each date
-    _df_total_tvl = df_grouped_market_share.groupby('sample_date')['amount'].sum().reset_index()
-    _df_total_tvl.rename(columns={'amount': 'total_tvl'}, inplace=True)
-
-    # Merge total TVL back into the grouped dataframe
-    df_grouped_market_share = pd.merge(df_grouped_market_share, _df_total_tvl, on='sample_date')
-
-    # Calculate market share
-    df_grouped_market_share['market_share'] = df_grouped_market_share['amount'] / df_grouped_market_share['total_tvl']
-
-    # Filter for superchain only
-    df_superchain_market_share = df_grouped_market_share[df_grouped_market_share['is_superchain'] == 'Superchain']
-
-    _fig_market_share = px.area(df_superchain_market_share, x='sample_date', y='market_share',
-                  title='Superchain market share of total TVL',
-                  labels={'market_share': 'Market Share', 'sample_date': 'Date'},
-                  color_discrete_sequence=['#ff0420'],)
-
+def _(LAYOUT, PRIMARY_COLOR, SECONDARY_COLOR, df_tvl_by_chain, mo, px):
+    _df_superchain_market_share = (
+        df_tvl_by_chain
+        .groupby(['sample_date', 'chain_group'], as_index=False)
+        .amount.sum()
+        .assign(market_share=lambda d: d['amount']/d.groupby('sample_date')['amount'].transform('sum'))
+        .query("chain_group == 'Superchain'")
+    )
+    _fig_market_share = px.area(
+        _df_superchain_market_share,
+        x='sample_date',
+        y='market_share',
+        title='Superchain market share of total TVL',
+        labels={'market_share': 'Market Share', 'sample_date': 'Date'},
+        color_discrete_sequence=[PRIMARY_COLOR, SECONDARY_COLOR]
+    )
     _fig_market_share.update_layout(
-        plot_bgcolor='white',
-        paper_bgcolor='white',
-        font_family="Arial",
-        title_font_family="Arial",
-        title_x=0,
-        xaxis_title="",
-        yaxis_title="",
-        legend_title="",
-        autosize=True,
-        margin=dict(t=50, l=0, r=0, b=0),
-        legend=dict(
-            orientation="h",
-            yanchor="bottom",
-            y=1.02,
-            xanchor="right",
-            x=1
-        ),
-        yaxis=dict(
-            showgrid=True,
-            gridcolor='lightgray',
-            linecolor='black',
-            linewidth=1,
-            ticks='outside',
-            rangemode='tozero',
-            tickformat=".1%",
-            title_text="Market Share"
-        ),
-        xaxis=dict(
-            showgrid=False,
-            linecolor='black',
-            linewidth=1,
-            ticks='outside',
-        ),
-        hovermode="x unified"
+         xaxis_title='',
+        yaxis_title='',
+        **LAYOUT
     )
-
     _fig_market_share.update_traces(
-        hovertemplate="%{y:.2%}",
+        hovertemplate="%{x|%d %b %Y}<br><b>%{y:.2%}</b>",
         selector=dict(mode='lines')
     )
-
-    f2 = mo.ui.plotly(_fig_market_share)
-    return (f2,)
+    fig_market_share = mo.ui.plotly(_fig_market_share)
+    return (fig_market_share,)
 
 
 @app.cell
-def _(f1, f2, mo):
+def _(fig_market_share, fig_superchain_tvl, mo):
     mo.vstack([
         mo.md("## Overall Trends"),
-        mo.hstack(items=[f1,f2])
+        mo.hstack(items=[fig_superchain_tvl,fig_market_share])
     ])
-
     return
 
 
@@ -236,14 +208,7 @@ def _(client, pd):
 
 
 @app.cell
-def _(df_funding_to_projects):
-    stringify = lambda arr: "'" + "','".join(arr) + "'"
-    funded_projects_str = stringify(df_funding_to_projects['project_id'].unique())
-    return (funded_projects_str,)
-
-
-@app.cell
-def _(client, funded_projects_str):
+def _(client, df_funding_to_projects, stringify):
     df_tvl_by_project = client.to_pandas(f"""
     WITH tvl_events AS (
       SELECT
@@ -255,7 +220,7 @@ def _(client, funded_projects_str):
       JOIN metrics_v0 USING metric_id
       WHERE
         metric_name LIKE '%_defillama_tvl_weekly'
-        AND project_id IN ({funded_projects_str})
+        AND project_id IN ({stringify(df_funding_to_projects['project_id'].unique())})
         AND sample_date >= DATE('2021-07-01')
     ),
     max_tvl AS (
@@ -272,7 +237,7 @@ def _(client, funded_projects_str):
         WHEN tvl_events.chain = 'CELO' AND sample_date < DATE('2025-03-25') THEN 'Other chain(s)'
         WHEN c.chain IS NULL THEN 'Other chain(s)'
         ELSE 'Superchain'
-      END AS is_superchain,
+      END AS chain_group,
       display_name AS project_name,
       amount,
       project_id
@@ -301,58 +266,37 @@ def _(df_funding_to_projects, df_tvl_by_project, mo, pd):
         .index[0]
     )
 
-    df_snapshot = df_tvl_by_project[df_tvl_by_project['sample_date'] == most_recent_date]
-
-    _df_total_tvl = (
-        df_snapshot
-        .groupby('project_name')['amount']
-        .sum()
-        .rename('Total TVL')
-    )
-    _df_superchain_tvl = (
-        df_snapshot
-        .query("is_superchain == 'Superchain'")
-        .groupby('project_name')['amount']
-        .sum()
-        .rename('Superchain TVL')
-    )
-    _df_leaderboard = pd.concat([_df_total_tvl, _df_superchain_tvl], axis=1, join='outer').fillna(0).reset_index()
-
-    _df_leaderboard['Share of TVL on Superchain'] = _df_leaderboard['Superchain TVL'] / _df_leaderboard['Total TVL']
-
-
-    if len(df_funding_to_projects) > 0:
-        df_funding_grouped = (
-            df_funding_to_projects
-            .groupby(['project_name','funding_source'], as_index=False)['amount']
-            .sum()
-            .pivot(index='project_name', columns='funding_source', values='amount')
-            .fillna(0)
-            .reset_index()
-        )
-    else:
-        df_funding_grouped = pd.DataFrame({'project_name': []})
-
-    for col in ['OPTIMISM_GOVGRANTS','OPTIMISM_RETROFUNDING']:
-        if col not in df_funding_grouped.columns:
-            df_funding_grouped[col] = 0
-
-    df_funding_grouped = df_funding_grouped.rename(columns={
-        'OPTIMISM_GOVGRANTS':'GovGrants Funding',
-        'OPTIMISM_RETROFUNDING':'Retro Funding'
-    })
-
     _df_leaderboard = (
-        _df_leaderboard
-        .merge(df_funding_grouped, how='left', left_on='project_name', right_on='project_name')
+        df_tvl_by_project
+        .query("sample_date == @most_recent_date")
+        .pipe(lambda d:
+            d.groupby('project_name',as_index=False)['amount'].sum().rename(columns={'amount':'Current TVL'})
+            .merge(
+                d.query("chain_group == 'Superchain'")
+                 .groupby('project_name',as_index=False)['amount'].sum()
+                 .rename(columns={'amount':'Superchain TVL'}),
+                how='left',
+                on='project_name'
+            )
+        )
+        .fillna({'Superchain TVL':0})
+        .assign(**{'Share of TVL on Superchain':lambda x: x['Superchain TVL']/x['Current TVL']})
+        .merge(
+            (
+                df_funding_to_projects
+                .groupby(['project_name','funding_source'],as_index=False)['amount'].sum()
+                .pivot(index='project_name',columns='funding_source',values='amount')
+                .reindex(columns=['OPTIMISM_GOVGRANTS','OPTIMISM_RETROFUNDING'],fill_value=0)
+                .rename(columns={'OPTIMISM_GOVGRANTS':'GovGrants Funding','OPTIMISM_RETROFUNDING':'Retro Funding'})
+                .reset_index()
+            ) if len(df_funding_to_projects)>0
+              else pd.DataFrame({'project_name':[],'GovGrants Funding':[],'Retro Funding':[]}),
+            how='left', on='project_name'
+        )
         .fillna(0)
+        .assign(**{'Total Funding':lambda x: x['GovGrants Funding']+x['Retro Funding']})
+        .rename(columns={'project_name':'Project'})
     )
-    _df_leaderboard['Total Funding'] = (
-        _df_leaderboard['GovGrants Funding'] + _df_leaderboard['Retro Funding']
-    )
-    _df_leaderboard.rename(columns={
-        'project_name': 'Project',
-    }, inplace=True)
 
     mo.vstack([
         mo.md(f"""
@@ -366,7 +310,7 @@ def _(df_funding_to_projects, df_tvl_by_project, mo, pd):
         mo.ui.table(
             _df_leaderboard.sort_values('Superchain TVL', ascending=False).reset_index(drop=True),
             format_mapping={
-                'Total TVL': '${:,.0f}',
+                'Current TVL': '${:,.0f}',
                 'Superchain TVL': '${:,.0f}',
                 'Share of TVL on Superchain': '{:.1%}',
                 'GovGrants Funding': '${:,.0f}',
@@ -378,16 +322,15 @@ def _(df_funding_to_projects, df_tvl_by_project, mo, pd):
             page_size=50
         )  
     ])
-
     return
 
 
 @app.cell
 def _(df_tvl_by_project, mo):
-    PROJECT_OPTIONS = sorted(df_tvl_by_project['project_name'].drop_duplicates().to_list())
+    _project_options = sorted(df_tvl_by_project['project_name'].drop_duplicates().to_list())
     project_dropdown = mo.ui.dropdown(
         label="Select a Project",
-        options=PROJECT_OPTIONS,
+        options=_project_options,
         value="Aave",
         searchable=True,
         full_width=True
@@ -398,14 +341,14 @@ def _(df_tvl_by_project, mo):
 @app.cell
 def _(df_tvl_by_project, mo, project_dropdown):
     df_tvl_by_project_filtered = df_tvl_by_project[df_tvl_by_project['project_name'] == project_dropdown.value]
-    CHAIN_OPTIONS = df_tvl_by_project_filtered['chain'].unique().tolist()
+    _chain_options = df_tvl_by_project_filtered['chain'].unique().tolist()
     chain_dropdown = mo.ui.multiselect(
         label="Select Chain(s)",
-        options=CHAIN_OPTIONS,
-        value=CHAIN_OPTIONS,
+        options=_chain_options,
+        value=_chain_options,
         full_width=True
     )
-    return chain_dropdown, df_tvl_by_project_filtered
+    return (chain_dropdown,)
 
 
 @app.cell
@@ -430,120 +373,74 @@ def _(chain_dropdown, funding_events_checkbox, mo, project_dropdown):
 
 
 @app.cell
-def _(funding_events_checkbox):
-    show_funding_events = bool(funding_events_checkbox.value)
-    return (show_funding_events,)
-
-
-@app.cell
 def _(
+    LAYOUT,
     chain_dropdown,
     df_funding_to_projects,
-    df_tvl_by_project_filtered,
-    project_dropdown,
-):
-    df_funding_to_projects_filtered = df_funding_to_projects[
-        df_funding_to_projects['project_name'] == project_dropdown.value
-    ]
-    df_tvl_by_project_filtered_by_chain = df_tvl_by_project_filtered[
-        df_tvl_by_project_filtered['chain'].isin(chain_dropdown.value)
-    ]
-    return df_funding_to_projects_filtered, df_tvl_by_project_filtered_by_chain
-
-
-@app.cell
-def _(
-    df_funding_to_projects_filtered,
-    df_tvl_by_project_filtered_by_chain,
+    df_tvl_by_project,
+    funding_events_checkbox,
     mo,
     pd,
     project_dropdown,
     px,
-    show_funding_events,
 ):
-    # Group by date and is_superchain to create stacked data
-    df_grouped = df_tvl_by_project_filtered_by_chain.groupby(['sample_date', 'is_superchain'])['amount'].sum().reset_index()
+    def project_tvl_chart(project_name, chain_list, show_funding_events):
 
-    # Sort by date
-    df_grouped = df_grouped.sort_values(by=['sample_date'])
+        d = df_tvl_by_project[df_tvl_by_project['project_name'] == project_name]
+        if chain_list:
+            d = d[d['chain'].isin(chain_list)]
 
-    # Create stacked area chart with custom color mapping
-    fig_tvl_by_project = px.area(
-        df_grouped, 
-        x="sample_date", 
-        y="amount", 
-        color='is_superchain',
-        title=f'<b>{project_dropdown.value} TVL</b>',
-        color_discrete_map={'Other chain(s)': '#AAA', 'Superchain': '#ff0420'}  
+        d = (
+            d.groupby(['sample_date','chain_group'],as_index=False)['amount']
+             .sum()
+             .sort_values('sample_date')
+        )
+
+        fig = px.area(
+            d,
+            x='sample_date',
+            y='amount',
+            color='chain_group',
+            title=f'<b>{project_name} TVL</b>',
+            color_discrete_map={'Other chain(s)':'#AAA','Superchain':'#ff0420'},
+            category_orders={'chain_group':['Other chain(s)','Superchain']}
+        )
+        fig.update_layout(xaxis_title='',yaxis_title='',**LAYOUT)
+        fig.update_traces(hovertemplate="%{x|%d %b %Y}<br>$%{y:,.0f}<extra></extra>")
+
+        if show_funding_events and 'df_funding_to_projects' in globals() and len(df_funding_to_projects):
+            f = (
+                df_funding_to_projects
+                .loc[lambda x: x['project_name']==project_name]
+                .dropna(subset=['sample_date'])
+            )
+            if len(f):
+                shapes,ann = [],[]
+                for _,row in f.iterrows():
+                    ts = pd.to_datetime(row['sample_date'])
+                    amt = row['amount']
+                    funding_type = str(row['funding_source']).replace('OPTIMISM_','')
+                    label = f"{funding_type}: ${amt:,.0f}"
+                    shapes.append(dict(type='line',x0=ts,x1=ts,y0=0,y1=1,yref='paper',
+                                       line=dict(color='black',width=1,dash='dash')))
+                    ann.append(dict(x=ts,y=0.98,xref='x',yref='paper',text=label,showarrow=False,
+                                    textangle=-90,yanchor='top',bgcolor='rgba(255,255,255,0.85)'))
+                fig.update_layout(shapes=shapes,annotations=ann)
+            else:
+                fig.update_layout(shapes=None,annotations=None)
+        else:
+            fig.update_layout(shapes=None,annotations=None)
+
+        return fig
+
+
+    mo.ui.plotly(
+        project_tvl_chart(
+            project_name=project_dropdown.value,
+            chain_list=chain_dropdown.value,
+            show_funding_events=bool(funding_events_checkbox.value)
+        )
     )
-
-    # Apply consistent styling like your other charts
-    fig_tvl_by_project.update_layout(
-        plot_bgcolor='white',
-        paper_bgcolor='white',
-        font_family="Arial",
-        title_font_family="Arial",
-        title_x=0,
-        xaxis_title="",
-        yaxis_title="",
-        legend_title="",
-        autosize=True,
-        margin=dict(t=50, l=0, r=0, b=0),
-        legend=dict(
-            orientation="h",
-            yanchor="bottom",
-            y=1.02,
-            xanchor="right",
-            x=1
-        ),
-        yaxis=dict(
-            showgrid=True,
-            gridcolor='lightgray',
-            linecolor='black',
-            linewidth=1,
-            ticks='outside',
-            rangemode='tozero',
-            title_text="TVL (USD)"
-        ),
-        xaxis=dict(
-            showgrid=False,
-            linecolor='black',
-            linewidth=1,
-            ticks='outside',
-        ),
-        hovermode="x unified"
-    )
-
-    # Update hover template
-    fig_tvl_by_project.update_traces(
-        hovertemplate="%{y:.2f}",
-        selector=dict(mode='lines')
-    )
-
-    if show_funding_events:
-        annotations = []
-        shapes = []
-        for _, row in df_funding_to_projects_filtered.dropna(subset=['sample_date']).iterrows():
-            ts = pd.Timestamp(row['sample_date']).to_pydatetime()
-            amt = row['amount']
-            funding_type = row['funding_source'].replace('OPTIMISM_','')
-            label = f"{funding_type}: ${amt:,.0f}"
-
-            shapes.append(dict(
-                type='line',x0=ts,x1=ts,y0=0,y1=1,yref='paper',
-                line=dict(color='black',width=1,dash='dash')
-            ))
-            annotations.append(dict(
-                x=ts,y=0.98,xref='x',yref='paper',text=label,showarrow=False,
-                textangle=-90,yanchor='top',bgcolor='rgba(255,255,255,0.8)'
-            ))
-
-        fig_tvl_by_project.update_layout(annotations=annotations,shapes=shapes)
-    else:
-        fig_tvl_by_project.update_layout(annotations=None,shapes=None)
-
-
-    mo.ui.plotly(fig_tvl_by_project)
     return
 
 
