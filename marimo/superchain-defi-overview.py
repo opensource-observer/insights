@@ -11,13 +11,13 @@ def setup_pyoso():
     import plotly.express as px
     from pyoso import Client
 
-    # client = Client()
-    # pyoso_db_conn = client.dbapi_connection()
+    client = Client()
+    pyoso_db_conn = client.dbapi_connection()
 
-    import os
-    from dotenv import load_dotenv
-    load_dotenv()
-    client = Client(api_key=os.environ['OSO_API_KEY'])
+    # import os
+    # from dotenv import load_dotenv
+    # load_dotenv()
+    # client = Client(api_key=os.environ['OSO_API_KEY'])
     return client, mo, pd, px
 
 
