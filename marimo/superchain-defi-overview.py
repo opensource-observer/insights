@@ -7,8 +7,6 @@ app = marimo.App(width="medium")
 @app.cell
 def setup_pyoso():
     import marimo as mo
-    import pandas as pd
-    import plotly.express as px
     from pyoso import Client
 
     client = Client()
@@ -18,7 +16,7 @@ def setup_pyoso():
     # from dotenv import load_dotenv
     # load_dotenv()
     # client = Client(api_key=os.environ['OSO_API_KEY'])
-    return client, mo, pd, px
+    return mo, client, pyoso_db_conn
 
 
 @app.cell
@@ -35,6 +33,9 @@ def _(mo):
 
 @app.cell
 def _():
+    import pandas as pd
+    import plotly.express as px
+
     LAYOUT = dict(
         plot_bgcolor='white',
         paper_bgcolor='white',
@@ -71,7 +72,7 @@ def _():
     SECONDARY_COLOR = '#AAA'
 
     stringify = lambda arr: "'" + "','".join(arr) + "'"
-    return LAYOUT, PRIMARY_COLOR, SECONDARY_COLOR, stringify
+    return pd, px,LAYOUT, PRIMARY_COLOR, SECONDARY_COLOR, stringify
 
 
 @app.cell
