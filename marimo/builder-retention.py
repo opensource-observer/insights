@@ -32,53 +32,55 @@ def _(mo):
 
 @app.cell
 def _(mo):
-    project_name_input = mo.ui.text(value="opensource-observer", label="Enter the name of a project", full_width=True)
+    project_source_input = mo.ui.dropdown(
+        options={
+            'OSO (oss-directory)': ('OSS_DIRECTORY', 'oso'),
+            'Electric Capital (crypto-ecosystems)': ('CRYPTO_ECOSYSTEMS', 'eco'),
+            'OP Atlas': ('OP_ATLAS', ''),
+        },
+        label='Choose a project registry',
+        full_width=True
+    )
+    project_source_input
+    return (project_source_input,)
+
+
+@app.cell
+def _(client, project_source_input):
+    df_projects = client.to_pandas(f"""
+    SELECT DISTINCT
+      p.project_id,
+      p.display_name,
+      km.amount AS star_count
+    FROM key_metrics_by_project_v0 AS km
+    JOIN projects_v1 AS p ON p.project_id = km.project_id
+    JOIN metrics_v0 AS m ON km.metric_id = m.metric_id
+    WHERE
+      p.project_source = '{project_source_input.value[0]}'
+      AND p.project_namespace = '{project_source_input.value[1]}'
+      AND m.metric_name = 'GITHUB_stars_over_all_time'
+      AND km.amount >= 100
+    ORDER BY
+      p.display_name ASC
+    """)
+    return (df_projects,)
+
+
+@app.cell
+def _(df_projects, mo):
+    project_name_input = mo.ui.dropdown(
+        value=df_projects.sort_values(by='star_count')['display_name'].iloc[-1],
+        options=df_projects.set_index('display_name')['project_id'].to_dict(),
+        label="Enter the name of a project",
+        full_width=True
+    )
     project_name_input
     return (project_name_input,)
 
 
 @app.cell
-def _():
-    LAYOUT = dict(
-        plot_bgcolor='white',
-        paper_bgcolor='white',
-        font_family="PT Sans, sans-serif",
-        title_font_family="Lora, serif",
-        title_x=0,
-        legend_title="",
-        autosize=True,
-        margin=dict(t=50, l=0, r=0, b=0),
-        legend=dict(
-            orientation="h",
-            yanchor="middle",
-            y=1,
-            xanchor="left",
-            x=0
-        ),
-        yaxis=dict(
-            showgrid=True,
-            gridcolor='lightgray',
-            linecolor='black',
-            linewidth=1,
-            ticks='outside',
-            rangemode='tozero'
-        ),
-        xaxis=dict(
-            showgrid=False,
-            linecolor='black',
-            linewidth=1,
-            ticks='outside',
-        ),
-        hovermode="x"
-    )
-    PRIMARY_COLOR = 'BLACK'
-    SECONDARY_COLOR = '#AAA'
-    return
-
-
-@app.cell
 def _(client, project_name_input):
-    df_timeseries = client.to_pandas(f"""
+    query = f"""
     WITH timeseries_metrics AS (
       SELECT
         sample_date,
@@ -87,9 +89,8 @@ def _(client, project_name_input):
         CASE WHEN metric_name = 'GITHUB_active_contributors_monthly' THEN amount END AS active_contributors
       FROM timeseries_metrics_by_project_v0
       JOIN metrics_v0 USING(metric_id)
-      JOIN projects_v1 p USING(project_id)
-      WHERE p.project_name='{project_name_input.value}'
-        AND p.project_source = 'OSS_DIRECTORY'
+      WHERE 
+        project_id = '{project_name_input.value}'
         AND metric_name IN (
           'GITHUB_new_contributors_monthly',
           'GITHUB_churned_contributors_monthly',
@@ -118,7 +119,8 @@ def _(client, project_name_input):
     LEFT JOIN timeseries_metrics AS t ON m.sample_date = t.sample_date
     GROUP BY 1
     ORDER BY 1
-    """)
+    """
+    df_timeseries = client.to_pandas(query)
     return (df_timeseries,)
 
 
@@ -138,7 +140,7 @@ def _(df_timeseries, go, pd):
             marker_color="#AAA",
             marker_line=dict(color="black", width=.5),
             opacity=0.8,
-            hovertemplate="%{x|%b %Y}<br><b>New</b> %{y:,}<extra></extra>"
+            hovertemplate="New: %{y:,}<extra></extra>"
         )
 
         # Outflows (already negative)
@@ -148,7 +150,7 @@ def _(df_timeseries, go, pd):
             y=d["churned_contributors"],
             marker_color="white",
             marker_line=dict(color="black", width=.5),
-            hovertemplate="%{x|%b %Y}<br><b>Churned</b> %{y:,}<extra></extra>"
+            hovertemplate="Churned: %{y:,}<extra></extra>"
         )
 
         # Active (overlay as black line on same y-axis)
@@ -158,7 +160,7 @@ def _(df_timeseries, go, pd):
             y=d["active_contributors"],
             mode="lines",
             line=dict(color="black", width=2),
-            hovertemplate="%{x|%b %Y}<br><b>Active</b> %{y:,}<extra></extra>"
+            hovertemplate="Active: %{y:,}<extra></extra>"
         )
 
         fig.update_layout(
@@ -196,6 +198,11 @@ def _(df_timeseries, go, pd):
         return fig
 
     libin_chart(df_timeseries)    
+    return
+
+
+@app.cell
+def _():
     return
 
 
