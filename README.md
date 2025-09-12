@@ -49,10 +49,10 @@ If you already have an account, log in. Then create a new personal API key:
 
 ### Install pyoso
 
-You can install pyoso using pip:
+You can install pyoso using uv:
 
 ```bash
-pip install pyoso
+uv add pyoso
 ```
 
 ### Issue your first query

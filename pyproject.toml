@@ -1,0 +1,20 @@
+[project]
+name = "insights"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "dotenv>=0.9.9",
+    "google-cloud-bigquery>=3.37.0",
+    "google-genai>=1.36.0",
+    "marimo>=0.15.3",
+    "networkx>=3.5",
+    "numpy>=2.3.3",
+    "pandas>=2.3.2",
+    "plotly>=6.3.0",
+    "pyoso>=0.6.5",
+    "pyyaml>=6.0.2",
+    "trino>=0.336.0",
+    "web3>=7.13.0",
+]
