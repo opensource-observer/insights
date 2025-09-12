@@ -9,14 +9,18 @@ def setup_pyoso():
     import marimo as mo
     from pyoso import Client
 
-    client = Client()
-    pyoso_db_conn = client.dbapi_connection()
+    try:
+        client = Client()
+        pyoso_db_conn = client.dbapi_connection()
+    
+    except Exception as e:
+        import os
+        from dotenv import load_dotenv
+        load_dotenv()
 
-    # import os
-    # from dotenv import load_dotenv
-    # load_dotenv()
-    # client = Client(api_key=os.environ['OSO_API_KEY'])
-    return mo, client, pyoso_db_conn
+        client = Client(api_key=os.environ['OSO_API_KEY'])
+        pyoso_db_conn = None
+    return client, mo, pyoso_db_conn
 
 
 @app.cell
@@ -72,7 +76,7 @@ def _():
     SECONDARY_COLOR = '#AAA'
 
     stringify = lambda arr: "'" + "','".join(arr) + "'"
-    return pd, px,LAYOUT, PRIMARY_COLOR, SECONDARY_COLOR, stringify
+    return LAYOUT, PRIMARY_COLOR, SECONDARY_COLOR, pd, px, stringify
 
 
 @app.cell
