@@ -113,11 +113,15 @@ mo.vstack([
 return (project_input,)
 ```
 
-- Use `mo.sidebar()` (if available) or stacked layouts to separate controls in dashboards
 - Gate expensive operations with a button:  
   ```python
-  _run_btn_input = mo.ui.button("Run")
-  _ = _run_btn_input.value  # downstream trigger
+  run_analysis_input = mo.ui.run_button()
+  run_analysis_input
+  ```
+- And then use it to gate expensive operations:
+  ```python
+  mo.stop(not run_analysis_input.value)
+  # Your expensive operation here
   ```
 
 ---
