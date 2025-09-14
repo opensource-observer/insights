@@ -162,7 +162,9 @@ def _(client):
 
 
 @app.cell
-def _(client, project_name_input):
+def _(client, mo, project_name_input, run_analysis_input):
+    mo.stop(not run_analysis_input.value)
+
     _query = f"""
     WITH timeseries_metrics AS (
       SELECT
@@ -208,9 +210,7 @@ def _(client, project_name_input):
 
 
 @app.cell
-def _(df_timeseries, go, mo, pd, run_analysis_input):
-    mo.stop(not run_analysis_input.value)
-
+def _(df_timeseries, go, mo, pd):
     def make_contributor_chart(df):
         d = df.sort_values("sample_date").copy()
         d["sample_date"] = pd.to_datetime(d["sample_date"])
