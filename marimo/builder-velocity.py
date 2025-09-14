@@ -15,7 +15,7 @@ def setup_pyoso():
         pyoso_db_conn = client.dbapi_connection()    
     except Exception as e:
         pyoso_db_conn = None
-    return mo, client, pyoso_db_conn
+    return client, mo
 
 
 @app.cell
@@ -71,8 +71,8 @@ def _():
 
 
 @app.cell
-def _(client):
-    _query = """
+def _(client, top_n_input):
+    _query = f"""
     WITH params AS (
       SELECT
         date_trunc('month', current_date) - INTERVAL '36' month AS analysis_start,
@@ -92,7 +92,7 @@ def _(client):
         AND ts.sample_date<=pr.analysis_end
       GROUP BY ts.project_id
       ORDER BY total_change DESC
-      LIMIT 50
+      LIMIT {top_n_input.value}
     )
     SELECT
       ts.sample_date,
@@ -107,51 +107,23 @@ def _(client):
       AND ts.sample_date<pr.analysis_end
     ORDER BY ts.sample_date, ts.amount DESC
     """
-    
+
     df_top_projects = client.to_pandas(_query)
     return (df_top_projects,)
 
 
 @app.cell
-def _(mo):
-    smoothing_input = mo.ui.slider(
-        start=0,
-        stop=3,
-        step=1,
-        value=0,
-        label='Smoothing (months)',
-        full_width=True
-    )
-    
-    top_n_input = mo.ui.slider(
-        start=10,
-        stop=50,
-        step=10,
-        value=50,
-        label='Number of projects to show',
-        full_width=True
-    )
-    
-    gap_input = mo.ui.slider(
-        start=0.5,
-        stop=2.0,
-        step=0.1,
-        value=1.2,
-        label='Spacing between ridges',
-        full_width=True
-    )
-    
-    mo.vstack([
-        mo.md("### Configuration"),
-        smoothing_input,
-        top_n_input,
-        gap_input
-    ])
-    return (gap_input, smoothing_input, top_n_input)
-
-
-@app.cell
-def _(df_top_projects, gap_input, go, mo, np, pd, px, smoothing_input, top_n_input):
+def _(
+    df_top_projects,
+    gap_input,
+    go,
+    mo,
+    np,
+    pd,
+    px,
+    smoothing_input,
+    top_n_input,
+):
     def _rgba_from_rgb(rgb: str, alpha: float) -> str:
         return rgb.replace("rgb", "rgba").replace(")", f",{alpha})")
 
@@ -314,12 +286,50 @@ def _(df_top_projects, gap_input, go, mo, np, pd, px, smoothing_input, top_n_inp
         fill_alpha=0.55,
         annotate_totals=True
     )
-    
+
     mo.vstack([
         mo.md('### Builder Velocity Over Time'),
         mo.ui.plotly(fig)
     ])
     return
+
+
+@app.cell
+def _(mo):
+    smoothing_input = mo.ui.slider(
+        start=0,
+        stop=3,
+        step=1,
+        value=0,
+        label='Smoothing (months)',
+        full_width=True
+    )
+
+    top_n_input = mo.ui.slider(
+        start=10,
+        stop=100,
+        step=10,
+        value=50,
+        label='Number of projects to show',
+        full_width=True
+    )
+
+    gap_input = mo.ui.slider(
+        start=0.5,
+        stop=2.0,
+        step=0.1,
+        value=1.2,
+        label='Spacing between ridges',
+        full_width=True
+    )
+
+    mo.vstack([
+        mo.md("### Configuration"),
+        smoothing_input,
+        top_n_input,
+        gap_input
+    ])
+    return gap_input, smoothing_input, top_n_input
 
 
 if __name__ == "__main__":
