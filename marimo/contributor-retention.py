@@ -22,12 +22,11 @@ def setup_pyoso():
 def _(mo):
     mo.md(
         """
-    # Contributor Dynamics
+    # **Contributor  Retention**
+    <small>Author: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">OSO Team</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;"> 15 September 2025</span></small>
 
-    This app visualizes the monthly trends of new, churned, and active contributors for a given project sourced from the OSS Directory. The chart provides insights into the growth and attrition of contributors over time.
-
-    **Author:** OSO Team  
-    **Last Updated:** September 2025
+    This app visualizes monthly trends of new, churned, and active contributors to open source software projects.
+    Add your project by submitting a pull request to [oss-directory](https://github.com/opensource-observer/oss-directory)!
     """
     )
     return
@@ -36,19 +35,24 @@ def _(mo):
 @app.cell
 def _(mo):
     mo.accordion({
-        "How is this app implemented?": """
-        - Fetches contributor metrics from the OSS Directory database
-        - Uses monthly time series data for new, churned, and active contributors
-        - Creates a waterfall-style chart showing contributor flows over time
-        - Supports multiple project registries (OSO, Electric Capital, OP Atlas)
+        "Methodology": """
+        - Contributions include commits, issues, pull requests, and code reviews
+        - A *contributor* is defined as a GitHub user who has made at least one contribution to the project in the given month
+        - *New* contributors are contributors who have made their first contribution to the project in the given month
+        - *Churned* contributors are contributors who were active in the project in the previous month, but are no longer active in the current month
+        - *Active* contributors are contributors who have made at least one contribution to the project in the given month
+        - Data is bucketed into monthly intervals, going back to the earliest available data for the project
+        - If contributions were made while a repo was private or associated with another organization, those events are not included in the data
+        - Data is refreshed and backfilled on a monthly basis
         """,
         "Data Sources": """
-        - [OSS Directory](https://oss-directory.com/) - Primary project registry
-        - [Electric Capital Crypto Ecosystems](https://github.com/electric-capital/crypto-ecosystems) - Alternative registry
-        - [OP Atlas](https://atlas.optimism.io/) - Optimism ecosystem projects
-        - GitHub API data aggregated through OSS Directory
+        - [OSS Directory](https://github.com/opensource-observer/oss-directory)
+        - [Electric Capital Crypto Ecosystems](https://github.com/electric-capital/crypto-ecosystems)
+        - [OP Atlas](https://atlas.optimism.io/)
+        - [GitHub Archive](https://www.gharchive.org/)
+
         """,
-        "Resources": """
+        "Further Resources": """
         - [Getting Started with Pyoso](https://docs.opensource.observer/docs/get-started/python)
         - [Using the Semantic Layer](https://docs.opensource.observer/docs/get-started/using-semantic-layer)
         - [Marimo Documentation](https://docs.marimo.io/)
@@ -66,14 +70,25 @@ def _():
 
 
 @app.cell
+def _():
+    DEFAULT_PROJECT_OPTIONS = {
+        'OSS_DIRECTORY': 'Open Source Observer',
+        'CRYPTO_ECOSYSTEMS': 'Ethereum Virtual Machine Stack',
+        'OP_ATLAS': 'Solidity'
+    }
+    return (DEFAULT_PROJECT_OPTIONS,)
+
+
+@app.cell
 def _(mo):
     project_source_input = mo.ui.dropdown(
         options={
-            'OSO (oss-directory)': ('OSS_DIRECTORY', 'oso'),
-            'Electric Capital (crypto-ecosystems)': ('CRYPTO_ECOSYSTEMS', 'eco'),
-            'OP Atlas': ('OP_ATLAS', ''),
+            'OSO (oss-directory)': 'OSS_DIRECTORY',
+            'Electric Capital (crypto-ecosystems)': 'CRYPTO_ECOSYSTEMS',
+            'OP Atlas': 'OP_ATLAS',
         },
-        label='Choose a project registry',
+        value='OSO (oss-directory)',
+        label='Step 1. Choose a project registry',
         full_width=True
     )
 
@@ -85,19 +100,58 @@ def _(mo):
 
 
 @app.cell
-def _(client, project_source_input):
+def _(DEFAULT_PROJECT_OPTIONS, df_projects, mo, project_source_input):
+    _df_projects = (
+        df_projects
+        .query(f"project_source == '{project_source_input.value}'")
+        .sort_values(by='star_count', ascending=False)
+        .set_index('display_name')
+    )
+
+    project_name_input = mo.ui.dropdown(
+        options=_df_projects['project_id'].to_dict(),
+        value=DEFAULT_PROJECT_OPTIONS.get(project_source_input.value),
+        label="Step 2. Choose a project",
+        full_width=True
+    )
+    project_name_input
+    return (project_name_input,)
+
+
+@app.cell
+def _(mo):
+    run_analysis_input = mo.ui.run_button(
+        label="Fetch contributor metrics",
+        full_width=True
+    )
+    run_analysis_input
+    return (run_analysis_input,)
+
+
+@app.cell
+def _(client):
     _query = f"""
+    WITH projects AS (
+      SELECT DISTINCT
+        project_source,
+        project_id,
+        display_name
+      FROM projects_v1
+      WHERE
+        (project_source = 'OSS_DIRECTORY' AND project_namespace = 'oso')
+        OR (project_source = 'CRYPTO_ECOSYSTEMS' AND project_namespace = 'eco')
+        OR (project_source = 'OP_ATLAS' AND project_namespace = '')    
+    )
     SELECT DISTINCT
       p.project_id,
+      p.project_source,
       p.display_name,
       km.amount AS star_count
     FROM key_metrics_by_project_v0 AS km
-    JOIN projects_v1 AS p ON p.project_id = km.project_id
+    JOIN projects AS p ON p.project_id = km.project_id
     JOIN metrics_v0 AS m ON km.metric_id = m.metric_id
     WHERE
-      p.project_source = '{project_source_input.value[0]}'
-      AND p.project_namespace = '{project_source_input.value[1]}'
-      AND m.metric_name = 'GITHUB_stars_over_all_time'
+      m.metric_name = 'GITHUB_stars_over_all_time'
       AND km.amount >= 100
     ORDER BY
       p.display_name ASC
@@ -105,22 +159,6 @@ def _(client, project_source_input):
 
     df_projects = client.to_pandas(_query)
     return (df_projects,)
-
-
-@app.cell
-def _(df_projects, mo):
-    project_name_input = mo.ui.dropdown(
-        value=df_projects.sort_values(by='star_count')['display_name'].iloc[-1],
-        options=df_projects.set_index('display_name')['project_id'].to_dict(),
-        label="Enter the name of a project",
-        full_width=True
-    )
-
-    mo.vstack([
-        mo.md("### Project Selection"),
-        project_name_input
-    ])
-    return (project_name_input,)
 
 
 @app.cell
@@ -166,13 +204,14 @@ def _(client, project_name_input):
     ORDER BY 1
     """
     df_timeseries = client.to_pandas(_query)
-    timeseries_error = None
     return (df_timeseries,)
 
 
 @app.cell
-def _(df_timeseries, go, mo, pd):
-    def make_contributor_chart(df, title=""):
+def _(df_timeseries, go, mo, pd, run_analysis_input):
+    mo.stop(not run_analysis_input.value)
+
+    def make_contributor_chart(df):
         d = df.sort_values("sample_date").copy()
         d["sample_date"] = pd.to_datetime(d["sample_date"])
 
@@ -210,13 +249,13 @@ def _(df_timeseries, go, mo, pd):
         )
 
         fig.update_layout(
-            title=dict(text=f'<b>{title}</b>', x=0, xanchor="left"),
+            title="",
             barmode="relative",
             hovermode="x unified",
             plot_bgcolor="white",
             paper_bgcolor="white",
             font=dict(size=12, color="#111"),
-            margin=dict(t=50, l=20, r=20, b=20),
+            margin=dict(t=0, l=0, r=0, b=50),
             legend=dict(
                 orientation="h",
                 yanchor="top", y=1.02,
@@ -229,7 +268,7 @@ def _(df_timeseries, go, mo, pd):
                 ticks="outside", tickformat="%b %Y"
             ),
             yaxis=dict(
-                title="Contributors",
+                title="",
                 showgrid=True, gridcolor="#DDD",
                 zeroline=True, zerolinecolor="black", zerolinewidth=1,
                 linecolor="#000", linewidth=1,
@@ -237,13 +276,16 @@ def _(df_timeseries, go, mo, pd):
             )
         )
 
-        # subtle reference line at y=0
         fig.add_hline(y=0, line_width=1, line_color="black")
 
         return fig
 
-    fig = make_contributor_chart(df_timeseries, "Contributor Dynamics")
-    mo.ui.plotly(fig)
+    fig = make_contributor_chart(df_timeseries)
+
+    mo.vstack([
+        mo.md('### Contributor Retention'),
+        mo.ui.plotly(fig)
+    ])
     return
 
 

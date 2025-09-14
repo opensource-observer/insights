@@ -2,11 +2,12 @@
 description: Use this rule when asked to create or edit a marimo notebook in this repo
 alwaysApply: false
 ---
+
 ## Notebook Structure and Cell Organization
 - **Setup Cell**: always start with the `setup_pyoso` cell (exact logic below)
 - **Documentation Cell(s)**:  
-  - Title, description, author, and last updated date  
-  - Accordion with implementation notes, data sources, and resources
+  - Title, description, author, and last updated date
+  - Accordion with methodology, data sources, and resources
 - **Configuration Cell**: constants, layouts, reusable configs
 - **Data Cells**: fetch and process data in dedicated cells
 - **Visualization Cells**: group related charts together; keep clean separation
@@ -35,7 +36,7 @@ def setup_pyoso():
 ---
 
 ## Documentation Pattern
-Each app must include:
+Each app must include a title and description. Use **"OSO Team"** for the author by default and the current date for the last updated date.
 
 ```python
 @app.cell
@@ -43,32 +44,33 @@ def _(mo):
     mo.md(
         """
         # App Title
+        <small>Author: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">OSO Team</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">[Date]</span></small>
 
         Brief description of what this app does.
-
-        **Author:** [Name]  
-        **Last Updated:** [Date]
         """
     )
     return
 ```
 
+Each app must also include an accordion with methodology, data sources, and further resources:
+
 ```python
 @app.cell
 def _(mo):
     mo.accordion({
-        "How is this app implemented?": """
-        - Brief explanation
-        - Methodology details
-        - Caveats or limitations
+        "Methodology": """
+        - Explanation of how the app works
+        - Key definitions and metrics
+        - Data processing approach
+        - Important caveats or limitations
         """,
         "Data Sources": """
-        - Project registries (and links)
-        - Event data sources (and links)
-        - Spreadsheets / private data connectors / static files
-        - Any other external data sources (and links)
+        - Project registries (with links)
+        - Event data sources (with links)
+        - Spreadsheets / connectors / static files
+        - Any other external data sources
         """,
-        "Resources": """
+        "Further Resources": """
         - [Getting Started with Pyoso](https://docs.opensource.observer/docs/get-started/python)
         - [Using the Semantic Layer](https://docs.opensource.observer/docs/get-started/using-semantic-layer)
         - [Marimo Documentation](https://docs.marimo.io/)
@@ -80,9 +82,8 @@ def _(mo):
 ---
 
 ## Imports
-- Grouped: stdlib → third-party → project-specific
+- Group imports: stdlib → third-party → project-specific
 - Keep imports minimal in each cell
-- Example:
 
 ```python
 import pandas as pd
@@ -93,68 +94,76 @@ import plotly.express as px
 ---
 
 ## UI Components
-- Prefer `mo.ui.*` for dropdowns, multiselects, sliders, checkboxes, buttons
-- Widgets named with `_input` suffix; values consumed explicitly via `.value`
+- Use `mo.ui.*` for dropdowns, multiselects, sliders, checkboxes, and buttons
+- Widget variables end with `_input`; consume `.value` downstream
 - Organize with `mo.hstack()` and `mo.vstack()`
-- Gate expensive operations with a **button trigger**:
+- For simple inputs, show directly; for grouped controls, wrap in `mo.vstack()`
 
 ```python
-_run_btn = mo.ui.button(label="Run Analysis")
-_run_btn
+# Simple widget
+project_input = mo.ui.dropdown(...)
+project_input
+return (project_input,)
+
+# With header
+mo.vstack([
+    mo.md("### Configuration"),
+    project_input
+])
+return (project_input,)
 ```
 
-Then use mo.stop() to gate expensive operations:
-
-```python
-mo.stop(not _run_btn.value, "Click 'Run Analysis' to proceed")
-# ... expensive operations here
-```
+- Use `mo.sidebar()` (if available) or stacked layouts to separate controls in dashboards
+- Gate expensive operations with a button:  
+  ```python
+  _run_btn_input = mo.ui.button("Run")
+  _ = _run_btn_input.value  # downstream trigger
+  ```
 
 ---
 
 ## Cell Dependencies and Return Patterns
-- **Always return variables that need to be used in other cells**
-- **Use consistent return patterns**: `return (variable,)` for single variables, `return (var1, var2)` for multiple
-- **Never use `_` prefix for returned variables** - they become cell dependencies
-- **UI cells should always return widget variables** for use in data processing cells
+- Always `return` variables that will be used in other cells
+- Use `return (var,)` for single and `return (var1, var2)` for multiple
+- Do **not** use `_` prefix for returned variables (they must be usable by other cells)
+- UI cells must always return widget variables
 
-### Example Patterns:
 ```python
-# Data processing cell
+# Data processing
 @app.cell
 def _(client, project_input):
-    query = f"SELECT * FROM table WHERE id = '{project_input.value}'"
-    df_data = client.to_pandas(query)
-    return (df_data,)  # ✅ Correct - no _ prefix
+    _query = f"SELECT * FROM table WHERE id = '{project_input.value}'"
+    df_data = client.to_pandas(_query)
+    return (df_data,)
 
-# UI cell  
+# UI cell
 @app.cell
 def _(mo):
     project_input = mo.ui.dropdown(...)
     mo.vstack([project_input])
-    return (project_input,)  # ✅ Correct - widget returned for other cells
+    return (project_input,)
 ```
 
 ---
 
 ## State Management
-- **Avoid `mo.state`** unless persistence or synchronization is unavoidable
-- Prefer value-driven reactivity and explicit flows
+- Avoid `mo.state` unless persistence or synchronization is truly required
+- Prefer explicit value-driven reactivity
 
 ---
 
 ## Visualization Standards
-- Use **Plotly-first** for charts
+- Use Plotly as the default charting library
 - Always sort by x-axis before plotting
-- Apply a shared layout/style helper:
+- Apply a shared styling helper:
 
 ```python
 def make_fig(dataframe, title=""):
     fig = px.line(
         dataframe,
-        x='sample_date',
+        x="sample_date",
         y=dataframe.columns[1:],
-        title=f'<b>{title}</b>',
+        title=f"<b>{title}</b>"
     )
     fig.update_layout(
         paper_bgcolor="white",
@@ -173,70 +182,47 @@ _fig = make_fig(_df, "Title")
 mo.ui.plotly(_fig)
 ```
 
-- Use stable categorical color palettes
-- Titles always left-aligned; legends concise
-- Avoid secondary y-axes — facet or annotate instead
-- Format hover templates for clarity
+- Use consistent color palettes
+- Titles left-aligned; legends concise
+- Avoid secondary y-axes
+- Format hover templates for readability
 
 ---
 
 ### Data Tables
-- Use `mo.ui.table()` for interactive data display
-- Always include `format_mapping` for proper number/currency formatting
-- Set appropriate `page_size` (default 50, adjust based on data size)
-- Disable unnecessary features: `show_data_types=False`, `show_column_summaries=False`
-- Sort data before display: `.sort_values(column, ascending=False).reset_index(drop=True)`
-- Clean up column names with `.rename(columns={...})` (title case, remove underscores)
-
-Example:
-
-```python
-mo.ui.table(
-    _df_leaderboard.sort_values('Superchain TVL', ascending=False).reset_index(drop=True),
-    format_mapping={
-        'Current TVL': '${:,.0f}',
-        'Superchain TVL': '${:,.0f}',
-        'Share of TVL on Superchain': '{:.1%}',
-        'GovGrants Funding': '${:,.0f}',
-        'Retro Funding': '${:,.0f}',
-        'Total Funding': '${:,.0f}',
-    },
-    show_data_types=False,
-    show_column_summaries=False,
-    page_size=50
-)
-```
+- Use `mo.ui.table()` for interactive display
+- Include `format_mapping` for numbers/dates
+- Set `page_size` appropriately (default 50)
+- Disable unused features: `show_data_types=False`, `show_column_summaries=False`
+- Clean column names and sort before display
+- Wrap in `mo.vstack()` with section headers
 
 ---
 
 ## Data Processing
-- Use pandas method chaining and descriptive variable names
+- Use pandas method chaining and descriptive names
 - Handle dates with `pd.to_datetime()`
-- Validate data before plotting (check nulls, row counts)
-- Group transformations in dedicated cells
-
-### Variable Naming Rules
-- **DataFrames passed between cells**: Use normal names (e.g., `df_projects`, `df_timeseries`)
-- **Local variables within cells**: Use `_` prefix (e.g., `_query`, `_result`, `_fig`)
-- **Widget variables**: Use `_input` suffix (e.g., `project_name_input`)
-- **Error variables**: Use descriptive names (e.g., `error_message`, `timeseries_error`)
-
-**CRITICAL**: Never use `_` prefix for variables that need to be passed between cells via return statements.
+- Keep transformations in dedicated cells
+- Variables:
+  - DataFrames across cells: normal names (`df_projects`)
+  - Local variables inside cells: `_` prefix (`_query`, `_result`)
+  - Widgets: `_input` suffix (`project_name_input`)
+- **Never** use `_` prefix for variables that must be returned between cells
 
 ---
 
 ## SQL Queries (Trino)
-- **Dialect**: Trino
-- **Indentation**: 2 spaces
-- **One variable per line** in `SELECT` and CTEs
-- **No spacing mid-line** (avoid padded expressions)
-- **No trailing semicolons**
+- Dialect: **Trino**
+- Indent: **2 spaces**
+- One variable per line in `SELECT` and CTEs
+- No padding mid-line
+- No trailing semicolons
 - Use CTEs for readability
 - Comment complex logic
-- Queries must be written in Python as one of two approved patterns:
+- Write queries in one of two approved patterns:
 
-### Option 1: Using `mo.sql`
 ```python
+# Option 1: mo.sql
 _query = f"""
   SELECT
     created_at,
@@ -248,10 +234,8 @@ _df = mo.sql(
     _query,
     engine=pyoso_db_conn
 )
-```
 
-### Option 2: Using `client.to_pandas`
-```python
+# Option 2: client.to_pandas
 _query = f"""
   SELECT
     created_at,
@@ -265,66 +249,33 @@ _df = client.to_pandas(_query)
 ---
 
 ## Error Handling and Robustness
-- Wrap API calls in try/except
-- Handle missing data with `.fillna()` or `.dropna()`
-- Provide fallback defaults for UI widgets
-- Surface clear, user-friendly error messages in UI cells with `mo.md()`
-
-### Error Handling Patterns
-**DO NOT** block UI rendering with conditional logic. Instead:
-
-```python
-# ❌ BAD - Blocks UI rendering
-@app.cell
-def _(df_projects, mo):
-    if df_projects is None:
-        mo.md("Error message")
-        return  # This prevents UI from rendering
-    # UI code here
-
-# ✅ GOOD - UI always renders
-@app.cell
-def _(df_projects, mo):
-    project_input = mo.ui.dropdown(...)  # Always creates widget
-    
-    components = [mo.md("### Title")]
-    if df_projects is None:
-        components.append(mo.md("Error message"))
-    components.append(project_input)
-    
-    mo.vstack(components)
-    return (project_input,)
-```
-
-**Key Principles**:
-- UI components should always render regardless of data state
-- Error messages should be displayed conditionally within the UI stack
-- Use `mo.vstack()` or `mo.hstack()` to organize conditional content
-- Never use early returns that prevent UI components from being created
+- Keep error handling simple and minimal
+- Prefer clean, direct flows over defensive programming
+- Surface concise error messages with `mo.md()`
 
 ---
 
 ## Performance
 - Fetch only necessary data ranges
-- Cache expensive computations in dedicated cells
+- Cache expensive computations in separate cells
 - Use efficient pandas operations
 - Avoid rendering very large tables; paginate or sample instead
 
 ---
 
 ## Code Style
-- Python code: **4 space indentation** (PEP 8)
-- SQL code: **2 space indentation**
-- Descriptive names: `*_input` for widgets, `fig_*` for plots, `_var` for locals
+- Python: 4 spaces (PEP 8)
+- SQL: 2 spaces
+- Descriptive names: `*_input` (widgets), `fig_*` (plots), `_var` (locals)
 - Global constants: `UPPER_CASE`
-- Functions are focused, typed, and reusable
-- Consistent indentation and formatting
+- Functions: focused, typed, and reusable
+- Consistent formatting across cells
 
 ---
 
 ## Documentation
 - Markdown for context; concise and data-driven
-- Use inline comments for complex logic
+- Inline comments for complex logic
 
 ---
 
@@ -334,7 +285,7 @@ def _(df_projects, mo):
 3. Data connections
 4. Fetch and validate data
 5. Create UI components
-6. Build styled visualizations
+6. Build visualizations
 7. Add markdown + accordion documentation
 8. Test interactivity and error handling
 
@@ -342,13 +293,10 @@ def _(df_projects, mo):
 
 ## Anti-Patterns
 - Hardcoding values that should be configurable
-- Mixing processing and visualization in the same cell
+- Mixing data processing and visualization in the same cell
 - Using widget objects directly in expressions (instead of `.value`)
-- Forgetting `_` prefix for local variables
+- Returning `_`-prefixed variables (breaks dependencies)
 - Overly complex single cells
-- Skipping error handling for APIs
-- Inconsistent visualization styling
-- **Using `_` prefix for variables passed between cells** (breaks cell dependencies)
-- **Blocking UI rendering with conditional logic** (prevents widgets from appearing)
-- **Early returns in UI cells** (stops widget creation)
-- **Complex error handling that prevents UI components from rendering**
+- Inconsistent styling across visualizations
+- Complex conditional UI rendering
+- Over-engineering error handling
