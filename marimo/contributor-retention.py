@@ -15,54 +15,54 @@ def setup_pyoso():
         pyoso_db_conn = client.dbapi_connection()    
     except Exception as e:
         pyoso_db_conn = None
-    return client, mo
+    return mo, client, pyoso_db_conn
 
 
 @app.cell
-def _(mo):
-    mo.md(
-        """
-    # **Contributor  Retention**
-    <small>Author: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">OSO Team</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;"> 15 September 2025</span></small>
+def about_app(mo):
+    mo.vstack([
+        mo.md("""
+        # **Contributor  Retention**
+        <small>Author: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">OSO Team</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;"> 15 September 2025</span></small>
+        """),
+        mo.md("""
+        This app visualizes monthly trends of new, churned, and active contributors to open source software projects.
+        Add your project by submitting a pull request to [oss-directory](https://github.com/opensource-observer/oss-directory)!
+        """),
+        mo.accordion({
+            "<b>Click to see details on how app was made</b>": mo.accordion({
+                "Methodology": """
+                - Contributions include commits, issues, pull requests, and code reviews
+                - A *contributor* is defined as a GitHub user who has made at least one contribution to the project in the given month
+                - *New* contributors are contributors who have made their first contribution to the project in the given month
+                - *Churned* contributors are contributors who were active in the project in the previous month, but are no longer active in the current month
+                - *Active* contributors are contributors who have made at least one contribution to the project in the given month
+                - Data is bucketed into monthly intervals, going back to the earliest available data for the project
+                - If contributions were made while a repo was private or associated with another organization, those events are not included in the data
+                - Data is refreshed and backfilled on a monthly basis
+                """,
+                "Data Sources": """
+                - [OSS Directory](https://github.com/opensource-observer/oss-directory)
+                - [Electric Capital Crypto Ecosystems](https://github.com/electric-capital/crypto-ecosystems)
+                - [OP Atlas](https://atlas.optimism.io/)
+                - [GitHub Archive](https://www.gharchive.org/)
 
-    This app visualizes monthly trends of new, churned, and active contributors to open source software projects.
-    Add your project by submitting a pull request to [oss-directory](https://github.com/opensource-observer/oss-directory)!
-    """
-    )
+                """,
+                "Further Resources": """
+                - [Getting Started with Pyoso](https://docs.opensource.observer/docs/get-started/python)
+                - [Using the Semantic Layer](https://docs.opensource.observer/docs/get-started/using-semantic-layer)
+                - [Marimo Documentation](https://docs.marimo.io/)
+                """
+            })
+        })    
+    ])
     return
 
 
-@app.cell
-def _(mo):
-    mo.accordion({
-        "Methodology": """
-        - Contributions include commits, issues, pull requests, and code reviews
-        - A *contributor* is defined as a GitHub user who has made at least one contribution to the project in the given month
-        - *New* contributors are contributors who have made their first contribution to the project in the given month
-        - *Churned* contributors are contributors who were active in the project in the previous month, but are no longer active in the current month
-        - *Active* contributors are contributors who have made at least one contribution to the project in the given month
-        - Data is bucketed into monthly intervals, going back to the earliest available data for the project
-        - If contributions were made while a repo was private or associated with another organization, those events are not included in the data
-        - Data is refreshed and backfilled on a monthly basis
-        """,
-        "Data Sources": """
-        - [OSS Directory](https://github.com/opensource-observer/oss-directory)
-        - [Electric Capital Crypto Ecosystems](https://github.com/electric-capital/crypto-ecosystems)
-        - [OP Atlas](https://atlas.optimism.io/)
-        - [GitHub Archive](https://www.gharchive.org/)
-
-        """,
-        "Further Resources": """
-        - [Getting Started with Pyoso](https://docs.opensource.observer/docs/get-started/python)
-        - [Using the Semantic Layer](https://docs.opensource.observer/docs/get-started/using-semantic-layer)
-        - [Marimo Documentation](https://docs.marimo.io/)
-        """
-    })
-    return
 
 
 @app.cell
-def _():
+def import_libraries():
     import pandas as pd
     import plotly.graph_objects as go
     import plotly.express as px
@@ -70,7 +70,7 @@ def _():
 
 
 @app.cell
-def _():
+def configuration_settings():
     DEFAULT_PROJECT_OPTIONS = {
         'OSS_DIRECTORY': 'Open Source Observer',
         'CRYPTO_ECOSYSTEMS': 'Ethereum Virtual Machine Stack',
@@ -80,7 +80,7 @@ def _():
 
 
 @app.cell
-def _(mo):
+def create_project_source_input(mo):
     project_source_input = mo.ui.dropdown(
         options={
             'OSO (oss-directory)': 'OSS_DIRECTORY',
@@ -100,7 +100,7 @@ def _(mo):
 
 
 @app.cell
-def _(DEFAULT_PROJECT_OPTIONS, df_projects, mo, project_source_input):
+def create_project_name_input(DEFAULT_PROJECT_OPTIONS, df_projects, mo, project_source_input):
     _df_projects = (
         df_projects
         .query(f"project_source == '{project_source_input.value}'")
@@ -119,7 +119,7 @@ def _(DEFAULT_PROJECT_OPTIONS, df_projects, mo, project_source_input):
 
 
 @app.cell
-def _(mo):
+def create_run_button(mo):
     run_analysis_input = mo.ui.run_button(
         label="Fetch contributor metrics",
         full_width=True
@@ -129,7 +129,7 @@ def _(mo):
 
 
 @app.cell
-def _(client):
+def get_projects_data(client):
     _query = f"""
     WITH projects AS (
       SELECT DISTINCT
@@ -162,7 +162,7 @@ def _(client):
 
 
 @app.cell
-def _(client, mo, project_name_input, run_analysis_input):
+def get_timeseries_data(client, mo, project_name_input, run_analysis_input):
     mo.stop(not run_analysis_input.value)
 
     _query = f"""
@@ -210,7 +210,7 @@ def _(client, mo, project_name_input, run_analysis_input):
 
 
 @app.cell
-def _(df_timeseries, go, mo, pd):
+def generate_contributor_plot(df_timeseries, go, mo, pd):
     def make_contributor_chart(df):
         d = df.sort_values("sample_date").copy()
         d["sample_date"] = pd.to_datetime(d["sample_date"])
