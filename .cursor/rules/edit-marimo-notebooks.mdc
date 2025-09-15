@@ -4,10 +4,12 @@ alwaysApply: false
 ---
 
 ## Notebook Structure and Cell Organization
+
+### Required Cells (MUST be present in every notebook):
 - **Setup Cell**: always start with the `setup_pyoso` cell (exact logic below)
-- **Documentation Cell(s)**:  
-  - Title, description, author, and last updated date
-  - Accordion with methodology, data sources, and resources
+- **Documentation Cell**: use `about_app` cell with vstack pattern
+
+### Common Reusable Building Blocks (use as needed):
 - **Configuration Cell**: constants, layouts, reusable configs
 - **Data Cells**: fetch and process data in dedicated cells
 - **Visualization Cells**: group related charts together; keep clean separation
@@ -15,7 +17,9 @@ alwaysApply: false
 
 ---
 
-## Setup Cell Pattern
+## Required Cell Patterns
+
+### 1. Setup Cell Pattern
 Every Marimo notebook MUST begin with the following exact cell:
 
 ```python
@@ -33,63 +37,195 @@ def setup_pyoso():
     return mo, client, pyoso_db_conn
 ```
 
----
-
-## Documentation Pattern
-Each app must include a title and description. Use **"OSO Team"** for the author by default and the current date for the last updated date.
+### 2. Documentation Cell Pattern
+Each app must include an `about_app` cell that combines title, description, and details accordion in a single `mo.vstack()`:
 
 ```python
 @app.cell
-def _(mo):
-    mo.md(
-        """
+def about_app(mo):
+    mo.vstack([
+        mo.md("""
         # App Title
         <small>Author: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">OSO Team</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">[Date]</span></small>
-
+        """),
+        mo.md("""
         Brief description of what this app does.
-        """
+        Additional context or notes about the app.
+        """),
+        mo.accordion({
+            "<b>Click to see details on how app was made</b>": mo.accordion({
+                "Methodology": """
+                - Explanation of how the app works
+                - Key definitions and metrics
+                - Data processing approach
+                - Important caveats or limitations
+                """,
+                "Data Sources": """
+                - Project registries (with links)
+                - Event data sources (with links)
+                - Spreadsheets / connectors / static files
+                - Any other external data sources
+                """,
+                "Further Resources": """
+                - [Getting Started with Pyoso](https://docs.opensource.observer/docs/get-started/python)
+                - [Using the Semantic Layer](https://docs.opensource.observer/docs/get-started/using-semantic-layer)
+                - [Marimo Documentation](https://docs.marimo.io/)
+                """
+            })
+        })    
+    ])
+    return
+```
+
+---
+
+## Common Reusable Building Blocks
+
+### Import Libraries
+```python
+@app.cell
+def import_libraries():
+    # Standard library imports
+    import datetime
+    
+    # Third-party imports
+    import pandas as pd
+    import plotly.express as px
+    import plotly.graph_objects as go
+    
+    return datetime, pd, px, go
+```
+
+### Get Data
+```python
+@app.cell
+def get_data(client, ...):
+    _query = f"""
+    SELECT
+      column1,
+      column2,
+      column3
+    FROM table_name
+    WHERE condition = '{parameter.value}'
+    """
+    
+    df_data = client.to_pandas(_query)
+    return (df_data,)
+```
+
+### Configuration Settings
+```python
+@app.cell
+def configuration_settings(mo, ...):
+    parameter_input = mo.ui.dropdown(
+        options=["option1", "option2"],
+        value="option1",
+        label="Parameter"
+    )
+    
+    mo.vstack([
+        mo.md("### Configuration"),
+        parameter_input
+    ])
+    return (parameter_input,)
+```
+
+### Generate Stats
+```python
+@app.cell
+def generate_stats(mo, df_data, ...):
+    total_count = mo.stat(
+        label="Total Count",
+        bordered=True,
+        value=f"{len(df_data):,.0f}",
+    )
+    
+    mo.hstack([total_count], widths="equal", gap=1)
+    return
+```
+
+### Generate Table
+```python
+@app.cell
+def generate_table(mo, df_data):
+    mo.ui.table(
+        df_data.reset_index(drop=True),
+        selection=None,
+        show_column_summaries=False,
+        show_data_types=False,
+        page_size=50
     )
     return
 ```
 
-Each app must also include an accordion with methodology, data sources, and further resources:
-
+### Generate Plot
 ```python
 @app.cell
-def _(mo):
-    mo.accordion({
-        "Methodology": """
-        - Explanation of how the app works
-        - Key definitions and metrics
-        - Data processing approach
-        - Important caveats or limitations
-        """,
-        "Data Sources": """
-        - Project registries (with links)
-        - Event data sources (with links)
-        - Spreadsheets / connectors / static files
-        - Any other external data sources
-        """,
-        "Further Resources": """
-        - [Getting Started with Pyoso](https://docs.opensource.observer/docs/get-started/python)
-        - [Using the Semantic Layer](https://docs.opensource.observer/docs/get-started/using-semantic-layer)
-        - [Marimo Documentation](https://docs.marimo.io/)
-        """
-    })
+def generate_plot(mo, df_data, px, ...):
+    def make_fig(dataframe, title=""):
+        fig = px.scatter(
+            dataframe,
+            x="x_column",
+            y="y_column",
+            title=f"<b>{title}</b>"
+        )
+        fig.update_layout(
+            paper_bgcolor="white",
+            plot_bgcolor="white",
+            font=dict(size=12, color="#111"),
+            title=dict(text=title, x=0, xanchor="left"),
+            margin=dict(t=50, l=20, r=20, b=20),
+            legend_title="",
+            hovermode="x"
+        )
+        fig.update_xaxes(showgrid=False, linecolor="#000", ticks="outside")
+        fig.update_yaxes(showgrid=True, gridcolor="#DDD", linecolor="#000", ticks="outside")
+        return fig
+
+    _fig = make_fig(df_data, "Chart Title")
+    mo.ui.plotly(_fig)
     return
 ```
 
 ---
 
-## Imports
-- Group imports: stdlib → third-party → project-specific
-- Keep imports minimal in each cell
+## Cell Naming Conventions
 
-```python
-import pandas as pd
-import numpy as np
-import plotly.express as px
-```
+### Required Named Cells:
+- `setup_pyoso()` - Database setup (exact pattern required)
+- `about_app(mo)` - Documentation with vstack pattern
+
+### Common Building Block Cells (use as needed):
+- `import_libraries()` - All imports organized by type
+- `get_data(...)` - Data fetching and processing
+- `configuration_settings(mo, ...)` - UI controls and settings
+- `generate_stats(mo, ...)` - Key metrics and statistics
+- `generate_table(mo, ...)` - Tabular data display
+- `generate_plot(mo, ...)` - Primary visualizations
+- `filter_data(...)` - Data filtering and transformation
+- `create_*_inputs(mo, ...)` - Specific UI element creation
+- `show_*_info(mo, ...)` - Information display cells
+
+### Helper Cells (use `_()` pattern):
+- Utility functions and calculations
+- State initialization
+- Simple data transformations
+- Helper computations
+
+---
+
+## Cell Organization Order
+
+1. `setup_pyoso()` - Always first (REQUIRED)
+2. `about_app(mo)` - Documentation (REQUIRED)
+3. `import_libraries()` - All imports (if needed)
+4. `configuration_settings(mo, ...)` - UI controls (if needed)
+5. `get_data(...)` - Data fetching (if needed)
+6. `filter_data(...)` - Data processing (if needed)
+7. `generate_stats(mo, ...)` - Key metrics (if needed)
+8. `generate_table(mo, ...)` - Data tables (if needed)
+9. `generate_plot(mo, ...)` - Visualizations (if needed)
+10. Helper cells with `_()` pattern as needed
 
 ---
 
@@ -135,14 +271,14 @@ return (project_input,)
 ```python
 # Data processing
 @app.cell
-def _(client, project_input):
+def get_data(client, project_input):
     _query = f"SELECT * FROM table WHERE id = '{project_input.value}'"
     df_data = client.to_pandas(_query)
     return (df_data,)
 
 # UI cell
 @app.cell
-def _(mo):
+def configuration_settings(mo):
     project_input = mo.ui.dropdown(...)
     mo.vstack([project_input])
     return (project_input,)
@@ -285,11 +421,11 @@ _df = client.to_pandas(_query)
 
 ## Workflow
 1. Define objective
-2. Setup → documentation
-3. Data connections
-4. Fetch and validate data
-5. Create UI components
-6. Build visualizations
+2. Setup → documentation (REQUIRED)
+3. Data connections (if needed)
+4. Fetch and validate data (if needed)
+5. Create UI components (if needed)
+6. Build visualizations (if needed)
 7. Add markdown + accordion documentation
 8. Test interactivity and error handling
 
@@ -304,3 +440,4 @@ _df = client.to_pandas(_query)
 - Inconsistent styling across visualizations
 - Complex conditional UI rendering
 - Over-engineering error handling
+- Using `_()` pattern for main building blocks (use named cells instead)

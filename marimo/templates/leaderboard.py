@@ -52,7 +52,7 @@ def about_app(mo):
 
 
 @app.cell
-def _(
+def configuration_settings(
     button_00s,
     button_10s,
     button_80s,
@@ -129,7 +129,7 @@ def _(get_end_date, get_start_date, mo, pd, set_end_date, set_start_date):
 
 
 @app.cell
-def _(
+def generate_stats(
     filtered_movies,
     get_average_budget,
     get_average_gross,
@@ -210,7 +210,7 @@ def _(
 
 
 @app.cell
-def _(filtered_movies, mo):
+def generate_table(filtered_movies, mo):
     mo.ui.table(
         filtered_movies.reset_index(drop=True),
         selection=None,
@@ -222,7 +222,7 @@ def _(filtered_movies, mo):
 
 
 @app.cell
-def _(filtered_movies, mo, pd, px):
+def generate_plot(filtered_movies, mo, pd, px):
     def make_fig(dataframe, title=""):
         _df = dataframe.assign(
             Production_Budget_M=lambda d: pd.to_numeric(d["Production_Budget"], errors="coerce")/1e6
@@ -329,7 +329,7 @@ def _(datetime):
 
 
 @app.cell
-def _():
+def import_libraries():
     import datetime
     import pandas as pd
     import plotly.express as px
@@ -338,7 +338,7 @@ def _():
 
 
 @app.cell
-def _(data, pd):
+def get_data(data, pd):
     movies = data.data.movies()
 
     # convert to date
