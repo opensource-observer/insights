@@ -19,50 +19,43 @@ def setup_pyoso():
 
 
 @app.cell
-def _(mo):
-    mo.md(
-        """
-    # **Builder Velocity**
-    <small>Author: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">OSO Team</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">15 September 2025</span></small>
-
-    This dashboard visualizes the monthly change in full-time contributors for projects in [oss-directory](https://github.com/opensource-observer/oss-directory) using data from the Pyoso API.
-
-    It focuses on the top 50 projects based on the total change in full-time contributors over the past 3 years.
-
-    You can add your project by submitting a PR!
-    """
-    )
+def about_app(mo):
+    mo.vstack([
+        mo.md("""
+        # Builder Velocity
+        <small>Author: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">OSO Team</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">2025-09-15</span></small>
+        """),
+        mo.md("""
+        This dashboard visualizes the monthly change in full-time contributors for projects in [oss-directory](https://github.com/opensource-observer/oss-directory) using data from the Pyoso API. You can add your project by submitting a PR!
+        """),
+        mo.accordion({
+            "<b>Click to see details on how app was made</b>": mo.accordion({
+                "Methodology": """
+                - Full-time contributors are defined as GitHub users who have made at least 30 contributions (commits, issues, pull requests, code reviews) in a given month
+                - Monthly change is calculated as the difference in full-time contributors between consecutive months
+                - Projects are ranked by their total cumulative change in full-time contributors over the past 3 years
+                - Data is bucketed into monthly intervals, going back 36 months from the current date
+                - The visualization shows the top 50 projects based on total cumulative change
+                - Each ridge represents a project, with height showing the normalized cumulative change over time
+                """,
+                "Data Sources": """
+                - [OSS Directory](https://github.com/opensource-observer/oss-directory)
+                - [GitHub Archive](https://www.gharchive.org/)
+                - [Pyoso API](https://docs.opensource.observer/docs/get-started/python)
+                """,
+                "Further Resources": """
+                - [Getting Started with Pyoso](https://docs.opensource.observer/docs/get-started/python)
+                - [Using the Semantic Layer](https://docs.opensource.observer/docs/get-started/using-semantic-layer)
+                - [Marimo Documentation](https://docs.marimo.io/)
+                """
+            })
+        })    
+    ])
     return
 
 
 @app.cell
-def _(mo):
-    mo.accordion({
-        "Methodology": """
-        - Full-time contributors are defined as GitHub users who have made at least 30 contributions (commits, issues, pull requests, code reviews) in a given month
-        - Monthly change is calculated as the difference in full-time contributors between consecutive months
-        - Projects are ranked by their total cumulative change in full-time contributors over the past 3 years
-        - Data is bucketed into monthly intervals, going back 36 months from the current date
-        - The visualization shows the top 50 projects based on total cumulative change
-        - Each ridge represents a project, with height showing the normalized cumulative change over time
-        """,
-        "Data Sources": """
-        - [OSS Directory](https://github.com/opensource-observer/oss-directory)
-        - [GitHub Archive](https://www.gharchive.org/)
-        - [Pyoso API](https://docs.opensource.observer/docs/get-started/python)
-
-        """,
-        "Further Resources": """
-        - [Getting Started with Pyoso](https://docs.opensource.observer/docs/get-started/python)
-        - [Using the Semantic Layer](https://docs.opensource.observer/docs/get-started/using-semantic-layer)
-        - [Marimo Documentation](https://docs.marimo.io/)
-        """
-    })
-    return
-
-
-@app.cell
-def _():
+def import_libraries():
     import pandas as pd
     import numpy as np
     import plotly.graph_objects as go
@@ -71,7 +64,15 @@ def _():
 
 
 @app.cell
-def _(client, top_n_input):
+def color_utils(px):
+    seq_attrs = {k: v for k, v in vars(px.colors.sequential).items() if not k.startswith("_") and isinstance(v, list)}
+    seq_names = sorted([k.lower() for k in seq_attrs])   # for the UI
+    seq_lookup = {k.lower(): k for k in seq_attrs}       # ui_name -> AttributeName
+    return seq_lookup, seq_names
+
+
+@app.cell
+def get_data(client, top_n_input):
     _query = f"""
     WITH params AS (
       SELECT
@@ -113,7 +114,8 @@ def _(client, top_n_input):
 
 
 @app.cell
-def _(
+def generate_plot(
+    colormap_input,
     df_top_projects,
     gap_input,
     go,
@@ -121,6 +123,7 @@ def _(
     np,
     pd,
     px,
+    seq_lookup,
     smoothing_input,
     top_n_input,
 ):
@@ -137,7 +140,7 @@ def _(
         smoothing: int = 0,
         top_n: int | None = None,
         color_mode: str = "sequential",
-        cmap_name: str = "Viridis",
+        cmap_name: str = "Tlgn",
         qual_name: str = "Set3",
         fill_alpha: float = 0.5,
         annotate_totals: bool = True
@@ -243,7 +246,7 @@ def _(
             paper_bgcolor="white",
             plot_bgcolor="white",
             font=dict(size=12, color="#111"),
-            margin=dict(l=20, r=80, t=50, b=30),
+            margin=dict(l=20, r=80, t=0, b=30),
             showlegend=False,
             height=1500,
             annotations=annotations,
@@ -275,6 +278,9 @@ def _(
         )
         return fig
 
+    # Resolve UI value (lowercase) -> Plotly attribute (Capitalized)
+    cmap_attr = seq_lookup.get(colormap_input.value, 'Viridis')
+
     fig = joyplot_timeseries(
         df_top_projects,
         normalize=True,
@@ -282,20 +288,23 @@ def _(
         gap=gap_input.value,
         top_n=top_n_input.value,
         color_mode="sequential",
-        cmap_name="Tealgrn",
+        cmap_name=cmap_attr,
         fill_alpha=0.55,
         annotate_totals=True
     )
 
-    mo.vstack([
-        mo.md('### Builder Velocity Over Time'),
-        mo.ui.plotly(fig)
-    ])
+    mo.ui.plotly(fig)
     return
 
 
 @app.cell
-def _(mo):
+def configuration_settings(mo, seq_names):
+    colormap_input = mo.ui.dropdown(
+        options=seq_names,
+        value='tlgn',
+        full_width=True
+    )
+
     smoothing_input = mo.ui.slider(
         start=0,
         stop=3,
@@ -325,11 +334,12 @@ def _(mo):
 
     mo.vstack([
         mo.md("### Configuration"),
+        colormap_input,
         smoothing_input,
-        top_n_input,
-        gap_input
+        gap_input,
+        top_n_input
     ])
-    return gap_input, smoothing_input, top_n_input
+    return colormap_input, gap_input, smoothing_input, top_n_input
 
 
 if __name__ == "__main__":
