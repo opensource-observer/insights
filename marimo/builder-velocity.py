@@ -22,7 +22,7 @@ def setup_pyoso():
 def about_app(mo):
     mo.vstack([
         mo.md("""
-        # Builder Velocity
+        # Contributor Growth
         <small>Author: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">OSO Team</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">2025-09-15</span></small>
         """),
         mo.md("""
