@@ -157,35 +157,7 @@ def filter_data(
 
     df_projects_filtered = df_projects_filtered.groupby(['project', 'chain'], as_index=False)['gas_fees'].sum()
     df_chains_filtered = df_chains_filtered.groupby(['sample_date', 'chain'], as_index=False)['gas_fees'].sum()
-    return df_chains_filtered, df_projects_filtered
-
-
-@app.cell
-def generate_stats(df_projects_filtered, mo):
-    total_gas_fees = df_projects_filtered['gas_fees'].sum()
-    total_projects = len(df_projects_filtered)
-    total_chains = df_projects_filtered['chain'].nunique()
-
-    total_fees_stat = mo.stat(
-        label="Total Gas Fees (ETH)",
-        bordered=True,
-        value=f"{total_gas_fees:,.1f}",
-    )
-
-    projects_stat = mo.stat(
-        label="Active Projects",
-        bordered=True,
-        value=f"{total_projects:,.0f}",
-    )
-
-    chains_stat = mo.stat(
-        label="Total Chains",
-        bordered=True,
-        value=f"{total_chains:,.0f}",
-    )
-
-    mo.hstack([total_fees_stat, projects_stat, chains_stat], widths="equal", gap=1)
-    return
+    return (df_projects_filtered,)
 
 
 @app.cell
@@ -216,72 +188,6 @@ def generate_plot_treemap(df_projects_filtered, mo, px):
         return fig
 
     _fig = make_treemap(df_projects_filtered, "Gas Fees by Chain and Project")
-    mo.ui.plotly(_fig)
-    return
-
-
-@app.cell
-def generate_table(df_projects_filtered, mo):
-    # Sort by gas fees descending and format for display
-    _df_display = (
-        df_projects_filtered
-        .sort_values('gas_fees', ascending=False)
-        .reset_index(drop=True)
-        .rename(columns={
-            'project': 'Project',
-            'chain': 'Chain',
-            'gas_fees': 'Gas Fee Contribution (ETH)'
-        })
-    )
-    mo.ui.table(
-        _df_display,
-        selection=None,
-        show_column_summaries=False,
-        show_data_types=False,
-        format_mapping={
-            'Gas Fee Contribution (ETH)': '{:,.2f}'
-        },
-        page_size=25
-    )
-    return
-
-
-@app.cell
-def generate_plot_trends(df_chains_filtered, mo, px):
-    def make_area_chart(dataframe, title=""):
-        fig = px.area(
-            data_frame=dataframe,
-            x='sample_date',
-            y='gas_fees',
-            color='chain',
-            title=f"<b>{title}</b>",
-            color_discrete_sequence=px.colors.qualitative.G10
-        )
-        fig.update_layout(
-            paper_bgcolor="white",
-            plot_bgcolor="white",
-            font=dict(size=12, color="#111"),
-            title=dict(text=title, x=0, xanchor="left"),
-            margin=dict(t=50, l=20, r=20, b=20),
-            legend_title="Chain",
-            hovermode="x"
-        )
-        fig.update_xaxes(
-            title="Date",
-            showgrid=False,
-            linecolor="#000",
-            ticks="outside"
-        )
-        fig.update_yaxes(
-            title="Daily Gas Fees (ETH)",
-            showgrid=True,
-            gridcolor="#DDD",
-            linecolor="#000",
-            ticks="outside"
-        )
-        return fig
-
-    _fig = make_area_chart(df_chains_filtered, "Daily Gas Fees Trends by Chain")
     mo.ui.plotly(_fig)
     return
 
