@@ -140,7 +140,7 @@ def generate_plot(
         smoothing: int = 0,
         top_n: int | None = None,
         color_mode: str = "sequential",
-        cmap_name: str = "Tlgn",
+        cmap_name: str = "tealgrn",
         qual_name: str = "Set3",
         fill_alpha: float = 0.5,
         annotate_totals: bool = True
@@ -279,7 +279,7 @@ def generate_plot(
         return fig
 
     # Resolve UI value (lowercase) -> Plotly attribute (Capitalized)
-    cmap_attr = seq_lookup.get(colormap_input.value, 'Viridis')
+    cmap_attr = seq_lookup.get(colormap_input.value, 'tealgrn')
 
     fig = joyplot_timeseries(
         df_top_projects,
@@ -301,7 +301,7 @@ def generate_plot(
 def configuration_settings(mo, seq_names):
     colormap_input = mo.ui.dropdown(
         options=seq_names,
-        value='tlgn',
+        value='tealgrn',
         full_width=True
     )
 
