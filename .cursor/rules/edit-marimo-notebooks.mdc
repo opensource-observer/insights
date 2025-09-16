@@ -392,6 +392,7 @@ _df = client.to_pandas(_query)
 - Keep error handling simple and minimal
 - Prefer clean, direct flows over defensive programming
 - Surface concise error messages with `mo.md()`
+- **CRITICAL: Never use premature return statements** - Marimo cells must execute completely. If data is empty, let the UI components handle it naturally (empty tables, empty plots, etc.)
 
 ---
 
@@ -432,6 +433,7 @@ _df = client.to_pandas(_query)
 ---
 
 ## Anti-Patterns
+- Marimo cells must always execute to completion. Let empty data fail in the UI rather than using conditional returns.
 - Hardcoding values that should be configurable
 - Mixing data processing and visualization in the same cell
 - Using widget objects directly in expressions (instead of `.value`)
