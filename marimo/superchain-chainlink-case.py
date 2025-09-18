@@ -21,7 +21,7 @@ def setup_pyoso():
 @app.cell
 def about_app(mo):
     _author = 'OSO Team'
-    _updated_at = '2025-01-15'
+    _updated_at = '2025-09-19'
     mo.vstack([
         mo.md(f"""
         # Chainlink Impact Analysis on Superchain
@@ -64,7 +64,7 @@ def import_libraries():
     import plotly.graph_objects as go
     from datetime import datetime, timedelta
     import numpy as np
-    return datetime, go, np, pd, px, timedelta
+    return pd, px, timedelta
 
 
 @app.cell
@@ -76,14 +76,14 @@ def configuration_settings(mo):
         'RACE', 'SHAPE', 'UNICHAIN', 'SWELL', 'SONEIUM',
         'INK', 'ARENAZ'
     ])
-    
+
     chain_filter_input = mo.ui.multiselect(
         options=CHAINS,
         value=CHAINS,
         label="Filter by Chain",
         full_width=True
     )
-    
+
     # Time range selection
     time_range_input = mo.ui.dropdown(
         options=["All Time", "YTD", "Last 6 Months", "Last 12 Months"],
@@ -91,7 +91,7 @@ def configuration_settings(mo):
         label="Time Range",
         full_width=True
     )
-    
+
     # Attribution percentage for downstream impact
     attribution_pct_input = mo.ui.slider(
         start=0.0,
@@ -101,7 +101,7 @@ def configuration_settings(mo):
         label="Downstream Attribution %",
         full_width=True
     )
-    
+
     # Risk reduction assumptions
     risk_reduction_input = mo.ui.slider(
         start=0.0,
@@ -111,7 +111,7 @@ def configuration_settings(mo):
         label="Estimated Risk Reduction %",
         full_width=True
     )
-    
+
     mo.vstack([
         mo.md("### Configuration"),
         chain_filter_input,
@@ -120,112 +120,85 @@ def configuration_settings(mo):
         attribution_pct_input,
         risk_reduction_input
     ])
-    return (attribution_pct_input, chain_filter_input, risk_reduction_input, time_range_input)
+    return (
+        attribution_pct_input,
+        chain_filter_input,
+        risk_reduction_input,
+        time_range_input,
+    )
 
 
 @app.cell
-def get_chainlink_contract_data(client):
-    # Query for Chainlink price feed contract interactions
+def _():
     _query_contracts = """
     SELECT
-      sample_date,
-      chain,
-      contract_address,
-      SUM(gas_used * gas_price) / 1e18 AS transaction_fees_eth,
-      COUNT(*) AS interaction_count
-    FROM contract_interactions
-    WHERE contract_address IN (
-      -- Chainlink price feed contracts (placeholder addresses)
-      '0x1234567890123456789012345678901234567890',
-      '0x2345678901234567890123456789012345678901',
-      '0x3456789012345678901234567890123456789012'
-    )
-    GROUP BY 1, 2, 3
-    ORDER BY 1, 2
+      artifact_name AS contract_address,
+      artifact_source AS chain,
+      amount AS contract_invocations
+    FROM artifacts_by_project_v1
+    JOIN key_metrics_by_artifact_v0 USING artifact_id
+    JOIN metrics_v0 USING metric_id
+    WHERE
+      project_name = 'chainlink'
+      AND project_source = 'OSS_DIRECTORY'
+      AND metric_name LIKE '%_contract_invocations_over_all_time'
+    ORDER BY 3 DESC
+    LIMIT 50
     """
-    
-    # Query for apps using Chainlink oracles
-    _query_apps = """
+    #df_contracts = client.to_pandas(_query_contracts)
+    return
+
+
+@app.cell
+def _(df_contracts):
+    df_contracts
+    return
+
+
+@app.cell
+def _(client, pd):
+    _query_usage = """
     SELECT
       sample_date,
-      chain,
-      project_name,
-      SUM(gas_used * gas_price) / 1e18 AS transaction_fees_eth,
-      COUNT(*) AS transaction_count
-    FROM project_transactions pt
-    JOIN projects_v1 p ON pt.project_id = p.project_id
-    WHERE p.tags LIKE '%oracle%' 
-      OR p.tags LIKE '%chainlink%'
-      OR pt.contract_address IN (
-        -- Apps known to use Chainlink
-        '0x4567890123456789012345678901234567890123',
-        '0x5678901234567890123456789012345678901234'
-      )
-    GROUP BY 1, 2, 3
-    ORDER BY 1, 2
+      regexp_extract(metric_name, '^(.*)_contract_invocations_daily', 1) AS chain,
+      amount
+    FROM timeseries_metrics_by_project_v0
+    JOIN projects_v1 USING project_id
+    JOIN metrics_v0 USING metric_id
+    WHERE
+      project_name = 'chainlink'
+      AND project_source = 'OSS_DIRECTORY'
+      AND metric_name LIKE '%_contract_invocations_daily'
+    ORDER BY 1
     """
-    
-    # Query for chain revenue data
+    df_usage = client.to_pandas(_query_usage)
+    df_usage['sample_date'] = pd.to_date(df_usage['sample_date'])
+    return (df_usage,)
+
+
+@app.cell
+def _(client, pd):
     _query_revenue = """
     SELECT
       sample_date,
-      chain,
-      SUM(amount) AS total_revenue_eth
-    FROM int_chain_metrics
-    WHERE metric_name = 'FEES_PAID_ETH'
-    GROUP BY 1, 2
-    ORDER BY 1, 2
+      regexp_extract(metric_name, '^(.*)_layer2_gas_fees_amortized_daily', 1) AS chain,
+      amount
+    FROM timeseries_metrics_by_project_v0
+    JOIN projects_v1 USING project_id
+    JOIN metrics_v0 USING metric_id
+    WHERE
+      project_name = 'chainlink'
+      AND project_source = 'OSS_DIRECTORY'
+      AND metric_name LIKE '%_layer2_gas_fees_amortized_daily'
+    ORDER BY 1
     """
-    
-    # Create dummy data for demonstration
-    dates = pd.date_range(start='2023-01-01', end='2024-12-31', freq='D')
-    chains = ['OPTIMISM', 'BASE', 'ZORA', 'MODE']
-    
-    # Dummy contract interaction data
-    contract_data = []
-    for date in dates[::7]:  # Weekly data
-        for chain in chains:
-            contract_data.append({
-                'sample_date': date,
-                'chain': chain,
-                'contract_address': f'0x{"1" * 40}',
-                'transaction_fees_eth': np.random.exponential(0.1),
-                'interaction_count': np.random.poisson(50)
-            })
-    
-    df_contracts = pd.DataFrame(contract_data)
-    
-    # Dummy app data
-    app_data = []
-    for date in dates[::7]:
-        for chain in chains:
-            app_data.append({
-                'sample_date': date,
-                'chain': chain,
-                'project_name': f'DeFi App {np.random.randint(1, 10)}',
-                'transaction_fees_eth': np.random.exponential(1.0),
-                'transaction_count': np.random.poisson(200)
-            })
-    
-    df_apps = pd.DataFrame(app_data)
-    
-    # Dummy revenue data
-    revenue_data = []
-    for date in dates:
-        for chain in chains:
-            revenue_data.append({
-                'sample_date': date,
-                'chain': chain,
-                'total_revenue_eth': np.random.exponential(10.0)
-            })
-    
-    df_revenue = pd.DataFrame(revenue_data)
-    
-    return df_apps, df_contracts, df_revenue
+    df_revenue = client.to_pandas(_query_revenue)
+    df_revenue['sample_date'] = pd.to_date(df_revenue['sample_date'])
+    return (df_revenue,)
 
 
 @app.cell
-def get_historical_exploit_data():
+def get_historical_exploit_data(pd):
     # Historical oracle exploit data (dummy data for demonstration)
     exploit_data = [
         {'date': '2022-03-01', 'chain': 'ETHEREUM', 'protocol': 'Protocol A', 'loss_amount_eth': 1000, 'oracle_type': 'Custom'},
@@ -234,20 +207,27 @@ def get_historical_exploit_data():
         {'date': '2023-01-10', 'chain': 'AVALANCHE', 'protocol': 'Protocol D', 'loss_amount_eth': 800, 'oracle_type': 'Custom'},
         {'date': '2023-04-05', 'chain': 'ARBITRUM', 'protocol': 'Protocol E', 'loss_amount_eth': 1500, 'oracle_type': 'Custom'},
     ]
-    
+
     df_exploits = pd.DataFrame(exploit_data)
     df_exploits['date'] = pd.to_datetime(df_exploits['date'])
-    
-    return df_exploits,
+    return (df_exploits,)
 
 
 @app.cell
-def filter_data(attribution_pct_input, chain_filter_input, df_apps, df_contracts, df_revenue, time_range_input):
+def filter_data(
+    chain_filter_input,
+    df_contracts,
+    df_revenue,
+    df_usage,
+    pd,
+    time_range_input,
+    timedelta,
+):
     # Filter by selected chains
     df_contracts_filtered = df_contracts[df_contracts['chain'].isin(chain_filter_input.value)].copy()
-    df_apps_filtered = df_apps[df_apps['chain'].isin(chain_filter_input.value)].copy()
+    df_usage_filtered = df_usage[df_usage['chain'].isin(chain_filter_input.value)].copy()
     df_revenue_filtered = df_revenue[df_revenue['chain'].isin(chain_filter_input.value)].copy()
-    
+
     # Filter by time range
     if time_range_input.value == "YTD":
         cutoff_date = pd.Timestamp('2024-01-01')
@@ -255,48 +235,50 @@ def filter_data(attribution_pct_input, chain_filter_input, df_apps, df_contracts
         cutoff_date = pd.Timestamp.now() - timedelta(days=180)
     elif time_range_input.value == "Last 12 Months":
         cutoff_date = pd.Timestamp.now() - timedelta(days=365)
-    else:  # All Time
+    else:
         cutoff_date = None
-    
+
     if cutoff_date:
-        df_contracts_filtered = df_contracts_filtered[df_contracts_filtered['sample_date'] >= cutoff_date]
-        df_apps_filtered = df_apps_filtered[df_apps_filtered['sample_date'] >= cutoff_date]
+        df_usage_filtered = df_usage_filtered[df_usage_filtered['sample_date'] >= cutoff_date]
         df_revenue_filtered = df_revenue_filtered[df_revenue_filtered['sample_date'] >= cutoff_date]
-    
-    return df_apps_filtered, df_contracts_filtered, df_revenue_filtered
+
+    return df_contracts_filtered, df_revenue_filtered, df_usage_filtered
 
 
 @app.cell
-def generate_direct_impact_analysis(df_contracts_filtered, mo, px):
-    mo.md("## 1. Direct Contract Interactions")
-    
+def generate_direct_impact_analysis(
+    df_revenue_filtered,
+    df_usage_filtered,
+    mo,
+    px,
+):
+
+
     # Calculate total direct fees
-    total_direct_fees = df_contracts_filtered['transaction_fees_eth'].sum()
-    total_interactions = df_contracts_filtered['interaction_count'].sum()
-    
+    total_direct_fees = df_revenue_filtered['amount'].sum()
+    total_interactions = df_usage_filtered['amount'].sum()
+
     # Create summary stats
     direct_fees_stat = mo.stat(
         label="Total Direct Fees (ETH)",
         bordered=True,
         value=f"{total_direct_fees:.2f}",
     )
-    
+
     interactions_stat = mo.stat(
         label="Total Interactions",
         bordered=True,
         value=f"{total_interactions:,}",
     )
-    
-    mo.hstack([direct_fees_stat, interactions_stat], widths="equal", gap=1)
-    
+
     # Create time series plot
-    df_daily = df_contracts_filtered.groupby('sample_date')['transaction_fees_eth'].sum().reset_index()
-    
+    df_daily = df_revenue_filtered.groupby('sample_date')['amount'].sum().reset_index()
+
     def make_direct_fees_plot(dataframe, title=""):
         fig = px.line(
             dataframe,
             x="sample_date",
-            y="transaction_fees_eth",
+            y="amount",
             title=f"<b>{title}</b>"
         )
         fig.update_layout(
@@ -311,44 +293,59 @@ def generate_direct_impact_analysis(df_contracts_filtered, mo, px):
         fig.update_xaxes(showgrid=False, linecolor="#000", ticks="outside")
         fig.update_yaxes(showgrid=True, gridcolor="#DDD", linecolor="#000", ticks="outside")
         return fig
-    
+
     _fig = make_direct_fees_plot(df_daily, "Daily Direct Contract Interaction Fees")
-    mo.ui.plotly(_fig)
-    
-    mo.md("""
-    **Analysis**: This section shows the direct transaction fees generated from interactions with Chainlink price feed contracts. 
-    These represent the most straightforward measure of Chainlink's direct economic impact on the Superchain ecosystem.
-    """)
+
+    mo.vstack([
+        mo.md("## 1. Direct Contract Interactions"),
+        mo.hstack([direct_fees_stat, interactions_stat], widths="equal", gap=1),
+        mo.md("""
+        **Analysis**: This section shows the direct transaction fees generated from interactions with Chainlink price feed contracts. 
+        These represent the most straightforward measure of Chainlink's direct economic impact on the Superchain ecosystem.
+        """),
+        mo.ui.plotly(_fig)
+    ])
     return
 
 
 @app.cell
-def generate_downstream_impact_analysis(attribution_pct_input, df_apps_filtered, mo, px):
+def _(df_usage):
+    df_usage
+    return
+
+
+@app.cell
+def generate_downstream_impact_analysis(
+    attribution_pct_input,
+    df_apps_filtered,
+    mo,
+    px,
+):
     mo.md("## 2. Downstream Impact on Transaction Fees")
-    
+
     # Calculate attributed fees
     total_app_fees = df_apps_filtered['transaction_fees_eth'].sum()
     attributed_fees = total_app_fees * (attribution_pct_input.value / 100)
-    
+
     # Create summary stats
     total_fees_stat = mo.stat(
         label="Total App Fees (ETH)",
         bordered=True,
         value=f"{total_app_fees:.2f}",
     )
-    
+
     attributed_stat = mo.stat(
         label=f"Attributed to Chainlink ({attribution_pct_input.value}%)",
         bordered=True,
         value=f"{attributed_fees:.2f}",
     )
-    
+
     mo.hstack([total_fees_stat, attributed_stat], widths="equal", gap=1)
-    
+
     # Create chain breakdown
     df_chain_breakdown = df_apps_filtered.groupby('chain')['transaction_fees_eth'].sum().reset_index()
     df_chain_breakdown['attributed_fees'] = df_chain_breakdown['transaction_fees_eth'] * (attribution_pct_input.value / 100)
-    
+
     def make_chain_breakdown_plot(dataframe, title=""):
         fig = px.bar(
             dataframe,
@@ -369,10 +366,10 @@ def generate_downstream_impact_analysis(attribution_pct_input, df_apps_filtered,
         fig.update_xaxes(showgrid=False, linecolor="#000", ticks="outside")
         fig.update_yaxes(showgrid=True, gridcolor="#DDD", linecolor="#000", ticks="outside")
         return fig
-    
+
     _fig = make_chain_breakdown_plot(df_chain_breakdown, "Transaction Fees by Chain")
     mo.ui.plotly(_fig)
-    
+
     mo.md(f"""
     **Analysis**: This section attributes {attribution_pct_input.value}% of transaction fees from applications using Chainlink oracles to Chainlink's contribution. 
     This represents the second-order economic impact, assuming that Chainlink's reliable oracle infrastructure contributes to the success and legitimacy of these applications.
@@ -381,31 +378,36 @@ def generate_downstream_impact_analysis(attribution_pct_input, df_apps_filtered,
 
 
 @app.cell
-def generate_risk_reduction_analysis(df_exploits, mo, px, risk_reduction_input):
+def generate_risk_reduction_analysis(
+    df_exploits,
+    mo,
+    px,
+    risk_reduction_input,
+):
     mo.md("## 3. Implied Risk Reduction")
-    
+
     # Calculate potential avoided losses
     total_historical_losses = df_exploits['loss_amount_eth'].sum()
     avg_loss_per_exploit = df_exploits['loss_amount_eth'].mean()
-    
+
     # Estimate avoided losses (simplified calculation)
     estimated_avoided_losses = total_historical_losses * (risk_reduction_input.value / 100)
-    
+
     # Create summary stats
     historical_losses_stat = mo.stat(
         label="Historical Oracle Losses (ETH)",
         bordered=True,
         value=f"{total_historical_losses:,.0f}",
     )
-    
+
     avoided_losses_stat = mo.stat(
         label=f"Estimated Avoided Losses ({risk_reduction_input.value}%)",
         bordered=True,
         value=f"{estimated_avoided_losses:,.0f}",
     )
-    
+
     mo.hstack([historical_losses_stat, avoided_losses_stat], widths="equal", gap=1)
-    
+
     # Create exploit timeline
     def make_exploit_timeline(dataframe, title=""):
         fig = px.bar(
@@ -427,10 +429,10 @@ def generate_risk_reduction_analysis(df_exploits, mo, px, risk_reduction_input):
         fig.update_xaxes(showgrid=False, linecolor="#000", ticks="outside")
         fig.update_yaxes(showgrid=True, gridcolor="#DDD", linecolor="#000", ticks="outside")
         return fig
-    
+
     _fig = make_exploit_timeline(df_exploits, "Historical Oracle Exploits by Chain")
     mo.ui.plotly(_fig)
-    
+
     mo.md(f"""
     **Analysis**: This section estimates the value of risk reduction provided by Chainlink's secure oracle infrastructure. 
     Based on historical oracle manipulation exploits on other chains, we estimate that Chainlink integration has prevented 
@@ -440,9 +442,9 @@ def generate_risk_reduction_analysis(df_exploits, mo, px, risk_reduction_input):
 
 
 @app.cell
-def generate_pre_post_analysis(df_revenue_filtered, mo, px):
+def generate_pre_post_analysis(df_revenue_filtered, mo, pd, px, timedelta):
     mo.md("## 4. Pre-Post Revenue Analysis")
-    
+
     # Simulate Chainlink integration dates (dummy data)
     integration_dates = {
         'OPTIMISM': '2023-06-01',
@@ -450,28 +452,28 @@ def generate_pre_post_analysis(df_revenue_filtered, mo, px):
         'ZORA': '2023-10-01',
         'MODE': '2024-01-01'
     }
-    
+
     # Calculate pre/post metrics for each chain
     analysis_results = []
-    
+
     for chain in df_revenue_filtered['chain'].unique():
         if chain in integration_dates:
             integration_date = pd.Timestamp(integration_dates[chain])
             chain_data = df_revenue_filtered[df_revenue_filtered['chain'] == chain].copy()
-            
+
             # Pre-integration period (6 months before)
             pre_start = integration_date - timedelta(days=180)
             pre_data = chain_data[(chain_data['sample_date'] >= pre_start) & (chain_data['sample_date'] < integration_date)]
-            
+
             # Post-integration period (6 months after)
             post_end = integration_date + timedelta(days=180)
             post_data = chain_data[(chain_data['sample_date'] >= integration_date) & (chain_data['sample_date'] <= post_end)]
-            
+
             if len(pre_data) > 0 and len(post_data) > 0:
                 pre_avg = pre_data['total_revenue_eth'].mean()
                 post_avg = post_data['total_revenue_eth'].mean()
                 growth_pct = ((post_avg - pre_avg) / pre_avg) * 100
-                
+
                 analysis_results.append({
                     'chain': chain,
                     'integration_date': integration_date,
@@ -479,9 +481,9 @@ def generate_pre_post_analysis(df_revenue_filtered, mo, px):
                     'post_avg_revenue': post_avg,
                     'growth_percentage': growth_pct
                 })
-    
+
     df_analysis = pd.DataFrame(analysis_results)
-    
+
     if len(df_analysis) > 0:
         # Create summary stats
         avg_growth_stat = mo.stat(
@@ -489,15 +491,15 @@ def generate_pre_post_analysis(df_revenue_filtered, mo, px):
             bordered=True,
             value=f"{df_analysis['growth_percentage'].mean():.1f}%",
         )
-        
+
         total_chains_stat = mo.stat(
             label="Chains Analyzed",
             bordered=True,
             value=f"{len(df_analysis)}",
         )
-        
+
         mo.hstack([avg_growth_stat, total_chains_stat], widths="equal", gap=1)
-        
+
         # Create growth comparison chart
         def make_growth_plot(dataframe, title=""):
             fig = px.bar(
@@ -520,10 +522,10 @@ def generate_pre_post_analysis(df_revenue_filtered, mo, px):
             fig.update_xaxes(showgrid=False, linecolor="#000", ticks="outside")
             fig.update_yaxes(showgrid=True, gridcolor="#DDD", linecolor="#000", ticks="outside")
             return fig
-        
+
         _fig = make_growth_plot(df_analysis, "Revenue Growth After Chainlink Integration")
         mo.ui.plotly(_fig)
-        
+
         # Show detailed table
         mo.ui.table(
             df_analysis.round(2),
@@ -532,7 +534,7 @@ def generate_pre_post_analysis(df_revenue_filtered, mo, px):
             show_data_types=False,
             page_size=10
         )
-    
+
     mo.md("""
     **Analysis**: This section compares chain revenues before and after Chainlink integration to estimate the revenue lift 
     attributable to improved oracle infrastructure. The analysis uses a 6-month pre/post comparison window and shows the 
@@ -542,48 +544,56 @@ def generate_pre_post_analysis(df_revenue_filtered, mo, px):
 
 
 @app.cell
-def generate_summary_dashboard(df_contracts_filtered, df_apps_filtered, attribution_pct_input, risk_reduction_input, mo):
+def generate_summary_dashboard(
+    attribution_pct_input,
+    df_apps_filtered,
+    df_contracts_filtered,
+    mo,
+    pd,
+    px,
+    risk_reduction_input,
+):
     mo.md("## Summary Dashboard")
-    
+
     # Calculate total impact
     direct_fees = df_contracts_filtered['transaction_fees_eth'].sum()
     downstream_fees = df_apps_filtered['transaction_fees_eth'].sum() * (attribution_pct_input.value / 100)
-    
+
     # Estimate risk reduction value (simplified)
     estimated_risk_value = 10000 * (risk_reduction_input.value / 100)  # Placeholder calculation
-    
+
     total_impact = direct_fees + downstream_fees + estimated_risk_value
-    
+
     # Create impact breakdown
     impact_data = [
         {'Category': 'Direct Fees', 'Value': direct_fees, 'Percentage': (direct_fees / total_impact) * 100},
         {'Category': 'Downstream Attribution', 'Value': downstream_fees, 'Percentage': (downstream_fees / total_impact) * 100},
         {'Category': 'Risk Reduction', 'Value': estimated_risk_value, 'Percentage': (estimated_risk_value / total_impact) * 100}
     ]
-    
+
     df_impact = pd.DataFrame(impact_data)
-    
+
     # Summary stats
     total_impact_stat = mo.stat(
         label="Total Estimated Impact (ETH)",
         bordered=True,
         value=f"{total_impact:.2f}",
     )
-    
+
     direct_impact_stat = mo.stat(
         label="Direct Impact (ETH)",
         bordered=True,
         value=f"{direct_fees:.2f}",
     )
-    
+
     downstream_impact_stat = mo.stat(
         label="Downstream Impact (ETH)",
         bordered=True,
         value=f"{downstream_fees:.2f}",
     )
-    
+
     mo.hstack([total_impact_stat, direct_impact_stat, downstream_impact_stat], widths="equal", gap=1)
-    
+
     # Impact breakdown pie chart
     def make_impact_pie(dataframe, title=""):
         fig = px.pie(
@@ -602,10 +612,10 @@ def generate_summary_dashboard(df_contracts_filtered, df_apps_filtered, attribut
             hovermode="x"
         )
         return fig
-    
+
     _fig = make_impact_pie(df_impact, "Chainlink Impact Breakdown")
     mo.ui.plotly(_fig)
-    
+
     mo.md("""
     **Summary**: This dashboard provides a comprehensive view of Chainlink's impact on the Superchain ecosystem across multiple dimensions. 
     The analysis combines direct economic contributions, downstream attribution effects, and estimated risk reduction value to quantify 
