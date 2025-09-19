@@ -90,7 +90,7 @@ def configuration_settings(mo):
 def _(datetime, years_back_input):
     lookback_date = (datetime.date.today() - datetime.timedelta(days=365*years_back_input.value))
     lookback_date_str = lookback_date.strftime('%Y-%m-%d')
-    return lookback_date, lookback_date_str
+    return (lookback_date_str,)
 
 
 @app.cell
@@ -168,15 +168,66 @@ def _(
 
 
 @app.cell
-def _(datetime, df_stargazers, lookback_date, mo):
+def _(df_stargazers, end_date, mo, pd, px, start_date):
+    df_stargazers_filtered = df_stargazers[(df_stargazers['sample_date'] >= pd.to_datetime(start_date.value)) & (df_stargazers['sample_date'] <= pd.to_datetime(end_date.value))]
+
+    total_stars_period = df_stargazers_filtered['amount'].sum()
+
+    _fig = px.line(
+        df_stargazers,
+        x="sample_date",
+        y="cum_amount",
+        color_discrete_sequence=['black'],
+        title="",
+        height=200,
+    )
+    _fig.update_layout(
+        paper_bgcolor="white",
+        plot_bgcolor="white",
+        font=dict(size=12, color="black"),
+        margin=dict(t=0, l=20, r=20, b=20),
+        yaxis=dict(
+            title="",
+            showgrid=False,
+            linecolor='black',
+            linewidth=1,
+            ticks='outside',
+            tickformat=",",
+            rangemode='tozero'
+        ),
+        xaxis=dict(
+            title="",
+            showgrid=False,
+            linecolor='black',
+            linewidth=1,
+            ticks='outside',
+        ),
+    )
+
+    _fig.add_vline(x=start_date.value, line_width=2, line_dash="dash", line_color="#AAA")
+    _fig.add_vline(x=end_date.value, line_width=2, line_dash="dash", line_color="#AAA")
+
+    mo.vstack([
+        mo.md("#### Stargazers"),
+        mo.md(f"+{total_stars_period:,.0f} over analysis period"),
+        mo.ui.plotly(_fig),
+        #mo.hstack([total_stars_all_time_stat, total_stars_period_stat], widths="equal", gap=1)
+    ])
+    return
+
+
+@app.cell
+def _(datetime, df_stargazers, mo):
     mo.stop(not len(df_stargazers))
 
+    _start_date_value = df_stargazers["starred_at"].min() + datetime.timedelta(days=15)
+
     start_date = mo.ui.date(
-        value=lookback_date,
+        value=_start_date_value,
         label="Start Date"
     )
     end_date = mo.ui.date(
-        value=lookback_date + datetime.timedelta(days=30),
+        value=_start_date_value + datetime.timedelta(days=30),
         label="End Date"
     )
     max_developers = mo.ui.number(
@@ -197,41 +248,6 @@ def _(datetime, df_stargazers, lookback_date, mo):
         run_analysis
     ])
     return end_date, max_developers, run_analysis, start_date
-
-
-@app.cell
-def _(df_stargazers, end_date, mo, pd, px, start_date):
-    df_stargazers_filtered = df_stargazers[(df_stargazers['sample_date'] >= pd.to_datetime(start_date.value)) & (df_stargazers['sample_date'] <= pd.to_datetime(end_date.value))]
-
-    total_stars_all_time = df_stargazers['amount'].sum()
-    total_stars_period = df_stargazers_filtered['amount'].sum()
-
-    total_stars_all_time_stat = mo.stat(
-        label="Total Stars (All Time)",
-        value=str(total_stars_all_time),
-    )
-
-    total_stars_period_stat = mo.stat(
-        label="Total Stars (Selected Period)",
-        value=str(total_stars_period),
-    )
-
-
-    _fig = px.line(
-        df_stargazers,
-        x="sample_date",
-        y="cum_amount",
-        title="Stars Over Time",
-    )
-
-    _fig.add_vline(x=start_date.value, line_width=3, line_dash="dash", line_color="green")
-    _fig.add_vline(x=end_date.value, line_width=3, line_dash="dash", line_color="red")
-
-    mo.vstack([
-        mo.hstack([total_stars_all_time_stat, total_stars_period_stat]),    
-        mo.ui.plotly(_fig)
-    ])
-    return
 
 
 @app.function
