@@ -69,13 +69,28 @@ def configuration_settings(mo):
         value="https://github.com/meta-llama/llama",
         full_width=True
     )
+    years_back_input = mo.ui.number(
+        label="Years back",
+        value=1,
+        start=1,
+        stop=10,
+        step=1,
+        full_width=True
+    )
     fetch_repo_stars = mo.ui.run_button(label="Fetch Stargazer History")
     mo.vstack([
         mo.md("### Step 1. Select a repo to analyze"),
-        repo_input,
+        mo.hstack([repo_input, years_back_input], widths=[3,1]),
         fetch_repo_stars
     ])
-    return fetch_repo_stars, repo_input
+    return fetch_repo_stars, repo_input, years_back_input
+
+
+@app.cell
+def _(datetime, years_back_input):
+    lookback_date = (datetime.date.today() - datetime.timedelta(days=365*years_back_input.value))
+    lookback_date_str = lookback_date.strftime('%Y-%m-%d')
+    return lookback_date, lookback_date_str
 
 
 @app.cell
@@ -109,40 +124,59 @@ def _(mo, repo_input):
 
 
 @app.cell
-def _(client, fetch_repo_stars, mo, pd, repo_name, repo_owner):
+def _(
+    client,
+    fetch_repo_stars,
+    lookback_date_str,
+    mo,
+    pd,
+    repo_name,
+    repo_owner,
+):
     mo.stop(not fetch_repo_stars.value)
 
-    _query_stars = f"""
-    WITH repo AS (
-      SELECT artifact_id
-      FROM artifacts_v1
-      WHERE artifact_source = 'GITHUB'
+    _query_repo = f"""
+    SELECT artifact_id
+    FROM artifacts_v1
+    WHERE
+      artifact_source = 'GITHUB'
       AND artifact_namespace = '{repo_owner}'
       AND artifact_name = '{repo_name}'
-    )
+    """
+
+    _df_repo = client.to_pandas(_query_repo)
+    repo_id = _df_repo['artifact_id'].iloc[0]
+
+    _query_stars = f"""
     SELECT
-      repo.artifact_id,
-      s.metrics_sample_date AS sample_date,
-      s.amount
-    FROM stars_to_artifact_daily AS s
-    JOIN repo ON s.to_artifact_id = repo.artifact_id
+      from_artifact_id AS dev_id,
+      MIN(bucket_day) AS sample_date
+    FROM int_events_daily__github
+    WHERE
+      to_artifact_id = '{repo_id}'
+      AND event_type = 'STARRED'
+      AND bucket_day >= DATE('{lookback_date_str}')
+    GROUP BY 1
     ORDER BY 2
     """
+
     df_stargazers = client.to_pandas(_query_stars)
     df_stargazers['sample_date'] = pd.to_datetime(df_stargazers['sample_date'])
+    df_stargazers['amount'] = 1
     df_stargazers['cum_amount'] = df_stargazers['amount'].cumsum()
-    repo_id = df_stargazers['artifact_id'].iloc[0]
     return df_stargazers, repo_id
 
 
 @app.cell
-def _(datetime, mo):
+def _(datetime, df_stargazers, lookback_date, mo):
+    mo.stop(not len(df_stargazers))
+
     start_date = mo.ui.date(
-        value=datetime.date.today() - datetime.timedelta(days=365),
+        value=lookback_date,
         label="Start Date"
     )
     end_date = mo.ui.date(
-        value=datetime.date.today() - datetime.timedelta(days=30),
+        value=lookback_date + datetime.timedelta(days=30),
         label="End Date"
     )
     max_developers = mo.ui.number(
@@ -167,10 +201,10 @@ def _(datetime, mo):
 
 @app.cell
 def _(df_stargazers, end_date, mo, pd, px, start_date):
-    _df_stargazers_filtered = df_stargazers[(df_stargazers['sample_date'] >= pd.to_datetime(start_date.value)) & (df_stargazers['sample_date'] <= pd.to_datetime(end_date.value))]
+    df_stargazers_filtered = df_stargazers[(df_stargazers['sample_date'] >= pd.to_datetime(start_date.value)) & (df_stargazers['sample_date'] <= pd.to_datetime(end_date.value))]
 
     total_stars_all_time = df_stargazers['amount'].sum()
-    total_stars_period = _df_stargazers_filtered['amount'].sum()
+    total_stars_period = df_stargazers_filtered['amount'].sum()
 
     total_stars_all_time_stat = mo.stat(
         label="Total Stars (All Time)",
@@ -197,7 +231,6 @@ def _(df_stargazers, end_date, mo, pd, px, start_date):
         mo.hstack([total_stars_all_time_stat, total_stars_period_stat]),    
         mo.ui.plotly(_fig)
     ])
-
     return
 
 
@@ -250,11 +283,9 @@ def _(client, end_date, mo, repo_id, run_analysis, start_date, valid_inputs):
     ),
     starrers AS (
       SELECT
-        e.from_artifact_id AS dev_id,
-        MIN(e.bucket_day) AS first_star_day
-      FROM events_stars e
-      JOIN target_repo t
-        ON e.to_artifact_id = t.target_repo_id
+        from_artifact_id AS dev_id,
+        MIN(bucket_day) AS first_star_day
+      FROM events_stars
       GROUP BY 1
     ),
     events_commits AS (
