@@ -169,15 +169,18 @@ def _(
 
 @app.cell
 def _(df_stargazers, end_date, mo, pd, px, start_date):
-    df_stargazers_filtered = df_stargazers[(df_stargazers['sample_date'] >= pd.to_datetime(start_date.value)) & (df_stargazers['sample_date'] <= pd.to_datetime(end_date.value))]
+    df_stargazers_filtered = df_stargazers[
+        (df_stargazers["sample_date"] >= pd.to_datetime(start_date.value))
+        & (df_stargazers["sample_date"] <= pd.to_datetime(end_date.value))
+    ]
 
-    total_stars_period = df_stargazers_filtered['amount'].sum()
+    total_stars_period = df_stargazers_filtered["amount"].sum()
 
     _fig = px.line(
         df_stargazers,
         x="sample_date",
         y="cum_amount",
-        color_discrete_sequence=['black'],
+        color_discrete_sequence=["black"],
         title="",
         height=200,
     )
@@ -185,34 +188,40 @@ def _(df_stargazers, end_date, mo, pd, px, start_date):
         paper_bgcolor="white",
         plot_bgcolor="white",
         font=dict(size=12, color="black"),
-        margin=dict(t=0, l=20, r=20, b=20),
+        margin=dict(t=0, l=0, r=20, b=20),
         yaxis=dict(
             title="",
             showgrid=False,
-            linecolor='black',
+            linecolor="black",
             linewidth=1,
-            ticks='outside',
+            ticks="outside",
             tickformat=",",
-            rangemode='tozero'
+            rangemode="tozero",
         ),
         xaxis=dict(
             title="",
             showgrid=False,
-            linecolor='black',
+            linecolor="black",
             linewidth=1,
-            ticks='outside',
+            ticks="outside",
         ),
     )
 
-    _fig.add_vline(x=start_date.value, line_width=2, line_dash="dash", line_color="#AAA")
-    _fig.add_vline(x=end_date.value, line_width=2, line_dash="dash", line_color="#AAA")
+    _fig.add_vline(
+        x=start_date.value, line_width=2, line_dash="dash", line_color="#AAA"
+    )
+    _fig.add_vline(
+        x=end_date.value, line_width=2, line_dash="dash", line_color="#AAA"
+    )
 
-    mo.vstack([
-        mo.md("#### Stargazers"),
-        mo.md(f"+{total_stars_period:,.0f} over analysis period"),
-        mo.ui.plotly(_fig),
-        #mo.hstack([total_stars_all_time_stat, total_stars_period_stat], widths="equal", gap=1)
-    ])
+    mo.vstack(
+        [
+            mo.md("#### **Stargazers**"),
+            mo.md(f"+{total_stars_period:,.0f} over analysis period"),
+            mo.ui.plotly(_fig),
+            # mo.hstack([total_stars_all_time_stat, total_stars_period_stat], widths="equal", gap=1)
+        ]
+    )
     return
 
 
@@ -220,14 +229,14 @@ def _(df_stargazers, end_date, mo, pd, px, start_date):
 def _(datetime, df_stargazers, mo):
     mo.stop(not len(df_stargazers))
 
-    _start_date_value = df_stargazers["starred_at"].min() + datetime.timedelta(days=15)
+    _start_date_value = df_stargazers["sample_date"].min() + datetime.timedelta(days=15)
 
     start_date = mo.ui.date(
-        value=_start_date_value,
+        value=_start_date_value.date(),
         label="Start Date"
     )
     end_date = mo.ui.date(
-        value=_start_date_value + datetime.timedelta(days=30),
+        value=_start_date_value.date() + datetime.timedelta(days=30),
         label="End Date"
     )
     max_developers = mo.ui.number(
@@ -391,7 +400,10 @@ def process_data(client, df_edges, max_developers):
             total_commits_after_star=('commits_after_star','sum'),
             unique_repos_worked_on=('work_repo_id','nunique')
         )
-        .sort_values(['total_stars_received_by_work_repos','total_commits_after_star'], ascending=[False,False])
+        .assign(
+            combined_score=lambda d: d["total_stars_received_by_work_repos"]*2 + d["total_commits_after_star"]
+        )
+        .sort_values(['combined_score'], ascending=[False])
         .assign(dev_rank=lambda d: range(1, len(d)+1))
     )
     return (df_rank,)
@@ -434,9 +446,6 @@ def generate_plot(df_rank, max_developers, mo, px):
         plot_df = (
             dataframe
             .head(top_n)
-            .assign(
-                combined_score=lambda d: d["total_stars_received_by_work_repos"]*2 + d["total_commits_after_star"]
-            )
             .copy()
         )
 
