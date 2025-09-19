@@ -59,16 +59,84 @@ def import_libraries():
     import pandas as pd
     import plotly.express as px
     import plotly.graph_objects as go
-    return datetime, px
+    return datetime, pd, px
 
 
 @app.cell
-def configuration_settings(datetime, mo):
+def configuration_settings(mo):
     repo_input = mo.ui.text(
         label="Enter a GitHub repo URL:",
         value="https://github.com/meta-llama/llama",
         full_width=True
     )
+    fetch_repo_stars = mo.ui.run_button(label="Fetch Stargazer History")
+    mo.vstack([
+        mo.md("### Step 1. Select a repo to analyze"),
+        repo_input,
+        fetch_repo_stars
+    ])
+    return fetch_repo_stars, repo_input
+
+
+@app.cell
+def _(mo, repo_input):
+    def process_url(url):
+        url = url.lower().strip().strip('/')
+        try:
+            org, repo = url.split('/')[-2:]
+            if not len(org) or not len(repo):
+                return None, None
+            if '.' in org or '.' in repo:
+                return None, None
+            return org, repo
+        except:
+            return None, None
+
+    valid_repo = True
+    valid_repo_explanation = ""
+
+    repo_owner, repo_name = process_url(repo_input.value)
+    if not repo_input.value.startswith("https://github.com/"):
+        valid_repo = False
+        valid_repo_explanation += f"⛔️ Invalid GitHub URL: {repo_input.value}.<br>"
+    else:    
+        if not repo_owner or not repo_name:
+            valid_repo = False
+            valid_repo_explanation += f"⛔️ Unable to parse repository owner and name from the URL: {repo_input.value}<br>."
+
+    mo.md(valid_repo_explanation)
+    return repo_name, repo_owner
+
+
+@app.cell
+def _(client, fetch_repo_stars, mo, pd, repo_name, repo_owner):
+    mo.stop(not fetch_repo_stars.value)
+
+    _query_stars = f"""
+    WITH repo AS (
+      SELECT artifact_id
+      FROM artifacts_v1
+      WHERE artifact_source = 'GITHUB'
+      AND artifact_namespace = '{repo_owner}'
+      AND artifact_name = '{repo_name}'
+    )
+    SELECT
+      repo.artifact_id,
+      s.metrics_sample_date AS sample_date,
+      s.amount
+    FROM stars_to_artifact_daily AS s
+    JOIN repo ON s.to_artifact_id = repo.artifact_id
+    ORDER BY 2
+    """
+    df_stargazers = client.to_pandas(_query_stars)
+    df_stargazers['sample_date'] = pd.to_datetime(df_stargazers['sample_date'])
+    df_stargazers['cum_amount'] = df_stargazers['amount'].cumsum()
+    repo_id = df_stargazers['artifact_id'].iloc[0]
+    return df_stargazers, repo_id
+
+
+@app.cell
+def _(datetime, mo):
     start_date = mo.ui.date(
         value=datetime.date.today() - datetime.timedelta(days=365),
         label="Start Date"
@@ -84,10 +152,9 @@ def configuration_settings(datetime, mo):
         value=100,
         label="Max Developers to Analyze"
     )
-    run_analysis = mo.ui.run_button(label="Run Analysis")
+    run_analysis = mo.ui.run_button(label="Fetch Stargazer Network")
     mo.vstack([
-        mo.md("### Configuration"),
-        repo_input,
+        mo.md("### 2. Configure analysis parameters"),
         mo.hstack([
             start_date,
             end_date,
@@ -95,27 +162,52 @@ def configuration_settings(datetime, mo):
         ]),
         run_analysis
     ])
-    return end_date, max_developers, repo_input, run_analysis, start_date
+    return end_date, max_developers, run_analysis, start_date
 
 
 @app.cell
-def helpers():
-    def stringify(arr):
-        return "'" + "','".join(arr) + "'"
+def _(df_stargazers, end_date, mo, pd, px, start_date):
+    _df_stargazers_filtered = df_stargazers[(df_stargazers['sample_date'] >= pd.to_datetime(start_date.value)) & (df_stargazers['sample_date'] <= pd.to_datetime(end_date.value))]
 
-    def process_url(url):
-        url = url.lower().strip().strip('/')
-        try:
-            return url.split('/')[-2:]
-        except:
-            return None, None
-    return (process_url,)
+    total_stars_all_time = df_stargazers['amount'].sum()
+    total_stars_period = _df_stargazers_filtered['amount'].sum()
+
+    total_stars_all_time_stat = mo.stat(
+        label="Total Stars (All Time)",
+        value=str(total_stars_all_time),
+    )
+
+    total_stars_period_stat = mo.stat(
+        label="Total Stars (Selected Period)",
+        value=str(total_stars_period),
+    )
+
+
+    _fig = px.line(
+        df_stargazers,
+        x="sample_date",
+        y="cum_amount",
+        title="Stars Over Time",
+    )
+
+    _fig.add_vline(x=start_date.value, line_width=3, line_dash="dash", line_color="green")
+    _fig.add_vline(x=end_date.value, line_width=3, line_dash="dash", line_color="red")
+
+    mo.vstack([
+        mo.hstack([total_stars_all_time_stat, total_stars_period_stat]),    
+        mo.ui.plotly(_fig)
+    ])
+
+    return
+
+
+@app.function
+def stringify(arr):
+    return "'" + "','".join(arr) + "'"
 
 
 @app.cell
-def get_data(end_date, mo, process_url, repo_input, run_analysis, start_date):
-    mo.stop(not run_analysis.value)
-
+def get_data(end_date, mo, start_date):
     def validate_date_range(start_date, end_date):
         days_diff = (end_date - start_date).days
         if days_diff > 730:
@@ -127,15 +219,6 @@ def get_data(end_date, mo, process_url, repo_input, run_analysis, start_date):
     valid_inputs = True
     valid_inputs_explanation = ""
 
-    repo_owner, repo_name = process_url(repo_input.value)
-    if not repo_input.value.startswith("https://github.com/"):
-        valid_inputs = False
-        valid_inputs_explanation += f"⛔️ Invalid GitHub URL: {repo_input.value}.<br>"
-    else:    
-        if not repo_owner or not repo_name:
-            valid_inputs = False
-            valid_inputs_explanation += f"⛔️ Unable to parse repository owner and name from the URL: {repo_input.value}<br>."
-
     if start_date.value >= end_date.value:
         valid_inputs = False
         valid_inputs_explanation += "⛔️ Start date must be before end date.<br>"
@@ -146,22 +229,15 @@ def get_data(end_date, mo, process_url, repo_input, run_analysis, start_date):
         valid_inputs_explanation += date_range_explanation + "\n"
 
     mo.md(valid_inputs_explanation)
-    return repo_name, repo_owner, valid_inputs
+    return (valid_inputs,)
 
 
 @app.cell
-def _(client, end_date, mo, repo_name, repo_owner, start_date, valid_inputs):
-    mo.stop(not valid_inputs)
+def _(client, end_date, mo, repo_id, run_analysis, start_date, valid_inputs):
+    mo.stop(not valid_inputs or not run_analysis.value)
 
     _query_edges = f"""
-    WITH target_repo AS (
-      SELECT artifact_id AS target_repo_id
-      FROM artifacts_v1
-      WHERE artifact_source = 'GITHUB'
-        AND artifact_namespace = '{repo_owner}'
-        AND artifact_name = '{repo_name}'
-    ),
-    events_stars AS (
+    WITH events_stars AS (
       SELECT
         bucket_day,
         from_artifact_id,
@@ -170,6 +246,7 @@ def _(client, end_date, mo, repo_name, repo_owner, start_date, valid_inputs):
       WHERE
         bucket_day BETWEEN DATE('{start_date.value}') AND DATE('{end_date.value}')
         AND event_type = 'STARRED'
+        AND to_artifact_id = '{repo_id}'
     ),
     starrers AS (
       SELECT
