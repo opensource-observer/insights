@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.15.3"
+__generated_with = "0.16.2"
 app = marimo.App(width="full")
 
 
@@ -74,7 +74,12 @@ def display_tabs(
 
 @app.cell
 def _(df_fork_devs, df_fork_devs_labeled, df_fork_devs_ranked, mo, px):
-    # 1. Area chart of cumulative forks
+    # 1. Table of example repos and fork count
+    _forks_table = df_fork_devs_labeled.groupby('first_fork_repo_url')['dev_id'].nunique().sort_values(ascending=False)
+    _forks_table = _forks_table.reset_index()
+    _forks_table.columns = ['Repo URL', 'Num. Developers']
+
+    # 2. Area chart of cumulative forks
     _df_fork_count = df_fork_devs.groupby(['first_fork_repo_url', 'first_fork'], as_index=False)['dev_id'].nunique() 
     _df_fork_count.sort_values(by='first_fork', inplace=True)
     _df_fork_count['Fork Count (Cumulative)'] = _df_fork_count['dev_id'].cumsum()
@@ -93,11 +98,6 @@ def _(df_fork_devs, df_fork_devs_labeled, df_fork_devs_ranked, mo, px):
         xaxis=dict(showgrid=False, linecolor='black', linewidth=1, ticks='outside', title=''),
     )
     _forks_barchart.update_layout(**_layout)
-
-    # 2. Table of example repos and fork count
-    _forks_table = df_fork_devs_labeled.groupby('first_fork_repo_url')['dev_id'].nunique().sort_values(ascending=False)
-    _forks_table = _forks_table.reset_index()
-    _forks_table.columns = ['Repo URL', 'Num. Developers']
 
     # 3. Developer funnel, PageRanked
     df_devs_by_project = (
@@ -142,25 +142,69 @@ def _(df_fork_devs, df_fork_devs_labeled, df_fork_devs_ranked, mo, px):
     }, inplace=True)
 
 
+    # Calculate developer funnel stats
+    _example_repos = len(_forks_table)
+    _unique_developers = len(df_devs_by_project)
+    _total_projects = len(df_projects_from_devs)
+    _avg_forks_per_month = _unique_developers / ((df_fork_devs['first_fork'].max() - df_fork_devs['first_fork'].min()).days / 30)
 
     dev_funnel_tab = mo.vstack([
-    
+        mo.md("## Developer Funnel Analysis"),
+        mo.Html(
+        """
+        The Developer Funnel analyzes how developers discover and engage with Stylus by forking the example repositories created by Offchain Labs.
+        This view tracks the earliest fork event made by a developer and then all subsequent commit events to other public repos.
+        It applies a basic ranking algorithm to identify developers worth watching because they are connected to influential projects,
+        have ties to non-EVM ecosystems (eg, Solana), or are very active Rust developers. It uses the developer ranking algorithm to identify projects
+        that may be experimenting with Stylus.
+        """),
+        mo.hstack(
+            items=[
+                mo.stat(
+                    label="Example Repos",
+                    bordered=True,
+                    value=f"{_example_repos:,.0f}",
+                    #caption="Git users who forked Stylus examples"
+                ),
+                mo.stat(
+                    label="Forking Developers",
+                    bordered=True,
+                    value=f"{_unique_developers:,.0f}",
+                    #caption="Git users who forked Stylus examples"
+                ),
+                mo.stat(
+                    label="Projects Identified",
+                    bordered=True,
+                    value=f"{_total_projects:,.0f}",
+                    #caption="Public GitHub repos with recent commits from developers identified"
+                ),
+                mo.stat(
+                    label="Avg Forks/Month",
+                    bordered=True,
+                    value=f"{_avg_forks_per_month:.1f}",
+                    #caption="Average developers per project"
+                )
+            ],
+            widths="equal",
+            gap=1
+        ),
+
         mo.hstack([
             mo.vstack([
-                mo.md("### Cumulative Forks"),
-                mo.ui.plotly(figure=_forks_barchart, config={'displayModeBar': False})
-            ]),
-            mo.vstack([
-                mo.md("### Forks by Repo"),
+                mo.md("### Forks by Example Repo"),
                 mo.ui.table(
                     data=_forks_table,
                     show_column_summaries=False,
                     show_data_types=False,
                 )
+            ]),
+            mo.vstack([
+                mo.md("### Forking Developers"),
+                mo.ui.plotly(figure=_forks_barchart, config={'displayModeBar': False})
             ])
         ], widths='equal', wrap=True),
-    
-        mo.md("### Developers"),
+
+        mo.md("### Developers Identified"),
         mo.ui.table(
             data=df_devs_by_project[['Git Username', 'Num OSS Repos', 'Contribution Type to Look For', 'Earliest Fork']],
             selection=None,
@@ -169,7 +213,7 @@ def _(df_fork_devs, df_fork_devs_labeled, df_fork_devs_ranked, mo, px):
             page_size=20
         ),
 
-        mo.md("### Projects"),
+        mo.md("### Projects Identified"),
         mo.ui.table(
             data=df_projects_from_devs[['GitHub Owner', 'Git Username(s)', 'Num Developers', 'Alignment', 'Earliest Fork']],
             selection=None,
@@ -177,7 +221,7 @@ def _(df_fork_devs, df_fork_devs_labeled, df_fork_devs_ranked, mo, px):
             show_data_types=False,
             page_size=20
         ),
-    
+
     ])
     return dev_funnel_tab, df_projects_from_devs
 
@@ -207,7 +251,47 @@ def _(
     _df_dep_repos['OSS Directory URL'] = _df_dep_repos['dependent_project_name'].apply(lambda x: f"{_ossd_base_url}/{x[0]}/{x}.yaml")
     _df_dep_repos.drop(columns=['dependent_project_name', 'repo_owner', 'repo_name', 'artifact_id'], inplace=True)
 
+    # Calculate SDK usage stats
+    _total_dependents = len(_df_dep_repos)
+    _sprint_participants = _df_dep_repos['In Stylus Sprint?'].sum()
+    _unique_projects = _df_dep_repos['Project Name'].nunique()
+    _avg_velocity = _mm.select_dtypes(include=['number']).mean().mean()
+
     sdk_tab = mo.vstack([
+        mo.md("## SDK Usage Analytics"),
+        mo.Html("""
+        The SDK Usage tab analyzes how the Stylus SDK is being adopted across different projects and repositories. This view tracks which projects are actively using the SDK, their development velocity, and how many are participating in the Stylus Sprint program. The data helps understand the broader impact and adoption patterns of the Stylus technology.
+        """),
+        mo.hstack(
+            items=[
+                mo.stat(
+                    label="Total Dependents",
+                    bordered=True,
+                    value=f"{_total_dependents:,.0f}",
+                    caption="Repositories using Stylus SDK"
+                ),
+                mo.stat(
+                    label="Sprint Participants",
+                    bordered=True,
+                    value=f"{_sprint_participants:,.0f}",
+                    caption="SDK users in Stylus Sprint program"
+                ),
+                mo.stat(
+                    label="Unique Projects",
+                    bordered=True,
+                    value=f"{_unique_projects:,.0f}",
+                    caption="Distinct projects using the SDK"
+                ),
+                mo.stat(
+                    label="Avg Monthly Velocity",
+                    bordered=True,
+                    value=f"{_avg_velocity:.1f}",
+                    caption="Average development velocity"
+                )
+            ],
+            widths="equal",
+            gap=1
+        ),
 
         mo.md("### Developer Velocity"),
         mo.ui.plotly(
@@ -259,7 +343,47 @@ def create_stylus_sprint_tab(
     _df_projects.drop(columns=['project_name'], inplace=True)
     _df_projects.sort_values(by='Project Name', inplace=True)
 
+    # Calculate Stylus Sprint stats
+    _total_projects = len(_df_projects)
+    _sdk_adopters = _df_projects['Using Stylus SDK?'].sum()
+    _avg_velocity = _mm.select_dtypes(include=['number']).mean().mean()
+    _total_commits = _mm['Commits Monthly'].sum() if 'Commits Monthly' in _mm.columns else 0
+
     stylus_sprint_tab = mo.vstack([
+        mo.md("## Stylus Sprint Projects"),
+        mo.Html("""
+        The Stylus Sprint tab tracks the development activity of projects participating in the Stylus Sprint program. This view helps monitor the progress and engagement of projects building on Arbitrum's Stylus technology. The data shows how these projects are adopting the SDK and maintaining development velocity over time.
+        """),
+        mo.hstack(
+            items=[
+                mo.stat(
+                    label="Total Projects",
+                    bordered=True,
+                    value=f"{_total_projects:,.0f}",
+                    caption="Projects in the Stylus Sprint program"
+                ),
+                mo.stat(
+                    label="SDK Adopters",
+                    bordered=True,
+                    value=f"{_sdk_adopters:,.0f}",
+                    caption="Projects using the Stylus SDK"
+                ),
+                mo.stat(
+                    label="Avg Monthly Velocity",
+                    bordered=True,
+                    value=f"{_avg_velocity:.1f}",
+                    caption="Average developer velocity across projects"
+                ),
+                mo.stat(
+                    label="Total Commits (6mo)",
+                    bordered=True,
+                    value=f"{_total_commits:,.0f}",
+                    caption="Total commits across all projects"
+                )
+            ],
+            widths="equal",
+            gap=1
+        ),
 
         mo.md("### Developer Velocity"),
         mo.ui.plotly(
@@ -302,7 +426,47 @@ def create_ecosystem_tab(
     _df = df_ecosystem_metrics[df_ecosystem_metrics['metric_name'] == 'GITHUB_project_velocity_daily']
     _mm = summarize_monthly_metrics(df_ecosystem_metrics, num_months=6)
 
+    # Calculate ecosystem stats
+    _total_ecosystems = len(df_ecosystem_metrics['display_name'].unique())
+    _total_repos = df_repo_overlap['total_repos'].sum()
+    _shared_repos = df_repo_overlap['repos_shared_with_target'].sum()
+    _avg_velocity = _mm.select_dtypes(include=['number']).mean().mean()
+
     ecosystem_tab = mo.vstack([
+        mo.md("## Ecosystem Overview"),
+        mo.Html("""
+        The ecosystem view provides insights into how Arbitrum compares to other cryptocurrency ecosystems in terms of developer activity and repository overlap. This analysis helps understand Arbitrum's position within the broader crypto development landscape and identifies opportunities for cross-ecosystem collaboration.
+        """),
+        mo.hstack(
+            items=[
+                mo.stat(
+                    label="Total Ecosystems",
+                    bordered=True,
+                    value=f"{_total_ecosystems:,.0f}",
+                    caption="Cryptocurrency ecosystems tracked"
+                ),
+                mo.stat(
+                    label="Total Repositories",
+                    bordered=True,
+                    value=f"{_total_repos:,.0f}",
+                    caption="Repositories across all ecosystems"
+                ),
+                mo.stat(
+                    label="Shared with Arbitrum",
+                    bordered=True,
+                    value=f"{_shared_repos:,.0f}",
+                    caption="Repositories shared with Arbitrum ecosystem"
+                ),
+                mo.stat(
+                    label="Avg Monthly Velocity",
+                    bordered=True,
+                    value=f"{_avg_velocity:.1f}",
+                    caption="Average developer velocity across ecosystems"
+                )
+            ],
+            widths="equal",
+            gap=1
+        ),
 
         mo.md("### Developer Velocity"),
         mo.ui.plotly(
@@ -342,6 +506,9 @@ def create_summary_tab(
 ):
     summary_tab = mo.vstack([
         mo.md("## Key Metrics"),
+        mo.Html("""
+        This overview provides key ecosystem metrics for the Stylus SDK and Arbitrum ecosystem. The data shows the reach and adoption of Stylus through direct project participation, SDK dependencies, and developer engagement. These metrics help quantify the overall health and growth of the ecosystem.
+        """),
         mo.hstack(
             items=[
                 mo.stat(
@@ -371,7 +538,7 @@ def create_summary_tab(
             ],
             widths="equal",
             gap=1
-        )
+        ),
     ])
     return (summary_tab,)
 
