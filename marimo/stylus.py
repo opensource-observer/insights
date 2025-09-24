@@ -55,33 +55,131 @@ def about_app(mo):
 
 @app.cell
 def display_tabs(
-    df_projects_from_devs,
+    dev_funnel_tab,
     ecosystem_tab,
     mo,
     sdk_tab,
     stylus_sprint_tab,
     summary_tab,
 ):
-    def _temp_tab(df, header):
-        return mo.vstack([
-            mo.md(f"## {header}"),
-            mo.ui.table(
-                data=df.reset_index(drop=True),
-                selection=None,
-                show_column_summaries=False,
-                show_data_types=False,
-                page_size=50
-            )
-        ])
-
     mo.ui.tabs({
         "Summary": summary_tab,
         "Ecosystem View": ecosystem_tab,
         "Stylus Sprint": stylus_sprint_tab,
         "SDK Usage": sdk_tab,
-        "Developer Funnel": _temp_tab(df_projects_from_devs, "Projects by Developer Activity"),
-    }, value="Ecosystem View")
+        "Developer Funnel": dev_funnel_tab,
+    }, value="Developer Funnel")
     return
+
+
+@app.cell
+def _(df_fork_devs, df_fork_devs_labeled, df_fork_devs_ranked, mo, px):
+    # 1. Area chart of cumulative forks
+    _df_fork_count = df_fork_devs.groupby(['first_fork_repo_url', 'first_fork'], as_index=False)['dev_id'].nunique() 
+    _df_fork_count.sort_values(by='first_fork', inplace=True)
+    _df_fork_count['Fork Count (Cumulative)'] = _df_fork_count['dev_id'].cumsum()
+
+    _forks_barchart = px.area(data_frame=_df_fork_count, x='first_fork', y='Fork Count (Cumulative)')
+    _forks_barchart.update_traces(line=dict(color='#104C35', width=1.5), fillcolor=rgba_from_rgb(rgb='rgb(8, 135, 43)', alpha=0.80))
+    _layout = dict(
+        plot_bgcolor='white',
+        paper_bgcolor='white',
+        title_x=0,
+        legend_title="",
+        autosize=True,
+        margin=dict(t=0, l=0, r=0, b=0),
+        height=300,
+        yaxis=dict(showgrid=True, gridcolor='lightgray', linecolor='black', linewidth=1, ticks='outside', rangemode='tozero', title=''),
+        xaxis=dict(showgrid=False, linecolor='black', linewidth=1, ticks='outside', title=''),
+    )
+    _forks_barchart.update_layout(**_layout)
+
+    # 2. Table of example repos and fork count
+    _forks_table = df_fork_devs_labeled.groupby('first_fork_repo_url')['dev_id'].nunique().sort_values(ascending=False)
+    _forks_table = _forks_table.reset_index()
+    _forks_table.columns = ['Repo URL', 'Num. Developers']
+
+    # 3. Developer funnel, PageRanked
+    df_devs_by_project = (
+        df_fork_devs_labeled.merge(df_fork_devs_ranked[['dev_id', 'dev_score']], on='dev_id')
+        .groupby(['dev_id', 'dev_url', 'dev_score'], as_index=False)
+        .agg(
+            first_fork=('first_fork','min'),    
+            num_repos=('repo_url', 'nunique'),
+            alignment=('project_type', lambda x: min(set(x))[3:]),
+            #repos_worked_on_by_this_dev=('repo_url', lambda x: ' | '.join(sorted(set(x))))
+        )
+        .sort_values(by=['dev_score', 'num_repos', 'first_fork'], ascending=[False, False, True])
+        .reset_index(drop=True)
+        .drop(columns=['dev_id', 'dev_score'])    
+        .rename(columns={
+            'dev_url': 'Git Username',
+            'first_fork': 'Earliest Fork',
+            'num_repos': 'Num OSS Repos',
+            'alignment': 'Contribution Type to Look For'
+        })
+    )
+
+    # 4. Projects worked on by developers in the funnel
+    df_projects_from_devs = (
+        df_fork_devs_labeled.merge(df_fork_devs_ranked[['dev_id', 'dev_score']], on='dev_id')
+        .groupby('repo_owner', as_index=False)
+        .agg(
+            repo_rank=('dev_score', 'sum'),
+            alignment=('project_type', lambda x: min(set(x))[3:]),
+            first_fork=('first_fork','min'),    
+            num_devs=('dev_id', 'nunique'),
+            dev_names=('dev_url', lambda x: ', '.join(sorted(set(x))).replace('https://github.com/',''))
+        )
+        .sort_values(by=['repo_rank', 'num_devs', 'first_fork'], ascending=[False, False, True])
+        .query("repo_owner not in @SDK_PROJECT_MAINTAINERS")
+        .drop(columns=['repo_rank'])
+        .reset_index(drop=True)
+    )
+    df_projects_from_devs['repo_owner'] = df_projects_from_devs['repo_owner'].apply(lambda x: f'https://github.com/{x}')
+    df_projects_from_devs.rename(columns={
+        'repo_owner': 'GitHub Owner', 'first_fork': 'Earliest Fork', 'num_devs': 'Num Developers', 'dev_names': 'Git Username(s)', 'alignment': 'Alignment'
+    }, inplace=True)
+
+
+
+    dev_funnel_tab = mo.vstack([
+    
+        mo.hstack([
+            mo.vstack([
+                mo.md("### Cumulative Forks"),
+                mo.ui.plotly(figure=_forks_barchart, config={'displayModeBar': False})
+            ]),
+            mo.vstack([
+                mo.md("### Forks by Repo"),
+                mo.ui.table(
+                    data=_forks_table,
+                    show_column_summaries=False,
+                    show_data_types=False,
+                )
+            ])
+        ], widths='equal', wrap=True),
+    
+        mo.md("### Developers"),
+        mo.ui.table(
+            data=df_devs_by_project[['Git Username', 'Num OSS Repos', 'Contribution Type to Look For', 'Earliest Fork']],
+            selection=None,
+            show_column_summaries=False,
+            show_data_types=False,
+            page_size=20
+        ),
+
+        mo.md("### Projects"),
+        mo.ui.table(
+            data=df_projects_from_devs[['GitHub Owner', 'Git Username(s)', 'Num Developers', 'Alignment', 'Earliest Fork']],
+            selection=None,
+            show_column_summaries=False,
+            show_data_types=False,
+            page_size=20
+        ),
+    
+    ])
+    return dev_funnel_tab, df_projects_from_devs
 
 
 @app.cell
@@ -113,7 +211,8 @@ def _(
 
         mo.md("### Developer Velocity"),
         mo.ui.plotly(
-            figure=make_joyplot(df=_df, smoothing=7)
+            figure=make_joyplot(df=_df, smoothing=7),
+            config={'displayModeBar': False}
         ),
 
         mo.md("### Activities Over Last 6 Months"),
@@ -164,7 +263,8 @@ def create_stylus_sprint_tab(
 
         mo.md("### Developer Velocity"),
         mo.ui.plotly(
-            figure=make_joyplot(df=_df, smoothing=7)
+            figure=make_joyplot(df=_df, smoothing=7),
+            config={'displayModeBar': False}
         ),
 
         mo.md("### Activities Over Last 6 Months"),
@@ -206,7 +306,8 @@ def create_ecosystem_tab(
 
         mo.md("### Developer Velocity"),
         mo.ui.plotly(
-            figure=make_joyplot(df=_df, smoothing=7)
+            figure=make_joyplot(df=_df, smoothing=7),
+            config={'displayModeBar': False}
         ),
 
         mo.md("### Activities Over Last 6 Months"),
@@ -222,7 +323,8 @@ def create_ecosystem_tab(
 
         mo.md("### Repository Overlap"),
         mo.ui.plotly(
-            figure=make_repo_overlap_barchart(df=df_repo_overlap)
+            figure=make_repo_overlap_barchart(df=df_repo_overlap),
+            config={'displayModeBar': False}
         ),
 
     ])   
@@ -276,10 +378,6 @@ def create_summary_tab(
 
 @app.cell
 def generate_joyplot(SPRINT_START_DATE, go, np, pd, px):
-    def _rgba_from_rgb(rgb, alpha):
-        return rgb.replace("rgb", "rgba").replace(")", f",{alpha})")
-
-
     def make_joyplot(df, smoothing=7):
 
         colorscale = 'Greens'
@@ -321,7 +419,7 @@ def generate_joyplot(SPRINT_START_DATE, go, np, pd, px):
             x_vals = wide_norm.index
 
             color = proj_colors[col]
-            fill_color = _rgba_from_rgb(color, fill_alpha)
+            fill_color = rgba_from_rgb(color, fill_alpha)
 
             fig.add_trace(
                 go.Scatter(
@@ -488,8 +586,8 @@ def generate_repo_overlap_barchart(go, np, pd):
 def configuration_settings():
     # Configuration constants
     SPRINT_START_DATE = '2025-03-01'
-    PROJECT_START_DATE = '2024-01-01'
-    ECOSYSTEM_START_DATE = '2024-01-01' #'2020-01-01'
+    PROJECT_START_DATE = '2023-07-01'
+    ECOSYSTEM_START_DATE = '2023-07-01' #'2020-01-01'
     COLLECTION_NAME = 'arb-stylus'
     SDK_PROJECT_MAINTAINERS = ['offchainlabs', 'arbitrumfoundation']
     EVM_ECOSYSTEMS = [
@@ -726,11 +824,7 @@ def get_data(
               SELECT DISTINCT dependent_artifact_id
               FROM sboms_v0
               JOIN stylus USING package_artifact_id
-              JOIN artifacts_by_project_v1 AS abp
-                ON dependent_artifact_id = abp.artifact_id
-                AND abp.project_source = 'OSS_DIRECTORY'
-                AND abp.project_namespace = 'oso'
-              WHERE abp.project_name IN ({stringify(SDK_PROJECT_MAINTAINERS)})
+              WHERE dependent_artifact_namespace = 'offchainlabs'
             ),
             devs AS (
               SELECT
@@ -820,7 +914,7 @@ def get_data(
               SELECT
                 project_id,
                 MAX(CASE WHEN project_name = 'arbitrum' THEN True ELSE False END) AS in_arbitrum,
-                MAX(CASE WHEN project_name IN ({stringify(OTHER_ECOSYSTEMS)}) THEN True ELSE False END) AS in_nonevem_ecosystem,
+                MAX(CASE WHEN project_name IN ({stringify(OTHER_ECOSYSTEMS)}) THEN True ELSE False END) AS in_nonevm_ecosystem,
                 MAX(CASE WHEN project_name IN ({stringify(EVM_ECOSYSTEMS)}) THEN True ELSE False END) AS in_evm_ecosystem
               FROM projects
               WHERE project_source = 'CRYPTO_ECOSYSTEMS'
@@ -915,28 +1009,13 @@ def process_data(
     df_fork_devs_labeled = label_repos(df_fork_devs)
     df_fork_devs_ranked = dev_pagerank(df_fork_devs)
 
-    # Create projects summary
-    df_projects_from_devs = (
-        df_fork_devs_labeled.merge(df_fork_devs_ranked[['dev_id', 'dev_score']], on='dev_id')
-        .groupby(['repo_owner', 'project_type'], as_index=False)
-        .agg(
-            repo_rank=('dev_score', 'sum'),
-            first_fork=('first_fork','min'),    
-            num_devs=('dev_id', 'nunique'),
-            dev_names=('dev_url', lambda x: ' | '.join(sorted(set(x.replace('https://github.com/',''))))),
-            repos_worked_on_by_those_devs=('repo_url', lambda x: ' | '.join(sorted(set(x))))
-        )
-        .sort_values(by=['repo_rank', 'num_devs', 'first_fork'], ascending=[False, False, True])
-        .reset_index(drop=True)
-        .drop(columns=['repo_rank'])
-    )
-
     # Helper variables
     most_recent_month = df_stylus_project_metrics[df_stylus_project_metrics['metric_name'].str.contains('monthly')==True]['date'].max()
     return (
         df_ecosystem_metrics,
+        df_fork_devs,
+        df_fork_devs_labeled,
         df_fork_devs_ranked,
-        df_projects_from_devs,
         df_repo_overlap,
         df_stylus_project_metrics,
         df_stylus_sdk_deps,
@@ -979,23 +1058,24 @@ def helper_labeling_and_pagerank(get_repo_alignment_tags, np, nx, pd):
 
         def label_project(tags, dev_url, repo_url):
             if not isinstance(tags, str):
-                tags = ''
+                tags = '8 - n/a'
             if 'stylus' in tags:
-                return 'Project (Stylus Sprint)'
+                return '0 - Project (Stylus Sprint)'
             if '/offchainlabs/' in repo_url:
-                return 'Offchain Labs'
+                return '1 - Offchain Labs'
             if 'arbitrum' in tags:
-                return 'Project (Arbitrum Ecosystem)'            
+                return '2 - Project (Arbitrum Ecosystem)'            
             if 'nonevm' in tags:
                 if ';' in tags:
-                    return 'Project (EVM + Non-EVM Ecosystems)'
+                    return '4 - Project (EVM + Non-EVM Ecosystems)'
                 else:
-                    return 'Project (Non-EVM Ecosystem)'
+                    return '3 - Project (Non-EVM Ecosystem)'
             if len(tags) > 1:
-                return 'Project (EVM Ecosystem)'
-            if dev_url in repo_url:
-                return 'Personal'
-            return 'Project (Other)'
+                if dev_url in repo_url:
+                    return '7 - Personal'
+                else:
+                    return '5 - Project (EVM Ecosystem)'
+            return '6 - Project (Other)'
 
         df_merged['project_type'] = df_merged.apply(lambda x: label_project(x['tags'], x['dev_url'], x['repo_url']), axis=1)
         df_merged.drop(columns="tags", inplace=True)
@@ -1086,6 +1166,11 @@ def helper_labeling_and_pagerank(get_repo_alignment_tags, np, nx, pd):
 @app.function
 def clean_metric_name(col):
     return col.replace('GITHUB_','').replace('_monthly','').replace('_',' ').title()
+
+
+@app.function
+def rgba_from_rgb(rgb, alpha):
+    return rgb.replace("rgb", "rgba").replace(")", f",{alpha})")
 
 
 @app.cell
