@@ -54,54 +54,183 @@ def about_app(mo):
 
 
 @app.cell
-def process_data(
-    dev_pagerank,
-    get_devs_who_forked_examples,
-    get_metrics_by_developer_ecosystem,
-    get_metrics_by_stylus_project,
-    get_stylus_sdk_dependents,
-    label_repos,
+def display_tabs(
+    df_projects_from_devs,
+    ecosystem_tab,
+    mo,
+    sdk_tab,
+    stylus_sprint_tab,
+    summary_tab,
 ):
-    # Get the data
-    df_stylus_project_metrics = get_metrics_by_stylus_project()
-    df_stylus_sdk_deps = get_stylus_sdk_dependents()
-    df_fork_devs = get_devs_who_forked_examples()
-    df_ecosystem_metrics = get_metrics_by_developer_ecosystem()
+    def _temp_tab(df, header):
+        return mo.vstack([
+            mo.md(f"## {header}"),
+            mo.ui.table(
+                data=df.reset_index(drop=True),
+                selection=None,
+                show_column_summaries=False,
+                show_data_types=False,
+                page_size=50
+            )
+        ])
 
-    # Process developer data
-    df_fork_devs_labeled = label_repos(df_fork_devs)
-    df_fork_devs_ranked = dev_pagerank(df_fork_devs)
-
-    # Create projects summary
-    df_projects_from_devs = (
-        df_fork_devs_labeled.merge(df_fork_devs_ranked[['dev_id', 'dev_score']], on='dev_id')
-        .groupby(['repo_owner', 'project_type'], as_index=False)
-        .agg(
-            repo_rank=('dev_score', 'sum'),
-            first_fork=('first_fork','min'),    
-            num_devs=('dev_id', 'nunique'),
-            dev_names=('dev_url', lambda x: ' | '.join(sorted(set(x.replace('https://github.com/',''))))),
-            repos_worked_on_by_those_devs=('repo_url', lambda x: ' | '.join(sorted(set(x))))
-        )
-        .sort_values(by=['repo_rank', 'num_devs', 'first_fork'], ascending=[False, False, True])
-        .reset_index(drop=True)
-        .drop(columns=['repo_rank'])
-    )
-
-    # Helper variables
-    most_recent_month = df_stylus_project_metrics[df_stylus_project_metrics['metric_name'].str.contains('monthly')==True]['date'].max()
-    return (
-        df_ecosystem_metrics,
-        df_fork_devs_ranked,
-        df_projects_from_devs,
-        df_stylus_project_metrics,
-        df_stylus_sdk_deps,
-        most_recent_month,
-    )
+    mo.ui.tabs({
+        "Summary": summary_tab,
+        "Ecosystem View": ecosystem_tab,
+        "Stylus Sprint": stylus_sprint_tab,
+        "SDK Usage": sdk_tab,
+        "Developer Funnel": _temp_tab(df_projects_from_devs, "Projects by Developer Activity"),
+    }, value="Ecosystem View")
+    return
 
 
 @app.cell
-def generate_stats(
+def _(
+    df_stylus_project_metrics,
+    df_stylus_sdk_deps,
+    df_stylus_sdk_deps_project_metrics,
+    make_joyplot,
+    mo,
+    summarize_monthly_metrics,
+):
+    _df = df_stylus_sdk_deps_project_metrics[df_stylus_sdk_deps_project_metrics['metric_name'] == 'GITHUB_project_velocity_daily']
+    _mm = summarize_monthly_metrics(df_stylus_sdk_deps_project_metrics, num_months=6)
+
+    _df_dep_repos = df_stylus_sdk_deps.copy()
+    _df_dep_repos['Project Name'] = _df_dep_repos['dependent_project_name'].map(
+        _df
+        .drop_duplicates(subset=['display_name', 'project_name'])
+        .set_index('project_name')['display_name']
+        .to_dict()       
+    )
+    _df_dep_repos['In Stylus Sprint?'] = _df_dep_repos['dependent_project_name'].isin(df_stylus_project_metrics['project_name'])
+    _df_dep_repos['Dependent Repo URL'] = _df_dep_repos.apply(lambda x: f"https://github.com/{x['repo_owner']}/{x['repo_name']}", axis=1)
+    _ossd_base_url = 'https://github.com/opensource-observer/oss-directory/tree/main/data/projects'
+    _df_dep_repos['OSS Directory URL'] = _df_dep_repos['dependent_project_name'].apply(lambda x: f"{_ossd_base_url}/{x[0]}/{x}.yaml")
+    _df_dep_repos.drop(columns=['dependent_project_name', 'repo_owner', 'repo_name', 'artifact_id'], inplace=True)
+
+    sdk_tab = mo.vstack([
+
+        mo.md("### Developer Velocity"),
+        mo.ui.plotly(
+            figure=make_joyplot(df=_df, smoothing=7)
+        ),
+
+        mo.md("### Activities Over Last 6 Months"),
+        mo.ui.table(
+            data=_mm,
+            selection=None,
+            show_column_summaries=False,
+            show_data_types=False,
+            page_size=25,
+            format_mapping={c: '{:,.0f}' for c in _mm.columns if c != 'Project'},
+            freeze_columns_left=['Project']
+        ),
+
+        mo.md("### Registry of (Known) Projects"),
+        mo.ui.table(
+            data=_df_dep_repos.reset_index(drop=True),
+            selection=None,
+            show_column_summaries=False,
+            show_data_types=False,
+            page_size=50
+        )
+
+    ])   
+    return (sdk_tab,)
+
+
+@app.cell
+def create_stylus_sprint_tab(
+    df_stylus_project_metrics,
+    df_stylus_sdk_deps_project_metrics,
+    make_joyplot,
+    mo,
+    summarize_monthly_metrics,
+):
+    _df = df_stylus_project_metrics[df_stylus_project_metrics['metric_name'] == 'GITHUB_project_velocity_daily']
+    _mm = summarize_monthly_metrics(df_stylus_project_metrics, num_months=6)
+
+    _df_projects = _df[['display_name', 'project_name']].drop_duplicates()
+    _df_projects['Using Stylus SDK?'] = _df_projects['project_name'].apply(lambda x: x in df_stylus_sdk_deps_project_metrics['project_name'].unique())
+
+    _ossd_base_url = 'https://github.com/opensource-observer/oss-directory/tree/main/data/projects'
+    _df_projects['OSS Directory URL'] = _df_projects['project_name'].apply(lambda x: f"{_ossd_base_url}/{x[0]}/{x}.yaml")
+    _df_projects.rename(columns={'display_name': 'Project Name'}, inplace=True)
+    _df_projects.drop(columns=['project_name'], inplace=True)
+    _df_projects.sort_values(by='Project Name', inplace=True)
+
+    stylus_sprint_tab = mo.vstack([
+
+        mo.md("### Developer Velocity"),
+        mo.ui.plotly(
+            figure=make_joyplot(df=_df, smoothing=7)
+        ),
+
+        mo.md("### Activities Over Last 6 Months"),
+        mo.ui.table(
+            data=_mm,
+            selection=None,
+            show_column_summaries=False,
+            show_data_types=False,
+            page_size=20,
+            format_mapping={c: '{:,.0f}' for c in _mm.columns if c != 'Project'},
+            freeze_columns_left=['Project']
+        ),
+
+        mo.md("### Registry of (Known) Projects"),
+        mo.ui.table(
+            data=_df_projects.reset_index(drop=True),
+            selection=None,
+            show_column_summaries=False,
+            show_data_types=False,
+            page_size=50
+        )
+    ])   
+    return (stylus_sprint_tab,)
+
+
+@app.cell
+def create_ecosystem_tab(
+    df_ecosystem_metrics,
+    df_repo_overlap,
+    make_joyplot,
+    make_repo_overlap_barchart,
+    mo,
+    summarize_monthly_metrics,
+):
+    _df = df_ecosystem_metrics[df_ecosystem_metrics['metric_name'] == 'GITHUB_project_velocity_daily']
+    _mm = summarize_monthly_metrics(df_ecosystem_metrics, num_months=6)
+
+    ecosystem_tab = mo.vstack([
+
+        mo.md("### Developer Velocity"),
+        mo.ui.plotly(
+            figure=make_joyplot(df=_df, smoothing=7)
+        ),
+
+        mo.md("### Activities Over Last 6 Months"),
+        mo.ui.table(
+            data=_mm,
+            selection=None,
+            show_column_summaries=False,
+            show_data_types=False,
+            page_size=20,
+            format_mapping={c: '{:,.0f}' for c in _mm.columns if c != 'Project'},
+            freeze_columns_left=['Project']
+        ),
+
+        mo.md("### Repository Overlap"),
+        mo.ui.plotly(
+            figure=make_repo_overlap_barchart(df=df_repo_overlap)
+        ),
+
+    ])   
+    return (ecosystem_tab,)
+
+
+@app.cell
+def create_summary_tab(
     df_fork_devs_ranked,
     df_projects_from_devs,
     df_stylus_project_metrics,
@@ -109,7 +238,7 @@ def generate_stats(
     mo,
     most_recent_month,
 ):
-    mo.vstack([
+    summary_tab = mo.vstack([
         mo.md("## Key Metrics"),
         mo.hstack(
             items=[
@@ -142,141 +271,46 @@ def generate_stats(
             gap=1
         )
     ])
-    return
+    return (summary_tab,)
 
 
 @app.cell
-def _(ECOSYSTEMS, df_ecosystem_metrics, mo, px):
-    def make_absolute_fig(dataframe):
-        df_pivot = dataframe.pivot(index='date', columns='developer_ecosystem', values='amount')
-        df_pivot = df_pivot.reset_index()
-
-        fig = px.line(
-            df_pivot, 
-            x='date', 
-            y=df_pivot.columns[1:],
-            color_discrete_map={ECOSYSTEMS[0]: 'black', ECOSYSTEMS[1]: '#AAA', ECOSYSTEMS[2]: '#555'}
-        )
-
-        fig.update_layout(
-            paper_bgcolor="white",
-            plot_bgcolor="white",
-            font=dict(size=12, color="#111"),
-            margin=dict(t=50, l=20, r=20, b=20),
-            legend_title="",
-            hovermode="x"
-        )
-        fig.update_xaxes(
-            showgrid=False,
-            linecolor="#000",
-            ticks="outside",
-            tickformat="%b %Y",
-            dtick="M6",
-            tickangle=-45
-        )
-        fig.update_yaxes(
-            showgrid=True,
-            gridcolor="#DDD",
-            linecolor="#000",
-            ticks="outside",
-            rangemode='tozero'
-        )
-        fig.update_traces(
-            hovertemplate="%{y:,.0f}",
-            selector=dict(mode='lines')
-        )
-        return fig
-
-    _fig = make_absolute_fig(df_ecosystem_metrics)
-    mo.vstack([
-        mo.md("## Absolute Values"),
-        mo.ui.plotly(_fig)
-    ])
-    return
-
-
-@app.cell
-def _(
-    MONTHLY_METRICS,
-    datetime,
-    df_stylus_project_metrics,
-    make_joyplot,
-    mo,
-    most_recent_month,
-):
-    _num_months = 6
-    _start_month = datetime(2025, most_recent_month.month - (_num_months-1), 1).date()
-    _stylus_table = (
-        df_stylus_project_metrics[
-            (df_stylus_project_metrics['metric_name'].str.endswith('monthly') == True) &
-            (df_stylus_project_metrics['date'].between(_start_month, most_recent_month)) &
-            (df_stylus_project_metrics['amount'].notna())
-        ]
-        .pivot_table(index='display_name', columns='metric_name', values='amount', aggfunc='sum', fill_value=0)
-        .map(lambda x: round(x/_num_months,2))
-        [MONTHLY_METRICS]
-        .rename(columns={c:clean_metric_name(c) for c in MONTHLY_METRICS})
-        .reset_index()
-        .rename(columns={'display_name': 'Project'})
-    )
-
-
-    _fig = make_joyplot("GITHUB_commits_weekly")
-
-    stylus_projects = mo.vstack([
-        mo.md("### Project Developer Metrics"),
-        mo.ui.table(
-            data=_stylus_table,
-            selection=None,
-            show_column_summaries=False,
-            show_data_types=False,
-            page_size=20
-        ),
-        mo.md("### Weekly Commits by Project"),
-        mo.ui.plotly(_fig)
-    ])
-
-    mo.ui.tabs({
-        "Stylus Projects": stylus_projects,
-        "Alice says": mo.md("Hello, Bob! 👋")
-    })
-
-    return
-
-
-@app.cell
-def _(df_stylus_project_metrics, go, np, px):
+def generate_joyplot(SPRINT_START_DATE, go, np, pd, px):
     def _rgba_from_rgb(rgb, alpha):
         return rgb.replace("rgb", "rgba").replace(")", f",{alpha})")
 
 
-    def make_joyplot(metric_name):
-    
-        gap = 1.05
-        fill_alpha = 0.35
+    def make_joyplot(df, smoothing=7):
 
-        df = df_stylus_project_metrics[df_stylus_project_metrics['metric_name'] == metric_name]
-        wide = (
-            df.pivot_table(index="date", columns="display_name", values="amount", aggfunc="sum")
-              .sort_index()
-        )
+        colorscale = 'Greens'
+        gap = 1.10
+        fill_alpha = 0.40
 
-        # Normalize each project by its own max
-        denom = wide.max(skipna=True).replace(0, np.nan)
-        wide_norm = wide.divide(denom, axis=1)
+        wide = df.pivot_table(index="date", columns="display_name", values="amount", aggfunc="sum").sort_index()
+        if smoothing > 1:
+            wide = wide.rolling(window=smoothing, min_periods=1, center=True).mean()
 
-        # --- CHANGE #1: reverse project order so "A" is at the TOP ---
+        wide_norm = wide.copy()
+        for col in wide.columns:
+            non_zero_count = (wide[col] > 0).sum()
+            if non_zero_count > 50:
+                threshold = int(wide[col].quantile(0.95))
+                wide_norm[col] = wide_norm[col].clip(upper=threshold)
+            denom = wide_norm[col].max(skipna=True)
+            wide_norm[col] = wide_norm[col].divide(denom, axis=0)
+
         cols = list(wide_norm.columns)[::-1]
-
-        # --- CHANGE #2: use only the darker half of the palette, mapped darkest→top to mid→bottom ---
-        cmap = getattr(px.colors.sequential, 'Greens')
-        cmap_subset = cmap[len(cmap)//2:][::-1]  # take darker half, put darkest first
+        cmap = getattr(px.colors.sequential, colorscale)
+        cmap_subset = cmap[len(cmap)//2:][::-1]
 
         n = len(cols)
         proj_colors = {}
         for rank, col in enumerate(cols):
             idx = int(round(rank * (len(cmap_subset) - 1) / max(1, n - 1)))
             proj_colors[col] = cmap_subset[idx]
+
+        sprint_start_date = pd.to_datetime(SPRINT_START_DATE).date()
+        last_date = wide_norm.index.max()
 
         fig = go.Figure()
         tickvals, ticktext = [], []
@@ -287,9 +321,8 @@ def _(df_stylus_project_metrics, go, np, px):
             x_vals = wide_norm.index
 
             color = proj_colors[col]
-            fill_color = _rgba_from_rgb(color, fill_alpha)  # your helper
+            fill_color = _rgba_from_rgb(color, fill_alpha)
 
-            # Baseline
             fig.add_trace(
                 go.Scatter(
                     x=x_vals,
@@ -300,8 +333,6 @@ def _(df_stylus_project_metrics, go, np, px):
                     showlegend=False
                 )
             )
-
-            # Ridge
             fig.add_trace(
                 go.Scatter(
                     x=x_vals,
@@ -312,14 +343,41 @@ def _(df_stylus_project_metrics, go, np, px):
                     line_shape="spline",
                     fillcolor=fill_color,
                     name=col,
-                    customdata=np.c_[wide[col].reindex(x_vals).fillna(0).values],
-                    hovertemplate="<b>%{fullData.name}</b><br>Week of: %{x|%d %b %Y}<br>Commits: %{customdata[0]:,.0f}<extra></extra>",
+                    customdata=np.c_[wide_norm[col].reindex(x_vals).fillna(0).values * 100],
+                    hovertemplate="<b>%{fullData.name}</b><br>Week of: %{x|%d %b %Y}<br>Velocity: %{customdata[0]:,.0f}% of max<extra></extra>",
                     showlegend=False
                 )
             )
-
             tickvals.append(y_offset)
-            ticktext.append(col)
+
+            # Calculate velocity change
+            pre_sprint_data = wide_norm[col][wide_norm.index < sprint_start_date]
+            post_sprint_data = wide_norm[col][wide_norm.index >= sprint_start_date]
+
+            pre_sprint_avg = pre_sprint_data.fillna(0).mean()
+            post_sprint_avg = post_sprint_data.fillna(0).mean()
+
+            if pre_sprint_avg > 0:
+                change = ((post_sprint_avg - pre_sprint_avg) / pre_sprint_avg) * 100
+            else:
+                change = 0
+
+            if int(change) > 0:
+                annotation_text = f"+{change:,.0f}%"
+            elif int(change) < 0:
+                annotation_text = f"{change:,.0f}%"
+            else:
+                annotation_text = "No change"
+
+            ticktext.append(f"<b>{col}</b>: {annotation_text}")
+
+        fig.add_vrect(
+            x0=sprint_start_date, x1=last_date,
+            fillcolor="rgba(128,128,128,0.05)",
+            line_width=0.25,
+            annotation_text="<i>Stylus Sprint</i>",
+            annotation_position="top left",
+        )
 
         fig.update_layout(
             template="plotly_white",
@@ -333,13 +391,15 @@ def _(df_stylus_project_metrics, go, np, px):
         fig.update_xaxes(title="", showgrid=False, visible=False, linecolor="#000", linewidth=1)
         fig.update_yaxes(
             title="",
+            side="right",
             showgrid=False,
             tickmode="array",
+            ticklabelposition="outside top",
+            #ticklabelshift=-1,
+            ticklabelstandoff=5,
             tickvals=tickvals,
             ticktext=ticktext,
             zeroline=False,
-            linecolor="#000",
-            linewidth=1,
             tickcolor="#000",
             showline=False
         )
@@ -348,52 +408,109 @@ def _(df_stylus_project_metrics, go, np, px):
 
 
 @app.cell
-def generate_table_sdk_dependents(df_stylus_sdk_deps, mo):
-    mo.vstack([
-        mo.md("## SDK Dependents"),
-        mo.ui.table(
-            df_stylus_sdk_deps.reset_index(drop=True),
-            selection=None,
-            show_column_summaries=False,
-            show_data_types=False,
-            page_size=50
+def generate_repo_overlap_barchart(go, np, pd):
+    def make_repo_overlap_barchart(
+        df: pd.DataFrame,
+        target_ecosystem: str = "Arbitrum"
+    ):
+        # Expect columns: ecosystem_name, repos_shared_with_target, repos_not_shared_with_target, total_repos
+        d = df.copy()
+        d.sort_values(["repos_shared_with_target", "total_repos", "ecosystem_name"], ascending=[False,False,True], inplace=True)
+
+        d["shared_val"] = d["repos_shared_with_target"]
+        d["not_shared_val"] = d["repos_not_shared_with_target"]
+
+        xaxis_title = "Repositories"
+        hover_suffix = ""
+        hover_shared_val = d["shared_val"]
+        hover_not_shared_val = d["not_shared_val"]
+
+        # Colors (fixed, readable on black)
+        COLOR_SHARED = "#2ecc71"
+        COLOR_NOT_SHARED = "#888888"
+        COLOR_HILITE = "Green"  # slightly brighter for the highlighted ecosystem
+        shared_colors = [COLOR_HILITE if name==target_ecosystem else COLOR_SHARED for name in d["ecosystem_name"]]
+
+        fig = go.Figure()
+        fig.add_trace(go.Bar(
+            y=d["ecosystem_name"],
+            x=d["shared_val"],
+            name=f"Shared with {target_ecosystem}",
+            orientation="h",
+            marker=dict(color=shared_colors),
+            hovertemplate=(
+                "<b>%{y}</b><br>"
+                "Shared: %{customdata[0]:,.0f}"+hover_suffix+"<br>"
+                "Not shared: %{customdata[1]:,.0f}"+hover_suffix+"<br>"
+                "Total: %{customdata[2]:,.0f}<extra></extra>"
+            ),
+            customdata=np.stack([
+                hover_shared_val,
+                hover_not_shared_val,
+                d["total_repos"]
+            ], axis=-1)
+        ))
+        fig.add_trace(go.Bar(
+            y=d["ecosystem_name"],
+            x=d["not_shared_val"],
+            name="Not shared",
+            orientation="h",
+            marker=dict(color=COLOR_NOT_SHARED),
+            hovertemplate=(
+                "<b>%{y}</b><br>"
+                "Shared: %{customdata[1]:,.0f}"+hover_suffix+"<br>"
+                "Not shared: %{customdata[0]:,.0f}"+hover_suffix+"<br>"
+                "Total: %{customdata[2]:,.0f}<extra></extra>"
+            ),
+            customdata=np.stack([
+                hover_not_shared_val,
+                hover_shared_val,
+                d["total_repos"]
+            ], axis=-1)
+        ))
+        fig.update_layout(
+            barmode="stack",
+            title="",
+            paper_bgcolor="white", plot_bgcolor="white",
+            font=dict(size=12, color="black"),
+            margin=dict(t=0, l=0, r=20, b=40),
+            showlegend=True,
+            legend=dict(orientation="h", y=1.02, x=1, xanchor='right')
         )
-    ])
-    return
+        fig.update_xaxes(title=xaxis_title, showgrid=True, gridcolor="#AAA", zeroline=False, color="black")
+        fig.update_yaxes(title="", showgrid=False, color="black", automargin=True)
 
-
-@app.cell
-def generate_table_projects(df_projects_from_devs, mo):
-    mo.vstack([
-        mo.md("## Projects by Developer Activity"),
-        mo.ui.table(
-            df_projects_from_devs.reset_index(drop=True),
-            selection=None,
-            show_column_summaries=False,
-            show_data_types=False,
-            page_size=50
-        )
-    ])
-    return
-
-
-@app.cell
-def _(df_stylus_project_metrics):
-    df_stylus_project_metrics
-    return
+        return fig
+    return (make_repo_overlap_barchart,)
 
 
 @app.cell
 def configuration_settings():
     # Configuration constants
+    SPRINT_START_DATE = '2025-03-01'
     PROJECT_START_DATE = '2024-01-01'
-    ECOSYSTEM_START_DATE = '2020-01-01'
+    ECOSYSTEM_START_DATE = '2024-01-01' #'2020-01-01'
     COLLECTION_NAME = 'arb-stylus'
-    ECOSYSTEMS = [
+    SDK_PROJECT_MAINTAINERS = ['offchainlabs', 'arbitrumfoundation']
+    EVM_ECOSYSTEMS = [
         'arbitrum',
+        'base',
+        'bnb_chain',
+        'evm_toolkit',
+        'ethereum',
+        'ethereum_l2s',
         'ethereum_virtual_machine_stack',
-        'solana'
+        'foundry',
+        'polygon',
+        'solidity',
     ]
+    OTHER_ECOSYSTEMS = [
+        'bitcoin',
+        'cosmos_network_stack',
+        'solana',
+        'sui'
+    ]
+    ECOSYSTEMS = EVM_ECOSYSTEMS + OTHER_ECOSYSTEMS
     MONTHLY_METRICS = [
         'GITHUB_active_developers_monthly',
         'GITHUB_full_time_developers_monthly',
@@ -417,15 +534,23 @@ def configuration_settings():
         'GITHUB_opened_issues_weekly',
         'GITHUB_closed_issues_weekly',
         'GITHUB_project_velocity_weekly',
+        'GITHUB_contributors_weekly'
     ]
-    METRIC_NAMES = MONTHLY_METRICS + WEEKLY_METRICS
+    DAILY_METRICS = [
+        'GITHUB_project_velocity_daily'
+    ]
+    METRIC_NAMES = MONTHLY_METRICS + WEEKLY_METRICS + DAILY_METRICS
     return (
         COLLECTION_NAME,
         ECOSYSTEMS,
         ECOSYSTEM_START_DATE,
+        EVM_ECOSYSTEMS,
         METRIC_NAMES,
         MONTHLY_METRICS,
+        OTHER_ECOSYSTEMS,
         PROJECT_START_DATE,
+        SDK_PROJECT_MAINTAINERS,
+        SPRINT_START_DATE,
     )
 
 
@@ -434,8 +559,11 @@ def get_data(
     COLLECTION_NAME,
     ECOSYSTEMS,
     ECOSYSTEM_START_DATE,
+    EVM_ECOSYSTEMS,
     METRIC_NAMES,
+    OTHER_ECOSYSTEMS,
     PROJECT_START_DATE,
+    SDK_PROJECT_MAINTAINERS,
     client,
     pd,
     wraps,
@@ -461,43 +589,74 @@ def get_data(
         return client.to_pandas(f"""
             SELECT
               sample_date AS date,
-              projects_v1.display_name AS developer_ecosystem,
+              metric_name,
+              projects_v1.display_name,
               amount
             FROM timeseries_metrics_by_project_v0
             JOIN metrics_v0 USING metric_id
             JOIN projects_v1 USING project_id
             WHERE
-              metric_name = 'GITHUB_active_developers_monthly'
-              AND sample_date >= DATE '{ECOSYSTEM_START_DATE}'
+              sample_date >= DATE '{ECOSYSTEM_START_DATE}'
+              AND metric_name IN ({stringify(METRIC_NAMES)})
               AND project_source = 'CRYPTO_ECOSYSTEMS'
               AND project_namespace = 'eco'
-              AND project_name IN ({stringify(ECOSYSTEMS)})
-            ORDER BY 1,2  
+              AND project_name IN ({stringify(ECOSYSTEMS)})          
+            ORDER BY 1,2,3  
             """)
 
     @parse_dates("date")
     def get_metrics_by_stylus_project():
-        df = client.to_pandas(f"""
+        return client.to_pandas(f"""
             SELECT DISTINCT
               p.display_name AS display_name,
               p.project_name AS project_name,
               m.metric_name AS metric_name,
               ts.sample_date AS date,
               ts.amount AS amount
-            FROM metrics_v0 m
-            JOIN timeseries_metrics_by_project_v0 ts
+            FROM timeseries_metrics_by_project_v0 ts        
+            JOIN metrics_v0 m
               ON m.metric_id = ts.metric_id
             JOIN projects_v1 p
               ON p.project_id = ts.project_id
             JOIN projects_by_collection_v1 pc
               ON p.project_id = pc.project_id
             WHERE
-              metric_name IN ({stringify(METRIC_NAMES)})
-              AND ts.sample_date >= DATE '{PROJECT_START_DATE}'
+              ts.sample_date >= DATE '{PROJECT_START_DATE}'
+              AND m.metric_name IN ({stringify(METRIC_NAMES)})
               AND pc.collection_name = '{COLLECTION_NAME}'
+              AND ts.amount IS NOT NULL
         """)
-        df.dropna(inplace=True)
-        return df
+
+    @parse_dates("date")
+    def get_metrics_by_stylus_sdk_dependent(repo_ids):
+        return client.to_pandas(f"""
+            WITH ossd_projects AS (
+              SELECT DISTINCT project_id
+              FROM artifacts_by_project_v1
+              WHERE
+                artifact_id IN ({stringify(repo_ids)})
+                AND artifact_source = 'GITHUB'
+                AND project_source = 'OSS_DIRECTORY'
+                AND project_namespace = 'oso'
+                AND project_name NOT IN ({stringify(SDK_PROJECT_MAINTAINERS)})
+            )
+            SELECT DISTINCT
+              p.display_name AS display_name,
+              p.project_name AS project_name,
+              m.metric_name AS metric_name,
+              ts.sample_date AS date,
+              ts.amount AS amount
+            FROM timeseries_metrics_by_project_v0 ts        
+            JOIN metrics_v0 m
+              ON m.metric_id = ts.metric_id
+            JOIN projects_v1 p
+              ON p.project_id = ts.project_id
+            WHERE
+              ts.sample_date >= DATE '{PROJECT_START_DATE}'
+              AND m.metric_name IN ({stringify(METRIC_NAMES)})
+              AND p.project_id IN (SELECT project_id FROM ossd_projects)
+              AND ts.amount IS NOT NULL
+        """)    
 
     @parse_dates("date")
     def get_metrics_by_stylus_repo():
@@ -523,7 +682,7 @@ def get_data(
         """)
 
     def get_stylus_sdk_dependents():
-        return client.to_pandas("""
+        return client.to_pandas(f"""
             WITH stylus AS (
               SELECT DISTINCT
                 package_artifact_id,
@@ -535,13 +694,21 @@ def get_data(
                 AND package_artifact_name = 'stylus-sdk'
             )
             SELECT DISTINCT
-              dependent_artifact_id AS artifact_id,
-              dependent_artifact_namespace AS repo_owner,
-              dependent_artifact_name AS repo_name
+              abp.project_name AS dependent_project_name,
+              sboms_v0.dependent_artifact_namespace AS repo_owner,
+              sboms_v0.dependent_artifact_name AS repo_name,
+              sboms_v0.dependent_artifact_id AS artifact_id          
             FROM sboms_v0
-            JOIN stylus USING package_artifact_id
-            WHERE package_owner_artifact_id != dependent_artifact_id
-            ORDER BY 1,2
+            JOIN stylus
+              ON sboms_v0.package_artifact_id = stylus.package_artifact_id
+            JOIN artifacts_by_project_v1 AS abp
+              ON
+                sboms_v0.dependent_artifact_id = abp.artifact_id
+                AND abp.project_source = 'OSS_DIRECTORY'
+                AND abp.project_namespace = 'oso'
+                AND abp.project_name NOT IN ({stringify(SDK_PROJECT_MAINTAINERS)})
+            WHERE stylus.package_owner_artifact_id != sboms_v0.dependent_artifact_id
+            ORDER BY 1,2,3
         """)    
 
     @parse_dates("first_fork")
@@ -559,7 +726,11 @@ def get_data(
               SELECT DISTINCT dependent_artifact_id
               FROM sboms_v0
               JOIN stylus USING package_artifact_id
-              WHERE dependent_artifact_namespace = 'offchainlabs'
+              JOIN artifacts_by_project_v1 AS abp
+                ON dependent_artifact_id = abp.artifact_id
+                AND abp.project_source = 'OSS_DIRECTORY'
+                AND abp.project_namespace = 'oso'
+              WHERE abp.project_name IN ({stringify(SDK_PROJECT_MAINTAINERS)})
             ),
             devs AS (
               SELECT
@@ -648,9 +819,9 @@ def get_data(
             alignment AS (
               SELECT
                 project_id,
-                MAX(CASE WHEN project_name = '{ECOSYSTEMS[0]}' THEN True ELSE False END) AS in_{ECOSYSTEMS[0]},
-                MAX(CASE WHEN project_name = '{ECOSYSTEMS[1]}' THEN True ELSE False END) AS in_{ECOSYSTEMS[1]},
-                MAX(CASE WHEN project_name = '{ECOSYSTEMS[2]}' THEN True ELSE False END) AS in_{ECOSYSTEMS[2]}
+                MAX(CASE WHEN project_name = 'arbitrum' THEN True ELSE False END) AS in_arbitrum,
+                MAX(CASE WHEN project_name IN ({stringify(OTHER_ECOSYSTEMS)}) THEN True ELSE False END) AS in_nonevem_ecosystem,
+                MAX(CASE WHEN project_name IN ({stringify(EVM_ECOSYSTEMS)}) THEN True ELSE False END) AS in_evm_ecosystem
               FROM projects
               WHERE project_source = 'CRYPTO_ECOSYSTEMS'
               GROUP BY 1
@@ -666,17 +837,137 @@ def get_data(
         df = df.fillna(False)
         return df
 
+    def get_artifact_overlap(target_ecosystem='Arbitrum'):
+        return client.to_pandas(f"""
+            WITH base AS (
+              SELECT DISTINCT
+                p.display_name AS ecosystem_name,
+                ap.artifact_id
+              FROM artifacts_by_project_v1 ap
+              JOIN projects_v1 p ON p.project_id=ap.project_id
+              WHERE
+                ap.artifact_source='GITHUB'
+                AND ap.project_source='CRYPTO_ECOSYSTEMS'
+                AND ap.project_namespace='eco'
+                AND ap.project_name IN ({stringify(ECOSYSTEMS)})
+            ),
+            target_set AS (
+              SELECT artifact_id FROM base WHERE ecosystem_name='{target_ecosystem}'
+            ),
+            totals AS (
+              SELECT
+                ecosystem_name,
+                COUNT(DISTINCT artifact_id) AS total_repos
+              FROM base
+              GROUP BY ecosystem_name
+            ),
+            shared AS (
+              SELECT
+                ecosystem_name,
+                COUNT(DISTINCT artifact_id) AS shared_with_target
+              FROM base
+              WHERE artifact_id IN (SELECT artifact_id FROM target_set)
+              GROUP BY ecosystem_name
+            )
+            SELECT
+              t.ecosystem_name,
+              COALESCE(s.shared_with_target,0) AS repos_shared_with_target,
+              (t.total_repos - COALESCE(s.shared_with_target,0)) AS repos_not_shared_with_target,
+              t.total_repos AS total_repos
+            FROM totals t
+            LEFT JOIN shared s
+              ON t.ecosystem_name = s.ecosystem_name
+            ORDER BY
+              repos_shared_with_target DESC,
+              ecosystem_name
+    """)
     return (
+        get_artifact_overlap,
         get_devs_who_forked_examples,
         get_metrics_by_developer_ecosystem,
         get_metrics_by_stylus_project,
+        get_metrics_by_stylus_sdk_dependent,
         get_repo_alignment_tags,
         get_stylus_sdk_dependents,
     )
 
 
 @app.cell
-def helper_functions(get_repo_alignment_tags, np, nx, pd):
+def process_data(
+    dev_pagerank,
+    get_artifact_overlap,
+    get_devs_who_forked_examples,
+    get_metrics_by_developer_ecosystem,
+    get_metrics_by_stylus_project,
+    get_metrics_by_stylus_sdk_dependent,
+    get_stylus_sdk_dependents,
+    label_repos,
+):
+    # Get the data
+    df_ecosystem_metrics = get_metrics_by_developer_ecosystem()
+    df_repo_overlap = get_artifact_overlap()
+    df_stylus_project_metrics = get_metrics_by_stylus_project()
+    df_stylus_sdk_deps = get_stylus_sdk_dependents()
+    df_stylus_sdk_deps_project_metrics = get_metrics_by_stylus_sdk_dependent(df_stylus_sdk_deps['artifact_id'].unique())
+    df_fork_devs = get_devs_who_forked_examples()
+
+    # Process developer data
+    df_fork_devs_labeled = label_repos(df_fork_devs)
+    df_fork_devs_ranked = dev_pagerank(df_fork_devs)
+
+    # Create projects summary
+    df_projects_from_devs = (
+        df_fork_devs_labeled.merge(df_fork_devs_ranked[['dev_id', 'dev_score']], on='dev_id')
+        .groupby(['repo_owner', 'project_type'], as_index=False)
+        .agg(
+            repo_rank=('dev_score', 'sum'),
+            first_fork=('first_fork','min'),    
+            num_devs=('dev_id', 'nunique'),
+            dev_names=('dev_url', lambda x: ' | '.join(sorted(set(x.replace('https://github.com/',''))))),
+            repos_worked_on_by_those_devs=('repo_url', lambda x: ' | '.join(sorted(set(x))))
+        )
+        .sort_values(by=['repo_rank', 'num_devs', 'first_fork'], ascending=[False, False, True])
+        .reset_index(drop=True)
+        .drop(columns=['repo_rank'])
+    )
+
+    # Helper variables
+    most_recent_month = df_stylus_project_metrics[df_stylus_project_metrics['metric_name'].str.contains('monthly')==True]['date'].max()
+    return (
+        df_ecosystem_metrics,
+        df_fork_devs_ranked,
+        df_projects_from_devs,
+        df_repo_overlap,
+        df_stylus_project_metrics,
+        df_stylus_sdk_deps,
+        df_stylus_sdk_deps_project_metrics,
+        most_recent_month,
+    )
+
+
+@app.cell
+def helper_monthly_metrics(MONTHLY_METRICS, datetime, most_recent_month):
+    def summarize_monthly_metrics(df, num_months=6):    
+        start_month = datetime(2025, most_recent_month.month - (num_months-1), 1).date()
+        table = (
+            df[
+                (df['metric_name'].str.endswith('monthly') == True) &
+                (df['date'].between(start_month, most_recent_month)) &
+                (df['amount'].notna())
+            ]
+            .pivot_table(index='display_name', columns='metric_name', values='amount', aggfunc='sum', fill_value=0)
+            .map(lambda x: round(x/num_months,2))
+            [MONTHLY_METRICS]
+            .rename(columns={c:clean_metric_name(c) for c in MONTHLY_METRICS})
+            .reset_index()
+            .rename(columns={'display_name': 'Project'})
+        )
+        return table
+    return (summarize_monthly_metrics,)
+
+
+@app.cell
+def helper_labeling_and_pagerank(get_repo_alignment_tags, np, nx, pd):
     def label_repos(df):
 
         _repos = df['repo_id'].unique()
@@ -693,13 +984,13 @@ def helper_functions(get_repo_alignment_tags, np, nx, pd):
                 return 'Project (Stylus Sprint)'
             if '/offchainlabs/' in repo_url:
                 return 'Offchain Labs'
-            if 'solana' in tags:
-                if ';' in tags:
-                    return 'Project (EVM + Solana Ecosystems)'
-                else:
-                    return 'Project (Solana Ecosystem)'
             if 'arbitrum' in tags:
-                return 'Project (Arbitrum Ecosystem)'
+                return 'Project (Arbitrum Ecosystem)'            
+            if 'nonevm' in tags:
+                if ';' in tags:
+                    return 'Project (EVM + Non-EVM Ecosystems)'
+                else:
+                    return 'Project (Non-EVM Ecosystem)'
             if len(tags) > 1:
                 return 'Project (EVM Ecosystem)'
             if dev_url in repo_url:
@@ -749,7 +1040,7 @@ def helper_functions(get_repo_alignment_tags, np, nx, pd):
 
         # Personalization: devs by commits, repos by stars
         dev_commit_sum = df.groupby("dev_id")["num_commits"].sum().reindex(devs.dev_id).fillna(0)
-        repo_stars     = repos.set_index("repo_url")["star_count"].fillna(0)
+        repo_stars = repos.set_index("repo_url")["star_count"].fillna(0)
 
         p = {}
         for n in G.nodes:
@@ -774,7 +1065,7 @@ def helper_functions(get_repo_alignment_tags, np, nx, pd):
             })
         dev_rank = pd.DataFrame(rows).sort_values("dev_score", ascending=False, kind="mergesort").reset_index(drop=True)
 
-        # Helpful diagnostics
+        # Some diagnostics
         dev_rank = dev_rank.merge(
             devs.assign(total_commits=dev_commit_sum.values), on=["dev_id","dev_url"], how="left"
         )
@@ -792,6 +1083,11 @@ def helper_functions(get_repo_alignment_tags, np, nx, pd):
     return dev_pagerank, label_repos
 
 
+@app.function
+def clean_metric_name(col):
+    return col.replace('GITHUB_','').replace('_monthly','').replace('_',' ').title()
+
+
 @app.cell
 def import_libraries():
     from datetime import datetime, date, timedelta
@@ -802,11 +1098,6 @@ def import_libraries():
     import networkx as nx
     import numpy as np
     return datetime, go, np, nx, pd, px, wraps
-
-
-@app.function
-def clean_metric_name(col):
-    return col.replace('GITHUB_','').replace('_monthly','').replace('_',' ').title()
 
 
 if __name__ == "__main__":
