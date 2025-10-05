@@ -432,14 +432,97 @@ _df = client.to_pandas(_query)
 
 ---
 
-## Anti-Patterns
-- Marimo cells must always execute to completion. Let empty data fail in the UI rather than using conditional returns.
+## 🚨 CRITICAL ANTI-PATTERNS - NEVER ALLOWED 🚨
+
+### ⛔ PREMATURE RETURNS - ABSOLUTELY FORBIDDEN
+**NEVER use conditional return statements in marimo cells. This breaks the reactive system.**
+
+```python
+# ❌ WRONG - NEVER DO THIS
+@app.cell
+def generate_stats(mo, df_data):
+    if len(df_data) == 0:
+        mo.md("No data available")
+        return  # ← THIS BREAKS MARIMO!
+    
+    # rest of code...
+
+# ✅ CORRECT - Always execute to completion
+@app.cell
+def generate_stats(mo, df_data):
+    total_count = mo.stat(
+        label="Total Count",
+        value=f"{len(df_data):,.0f}" if len(df_data) > 0 else "0",
+    )
+    mo.hstack([total_count])
+    return
+```
+
+### ⛔ CONDITIONAL UI RENDERING - FORBIDDEN
+**NEVER use conditional rendering with early returns. Let UI components handle empty states.**
+
+```python
+# ❌ WRONG - NEVER DO THIS
+@app.cell
+def generate_table(mo, df_data):
+    if len(df_data) == 0:
+        mo.md("No data")
+        return  # ← BREAKS MARIMO!
+    
+    mo.ui.table(df_data)
+
+# ✅ CORRECT - Let empty table display naturally
+@app.cell
+def generate_table(mo, df_data):
+    mo.ui.table(df_data)  # Empty table is fine
+    return
+```
+
+### ⛔ CONDITIONAL PLOT RENDERING - FORBIDDEN
+**NEVER use conditional plot rendering with early returns. Create proper empty figures.**
+
+```python
+# ❌ WRONG - NEVER DO THIS
+@app.cell
+def generate_plot(mo, df_data, px):
+    if len(df_data) == 0:
+        mo.md("No data")
+        return  # ← BREAKS MARIMO!
+    
+    fig = px.scatter(df_data, ...)
+    mo.ui.plotly(fig)
+
+# ✅ CORRECT - Create empty figure with proper styling
+@app.cell
+def generate_plot(mo, df_data, px, go):
+    def make_fig(dataframe, title=""):
+        if len(dataframe) == 0:
+            fig = go.Figure()
+            fig.update_layout(
+                title=title,
+                annotations=[dict(
+                    x=0.5, y=0.5,
+                    xref="paper", yref="paper",
+                    text="No data available",
+                    showarrow=False
+                )]
+            )
+            return fig
+        
+        fig = px.scatter(dataframe, ...)
+        return fig
+    
+    _fig = make_fig(df_data, "Chart Title")
+    mo.ui.plotly(_fig)
+    return
+```
+
+## Other Anti-Patterns
 - Hardcoding values that should be configurable
 - Mixing data processing and visualization in the same cell
 - Using widget objects directly in expressions (instead of `.value`)
 - Returning `_`-prefixed variables (breaks dependencies)
 - Overly complex single cells
 - Inconsistent styling across visualizations
-- Complex conditional UI rendering
 - Over-engineering error handling
 - Using `_()` pattern for main building blocks (use named cells instead)
