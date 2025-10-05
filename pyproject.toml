@@ -17,6 +17,7 @@ dependencies = [
     "pyarrow>=21.0.0",
     "pyoso>=0.6.5",
     "pyyaml>=6.0.2",
+    "sqlalchemy>=2.0.43",
     "trino>=0.336.0",
     "vega-datasets>=0.9.0",
     "web3>=7.13.0",
