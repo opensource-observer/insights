@@ -12,7 +12,23 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""## Data pre-processing""")
+    mo.md(
+        r"""
+    The voting results for Optimism's Retro Funding Round 4 (RF4) were tallied in July 2024 and shared with the community.
+
+    This is an analysis of the ballot data from different angles. First, we cover high-level trends among voters. Then, we compare voters' expressed preferences (from a pre-round survey) against their revealed preferences (from the voting data). Finally, we perform some clustering analysis on the votes and identify three distinct "blocs" of voters.
+
+    **Round Overview:**
+
+    - **10M OP tokens** distributed across **230 projects**
+    - **108 badgeholders** voted (out of ~130 eligible)
+    - **16 impact metrics** available for selection
+    - Each project was pre-scored against all metrics
+    - Each badgeholder voted on the metrics they believed best assessed impact on the Superchain
+
+    The final distribution was determined by taking the median allocation across all badgeholder ballots, with a maximum cap of 500K OP per project and a minimum threshold of 1K OP.
+    """
+    )
     return
 
 
@@ -84,10 +100,10 @@ def _(DF_METRICS, METRIC_IDS_RF4, client, json, pd):
 
         # 4. allocate funding based on the median badgeholder allocation
         df_results['rf4_allocation'] = allocate_funding(df_results['median'])
-    
+
         # 5. set the funding for projects below the minimum cap to 0
         df_results.loc[df_results['rf4_allocation'] < MIN_CAP, 'rf4_allocation'] = 0
-    
+
         # 6. allocate the remaining funding to projects below the maximum cap
         max_cap_funding = df_results[df_results['rf4_allocation']==MAX_CAP]['rf4_allocation'].sum()
         remaining_funding = TOTAL_FUNDING - max_cap_funding
@@ -104,7 +120,6 @@ def _(DF_METRICS, METRIC_IDS_RF4, client, json, pd):
     METRIC_IDS = DF_VOTES.mean().sort_values(ascending=False).index
     os_multiply = [v['os_multiplier'] for v in VOTES]
     DF_VOTES['os_multiplier'] = os_multiply
-    print("Total votes:", len(DF_VOTES))    
 
     RESULTS = determine_results(
         VOTES,
@@ -112,7 +127,7 @@ def _(DF_METRICS, METRIC_IDS_RF4, client, json, pd):
         max_cap=MAX_CAP,
         min_cap=MIN_CAP
     )
-    return DF_VOTES, METRIC_IDS, RESULTS, VOTES, determine_results, os_multiply
+    return DF_VOTES, METRIC_IDS, RESULTS, VOTES, determine_results
 
 
 @app.cell
@@ -129,8 +144,7 @@ def _(client, pd):
     # Convert SPECIFIC_PREFS columns to numeric
     for _pref in SPECIFIC_PREFS:
         DF_SURVEY[_pref] = pd.to_numeric(DF_SURVEY[_pref], errors='coerce')
-    print('Num surveys:', len(DF_SURVEY))
-    return DF_SURVEY, GENERAL_PREFS, SPECIFIC_PREFS
+    return DF_SURVEY, SPECIFIC_PREFS
 
 
 @app.cell
@@ -201,9 +215,9 @@ def _():
     return (METRIC_GROUPS,)
 
 
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""## Chart templates""")
+@app.cell
+def _():
+    # Chart templates - not visible to readers
     return
 
 
@@ -385,7 +399,49 @@ def _(COLOR1, FONT_SIZE, METRIC_IDS, TITLE_SIZE, go, pd):
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""## 1. High level analysis of votes""")
+    mo.md(r"""## 1. High-Level Observations""")
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""Let's start by examining how badgeholders approached the voting process and what patterns emerged from their ballots.""")
+    return
+
+
+@app.cell(hide_code=True)
+def _(DF_VOTES, METRIC_IDS, mo):
+    _total_votes_stat = mo.stat(
+        label="Total Ballots",
+        value=f"{len(DF_VOTES)}",
+        bordered=True
+    )
+
+    _total_metrics_stat = mo.stat(
+        label="Impact Metrics Available",
+        value=f"{len(METRIC_IDS)}",
+        bordered=True
+    )
+
+    _median_metrics_stat = mo.stat(
+        label="Median Metrics Per Ballot",
+        value=f"{DF_VOTES[METRIC_IDS].count(axis=1).median():.0f}",
+        bordered=True
+    )
+
+    mo.hstack([_total_votes_stat, _total_metrics_stat, _median_metrics_stat], widths="equal")
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        r"""
+    ### The average badgeholder voted on five metrics
+
+    While a few voters included all 16 metrics, most selected between 3 to 6 metrics. Some metrics were closely related, such as `gas_fees` and `log_gas_fees`, which represented the same metric on different scales (linear vs logarithmic). Half of the metrics relied on a "trusted user model", considering different aspects of user and network activity.
+    """
+    )
     return
 
 
@@ -423,49 +479,135 @@ def _(COLOR1, DF_VOTES, FONT_SIZE, METRIC_IDS, TITLE_SIZE, go, mo):
     )
 
     mo.ui.plotly(_fig)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        r"""
+    ### Badgeholders felt gas fees were the most impactful metric
+
+    The chart below ranks each metric based on its overall weighting and shows the distribution of individual votes. `gas_fees` topped the list, receiving votes from 60 badgeholders and accounting for 19% of the total allocation. The `trusted_users_onboarded` metric was the most popular individual indicator, attracting 75 votes but weighing less than `gas_fees` in the final allocation.
+    """
+    )
+    return
 
 
 @app.cell
 def _(DF_VOTES, mo, stripplot):
     mo.ui.plotly(stripplot(DF_VOTES, "all votes"))
+    return
 
 
-@app.cell
-def _(DF_VOTES, METRIC_GROUPS):
+@app.cell(hide_code=True)
+def _(DF_VOTES, METRIC_GROUPS, mo):
+    _summary_text = []
     for grouping, metric_list in METRIC_GROUPS.items():
         filt = DF_VOTES[metric_list].sum(axis=1)
         num_metrics = len(metric_list)
         _n = len(filt[filt > 0])
         m = filt.mean() * 100
-        print(f'{grouping} ({num_metrics} metrics): n={_n} ballots, wt={m:.1f}%')
+        _summary_text.append(f"- **{grouping.replace('_', ' ').title()}** ({num_metrics} metrics): {_n} ballots, {m:.1f}% avg weight<br>")
+
+    mo.md(
+        r"""
+        Combining related metrics reveals interesting patterns:
+
+        """ + "\n".join(_summary_text) + """
+
+        Most notably, `gas_fees` and `log_gas_fees` appeared in 94 out of 108 ballots and commanded 31% of the total weighting. Metrics derived from the trusted user model were included in 92 ballots, representing 44% of the weighting.
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        r"""
+    ### The final distribution was a power law distribution
+
+    Previous rounds, including Optimism's RF3 and Filecoin's RetroPGF 1, had relatively flat distributions. In RF3, the median project received 45K OP, while a top 10% project received 100K OP. In RF4, despite having a smaller overall funding pool (10M vs 30M tokens), the distribution was much steeper, with top projects doing significantly better.
+    """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(RESULTS, mo):
+    _median_alloc = mo.stat(
+        label="Median Project Allocation",
+        value=f"{RESULTS['rf4_allocation'].median()/1000:.0f}K OP",
+        bordered=True
+    )
+
+    _top10_alloc = mo.stat(
+        label="Top 10% Project Allocation",
+        value=f"{RESULTS['rf4_allocation'].quantile(0.9)/1000:.0f}K OP",
+        bordered=True
+    )
+
+    _ratio = mo.stat(
+        label="Top 10% to Median Ratio",
+        value=f"{RESULTS['rf4_allocation'].quantile(0.9)/RESULTS['rf4_allocation'].median():.0f}x",
+        bordered=True
+    )
+
+    mo.hstack([_median_alloc, _top10_alloc, _ratio], widths="equal")
     return
 
 
 @app.cell
 def _(RESULTS, barchart, mo):
-    print("Median:", RESULTS['rf4_allocation'].median())
-    print("Top 90%:", RESULTS['rf4_allocation'].quantile(0.9))
     mo.ui.plotly(barchart(RESULTS['rf4_allocation'], title='Overall RF4 distribution', top_n=230))
+    return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""## 2. Compare votes with survey results""")
+    mo.md(r"""## 2. Expressed vs Revealed Preferences""")
+    return
+
+
+@app.cell(hide_code=True)
+def _(DF_VOTES, mo):
+    mo.md(
+        f"""
+    Before the voting phase, a survey was conducted to understand badgeholders' preferences. We can compare these **expressed preferences** from the survey against their **revealed preferences** from the actual voting data to see how well they align.
+
+    The survey received **38 responses** from badgeholders, while **{len(DF_VOTES)} badgeholders** ultimately voted in the round.
+    """
+    )
     return
 
 
 @app.cell
-def _(DF_SURVEY):
-    print("Num surveys:",len(DF_SURVEY))
-    return
+def _(COLOR1, DF_SURVEY, FONT_SIZE, SPECIFIC_PREFS, TITLE_SIZE, go, mo):
+    _fig = go.Figure()
 
+    for col in SPECIFIC_PREFS:
+        _fig.add_trace(go.Box(
+            x=DF_SURVEY[col],
+            name=col.replace('_', ' ').title(),
+            marker=dict(color=COLOR1),
+            orientation='h',
+        ))
 
-@app.cell
-def _(DF_SURVEY, GENERAL_PREFS):
-    for _pref in GENERAL_PREFS:
-        print(_pref)
-        print((DF_SURVEY[_pref].value_counts() / 38).to_dict())
-        print()
+    _fig.update_layout(
+        title=dict(text='<b>Badgeholder preferences in survey data (n=38)</b>', x=0, xanchor='left', font=dict(size=TITLE_SIZE)),
+        height=720,
+        width=1440,
+        font=dict(family='Arial', size=FONT_SIZE),
+        paper_bgcolor='white',
+        plot_bgcolor='white',
+        margin=dict(l=300, r=20, t=60, b=60),
+        showlegend=False,
+        yaxis=dict(tickfont=dict(size=FONT_SIZE)),
+        xaxis=dict(tickfont=dict(size=FONT_SIZE))
+    )
+
+    mo.ui.plotly(_fig)
     return
 
 
@@ -545,62 +687,51 @@ def _(
     )
 
     mo.ui.plotly(_fig)
-
-
-@app.cell
-def _(DF_SURVEY, SPECIFIC_PREFS):
-    DF_SURVEY[SPECIFIC_PREFS].mean()
     return
-
-
-@app.cell
-def _(DF_VOTES):
-    DF_VOTES.mean(axis=0).sort_values(ascending=False)
-    return
-
-
-@app.cell
-def _(DF_SURVEY):
-    len(DF_SURVEY[DF_SURVEY['using_open_source_and_permissive_licenses'] >= 7]) / 38
-    return
-
-
-@app.cell
-def _(os_multiply):
-    len([x for x in os_multiply if x>1]) / 108
-    return
-
-
-@app.cell
-def _(COLOR1, DF_SURVEY, FONT_SIZE, SPECIFIC_PREFS, go, mo):
-    _fig = go.Figure()
-
-    for col in SPECIFIC_PREFS:
-        _fig.add_trace(go.Box(
-            x=DF_SURVEY[col],
-            name=col.replace('_', ' ').title(),
-            marker=dict(color=COLOR1),
-            orientation='h'
-        ))
-
-    _fig.update_layout(
-        height=720,
-        width=1440,
-        font=dict(family='Arial', size=FONT_SIZE),
-        paper_bgcolor='white',
-        plot_bgcolor='white',
-        margin=dict(l=300, r=20, t=60, b=60),
-        showlegend=False,
-        yaxis=dict(tickfont=dict(size=FONT_SIZE)),
-        xaxis=dict(tickfont=dict(size=FONT_SIZE))
-    )
-
-    mo.ui.plotly(_fig)
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""## 4. Analysis of voting blocs""")
+    mo.md(
+        r"""
+    ### User quality was rewarded over growth
+
+    In the survey, voters preferred rewarding user quality over growth (47% vs 24%). This preference was reflected in the voting data, with user quality metrics appearing on 89 out of 108 ballots and receiving 35% of the overall allocation. User growth metrics appeared on 69 ballots, accounting for 15% of the allocation.
+
+    ### Network growth metrics performed better than network quality metrics
+
+    In contrast to the user metrics, voters showed a stronger preference for network growth metrics (e.g., `gas_fees` and `transaction_counts`). While survey respondents preferred quality over growth (39% vs 16%), network growth metrics appeared on 98 ballots, capturing 41% of the allocation. Network quality metrics appeared on 47 ballots, receiving just 9% of the overall allocation.
+
+    **Possible reasons for the discrepancy:**
+
+    1. **Non-representative survey sample**: Only 38 badgeholders completed the survey versus 108 who voted. Badgeholders caring more about social and quality metrics might have been overrepresented in the survey.
+
+    2. **Change of mind**: Voters may have adjusted preferences after reviewing specific metrics, reading others' strategies, or seeing the actual project mix in the voting UI. There was over a month between the survey and voting phases.
+
+    3. **Weak metrics**: Network quality metrics might have been perceived as less impactful. Metrics like gas efficiency and novel implementations did not make the final cut, suggesting a need for better quality metrics in future rounds.
+
+    ### Consistency in specific metrics
+
+    Voters' preferences remained consistent around specific metrics like onboarding and retaining users. Although controversial and difficult to assess, the open source multiplier was popular both before and during the round: 87% of survey respondents valued rewarding open source projects, and 80% of voters used the open source multiplier in their ballots.
+    """
+    )
+    return
+
+
+@app.cell
+def _():
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""## 3. Correlations and Badgeholder Blocs""")
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""As votes were public, we can analyze the data to identify patterns and groupings among voters. This helps us understand how different groups of badgeholders approached the voting process and what impact this had on the final distribution.""")
     return
 
 
@@ -613,6 +744,18 @@ def _(METRIC_GROUPS):
         + METRIC_GROUPS['user_quality']
     )
     return (corr_order,)
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        r"""
+    ### Some metrics had correlated performance among voters
+
+    The correlation matrix below shows the degree to which any two metrics were positively or negatively correlated. `gas_fees`, for instance, correlated most strongly with `transaction_count` but little else. Most trusted user metrics had moderate to high correlation coefficients. The most pronounced negative correlation was between `log_trusted_transaction_count` and `daily_active_addresses`, both among the least popular metrics.
+    """
+    )
+    return
 
 
 @app.cell
@@ -655,11 +798,18 @@ def _(DF_VOTES, FONT_SIZE, TITLE_SIZE, corr_order, go, mo):
     )
 
     mo.ui.plotly(_fig)
+    return
 
 
-@app.cell
-def _(METRIC_IDS):
-    METRIC_IDS
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        r"""
+    ### We identified three distinct "blocs" of voters using a clustering algorithm
+
+    A voting bloc is a group of voters strongly motivated by specific concerns, leading them to vote together. Using a k-means clustering algorithm on the ballot allocations, we identified three distinct blocs with different preferences in the voting data.
+    """
+    )
     return
 
 
@@ -684,7 +834,6 @@ def _(DF_VOTES, METRIC_IDS, pd):
     blocs = centroids.set_index('Cluster')['Bloc'].to_dict()
 
     votes_df['Bloc'] = votes_df['Cluster'].apply(lambda x: blocs.get(x, "Balanced Bloc"))
-    votes_df['Bloc'].value_counts()
     return (votes_df,)
 
 
@@ -697,6 +846,33 @@ def _(VOTES, barchart, determine_results, votes_df):
     return (bloc_distribution,)
 
 
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        r"""
+    ### The "Trust Bloc" experimented with trusted user metrics and had more diverse ballots overall
+
+    This largest bloc, effectively a catchall for nuanced views on rewarding impact or a preference for consumer-oriented apps, gave greater allocation to user metrics over network activity. These voters generally kept allocations below 40% per metric, resulting in a more balanced weight across all 16 metrics.
+    """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo, votes_df):
+    _trust_count = len(votes_df[votes_df['Bloc'] == 'Trust Bloc'])
+    _trust_pct = _trust_count / len(votes_df) * 100
+
+    _trust_stat = mo.stat(
+        label="Trust Bloc Size",
+        value=f"{_trust_count} voters ({_trust_pct:.0f}%)",
+        bordered=True
+    )
+
+    mo.hstack([_trust_stat], widths="equal")
+    return
+
+
 @app.cell
 def _(bloc_distribution, mo, stripplot, votes_df):
     _bloc = 'Trust Bloc'
@@ -704,6 +880,34 @@ def _(bloc_distribution, mo, stripplot, votes_df):
         mo.ui.plotly(stripplot(votes_df[votes_df['Bloc'] == _bloc], subtitle=_bloc)),
         mo.ui.plotly(bloc_distribution(_bloc))
     ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        r"""
+    ### The "Balanced Bloc" liked log metrics and a flatter overall distribution
+
+    This bloc seemed to want to achieve a more balanced distribution of tokens among projects. They favored network growth indicators on a log scale, allocating over 40% to `log_gas_fees` and `log_transaction_count`. They also used address-based metrics more than trusted user metrics. The simulated token distribution for this bloc had a 6-to-1 ratio between a top 10% project and a median project, compared to 16-to-1 for the Gas Bloc (and 9-to-1 for the actual distribution).
+    """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo, votes_df):
+    _balanced_count = len(votes_df[votes_df['Bloc'] == 'Balanced Bloc'])
+    _balanced_pct = _balanced_count / len(votes_df) * 100
+
+    _balanced_stat = mo.stat(
+        label="Balanced Bloc Size",
+        value=f"{_balanced_count} voters ({_balanced_pct:.0f}%)",
+        bordered=True
+    )
+
+    mo.hstack([_balanced_stat], widths="equal")
+    return
 
 
 @app.cell
@@ -713,6 +917,34 @@ def _(bloc_distribution, mo, stripplot, votes_df):
         mo.ui.plotly(stripplot(votes_df[votes_df['Bloc'] == _bloc], subtitle=_bloc)),
         mo.ui.plotly(bloc_distribution(_bloc))
     ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        r"""
+    ### The "Gas Bloc" emphasized gas fees
+
+    Gas fees, a simple impact metric, formed the basis of many ballots. All voters in this bloc allocated over 20% of their ballot to `gas_fees`, averaging 47%. Including `log_gas_fees`, the weighting rose to 54%. This bloc showed little interest in other metrics. Had everyone voted like the Gas Bloc, the results distribution would have been more exponential, with a much steeper curve favoring the top projects.
+    """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo, votes_df):
+    _gas_count = len(votes_df[votes_df['Bloc'] == 'Gas Bloc'])
+    _gas_pct = _gas_count / len(votes_df) * 100
+
+    _gas_stat = mo.stat(
+        label="Gas Bloc Size",
+        value=f"{_gas_count} voters ({_gas_pct:.0f}%)",
+        bordered=True
+    )
+
+    mo.hstack([_gas_stat], widths="equal")
+    return
 
 
 @app.cell
@@ -722,6 +954,27 @@ def _(bloc_distribution, mo, stripplot, votes_df):
         mo.ui.plotly(stripplot(votes_df[votes_df['Bloc'] == _bloc], subtitle=_bloc)),
         mo.ui.plotly(bloc_distribution(_bloc))
     ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        r"""
+    ## Final Thoughts
+
+    This analysis prompts some important governance questions for the Optimism community:
+
+    - **Alignment**: How well do citizens' preferences align with token house preferences?
+    - **Representation**: How representative are different ideologies and experiences in the voter mix?
+    - **Evolution**: How should the badgeholder community evolve alongside the wider community of Superchain users and contributors?
+
+    Looking forward, it will be exciting to see how these preferences and voting blocs evolve over future rounds and how projects react to these signals. My hypothesis is that the most successful projects will perform well across multiple metrics rather than optimizing for a single metric. **Sound.xyz** is a good example: it received one of the highest allocations overall despite not topping any single category (and being middle of the pack in terms of gas fees).
+
+    The code and data used for this analysis are available on the [OSO GitHub repository](https://github.com/opensource-observer/insights/tree/main/analysis/optimism/retrofunding4). We welcome collaboration and further exploration of this data.
+    """
+    )
+    return
 
 
 @app.cell
