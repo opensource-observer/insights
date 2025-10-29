@@ -7,6 +7,7 @@ requires-python = ">=3.13"
 dependencies = [
     "altair>=5.5.0",
     "dotenv>=0.9.9",
+    "duckdb>=1.4.1",
     "google-cloud-bigquery>=3.37.0",
     "google-genai>=1.36.0",
     "marimo>=0.15.3",
@@ -16,6 +17,7 @@ dependencies = [
     "plotly>=6.3.0",
     "pyarrow>=21.0.0",
     "pyoso>=0.6.5",
+    "pysyncon>=1.5.2",
     "pyyaml>=6.0.2",
     "scipy>=1.16.2",
     "sqlalchemy>=2.0.43",
