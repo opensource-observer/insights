@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.16.2"
+__generated_with = "0.17.4"
 app = marimo.App(width="full")
 
 
@@ -29,12 +29,10 @@ def _(pd):
     METRICS_FORMATS = {_ml: _fmt for _ml in METRIC_LABELS}
     DEFAULT_METRIC = 'User Events'
     return (
-        COLLECTION_NAME,
         DEFAULT_METRIC,
         METRICS_FORMATS,
         METRICS_KEY,
         METRICS_TRANSFORMS,
-        METRIC_EVENT_SOURCE,
         METRIC_LABELS,
         METRIC_NAMES,
         NUM_PROJECTS,
@@ -137,11 +135,11 @@ def build_dashboard(
         showlegend=False,
         xaxis=dict(title="",showgrid=False,linecolor="#ddd",tickformat="%b %Y"),
         yaxis=dict(title="",showgrid=True,gridcolor="#eee",linecolor="#ddd"),
-        height=360
+        height=360,
     )
 
     chart_header = mo.md(f"### Total {_sel} Over Time")
-    bar_chart = mo.ui.plotly(_fig)    
+    bar_chart = mo.ui.plotly(_fig, config={'displayModeBar': False})    
 
     # 4) Ranking over time with annotations + full monthly axis
     _df_sel = df[df['Metric']==_sel].copy()
@@ -226,7 +224,7 @@ def build_dashboard(
     )
 
     heatmap_header = mo.md(f"### Project Rank by Month — {_sel}")
-    heatmap = mo.ui.plotly(_heat)
+    heatmap = mo.ui.plotly(_heat, config={'displayModeBar': False})
     return (
         bar_chart,
         chart_header,
@@ -270,39 +268,39 @@ def process_data(METRICS_KEY, METRICS_TRANSFORMS, METRIC_NAMES, df_raw, pd):
 def generate_dummy_data(
     METRIC_NAMES,
     NUM_PROJECTS,
-    pd,
-    np,
     START_DATE,
     STOP_DATE,
+    np,
+    pd,
 ):
     # Generate project names
     project_names = [
-        "BlockForge", "CryptoNexus", "DefiCentral", "TokenFlow", "ChainSync",
-        "Web3Hub", "DeFiBridge", "SmartChain", "TokenVault", "CryptoNet",
-        "BlockLift", "ChainCore", "DeFiPulse", "TokenStream", "Web3Core",
-        "BlockChainz", "CryptoBase", "DeFiLink", "TokenStack", "Web3Mesh",
-        "ChainForge", "DeFiZone", "TokenWave", "Web3Grid", "BlockNet",
-        "CryptoMesh", "DeFiEdge", "TokenFire", "Web3Flow", "ChainBase"
+        "Señor Bear", "Signal Layer", "Axiom Labs", "Kernel Compute", "TensorPath",
+        "Modular Stack", "StreamForge", "NexusAI", "Epoch Systems", "SignalMesh",
+        "Relay Labs", "ComputeCore", "InsightStream", "PrimeLayer", "OpenCascade",
+        "VectorBase", "Pioneer Protocol", "BlockMetric", "DeltaMesh", "Origin Systems",
+        "Helix Compute", "Frontier Analytics", "LayerSense", "Protocol Works", "IndexFlow",
+        "AtlasStack", "ClearCompute", "CodeMesh", "DataRelay", "VectorChain"
     ]
-    
+
     # Generate date range
     dates = pd.date_range(start=START_DATE, end=STOP_DATE, freq='MS')
-    
+
     # Initialize data list
     data = []
-    
+
     # Generate data for each project, metric combination
     # Store starting values to ensure month-over-month growth on average
     for project in project_names[:NUM_PROJECTS]:
         # Each project has a base multiplier to create variation
         base_mult = hash(project) % 100 / 50 + 0.5  # 0.5 to 1.5
-        
+
         # Determine if this project will have declining trends (some will)
         project_declining = hash(project) % 10 < 2  # 20% of projects declining
-        
+
         # Store starting values for each metric
         starting_values = {}
-        
+
         # Generate first month values
         first_date = dates[0]
         for metric in METRIC_NAMES:
@@ -316,19 +314,19 @@ def generate_dummy_data(
                 start_val = int(1000 + base_mult * 12000)
             else:
                 start_val = int(100 * base_mult)
-            
+
             starting_values[metric] = start_val
-            
+
             data.append({
                 'Date': first_date,
                 'Project': project,
                 'Metric': metric,
                 'Amount': start_val
             })
-        
+
         # Generate remaining months with consistent growth/decline
         previous_values = starting_values.copy()
-        
+
         for date_idx, date in enumerate(dates[1:], 1):
             for metric in METRIC_NAMES:
                 # Calculate growth trend (positive for most, negative for declining projects)
@@ -338,24 +336,24 @@ def generate_dummy_data(
                 else:
                     # Growing projects increase by 10-20% per month on average (targeting ~15%)
                     growth_rate = np.random.uniform(1.10, 1.20)
-                
+
                 # Apply growth with some noise
                 noise = np.random.normal(1.0, 0.08)  # Reduced noise for smoother trends
                 new_value = int(previous_values[metric] * growth_rate * noise)
-                
+
                 # Ensure no negative values
                 new_value = max(1, new_value)  # At least 1 for all metrics
-                
+
                 # Update previous value for next iteration
                 previous_values[metric] = new_value
-                
+
                 data.append({
                     'Date': date,
                     'Project': project,
                     'Metric': metric,
                     'Amount': new_value
                 })
-    
+
     df_raw = pd.DataFrame(data)
     return (df_raw,)
 
@@ -369,9 +367,6 @@ def delta_caption(curr, prev):
     if v > 0:
         c = "+" + c
     return c
-
-
-
 
 
 @app.cell
@@ -390,7 +385,17 @@ def setup_marimo():
 
 
 @app.cell
-def show_dashboard(bar_chart, chart_header, heatmap, heatmap_header, leaderboard, leaderboard_header, metric_input, mo, stats):
+def show_dashboard(
+    bar_chart,
+    chart_header,
+    heatmap,
+    heatmap_header,
+    leaderboard,
+    leaderboard_header,
+    metric_input,
+    mo,
+    stats,
+):
     mo.vstack([
         mo.hstack([
             mo.md(f"## **Growth Dashboard**"),
