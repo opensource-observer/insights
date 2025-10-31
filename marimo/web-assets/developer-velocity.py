@@ -36,7 +36,7 @@ def _(df_all, mo):
         mo.hstack([
             selected_projects,
             mo.hstack([milestone_date, start_date], widths="equal", gap=5)
-        ], widths=[2,1], gap=5)
+        ], widths='equal', gap=5)
     ])
     return milestone_date, selected_projects, start_date
 
