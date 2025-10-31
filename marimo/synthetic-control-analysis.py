@@ -54,6 +54,21 @@ def about_app(mo):
 
 
 @app.cell
+def tuning_controls(mo):
+    # Tuning knobs (model-only; no refetch)
+    lambda_cov_input = mo.ui.number(label='Predictor balance (lambda_cov)', start=0.0, stop=10.0, step=0.1, value=1.0)
+    alpha_equal_input = mo.ui.number(label='Weight spread (alpha_equal)', start=0.0001, stop=0.01, step=0.0001, value=0.001)
+    weight_cap_input = mo.ui.number(label='Max donor weight (cap)', start=0.60, stop=1.00, step=0.05, value=0.85)
+    resample_weekly_input = mo.ui.switch(label='Resample to weekly means', value=False)
+    return (
+        alpha_equal_input,
+        lambda_cov_input,
+        resample_weekly_input,
+        weight_cap_input,
+    )
+
+
+@app.cell
 def define_constants():
     AVAILABLE_CHAINS = [
       "ARBITRUM_ONE", "BASE", "BLAST", "CELO", "FRAX", "INK", "LINEA", "LISK", "LOOPRING",
@@ -88,8 +103,10 @@ def define_constants():
     DEFAULT_CONTROLS = ['ARBITRUM_ONE', 'BASE', 'ZKSYNC_ERA', 'SCROLL', 'TAIKO', 'LINEA', 'POLYGON_ZKEVM']
     DEFAULT_DEPENDENT = 'Fees Paid - ETH (growthepie)'
     DEFAULT_PREDICTORS = [
-        'TVL - USD (Defillama)', 'Market Cap - USD (growthepie)', 
-        'Stablecoin Value - USD (growthepie)', 'Tx Costs Median - ETH (growthepie)',
+        'TVL - USD (Defillama)',
+        'Market Cap - USD (growthepie)',
+        'Stablecoin Value - USD (growthepie)',
+        'Tx Costs Median - ETH (growthepie)',
         'Gas Per Second (growthepie)'
     ]
     return (
@@ -194,7 +211,7 @@ def pivot_metrics(pd):
             values='amount',
             aggfunc='sum'
         ).reset_index()
-        df_wide = df_wide.fillna(0)
+        # Do NOT fillna globally to zero; preserve NaNs for missing values
         return df_wide.sort_values(['sample_date', 'chain'])
     return (pivot_metrics,)
 
@@ -229,7 +246,7 @@ def get_chain_metrics(
     WHERE metric_name IN ({metrics_str})
       AND chain IN ({chains_str})
       AND sample_date >= DATE '2022-01-01'
-    ORDER BY sample_date, chain, metric_name
+    ORDER BY sample_date, chain
     """
 
     mo.status.spinner(title='Fetching data...')
@@ -239,21 +256,94 @@ def get_chain_metrics(
 
 @app.cell
 def prepare_data(
+    controls_input,
+    dependent_input,
     df_metrics,
     intervention_date_input,
+    np,
     pd,
     pivot_metrics,
+    predictors_input,
+    resample_weekly_input,
     training_months_input,
+    treatment_input,
 ):
     # Pivot the metrics
     df_wide = pivot_metrics(df_metrics)
+
+    # Optional: resample to weekly means per chain (post-query smoothing)
+    if resample_weekly_input.value:
+        df_wide = (
+            df_wide
+            .set_index('sample_date')
+            .groupby('chain', group_keys=False)
+            .resample('W')
+            .mean(numeric_only=True)
+            .reset_index()
+        )
 
     # Calculate date ranges
     intervention_date = pd.to_datetime(intervention_date_input.value)
     training_start = intervention_date - pd.DateOffset(months=training_months_input.value)
 
-    # Filter to relevant date range (training period onwards)
+    # Keep data from training start onward for plotting later
     df_wide = df_wide[df_wide['sample_date'] >= training_start].copy()
+
+    # --- Balanced-panel selection for the *pre* period only ---
+    need_cols = [dependent_input.value] + list(predictors_input.value)
+    units = [treatment_input.value] + list(controls_input.value)
+
+    pre_mask = (df_wide['sample_date'] >= training_start) & (df_wide['sample_date'] < intervention_date)
+    pre_df = df_wide.loc[pre_mask, ['sample_date','chain'] + need_cols].copy()
+
+    # 1) Strict: all units complete on dependent+predictors
+    pre_df['__complete_all__'] = pre_df[need_cols].notna().all(axis=1)
+    counts_all = (
+        pre_df[pre_df['__complete_all__'] & pre_df['chain'].isin(units)]
+        .groupby('sample_date')['chain']
+        .nunique()
+        .rename('n_complete')
+        .reset_index()
+    )
+    good_pre_dates = set(counts_all.loc[counts_all['n_complete'] == len(units), 'sample_date'])
+
+    # 2) Fallback: require only dependent to be complete for all units
+    if not good_pre_dates:
+        dep = dependent_input.value
+        pre_df['__complete_dep__'] = pre_df[[dep]].notna().all(axis=1)
+        counts_dep = (
+            pre_df[pre_df['__complete_dep__'] & pre_df['chain'].isin(units)]
+            .groupby('sample_date')['chain']
+            .nunique()
+            .rename('n_complete')
+            .reset_index()
+        )
+        good_pre_dates = set(counts_dep.loc[counts_dep['n_complete'] == len(units), 'sample_date'])
+
+    # 3) Last-resort: allow partial balance on dependent (>=80% of units)
+    if not good_pre_dates:
+        k = max(2, int(np.ceil(0.8 * len(units))))
+        dep = dependent_input.value
+        pre_df['__complete_dep__'] = pre_df[[dep]].notna().all(axis=1)
+        counts_k = (
+            pre_df[pre_df['__complete_dep__'] & pre_df['chain'].isin(units)]
+            .groupby('sample_date')['chain']
+            .nunique()
+            .rename('n_complete')
+            .reset_index()
+        )
+        good_pre_dates = set(counts_k.loc[counts_k['n_complete'] >= k, 'sample_date'])
+
+    # Build keep_mask: if we found any good pre-period dates, filter pre only; otherwise keep all rows
+    if good_pre_dates:
+        keep_mask = (
+            ((df_wide['sample_date'] < intervention_date) & (df_wide['sample_date'].isin(good_pre_dates)))
+            | (df_wide['sample_date'] >= intervention_date)
+        )
+    else:
+        keep_mask = pd.Series(True, index=df_wide.index)
+
+    df_wide = df_wide[keep_mask].copy()
     return df_wide, intervention_date, training_start
 
 
@@ -261,15 +351,18 @@ def prepare_data(
 def run_synthetic_control(
     Dataprep,
     Synth,
+    alpha_equal_input,
     controls_input,
     dependent_input,
     df_wide,
     intervention_date,
+    lambda_cov_input,
     np,
     pd,
     predictors_input,
     training_start,
     treatment_input,
+    weight_cap_input,
 ):
     # Create date ranges for pysyncon
     time_predictors_prior = pd.date_range(
@@ -307,28 +400,118 @@ def run_synthetic_control(
     X0, X1 = dataprep.make_covariate_mats()
     Z0, Z1 = dataprep.make_outcome_mats()
 
-    # Convert to numpy arrays
-    X0_arr = X0.to_numpy()
-    X1_arr = X1.to_numpy()
-    Z0_arr = Z0.to_numpy()
-    Z1_arr = Z1.to_numpy()
+    # Convert to numeric float numpy arrays (robust to object dtypes, handles pd.NA)
+    def _to_float_array(df_or_series):
+        import pandas as _pd
+        if isinstance(df_or_series, _pd.DataFrame):
+            return df_or_series.to_numpy(dtype='float64', na_value=np.nan)
+        elif isinstance(df_or_series, _pd.Series):
+            return _pd.to_numeric(df_or_series, errors='coerce').to_numpy(dtype='float64')
+        else:
+            # Fallback for numpy arrays / lists
+            arr = np.asarray(df_or_series)
+            return arr.astype('float64', copy=False)
+
+    X0_arr = _to_float_array(X0)
+    X1_arr = _to_float_array(X1)
+    Z0_arr = _to_float_array(Z0)
+    Z1_arr = _to_float_array(Z1)
+
+    # Hyperparameters from UI (model-only; no refetch)
+    lambda_cov = float(lambda_cov_input.value)
+    epsilon_ridge = 1e-10
+    alpha_equal = float(alpha_equal_input.value)  # L2 toward uniform weights
+    weight_cap = float(weight_cap_input.value)    # per-donor cap
+
+    # Ensure 1D arrays for treated vectors when appropriate
+    if X1_arr.ndim > 1 and X1_arr.shape[1] == 1:
+        X1_arr_vec = X1_arr.ravel()
+    else:
+        X1_arr_vec = X1_arr
+
+    if Z1_arr.ndim > 1 and Z1_arr.shape[1] == 1:
+        Z1_arr_vec = Z1_arr.ravel()
+    else:
+        Z1_arr_vec = Z1_arr
 
     n_controls = len(controls_input.value)
+
+    # --- Clean pre-period outcome rows: drop any time rows with NaNs in Z0 or Z1 ---
+    if Z0_arr.ndim == 1:
+        Z0_arr = Z0_arr.reshape(-1, 1)
+    mask_pre_outcome = np.isfinite(Z1_arr_vec)
+    if Z0_arr.size > 0:
+        mask_pre_outcome &= np.all(np.isfinite(Z0_arr), axis=1)
+    Z0_arr = Z0_arr[mask_pre_outcome]
+    Z1_arr_vec = Z1_arr_vec[mask_pre_outcome]
+
+    # Guardrail: need at least 3 pre-period rows to fit meaningfully
+    min_rows = 3
+    insufficient_pre_rows = (Z1_arr_vec.shape[0] < min_rows)
+
+    # --- Clean predictor rows: drop predictors with any NaNs across controls or in treated ---
+    # X0_arr: shape (p, n_controls); X1_arr_vec: shape (p,)
+    if X0_arr.ndim == 1:
+        X0_arr = X0_arr.reshape(-1, 1)
+    mask_pred_rows = np.isfinite(X1_arr_vec)
+    if X0_arr.size > 0:
+        mask_pred_rows &= np.all(np.isfinite(X0_arr), axis=1)
+    X0_arr = X0_arr[mask_pred_rows, :]
+    X1_arr_vec = X1_arr_vec[mask_pred_rows]
+
+    # If no valid predictor rows left, turn off covariate penalty
+    if X1_arr_vec.size == 0 or X0_arr.shape[0] == 0:
+        lambda_cov = 0.0
+
+    # --- Outcome scaling for RMSPE: denom = synthetic_Z during optimization (guarded by epsilon) ---
+    eps = 1e-9
+
+    # --- Standardize predictors (z-score) across controls in pre-period ---
+    # Center/scale each predictor row using control stats, then apply same transform to treated
+    if X0_arr.size and X1_arr_vec.size and lambda_cov > 0.0:
+        ctrl_mean = X0_arr.mean(axis=1, keepdims=True)
+        ctrl_std = X0_arr.std(axis=1, ddof=1, keepdims=True)
+        ctrl_std = np.where(ctrl_std < eps, 1.0, ctrl_std)
+        X0_arr = (X0_arr - ctrl_mean)/ctrl_std
+        X1_arr_vec = (X1_arr_vec - ctrl_mean.ravel())/ctrl_std.ravel()
 
     # Implement our own optimization to avoid pysyncon bug
     from scipy.optimize import minimize
 
     def objective(weights):
-        # Ensure weights sum to 1 and are non-negative
-        weights = np.abs(weights)
-        weights = weights / np.sum(weights)
+        # Nonnegative and sum-to-one (we also enforce with constraints below)
+        w = np.clip(weights, 0, None)
+        s = w.sum()
+        if s == 0:
+            return np.inf
+        w = w / s
 
-        # Calculate synthetic control
-        synthetic = Z0_arr @ weights
+        # Outcome fit over pre period (RMSPE-style)
+        synthetic_Z = Z0_arr @ w
+        denom = np.where(np.isfinite(synthetic_Z) & (np.abs(synthetic_Z) > eps), synthetic_Z, eps)
+        pe = (Z1_arr_vec - synthetic_Z)/denom
+        pe = pe[np.isfinite(pe)]
+        if pe.size < 3:
+            return 1e12
+        loss_outcome = np.sum(pe ** 2)
 
-        # Calculate loss (sum of squared differences)
-        loss = np.sum((Z1_arr - synthetic) ** 2)
-        return loss
+        # Predictor balance over pre period (z-scored, means, as per Dataprep predictors_op="mean")
+        if lambda_cov == 0.0 or X0_arr.size == 0 or X1_arr_vec.size == 0:
+            loss_cov = 0.0
+        else:
+            synthetic_X = X0_arr @ w
+            diff_x = X1_arr_vec - synthetic_X
+            diff_x = diff_x[np.isfinite(diff_x)]
+            loss_cov = np.sum(diff_x ** 2) if diff_x.size else 0.0
+
+        # Small ridge for numerical stability
+        loss_ridge = epsilon_ridge * np.sum(w ** 2)
+
+        # L2 penalty to keep weights near uniform and avoid extreme corners
+        w_uniform = np.full_like(w, 1.0/len(w))
+        loss_spread = alpha_equal * np.sum((w - w_uniform) ** 2)
+
+        return float(loss_outcome + lambda_cov * loss_cov + loss_ridge + loss_spread)
 
     # Constraint: weights must sum to 1
     from scipy.optimize import LinearConstraint
@@ -353,7 +536,7 @@ def run_synthetic_control(
             x0, 
             method='SLSQP',
             constraints=constraint,
-            bounds=[(0, 1) for _ in range(n_controls)],
+            bounds=[(0, weight_cap) for _ in range(n_controls)],
             options={'maxiter': 2000, 'ftol': 1e-9}
         )
         if result.success and result.fun < best_loss:
@@ -366,13 +549,31 @@ def run_synthetic_control(
     # Method 2: Try without constraints, normalize after
     try:
         def unconstrained_objective(weights):
-            weights = np.abs(weights)
-            if np.sum(weights) == 0:
-                return float('inf')
-            weights = weights / np.sum(weights)
-            synthetic = Z0_arr @ weights
-            loss = np.sum((Z1_arr - synthetic) ** 2)
-            return loss
+            w = np.clip(weights, 0, None)
+            s = w.sum()
+            if s == 0:
+                return np.inf
+            w = w / s
+            # Outcome RMSPE-style
+            synthetic_Z = Z0_arr @ w
+            denom = np.where(np.isfinite(synthetic_Z) & (np.abs(synthetic_Z) > eps), synthetic_Z, eps)
+            pe = (Z1_arr_vec - synthetic_Z)/denom
+            pe = pe[np.isfinite(pe)]
+            if pe.size < 3:
+                return 1e12
+            loss_outcome = np.sum(pe ** 2)
+            # Predictor z-loss
+            if lambda_cov == 0.0 or X0_arr.size == 0 or X1_arr_vec.size == 0:
+                loss_cov = 0.0
+            else:
+                synthetic_X = X0_arr @ w
+                diff_x = X1_arr_vec - synthetic_X
+                diff_x = diff_x[np.isfinite(diff_x)]
+                loss_cov = np.sum(diff_x ** 2) if diff_x.size else 0.0
+            loss_ridge = epsilon_ridge * np.sum(w ** 2)
+            w_uniform = np.full_like(w, 1.0/len(w))
+            loss_spread = alpha_equal * np.sum((w - w_uniform) ** 2)
+            return float(loss_outcome + lambda_cov * loss_cov + loss_ridge + loss_spread)
 
         result = minimize(
             unconstrained_objective,
@@ -381,10 +582,26 @@ def run_synthetic_control(
             options={'maxiter': 2000}
         )
         if result.success:
-            weights = np.abs(result.x)
-            weights = weights / np.sum(weights)
+            weights = np.clip(result.x, 0, None)
+            s = weights.sum()
+            if s == 0:
+                weights = np.ones_like(weights) / len(weights)
+            else:
+                weights = weights / s
             synthetic = Z0_arr @ weights
-            loss = np.sum((Z1_arr - synthetic) ** 2)
+            # Compute loss using same logic as above for finite fallback
+            denom = np.where(np.isfinite(synthetic) & (np.abs(synthetic) > eps), synthetic, eps)
+            pe = (Z1_arr_vec - synthetic)/denom
+            pe = pe[np.isfinite(pe)]
+            loss = np.sum(pe ** 2) if pe.size else 0.0
+            if lambda_cov > 0.0 and X0_arr.size and X1_arr_vec.size:
+                synthetic_X = X0_arr @ weights
+                diff_x = X1_arr_vec - synthetic_X
+                diff_x = diff_x[np.isfinite(diff_x)]
+                loss += lambda_cov * (np.sum(diff_x ** 2) if diff_x.size else 0.0)
+            loss += epsilon_ridge * np.sum(weights ** 2)
+            w_uniform = np.full_like(weights, 1.0/len(weights))
+            loss += alpha_equal * np.sum((weights - w_uniform) ** 2)
             if loss < best_loss:
                 best_weights = weights
                 best_loss = loss
@@ -398,7 +615,7 @@ def run_synthetic_control(
             objective,
             x0,
             method='L-BFGS-B',
-            bounds=[(0, 1) for _ in range(n_controls)],
+            bounds=[(0, weight_cap) for _ in range(n_controls)],
             options={'maxiter': 2000}
         )
         if result.success and result.fun < best_loss:
@@ -408,11 +625,32 @@ def run_synthetic_control(
     except Exception as e:
         pass
 
+    # Compute a finite fallback loss for equal weights (used if optimization fails)
+    equal_w = np.ones(n_controls) / n_controls
+    try:
+        synth_eq_Z = Z0_arr @ equal_w if Z0_arr.size else np.array([])
+        denom = np.where(np.isfinite(synth_eq_Z) & (np.abs(synth_eq_Z) > eps), synth_eq_Z, eps)
+        pe = (Z1_arr_vec - synth_eq_Z)/denom
+        pe = pe[np.isfinite(pe)]
+        loss_eq = np.sum(pe ** 2) if pe.size else 0.0
+        if lambda_cov > 0.0 and X0_arr.size and X1_arr_vec.size:
+            synthetic_X = X0_arr @ equal_w
+            diff_x = X1_arr_vec - synthetic_X
+            diff_x = diff_x[np.isfinite(diff_x)]
+            loss_eq += lambda_cov * (np.sum(diff_x ** 2) if diff_x.size else 0.0)
+        # Add L2-to-uniform penalty (zero for equal weights, but keep for consistency)
+        w_uniform = np.full_like(equal_w, 1.0/len(equal_w))
+        loss_eq += alpha_equal * np.sum((equal_w - w_uniform) ** 2)
+    except Exception:
+        loss_eq = 0.0
+
     if best_weights is not None:
         optimal_weights = best_weights
+        final_loss = best_loss
     else:
-        optimal_weights = np.ones(n_controls) / n_controls
+        optimal_weights = equal_w
         optimization_method = "Equal weights (optimization failed)"
+        final_loss = float(loss_eq)
 
     # Create a simple synthetic control object
     class SimpleSynth:
@@ -450,8 +688,9 @@ def run_synthetic_control(
     ### Optimization Results:
 
     - Method: {optimization_method}
-    - Loss: {best_loss:,.0f}
+    - Loss: {final_loss:,.0f}
     - Optimal Weights: {', '.join([f'{name}: {weight:.3f}' for name, weight in zip(controls_input.value, optimal_weights)])}
+    > (RMSPE-style pre-fit loss on outcome; lower is better)
     """
 
     # Get weights
@@ -489,9 +728,26 @@ def generate_synthetic_control_plot(
     go,
     intervention_date,
     mo,
+    pd,
     treatment_input,
 ):
     fig = go.Figure()
+
+    # Derive headline: average post-period percent gap (avoid exporting globals in marimo)
+    def _compute_headline(_df: pd.DataFrame, _intervention) -> str:
+        _post = _df[_df['date'] >= _intervention]
+        _syn_mean = pd.to_numeric(_post['synthetic'], errors='coerce').mean()
+        _gap_mean = pd.to_numeric(_post['gap'], errors='coerce').mean()
+        if pd.notna(_syn_mean) and _syn_mean != 0 and pd.notna(_gap_mean):
+            _pct = (_gap_mean / _syn_mean) * 100.0
+            return (
+                f"The treatment underperformed the counterfactual by ~{abs(_pct):.1f}% on average"
+                if _pct < 0 else f"The treatment outperformed the counterfactual by ~{_pct:.1f}% on average"
+            )
+        return "Synthetic control comparison"
+
+    headline = _compute_headline(df_results, intervention_date)
+    mo.md(f"### {headline}")
 
     # Add treatment line
     fig.add_trace(go.Scatter(
@@ -513,14 +769,23 @@ def generate_synthetic_control_plot(
         hovertemplate='%{y:,.0f}<extra></extra>'
     ))
 
-    # Add intervention line
+    # Add intervention line (avoid annotation in add_vline for datetime values)
+    x_vline = pd.to_datetime(intervention_date).to_pydatetime()
     fig.add_vline(
-        x=intervention_date.timestamp() * 1000,
+        x=x_vline,
         line_dash="dash",
         line_color="rgba(0, 0, 0, 0.5)",
-        line_width=2,
-        annotation_text="Intervention",
-        annotation_position="top"
+        line_width=2
+    )
+    # Separate annotation pinned to the top of the plot
+    fig.add_annotation(
+        x=x_vline,
+        y=1.02,
+        xref="x",
+        yref="paper",
+        text="Intervention",
+        showarrow=False,
+        font=dict(size=11)
     )
 
     # Get the display name for the dependent variable
@@ -566,12 +831,26 @@ def generate_synthetic_control_plot(
 
 
 @app.cell
+def display_tuning_controls(
+    alpha_equal_input,
+    lambda_cov_input,
+    mo,
+    resample_weekly_input,
+    weight_cap_input,
+):
+    mo.md("#### Tuning (model-only; no refetch)")
+    mo.hstack([lambda_cov_input, alpha_equal_input, weight_cap_input, resample_weekly_input], gap=8, justify='start', align='start')
+    return
+
+
+@app.cell
 def display_summary_stats(
     analysis_summary,
     df_results,
     intervention_date,
     mo,
     np,
+    pd,
     weights_dict,
 ):
     weights_formula = " + ".join([
@@ -579,26 +858,52 @@ def display_summary_stats(
         for chain, weight in weights_dict.items()
     ])
 
-    df_pre = df_results[df_results['date'] < intervention_date]
-    df_post = df_results[df_results['date'] >= intervention_date]
+    df_pre = df_results[df_results['date'] < intervention_date].copy()
+    df_post = df_results[df_results['date'] >= intervention_date].copy()
 
-    pre_rmse = np.sqrt(np.mean(df_pre['gap'] ** 2))
-    post_mean_gap = df_post['gap'].mean()
-    post_mean_gap_pct = (post_mean_gap / df_post['synthetic'].mean()) * 100 if df_post['synthetic'].mean() != 0 else 0
+    def _rmspe(y, yhat):
+        y = pd.to_numeric(y, errors='coerce').to_numpy(dtype=float)
+        yhat = pd.to_numeric(yhat, errors='coerce').to_numpy(dtype=float)
+        mask = np.isfinite(y) & np.isfinite(yhat) & (yhat != 0)
+        if mask.sum() == 0:
+            return np.nan
+        pct = (y[mask] - yhat[mask]) / yhat[mask]
+        return float(np.sqrt(np.mean(pct ** 2)))
+
+    pre_rmspe = _rmspe(df_pre['treatment'], df_pre['synthetic']) if len(df_pre) else np.nan
+    post_rmspe = _rmspe(df_post['treatment'], df_post['synthetic']) if len(df_post) else np.nan
+    rmspe_ratio = (post_rmspe / pre_rmspe) if (pre_rmspe and pre_rmspe > 0) else np.nan
+
+    post_mean_gap = float(df_post['gap'].mean()) if len(df_post) else np.nan
+    syn_mean_post = float(df_post['synthetic'].mean()) if len(df_post) else np.nan
+    post_mean_gap_pct = (post_mean_gap / syn_mean_post * 100) if (syn_mean_post and syn_mean_post != 0) else np.nan
+    cum_effect = float(df_post['gap'].sum()) if len(df_post) else np.nan
 
     mo.vstack([
         mo.md("## Model Results"),
         mo.hstack([
             mo.stat(
-                label="Pre-Intervention RMSE",
-                value=f"{pre_rmse:,.1f}",
-                caption="Lower is better fit",        
+                label="Pre RMSPE",
+                value=f"{pre_rmspe:,.3f}" if pre_rmspe == pre_rmspe else "—",
+                caption="Lower is better pre-fit",
                 bordered=True
             ),
             mo.stat(
-                label="Post-Intervention Avg Gap",
-                value=f"{post_mean_gap:,.1f}",
-                caption=f"{post_mean_gap_pct:+.1f}% vs synthetic control",
+                label="Post/Pre RMSPE Ratio",
+                value=f"{rmspe_ratio:,.2f}" if rmspe_ratio == rmspe_ratio else "—",
+                caption=">1 suggests worse post fit (signal)",
+                bordered=True
+            ),
+            mo.stat(
+                label="Avg Post Gap",
+                value=f"{post_mean_gap:,.1f}" if post_mean_gap == post_mean_gap else "—",
+                caption=(f"{post_mean_gap_pct:+.1f}% vs synthetic" if post_mean_gap_pct == post_mean_gap_pct else ""),
+                bordered=True
+            ),
+            mo.stat(
+                label="Cumulative Effect (post)",
+                value=f"{cum_effect:,.1f}" if cum_effect == cum_effect else "—",
+                caption="Sum of gaps",
                 bordered=True
             ),
             mo.stat(
