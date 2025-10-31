@@ -7,7 +7,7 @@ app = marimo.App(width="full")
 @app.cell
 def _(mo):
     mo.md(r"""
-    # Has developer velocity increased since the launch of ChatGPT 4o?
+    # Has developer velocity changed since the launch of ChatGPT 4o?
     """)
     return
 
@@ -39,11 +39,6 @@ def _(df_all, mo):
         ], widths=[2,1], gap=5)
     ])
     return milestone_date, selected_projects, start_date
-
-
-@app.cell
-def _():
-    return
 
 
 @app.cell
@@ -296,27 +291,35 @@ def _(go, np, pd, px):
 
 
 @app.cell
-def _(mo, pyoso_db_conn):
-    df_all = mo.sql(
-        f"""
-        SELECT
-          sample_date,
-          projects_v1.display_name,
-          amount
-        FROM timeseries_metrics_by_project_v0
-        JOIN metrics_v0 USING metric_id
-        JOIN projects_v1 USING project_id
-        JOIN projects_by_collection_v1 USING project_id
-        WHERE
-          sample_date BETWEEN DATE('2023-01-01') AND DATE('2025-04-30')
-          AND collection_name = 'octant-05'
-          AND metric_event_source = 'GITHUB'
-          AND metric_model = 'project_velocity'
-          AND metric_time_aggregation = 'daily'
-        """,
-        output=False,
-        engine=pyoso_db_conn
-    )
+def _(mo, pd, pyoso_db_conn):
+    _path = "marimo/web-assets/data/developer-velocity.csv"
+    try:
+        df_all = mo.sql(
+            f"""
+            SELECT
+              sample_date,
+              projects_v1.display_name,
+              amount
+            FROM timeseries_metrics_by_project_v0
+            JOIN metrics_v0 USING metric_id
+            JOIN projects_v1 USING project_id
+            JOIN projects_by_collection_v1 USING project_id
+            WHERE
+              sample_date BETWEEN DATE('2023-01-01') AND DATE('2025-04-30')
+              AND collection_name = 'octant-05'
+              AND metric_event_source = 'GITHUB'
+              AND metric_model = 'project_velocity'
+              AND metric_time_aggregation = 'daily'
+            """,
+            output=False,
+            engine=pyoso_db_conn
+        )
+        #df_all.to_csv(_path, index=False)
+    except:
+        df_all = pd.read_csv(f"https://raw.githubusercontent.com/opensource-observer/insights/refs/heads/main/{_path}")
+
+    if df_all.empty:
+        df_all = pd.read_csv(f"https://raw.githubusercontent.com/opensource-observer/insights/refs/heads/main/{_path}")
     return (df_all,)
 
 
