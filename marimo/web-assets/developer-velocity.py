@@ -303,13 +303,38 @@ def _(mo, pd, pyoso_db_conn):
             FROM timeseries_metrics_by_project_v0
             JOIN metrics_v0 USING metric_id
             JOIN projects_v1 USING project_id
-            JOIN projects_by_collection_v1 USING project_id
             WHERE
-              sample_date BETWEEN DATE('2023-01-01') AND DATE('2025-04-30')
-              AND collection_name = 'octant-05'
+              sample_date BETWEEN DATE('2022-01-01') AND DATE('2025-04-30')          
               AND metric_event_source = 'GITHUB'
               AND metric_model = 'project_velocity'
               AND metric_time_aggregation = 'daily'
+              AND project_name IN (
+                'rust-lang',
+                'azure',
+                'homebrew',
+                'kubernetes',
+                'facebook-oss',
+                'huggingface',
+                'w3c',
+                'vercel',
+                'python',
+                'cockroachdb',
+                'aave',
+                'defi-llama',
+                'nodejs',
+                'docker',
+                'layr-labs',
+                'pydantic',
+                'offchainlabs',
+                'unicode-org',
+                'numpy',
+                'foundry',
+                'prometheus',
+                'alchemyplatform',
+                'chainlink',
+                'pandas',
+                'internet-archive'
+              )
             """,
             output=False,
             engine=pyoso_db_conn
