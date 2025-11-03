@@ -34,17 +34,27 @@
       "funding_ask": "230000 ARB",
       "submitted_on": "05 Jan 2025",
       "milestones": [
-        {"name": "Liquidity hook", "amount": "25000 ARB"},
+        {"name": "Uniswap v4 Liquidity Facility Hook", "amount": "25000 ARB"},
         {"name": "Core protocol", "amount": "50000 ARB"},
-        {"name": "zkTLS & cross-chain integration", "amount": "50000 ARB"},
+        {"name": "zkTLS security & cross-chain integration", "amount": "50000 ARB"},
         {"name": "Protocol audit", "amount": "50000 ARB"},
         {"name": "Mainnet deployment", "amount": "50000 ARB"},
         {"name": "Proof of user adoption", "amount": "5000 ARB"}
       ],
-      "project_links": ["http://suretyfund.com", "https://usher.so", "https://go.usher.so/discord"],
-      "questbook_link": null,
-      "oso_slug": null,
-      "status": null
+      "project_links": [
+        "http://suretyfund.com/",
+        "https://x.com/usher_web3",
+        "https://go.usher.so/discord",
+        "https://github.com/rsoury",
+        "https://github.com/outerlook",
+        "https://github.com/Xand6r",
+        "https://github.com/victorshevtsov",
+        "https://github.com/xlassix",
+        "https://userfy.design/2024/surety-mvp"
+      ],
+      "questbook_link": "https://arbitrum.questbook.app/dashboard/?grantId=671a105a2047c84bb8a73770&chainId=10&proposalId=677a5e458f4a6bf405dc2026&isRenderingProposalBody=true&role=builder",
+      "oso_slug": "usher-labs-surety",
+      "status": "approved"
     },
     {
       "title": "RedStone Oracles",
@@ -57,7 +67,7 @@
         {"name": "Integration work", "amount": "175000 ARB", "deadline": "29 Apr 2025"},
         {"name": "Ongoing account management", "amount": "25000 ARB", "deadline": "30 Dec 2025"}
       ],
-      "project_links": ["https://redstone.finance", "https://github.com/redstone-finance/", "https://twitter.com/redstone_defi", "https://docs.redstone.finance/", "https://app.redstone.finance/"],
+      "project_links": ["https://redstone.finance", "https://github.com/redstone-finance", "https://twitter.com/redstone_defi", "https://docs.redstone.finance", "https://app.redstone.finance"],
       "questbook_link": "https://arbitrum.questbook.app/dashboard/?proposalId=6776cd09faef5017a80287c9&isRenderingProposalBody=true&chainId=10&role=builder&grantId=671a105a2047c84bb8a73770",
       "oso_slug": "redstone-finance",
       "status": "approved"
@@ -73,7 +83,7 @@
         {"name": "Additional features", "amount": null},
         {"name": "Further expansions", "amount": null}
       ],
-      "project_links": ["https://thirdweb.com", "https://github.com/thirdweb-dev", "https://portal.thirdweb.com", "https://x.com/thirdweb", "https://youtube.com/thirdweb"],
+      "project_links": ["https://thirdweb.com", "https://github.com/thirdweb-dev", "https://portal.thirdweb.com", "https://twitter.com/thirdweb", "https://youtube.com/thirdweb"],
       "questbook_link": "https://arbitrum.questbook.app/dashboard/?proposalId=6733d9e7902931f05cac4da9&isRenderingProposalBody=true&chainId=10&role=builder&grantId=671a105a2047c84bb8a73770",
       "oso_slug": "third-web",
       "status": "cancelled"
@@ -112,7 +122,12 @@
       "title": "Passport XYZ: Multi-Wallet Identity Proofs for Sybil Resistance",
       "funding_ask": "115000 ARB",
       "submitted_on": "17 Dec 2024",
-      "milestones": [],
+      "milestones": [
+        {"name": "Implementation and development", "amount": "81000 ARB"},
+        {"name": "Testing and integration", "amount": "24000 ARB"},
+        {"name": "Documentation and outreach", "amount": "6000 ARB"},
+        {"name": "Contingency", "amount": "4000 ARB"}
+      ],
       "project_links": ["https://www.passport.xyz"],
       "questbook_link": "https://arbitrum.questbook.app/dashboard/?proposalId=6761d9d9faef5017a85b9489&isRenderingProposalBody=true&chainId=10&role=builder&grantId=671a105a2047c84bb8a73770",
       "oso_slug": "passportxyz",
@@ -160,7 +175,7 @@
         {"name": "Benchmark gas efficiency", "amount": "200000 ARB", "deadline": "09 Feb 2026"},
         {"name": "SDK extension for Solidity apps", "amount": "100000 ARB", "deadline": "09 Mar 2026"}
       ],
-      "project_links": ["https://pyth.network", "https://x.com/PythNetwork"],
+      "project_links": ["https://pyth.network", "https://twitter.com/PythNetwork"],
       "questbook_link": "https://arbitrum.questbook.app/dashboard/?grantId=671a105a2047c84bb8a73770&chainId=10&role=builder&proposalId=677ead288f4a6bf40504bf73&isRenderingProposalBody=true",
       "oso_slug": "pyth-network",
       "status": "approved"
@@ -175,7 +190,7 @@
         {"name": "Mid-program reviews", "amount": "20000 ARB", "deadline": "30 Aug 2025"},
         {"name": "End-of-program report", "amount": "40000 ARB", "deadline": "29 Jan 2026"}
       ],
-      "project_links": ["https://www.opensourceobserver.org", "https://github.com/opensource-observer", "https://x.com/osobserver", "https://warpcast.com/~/channels/oso", "https://opensourceobserver.org/discord"],
+      "project_links": ["https://opensourceobserver.org", "https://github.com/opensource-observer", "https://twitter.com/osobserver", "https://warpcast.com/~/channels/oso", "https://opensourceobserver.org/discord"],
       "questbook_link": "https://arbitrum.questbook.app/dashboard/?grantId=671a105a2047c84bb8a73770&chainId=10&role=builder&proposalId=677e8f60faef5017a83df833&isRenderingProposalBody=true",
       "oso_slug": "opensource-observer",
       "status": "approved"
@@ -193,7 +208,7 @@
         {"name": "Variables pretty-printing", "amount": "31000 ARB", "deadline": "12 Jun 2025"},
         {"name": "Long-term support & integration", "amount": "90000 ARB", "deadline": "12 Dec 2025"}
       ],
-      "project_links": ["https://walnut.dev", "https://github.com/walnuthq", "https://x.com/walnut_dev"],
+      "project_links": ["https://walnut.dev", "https://github.com/walnuthq", "https://twitter.com/walnut_dev"],
       "questbook_link": "https://arbitrum.questbook.app/dashboard/?proposalId=673f39c990449961f5973a73&isRenderingProposalBody=true&chainId=10&role=builder&grantId=671a105a2047c84bb8a73770",
       "oso_slug": "walnuthq",
       "status": "approved"
@@ -224,7 +239,7 @@
         {"name": "Second dapp audited & 6 blogposts", "amount": "48168 ARB", "deadline": "21 Oct 2025"},
         {"name": "Third dapp audited & 7 blogposts", "amount": "15496 ARB", "deadline": "30 Dec 2025"}
       ],
-      "project_links": ["https://stylussaturdays.substack.com/"],
+      "project_links": ["https://stylussaturdays.substack.com"],
       "questbook_link": "https://arbitrum.questbook.app/dashboard/?grantId=671a105a2047c84bb8a73770&chainId=10&proposalId=677a810f8f4a6bf405dd388d&isRenderingProposalBody=true",
       "oso_slug": "",
       "status": "approved"
@@ -257,7 +272,7 @@
         {"name": "Prediction market resolved using AI agent", "amount": "60000 ARB", "deadline": "31 Mar 2025"},
         {"name": "AI agents participating on 9 Lives", "amount": "70000 ARB", "deadline": "30 Jun 2025"},
         {"name": "Growth of platform & feature addition", "amount": "35000 ARB"},
-        {"name": "Extended growth and feature addition", "amount": "35000 ARB"}
+        {"name": "Extended growth of platform & feature addition", "amount": "35000 ARB"}
       ],
       "project_links": ["https://9lives.so"],
       "questbook_link": "https://arbitrum.questbook.app/dashboard/?grantId=671a105a2047c84bb8a73770&chainId=10&role=builder&proposalId=677aeb51faef5017a81ba302&isRenderingProposalBody=true",
@@ -275,7 +290,7 @@
         {"name": "Copilot implementation", "amount": "44000 ARB", "deadline": "29 Nov 2025"},
         {"name": "Feedback & documentation", "amount": "22000 ARB", "deadline": "30 Dec 2025"}
       ],
-      "project_links": ["https://www.arc.fun/", "https://playgrounds.network/", "https://www.emberai.xyz/"],
+      "project_links": ["https://www.arc.fun", "https://playgrounds.network", "https://www.emberai.xyz"],
       "questbook_link": "https://arbitrum.questbook.app/dashboard/?grantId=671a105a2047c84bb8a73770&chainId=10&role=builder&proposalId=6785958c80bdbe26615996a4&isRenderingProposalBody=true",
       "oso_slug": "angel",
       "status": "approved"
@@ -299,9 +314,16 @@
     {
       "title": "Ember: LP Optimization with Volatility-based Dynamic Fees",
       "funding_ask": "60000 ARB",
-      "submitted_on": null,
+      "submitted_on": "05 Jan 2025",
       "milestones": [],
-      "project_links": null,
+      "project_links": [
+        "https://github.com/shahankhatch/ember-hook",
+        "https://github.com/shahankhatch/ember-stylus",
+        "https://github.com/shahankhatch/ember",
+        "https://github.com/shahankhatch/ember-brevis",
+        "https://github.com/shahankhatch/ember-hook",   
+        "https://drive.google.com/file/d/1C7E0mPaNH5PsxjcVMNu_4DYK-wESxDuX/view?usp=sharing"
+      ],
       "questbook_link": "https://arbitrum.questbook.app/dashboard/?grantId=671a105a2047c84bb8a73770&isRenderingProposalBody=true&chainId=10&proposalId=677b6194faef5017a81d9e61&role=builder",
       "oso_slug": "ember-shahankhatch",
       "status": "cancelled"
@@ -317,7 +339,15 @@
         {"name": "Deployment of Enclave to Arbitrum", "amount": "150000 ARB", "deadline": "30 Sep 2025"},
         {"name": "Cultivation of developer & application ecosystem", "amount": "50000 ARB", "deadline": "30 Dec 2025"}
       ],
-      "project_links": ["https://enclave.gg/", "https://docs.enclave.gg/whitepaper", "https://github.com/gnosisguild", "https://x.com/EnclaveE3", "https://warpcast.com/EnclaveE3", "https://crisp.enclave.gg/", "https://t.me/enclave_e3"],
+      "project_links": [
+        "https://enclave.gg",
+        "https://docs.enclave.gg/whitepaper",
+        "https://github.com/gnosisguild",
+        "https://twitter.com/EnclaveE3",
+        "https://warpcast.com/EnclaveE3",
+        "https://crisp.enclave.gg",
+        "https://t.me/enclave_e3"
+      ],
       "questbook_link": "https://arbitrum.questbook.app/dashboard/?grantId=671a105a2047c84bb8a73770&chainId=10&role=builder&proposalId=677a9d22faef5017a81805e3&isRenderingProposalBody=true",
       "oso_slug": "enclave-gnosisguild",
       "status": "approved"
@@ -333,11 +363,23 @@
       "status": "cancelled"
     },
     {
-      "title": "More Markets (Nuffle Labs)",
+      "title": "Nuffle Labs (More Markets)",
       "funding_ask": "460000 ARB",
-      "submitted_on": null,
-      "milestones": [],
-      "project_links": null,
+      "submitted_on": "04 Dec 2024",
+      "milestones": [
+        {"name": "Development of Nuffle in Rust/Stylus", "amount": "50000 ARB", "deadline": "29 Jun 2025"},
+        {"name": "Audit for Nuffle (Rust/Stylus)", "amount": "55000 ARB", "deadline": "30 Jul 2025"},
+        {"name": "Mainnet deployment of Nuffle in Rust/Stylus", "amount": "125000 ARB", "deadline": "30 Aug 2025"},
+        {"name": "Development of Stylus library", "amount": "50000 ARB", "deadline": "29 Sep 2025"},
+        {"name": "Audit of Stylus library", "amount": "55000 ARB", "deadline": "30 Oct 2025"},
+        {"name": "Open-sourcing of Stylus library", "amount": "125000 ARB", "deadline": null}
+      ],
+      "project_links": [
+        "https://nuff.tech/#home",
+        "https://x.com/nufflelabs",
+        "https://docs.google.com/document/d/1HTOqXcX8yiGxYObFlr2HidHlvqRpBR9RfltrP2Bk/edit?tab=0",
+        "https://docs.google.com/presentation/d/15CnUdWuqx9efSRpRu9R5EzOW0rz8bnALQs7MHyZBc/edit#slide=id.g3168b3b4ff_0_439"
+      ],
       "questbook_link": "https://arbitrum.questbook.app/dashboard/?grantId=671a105a2047c84bb8a73770&isRenderingProposalBody=true&chainId=10&proposalId=675080fe90449961f5919181&role=builder",
       "oso_slug": "nuffle-labs",
       "status": "approved"
@@ -345,9 +387,14 @@
     {
       "title": "Remix IDE for Stylus",
       "funding_ask": "75000 ARB",
-      "submitted_on": null,
-      "milestones": [],
-      "project_links": ["https://remix.ethereum.org"],
+      "submitted_on": "02 Jan 2025",
+      "milestones": [
+        {"name": "Official launch", "amount": "15000 ARB", "deadline": "19 Mar 2025"},
+        {"name": "Template addition & maintenance", "amount": "22500 ARB", "deadline": "19 Jun 2025"},
+        {"name": "Community activation", "amount": "22500 ARB", "deadline": "17 Sep 2025"},
+        {"name": "Incorporating user feedback", "amount": "15000 ARB", "deadline": "17 Dec 2025"}
+      ],
+      "project_links": ["https://remix.ethereum.org/#activate-arbitrum-stylus"],
       "questbook_link": "https://arbitrum.questbook.app/dashboard/?proposalId=67776456faef5017a805ee6a&isRenderingProposalBody=true&chainId=10&role=builder&grantId=671a105a2047c84bb8a73770",
       "oso_slug": "remix-ethereum",
       "status": "approved"
@@ -355,19 +402,30 @@
     {
       "title": "Stateful fuzzing of Stylus programs using Medusa",
       "funding_ask": "415000 ARB",
-      "submitted_on": null,
+      "submitted_on": "13 Jan 2025",
       "milestones": [],
-      "project_links": null,
+      "project_links": ["https://www.trailofbits.com"],
       "questbook_link": "https://arbitrum.questbook.app/dashboard/?proposalId=67853d8eea95304673ba4244&isRenderingProposalBody=true&chainId=10&role=builder&grantId=671a105a2047c84bb8a73770",
       "oso_slug": "trailofbits",
       "status": "cancelled"
     },
     {
-      "title": "StylusPort",
+      "title": "StylusPort: Stylus migration framework from SVM and Solana programs",
       "funding_ask": "200000 ARB",
-      "submitted_on": null,
-      "milestones": [],
-      "project_links": null,
+      "submitted_on": "05 Jan 2025",
+      "milestones": [
+        {"name": "StylusPort-MVP", "amount": "40000 ARB", "deadline": "29 Mar 2025"},
+        {"name": "StylusPort-Solana", "amount": "80000 ARB", "deadline": "29 Apr 2025"},
+        {"name": "StylusPort-Tooling", "amount": "60000 ARB", "deadline": "14 Jun 2025"},
+        {"name": "StylusPort-Community", "amount": "20000 ARB", "deadline": "29 Sep 2025"}
+      ],
+      "project_links": [
+        "https://www.range.org",
+        "https://www.scanworks.org",
+        "https://github.com/teamscanworks",
+        "https://github.com/rangesecurity",
+        "https://twitter.com/RangeSecurity"
+      ],
       "questbook_link": "https://arbitrum.questbook.app/dashboard/?proposalId=677aa3258f4a6bf405de8e31&isRenderingProposalBody=true&chainId=10&role=builder&grantId=671a105a2047c84bb8a73770",
       "oso_slug": "stylusport-teamscanworks",
       "status": "approved"
@@ -375,10 +433,20 @@
     {
       "title": "Stylus SDK: Building a AssemblyScript to WebAssembly Solution",
       "funding_ask": "200000 ARB",
-      "submitted_on": null,
-      "milestones": [],
-      "project_links": ["https://wakeuplabs.com"],
-  
+      "submitted_on": "24 Dec 2024",
+      "milestones": [
+        {"name": "Set up fee", "amount": "49000 ARB", "deadline": "27 Feb 2025"},
+        {"name": "Research and deep feasibility analysis", "amount": "12000 ARB", "deadline": "20 Mar 2025"},
+        {"name": "Core development – setting the foundation", "amount": "12000 ARB", "deadline": "13 Apr 2025"},
+        {"name": "Core development – feature implementation", "amount": "72000 ARB", "deadline": "28 Jul 2025"},
+        {"name": "Core development – pre-QA refinements", "amount": "24000 ARB", "deadline": "28 Aug 2025"},
+        {"name": "Testing, QA and bug fixing", "amount": "21840 ARB", "deadline": "26 Sep 2025"}
+      ],
+      "project_links": [
+        "https://drive.google.com/file/d/1k_2vazUktnIC20yaAIQiTDjVFkTsBbBRYU/view?usp=sharing",
+        "https://drive.google.com/file/d/18TEauQyZKx1-AkP2gdShqVpQVSFNfI2/view?usp=sharing",
+        "https://drive.google.com/file/d/IqKFtHht1zpo5vULyS9awwLs3FqUV0yD/view?usp=sharing"
+      ],
       "questbook_link": "https://arbitrum.questbook.app/dashboard/?proposalId=676a4aaa8f4a6bf4057cae7b&isRenderingProposalBody=true&chainId=10&role=builder&grantId=671a105a2047c84bb8a73770",
       "oso_slug": "wakeuplabs",
       "status": "approved"
@@ -386,11 +454,18 @@
     {
       "title": "Sylow",
       "funding_ask": "700000 ARB",
-      "submitted_on": null,
+      "submitted_on": "14 Nov 2024",
       "milestones": [],
-      "project_links": null,
+      "project_links": [
+        "https://github.com/warlock-labs/sylow",
+        "https://github.com/warlock-labs",
+        "https://github.com/warlock-labs/solbls",
+        "https://github.com/warlock-labs/dimensionals",
+        "https://github.com/warlock-labs/electrologica",
+        "https://twitter.com/warlock_xyz/status/183317361998556576"
+      ],
       "questbook_link": "https://arbitrum.questbook.app/dashboard/?grantId=671a105a2047c84bb8a73770&chainId=10&role=builder&proposalId=6736959690449961f536371f&isRenderingProposalBody=true",
       "oso_slug": "sylow-warlock-labs",
       "status": "cancelled"
     }
-  ]
+]
