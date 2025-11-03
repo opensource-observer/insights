@@ -104,21 +104,6 @@
       "status": "approved"
     },
     {
-      "title": "Stylus AI Context Provider",
-      "funding_ask": "75000 ARB",
-      "submitted_on": "12 Jan 2025",
-      "milestones": [
-        {"name": "Automation & prompt templates", "amount": "30000 ARB", "deadline": "14 Apr 2025"},
-        {"name": "Ten integrations", "amount": "15000 ARB", "deadline": "14 Jul 2025"},
-        {"name": "Indexing/memory service", "amount": "15000 ARB", "deadline": "14 Aug 2025"},
-        {"name": "Ongoing integrations", "amount": "15000 ARB", "deadline": "14 Sep 2025"}
-      ],
-      "project_links": ["https://github.com/contextprotocol", "https://github.com/stylus-ai"],
-      "questbook_link": null,
-      "oso_slug": null,
-      "status": null
-    },
-    {
       "title": "Passport XYZ: Multi-Wallet Identity Proofs for Sybil Resistance",
       "funding_ask": "115000 ARB",
       "submitted_on": "17 Dec 2024",
@@ -143,7 +128,7 @@
         {"name": "Marketing & adoption", "amount": "52100 ARB"},
         {"name": "Feedback integration", "amount": "52100 ARB"}
       ],
-      "project_links": ["https://runtimeverification.com", "https://github.com/runtimeverification/ks", "https://twitter.com/rv_inc"],
+      "project_links": ["https://runtimeverification.com", "https://github.com/runtimeverification/komet", "https://twitter.com/rv_inc"],
       "questbook_link": "https://arbitrum.questbook.app/dashboard/?grantId=671a105a2047c84bb8a73770&isRenderingProposalBody=true&chainId=10&proposalId=674fb60d902931f05c15e3c9&role=builder",
       "oso_slug": "runtimeverification",
       "status": "approved"
@@ -190,7 +175,7 @@
         {"name": "Mid-program reviews", "amount": "20000 ARB", "deadline": "30 Aug 2025"},
         {"name": "End-of-program report", "amount": "40000 ARB", "deadline": "29 Jan 2026"}
       ],
-      "project_links": ["https://opensourceobserver.org", "https://github.com/opensource-observer", "https://twitter.com/osobserver", "https://warpcast.com/~/channels/oso", "https://opensourceobserver.org/discord"],
+      "project_links": ["https://opensource.observer", "https://github.com/opensource-observer", "https://twitter.com/osobserver", "https://warpcast.com/~/channels/oso", "https://opensourceobserver.org/discord"],
       "questbook_link": "https://arbitrum.questbook.app/dashboard/?grantId=671a105a2047c84bb8a73770&chainId=10&role=builder&proposalId=677e8f60faef5017a83df833&isRenderingProposalBody=true",
       "oso_slug": "opensource-observer",
       "status": "approved"
@@ -259,7 +244,7 @@
         {"name": "Foundry feature parity", "amount": "20000 ARB", "deadline": "30 Jul 2025"},
         {"name": "Long-term support (6 months)", "amount": "20000 ARB"}
       ],
-      "project_links": ["https://github.com/bernard-wagner"],
+      "project_links": ["https://github.com/iosiro/arbos-foundry", "https://github.com/iosiro/arbos-foundry-mono"],
       "questbook_link": "https://arbitrum.questbook.app/dashboard/?grantId=671a105a2047c84bb8a73770&chainId=10&role=builder&proposalId=673ddbb490449961f5882a34&isRenderingProposalBody=true",
       "oso_slug": "arbos-foundry-bernard-wagner",
       "status": "approved"
@@ -274,7 +259,7 @@
         {"name": "Growth of platform & feature addition", "amount": "35000 ARB"},
         {"name": "Extended growth of platform & feature addition", "amount": "35000 ARB"}
       ],
-      "project_links": ["https://9lives.so"],
+      "project_links": ["https://9lives.so", "https://github.com/fluidity-money/9lives.so/"],
       "questbook_link": "https://arbitrum.questbook.app/dashboard/?grantId=671a105a2047c84bb8a73770&chainId=10&role=builder&proposalId=677aeb51faef5017a81ba302&isRenderingProposalBody=true",
       "oso_slug": "9lives-fluidity-money",
       "status": "approved"
@@ -290,7 +275,7 @@
         {"name": "Copilot implementation", "amount": "44000 ARB", "deadline": "29 Nov 2025"},
         {"name": "Feedback & documentation", "amount": "22000 ARB", "deadline": "30 Dec 2025"}
       ],
-      "project_links": ["https://www.arc.fun", "https://playgrounds.network", "https://www.emberai.xyz"],
+      "project_links": ["https://www.arc.fun", "https://playgrounds.network", "https://www.emberai.xyz", "https://github.com/0xPlaygrounds"],
       "questbook_link": "https://arbitrum.questbook.app/dashboard/?grantId=671a105a2047c84bb8a73770&chainId=10&role=builder&proposalId=6785958c80bdbe26615996a4&isRenderingProposalBody=true",
       "oso_slug": "angel",
       "status": "approved"
@@ -306,7 +291,7 @@
         {"name": "Transaction tracing for block explorers", "amount": "50000 ARB", "deadline": "30 Jun 2025"},
         {"name": "Production readiness", "amount": "50000 ARB", "deadline": "31 Jul 2025"}
       ],
-      "project_links": ["https://youtu.be/vXHmZtmncrQ"],
+      "project_links": ["https://youtu.be/vXHmZtmncrQ", "https://github.com/metacraft-labs/codetracer"],
       "questbook_link": "https://arbitrum.questbook.app/dashboard/?grantId=671a105a2047c84bb8a73770&isRenderingProposalBody=true&chainId=10&proposalId=6767477ffaef5017a89b48a2&role=builder",
       "oso_slug": "codetracer-metacraft-labs",
       "status": "approved"
@@ -342,7 +327,7 @@
       "project_links": [
         "https://enclave.gg",
         "https://docs.enclave.gg/whitepaper",
-        "https://github.com/gnosisguild",
+        "https://github.com/gnosisguild/enclave",
         "https://twitter.com/EnclaveE3",
         "https://warpcast.com/EnclaveE3",
         "https://crisp.enclave.gg",
@@ -351,16 +336,6 @@
       "questbook_link": "https://arbitrum.questbook.app/dashboard/?grantId=671a105a2047c84bb8a73770&chainId=10&role=builder&proposalId=677a9d22faef5017a81805e3&isRenderingProposalBody=true",
       "oso_slug": "enclave-gnosisguild",
       "status": "approved"
-    },
-    {
-      "title": "Fiet Protocol",
-      "funding_ask": "100000 ARB",
-      "submitted_on": null,
-      "milestones": [],
-      "project_links": null,
-      "questbook_link": "https://arbitrum.questbook.app/dashboard/?proposalId=677a5e458f4a6bf405dc2026&isRenderingProposalBody=true&chainId=10&role=builder&grantId=671a105a2047c84bb8a73770",
-      "oso_slug": "fiet-protocol-usherlabs",
-      "status": "cancelled"
     },
     {
       "title": "Nuffle Labs (More Markets)",
@@ -377,6 +352,7 @@
       "project_links": [
         "https://nuff.tech/#home",
         "https://x.com/nufflelabs",
+        "https://github.com/Nuffle-Labs",
         "https://docs.google.com/document/d/1HTOqXcX8yiGxYObFlr2HidHlvqRpBR9RfltrP2Bk/edit?tab=0",
         "https://docs.google.com/presentation/d/15CnUdWuqx9efSRpRu9R5EzOW0rz8bnALQs7MHyZBc/edit#slide=id.g3168b3b4ff_0_439"
       ],
@@ -443,6 +419,7 @@
         {"name": "Testing, QA and bug fixing", "amount": "21840 ARB", "deadline": "26 Sep 2025"}
       ],
       "project_links": [
+        "https://github.com/wakeuplabs-io",
         "https://drive.google.com/file/d/1k_2vazUktnIC20yaAIQiTDjVFkTsBbBRYU/view?usp=sharing",
         "https://drive.google.com/file/d/18TEauQyZKx1-AkP2gdShqVpQVSFNfI2/view?usp=sharing",
         "https://drive.google.com/file/d/IqKFtHht1zpo5vULyS9awwLs3FqUV0yD/view?usp=sharing"
