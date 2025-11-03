@@ -248,5 +248,149 @@
       "questbook_link": "https://arbitrum.questbook.app/dashboard/?grantId=671a105a2047c84bb8a73770&chainId=10&role=builder&proposalId=673ddbb490449961f5882a34&isRenderingProposalBody=true",
       "oso_slug": "arbos-foundry-bernard-wagner",
       "status": "approved"
+    },
+    {
+      "title": "9 Lives",
+      "funding_ask": "200000 ARB",
+      "submitted_on": "05 Jan 2025",
+      "milestones": [
+        {"name": "Prediction market resolved using AI agent", "amount": "60000 ARB", "deadline": "31 Mar 2025"},
+        {"name": "AI agents participating on 9 Lives", "amount": "70000 ARB", "deadline": "30 Jun 2025"},
+        {"name": "Growth of platform & feature addition", "amount": "35000 ARB"},
+        {"name": "Extended growth and feature addition", "amount": "35000 ARB"}
+      ],
+      "project_links": ["https://9lives.so"],
+      "questbook_link": "https://arbitrum.questbook.app/dashboard/?grantId=671a105a2047c84bb8a73770&chainId=10&role=builder&proposalId=677aeb51faef5017a81ba302&isRenderingProposalBody=true",
+      "oso_slug": "9lives-fluidity-money",
+      "status": "approved"
+    },
+    {
+      "title": "Angel",
+      "funding_ask": "220000 ARB",
+      "submitted_on": "13 Jan 2025",
+      "milestones": [
+        {"name": "Data aggregation & annotation", "amount": "44000 ARB", "deadline": "29 Apr 2025"},
+        {"name": "Documentation chatbot", "amount": "44000 ARB", "deadline": "29 Jun 2025"},
+        {"name": "Coding chatbot", "amount": "66000 ARB", "deadline": "29 Sep 2025"},
+        {"name": "Copilot implementation", "amount": "44000 ARB", "deadline": "29 Nov 2025"},
+        {"name": "Feedback & documentation", "amount": "22000 ARB", "deadline": "30 Dec 2025"}
+      ],
+      "project_links": ["https://www.arc.fun/", "https://playgrounds.network/", "https://www.emberai.xyz/"],
+      "questbook_link": "https://arbitrum.questbook.app/dashboard/?grantId=671a105a2047c84bb8a73770&chainId=10&role=builder&proposalId=6785958c80bdbe26615996a4&isRenderingProposalBody=true",
+      "oso_slug": "angel",
+      "status": "approved"
+    },
+    {
+      "title": "CodeTracer",
+      "funding_ask": "250000 ARB",
+      "submitted_on": "21 Dec 2024",
+      "milestones": [
+        {"name": "CodeTracer is open-sourced", "amount": "25000 ARB", "deadline": "09 Feb 2025"},
+        {"name": "Basic Stylus debugging support", "amount": "50000 ARB", "deadline": "28 Feb 2025"},
+        {"name": "VS Code plugin", "amount": "75000 ARB", "deadline": "30 Jun 2025"},
+        {"name": "Transaction tracing for block explorers", "amount": "50000 ARB", "deadline": "30 Jun 2025"},
+        {"name": "Production readiness", "amount": "50000 ARB", "deadline": "31 Jul 2025"}
+      ],
+      "project_links": ["https://youtu.be/vXHmZtmncrQ"],
+      "questbook_link": "https://arbitrum.questbook.app/dashboard/?grantId=671a105a2047c84bb8a73770&isRenderingProposalBody=true&chainId=10&proposalId=6767477ffaef5017a89b48a2&role=builder",
+      "oso_slug": "codetracer-metacraft-labs",
+      "status": "approved"
+    },
+    {
+      "title": "Ember: LP Optimization with Volatility-based Dynamic Fees",
+      "funding_ask": "60000 ARB",
+      "submitted_on": null,
+      "milestones": [],
+      "project_links": null,
+      "questbook_link": "https://arbitrum.questbook.app/dashboard/?grantId=671a105a2047c84bb8a73770&isRenderingProposalBody=true&chainId=10&proposalId=677b6194faef5017a81d9e61&role=builder",
+      "oso_slug": "ember-shahankhatch",
+      "status": "cancelled"
+    },
+    {
+      "title": "Enclave",
+      "funding_ask": "450000 ARB",
+      "submitted_on": "05 Jan 2025",
+      "milestones": [
+        {"name": "Implementation of Stylus-based compute provider", "amount": "100000 ARB", "deadline": "31 Mar 2025"},
+        {"name": "Implementation of Enclave to Arbitrum", "amount": "75000 ARB", "deadline": "30 Jun 2025"},
+        {"name": "Test and audit", "amount": "75000 ARB", "deadline": "30 Sep 2025"},
+        {"name": "Deployment of Enclave to Arbitrum", "amount": "150000 ARB", "deadline": "30 Sep 2025"},
+        {"name": "Cultivation of developer & application ecosystem", "amount": "50000 ARB", "deadline": "30 Dec 2025"}
+      ],
+      "project_links": ["https://enclave.gg/", "https://docs.enclave.gg/whitepaper", "https://github.com/gnosisguild", "https://x.com/EnclaveE3", "https://warpcast.com/EnclaveE3", "https://crisp.enclave.gg/", "https://t.me/enclave_e3"],
+      "questbook_link": "https://arbitrum.questbook.app/dashboard/?grantId=671a105a2047c84bb8a73770&chainId=10&role=builder&proposalId=677a9d22faef5017a81805e3&isRenderingProposalBody=true",
+      "oso_slug": "enclave-gnosisguild",
+      "status": "approved"
+    },
+    {
+      "title": "Fiet Protocol",
+      "funding_ask": "100000 ARB",
+      "submitted_on": null,
+      "milestones": [],
+      "project_links": null,
+      "questbook_link": "https://arbitrum.questbook.app/dashboard/?proposalId=677a5e458f4a6bf405dc2026&isRenderingProposalBody=true&chainId=10&role=builder&grantId=671a105a2047c84bb8a73770",
+      "oso_slug": "fiet-protocol-usherlabs",
+      "status": "cancelled"
+    },
+    {
+      "title": "More Markets (Nuffle Labs)",
+      "funding_ask": "460000 ARB",
+      "submitted_on": null,
+      "milestones": [],
+      "project_links": null,
+      "questbook_link": "https://arbitrum.questbook.app/dashboard/?grantId=671a105a2047c84bb8a73770&isRenderingProposalBody=true&chainId=10&proposalId=675080fe90449961f5919181&role=builder",
+      "oso_slug": "nuffle-labs",
+      "status": "approved"
+    },
+    {
+      "title": "Remix IDE for Stylus",
+      "funding_ask": "75000 ARB",
+      "submitted_on": null,
+      "milestones": [],
+      "project_links": ["https://remix.ethereum.org"],
+      "questbook_link": "https://arbitrum.questbook.app/dashboard/?proposalId=67776456faef5017a805ee6a&isRenderingProposalBody=true&chainId=10&role=builder&grantId=671a105a2047c84bb8a73770",
+      "oso_slug": "remix-ethereum",
+      "status": "approved"
+    },
+    {
+      "title": "Stateful fuzzing of Stylus programs using Medusa",
+      "funding_ask": "415000 ARB",
+      "submitted_on": null,
+      "milestones": [],
+      "project_links": null,
+      "questbook_link": "https://arbitrum.questbook.app/dashboard/?proposalId=67853d8eea95304673ba4244&isRenderingProposalBody=true&chainId=10&role=builder&grantId=671a105a2047c84bb8a73770",
+      "oso_slug": "trailofbits",
+      "status": "cancelled"
+    },
+    {
+      "title": "StylusPort",
+      "funding_ask": "200000 ARB",
+      "submitted_on": null,
+      "milestones": [],
+      "project_links": null,
+      "questbook_link": "https://arbitrum.questbook.app/dashboard/?proposalId=677aa3258f4a6bf405de8e31&isRenderingProposalBody=true&chainId=10&role=builder&grantId=671a105a2047c84bb8a73770",
+      "oso_slug": "stylusport-teamscanworks",
+      "status": "approved"
+    },
+    {
+      "title": "Stylus SDK: Building a AssemblyScript to WebAssembly Solution",
+      "funding_ask": "200000 ARB",
+      "submitted_on": null,
+      "milestones": [],
+      "project_links": ["https://wakeuplabs.com"],
+  
+      "questbook_link": "https://arbitrum.questbook.app/dashboard/?proposalId=676a4aaa8f4a6bf4057cae7b&isRenderingProposalBody=true&chainId=10&role=builder&grantId=671a105a2047c84bb8a73770",
+      "oso_slug": "wakeuplabs",
+      "status": "approved"
+    },
+    {
+      "title": "Sylow",
+      "funding_ask": "700000 ARB",
+      "submitted_on": null,
+      "milestones": [],
+      "project_links": null,
+      "questbook_link": "https://arbitrum.questbook.app/dashboard/?grantId=671a105a2047c84bb8a73770&chainId=10&role=builder&proposalId=6736959690449961f536371f&isRenderingProposalBody=true",
+      "oso_slug": "sylow-warlock-labs",
+      "status": "cancelled"
     }
   ]
