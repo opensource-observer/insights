@@ -86,7 +86,7 @@
       "project_links": ["https://thirdweb.com", "https://github.com/thirdweb-dev", "https://portal.thirdweb.com", "https://twitter.com/thirdweb", "https://youtube.com/thirdweb"],
       "questbook_link": "https://arbitrum.questbook.app/dashboard/?proposalId=6733d9e7902931f05cac4da9&isRenderingProposalBody=true&chainId=10&role=builder&grantId=671a105a2047c84bb8a73770",
       "oso_slug": "third-web",
-      "status": "cancelled"
+      "status": "approved"
     },
     {
       "title": "Add Stylus as a Solang compiler target",
