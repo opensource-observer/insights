@@ -246,7 +246,7 @@
       ],
       "project_links": ["https://github.com/iosiro/arbos-foundry", "https://github.com/iosiro/arbos-foundry-mono"],
       "questbook_link": "https://arbitrum.questbook.app/dashboard/?grantId=671a105a2047c84bb8a73770&chainId=10&role=builder&proposalId=673ddbb490449961f5882a34&isRenderingProposalBody=true",
-      "oso_slug": "arbos-foundry-bernard-wagner",
+      "oso_slug": "iosiro",
       "status": "approved"
     },
     {
@@ -261,11 +261,11 @@
       ],
       "project_links": ["https://9lives.so", "https://github.com/fluidity-money/9lives.so/"],
       "questbook_link": "https://arbitrum.questbook.app/dashboard/?grantId=671a105a2047c84bb8a73770&chainId=10&role=builder&proposalId=677aeb51faef5017a81ba302&isRenderingProposalBody=true",
-      "oso_slug": "9lives-fluidity-money",
+      "oso_slug": "fluidity-money",
       "status": "approved"
     },
     {
-      "title": "Angel",
+      "title": "Angel (by 0xPlaygrounds)",
       "funding_ask": "220000 ARB",
       "submitted_on": "13 Jan 2025",
       "milestones": [
@@ -277,7 +277,7 @@
       ],
       "project_links": ["https://www.arc.fun", "https://playgrounds.network", "https://www.emberai.xyz", "https://github.com/0xPlaygrounds"],
       "questbook_link": "https://arbitrum.questbook.app/dashboard/?grantId=671a105a2047c84bb8a73770&chainId=10&role=builder&proposalId=6785958c80bdbe26615996a4&isRenderingProposalBody=true",
-      "oso_slug": "angel",
+      "oso_slug": "0xplaygrounds",
       "status": "approved"
     },
     {
@@ -372,7 +372,7 @@
       ],
       "project_links": ["https://remix.ethereum.org/#activate-arbitrum-stylus"],
       "questbook_link": "https://arbitrum.questbook.app/dashboard/?proposalId=67776456faef5017a805ee6a&isRenderingProposalBody=true&chainId=10&role=builder&grantId=671a105a2047c84bb8a73770",
-      "oso_slug": "remix-ethereum",
+      "oso_slug": "welldonestudio",
       "status": "approved"
     },
     {
@@ -403,7 +403,7 @@
         "https://twitter.com/RangeSecurity"
       ],
       "questbook_link": "https://arbitrum.questbook.app/dashboard/?proposalId=677aa3258f4a6bf405de8e31&isRenderingProposalBody=true&chainId=10&role=builder&grantId=671a105a2047c84bb8a73770",
-      "oso_slug": "stylusport-teamscanworks",
+      "oso_slug": "teamscanworks",
       "status": "approved"
     },
     {
