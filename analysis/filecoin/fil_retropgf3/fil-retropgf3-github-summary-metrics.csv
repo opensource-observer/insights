@@ -1,0 +1,122 @@
+Project Name,GitHub URL,Repo Maintainer,Language,First Activity Time,Last Activity Time,Age Months,Has Packages,Package Count,Release Count,Star Count,Fork Count,Contributor Count,Forks (6 Months),Stars (6 Months),Contributor Count (6 Months),Avg Monthly Active Devs (6 Months)
+Blockscout Open Source Filecoin Explorer,https://github.com/blockscout/blockscout,blockscout,Elixir,2018-01-12,2025-11-05,93.0,True,1.0,67.0,4259.0,2873.0,2626.0,108.0,169.0,75.0,10.5
+IPFS Desktop and Companion,https://github.com/ipfs/ipfs-desktop,ipfs,JavaScript,2015-05-30,2025-11-05,125.0,True,1.0,49.0,6406.0,897.0,554.0,11.0,126.0,11.0,1.7
+go-libp2p,https://github.com/libp2p/go-libp2p,libp2p,Go,2015-09-30,2025-11-05,121.0,True,6.0,140.0,6577.0,1205.0,512.0,46.0,158.0,37.0,6.8
+FIP Editors - Filecoin Improvement Proposal Governance,https://github.com/filecoin-project/fips,filecoin-project,Jupyter Notebook,2019-04-03,2025-10-30,78.0,False,0.0,0.0,338.0,186.0,136.0,4.0,4.0,16.0,6.0
+Helia,https://github.com/ipfs/helia,ipfs,TypeScript,2022-10-25,2025-11-05,36.0,True,21.0,321.0,1238.0,134.0,129.0,10.0,82.0,12.0,2.7
+Boost,https://github.com/filecoin-project/boost,filecoin-project,Go,2021-10-18,2025-10-31,48.0,True,2.0,62.0,120.0,76.0,98.0,2.0,3.0,4.0,0.8
+Forest Archive,https://github.com/chainsafe/forest,chainsafe,Rust,2019-11-11,2025-11-05,71.0,True,24.0,65.0,682.0,181.0,95.0,11.0,20.0,15.0,6.2
+Forest,https://github.com/chainsafe/forest,chainsafe,Rust,2019-11-11,2025-11-05,71.0,True,24.0,65.0,682.0,181.0,95.0,11.0,20.0,15.0,6.2
+Boxo and Kubo,https://github.com/ipfs/boxo,ipfs,Go,2022-11-28,2025-10-30,35.0,True,5.0,48.0,265.0,138.0,88.0,16.0,17.0,15.0,5.2
+py-libp2p: The Python libp2p Stack for Filecoin & IPFS,https://github.com/libp2p/py-libp2p,libp2p,Python,2018-09-17,2025-11-05,85.0,True,2.0,3.0,569.0,189.0,87.0,28.0,31.0,40.0,14.3
+Filecoin Client Implementation - Venus,https://github.com/filecoin-project/venus,filecoin-project,Go,2017-12-05,2025-11-05,95.0,True,3.0,97.0,2059.0,482.0,85.0,9.0,8.0,11.0,3.8
+drand - the distributed randomness beacon project powering the League of Entropy and Filecoin Leader Election,https://github.com/drand/drand,drand,Go,2017-08-18,2025-11-02,98.0,True,4.0,81.0,785.0,126.0,77.0,6.0,17.0,4.0,1.3
+libp2p Community Architecting and Infra Management,https://github.com/libp2p/libp2p,libp2p,,2016-06-18,2025-11-03,112.0,True,1.0,0.0,2860.0,281.0,74.0,9.0,82.0,3.0,0.3
+Axelar Network,https://github.com/axelarnetwork/axelar-contract-deployments,axelarnetwork,JavaScript,2023-05-22,2025-11-05,29.0,True,2.0,6.0,15.0,29.0,46.0,1.0,1.0,30.0,13.0
+Curio Snark Market,https://github.com/filecoin-project/curio,filecoin-project,Go,2024-05-24,2025-11-05,17.0,True,1.0,13.0,44.0,32.0,44.0,9.0,7.0,23.0,7.7
+Curio Smart Cordon & Restart System,https://github.com/filecoin-project/curio,filecoin-project,Go,2024-05-24,2025-11-05,17.0,True,1.0,13.0,44.0,32.0,44.0,9.0,7.0,23.0,7.7
+Curio Storage,https://github.com/filecoin-project/curio,filecoin-project,Go,2024-05-24,2025-11-05,17.0,True,1.0,13.0,44.0,32.0,44.0,9.0,7.0,23.0,7.7
+Open Source Observer (OSO),https://github.com/opensource-observer/oso,opensource-observer,Python,2023-07-25,2025-11-05,27.0,True,2.0,0.0,107.0,36.0,42.0,10.0,8.0,18.0,8.8
+Lily: blockchain data extraction for Filecoin,https://github.com/filecoin-project/lily,filecoin-project,Go,2020-09-09,2025-10-28,61.0,True,2.0,39.0,49.0,47.0,40.0,,,2.0,0.8
+Drips,https://github.com/drips-network/app,drips-network,Svelte,2022-09-12,2025-11-04,37.0,False,0.0,0.0,47.0,22.0,30.0,3.0,3.0,9.0,2.2
+Old Faithful,https://github.com/rpcpool/yellowstone-faithful,rpcpool,Go,2023-05-12,2025-10-31,29.0,True,1.0,36.0,159.0,40.0,29.0,7.0,22.0,12.0,3.3
+Filecoin Deal Tool - Droplet,https://github.com/ipfs-force-community/droplet,ipfs-force-community,Go,2021-04-26,2025-10-21,53.0,True,1.0,26.0,23.0,21.0,19.0,1.0,1.0,5.0,1.5
+PLDG Dashboard: Developer Analytics for the Protocol Labs Dev Guild,https://github.com/seetadev/pldg-dashboard,seetadev,TypeScript,2024-11-15,2025-11-05,11.0,False,0.0,0.0,8.0,27.0,17.0,11.0,2.0,14.0,2.5
+filsnap,https://github.com/filecoin-project/filsnap,filecoin-project,TypeScript,2023-06-12,2025-10-29,28.0,True,3.0,53.0,21.0,12.0,16.0,,3.0,3.0,0.7
+FIL-B (FIL Builders) DX and Community,https://github.com/fil-builders/fil-frame,fil-builders,TypeScript,2024-09-10,2025-08-28,11.0,False,0.0,0.0,19.0,14.0,16.0,,3.0,1.0,0.2
+Lighthouse,https://github.com/lighthouse-web3/lighthouse-package,lighthouse-web3,TypeScript,2021-11-19,2025-11-03,47.0,True,3.0,21.0,18.0,13.0,15.0,2.0,,6.0,1.2
+Multichain Storage,https://github.com/filswan/multi-chain-storage,filswan,Vue,2022-03-14,2025-11-04,43.0,False,0.0,4.0,8.0,12.0,13.0,1.0,,1.0,0.2
+Metrics for the Filecoin P2P network health,https://github.com/probe-lab/website,probe-lab,HTML,2023-03-22,2025-11-06,31.0,False,0.0,0.0,2.0,6.0,13.0,,,5.0,2.2
+Forest Explorer,https://github.com/chainsafe/forest-explorer,chainsafe,,2024-07-18,2025-09-30,14.0,False,0.0,1.0,,,13.0,,,,
+4EVERLAND,https://github.com/4everland/dashboard-website,4everland,Vue,2022-03-28,2025-10-16,42.0,False,0.0,0.0,5.0,18.0,9.0,1.0,,3.0,1.7
+Filecoin Data Portal,https://github.com/davidgasquez/filecoin-data-portal,davidgasquez,Python,2023-06-13,2025-11-05,28.0,False,0.0,0.0,30.0,9.0,9.0,,2.0,1.0,1.0
+Root Key Holder management portal,https://github.com/fidlabs/rkh-frontend,fidlabs,TypeScript,2025-01-27,2025-10-27,8.0,False,0.0,0.0,0.0,5.0,9.0,4.0,,7.0,3.0
+UCAN,https://github.com/ucan-wg/.github,ucan-wg,,2022-04-10,2025-07-16,39.0,False,0.0,0.0,1.0,2.0,9.0,1.0,,2.0,0.3
+IPFS Public Utilities,https://github.com/ipshipyard/waterworks-community,ipshipyard,,2023-05-05,2025-11-03,29.0,False,0.0,0.0,1.0,0.0,8.0,,,1.0,
+Chain.Love,https://github.com/glifio/filecoin-iac,glifio,HCL,2022-07-18,2025-09-30,38.0,False,0.0,0.0,13.0,2.0,8.0,,,1.0,0.3
+Storacha-Solana-SDK,https://github.com/seetadev/storacha-solana-sdk,seetadev,,2025-07-19,2025-09-18,1.0,True,1.0,0.0,,,8.0,,,,
+Web3 Billing & Invoicing System – Building Verifiable Workflows on Filecoin for Digital Public Goods,https://github.com/seetadev/govtinvoice,seetadev,JavaScript,2023-09-10,2025-11-03,25.0,False,0.0,0.0,18.0,43.0,8.0,7.0,,6.0,0.8
+Filliquid,https://github.com/fill-lab/fill,fill-lab,Solidity,2023-01-21,2024-11-22,22.0,False,0.0,0.0,4.0,2.0,7.0,,,,
+Beryx Filecoin Explorer,https://github.com/zondax/web-beryx-explorer,zondax,TypeScript,2024-02-22,2025-11-03,20.0,False,0.0,1.0,7.0,1.0,6.0,,,,
+Filscan Explorer,https://github.com/ipfs-force-community/filscan-frontend,ipfs-force-community,,2020-02-20,2021-08-31,18.0,False,0.0,0.0,,,6.0,,,,
+Spacescope: API service for the Filecoin ecosystem,https://github.com/spacescope/meta-task,spacescope,Go,2022-11-01,2025-10-28,35.0,False,0.0,0.0,3.0,2.0,6.0,1.0,,2.0,0.7
+Filscan Explorer,https://github.com/ipfs-force-community/filscan-frontend,ipfs-force-community,,2025-01-07,2025-01-07,0.0,False,0.0,0.0,,,6.0,,,,
+Filecoin Community Service -VenusHub,https://github.com/ipfs-force-community/venus-hub,ipfs-force-community,,2022-03-07,2025-09-22,42.0,False,0.0,0.0,0.0,2.0,5.0,,,,
+GainForest: The world’s first community-owned data commons for nature impact,https://github.com/gainforest/ecocertain,gainforest,TypeScript,2024-10-27,2025-11-05,12.0,False,0.0,1.0,10.0,5.0,5.0,,2.0,3.0,2.2
+Curio Dashboard,https://github.com/web3tea/curio-dashboard,web3tea,Vue,2024-08-27,2025-10-17,13.0,True,1.0,2.0,20.0,4.0,5.0,1.0,1.0,4.0,1.7
+Curio APT Repository (Filecoin APT),https://github.com/filecoin-project/apt,filecoin-project,Shell,2024-04-17,2025-10-13,17.0,False,0.0,0.0,0.0,1.0,5.0,,,2.0,0.8
+Secured Finance ,https://github.com/secured-finance/stablecoin-contracts,secured-finance,JavaScript,2024-09-24,2025-11-03,13.0,False,0.0,0.0,4.0,6.0,5.0,4.0,1.0,3.0,1.3
+JZFS - Building Data Hub-and-Spoke Model with Filecoin,https://github.com/gitdataai/jzfs,gitdataai,TypeScript,2023-11-24,2025-11-04,23.0,False,0.0,0.0,110.0,12.0,4.0,,2.0,3.0,0.8
+MUSE,https://github.com/beaconlabs-io/muse,beaconlabs-io,TypeScript,2025-04-15,2025-10-31,6.0,False,0.0,0.0,2.0,0.0,4.0,,1.0,3.0,0.5
+iso-filecoin,https://github.com/hugomrdias/filecoin,hugomrdias,TypeScript,2023-10-30,2025-10-14,23.0,True,4.0,28.0,1.0,1.0,4.0,,,1.0,0.7
+MYRAD,https://github.com/argyporgy/myrad,argyporgy,TypeScript,2025-09-27,2025-11-05,1.0,False,0.0,0.0,23.0,3.0,3.0,,,3.0,0.5
+Filosign,https://github.com/filosign-dapp/core,filosign-dapp,TypeScript,2025-09-03,2025-11-05,2.0,False,0.0,0.0,0.0,0.0,3.0,,,,
+NanoDC Project,https://github.com/filsogoood/nanodcproject,filsogoood,CSS,2024-09-05,2025-10-30,13.0,False,0.0,0.0,1.0,1.0,2.0,1.0,,1.0,0.2
+MechaFIL-JAX,https://github.com/celtd/mechafil-jax,celtd,Jupyter Notebook,2024-01-08,2025-10-31,21.0,False,0.0,0.0,0.0,0.0,2.0,,,2.0,0.7
+Crossfi,https://github.com/crossfidao/crossfi,crossfidao,Solidity,2021-04-20,2024-12-22,44.0,False,0.0,0.0,0.0,0.0,2.0,,,,
+Filecoin FIPs Tracker,https://github.com/ipfs-force-community/janus,ipfs-force-community,TypeScript,2025-08-29,2025-10-27,1.0,False,0.0,0.0,0.0,0.0,2.0,,,2.0,0.3
+OP Medicine – Filecoin-Powered Healthcare Infrastructure,https://github.com/aspiringsecurity/emttr,aspiringsecurity,Python,2022-11-11,2025-11-02,35.0,False,0.0,0.0,13.0,6.0,2.0,,,,
+Safe on Filecoin,https://github.com/protofire/filecoin-wallet-web,protofire,TypeScript,2024-11-18,2025-11-03,11.0,False,0.0,0.0,0.0,0.0,2.0,,,1.0,0.3
+CIDgravity Nextcloud App,https://github.com/cidgravity/nextcloud-cidgravity-app,cidgravity,PHP,2024-06-13,2025-10-13,16.0,False,0.0,3.0,2.0,0.0,2.0,,,1.0,0.2
+CIDgravity Filecoin Gateway,https://github.com/cidgravity/gw,cidgravity,Go,2023-02-01,2025-10-13,32.0,False,0.0,0.0,28.0,3.0,2.0,2.0,,2.0,0.7
+boxo-starter-kit,https://github.com/gosuda/boxo-starter-kit,gosuda,Go,2025-09-11,2025-10-20,1.0,False,0.0,0.0,8.0,0.0,2.0,,5.0,2.0,0.3
+ETH-FIL swap,https://github.com/seetadev/eth-fil-swap,seetadev,,2025-08-03,2025-08-28,0.0,False,0.0,0.0,,,2.0,,,,
+chainfee,https://github.com/beck-8/chainfee,beck-8,Go,2023-07-20,2025-11-03,27.0,False,0.0,0.0,14.0,9.0,2.0,,1.0,2.0,0.7
+Cuview,https://github.com/strahe/cuview,strahe,,2025-08-28,2025-10-08,1.0,False,0.0,0.0,,,2.0,,,,
+Fil Implementers WG - Cross-Client Coordination and Governance,https://github.com/filozone/fil-implemeter-wg,filozone,,2024-11-03,2025-06-04,7.0,False,0.0,0.0,0.0,0.0,2.0,,,,
+OpenEdStore Decentralized Educational Storage Platform,https://github.com/filecoin-nigeria/education-outreach,filecoin-nigeria,,2024-11-04,2024-12-03,0.0,False,0.0,0.0,0.0,0.0,1.0,,,,
+Filecoin Nigeria,https://github.com/filecoin-nigeria/education-outreach,filecoin-nigeria,,2024-11-04,2024-12-03,0.0,False,0.0,0.0,0.0,0.0,1.0,,,,
+ND Labs,https://github.com/ndlabs-leo/rpgf2---ndlabs,ndlabs-leo,,2024-10-16,2024-11-24,1.0,False,0.0,0.0,0.0,0.0,1.0,,,,
+Filecoin Kenya Community,https://github.com/wengi-web/filecoin-kenya-community,wengi-web,,2024-11-12,2024-11-12,0.0,False,0.0,0.0,0.0,0.0,1.0,,,,
+FileScope AI: Blockchain-Powered Dataset Analysis Platform,https://github.com/filecoin-nigeria/education-outreach,filecoin-nigeria,,2024-11-04,2024-12-03,0.0,False,0.0,0.0,0.0,0.0,1.0,,,,
+"Filecoin Onchain Cloud (FOC) - Verifiable Storage, Retrieval, and Payments",https://github.com/filozone/retropgf-drips,filozone,,2024-12-20,2025-06-04,5.0,False,0.0,0.0,0.0,0.0,1.0,,,,
+OrbitChina,https://github.com/irmago/orbitchinarpgf,irmago,,2024-10-18,2024-11-24,1.0,False,0.0,0.0,0.0,0.0,1.0,,,,
+Filecoin Orbit Bootcamp Africa,https://github.com/filecoin-africa/education-outreach-repository,filecoin-africa,,2024-10-14,2024-12-03,1.0,False,0.0,0.0,0.0,0.0,1.0,,,,
+ETHNigeria  (BuiDL Africa – Empowering Web3 Adoption),https://github.com/filecoin-nigeria/education-outreach,filecoin-nigeria,,2024-11-04,2024-12-03,0.0,False,0.0,0.0,0.0,0.0,1.0,,,,
+Eth Transport – Decentralized Civic Infrastructure on Filecoin,https://github.com/aspiringsecurity/ethtransport,aspiringsecurity,,2022-09-21,2025-10-06,36.0,False,0.0,0.0,,,1.0,,,,
+"Oku.trade - Filecoin’s premier DeFi aggregator for deep liquidity, LP management and cross-chain interoperability - 0% fee swaps & bridges.",https://github.com/oku-trade/uniswap-sdks,oku-trade,TypeScript,2025-09-12,2025-10-29,1.0,False,0.0,0.0,1.0,0.0,1.0,,,1.0,0.2
+Filet Finance,https://github.com/filetfinance/filet_1.0,filetfinance,Solidity,2023-05-24,2025-11-03,29.0,False,0.0,0.0,0.0,0.0,1.0,,,,
+SealGuard,https://github.com/fmsticks2/sealguard,fmsticks2,TypeScript,2025-08-30,2025-11-03,2.0,False,0.0,0.0,0.0,0.0,1.0,,,1.0,0.2
+Filecoin Address Drainer,https://github.com/reiers/filecoin-drainer,reiers,Shell,2025-08-21,2025-10-13,1.0,False,0.0,0.0,0.0,0.0,1.0,,,1.0,0.2
+Beryx Filecoin API,https://github.com/zondax/rfpg-beryx-api,zondax,,2024-11-04,2024-11-21,0.0,False,0.0,0.0,0.0,0.0,1.0,,,,
+Filecoin Ledger App & Installation Hub,https://github.com/zondax/web-hub,zondax,,2024-11-04,2024-11-21,0.0,False,0.0,0.0,0.0,0.0,1.0,,,,
+FILCAPETOWN,https://github.com/filecoin-south-africa-community/impact,filecoin-south-africa-community,,2024-11-05,2024-12-03,0.0,False,0.0,0.0,0.0,0.0,1.0,,,,
+Filmint,https://github.com/ancients-research/retropgf,ancients-research,,2024-10-23,2024-11-21,0.0,False,0.0,0.0,0.0,0.0,1.0,,,1.0,
+FilDOS,https://github.com/arqoslabs/fildos,arqoslabs,,2025-08-18,2025-10-05,1.0,False,0.0,0.0,,,1.0,,,,
+Retrieval Tester,https://github.com/supercoolkayy/retrieval-tester,supercoolkayy,,2025-07-06,2025-07-06,0.0,False,0.0,0.0,,,1.0,,,,
+filecoin-checker,https://github.com/beck-8/filecoin-checker,beck-8,,2025-05-21,2025-07-06,1.0,True,1.0,2.0,,,1.0,,,,
+Asia-SPWG,https://github.com/asia-spwg/retropgf,asia-spwg,,2024-10-23,2024-11-21,0.0,False,0.0,0.0,0.0,0.0,1.0,,,,
+FilPunks,https://github.com/filpunks/retropgf,filpunks,,2024-10-23,2024-11-21,0.0,False,0.0,0.0,0.0,0.0,1.0,,,,
+Ancients Research,https://github.com/ancients-research/retropgf,ancients-research,,2024-10-23,2024-11-21,0.0,False,0.0,0.0,0.0,0.0,1.0,,,1.0,
+FilOz – Advancing the Filecoin Protocol,https://github.com/filozone/retropgf-drips,filozone,,2024-12-20,2025-06-04,5.0,False,0.0,0.0,0.0,0.0,1.0,,,,
+Guide To Filecoin - Easing the Transition to Filecoin.,https://github.com/kencloud-tech/kenlabs-education,kencloud-tech,HTML,2023-03-24,2025-01-20,21.0,False,0.0,0.0,0.0,0.0,1.0,,,,
+CalibrationNet Stability Project,https://github.com/reiers/the-calibrationnet-stability-project,reiers,,2025-01-06,2025-05-24,4.0,False,0.0,0.0,0.0,0.0,1.0,,,1.0,0.2
+FIL LAGOS,https://github.com/filecoin-nigeria/education-outreach,filecoin-nigeria,,2024-11-04,2024-12-03,0.0,False,0.0,0.0,0.0,0.0,1.0,,,,
+FIP 100 Research & Development,https://github.com/celtd/cel,celtd,,2024-01-08,2025-10-30,21.0,False,0.0,0.0,0.0,0.0,1.0,,,,
+WarmWeb,https://github.com/warmweb/warmweb-upload-dapp-try2,warmweb,TypeScript,2025-09-11,2025-09-22,0.0,False,0.0,1.0,0.0,0.0,1.0,,,1.0,0.2
+Eastore,https://github.com/eastore-project/fildeal,eastore-project,Go,2024-09-02,2025-02-21,5.0,True,1.0,0.0,0.0,3.0,1.0,,,,
+Filecoin Community Services,https://github.com/chainsafe/filecoin-community-services,chainsafe,,2024-10-31,2024-10-31,0.0,False,0.0,0.0,0.0,0.0,1.0,,,,
+Filecoin Orbit Uganda ,https://github.com/ahimbisibwebrian/orbit-community-uganda-,ahimbisibwebrian,,2025-09-23,2025-10-13,0.0,False,0.0,0.0,0.0,0.0,1.0,,,1.0,0.2
+The Epoch Clock,https://github.com/reiers/epochclock,reiers,JavaScript,2023-03-19,2025-10-13,30.0,False,0.0,0.0,1.0,0.0,1.0,,,,
+IPFS及Filecoin价值资讯传递（南山居士Hill）,https://github.com/hill168/filecoinhill,hill168,,2024-10-28,2024-12-25,1.0,False,0.0,0.0,0.0,0.0,1.0,,,,
+Silvi: IPFS-Powered Biodiversity Infrastructure,https://github.com/silviprotocol/silvi,silviprotocol,JavaScript,2023-07-28,2025-11-02,27.0,False,0.0,0.0,1.0,1.0,0.0,,,,
+B<>rder/ess Developers Program,https://github.com/b-rder-ess-dev-hub/borderlessdevprogram,b-rder-ess-dev-hub,,2023-11-01,2025-10-17,23.0,False,0.0,0.0,0.0,0.0,0.0,,,,
+FIL RetroPGF Data Analysis & Round Modeling,https://github.com/fil-retropgf/rpgf3,fil-retropgf,Jupyter Notebook,2025-09-25,2025-11-05,1.0,False,0.0,0.0,0.0,0.0,0.0,,,,
+BlockseBlock,https://github.com/sahilbsb/bsb,sahilbsb,,2025-10-13,2025-11-03,0.0,False,0.0,0.0,0.0,0.0,0.0,,,,
+ETHAccra,https://github.com/ethaccra/fil-retropgf,ethaccra,,2025-11-03,2025-11-03,0.0,False,0.0,0.0,0.0,0.0,0.0,,,,
+MetaEra,https://github.com/metaeraworkops/retropgf3,metaeraworkops,,2025-11-03,2025-11-03,0.0,False,0.0,0.0,0.0,0.0,0.0,,,,
+fil-miner-info.safematrix,https://github.com/kissports/minerinfo,kissports,,2025-11-03,2025-11-03,0.0,False,0.0,0.0,0.0,0.0,0.0,,,,
+Filecoin BigQuery Data Repository,https://github.com/starboard-ventures/sync_lily_to_bigquery,starboard-ventures,Python,2024-07-28,2025-10-28,14.0,False,0.0,0.0,0.0,0.0,0.0,,,,
+万佳社区,https://github.com/pp1314car/wanjia-storage,pp1314car,,2024-10-16,2024-11-22,1.0,False,0.0,0.0,0.0,0.0,0.0,,,,
+FilPonto: Public goods chain infrastructure & collaborations support for Filecoin,https://github.com/filponto/filponto-drips,filponto,,2025-09-03,2025-09-03,0.0,False,0.0,0.0,0.0,0.0,0.0,,,,
+Meet with Huddle01,https://github.com/ramitphi/huddle01,ramitphi,,2025-10-14,2025-10-14,0.0,False,0.0,0.0,0.0,0.0,0.0,,,,
+OneForm – SocialCap,https://github.com/worldpeace1121/filrpgf,worldpeace1121,,2025-11-03,2025-11-03,0.0,False,0.0,0.0,0.0,0.0,0.0,,,,
+Lynx – Storage Provider Retrieval Analytics Platform,https://github.com/26dos/retropgf,26dos,,2025-11-03,2025-11-03,0.0,False,0.0,0.0,0.0,0.0,0.0,,,,
+Cyberport Data Integration,https://github.com/ndlabs-leo/rpgf3---cyberport,ndlabs-leo,,2025-11-03,2025-11-03,0.0,False,0.0,0.0,0.0,0.0,0.0,,,,
+Filecoin Slack Community Admin,https://github.com/reiers/filecoin-slack-admin-program,reiers,,2025-10-22,2025-10-22,0.0,False,0.0,0.0,0.0,0.0,0.0,,,,
+Filecoin Beam,https://github.com/filbeam/funding,filbeam,,2025-10-31,2025-10-31,0.0,False,0.0,0.0,0.0,0.0,0.0,,,,
+DevTTY Filecoin Mainnet Bootstrap Nodes,https://github.com/magik6k/lotus-bootstrap-devtty,magik6k,,2025-10-13,2025-10-13,0.0,False,0.0,0.0,0.0,0.0,0.0,,,,
+witnesschain,https://github.com/hany-almnaem/witnesschain,hany-almnaem,JavaScript,2025-10-12,2025-10-18,0.0,False,0.0,0.0,0.0,0.0,0.0,,,,
+"Lotus, Builtin Actors, and ref-FVM - Core Filecoin Protocol Implementations",https://github.com/filozone/lotus-drips,filozone,,2025-01-16,2025-06-04,4.0,False,0.0,0.0,0.0,0.0,0.0,,,,
+Filecoin Spark,https://github.com/checkernetwork/spark,,,,,,,,,,,,,,,
+Keypo,https://github.com/decentralized-storage/keypo-sdk-v2,,,,,,,,,,,,,,,
