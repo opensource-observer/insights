@@ -272,13 +272,13 @@ def _(go, np, pd, px):
                          tickmode="array", tickvals=tickvals, ticktext=ticktext,
                          ticklabelposition="outside top", ticklabelstandoff=5, tickcolor="#000")
 
-        fig.add_vrect(
-            x0=start_analysis_date, x1=milestone_date,
-            fillcolor="rgba(128,128,128,0.05)",
-            line_width=0.25,
-            annotation_text="<i>  Comparison Period</i>",
-            annotation_position="top left",
-        )
+        # fig.add_vrect(
+        #     x0=start_analysis_date, x1=milestone_date,
+        #     fillcolor="rgba(128,128,128,0.05)",
+        #     line_width=0.25,
+        #     annotation_text="<i>  Comparison Period</i>",
+        #     annotation_position="top left",
+        # )
         fig.add_vrect(
             x0=milestone_date, x1=last_date,
             fillcolor="rgba(128,128,128,0.05)",
