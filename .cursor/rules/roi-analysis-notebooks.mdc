@@ -1,0 +1,492 @@
+---
+description: Use this rule when creating ROI or impact analysis notebooks for grant programs, partnerships, or ecosystem measurement
+alwaysApply: false
+---
+
+# ROI Analysis Notebook Standards
+
+## 1. Notebook Structure (REQUIRED)
+
+Every ROI analysis notebook MUST follow this exact structure from top to bottom:
+
+```python
+1. Title cell with metadata
+2. Context accordion (background, key insights, data sources)
+3. 5-7 Key Insight sections (each with headline variable + visualization/table)
+4. "---" separator + "# Methodology Details" header
+5. Methodology explanation cells
+6. Query/data processing cells
+7. Helper cells (constants, dropdowns, utilities)
+8. Imports cell
+9. setup_pyoso() cell (always last)
+```
+
+### 1.1 Title Cell Pattern
+
+```python
+@app.cell
+def _(mo):
+    mo.md("""
+    # Measuring [Subject]'s Impact on [Platform]
+    <small>Owner: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">[Owner]</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">[Date YYYY-MM-DD]</span></small>
+    """)
+    return
+```
+
+### 1.2 Context Accordion Pattern
+
+```python
+@app.cell
+def _(
+    headline_1,
+    headline_2,
+    headline_3,
+    headline_4,
+    headline_5,
+    mo,
+):
+    _context = """
+    - Brief bullet about the program/agreement
+    - Success metrics being measured
+    - Key constraints or scope
+    """
+
+    _insights = f"""
+    1. {headline_1}.
+    2. {headline_2}.
+    3. {headline_3}.
+    4. {headline_4}.
+    5. {headline_5}.
+    """
+
+    mo.accordion({
+        "Context": _context,
+        "Key Insights": _insights,
+        "Data Sources": """
+        - [Data Source Name](link) - Description
+        - [API/Model Name](link) - Description
+        """
+    })    
+    return
+```
+
+## 2. Key Insights Pattern (CRITICAL)
+
+Each insight section MUST follow this pattern:
+
+### 2.1 Structure
+- Generate a **headline variable** with quantified metrics
+- Use `mo.vstack()` to combine markdown and visualization
+- Start with `---` separator (except first insight)
+- Bold the headline with `### **{headline_variable}**`
+- Add 1-2 sentences of context below headline
+- Include visualization or table
+
+### 2.2 Example
+
+```python
+@app.cell
+def _(df_summary, mo, px):
+    _total_value = df_summary['value'].sum()
+    _num_items = len(df_summary)
+    
+    insight_headline = f"Program generated {_total_value:,.0f} ETH across {_num_items} recipients"
+    
+    # Create visualization
+    _fig = px.bar(df_summary, x='category', y='value')
+    _fig.update_layout(
+        plot_bgcolor="white",
+        paper_bgcolor="white",
+        font=dict(size=12, color="#111"),
+        margin=dict(l=0, r=0, t=10, b=50)
+    )
+    
+    mo.vstack([
+        mo.md(f"""
+        ---
+        ### **{insight_headline}**
+        Additional context about what this means and why it matters.
+        """),
+        mo.ui.plotly(_fig)
+    ])
+    return (insight_headline,)
+```
+
+### 2.3 Headline Variable Requirements
+- **MUST return** the headline variable (used in accordion)
+- Use f-strings with `:,.0f` for integers, `:,.2f` for decimals
+- Include units (ETH, USD, OP, %, etc.)
+- Be specific and quantified (not vague)
+- Complete sentence structure
+
+## 3. Visualization Standards
+
+### 3.1 Consistent Styling (Adapt per chart type)
+
+All visualizations should follow these principles:
+
+```python
+# Common layout settings
+_fig.update_layout(
+    plot_bgcolor="white",           # Always white
+    paper_bgcolor="white",          # Always white
+    font=dict(size=12, color="#111"),  # Consistent font
+    xaxis=dict(
+        showgrid=False,             # No grid on x-axis typically
+        linecolor="#000",           # Black axis line
+        linewidth=1
+    ),
+    yaxis=dict(
+        showgrid=True,              # Grid on y-axis for readability
+        gridcolor="#DDD",           # Light gray gridlines
+        linecolor="#000",
+        linewidth=1,
+        range=[0, None]             # Start at 0 when appropriate
+    ),
+    margin=dict(l=0, r=0, t=0, b=0)  # Adjust per chart
+)
+```
+
+### 3.2 Color Palettes
+
+**OSO Brand Colors** (preferred for all charts):
+```python
+# OSO Color Palette (blues/teals/greens)
+OSO_COLORS = {
+    'dark_blue': '#253494',
+    'medium_blue': '#2C7FB8',
+    'teal': '#41B6C4',
+    'seafoam': '#99D8C9',
+    'light_green': '#CCE5DF',
+    'pale_yellow': '#FFF2C2'
+}
+
+# Single metric (use medium blue or teal)
+marker_color='#2C7FB8'
+
+# Gradient (low to high performance)
+colors = ['#CCE5DF', '#99D8C9', '#41B6C4', '#2C7FB8', '#253494']
+
+# Area charts with multiple series (dark to light)
+color_discrete_map={
+    'Series1': '#253494',  # Darkest
+    'Series2': '#2C7FB8',
+    'Series3': '#41B6C4',
+    'Series4': '#99D8C9',
+    'Series5': '#CCE5DF'   # Lightest
+}
+
+# Diverging palette (for comparisons, use with pale yellow for contrast)
+diverging = ['#253494', '#2C7FB8', '#99D8C9', '#FFF2C2']
+```
+
+### 3.3 Chart Type Recommendations
+
+| Use Case | Chart Type | Key Features |
+|----------|------------|--------------|
+| Compare final values | Horizontal bar | Text labels outside/auto |
+| Show trends over time | Area chart | Cumulative when appropriate, spline smoothing |
+| Distribution | Bar chart | Sorted by value |
+| Retention/cohorts | Line chart | Multiple series, markers |
+| Complex comparisons | Grouped bar | Clear legend |
+
+### 3.4 Specific Chart Patterns
+
+**Area Chart (Timeseries)**:
+```python
+_fig = px.area(df, x='Date', y='Value', color='Category')
+_fig.update_layout(
+    hovermode='x unified',  # Show all series on hover
+    xaxis=dict(tickformat="%b %Y"),
+    legend=dict(
+        orientation="v",
+        yanchor="top", y=0.98,
+        xanchor="left", x=0.02,
+        bordercolor="black", borderwidth=1,
+        bgcolor="white"
+    )
+)
+_fig.update_traces(line_shape='spline')  # Smooth lines
+```
+
+**Horizontal Bar (Comparison)**:
+```python
+_fig = px.bar(df, x='Value', y='Category', orientation='h', text='Value')
+_fig.update_traces(
+    texttemplate='%{text:.2f} [UNIT]',
+    textposition='auto',  # Inside if fits, outside if not
+    marker_color=['color1', 'color2', 'color3']  # Gradient by value
+)
+_fig.update_layout(
+    margin=dict(l=80, r=120, t=10, b=50),  # Room for labels
+    height=300  # Compact for few items
+)
+```
+
+## 4. Data Processing Patterns
+
+### 4.1 Define Constants Early
+
+When filtering to specific entities, define them as constants at the top:
+
+```python
+@app.cell
+def _():
+    # Define entity list upfront to avoid circular dependencies
+    TARGET_CHAINS = ['CHAIN1', 'CHAIN2', 'CHAIN3']
+    return (TARGET_CHAINS,)
+
+@app.cell
+def _(TARGET_CHAINS, mo, pyoso_db_conn):
+    _filter = "'" + "','".join(TARGET_CHAINS) + "'"
+    df = mo.sql(f"SELECT * FROM table WHERE entity IN ({_filter})", ...)
+    return (df,)
+```
+
+### 4.2 Avoid Circular Dependencies
+
+**WRONG** (circular dependency):
+```python
+# Cell 1: df depends on df_summary
+df = df_raw[df_raw['item'].isin(df_summary['item'])]
+
+# Cell 2: df_summary depends on df
+df_summary = df.groupby('item').sum()
+```
+
+**RIGHT** (linear flow):
+```python
+# Cell 1: Define what you need upfront
+ITEMS = ['item1', 'item2', 'item3']
+
+# Cell 2: Filter using constant
+df = df_raw[df_raw['item'].isin(ITEMS)]
+
+# Cell 3: Create summary
+df_summary = df.groupby('item').sum()
+```
+
+### 4.3 Dropdown Inputs
+
+Use constants to avoid depending on computed dataframes:
+
+```python
+@app.cell
+def _(ENTITY_LIST, mo):
+    entity_input = mo.ui.dropdown(
+        options=ENTITY_LIST,  # Use constant, not df['entity'].unique()
+        value=ENTITY_LIST[0],
+        label="Select entity:",
+        full_width=True
+    )
+    return (entity_input,)
+```
+
+## 5. SQL Query Patterns
+
+### 5.1 Filter in SQL, Not Python
+
+**WRONG**:
+```python
+df = mo.sql("SELECT * FROM table")  # Gets everything
+df = df[df['category'] == 'target']  # Filter in Python
+```
+
+**RIGHT**:
+```python
+_filter = "'" + "','".join(TARGET_LIST) + "'"
+df = mo.sql(f"""
+    SELECT * FROM table
+    WHERE category IN ({_filter})
+""")
+```
+
+### 5.2 Rolling Metrics Pattern
+
+```python
+df = mo.sql(f"""
+    WITH base AS (
+      SELECT date, chain, metric, amount
+      FROM metrics_table
+      WHERE metric IN ('fees', 'revenue')
+    ),
+    rolling AS (
+      SELECT
+        date,
+        chain,
+        metric || '_90day' AS metric,
+        SUM(amount) OVER (
+          PARTITION BY chain, metric 
+          ORDER BY date 
+          ROWS BETWEEN 89 PRECEDING AND CURRENT ROW
+        ) AS amount
+      FROM base
+    )
+    SELECT * FROM base
+    UNION ALL
+    SELECT * FROM rolling
+""")
+```
+
+## 6. Narrative and Tone
+
+### 6.1 Writing Style
+- **Quantify everything**: Use specific numbers, not "significant" or "many"
+- **Use comparisons**: "X is 2.5x higher than Y"
+- **Be precise with units**: "10.76 ETH" not "10.76"
+- **Avoid jargon**: Explain technical terms inline
+- **Past tense for results**: "Generated X ETH"
+- **Present tense for current state**: "Shows strong traction"
+
+### 6.2 Headline Formula
+
+Pattern: `[Subject] [action verb] [quantified result] [comparison/context]`
+
+**Good examples**:
+- "Ink is the top performer with 10.76 ETH in lifetime revenue, while ARENAZ has generated just 0.22 ETH"
+- "Grant recipients have contributed 1,234 ETH in total revenue to the Superchain, with a median of 5.6 ETH per protocol"
+- "At the 12-month mark, the median protocol generates 2.3e-4 ETH in revenue per OP token granted (n=25 protocols)"
+
+**Bad examples**:
+- "Performance varies across chains" (no numbers)
+- "Revenue was good" (vague)
+- "Chains made money" (imprecise)
+
+### 6.3 Context Sentences
+After each headline, add 1-2 sentences explaining:
+- **What**: What do the numbers represent?
+- **Why**: Why does this matter?
+- **How**: Any caveats or methodology notes?
+
+Example:
+```
+### **Ink is the top performer with 10.76 ETH in lifetime revenue**
+
+Performance varies significantly across Gelato's portfolio, with Ink 
+showing strong traction and others struggling to gain adoption.
+```
+
+## 7. Methodology Section
+
+### 7.1 Structure
+
+```markdown
+# Methodology Details
+
+## Overview
+[High-level summary of the approach]
+
+## Part 1: [Data Collection/Identification]
+[Explain what data sources are used and how]
+
+## Part 2: [Processing/Calculation]
+[Explain transformations and calculations]
+
+## Part 3: [Analysis/Measurement]
+[Explain how metrics are derived]
+
+## Part 4: [ROI/Attribution]
+[Explain attribution model and ROI calculation]
+```
+
+### 7.2 Include Supporting Queries
+
+Place actual query cells in methodology section:
+- Users can see and verify the data
+- Queries serve as documentation
+- Easy to spot-check results
+
+## 8. ROI Calculation Standards
+
+### 8.1 Always Include
+
+1. **Cost basis**: How grants/incentives are valued
+2. **Revenue calculation**: What counts as revenue
+3. **Attribution model**: What % to credit to the program
+4. **Time horizon**: Period measured
+5. **Assumptions**: Growth rates, churn, conversions
+6. **Limitations**: What's NOT included
+
+### 8.2 Present Multiple Scenarios
+
+```markdown
+| Scenario | Attribution | Assumptions | ROI |
+|----------|-------------|-------------|-----|
+| Lower Bound | 10% | Conservative | -50% |
+| Base Case | 20% | Moderate | -25% |
+| Upper Bound | 50% | Aggressive | +15% |
+```
+
+### 8.3 ROI Formula Display
+
+Always show the calculation explicitly:
+
+```markdown
+ROI = ((Attributed Revenue - Grant Cost) / Grant Cost) × 100%
+    = ((4.71 ETH - 16.88 ETH) / 16.88 ETH) × 100%
+    = -72%
+```
+
+## 9. Tables and Formatting
+
+### 9.1 Marimo Tables
+
+```python
+mo.ui.table(
+    data=df,
+    show_column_summaries=False,
+    show_data_types=False,
+    freeze_columns_left=['Key', 'Columns'],  # Keep visible while scrolling
+    page_size=10  # Paginate long tables
+)
+```
+
+### 9.2 Markdown Tables
+
+Use for small, static comparison tables:
+- Right-align numbers with `:---:|` or `---:|`
+- Bold totals/summaries
+- Include units in column headers
+
+## 10. Common Pitfalls to Avoid
+
+| Issue | Wrong | Right |
+|-------|-------|-------|
+| **Circular deps** | df uses df_summary uses df | Define constants early |
+| **Vague headlines** | "Performance is good" | "Generated 10.76 ETH (2.5x above median)" |
+| **Missing units** | "10.76" | "10.76 ETH" |
+| **No context** | Just show chart | Headline + context + chart |
+| **Inconsistent styling** | Different colors/fonts | Use standard palette |
+| **Empty methodology** | Skip details | Show queries and logic |
+| **Unquantified ROI** | "Positive impact" | "ROI of -72% (-12.17 ETH net)" |
+
+## 11. Quality Checklist
+
+Before finalizing, verify:
+
+- [ ] Title has Owner and Last Updated metadata
+- [ ] Accordion has context, 5-7 insights, data sources
+- [ ] Each insight has headline variable returned
+- [ ] All headlines are quantified with units
+- [ ] Visualizations use consistent styling
+- [ ] "---" separates methodology section
+- [ ] Methodology explains all calculations
+- [ ] No circular dependencies in cells
+- [ ] Imports and setup_pyoso() are last
+- [ ] No linter errors
+- [ ] All numbers have proper formatting (`:,.0f` etc)
+- [ ] Charts have appropriate margins for labels
+- [ ] Tables are paginated if >25 rows
+
+## 12. When to Use This Pattern
+
+Use this ROI analysis pattern for:
+- ✅ Grant program evaluations
+- ✅ Partnership impact assessments  
+- ✅ Ecosystem contribution measurement
+- ✅ Infrastructure provider ROI
+- ✅ Incentive program performance
+
+Do NOT use for:
+- ❌ Exploratory data analysis (use simpler notebooks)
+- ❌ Interactive dashboards
