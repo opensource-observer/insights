@@ -379,12 +379,6 @@ def import_libraries():
 
 
 @app.cell
-def setup_marimo():
-    import marimo as mo
-    return (mo,)
-
-
-@app.cell
 def show_dashboard(
     bar_chart,
     chart_header,

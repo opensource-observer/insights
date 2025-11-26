@@ -31,7 +31,7 @@ def analysis_settings(
         label="Baseline Group:"
     )
     mo.vstack([
-        mo.md("### Analysis Settings:"),
+        mo.md("### Analysis Settings"),
         mo.hstack([incentive_group, baseline_group], widths="equal", gap=2)
     ])
     return baseline_group, incentive_group
@@ -103,7 +103,7 @@ def analysis_results(baseline_group, df, incentive_group, make_figure, mo):
 
     # Generate the results dashboard
     mo.vstack([
-        mo.md("### Program Results:"),
+        mo.md("### Program Results"),
         mo.hstack([stat1, stat2, stat3, stat4], widths="equal", gap=1),
         mo.ui.plotly(_fig, config={'displayModeBar': False})
     ])
@@ -209,7 +209,7 @@ def setup_pyoso():
     import pyoso
     import marimo as mo
     pyoso_db_conn = pyoso.Client().dbapi_connection()
-    return mo, pyoso_db_conn
+    return (mo,)
 
 
 if __name__ == "__main__":
