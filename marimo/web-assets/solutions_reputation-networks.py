@@ -34,7 +34,7 @@ def analysis_settings(mo):
         label="Show Top N Developers:"
     )
     mo.vstack([
-        mo.md("### Analysis Settings:"),
+        mo.md("### Analysis Settings"),
         mo.hstack([min_commits, min_repos, top_n], widths="equal", gap=2)
     ])
     return min_commits, min_repos, top_n
@@ -101,7 +101,7 @@ def analysis_results(df, make_treemap, min_commits, min_repos, mo, top_n):
     
     # Generate the results dashboard
     mo.vstack([
-        mo.md("### Developer Network Metrics:"),
+        mo.md("### Developer Network Metrics"),
         mo.hstack([stat1, stat2, stat3, stat4], widths="equal", gap=1),
         mo.ui.plotly(_fig, config={'displayModeBar': False})
     ])

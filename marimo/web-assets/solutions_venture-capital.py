@@ -30,7 +30,7 @@ def analysis_settings(mo, startup_list):
         label="Metric:"
     )
     mo.vstack([
-        mo.md("### Analysis Settings:"),
+        mo.md("### Analysis Settings"),
         mo.hstack([startup_1, startup_2, metric_selector], widths="equal", gap=2)
     ])
     return metric_selector, startup_1, startup_2
@@ -122,7 +122,7 @@ def analysis_results(
 
     # Generate the results dashboard
     mo.vstack([
-        mo.md("### Comparison Results:"),
+        mo.md("### Comparison Results"),
         mo.hstack([stat1, stat2, stat3, stat4], widths="equal", gap=1),
         mo.ui.plotly(_fig, config={'displayModeBar': False})
     ])

@@ -30,7 +30,7 @@ def analysis_settings(commodity_list, mo, supplier_list):
         label="Time Period:"
     )
     mo.vstack([
-        mo.md("### Analysis Settings:"),
+        mo.md("### Analysis Settings"),
         mo.hstack([supplier_filter, commodity_filter, time_period], widths="equal", gap=2)
     ])
     return commodity_filter, supplier_filter
@@ -99,7 +99,7 @@ def analysis_results(commodity_filter, df, make_sankey, mo, supplier_filter):
 
     # Generate the results dashboard
     mo.vstack([
-        mo.md("### Supply Chain Metrics:"),
+        mo.md("### Supply Chain Metrics"),
         mo.hstack([stat1, stat2, stat3, stat4], widths="equal", gap=1),
         mo.ui.plotly(_fig, config={'displayModeBar': False})
     ])
