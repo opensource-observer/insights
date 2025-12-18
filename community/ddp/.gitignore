@@ -1,0 +1,16 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+
+# Environment variables
+.env
+.env.local
+
+# Next.js
+app/.next/
+app/out/
+app/node_modules/
+
+# OS
+.DS_Store

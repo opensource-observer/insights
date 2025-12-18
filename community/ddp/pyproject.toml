@@ -1,0 +1,14 @@
+[project]
+name = "ethereum-developer-data-portal"
+version = "0.1.0"
+description = "Ethereum Developer Data Portal - Dashboard for serving marimo notebooks"
+requires-python = ">=3.13"
+dependencies = [
+    "marimo>=0.15.3",
+    "uvicorn>=0.30.0",
+    "pyoso>=0.6.5",
+    "plotly>=6.5.0",
+]
+
+[tool.marimo.runtime]
+dotenv = [".env", ".env.testing"]
