@@ -15,51 +15,39 @@ def setup_pyoso():
 
 
 @app.cell(hide_code=True)
-def _(mo):
-    mo.md(
-        """
-        # Repositories Model
-
-        The Repositories model combines repository data from multiple sources to create a unified 
-        view with consistent `repo_id` identifiers. This notebook explains how we join disparate 
-        repository datasets and how different ID systems work together.
-        """
-    )
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(
-        """
-        ## Data Lineage
-
-        The `int_opendevdata__repositories_with_repo_id` model follows a two-step matching strategy:
-
-        1. **Primary Match (OSSD via GitHub GraphQL ID)**: Open Dev Data repositories are first 
-           matched to OSS Directory repositories using `github_graphql_id` → `node_id`. This provides 
-           the most reliable `repo_id` mapping.
-
-        2. **Fallback Match (GitHub Archive via Repo Name)**: Repositories that don't match via 
-           GraphQL ID are matched by `repo_name` to GitHub Archive repositories, which tracks 
-           repository name changes over time.
-
-        3. **Unmatched**: Repositories that don't match either source retain their Open Dev Data 
-           `id` but have `repo_id = NULL`.
-
-        ### ID Types Explained
-
-        - **`opendevdata_id`**: Original ID from Open Dev Data (`stg_opendevdata__repos.id`)
-        - **`github_graphql_id`**: GitHub's GraphQL API node ID (from Open Dev Data)
-        - **`repo_id`**: Unified repository identifier from OSSD or GitHub Archive
-        - **`repo_id_source`**: Indicates which source provided the `repo_id` ('ossd', 'gharchive', or 'opendevdata')
-        """
-    )
-    return
-
-
-@app.cell(hide_code=True)
 def _(mo, pyoso_db_conn):
+    def get_model_preview(model_name, limit=5):
+        return mo.sql(f"SELECT * FROM {model_name} LIMIT {limit}", 
+                      engine=pyoso_db_conn, output=False)
+
+    def get_row_count(model_name):
+        result = mo.sql(f"SHOW STATS FOR {model_name}", 
+                        engine=pyoso_db_conn, output=False)
+        return result['row_count'].sum()    
+    
+    def generate_sql_snippet(model_name, df_results, limit=5):
+        column_names = df_results.columns.tolist()
+        # Format columns with one per line, indented
+        columns_formatted = ',\n  '.join(column_names)
+        sql_snippet = f"""```sql
+SELECT 
+  {columns_formatted}
+FROM {model_name}
+LIMIT {limit}
+```
+"""
+        return mo.md(sql_snippet)
+
+    def render_table_preview(model_name):
+        df = get_model_preview(model_name)
+        sql_snippet = generate_sql_snippet(model_name, df, limit=5)
+        fmt = {c: '{:.0f}' for c in df.columns if df[c].dtype == 'int64' and ('_id' in c or c == 'id')}
+        table = mo.ui.table(df, format_mapping=fmt, show_column_summaries=False, show_data_types=False)
+        row_count = get_row_count(model_name)
+        col_count = len(df.columns)
+        title = f"{model_name} | {row_count:,.0f} rows, {col_count} cols"
+        return mo.accordion({title: mo.vstack([sql_snippet, table])})
+    
     import pandas as pd
     
     def get_format_mapping(df, include_percentage=False):
@@ -75,6 +63,290 @@ def _(mo, pyoso_db_conn):
                     fmt[c] = '{:.0f}'
         return fmt
     
+    return (render_table_preview, pd, get_format_mapping)
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        # Repositories Model
+
+        The Repositories model unifies repository data from Open Dev Data, OSS Directory, and GitHub Archive 
+        to create a consistent view with unified `repo_id` identifiers. This enables cross-source analysis 
+        by providing a single identifier that can be used to join repository data across different datasets.
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ## Overview
+
+        The `int_opendevdata__repositories_with_repo_id` model combines repository data from multiple sources 
+        using a two-step matching strategy. The primary match links Open Dev Data repositories to OSS Directory 
+        repositories via GitHub GraphQL IDs (`github_graphql_id` to `node_id`). For repositories that don't 
+        match via GraphQL ID, a fallback match uses repository name to link with GitHub Archive data. This 
+        unified `repo_id` serves as the primary identifier for joining repository data across GitHub Archive 
+        events, Open Dev Data commit activities, and other OSO data products.
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ## Coverage Across Datasets
+
+        The following charts show how repositories overlap across Open Dev Data, OSS Directory, and GitHub Archive.
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo, pyoso_db_conn):
+    import plotly.express as px
+    
+    # Open Dev Data coverage query
+    opendevdata_coverage_query = """
+    WITH total_opendevdata AS (
+      SELECT COUNT(*) as total_repos
+      FROM oso.int_opendevdata__repositories_with_repo_id
+    ),
+    not_blacklisted AS (
+      SELECT COUNT(*) as count
+      FROM oso.int_opendevdata__repositories_with_repo_id
+      WHERE is_opendevdata_blacklist = false OR is_opendevdata_blacklist IS NULL
+    ),
+    with_repo_id AS (
+      SELECT COUNT(*) as count
+      FROM oso.int_opendevdata__repositories_with_repo_id
+      WHERE repo_id IS NOT NULL
+    ),
+    in_ossd AS (
+      SELECT COUNT(*) as count
+      FROM oso.int_opendevdata__repositories_with_repo_id
+      WHERE repo_id_source = 'ossd'
+    )
+    SELECT 
+      (SELECT total_repos FROM total_opendevdata) as all_repos,
+      (SELECT count FROM not_blacklisted) as not_blacklisted,
+      (SELECT count FROM with_repo_id) as with_repo_id,
+      (SELECT count FROM in_ossd) as in_ossd
+    """
+    
+    opendevdata_coverage_df = mo.sql(opendevdata_coverage_query, engine=pyoso_db_conn, output=False)
+    return px, opendevdata_coverage_df
+
+
+@app.cell(hide_code=True)
+def _(mo, opendevdata_coverage_df, px):
+    # Prepare data for horizontal bar chart (ordered from largest to smallest)
+    opendevdata_total = opendevdata_coverage_df['all_repos'].iloc[0]
+    opendevdata_not_blacklisted = opendevdata_coverage_df['not_blacklisted'].iloc[0]
+    opendevdata_with_repo_id = opendevdata_coverage_df['with_repo_id'].iloc[0]
+    opendevdata_in_ossd = opendevdata_coverage_df['in_ossd'].iloc[0]
+    
+    opendevdata_categories = [
+        'All repos in Open Dev Data',
+        'Not blacklisted by Open Dev Data',
+        'Have non-null Repo ID',
+        'In OSS Directory'
+    ]
+    opendevdata_values = [opendevdata_total, opendevdata_not_blacklisted, opendevdata_with_repo_id, opendevdata_in_ossd]
+    
+    opendevdata_fig = px.bar(
+        x=opendevdata_values,
+        y=opendevdata_categories,
+        orientation='h',
+        text=[f'{v:,.0f}' for v in opendevdata_values],
+        labels={'x': 'Repository Count', 'y': ''},
+        title='Open Dev Data Repository Coverage',
+        template='plotly_white',
+        color_discrete_sequence=['#4a4a4a']
+    )
+    opendevdata_fig.update_traces(
+        textposition='outside',
+        marker_color='#4a4a4a'
+    )
+    opendevdata_fig.update_layout(
+        showlegend=False,
+        height=280,
+        margin=dict(l=10, r=150, t=60, b=20),
+        xaxis=dict(showgrid=True, gridcolor='#f0f0f0', range=[0, max(opendevdata_values) * 1.15]),
+        yaxis=dict(showgrid=False)
+    )
+    
+    mo.ui.plotly(opendevdata_fig, config={'displayModeBar': False})
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo, pyoso_db_conn):
+    # OSS Directory coverage query
+    ossd_coverage_query = """
+    WITH total_ossd AS (
+      SELECT COUNT(*) as total_repos
+      FROM oso.stg_ossd__current_repositories
+    ),
+    in_opendevdata_not_blacklisted AS (
+      SELECT COUNT(DISTINCT ossd.node_id) as count
+      FROM oso.stg_ossd__current_repositories ossd
+      INNER JOIN oso.int_opendevdata__repositories_with_repo_id od 
+        ON ossd.node_id = od.github_graphql_id
+      WHERE od.is_opendevdata_blacklist = false OR od.is_opendevdata_blacklist IS NULL
+    ),
+    in_opendevdata AS (
+      SELECT COUNT(DISTINCT ossd.node_id) as count
+      FROM oso.stg_ossd__current_repositories ossd
+      INNER JOIN oso.int_opendevdata__repositories_with_repo_id od 
+        ON ossd.node_id = od.github_graphql_id
+    )
+    SELECT 
+      (SELECT total_repos FROM total_ossd) as all_repos,
+      (SELECT count FROM in_opendevdata_not_blacklisted) as not_blacklisted,
+      (SELECT count FROM in_opendevdata) as in_opendevdata
+    """
+    
+    ossd_coverage_df = mo.sql(ossd_coverage_query, engine=pyoso_db_conn, output=False)
+    return ossd_coverage_df,
+
+
+@app.cell(hide_code=True)
+def _(mo, ossd_coverage_df, px):
+    # Prepare data for horizontal bar chart (ordered from largest to smallest)
+    ossd_total = ossd_coverage_df['all_repos'].iloc[0]
+    ossd_not_blacklisted = ossd_coverage_df['not_blacklisted'].iloc[0]
+    ossd_in_opendevdata = ossd_coverage_df['in_opendevdata'].iloc[0]
+    
+    ossd_categories = [
+        'All repos in OSS Directory',
+        'In Open Dev Data',
+        'Not blacklisted by Open Dev Data'
+    ]
+    ossd_values = [ossd_total, ossd_in_opendevdata, ossd_not_blacklisted]
+    
+    ossd_fig = px.bar(
+        x=ossd_values,
+        y=ossd_categories,
+        orientation='h',
+        text=[f'{v:,.0f}' for v in ossd_values],
+        labels={'x': 'Repository Count', 'y': ''},
+        title='OSS Directory Repository Coverage',
+        template='plotly_white',
+        color_discrete_sequence=['#4a4a4a']
+    )
+    ossd_fig.update_traces(
+        textposition='outside',
+        marker_color='#4a4a4a'
+    )
+    ossd_fig.update_layout(
+        showlegend=False,
+        height=220,
+        margin=dict(l=10, r=150, t=60, b=20),
+        xaxis=dict(showgrid=True, gridcolor='#f0f0f0', range=[0, max(ossd_values) * 1.15]),
+        yaxis=dict(showgrid=False)
+    )
+    
+    mo.ui.plotly(ossd_fig, config={'displayModeBar': False})
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo, pyoso_db_conn):
+    # GitHub Archive coverage query - repos by year
+    gharchive_yearly_query = """
+    SELECT 
+      EXTRACT(YEAR FROM valid_from) as discovery_year,
+      COUNT(DISTINCT repo_id) as repos_discovered
+    FROM oso.int_gharchive__repositories
+    WHERE valid_from IS NOT NULL
+    GROUP BY EXTRACT(YEAR FROM valid_from)
+    ORDER BY discovery_year
+    """
+    
+    gharchive_yearly_df = mo.sql(gharchive_yearly_query, engine=pyoso_db_conn, output=False)
+    return gharchive_yearly_df,
+
+
+@app.cell(hide_code=True)
+def _(mo, pyoso_db_conn):
+    # Get total repos in GitHub Archive for the chart title
+    gharchive_total_query = """
+    SELECT COUNT(DISTINCT repo_id) as total_repos
+    FROM oso.int_gharchive__repositories
+    """
+    gharchive_total_df = mo.sql(gharchive_total_query, engine=pyoso_db_conn, output=False)
+    total_gharchive_repos = gharchive_total_df['total_repos'].iloc[0]
+    return gharchive_total_df, total_gharchive_repos
+
+
+@app.cell(hide_code=True)
+def _(mo, gharchive_yearly_df, px, total_gharchive_repos):
+    # Prepare data for vertical bar chart
+    gharchive_fig = px.bar(
+        gharchive_yearly_df,
+        x='discovery_year',
+        y='repos_discovered',
+        labels={'discovery_year': 'Year', 'repos_discovered': 'New Repositories Discovered'},
+        title=f'GitHub Archive: New Repositories Discovered by Year (Total: {total_gharchive_repos:,.0f} repos)',
+        template='plotly_white',
+        color_discrete_sequence=['#4a4a4a']
+    )
+    gharchive_fig.update_traces(
+        marker_color='#4a4a4a',
+        text=gharchive_yearly_df['repos_discovered'].apply(lambda x: f'{x:,.0f}'),
+        textposition='outside'
+    )
+    max_repos = gharchive_yearly_df['repos_discovered'].max()
+    gharchive_fig.update_layout(
+        showlegend=False,
+        height=450,
+        margin=dict(l=10, r=150, t=80, b=50),
+        xaxis=dict(showgrid=True, gridcolor='#f0f0f0', dtick=2),
+        yaxis=dict(showgrid=True, gridcolor='#f0f0f0', range=[0, max_repos * 1.1])
+    )
+    
+    mo.ui.plotly(gharchive_fig, config={'displayModeBar': False})
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ## Model Structure
+
+        ### Key Fields
+
+        - **`opendevdata_id`**: Original repository ID from Open Dev Data (`stg_opendevdata__repos.id`)
+        - **`github_graphql_id`**: GitHub's GraphQL API node ID from Open Dev Data
+        - **`repo_id`**: Unified repository identifier from OSS Directory or GitHub Archive (GitHub REST API ID)
+        - **`repo_id_source`**: Indicates which source provided the `repo_id` ('ossd' for OSS Directory, 'gharchive' for GitHub Archive, or 'opendevdata' if unmatched)
+        - **`repo_name`**: Repository name used for fallback matching
+
+        Use `repo_id` when joining with GitHub Archive events or other datasets that use REST API IDs. Use 
+        `opendevdata_id` when joining with Open Dev Data commit and developer activity tables. Use `github_graphql_id` 
+        when joining with OSS Directory repositories.
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(render_table_preview):
+    render_table_preview("oso.int_opendevdata__repositories_with_repo_id")
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo, pyoso_db_conn):
     # Get coverage statistics
     coverage_query = """
     SELECT 
@@ -89,16 +361,19 @@ def _(mo, pyoso_db_conn):
     """
     
     coverage_df = mo.sql(coverage_query, engine=pyoso_db_conn, output=False)
-    return coverage_df, pd, get_format_mapping
+    return coverage_df,
 
 
 @app.cell(hide_code=True)
-def _(mo, coverage_df):
+def _(mo):
     mo.md(
         """
-        ## Coverage Overview
+        ## Coverage
 
-        This shows how many repositories were matched via each source and the overall match rate.
+        The coverage statistics show how repositories are matched across sources. Primary matches via OSS Directory 
+        (using GraphQL IDs) provide the most reliable `repo_id` mappings. Fallback matches via GitHub Archive (using 
+        repository names) capture additional repositories not found in OSS Directory. The match percentage indicates 
+        what portion of repositories in each category successfully received a `repo_id` for cross-source joins.
         """
     )
     return
@@ -111,204 +386,99 @@ def _(mo, coverage_df, get_format_mapping):
 
 
 @app.cell(hide_code=True)
-def _(mo, pyoso_db_conn):
-    # Get sample data showing the different ID types
-    sample_query = """
-    SELECT 
-      opendevdata_id,
-      github_graphql_id,
-      repo_id,
-      repo_name,
-      repo_id_source,
-      star_count,
-      fork_count
-    FROM oso.int_opendevdata__repositories_with_repo_id
-    WHERE repo_id_source IN ('ossd', 'gharchive', 'opendevdata')
-    ORDER BY star_count DESC NULLS LAST
-    LIMIT 20
-    """
-    
-    sample_df = mo.sql(sample_query, engine=pyoso_db_conn, output=False)
-    return sample_df,
-
-
-@app.cell(hide_code=True)
 def _(mo):
     mo.md(
         """
-        ## Sample Repositories by Match Type
+        ## Limitations
 
-        Examples showing how different repositories are matched across the three sources. 
-        Notice how `repo_id` is populated from different sources based on the `repo_id_source` field.
+        Repositories that couldn't be matched to either OSS Directory or GitHub Archive will have `repo_id = NULL`. 
+        These unmatched repositories may include very new repositories not yet indexed, repositories that have undergone 
+        name changes, or repositories that exist only in Open Dev Data. Repositories with `repo_id = NULL` cannot be 
+        directly joined with GitHub Archive event data using the `repo_id` field. In some cases, a single `github_graphql_id` 
+        may map to multiple `repo_id` values due to GitHub API ID changes over time, which the model handles by including 
+        both mappings.
         """
     )
     return
 
 
 @app.cell(hide_code=True)
-def _(mo, sample_df, get_format_mapping):
-    mo.ui.table(sample_df, format_mapping=get_format_mapping(sample_df), show_column_summaries=False, show_data_types=False)
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo, pyoso_db_conn):
-    # Statistics by source
-    stats_query = """
-    SELECT 
-      repo_id_source,
-      COUNT(*) AS total_repos,
-      COUNT(DISTINCT repo_id) AS unique_repo_ids,
-      AVG(star_count) AS avg_stars,
-      AVG(fork_count) AS avg_forks,
-      SUM(star_count) AS total_stars,
-      SUM(fork_count) AS total_forks
-    FROM oso.int_opendevdata__repositories_with_repo_id
-    GROUP BY repo_id_source
-    ORDER BY total_repos DESC
-    """
-    
-    stats_df = mo.sql(stats_query, engine=pyoso_db_conn, output=False)
-    return stats_df,
-
-
-@app.cell(hide_code=True)
 def _(mo):
     mo.md(
         """
-        ## Statistics by Match Source
+        ## Sample Queries
 
-        Aggregated statistics showing the characteristics of repositories matched via each source.
+        ### Basic Usage: Find Repositories with repo_id
+
+        This query returns repositories that have a unified `repo_id` for joining with GitHub Archive and other datasets.
+
+        **When to use**: Starting point for any cross-source analysis requiring GitHub Archive event data.
         """
     )
     return
 
 
 @app.cell(hide_code=True)
-def _(mo, stats_df, get_format_mapping):
-    mo.ui.table(stats_df, format_mapping=get_format_mapping(stats_df, include_percentage=True), show_column_summaries=False, show_data_types=False)
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo, pyoso_db_conn):
-    # Show repositories that matched via OSSD (primary match)
-    ossd_match_query = """
-    SELECT 
-      r.opendevdata_id,
-      r.repo_name,
-      r.repo_id,
-      r.star_count,
-      r.fork_count,
-      r.repo_created_at
-    FROM oso.int_opendevdata__repositories_with_repo_id AS r
-    WHERE r.repo_id_source = 'ossd'
-    ORDER BY r.star_count DESC
-    LIMIT 10
-    """
-    
-    ossd_df = mo.sql(ossd_match_query, engine=pyoso_db_conn, output=False)
-    return ossd_df,
-
-
-@app.cell(hide_code=True)
 def _(mo):
     mo.md(
         """
-        ## Top Repositories Matched via OSSD (Primary Match)
-
-        These repositories were successfully matched using GitHub GraphQL ID, providing the most 
-        reliable `repo_id` mapping.
+        ```sql
+        -- Find repositories with repo_id for joining with GitHub Archive
+        SELECT repo_name, repo_id, repo_id_source
+        FROM oso.int_opendevdata__repositories_with_repo_id
+        WHERE repo_id IS NOT NULL
+        LIMIT 100
+        ```
         """
     )
     return
 
 
 @app.cell(hide_code=True)
-def _(mo, ossd_df, get_format_mapping):
-    mo.ui.table(ossd_df, format_mapping=get_format_mapping(ossd_df), show_column_summaries=False, show_data_types=False)
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo, pyoso_db_conn):
-    # Show repositories that matched via GitHub Archive (fallback)
-    gharchive_match_query = """
-    SELECT 
-      r.opendevdata_id,
-      r.repo_name,
-      r.repo_id,
-      r.star_count,
-      r.fork_count,
-      r.repo_created_at
-    FROM oso.int_opendevdata__repositories_with_repo_id AS r
-    WHERE r.repo_id_source = 'gharchive'
-    ORDER BY r.star_count DESC
-    LIMIT 10
-    """
-    
-    gharchive_df = mo.sql(gharchive_match_query, engine=pyoso_db_conn, output=False)
-    return gharchive_df,
-
-
-@app.cell(hide_code=True)
 def _(mo):
     mo.md(
         """
-        ## Top Repositories Matched via GitHub Archive (Fallback)
+        ### Coverage Analysis: Repositories by Match Type
 
-        These repositories didn't have a GitHub GraphQL ID match in OSSD, but were matched by 
-        repository name to GitHub Archive data.
+        Shows the distribution of repositories across different matching strategies.
+
+        **When to use**: Understanding data quality and coverage across sources.
         """
     )
     return
 
 
 @app.cell(hide_code=True)
-def _(mo, gharchive_df, get_format_mapping):
-    mo.ui.table(gharchive_df, format_mapping=get_format_mapping(gharchive_df), show_column_summaries=False, show_data_types=False)
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo, pyoso_db_conn):
-    # Show unmatched repositories
-    unmatched_query = """
-    SELECT 
-      opendevdata_id,
-      repo_name,
-      github_graphql_id,
-      star_count,
-      fork_count,
-      repo_created_at
-    FROM oso.int_opendevdata__repositories_with_repo_id
-    WHERE repo_id_source = 'opendevdata' AND repo_id IS NULL
-    ORDER BY star_count DESC
-    LIMIT 10
-    """
-    
-    unmatched_df = mo.sql(unmatched_query, engine=pyoso_db_conn, output=False)
-    return unmatched_df,
-
-
-@app.cell(hide_code=True)
 def _(mo):
     mo.md(
         """
-        ## Top Unmatched Repositories
-
-        These repositories couldn't be matched to either OSSD or GitHub Archive. They may be:
-        - Very new repositories not yet in our systems
-        - Repositories with name changes that don't match current names
-        - Repositories that exist only in Open Dev Data
+        ```sql
+        -- See how repositories were matched
+        SELECT 
+          repo_id_source,
+          COUNT(*) as repository_count,
+          COUNT(repo_id) as repos_with_repo_id,
+          ROUND(100.0 * COUNT(repo_id) / COUNT(*), 2) AS match_percentage
+        FROM oso.int_opendevdata__repositories_with_repo_id
+        GROUP BY repo_id_source
+        ORDER BY repository_count DESC
+        ```
         """
     )
     return
 
 
 @app.cell(hide_code=True)
-def _(mo, unmatched_df, get_format_mapping):
-    mo.ui.table(unmatched_df, format_mapping=get_format_mapping(unmatched_df), show_column_summaries=False, show_data_types=False)
+def _(mo):
+    mo.md(
+        """
+        ### Join with GitHub Archive Events
+
+        Example of joining the unified repository model with GitHub Archive events using `repo_id`.
+
+        **When to use**: Analyzing GitHub activity for repositories tracked in Open Dev Data.
+        """
+    )
     return
 
 
@@ -316,16 +486,92 @@ def _(mo, unmatched_df, get_format_mapping):
 def _(mo):
     mo.md(
         """
-        ## Summary
+        ```sql
+        -- Join with GitHub Archive events using repo_id
+        SELECT 
+          r.repo_name,
+          r.repo_id,
+          COUNT(*) as event_count
+        FROM oso.int_opendevdata__repositories_with_repo_id r
+        JOIN oso.stg_github__events e ON r.repo_id = e.repo.id
+        WHERE r.repo_id IS NOT NULL
+        GROUP BY r.repo_name, r.repo_id
+        ORDER BY event_count DESC
+        LIMIT 20
+        ```
+        """
+    )
+    return
 
-        The Repositories model successfully unifies repository data from multiple sources:
 
-        - **Primary matching** via GitHub GraphQL ID provides the most reliable `repo_id` mapping
-        - **Fallback matching** via repository name captures additional repositories from GitHub Archive
-        - **Coverage statistics** show the breadth of data integration across sources
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ### Find Unmatched Repositories
 
-        This unified `repo_id` enables consistent analysis across all OSO data products, regardless 
-        of the original data source.
+        Identifies repositories without a `repo_id` that cannot be directly joined with GitHub Archive data.
+
+        **When to use**: Identifying repositories that may need manual review or alternative join strategies.
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ```sql
+        -- Find repositories without repo_id (cannot join with GitHub Archive)
+        SELECT 
+          repo_name, 
+          opendevdata_id, 
+          github_graphql_id,
+          star_count
+        FROM oso.int_opendevdata__repositories_with_repo_id
+        WHERE repo_id IS NULL
+        ORDER BY star_count DESC NULLS LAST
+        LIMIT 20
+        ```
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ### Join with Open Dev Data Commit Activities
+
+        Example of using `opendevdata_id` to join with Open Dev Data commit and activity tables.
+
+        **When to use**: Analyzing commit patterns or developer activity for specific repositories.
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ```sql
+        -- Join with Open Dev Data commit activities
+        SELECT 
+          r.repo_name,
+          r.opendevdata_id,
+          COUNT(DISTINCT c.canonical_developer_id) as unique_developers,
+          SUM(a.commits) as total_commits
+        FROM oso.int_opendevdata__repositories_with_repo_id r
+        JOIN oso.stg_opendevdata__repo_developer_activities a 
+          ON r.opendevdata_id = a.repo_id
+        WHERE r.repo_id IS NOT NULL
+        GROUP BY r.repo_name, r.opendevdata_id
+        ORDER BY total_commits DESC
+        LIMIT 20
+        ```
         """
     )
     return
