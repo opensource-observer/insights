@@ -38,6 +38,15 @@ LIMIT {limit}
 """
         return mo.md(sql_snippet)
 
+    def render_table_preview(model_name):
+        df = get_model_preview(model_name)
+        sql_snippet = generate_sql_snippet(model_name, df, limit=5)
+        fmt = {c: '{:.0f}' for c in df.columns if df[c].dtype == 'int64' and ('_id' in c or c == 'id')}
+        table = mo.ui.table(df, format_mapping=fmt, show_column_summaries=False, show_data_types=False)
+        row_count = get_row_count(model_name)
+        col_count = len(df.columns)
+        title = f"{model_name} | {row_count:,.0f} rows, {col_count} cols"
+        return mo.accordion({title: mo.vstack([sql_snippet, table])})
 
     def render_table_accordion(model_names):
         accordion = {}
@@ -51,7 +60,7 @@ LIMIT {limit}
             title = f"{model_name} | {row_count:,.0f} rows, {col_count} cols"
             accordion[title] = mo.vstack([sql_snippet, table])
         return mo.accordion(accordion)
-    return (render_table_accordion,)
+    return (render_table_preview, render_table_accordion)
 
 
 @app.cell(hide_code=True)
@@ -60,11 +69,60 @@ def _(mo):
         """
         # OSS Directory
 
-        The OSS Directory is a curated registry of open source projects, collections, 
-        and their associated repositories. It serves as the foundation for mapping 
-        projects across the OSO data pipeline.
-
         **Maintained by:** [OSO](https://opensource.observer)
+
+        ## Overview
+
+        OSS Directory is a curated registry of open source projects, collections, and their associated repositories. 
+        OSO takes GitHub URLs from projects, calls the GitHub API, and identifies all repositories belonging to 
+        organizations. This data serves as the primary bridge between different data sources because it includes 
+        both GitHub REST API IDs and GraphQL node IDs, enabling joins across GitHub Archive, Open Dev Data, and other sources.
+
+        ## Primary Tables
+
+        ### Repositories
+
+        This is the most important table for data joining. It contains repository metadata with both ID systems needed 
+        for cross-source analysis. The `id` field contains the GitHub REST API ID, which should be used to join with 
+        GitHub Archive data. The `node_id` field contains the GitHub GraphQL ID, which should be used to join with 
+        Open Dev Data repositories.
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(render_table_preview):
+    render_table_preview("stg_ossd__current_repositories")
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ### Projects
+
+        Contains project definitions with associated artifacts stored as arrays or nested dictionaries. Projects aggregate 
+        multiple related repositories and can include GitHub URLs, commit information, and other project metadata.
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(render_table_preview):
+    render_table_preview("stg_ossd__current_projects")
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ## Other Tables
+
+        The following are other tables that may be useful for analysis.
         """
     )
     return
@@ -73,11 +131,23 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(render_table_accordion):
     render_table_accordion([
-        "stg_ossd__current_projects",
         "stg_ossd__current_collections",
-        "stg_ossd__current_repositories",
         "stg_ossd__current_sbom"
     ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ## Limitations
+
+        OSS Directory only includes a limited number of repositories. New repositories must be added by submitting a 
+        pull request to [github.com/opensource-observer/oss-directory](https://github.com/opensource-observer/oss-directory). 
+        The repository set is curated rather than comprehensive.
+        """
+    )
     return
 
 

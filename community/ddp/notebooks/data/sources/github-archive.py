@@ -38,19 +38,16 @@ LIMIT {limit}
 """
         return mo.md(sql_snippet)
 
-    def render_table_accordion(model_names):
-        accordion = {}
-        for model_name in model_names:
-            df = get_model_preview(model_name)
-            sql_snippet = generate_sql_snippet(model_name, df, limit=5)
-            fmt = {c: '{:.0f}' for c in df.columns if df[c].dtype == 'int64' and ('_id' in c or c == 'id')}
-            table = mo.ui.table(df, format_mapping=fmt, show_column_summaries=False, show_data_types=False)
-            row_count = get_row_count(model_name)
-            col_count = len(df.columns)
-            title = f"{model_name} | {row_count:,.0f} rows, {col_count} cols"
-            accordion[title] = mo.vstack([sql_snippet, table])
-        return mo.accordion(accordion)
-    return (render_table_accordion,)
+    def render_table_preview(model_name):
+        df = get_model_preview(model_name)
+        sql_snippet = generate_sql_snippet(model_name, df, limit=5)
+        fmt = {c: '{:.0f}' for c in df.columns if df[c].dtype == 'int64' and ('_id' in c or c == 'id')}
+        table = mo.ui.table(df, format_mapping=fmt, show_column_summaries=False, show_data_types=False)
+        row_count = get_row_count(model_name)
+        col_count = len(df.columns)
+        title = f"{model_name} | {row_count:,.0f} rows, {col_count} cols"
+        return mo.accordion({title: mo.vstack([sql_snippet, table])})
+    return (render_table_preview,)
 
 
 @app.cell(hide_code=True)
@@ -59,21 +56,45 @@ def _(mo):
         """
         # GitHub Archive
 
-        GitHub Archive is a project to record the public GitHub timeline, archive it, 
-        and make it easily accessible for further analysis. This includes events like 
-        pushes, pull requests, issues, and more.
-
         **Maintained by:** [gharchive.org](https://gharchive.org)
+
+        ## Overview
+
+        GitHub Archive records the public GitHub timeline, archiving all public GitHub activity including pushes, pull requests, 
+        issues, comments, and many other event types. The dataset provides complete coverage of public GitHub activity and is 
+        continuously updated. Events use GitHub's **REST API IDs** rather than GraphQL node IDs, allowing direct joins with OSS Directory 
+        repositories via the `id` field, but requiring OSS Directory as an intermediary to join with Open Dev Data.
+
+        ## Primary Tables
+
+        ### Events
+
+        Contains all public GitHub activity events. The `type` field indicates the event category (push, pull request, issue, etc.), 
+        with detailed information in the JSON `payload` field. Repository and actor IDs are extracted from the payload and use 
+        GitHub's REST API ID system (`repo.id` and `actor.id`). These REST API IDs can be directly joined with OSS Directory 
+        repositories using the `id` field.
         """
     )
     return
 
 
 @app.cell(hide_code=True)
-def _(render_table_accordion):
-    render_table_accordion([
-        "stg_github__events"
-    ])
+def _(render_table_preview):
+    render_table_preview("stg_github__events")
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ## Limitations
+
+        The dataset does not capture contributions made when repositories were private (only public activity is recorded). There may 
+        be gaps in coverage if the GitHub API is down or the indexer experiences issues, potentially missing hours or days of activity. 
+        While comprehensive, the dataset is not 100% complete due to these edge cases.
+        """
+    )
     return
 
 
