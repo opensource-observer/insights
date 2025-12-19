@@ -38,6 +38,16 @@ LIMIT {limit}
 """
         return mo.md(sql_snippet)
 
+    def render_table_preview(model_name):
+        df = get_model_preview(model_name)
+        sql_snippet = generate_sql_snippet(model_name, df, limit=5)
+        fmt = {c: '{:.0f}' for c in df.columns if df[c].dtype == 'int64' and ('_id' in c or c == 'id')}
+        table = mo.ui.table(df, format_mapping=fmt, show_column_summaries=False, show_data_types=False)
+        row_count = get_row_count(model_name)
+        col_count = len(df.columns)
+        title = f"{model_name} | {row_count:,.0f} rows, {col_count} cols"
+        return mo.accordion({title: mo.vstack([sql_snippet, table])})
+
     def render_table_accordion(model_names):
         accordion = {}
         for model_name in model_names:
@@ -50,7 +60,7 @@ LIMIT {limit}
             title = f"{model_name} | {row_count:,.0f} rows, {col_count} cols"
             accordion[title] = mo.vstack([sql_snippet, table])
         return mo.accordion(accordion)
-    return (render_table_accordion,)
+    return (render_table_preview, render_table_accordion)
 
 
 @app.cell(hide_code=True)
@@ -59,10 +69,138 @@ def _(mo):
         """
         # Open Dev Data
 
-        Open Dev Data provides comprehensive developer activity metrics, ecosystem 
-        mappings, and contribution analytics across crypto/web3 ecosystems.
-
         **Maintained by:** [Electric Capital](https://electriccapital.com)
+
+        ## Overview
+
+        Open Dev Data provides comprehensive developer activity metrics, ecosystem mappings, and contribution analytics. 
+        Open Dev Data maintains their own repository and developer tracking systems with canonical IDs. The dataset uses 
+        GraphQL IDs rather than REST API IDs, so joining with GitHub Archive (which uses REST API IDs) requires using the
+        `repo_name` or going through OSS Directory as an intermediary.
+
+        ## Primary Tables
+
+        ### Repositories
+
+        Open Dev Data's repository registry. The `id` field contains Open Dev Data's canonical ID system. The `github_graphql_id` 
+        field can be used to join with OSS Directory repositories via `node_id`. Repository names are case-sensitive. The `blacklist` 
+        field indicates repositories excluded from Open Dev Data's metrics calculations.
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(render_table_preview):
+    render_table_preview("stg_opendevdata__repos")
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ### Commits
+
+        Detailed commit-level activity data. The `repo_id` references Open Dev Data's canonical repository ID. Each commit 
+        links to a `canonical_developer_id`. Note that this table does not include GitHub handles, so connecting commits to 
+        GitHub REST API data requires additional mapping through other sources.
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(render_table_preview):
+    render_table_preview("stg_opendevdata__commits")
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ### Developers
+
+        Unified developer identity system tracking developers across different ID systems: canonical ID, email identity, and 
+        GitHub user ID from GraphQL API. Related location data is available in `canonical_developer_locations`.
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(render_table_preview):
+    render_table_preview("stg_opendevdata__canonical_developers")
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ### Ecosystems
+
+        Ecosystems represent collections of repositories grouped together (conceptually similar to OSS Directory "projects"). 
+        Use `ecosystems_repos` for direct mappings, or `ecosystems_repos_recursive` to include all repositories from parent 
+        and child ecosystems in hierarchical relationships.
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(render_table_preview):
+    render_table_preview("stg_opendevdata__ecosystems")
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ### Ecosystems Repos Recursive
+
+        Use this table to get complete repository sets for ecosystems that have parent-child relationships. Includes all 
+        repositories from both parent and child ecosystems.
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(render_table_preview):
+    render_table_preview("stg_opendevdata__ecosystems_repos_recursive")
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ### Repository Developer Activities
+
+        Aggregated daily commit counts per developer per repository. Key fields: `repo_id`, `day`, `canonical_developer_id`, 
+        and `commits` (count). Use `repo_developer_28d_activities` for 28-day rolling windows, which aligns with Open Dev Data's 
+        definition of "active developer".
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(render_table_preview):
+    render_table_preview("stg_opendevdata__repo_developer_activities")
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ## Other Tables
+
+        The following are other tables that may be useful for analysis.
         """
     )
     return
@@ -72,25 +210,34 @@ def _(mo):
 def _(render_table_accordion):
     render_table_accordion([
         "stg_opendevdata__canonical_developer_locations",
-        "stg_opendevdata__canonical_developers",
-        "stg_opendevdata__commits",
+        "stg_opendevdata__repo_developer_28d_activities",
         "stg_opendevdata__developer_activities",
-        "stg_opendevdata__eco_developer_28d_activities",
         "stg_opendevdata__eco_developer_activities",
+        "stg_opendevdata__eco_developer_28d_activities",
         "stg_opendevdata__eco_developer_contribution_ranks",
         "stg_opendevdata__eco_developer_tenures",
         "stg_opendevdata__eco_mads",
         "stg_opendevdata__ecosystems_child_ecosystems_recursive",
         "stg_opendevdata__ecosystems_child_ecosystems",
         "stg_opendevdata__ecosystems_organizations",
-        "stg_opendevdata__ecosystems_repos_recursive",
         "stg_opendevdata__ecosystems_repos",
-        "stg_opendevdata__ecosystems",
-        "stg_opendevdata__organizations",
-        "stg_opendevdata__repo_developer_28d_activities",
-        "stg_opendevdata__repo_developer_activities",
-        "stg_opendevdata__repos"
+        "stg_opendevdata__organizations"
     ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ## Limitations
+
+        Open Dev Data includes a curated set of repositories rather than comprehensive coverage. Some repositories may be 
+        blacklisted from metrics calculations. The dataset focuses on commit events and does not include pull requests, issues, 
+        or other GitHub activity types. Developers are tracked by canonical ID, email, and GraphQL ID rather than GitHub handles 
+        or REST API IDs, so integration with GitHub Archive data requires mapping through OSS Directory.
+        """
+    )
     return
 
 
