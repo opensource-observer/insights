@@ -7,7 +7,7 @@ app = marimo.App(width="full")
 @app.cell(hide_code=True)
 def about_app(mo):
     _team = "OSO Team"
-    _date = "18 December 2024"
+    _date = "22 December 2025"
 
     mo.vstack([
         mo.md(f"""
@@ -26,7 +26,7 @@ def about_app(mo):
                 - **Churned Contributor**: A contributor who was active in the project in the previous month, but is no longer active in the current month
                 - **First Time Contributor**: A contributor making their first contribution
                 - **Full Time Contributor**: A contributor with high activity levels (typically 10+ days of activity per month)
-                - **Part Time Contributor**: A contributor with moderate activity levels
+                - **Part Time Contributor**: A contributor with moderate activity levels (1-9 days of activity per month)
                 - **Dormant Contributor**: A contributor who was previously active but is no longer contributing
                 - **Lifecycle States**: Categories that track how contributors move through different engagement levels over time
                 - **Collection**: A group of related projects (e.g., Protocol Labs Network, Filecoin Core, Filecoin Builders)
@@ -37,6 +37,7 @@ def about_app(mo):
                 - **Collections**: `collections_v1` - Collection definitions from OSS Directory
                 - **Projects**: `projects_v1` - Project metadata and definitions
                 - **Artifacts**: `artifacts_v1` - Repository and artifact metadata
+                - **Lifecycle Metrics**: `int_pln_developer_lifecycle_monthly_enriched` - Developer lifecycle states for PLN projects
                 - **Time-Series Metrics**: 
                   - `timeseries_metrics_by_collection_v0` - Collection-level metrics over time
                   - `timeseries_metrics_by_project_v0` - Project-level metrics over time
@@ -48,7 +49,9 @@ def about_app(mo):
                 "Methodology": """
                 - **Time Aggregation**: All lifecycle metrics are aggregated monthly
                 - **Event Source**: Metrics are derived from GitHub events (commits, issues, pull requests, code reviews)
-                - **Metric Filtering**: Lifecycle metrics are identified by patterns in `metric_model` field (contains 'contributor', excludes 'change_in')
+                - **Activity Classification**: Contributors are classified based on days active per month:
+                  - *Full Time*: 10+ days of activity per month
+                  - *Part Time*: 1-9 days of activity per month
                 - **Data Bucketing**: Data is bucketed into monthly intervals, going back to the earliest available data
                 - **Collection Aggregation**: When multiple collections are selected, metrics are aggregated across all projects in those collections
                 - **Snapshot vs Time-Series**: Artifact-level metrics use snapshot data (current state) while collection and project metrics use time-series data
@@ -69,63 +72,625 @@ def about_app(mo):
 
 
 @app.cell(hide_code=True)
-def import_libraries():
-    import pandas as pd
-    import plotly.express as px
-    import plotly.graph_objects as go
-    return go, pd, px
+def _(mo):
+    mo.md(r"""
+    # Ecosystem Health Overview
+    """)
+    return
 
 
 @app.cell(hide_code=True)
-def configuration_settings(mo, pyoso_db_conn):
-    # Load available collections
-    _collections_query = """
-    SELECT 
-      collection_name,
-      display_name
-    FROM collections_v1
-    WHERE collection_source = 'OSS_DIRECTORY'
-    AND collection_namespace = 'oso'
-    ORDER BY collection_name
-    """
-    _collections_df = mo.sql(_collections_query, engine=pyoso_db_conn, output=False)
+def _(mo, pyoso_db_conn):
+    COLLECTIONS = [
+        'protocol-labs-network',
+        'filecoin-builders',
+        'filecoin-core',
+        'filecoin-dependencies',
+        'filecoin-infra-for-builders',
+    ]
+    GITHUB_METRICS = [
+        'opened_issues',
+        'closed_issues',
+        'commits',
+        'opened_pull_requests',
+        'merged_pull_requests',
+        'contributors',
+        'comments',
+        'repositories',
+        'releases',
+        'stars',
+        'forks',        
+    ]
+    df_collections = mo.sql(
+        f"""
+        WITH collections AS (
+          SELECT 
+            collection_id,
+            display_name AS collection
+          FROM collections_v1
+          WHERE
+            collection_source = 'OSS_DIRECTORY'
+            AND collection_name IN ({stringify(COLLECTIONS)})
+        ),
+        metrics AS (
+          SELECT
+            metric_id,
+            display_name AS metric
+          FROM metrics_v0
+          WHERE
+            metric_event_source = 'GITHUB'
+            AND metric_model IN ({stringify(GITHUB_METRICS)})
+        )
+        SELECT
+          collection AS "Collection",
+          metric AS "Metric",
+          amount AS "Amount"
+        FROM key_metrics_by_collection_v0
+        JOIN metrics USING metric_id
+        JOIN collections USING collection_id
+        ORDER BY 1,2
+        """,
+        output=False,
+        engine=pyoso_db_conn
+    )
+    df_collections_monthly_metrics = mo.sql(
+        f"""
+        WITH collections AS (
+          SELECT 
+            collection_id,
+            display_name AS collection
+          FROM collections_v1
+          WHERE
+            collection_source = 'OSS_DIRECTORY'
+            AND collection_name IN ({stringify(COLLECTIONS)})
+        ),
+        metrics AS (
+          SELECT
+            metric_id,
+            CASE WHEN display_name = 'Repositories' THEN 'Active Repositories' ELSE display_name END AS metric
+          FROM metrics_v0
+          WHERE
+            metric_event_source = 'GITHUB'
+            AND metric_model IN ({stringify(GITHUB_METRICS)})
+            AND metric_time_aggregation = 'monthly'
+        )
+        SELECT
+          collection AS "Collection",
+          metric AS "Metric",
+          sample_date AS "Date",
+          amount AS "Amount"
+        FROM timeseries_metrics_by_collection_v0
+        JOIN metrics USING metric_id
+        JOIN collections USING collection_id
+        ORDER BY 1,2,3
+        """,
+        output=False,
+        engine=pyoso_db_conn
+    )
+    return COLLECTIONS, df_collections, df_collections_monthly_metrics
 
-    # Default collections for Filecoin analysis
-    _default_collections = ['protocol-labs-network', 'filecoin-core', 'filecoin-builders']
 
-    # Filter to only include collections that exist in the database
-    _available_collections = _collections_df['collection_name'].tolist()
-    _default_selected = [c for c in _default_collections if c in _available_collections]
-    if not _default_selected:
-        _default_selected = _available_collections[:3] if len(_available_collections) >= 3 else _available_collections
+@app.cell(hide_code=True)
+def _(df_collections_monthly_metrics, mo):
+    _collections = df_collections_monthly_metrics['Collection'].unique()
+    _metrics = df_collections_monthly_metrics['Metric'].unique()
+    _default_collection = 'Protocol Labs Network'
+    _default_metric = 'Contributors'
+    monthly_metric_collection_select = mo.ui.dropdown(
+        options=_collections,
+        value=_default_collection,
+        allow_select_none=False
+    )
+    monthly_metric_metric_select = mo.ui.dropdown(
+        options=_metrics,
+        value=_default_metric,
+        allow_select_none=False
+    )
+    return monthly_metric_collection_select, monthly_metric_metric_select
 
-    collection_input = mo.ui.multiselect(
-        options=_available_collections,
-        value=_default_selected,
-        label='Select Collections:'
+
+@app.cell(hide_code=True)
+def _(
+    LAYOUT_SETTINGS,
+    df_collections,
+    df_collections_monthly_metrics,
+    mo,
+    monthly_metric_collection_select,
+    monthly_metric_metric_select,
+    pd,
+    px,
+    show_insight,
+    show_plotly,
+    show_table,
+):
+    def _chart(collection, metric):
+        df = df_collections_monthly_metrics[
+            (df_collections_monthly_metrics['Collection'] == collection)
+            & (df_collections_monthly_metrics['Metric'] == metric)
+        ].copy()
+        df['Date'] = pd.to_datetime(df['Date'])
+        df.sort_values(by='Date', inplace=True)
+        fig = px.area(data_frame=df, x='Date', y='Amount', line_shape='hvh', color_discrete_sequence=['teal'])
+        fig.update_layout(hovermode='x unified', **LAYOUT_SETTINGS)
+        annotation_date = pd.Timestamp("2025-05-01")
+        fig.add_annotation(
+            x=annotation_date,
+            y=df.loc[df['Date'] == annotation_date, 'Amount'].iloc[0],
+            text="Issue with gharchive",
+            showarrow=True,
+            arrowhead=2,
+            ax=0,
+            ay=-100,
+            xanchor="center",
+            yanchor="bottom",
+        )
+        return fig
+
+    _df = (
+        df_collections.pivot_table(index='Collection', columns='Metric', values='Amount', fill_value=0)
+        .map(int)
+        [[
+            'Repositories', 'Contributors', 'Releases',
+            'Forks', 'Stars', 'Commits', 
+            'Opened Pull Requests', 'Merged Pull Requests',
+            'Opened Issues', 'Closed Issues', 'Comments'
+        ]]
+        .reset_index()
     )
 
-    show_inactive_input = mo.ui.switch(
-        label='Show inactive developers',
-        value=False
+    _chart_title = mo.hstack([
+        mo.md("Analyze"),
+        monthly_metric_metric_select,
+        mo.md("for all projects in the"),
+        monthly_metric_collection_select,
+        mo.md("collection")
+    ], align='start', justify='start')
+
+    _fig = _chart(monthly_metric_collection_select.value, monthly_metric_metric_select.value)
+
+    _num_repos = _df['Repositories'].max()
+    _num_contribs = _df['Contributors'].max()
+    _collections = len(_df)
+    show_insight(
+        headline=f"OSO is currently tracking >{_num_repos:,.0f} repos and >{_num_contribs:,.0f} contributors across {_collections:,.0f} collections",
+        level=2,
+        elements=[
+            show_table(_df),
+            mo.md("### Since May 2025, there has been a [documented issue](https://github.com/igrigorik/gharchive.org/issues/310) with gharchive missing some events"),
+            _chart_title,
+            show_plotly(_fig)        
+        ]
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(
+    COLLECTIONS,
+    artifacts_by_collection_v1,
+    int_opendevdata__repositories_with_repo_id,
+    mo,
+    pyoso_db_conn,
+    stg_opendevdata__developer_activities,
+    stg_opendevdata__ecosystems,
+    stg_opendevdata__ecosystems_repos_recursive,
+):
+    ECOSYSTEMS = ['Filecoin', 'IPFS', 'Protocol Labs', 'libp2p']
+
+    df_opendevdata_repos = mo.sql(
+        f"""
+        WITH artifacts AS (
+          SELECT DISTINCT CAST(artifact_source_id AS integer) AS repo_id
+          FROM artifacts_by_collection_v1
+          WHERE
+            collection_name IN ({stringify(COLLECTIONS)})
+            AND artifact_source = 'GITHUB'
+        )
+        SELECT
+          SPLIT(repo_name, '/')[1] AS "Maintainer",
+          CONCAT('https://github.com/', repo_name) AS "Repo URL",
+          repo_created_at AS "Repo Created At",
+          fork_count AS "Fork Count",
+          star_count AS "Star Count",
+          opendevdata_id IN (
+            SELECT repo_id
+            FROM stg_opendevdata__ecosystems_repos_recursive AS rr
+            JOIN stg_opendevdata__ecosystems AS e ON rr.ecosystem_id = e.id
+            WHERE e.name IN ({stringify(ECOSYSTEMS)})
+          ) AS "Included in Electric Capital"
+        FROM int_opendevdata__repositories_with_repo_id
+        JOIN artifacts USING repo_id
+        """,
+        output=False,
+        engine=pyoso_db_conn
     )
 
-    # Lifecycle metric mappings (from user query)
-    LIFECYCLE_METRICS_MAPPING = {
-        'first_time_contributor': 'first time',
-        'active_full_time_contributor': 'full time',
-        'new_full_time_contributor': 'new full time',
-        'part_time_to_full_time_contributor': 'part time to full time',
-        'reactivated_full_time_contributor': 'dormant to full time',
-        'active_part_time_contributor': 'part time',
-        'new_part_time_contributor': 'new part time',
-        'full_time_to_part_time_contributor': 'full time to part time',
-        'reactivated_part_time_contributor': 'dormant to part time',
-        'churned_contributors': 'dormant',
-        'churned_after_first_time_contributor': 'churned (after first time)',
-        'churned_after_part_time_contributor': 'churned (after reaching part time)',
-        'churned_after_full_time_contributor': 'churned (after reaching full time)'
-    }
+    df_opendevdata_metrics = mo.sql(
+        f"""
+        WITH artifacts AS (
+          SELECT DISTINCT CAST(artifact_source_id AS integer) AS repo_id
+          FROM artifacts_by_collection_v1
+          WHERE collection_name IN ({stringify(COLLECTIONS)})
+            AND artifact_source='GITHUB'
+        ),
+        oso_repos AS (
+          SELECT DISTINCT r.opendevdata_id AS repo_id
+          FROM int_opendevdata__repositories_with_repo_id r
+          JOIN artifacts a ON r.repo_id=a.repo_id
+        ),
+        ec_repos AS (
+          SELECT DISTINCT rr.repo_id
+          FROM stg_opendevdata__ecosystems_repos_recursive rr
+          JOIN stg_opendevdata__ecosystems e ON rr.ecosystem_id=e.id
+          WHERE e.name IN ({stringify(ECOSYSTEMS)})
+        ),
+        oso_metrics AS (
+          SELECT
+            DATE_TRUNC('MONTH', d.day) AS bucket_month,
+            APPROX_DISTINCT(d.canonical_developer_id) AS dev_count,
+            APPROX_DISTINCT(d.repo_id) AS repo_count,
+            SUM(d.num_commits) AS commit_count,
+            'OSO-Tracked Repos' AS label
+          FROM stg_opendevdata__developer_activities d
+          JOIN oso_repos r ON d.repo_id=r.repo_id
+          GROUP BY 1
+        ),
+        ec_metrics AS (
+          SELECT
+            DATE_TRUNC('MONTH', d.day) AS bucket_month,
+            APPROX_DISTINCT(d.canonical_developer_id) AS dev_count,
+            APPROX_DISTINCT(d.repo_id) AS repo_count,
+            SUM(d.num_commits) AS commit_count,
+            'Electric Capital Repos' AS label
+          FROM stg_opendevdata__developer_activities d
+          JOIN ec_repos r ON d.repo_id=r.repo_id
+          GROUP BY 1
+        ),
+        unioned AS (
+          SELECT * FROM oso_metrics
+          UNION ALL
+          SELECT * FROM ec_metrics
+        )
+        SELECT
+          bucket_month AS "Date",
+          dev_count AS "Active Developers",
+          repo_count AS "Active Repos",
+          commit_count AS "Commits",
+          label AS "Label"
+        FROM unioned
+        ORDER BY 1
+        """,
+        output=False,
+        engine=pyoso_db_conn
+    )
+    return ECOSYSTEMS, df_opendevdata_metrics, df_opendevdata_repos
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    _metrics = ['Active Developers', 'Active Repos', 'Commits']
+    _default_metric = 'Active Developers'
+    opendevdata_metric_select = mo.ui.dropdown(
+        options=_metrics,
+        value=_default_metric,
+        allow_select_none=False
+    )
+    return (opendevdata_metric_select,)
+
+
+@app.cell(hide_code=True)
+def _(
+    ECOSYSTEMS,
+    LAYOUT_SETTINGS,
+    df_opendevdata_metrics,
+    df_opendevdata_repos,
+    mo,
+    opendevdata_metric_select,
+    pd,
+    px,
+    show_insight,
+    show_plotly,
+    show_table,
+):
+    def _chart(metric):
+        df = df_opendevdata_metrics.copy()
+        df['Date'] = pd.to_datetime(df['Date'])
+        df.sort_values(by='Date', inplace=True)
+        fig = px.line(data_frame=df, x='Date', y=metric, color='Label', line_shape='hvh')
+        fig.update_layout(hovermode='x unified', **LAYOUT_SETTINGS)
+        annotation_date = pd.Timestamp("2023-03-01")
+        y = df.loc[df['Date'] == annotation_date, metric].iloc[0]
+        fig.add_annotation(
+            x=annotation_date,
+            y=y,
+            text="Figures start getting stale",
+            showarrow=True,
+            arrowhead=2,
+            ax=0,
+            ay=200,
+            xanchor="center",
+            yanchor="bottom",
+        )
+        return fig
+
+    _chart_title = mo.hstack([
+        mo.md("Analyze"),
+        opendevdata_metric_select,
+        mo.md("for all repos tracked by Electric Capital's Open Dev Data")
+    ], align='start', justify='start')
+
+    _fig = _chart(opendevdata_metric_select.value)
+
+    _df_repos = df_opendevdata_repos.sort_values(by='Fork Count', ascending=False).copy()
+    _df_repos['Maintainer'] = _df_repos['Repo URL']
+
+    _num_repos = len(df_opendevdata_repos)
+    _included_repos = len(df_opendevdata_repos[df_opendevdata_repos['Included in Electric Capital']])
+    show_insight(
+        headline=f"OSO can diff these metrics against the ~{_num_repos:,.0f} repos currently tracked by Electric Capital",
+        level=2,
+        elements=[
+            mo.md(f"Of these, only {_included_repos:,.0f} are listed as part of one or more of the following Electric Capital ecosystems: {', '.join(sorted(ECOSYSTEMS))}"),
+            show_table(_df_repos),
+            _chart_title,
+            show_plotly(_fig)        
+        ]
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    # Detailed Repository Metrics
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    repository_input = mo.ui.text(kind='url', label='Enter a repository url', value='https://github.com/opensource-observer/oso', full_width=True)
+    repository_input
+    return (repository_input,)
+
+
+@app.cell(hide_code=True)
+def _(
+    int_artifacts__github,
+    int_opendevdata__repositories_with_repo_id,
+    mo,
+    pd,
+    pyoso_db_conn,
+    repositories_v0,
+    repository_input,
+    stg_opendevdata__developer_activities,
+):
+    df_repo_snapshot = mo.sql(
+        f"""
+        SELECT
+          artifact_id,
+          artifact_source_id AS repo_id,
+          star_count,
+          fork_count,
+          license_name,
+          language,
+          created_at,
+          updated_at
+        FROM repositories_v0
+        WHERE artifact_url = '{repository_input.value}'
+        """,
+        engine=pyoso_db_conn,
+        output=False
+    )
+
+    _repo_id = df_repo_snapshot['repo_id'].iloc[0]
+    df_repo_lineage = mo.sql(
+        f"""
+        SELECT DISTINCT
+          artifact_id,
+          artifact_url AS repo_url,
+        FROM int_artifacts__github
+        WHERE artifact_source_id = '{_repo_id}'
+        """,
+        engine=pyoso_db_conn,
+        output=False
+    )
+
+    _artifact_ids = df_repo_lineage['artifact_id'].to_list()
+    _df_repo_opendevdata_metrics = mo.sql(
+        f"""
+        WITH metrics AS (
+          SELECT
+            DATE_TRUNC('MONTH', d.day) AS bucket_month,
+            APPROX_DISTINCT(d.canonical_developer_id) AS dev_count,
+            SUM(d.num_commits) AS commit_count
+          FROM stg_opendevdata__developer_activities d
+          JOIN int_opendevdata__repositories_with_repo_id r
+            ON d.repo_id = r.opendevdata_id
+          WHERE r.repo_id = {_repo_id}
+          GROUP BY 1
+        ),
+        unpivoted AS (
+          SELECT
+            bucket_month,
+            'Active Developers' AS metric,
+            dev_count AS amount
+          FROM metrics
+          UNION ALL
+          SELECT
+            bucket_month,
+            'Commits' AS metric,
+            commit_count AS amount
+          FROM metrics
+        )
+        SELECT
+          bucket_month AS "Date",
+          metric AS "Metric",
+          amount AS "Amount"
+        FROM unpivoted
+        ORDER BY 1,2
+        """,
+        engine=pyoso_db_conn,
+        output=False
+    )
+
+    def _metric_query(metric, repo_artifact_ids, start_date='2022-01-01'):
+        metric_name = metric.replace('_', ' ').title()
+        return f"""
+            SELECT
+              metrics_sample_date AS "Date",
+              '{metric_name}' AS "Metric",
+              amount AS "Amount"
+            FROM {metric}_to_artifact_monthly
+            WHERE
+              to_artifact_id IN ({stringify(repo_artifact_ids)})
+              AND metrics_sample_date >= DATE('{start_date}')
+            """
+
+    _repo_metrics = [
+        'closed_issues',
+        'comments',
+        'contributors',
+        'forks',
+        'merged_pull_requests',
+        'opened_issues',
+        'opened_pull_requests',
+        'stars',
+        'issue_age_median',
+        'issue_age_max',
+    #    'full_time_developers',
+    #    'part_time_developers',
+        'bot_activity',
+        'project_velocity',
+    #    'new_contributors',
+        'self_merge_rates',
+        'contributor_absence_factor',
+        'releases',
+        'burstiness'
+    ]
+    _df_repo_timeseries_metrics = mo.sql(
+        "UNION ALL".join([_metric_query(m, _artifact_ids) for m in _repo_metrics]),
+        engine=pyoso_db_conn,
+        output=False
+    )
+
+    df_repo_metrics = pd.concat([_df_repo_timeseries_metrics, _df_repo_opendevdata_metrics], axis=0, ignore_index=True)
+    return df_repo_lineage, df_repo_metrics, df_repo_snapshot
+
+
+@app.cell(hide_code=True)
+def _(df_repo_metrics, mo):
+    _metrics = sorted(df_repo_metrics['Metric'].unique())
+    _default_metric = 'Active Developers'
+    repo_metric_select = mo.ui.dropdown(
+        options=_metrics,
+        value=_default_metric,
+        allow_select_none=False
+    )
+    return (repo_metric_select,)
+
+
+@app.cell(hide_code=True)
+def _(
+    LAYOUT_SETTINGS,
+    df_opendevdata_repos,
+    df_repo_lineage,
+    df_repo_metrics,
+    df_repo_snapshot,
+    mo,
+    pd,
+    px,
+    repo_metric_select,
+    repository_input,
+    show_insight,
+    show_plotly,
+    show_table,
+):
+    def _chart(metric):
+        df = df_repo_metrics.copy()
+        df["Date"] = pd.to_datetime(df["Date"])
+        df["Date"] = df["Date"].dt.to_period("M").dt.to_timestamp()
+        start = df["Date"].min()
+        end = df["Date"].max()
+        df = df[df["Metric"] == metric]
+        df = df.groupby(["Date", "Metric"], as_index=False)["Amount"].sum()
+        full_dates = pd.date_range(start=start, end=end, freq="MS")
+        grid = pd.DataFrame({"Date": full_dates})
+        grid["Metric"] = metric
+        df = (
+            grid.merge(df, on=["Date", "Metric"], how="left")
+                .fillna({"Amount": 0})
+                .sort_values("Date")
+        )
+        fig = px.area(data_frame=df, x="Date", y="Amount", line_shape="hvh", color_discrete_sequence=['teal'])
+        fig.update_layout(hovermode="x unified", **LAYOUT_SETTINGS)
+        return fig
+
+    _name = repository_input.value.replace('https://github.com/', '')
+
+    _chart_title = mo.hstack([
+        mo.md("Analyze"),
+        repo_metric_select,
+        mo.md(f"for {_name}")
+    ], align='start', justify='start')
+
+    _fig = _chart(repo_metric_select.value)
+
+
+    _lineage = [x for x in df_repo_lineage['repo_url'].unique() if x != repository_input.value]
+    _lineage_md = f"Also known as {';'.join(_lineage)}" if _lineage else ""
+
+    _num_repos = len(df_opendevdata_repos)
+    _included_repos = len(df_opendevdata_repos[df_opendevdata_repos['Included in Electric Capital']])
+    show_insight(
+        headline=f"Showing GitHub related metrics for: {_name}",
+        level=2,
+        elements=[
+            mo.md(_lineage_md),
+            show_table(df_repo_snapshot),
+            _chart_title,
+            show_plotly(_fig)        
+        ]
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    # Developer Lifecycle Analysis
+
+    This section provides detailed developer lifecycle analysis using granular data from the Protocol Labs Network.
+    The lifecycle model tracks contributors through different engagement states over time, from first contribution
+    through to becoming full-time contributors or churning out of the ecosystem.
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def lifecycle_configuration(
+    COLLECTIONS,
+    mo,
+    projects_by_collection_v1,
+    projects_v1,
+    pyoso_db_conn,
+):
+    # Get all projects in the PLN collections
+    df_pln_projects = mo.sql(
+        f"""
+        SELECT DISTINCT
+          project_id,
+          p.project_name,
+          p.display_name AS project_display_name,
+          pbc.collection_name
+        FROM projects_by_collection_v1 pbc
+        JOIN projects_v1 p USING (project_id)
+        WHERE pbc.collection_name IN ({stringify(COLLECTIONS)})
+        ORDER BY p.display_name
+        """,
+        engine=pyoso_db_conn,
+        output=False
+    )
 
     # Lifecycle color mapping
     LIFECYCLE_COLORS = {
@@ -145,6 +710,8 @@ def configuration_settings(mo, pyoso_db_conn):
         'churned (after first time)': '#D62728',
         'churned (after reaching part time)': '#E57373',
         'churned (after reaching full time)': '#F1948A',
+        'churned': '#999999',
+        'unknown': '#CCCCCC',
     }
 
     # Label order for lifecycle states
@@ -165,189 +732,126 @@ def configuration_settings(mo, pyoso_db_conn):
         'churned (after first time)',
         'churned (after reaching part time)',
         'churned (after reaching full time)',
+        'churned',
+        'unknown',
     ]
+
+    # Active labels (non-churned, non-dormant)
+    ACTIVE_LABELS = [
+        'first time',
+        'full time',
+        'new full time',
+        'part time to full time',
+        'dormant to full time',
+        'part time',
+        'new part time',
+        'full time to part time',
+        'dormant to part time',
+    ]
+
+    # Show inactive toggle
+    show_inactive_input = mo.ui.switch(
+        label='Include dormant & churned states',
+        value=False
+    )
+
     return (
+        ACTIVE_LABELS,
         LIFECYCLE_COLORS,
         LIFECYCLE_LABEL_ORDER,
-        LIFECYCLE_METRICS_MAPPING,
-        collection_input,
         show_inactive_input,
     )
 
 
-@app.cell
-def get_data(collection_input, mo, pyoso_db_conn):
-    # Helper function to stringify list for SQL IN clause
-    def stringify(arr):
-        if not arr:
-            return "''"
-        return "'" + "','".join(arr) + "'"
-
-    # Get lifecycle metrics by collection
-    _lifecycle_query = f"""
-    WITH lifecycle_metrics AS (
-      SELECT
-        metric_id,
-        metric_model
-      FROM metrics_v0
-      WHERE metric_event_source = 'GITHUB'
-      AND metric_time_aggregation = 'monthly'
-      AND metric_model LIKE '%contributor%' 
-      AND metric_model NOT LIKE 'change_in%'
-      AND description = 'TODO'
+@app.cell(hide_code=True)
+def get_lifecycle_data(
+    int_pln_developer_lifecycle_monthly_enriched,
+    mo,
+    pyoso_db_conn,
+):
+    # Get developer lifecycle data from the enriched PLN lifecycle model
+    df_lifecycle_raw = mo.sql(
+        f"""
+        SELECT
+          bucket_month,
+          project_id,
+          project_name,
+          project_display_name,
+          git_user,
+          is_bot,
+          label,
+          days_active,
+          activity_level,
+          current_state,
+          prev_state,
+          highest_engaged_state,
+          first_contribution_month,
+          last_contribution_month
+        FROM int_pln_developer_lifecycle_monthly_enriched
+        WHERE is_bot = FALSE
+        ORDER BY bucket_month, project_name
+        """,
+        output=False,
+        engine=pyoso_db_conn
     )
-    SELECT
-      c.collection_name,
-      c.display_name AS collection_display_name,
-      ts.sample_date AS bucket_month,
-      m.metric_model,
-      ts.amount AS developers_count
-    FROM timeseries_metrics_by_collection_v0 ts
-    JOIN lifecycle_metrics lm USING (metric_id)
-    JOIN metrics_v0 m USING (metric_id)
-    JOIN collections_v1 c USING (collection_id)
-    WHERE c.collection_name IN ({stringify(collection_input.value)})
-    ORDER BY 1, 3, 4
-    """
-
-    df_lifecycle = mo.sql(_lifecycle_query, engine=pyoso_db_conn, output=False)
-
-    # Get standard GitHub metrics by collection
-    _github_metrics_query = f"""
-    SELECT
-      c.collection_name,
-      c.display_name AS collection_display_name,
-      ts.sample_date AS bucket_month,
-      m.metric_name,
-      m.display_name AS metric_display_name,
-      ts.amount
-    FROM timeseries_metrics_by_collection_v0 ts
-    JOIN metrics_v0 m USING (metric_id)
-    JOIN collections_v1 c USING (collection_id)
-    WHERE c.collection_name IN ({stringify(collection_input.value)})
-    AND m.metric_source = 'GITHUB'
-    AND m.metric_name IN ('stars', 'forks', 'commits', 'pull_requests', 'issues', 'active_contributors')
-    ORDER BY 1, 3, 4
-    """
-
-    df_github_metrics = mo.sql(_github_metrics_query, engine=pyoso_db_conn, output=False)
-
-    # Get projects by collection
-    _projects_query = f"""
-    SELECT DISTINCT
-      project_id,
-      p.project_name,
-      p.display_name AS project_display_name,
-      pbc.collection_name
-    FROM projects_by_collection_v1 pbc
-    JOIN projects_v1 p USING (project_id)
-    WHERE pbc.collection_name IN ({stringify(collection_input.value)})
-    ORDER BY pbc.collection_name, p.display_name
-    """
-
-    df_projects = mo.sql(_projects_query, engine=pyoso_db_conn, output=False)
-    return df_github_metrics, df_lifecycle, df_projects, stringify
+    return (df_lifecycle_raw,)
 
 
 @app.cell(hide_code=True)
-def process_data(LIFECYCLE_METRICS_MAPPING, df_lifecycle, pd):
-    # Process lifecycle data: map metric_model to labels
-    if not df_lifecycle.empty:
-        df_lifecycle_processed = df_lifecycle.copy()
-        df_lifecycle_processed['label'] = df_lifecycle_processed['metric_model'].map(LIFECYCLE_METRICS_MAPPING)
-        df_lifecycle_processed = df_lifecycle_processed[df_lifecycle_processed['label'].notna()].copy()
-        df_lifecycle_processed['bucket_month'] = pd.to_datetime(df_lifecycle_processed['bucket_month'])
+def process_lifecycle_data(df_lifecycle_raw, pd):
+    # Process lifecycle data
+    if not df_lifecycle_raw.empty:
+        df_lifecycle = df_lifecycle_raw.copy()
+        df_lifecycle['bucket_month'] = pd.to_datetime(df_lifecycle['bucket_month'])
     else:
-        df_lifecycle_processed = pd.DataFrame(columns=['collection_name', 'bucket_month', 'label', 'developers_count'])
-    return (df_lifecycle_processed,)
+        df_lifecycle = pd.DataFrame(columns=[
+            'bucket_month', 'project_id', 'project_name', 'project_display_name',
+            'git_user', 'label', 'days_active', 'activity_level'
+        ])
+    return (df_lifecycle,)
 
 
 @app.cell(hide_code=True)
-def ui_helpers(mo):
-    def show_plotly(fig):
-        return mo.ui.plotly(fig, config={'displayModeBar': False})
+def lifecycle_collection_view(
+    ACTIVE_LABELS,
+    LIFECYCLE_COLORS,
+    LIFECYCLE_LABEL_ORDER,
+    df_lifecycle,
+    go,
+    mo,
+    pd,
+    px,
+    show_inactive_input,
+    show_plotly,
+    show_stat,
+):
 
-    def show_table(df, **kwargs):
-        _fmt = {}
-        for col in df.columns:
-            if df[col].dtype in ['int64', 'float64']:
-                if '_id' in col or col == 'id' or 'count' in col.lower():
-                    _fmt[col] = '{:.0f}'
-                else:
-                    _fmt[col] = '{:.2f}'
-        return mo.ui.table(
-            df.reset_index(drop=True),
-            format_mapping=_fmt,
-            show_column_summaries=False,
-            show_data_types=False,
-            **kwargs
+    # Aggregate lifecycle data by month and label (across all projects)
+    if not df_lifecycle.empty:
+        _df_agg = df_lifecycle.groupby(['bucket_month', 'label'], as_index=False).agg(
+            developers_count=('git_user', 'nunique')
         )
 
-    def show_stat(value, label, caption="", format="int"):
-        if format == "int":
-            value_str = f"{value:,.0f}" if isinstance(value, (int, float)) else str(value)
-        elif format == "1f":
-            value_str = f"{value:,.1f}" if isinstance(value, (int, float)) else str(value)
-        elif format == "pct":
-            value_str = f"{value:.1f}%" if isinstance(value, (int, float)) else str(value)
-        else:
-            value_str = str(value)
-        return mo.stat(value=value_str, label=label, caption=caption, bordered=True)
-    return show_plotly, show_stat, show_table
-
-
-@app.cell(hide_code=True)
-def visualization_helpers(LIFECYCLE_COLORS, LIFECYCLE_LABEL_ORDER, go, pd, px):
-    def render_lifecycle_chart(df, show_inactive=False):
-        if df.empty:
-            fig = go.Figure()
-            fig.add_annotation(
-                text="No data available for selected collections",
-                xref="paper", yref="paper",
-                x=0.5, y=0.5, showarrow=False
-            )
-            fig.update_layout(
-                font=dict(size=12, color="#111"),
-                paper_bgcolor="white",
-                plot_bgcolor="white",
-                margin=dict(t=40, l=20, r=20, b=20),
-            )
-            return fig
-
-        _inactive_labels = [
-            'dormant',
-            'first time to dormant',
-            'part time to dormant',
-            'full time to dormant',
-            'churned (after first time)',
-            'churned (after reaching part time)',
-            'churned (after reaching full time)',
-        ]
-
-        if show_inactive:
+        # Filter based on show_inactive toggle
+        if show_inactive_input.value:
             _display_labels = LIFECYCLE_LABEL_ORDER
         else:
-            _display_labels = [c for c in LIFECYCLE_LABEL_ORDER if c not in _inactive_labels]
+            _display_labels = ACTIVE_LABELS
 
-        _df = df.copy()
-        _df['label'] = pd.Categorical(_df['label'], categories=LIFECYCLE_LABEL_ORDER, ordered=True)
-        _df_filtered = _df[_df['label'].isin(_display_labels)].copy()
+        _df_filtered = _df_agg[_df_agg['label'].isin(_display_labels)].copy()
+        _df_filtered['label'] = pd.Categorical(_df_filtered['label'], categories=LIFECYCLE_LABEL_ORDER, ordered=True)
 
-        # Aggregate across collections if multiple selected
-        if 'collection_name' in _df_filtered.columns:
-            _df_agg = _df_filtered.groupby(['bucket_month', 'label'], as_index=False)['developers_count'].sum()
-        else:
-            _df_agg = _df_filtered
-
-        fig = px.bar(
-            data_frame=_df_agg,
+        # Create stacked bar chart
+        _fig = px.bar(
+            data_frame=_df_filtered,
             x='bucket_month',
             y='developers_count',
             color='label',
             color_discrete_map=LIFECYCLE_COLORS,
             category_orders={'label': LIFECYCLE_LABEL_ORDER},
+            labels={'bucket_month': 'Month', 'developers_count': 'Contributors', 'label': 'Lifecycle State'}
         )
-        fig.update_layout(
+        _fig.update_layout(
             barmode='stack',
             template='plotly_white',
             legend_title_text='Lifecycle State',
@@ -357,7 +861,7 @@ def visualization_helpers(LIFECYCLE_COLORS, LIFECYCLE_LABEL_ORDER, go, pd, px):
             margin=dict(t=40, l=20, r=100, b=20),
             hovermode='x unified',
         )
-        fig.update_xaxes(
+        _fig.update_xaxes(
             title='',
             showgrid=False,
             linecolor="black",
@@ -366,8 +870,8 @@ def visualization_helpers(LIFECYCLE_COLORS, LIFECYCLE_LABEL_ORDER, go, pd, px):
             tickformat="%b %Y",
             ticklen=6,
         )
-        fig.update_yaxes(
-            title="",
+        _fig.update_yaxes(
+            title="Contributors",
             showgrid=True,
             gridcolor="#DDD",
             zeroline=True,
@@ -379,396 +883,271 @@ def visualization_helpers(LIFECYCLE_COLORS, LIFECYCLE_LABEL_ORDER, go, pd, px):
             ticklen=6,
             range=[0, None]
         )
-        return fig
-    return (render_lifecycle_chart,)
 
+        # Calculate KPIs for the most recent month
+        _latest_month = _df_agg['bucket_month'].max()
+        _latest_data = _df_agg[_df_agg['bucket_month'] == _latest_month]
 
-@app.cell(hide_code=True)
-def milestone_1_intro(mo):
+        _total_active = _latest_data[_latest_data['label'].isin(ACTIVE_LABELS)]['developers_count'].sum()
+        _new_contributors = _latest_data[_latest_data['label'] == 'first time']['developers_count'].sum()
+        _full_time = _latest_data[_latest_data['label'].isin(['full time', 'new full time', 'part time to full time', 'dormant to full time'])]['developers_count'].sum()
+        _part_time = _latest_data[_latest_data['label'].isin(['part time', 'new part time', 'full time to part time', 'dormant to part time'])]['developers_count'].sum()
+        _churned = _latest_data[_latest_data['label'].str.contains('churned', na=False)]['developers_count'].sum()
+
+    else:
+        _fig = go.Figure()
+        _fig.add_annotation(
+            text="No lifecycle data available",
+            xref="paper", yref="paper",
+            x=0.5, y=0.5, showarrow=False
+        )
+        _total_active = 0
+        _new_contributors = 0
+        _full_time = 0
+        _part_time = 0
+        _churned = 0
+
+    # Display KPIs
+    _stats = mo.hstack([
+        show_stat(value=_total_active, label='Active Contributors', caption="Current month", format="int"),
+        show_stat(value=_new_contributors, label="First Time Contributors", caption="Current month", format="int"),
+        show_stat(value=_full_time, label="Full Time Contributors", caption="Current month", format="int"),
+        show_stat(value=_part_time, label="Part Time Contributors", caption="Current month", format="int"),
+        show_stat(value=_churned, label="Churned Contributors", caption="Current month", format="int"),
+    ], widths='equal')
+
     mo.vstack([
-        mo.md("---"),
-        mo.md("## Milestone 1: Ecosystem Health Overview"),
+        mo.md("## Collection-Level Lifecycle Analysis"),
         mo.md("""
-        This section provides aggregate metrics about the health of the PLN open source ecosystem at the collection level. 
-        Key performance indicators (KPIs) are displayed for all selected collections, showing trends in contributor lifecycle states, 
-        GitHub activity metrics, and project-level breakdowns.
+        This view aggregates developer lifecycle states across all projects in the Protocol Labs Network.
+        Use the toggle below to include or exclude dormant and churned contributors.
         """),
-    ])
-    return
-
-
-@app.cell(hide_code=True)
-def milestone_1_configuration(collection_input, mo, show_inactive_input):
-    mo.vstack([
-        mo.md("### Configuration"),
-        mo.hstack([
-            collection_input,
-            show_inactive_input
-        ], widths=[2, 1], gap=2, align="end", justify="start")
-    ])
-    return
-
-
-@app.cell(hide_code=True)
-def milestone_1_lifecycle_chart(
-    df_lifecycle_processed,
-    mo,
-    render_lifecycle_chart,
-    show_inactive_input,
-    show_plotly,
-):
-    _fig = render_lifecycle_chart(df_lifecycle_processed, show_inactive=show_inactive_input.value)
-
-    mo.vstack([
-        mo.md("### Developer Lifecycle Analysis"),
+        show_inactive_input,
+        mo.md("### Key Performance Indicators"),
+        _stats,
+        mo.md("### Lifecycle State Distribution Over Time"),
         show_plotly(_fig),
         mo.md("""
-        - Contributions include commits, issues, pull requests, and code reviews
-        - A *contributor* is defined as a GitHub user who has made at least one contribution to the project in the given month
-        - *New* contributors are contributors who have made their first contribution to the project in the given month
-        - *Churned* contributors are contributors who were active in the project in the previous month, but are no longer active in the current month
-        - *Active* contributors are contributors who have made at least one contribution to the project in the given month
-        - Data is bucketed into monthly intervals, going back to the earliest available data for the project
-        - If contributions were made while a repo was private or associated with another organization, those events are not included in the data
-        - Data is refreshed and backfilled on a monthly basis
+        **Understanding Lifecycle States:**
+        - **First Time**: Contributors making their first contribution to any project in the ecosystem
+        - **Full Time**: Contributors with 10+ days of activity per month  
+        - **Part Time**: Contributors with 1-9 days of activity per month
+        - **Dormant**: Contributors who were active but have no recent activity
+        - **Churned**: Contributors who have permanently left the ecosystem
         """)
     ])
     return
 
 
 @app.cell(hide_code=True)
-def milestone_1_kpi_dashboard(
-    df_github_metrics,
-    df_lifecycle_processed,
-    mo,
-    show_stat,
-):
-    # Calculate KPIs from the most recent month
-    if not df_lifecycle_processed.empty:
-        _latest_month = df_lifecycle_processed['bucket_month'].max()
-        _latest_data = df_lifecycle_processed[df_lifecycle_processed['bucket_month'] == _latest_month]
-
-        _total_active = _latest_data[_latest_data['label'].isin(['full time', 'part time', 'new full time', 'new part time', 'first time'])]['developers_count'].sum()
-        _new_contributors = _latest_data[_latest_data['label'] == 'first time']['developers_count'].sum()
-        _churned = _latest_data[_latest_data['label'].str.contains('churned', na=False)]['developers_count'].sum()
+def project_selector(df_lifecycle, mo):
+    # Create project selector dropdown with all available projects
+    # Default to "Filecoin" if available, otherwise use the first project
+    if not df_lifecycle.empty:
+        _projects = sorted(df_lifecycle['project_display_name'].unique().tolist())
+        # Prefer Filecoin as the default for this Filecoin-focused notebook
+        _preferred_defaults = ['Filecoin', 'libp2p', 'IPFS']
+        _default_project = None
+        for _pref in _preferred_defaults:
+            if _pref in _projects:
+                _default_project = _pref
+                break
+        if _default_project is None:
+            _default_project = _projects[0] if _projects else None
     else:
-        _total_active = 0
-        _new_contributors = 0
-        _churned = 0
+        _projects = []
+        _default_project = None
 
-    if not df_github_metrics.empty:
-        _latest_month_github = df_github_metrics['bucket_month'].max()
-        _latest_github = df_github_metrics[df_github_metrics['bucket_month'] == _latest_month_github]
-        _total_stars = _latest_github[_latest_github['metric_name'] == 'stars']['amount'].sum()
-        _total_forks = _latest_github[_latest_github['metric_name'] == 'forks']['amount'].sum()
-    else:
-        _total_stars = 0
-        _total_forks = 0
-
-    _stats = mo.hstack([
-        show_stat(value=_total_active, label='Total Active Contributors', caption="Current month", format="int"),
-        show_stat(value=_new_contributors, label="New Contributors", caption="Current month", format="int"),
-        show_stat(value=_churned, label="Churned Contributors", caption="Current month", format="int"),
-        show_stat(value=_total_stars, label="Total Stars", caption="Current month", format="int"),
-        show_stat(value=_total_forks, label="Total Forks", caption="Current month", format="int"),
-    ], widths='equal')
-
-    mo.vstack([
-        mo.md("### Key Performance Indicators"),
-        _stats
-    ])
-    return
-
-
-@app.cell(hide_code=True)
-def milestone_1_project_breakdown(df_projects, mo, pd, show_table):
-    if not df_projects.empty:
-        _project_table = df_projects[['collection_name', 'project_display_name', 'project_name']].copy()
-        _project_table = _project_table.rename(columns={
-            'collection_name': 'Collection',
-            'project_display_name': 'Project Display Name',
-            'project_name': 'Project Name'
-        })
-    else:
-        _project_table = pd.DataFrame(columns=['Collection', 'Project Display Name', 'Project Name'])
-
-    mo.vstack([
-        mo.md("### Projects in Selected Collections"),
-        mo.md(f"Total projects: {len(df_projects):,}" if not df_projects.empty else "No projects found"),
-        show_table(_project_table)
-    ])
-    return
-
-
-@app.cell(hide_code=True)
-def milestone_2_intro(mo):
-    mo.vstack([
-        mo.md("---"),
-        mo.md("## Milestone 2: Detailed Repository Insights"),
-        mo.md("""
-        This section provides granular metrics about specific projects and their associated repositories (artifacts). 
-        Project-level time-series analysis shows lifecycle trends over time, while artifact-level snapshots provide 
-        current state metrics for individual repositories.
-        """),
-    ])
-    return
-
-
-@app.cell
-def get_project_data(collection_input, mo, pyoso_db_conn, stringify):
-    # Get lifecycle metrics by project
-    _project_lifecycle_query = f"""
-    WITH lifecycle_metrics AS (
-      SELECT
-        metric_id,
-        metric_model
-      FROM metrics_v0
-      WHERE metric_event_source = 'GITHUB'
-      AND metric_time_aggregation = 'monthly'
-      AND metric_model LIKE '%contributor%' 
-      AND metric_model NOT LIKE 'change_in%'
-      AND description = 'TODO'
+    project_select = mo.ui.dropdown(
+        options=_projects,
+        value=_default_project,
+        label='Select a project:',
+        allow_select_none=False,
+        full_width=True
     )
-    SELECT
-      project_id,
-      p.project_name,
-      p.display_name AS project_display_name,
-      pbc.collection_name,
-      ts.sample_date AS bucket_month,
-      m.metric_model,
-      ts.amount AS developers_count
-    FROM timeseries_metrics_by_project_v0 ts
-    JOIN lifecycle_metrics lm USING (metric_id)
-    JOIN metrics_v0 m USING (metric_id)
-    JOIN projects_v1 p USING (project_id)
-    JOIN projects_by_collection_v1 pbc USING (project_id)
-    WHERE pbc.collection_name IN ({stringify(collection_input.value)})
-    ORDER BY 1, 5, 6
-    """
-
-    df_project_lifecycle = mo.sql(_project_lifecycle_query, engine=pyoso_db_conn, output=False)
-
-    # Get artifacts (repositories) for selected collections
-    _artifacts_query = f"""
-    SELECT DISTINCT
-      a.artifact_id,
-      a.artifact_namespace,
-      a.artifact_name,
-      p.project_name,
-      p.display_name AS project_display_name,
-      pbc.collection_name
-    FROM projects_by_collection_v1 pbc
-    JOIN projects_v1 p USING (project_id)
-    JOIN artifacts_by_project_v1 a USING (project_id)
-    WHERE pbc.collection_name IN ({stringify(collection_input.value)})
-    AND a.artifact_source = 'GITHUB'
-    ORDER BY pbc.collection_name, p.display_name, a.artifact_name
-    """
-
-    df_artifacts = mo.sql(_artifacts_query, engine=pyoso_db_conn, output=False)
-    return df_artifacts, df_project_lifecycle
+    return (project_select,)
 
 
 @app.cell(hide_code=True)
-def process_project_data(LIFECYCLE_METRICS_MAPPING, df_project_lifecycle, pd):
-    if not df_project_lifecycle.empty:
-        df_project_lifecycle_processed = df_project_lifecycle.copy()
-        df_project_lifecycle_processed['label'] = df_project_lifecycle_processed['metric_model'].map(LIFECYCLE_METRICS_MAPPING)
-        df_project_lifecycle_processed = df_project_lifecycle_processed[df_project_lifecycle_processed['label'].notna()].copy()
-        df_project_lifecycle_processed['bucket_month'] = pd.to_datetime(df_project_lifecycle_processed['bucket_month'])
-    else:
-        df_project_lifecycle_processed = pd.DataFrame(columns=['project_id', 'bucket_month', 'label', 'developers_count'])
-    return (df_project_lifecycle_processed,)
-
-
-@app.cell(hide_code=True)
-def milestone_2_project_selection(df_project_lifecycle_processed, mo):
-    if not df_project_lifecycle_processed.empty:
-        _project_list = sorted(df_project_lifecycle_processed['project_display_name'].unique().tolist())
-        project_input = mo.ui.dropdown(
-            options=_project_list,
-            value=_project_list[0] if _project_list else None,
-            label='Select a Project:',
-            full_width=True
-        )
-    else:
-        project_input = mo.ui.dropdown(
-            options=[],
-            value=None,
-            label='Select a Project:',
-            full_width=True
-        )
-    return (project_input,)
-
-
-@app.cell(hide_code=True)
-def milestone_2_project_chart(
-    df_project_lifecycle_processed,
+def lifecycle_project_view(
+    ACTIVE_LABELS,
+    LIFECYCLE_COLORS,
+    LIFECYCLE_LABEL_ORDER,
+    df_lifecycle,
     go,
     mo,
-    project_input,
-    render_lifecycle_chart,
+    pd,
+    project_select,
+    px,
     show_inactive_input,
     show_plotly,
+    show_stat,
+    show_table,
 ):
-    if not df_project_lifecycle_processed.empty and project_input.value:
-        _df_project = df_project_lifecycle_processed[
-            df_project_lifecycle_processed['project_display_name'] == project_input.value
-        ].copy()
-        _fig = render_lifecycle_chart(_df_project, show_inactive=show_inactive_input.value)
-    else:
-        _fig = go.Figure()
-        _fig.add_annotation(
-            text="No data available for selected project",
-            xref="paper", yref="paper",
-            x=0.5, y=0.5, showarrow=False
+
+    # Filter lifecycle data for selected project
+    if not df_lifecycle.empty and project_select.value:
+        _df_project = df_lifecycle[df_lifecycle['project_display_name'] == project_select.value].copy()
+
+        # Aggregate by month and label
+        _df_agg = _df_project.groupby(['bucket_month', 'label'], as_index=False).agg(
+            developers_count=('git_user', 'nunique')
+        )
+
+        # Filter based on show_inactive toggle
+        if show_inactive_input.value:
+            _display_labels = LIFECYCLE_LABEL_ORDER
+        else:
+            _display_labels = ACTIVE_LABELS
+
+        _df_filtered = _df_agg[_df_agg['label'].isin(_display_labels)].copy()
+        _df_filtered['label'] = pd.Categorical(_df_filtered['label'], categories=LIFECYCLE_LABEL_ORDER, ordered=True)
+
+        # Create stacked bar chart
+        _fig = px.bar(
+            data_frame=_df_filtered,
+            x='bucket_month',
+            y='developers_count',
+            color='label',
+            color_discrete_map=LIFECYCLE_COLORS,
+            category_orders={'label': LIFECYCLE_LABEL_ORDER},
+            labels={'bucket_month': 'Month', 'developers_count': 'Contributors', 'label': 'Lifecycle State'}
         )
         _fig.update_layout(
+            barmode='stack',
+            template='plotly_white',
+            legend_title_text='Lifecycle State',
             font=dict(size=12, color="#111"),
             paper_bgcolor="white",
             plot_bgcolor="white",
-            margin=dict(t=40, l=20, r=20, b=20),
+            margin=dict(t=40, l=20, r=100, b=20),
+            hovermode='x unified',
+        )
+        _fig.update_xaxes(
+            title='',
+            showgrid=False,
+            linecolor="black",
+            linewidth=1.5,
+            ticks="outside",
+            tickformat="%b %Y",
+            ticklen=6,
+        )
+        _fig.update_yaxes(
+            title="Contributors",
+            showgrid=True,
+            gridcolor="#DDD",
+            zeroline=True,
+            zerolinecolor="black",
+            zerolinewidth=1,
+            linecolor="black",
+            linewidth=1.5,
+            ticks="outside",
+            ticklen=6,
+            range=[0, None]
         )
 
-    mo.vstack([
-        mo.md("### Project-Level Lifecycle Analysis"),
-        show_plotly(_fig)
-    ])
-    return
+        # Calculate KPIs for the most recent month for this project
+        _latest_month = _df_agg['bucket_month'].max()
+        _latest_data = _df_agg[_df_agg['bucket_month'] == _latest_month]
 
+        _total_active = _latest_data[_latest_data['label'].isin(ACTIVE_LABELS)]['developers_count'].sum()
+        _new_contributors = _latest_data[_latest_data['label'] == 'first time']['developers_count'].sum()
+        _full_time = _latest_data[_latest_data['label'].isin(['full time', 'new full time', 'part time to full time', 'dormant to full time'])]['developers_count'].sum()
 
-@app.cell
-def get_artifact_snapshot(df_artifacts, mo, pd, pyoso_db_conn, stringify):
-    if df_artifacts.empty:
-        df_artifact_metrics = pd.DataFrame()
-    else:
-        _artifact_ids = df_artifacts['artifact_id'].unique().tolist()
-        if _artifact_ids:
-            _artifact_metrics_query = f"""
-            SELECT DISTINCT
-              artifact_id,
-              a.artifact_namespace,
-              a.artifact_name,
-              m.display_name AS metric_display_name,
-              km.amount,
-              km.sample_date
-            FROM key_metrics_by_artifact_v0 km
-            JOIN artifacts_by_project_v1 a USING (artifact_id)
-            JOIN metrics_v0 m USING (metric_id)
-            WHERE artifact_id IN ({stringify(_artifact_ids)})
-            AND m.metric_event_source = 'GITHUB'
-            AND a.artifact_source = 'GITHUB'
-            AND m.metric_model IN ('stars', 'forks', 'contributors')
-            ORDER BY a.artifact_namespace, a.artifact_name, m.display_name
-            """
-
-            df_artifact_metrics = mo.sql(_artifact_metrics_query, engine=pyoso_db_conn, output=False)
-        else:
-            df_artifact_metrics = pd.DataFrame()
-    return (df_artifact_metrics,)
-
-
-@app.cell
-def _(df_artifact_metrics):
-    df_artifact_metrics
-    return
-
-
-@app.cell(hide_code=True)
-def milestone_2_artifact_table(
-    df_artifact_metrics,
-    df_artifacts,
-    mo,
-    pd,
-    show_table,
-):
-    if not df_artifacts.empty and not df_artifact_metrics.empty:
-        # Pivot artifact metrics for better display
-        _df_pivot = df_artifact_metrics.pivot_table(
-            index=['artifact_id', 'artifact_name', 'artifact_namespace'],
-            columns='metric_display_name',
-            values='amount',
-            aggfunc='first'
-        ).reset_index()
-
-        # Merge with artifact metadata
-        _df_artifact_display = df_artifacts.merge(
-            _df_pivot,
-            on=['artifact_id', 'artifact_name', 'artifact_namespace'],
-            how='left'
-        )
-
-        _df_artifact_display = _df_artifact_display[[
-            'collection_name',
-            'project_display_name',
-            'artifact_name',
-            'Stars',
-            'Forks',
-            'Contributors'
-        ]].copy()
-
-        _df_artifact_display = _df_artifact_display.rename(columns={
-            'collection_name': 'Collection',
-            'project_display_name': 'Project',
-            'artifact_name': 'Repository',
+        # Get top contributors for this project
+        _df_top_contributors = _df_project.groupby('git_user', as_index=False).agg(
+            total_days_active=('days_active', 'sum'),
+            months_active=('bucket_month', 'nunique'),
+            first_contribution=('first_contribution_month', 'min'),
+            last_contribution=('last_contribution_month', 'max'),
+        ).sort_values('total_days_active', ascending=False).head(10)
+        _df_top_contributors = _df_top_contributors.rename(columns={
+            'git_user': 'Contributor',
+            'total_days_active': 'Total Days Active',
+            'months_active': 'Months Active',
+            'first_contribution': 'First Contribution',
+            'last_contribution': 'Last Contribution'
         })
 
-        _df_artifact_display = _df_artifact_display.fillna(0)
     else:
-        _df_artifact_display = pd.DataFrame(columns=['Collection', 'Project', 'Repository', 'Stars', 'Forks', 'Contributors'])
+        _fig = go.Figure()
+        _fig.add_annotation(
+            text="No lifecycle data available for selected project",
+            xref="paper", yref="paper",
+            x=0.5, y=0.5, showarrow=False
+        )
+        _total_active = 0
+        _new_contributors = 0
+        _full_time = 0
+        _df_top_contributors = pd.DataFrame(columns=['Contributor', 'Total Days Active', 'Months Active', 'First Contribution', 'Last Contribution'])
 
+    # Display KPIs
+    _stats = mo.hstack([
+        show_stat(value=_total_active, label='Active Contributors', caption="Current month", format="int"),
+        show_stat(value=_new_contributors, label="First Time Contributors", caption="Current month", format="int"),
+        show_stat(value=_full_time, label="Full Time Contributors", caption="Current month", format="int"),
+    ], widths='equal')
+
+    _project_name = project_select.value if project_select.value else "No Project Selected"
+    _project_count = df_lifecycle['project_display_name'].nunique() if not df_lifecycle.empty else 0
+    
     mo.vstack([
-        mo.md("### Artifact (Repository) Snapshot Metrics"),
-        mo.md("""
-        Current snapshot metrics for repositories in selected collections. These metrics represent the most recent 
-        available data and are not time-series. For time-series analysis, see the project-level charts above.
+        mo.md("## Project-Level Lifecycle Analysis"),
+        mo.md(f"""
+        Select a specific project from the **{_project_count} projects** in the Protocol Labs Network 
+        to view its developer lifecycle patterns and top contributors.
         """),
-        mo.md(f"Total repositories: {len(df_artifacts):,}" if not df_artifacts.empty else "No repositories found"),
-        show_table(_df_artifact_display)
+        project_select,
+        mo.md(f"### {_project_name} - Key Metrics"),
+        _stats,
+        mo.md(f"### {_project_name} - Lifecycle State Distribution"),
+        show_plotly(_fig),
+        mo.md(f"### {_project_name} - Top Contributors"),
+        show_table(_df_top_contributors)
     ])
     return
 
 
 @app.cell(hide_code=True)
-def milestone_3_intro(mo):
-    mo.vstack([
-        mo.md("---"),
-        mo.md("## Milestone 3: Advanced Analytics"),
-        mo.md("""
-        This section provides advanced analytics capabilities including cross-collection comparisons, 
-        contributor retention analysis, and custom query interfaces for deeper insights.
-        """),
-    ])
-    return
-
-
-@app.cell(hide_code=True)
-def milestone_3_cross_collection_comparison(
-    df_lifecycle_processed,
+def project_comparison(
+    ACTIVE_LABELS,
+    df_lifecycle,
     go,
     mo,
+    pd,
     px,
     show_plotly,
+    show_table,
 ):
-    if not df_lifecycle_processed.empty:
-        # Aggregate by collection for comparison
-        _df_collection_agg = df_lifecycle_processed.groupby(
-            ['collection_name', 'collection_display_name', 'bucket_month'],
+
+    if not df_lifecycle.empty:
+        # Aggregate by project and month
+        _df_project_agg = df_lifecycle[df_lifecycle['label'].isin(ACTIVE_LABELS)].groupby(
+            ['bucket_month', 'project_display_name'],
             as_index=False
-        )['developers_count'].sum()
+        ).agg(
+            active_contributors=('git_user', 'nunique')
+        )
+
+        # Get top 10 projects by recent activity
+        _latest_month = _df_project_agg['bucket_month'].max()
+        _top_projects = _df_project_agg[_df_project_agg['bucket_month'] == _latest_month].nlargest(10, 'active_contributors')['project_display_name'].tolist()
+
+        _df_top = _df_project_agg[_df_project_agg['project_display_name'].isin(_top_projects)]
 
         _fig = px.line(
-            data_frame=_df_collection_agg,
+            data_frame=_df_top,
             x='bucket_month',
-            y='developers_count',
-            color='collection_display_name',
+            y='active_contributors',
+            color='project_display_name',
             labels={
                 'bucket_month': 'Month',
-                'developers_count': 'Total Active Contributors',
-                'collection_display_name': 'Collection'
+                'active_contributors': 'Active Contributors',
+                'project_display_name': 'Project'
             }
         )
         _fig.update_layout(
+            template='plotly_white',
             font=dict(size=12, color="#111"),
             paper_bgcolor="white",
             plot_bgcolor="white",
@@ -778,7 +1157,7 @@ def milestone_3_cross_collection_comparison(
                 orientation="v",
                 x=1.00,
                 y=1.00,
-                xanchor="right",
+                xanchor="left",
                 yanchor="top"
             )
         )
@@ -801,41 +1180,185 @@ def milestone_3_cross_collection_comparison(
             ticklen=6,
             rangemode="tozero"
         )
-        _fig.update_traces(line=dict(width=3))
+        _fig.update_traces(line=dict(width=2))
+
+        # Create summary table
+        _df_summary = df_lifecycle.groupby('project_display_name', as_index=False).agg(
+            total_contributors=('git_user', 'nunique'),
+            total_days_active=('days_active', 'sum'),
+            first_contribution=('first_contribution_month', 'min'),
+            latest_contribution=('last_contribution_month', 'max'),
+        ).sort_values('total_contributors', ascending=False)
+        _df_summary = _df_summary.rename(columns={
+            'project_display_name': 'Project',
+            'total_contributors': 'Total Contributors',
+            'total_days_active': 'Total Days Active',
+            'first_contribution': 'First Contribution',
+            'latest_contribution': 'Latest Contribution'
+        })
+
     else:
         _fig = go.Figure()
         _fig.add_annotation(
-            text="No data available for comparison",
+            text="No comparison data available",
             xref="paper", yref="paper",
             x=0.5, y=0.5, showarrow=False
         )
+        _df_summary = pd.DataFrame(columns=['Project', 'Total Contributors', 'Total Days Active', 'First Contribution', 'Latest Contribution'])
+
+    mo.vstack([
+        mo.md("## Project Comparison"),
+        mo.md("""
+        Compare active contributor counts across the top projects in the Protocol Labs Network.
+        The chart below shows the top 10 projects by recent contributor activity.
+        """),
+        mo.md("### Active Contributors by Project (Top 10)"),
+        show_plotly(_fig),
+        mo.md("### All Projects Summary"),
+        mo.md("""
+        This table shows all projects in the ecosystem with their total contributor counts and activity span.
+        Sort by any column to find specific projects.
+        """),
+        show_table(_df_summary)
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def retention_analysis(
+    ACTIVE_LABELS,
+    df_lifecycle,
+    go,
+    mo,
+    pd,
+    px,
+    show_plotly,
+    show_stat,
+):
+
+    if not df_lifecycle.empty:
+        # Calculate retention metrics by cohort (first contribution month)
+        _df_cohorts = df_lifecycle.copy()
+        _df_cohorts['cohort_month'] = pd.to_datetime(_df_cohorts['first_contribution_month']).dt.to_period('M').dt.to_timestamp()
+        _df_cohorts['months_since_first'] = (
+            pd.to_datetime(_df_cohorts['bucket_month']).dt.to_period('M').astype(int) -
+            pd.to_datetime(_df_cohorts['first_contribution_month']).dt.to_period('M').astype(int)
+        )
+
+        # Count active contributors by cohort and months since first contribution
+        _df_retention = _df_cohorts[_df_cohorts['label'].isin(ACTIVE_LABELS)].groupby(
+            ['cohort_month', 'months_since_first'],
+            as_index=False
+        ).agg(
+            active_contributors=('git_user', 'nunique')
+        )
+
+        # Get cohort sizes (month 0)
+        _cohort_sizes = _df_retention[_df_retention['months_since_first'] == 0][['cohort_month', 'active_contributors']].rename(
+            columns={'active_contributors': 'cohort_size'}
+        )
+
+        _df_retention = _df_retention.merge(_cohort_sizes, on='cohort_month')
+        _df_retention['retention_rate'] = (_df_retention['active_contributors'] / _df_retention['cohort_size'] * 100).round(1)
+
+        # Filter to show meaningful cohorts (at least 6 months old, at least 5 contributors)
+        _min_cohort_date = _df_retention['cohort_month'].max() - pd.DateOffset(months=6)
+        _df_retention_filtered = _df_retention[
+            (_df_retention['cohort_month'] <= _min_cohort_date) &
+            (_df_retention['cohort_size'] >= 5) &
+            (_df_retention['months_since_first'] <= 12)
+        ]
+
+        # Average retention by months since first contribution
+        _df_avg_retention = _df_retention_filtered.groupby('months_since_first', as_index=False).agg(
+            avg_retention_rate=('retention_rate', 'mean')
+        )
+
+        _fig = px.line(
+            data_frame=_df_avg_retention,
+            x='months_since_first',
+            y='avg_retention_rate',
+            labels={
+                'months_since_first': 'Months Since First Contribution',
+                'avg_retention_rate': 'Retention Rate (%)'
+            },
+            markers=True
+        )
+        _fig.update_traces(line=dict(color='teal', width=3), marker=dict(size=8))
         _fig.update_layout(
+            template='plotly_white',
             font=dict(size=12, color="#111"),
             paper_bgcolor="white",
             plot_bgcolor="white",
             margin=dict(t=40, l=20, r=20, b=20),
+            hovermode='x unified',
+        )
+        _fig.update_xaxes(
+            showline=True,
+            linewidth=1.5,
+            linecolor="black",
+            ticks="outside",
+        )
+        _fig.update_yaxes(
+            showline=True,
+            linewidth=1.5,
+            linecolor="black",
+            ticks="outside",
+            range=[0, 100]
         )
 
+        # Calculate summary retention metrics
+        _month_1_retention = _df_avg_retention[_df_avg_retention['months_since_first'] == 1]['avg_retention_rate'].values
+        _month_3_retention = _df_avg_retention[_df_avg_retention['months_since_first'] == 3]['avg_retention_rate'].values
+        _month_6_retention = _df_avg_retention[_df_avg_retention['months_since_first'] == 6]['avg_retention_rate'].values
+        _month_12_retention = _df_avg_retention[_df_avg_retention['months_since_first'] == 12]['avg_retention_rate'].values
+
+        _m1 = _month_1_retention[0] if len(_month_1_retention) > 0 else 0
+        _m3 = _month_3_retention[0] if len(_month_3_retention) > 0 else 0
+        _m6 = _month_6_retention[0] if len(_month_6_retention) > 0 else 0
+        _m12 = _month_12_retention[0] if len(_month_12_retention) > 0 else 0
+
+    else:
+        _fig = go.Figure()
+        _m1, _m3, _m6, _m12 = 0, 0, 0, 0
+
+    _stats = mo.hstack([
+        show_stat(value=_m1, label='1 Month Retention', caption="Average across cohorts", format="pct"),
+        show_stat(value=_m3, label='3 Month Retention', caption="Average across cohorts", format="pct"),
+        show_stat(value=_m6, label='6 Month Retention', caption="Average across cohorts", format="pct"),
+        show_stat(value=_m12, label='12 Month Retention', caption="Average across cohorts", format="pct"),
+    ], widths='equal')
+
     mo.vstack([
-        mo.md("### Cross-Collection Comparison"),
-        mo.md("Total active contributors over time across selected collections"),
+        mo.md("## Contributor Retention Analysis"),
+        mo.md("""
+        Retention analysis shows what percentage of contributors who joined in a given month remain active over time.
+        This helps understand how well the ecosystem is retaining developers after their first contribution.
+        """),
+        _stats,
+        mo.md("### Average Retention Curve"),
+        mo.md("""
+        The curve below shows the average retention rate across all contributor cohorts. 
+        A higher retention rate indicates better developer engagement and stickiness.
+        """),
         show_plotly(_fig)
     ])
     return
 
 
 @app.cell(hide_code=True)
-def milestone_3_summary(mo):
+def summary_section(mo):
     mo.vstack([
         mo.md("---"),
         mo.md("## Summary"),
         mo.md("""
-        This notebook provides comprehensive developer lifecycle analysis for Protocol Labs Network and Filecoin ecosystems. 
+        This notebook provides comprehensive developer lifecycle analysis for the Protocol Labs Network and Filecoin ecosystems. 
         Key insights can be derived from:
 
         - **Collection-level trends**: Overall ecosystem health and contributor engagement patterns
         - **Project-level analysis**: Individual project performance and lifecycle states
-        - **Artifact snapshots**: Current state of individual repositories
+        - **Contributor retention**: How well the ecosystem retains developers over time
+        - **Project comparison**: Relative performance across different projects
 
         For more detailed analysis, consider:
         - Filtering by specific time ranges
@@ -845,6 +1368,123 @@ def milestone_3_summary(mo):
         """),
     ])
     return
+
+
+@app.cell
+def _(mo):
+    mo.md(r"""
+    # Code
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def plotly_layout():
+    LAYOUT_SETTINGS = dict(
+        font=dict(size=12, color="#111"),
+        paper_bgcolor="white",
+        plot_bgcolor="white",
+        margin=dict(t=0, l=20, r=20, b=0),
+        legend=dict(
+            orientation="v",
+            x=0.01,
+            y=1.00,
+            xanchor="left",
+            yanchor="top"
+        ),
+        xaxis=dict(
+            showline=True,
+            linewidth=1.5,
+            linecolor="black",
+            ticks="outside",
+            tickwidth=1.5,
+            tickcolor="black",
+            ticklen=6,
+        ),
+        yaxis=dict(
+            showline=True,
+            linewidth=1.5,
+            linecolor="black",
+            ticks="outside",
+            tickwidth=1.5,
+            tickcolor="black",
+            ticklen=6,
+            rangemode="tozero"
+        )
+    )
+    return (LAYOUT_SETTINGS,)
+
+
+@app.cell(hide_code=True)
+def ui_helpers(mo):
+    def show_plotly(fig, **kwargs):
+        return mo.ui.plotly(
+            fig,
+            config={'displayModeBar': False},
+            **kwargs
+        )
+
+    def show_table(df, **kwargs):
+        _fmt = {}
+        for col in df.columns:
+            if df[col].dtype == 'int64':
+                _fmt[col] = '{:,.0f}'
+            elif df[col].dtype == 'float64':
+                _fmt[col] = '{:,.2f}'
+        return mo.ui.table(
+            df.reset_index(drop=True),
+            format_mapping=_fmt,
+            show_column_summaries=False,
+            show_data_types=False,
+            **kwargs
+        )
+
+    def show_stat(
+        value,
+        label,
+        caption="",
+        format="int"
+    ):
+        if format == "int":
+            value_str = f"{value:,.0f}" if isinstance(value, (int, float)) else str(value)
+        elif format == "1f":
+            value_str = f"{value:,.1f}" if isinstance(value, (int, float)) else str(value)
+        elif format == "pct":
+            value_str = f"{value:.1f}%" if isinstance(value, (int, float)) else str(value)
+        else:
+            value_str = str(value)
+        return mo.stat(
+            value=value_str,
+            label=label,
+            caption=caption,
+            bordered=True
+        )
+
+    def show_insight(
+        headline:str='This is a sample headline',
+        level:int=2,
+        elements:list|None=None,
+    ):
+        if elements is None:
+            elements = []
+
+        level = max(1, min(level, 6))
+        header_md = mo.md(f"{'#' * level} {headline}")
+        return mo.vstack([header_md, *elements])
+    return show_insight, show_plotly, show_stat, show_table
+
+
+@app.function(hide_code=True)
+def stringify(arr):
+    return "'" + "','".join(arr) + "'"
+
+
+@app.cell(hide_code=True)
+def import_libraries():
+    import pandas as pd
+    import plotly.express as px
+    import plotly.graph_objects as go
+    return go, pd, px
 
 
 @app.cell
