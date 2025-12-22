@@ -4,66 +4,100 @@ __generated_with = "0.17.5"
 app = marimo.App(width="full")
 
 
+@app.cell
+def _(mo):
+    mo.md(r"""
+    # Protocol Labs Network - Developer Ecosystem Analytics
+    """)
+    return
+
+
 @app.cell(hide_code=True)
 def about_app(mo):
-    _team = "Open Source Observer"
+    _team = "OSO"
     _date = "December 2025"
+    mo.md(
+        f"""
+        <div>
+            <div style="
+                font-size: 13px;
+                color: #666;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin-bottom: 20px;
+            ">
+                <span>Prepared by</span>
+                <span style="
+                    background-color: #0969DA;
+                    color: white;
+                    padding: 2px 8px;
+                    border-radius: 4px;
+                    font-weight: 600;
+                ">
+                    {_team}
+                </span>
+                <span>· {_date}</span>
+            </div>
+            <div style="
+                font-size: 14px;
+                line-height: 1.6;
+                color: #333;
+            ">
+                <p style="margin-top: 0;">
+                    This notebook includes comprehensive analysis of developer engagement,
+                    lifecycle states, and retention across 150+ projects in the Protocol Labs
+                    Network ecosystem—including Filecoin, IPFS, and libp2p.
+                </p>
+                <p>
+                    All of this data is live, public, and interactive. You can also download
+                    the code that generates this notebook and run it locally.
+                </p>
+            </div>
+        </div>
+        """
+    )
+    return
 
-    mo.vstack([
-        mo.md(f"""
-        # **Protocol Labs Network**
-        ## Developer Ecosystem Health Report
-        <small>Prepared by <span style="background-color: #0969DA; color: white; padding: 2px 8px; border-radius: 3px;">{_team}</span> · {_date}</small>
-        """),
-        mo.callout(
-            mo.md("""
-            **What this report shows:** Comprehensive analysis of developer engagement, lifecycle states, and retention 
-            across 150+ projects in the Protocol Labs Network ecosystem—including Filecoin, IPFS, and libp2p.
 
-            Use this dashboard to understand developer health trends, identify top-performing projects, 
-            and track contributor retention over time.
-            """),
-            kind="info"
-        ),
-        mo.accordion({
-            "Methodology & Definitions": mo.vstack([
-                mo.md("""
-                **How we measure developer activity:**
+@app.cell(hide_code=True)
+def _(ACTIVE_LABELS, df_lifecycle, mo):
+    if not df_lifecycle.empty:
+        _total_contributors = df_lifecycle['git_user'].nunique()
+        _total_projects = df_lifecycle['project_display_name'].nunique()
+        _latest_month = df_lifecycle['bucket_month'].max()
+        _latest_month_str = _latest_month.strftime('%B %Y')
+        _latest_data = df_lifecycle[df_lifecycle['bucket_month'] == _latest_month]
+        _current_active = _latest_data[_latest_data['label'].isin(ACTIVE_LABELS)]['git_user'].nunique()
+        _earliest = df_lifecycle['first_contribution_month'].min()
+        _latest = df_lifecycle['last_contribution_month'].max()
+    else:
+        _total_contributors = 0
+        _total_projects = 0
+        _current_active = 0
+        _earliest = "N/A"
+        _latest = "N/A"
+        _latest_month_str = "N/A"
 
-                | Lifecycle State | Definition |
-                |-----------------|------------|
-                | **First Time** | Making their first contribution to any project in the ecosystem |
-                | **Full Time** | 10+ days of activity per month |
-                | **Part Time** | 1-9 days of activity per month |
-                | **Dormant** | Previously active but no recent contributions |
-                | **Churned** | Permanently left the ecosystem |
+    mo.accordion({
+        "Network at a Glance": mo.md(f"""
+            | Metric | Value |
+            |--------|-------|
+            | **Total Historical Contributors** | {_total_contributors:,} |
+            | **Active Projects Tracked** | {_total_projects:,} |
+            | **Active Contributors ({_latest_month_str})** | {_current_active:,} |
+            | **Data Range** | {_earliest} to {_latest} |
 
-                **Data sources:** GitHub events (commits, issues, PRs, reviews) aggregated monthly via OSO's data warehouse.
-
-                **Limitations:** Private repo activity and pre-organization contributions are not included.
-                """),
-                mo.accordion({
-                    "Data Sources & Technical Details": """
-                    - **Collections**: `collections_v1` - Collection definitions from OSS Directory
-                    - **Projects**: `projects_v1` - Project metadata and definitions  
-                    - **Lifecycle Metrics**: `int_pln_developer_lifecycle_monthly_enriched` - Developer lifecycle states
-                    - **Time-Series Metrics**: `timeseries_metrics_by_collection_v0`, `timeseries_metrics_by_project_v0`
-                    """,
-                    "Further Resources": """
-                    - [Getting Started with Pyoso](https://docs.opensource.observer/docs/get-started/python)
-                    - [OSO Data Warehouse Documentation](https://docs.opensource.observer/)
-                    - [OSS Directory Collections](https://github.com/opensource-observer/oss-directory/tree/main/data/collections)
-                    """
-                })
-            ])
-        }),
-    ])
+            *Data is refreshed monthly and only includes complete months.*
+        """)
+    })
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
+    **Part 1**
     # Ecosystem Overview
 
     This section provides a high-level view of development activity across all Protocol Labs Network collections,
@@ -192,7 +226,6 @@ def _(
     monthly_metric_metric_select,
     pd,
     px,
-    show_insight,
     show_plotly,
     show_table,
 ):
@@ -244,16 +277,18 @@ def _(
     _num_repos = _df['Repositories'].max()
     _num_contribs = _df['Contributors'].max()
     _collections = len(_df)
-    show_insight(
-        headline=f"OSO is currently tracking >{_num_repos:,.0f} repos and >{_num_contribs:,.0f} contributors across {_collections:,.0f} collections",
-        level=2,
-        elements=[
-            show_table(_df),
-            mo.md("### Since May 2025, there has been a [documented issue](https://github.com/igrigorik/gharchive.org/issues/310) with gharchive missing some events"),
-            _chart_title,
-            show_plotly(_fig)        
-        ]
-    )
+
+    mo.vstack([
+        mo.md("## Collection Metrics"),
+        mo.callout(
+            mo.md(f"Currently tracking **{_num_repos:,.0f}+ repos** and **{_num_contribs:,.0f}+ contributors** across **{_collections} collections**."),
+            kind="info"
+        ),
+        show_table(_df),
+        mo.md("*Since May 2025, there has been a [documented issue](https://github.com/igrigorik/gharchive.org/issues/310) with gharchive missing some events.*"),
+        _chart_title,
+        show_plotly(_fig)        
+    ])
     return
 
 
@@ -381,7 +416,6 @@ def _(
     opendevdata_metric_select,
     pd,
     px,
-    show_insight,
     show_plotly,
     show_table,
 ):
@@ -415,36 +449,33 @@ def _(
     _fig = _chart(opendevdata_metric_select.value)
 
     _df_repos = df_opendevdata_repos.sort_values(by='Fork Count', ascending=False).copy()
-    _df_repos['Maintainer'] = _df_repos['Repo URL']
 
     _num_repos = len(df_opendevdata_repos)
     _included_repos = len(df_opendevdata_repos[df_opendevdata_repos['Included in Electric Capital']])
-    show_insight(
-        headline=f"OSO can diff these metrics against the ~{_num_repos:,.0f} repos currently tracked by Electric Capital",
-        level=2,
-        elements=[
-            mo.md(f"Of these, only {_included_repos:,.0f} are listed as part of one or more of the following Electric Capital ecosystems: {', '.join(sorted(ECOSYSTEMS))}"),
-            show_table(_df_repos),
-            _chart_title,
-            show_plotly(_fig)        
-        ]
-    )
+
+    mo.vstack([
+        mo.md("## Electric Capital Comparison"),
+        mo.callout(
+            mo.md(f"OSO tracks **{_num_repos:,.0f} repos** that can be compared against Electric Capital data. Of these, **{_included_repos:,.0f}** are listed in the following ecosystems: {', '.join(sorted(ECOSYSTEMS))}."),
+            kind="info"
+        ),
+        show_table(_df_repos),
+        _chart_title,
+        show_plotly(_fig)        
+    ])
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
+    **Part 2**
+
     # Developer Lifecycle Analysis
 
-    Understanding how developers engage with the ecosystem over time is critical for assessing long-term sustainability.
+    Understanding how developers engage with the ecosystem over time is useful for assessing long-term sustainability.
     This section tracks contributors through their journey—from first contribution through to becoming full-time
     maintainers or churning out of the ecosystem.
-
-    **Key questions this section answers:**
-    - How many developers are actively engaged each month?
-    - What percentage of contributors become long-term maintainers?
-    - Which projects have the healthiest contributor pipelines?
     """)
     return
 
@@ -729,9 +760,9 @@ def lifecycle_collection_view(
             mo.md("**Show all lifecycle states:**"),
             show_inactive_input,
         ]),
-        mo.md("### Current Month Metrics"),
+        mo.md("### Monthly Metrics"),
         _stats,
-        mo.md("### Developer Engagement Over Time"),
+        mo.md("### Engagement Over Time"),
         mo.md("""
         The stacked chart below shows how contributors flow through different engagement levels each month.
         **Healthy ecosystems** show sustained first-time contributors (blue) and growing full-time contributors (teal).
@@ -919,9 +950,9 @@ def lifecycle_project_view(
             kind="warn"
         ),
         _stats,
-        mo.md(f"### Contributor Engagement Over Time"),
+        mo.md("### Engagement Over Time"),
         show_plotly(_fig),
-        mo.md(f"### Top Contributors"),
+        mo.md("### Top Contributors"),
         mo.md("""
         Top contributors ranked by total days of activity. These are the core maintainers 
         who drive the majority of development work.
@@ -1056,7 +1087,8 @@ def retention_analysis(
     _callout_kind = "success" if _m12 >= 20 else ("info" if _m12 >= 10 else "warn")
 
     mo.vstack([
-        mo.md(f"## Contributor Retention: {_project_name}"),
+        mo.md("### Contributor Retention by Time Period"),
+        _stats,
         mo.callout(
             mo.md(f"""
             **Retention Summary:** After 12 months, **{_project_name}** retains **{_m12:.1f}%** of new contributors on average.
@@ -1070,16 +1102,14 @@ def retention_analysis(
             This may be because the project is too new or has too few contributors for meaningful cohort analysis.
             """),
             kind="warn"
-        ),
-        mo.md("### Retention Rate by Time Period"),
-        _stats,
-        mo.md("### Cohort Retention Curve"),
+        ),    
+        mo.md("### Contributor Retention Curve"),
         mo.md(f"""
         The curve shows how {_project_name}'s contributor engagement decays over time. 
         **Steeper drops** indicate onboarding or engagement issues. 
         **Flatter curves** suggest strong community retention.
         """),
-        show_plotly(_fig)
+        show_plotly(_fig),
     ])
     return
 
@@ -1195,9 +1225,9 @@ def project_comparison(
             """),
             kind="info"
         ),
-        mo.md("### Monthly Active Contributors by Project"),
+        mo.md("### Monthly Active Contributors"),
         show_plotly(_fig),
-        mo.md("### Complete Project Leaderboard"),
+        mo.md("### Project Leaderboard"),
         mo.md("""
         All projects in the ecosystem ranked by total contributor count. 
         Click column headers to sort. Use the search box to find specific projects.
@@ -1210,17 +1240,20 @@ def project_comparison(
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
+    **Part 3**
     # Detailed Repository Metrics
 
     Deep dive into individual repository performance. Enter any GitHub repository URL
     to view its activity trends, including commits, contributors, issues, and more.
+
+    _These queries might take over a minute to run!_
     """)
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    repository_input = mo.ui.text(kind='url', label='Enter a repository url', value='https://github.com/opensource-observer/oso', full_width=True)
+    repository_input = mo.ui.text(kind='url', label='Enter a repository url', value='https://github.com/ipfs/kubo', full_width=True)
     repository_input
     return (repository_input,)
 
@@ -1305,19 +1338,6 @@ def _(
         output=False
     )
 
-    def _metric_query(metric, repo_artifact_ids, start_date='2022-01-01'):
-        metric_name = metric.replace('_', ' ').title()
-        return f"""
-            SELECT
-              metrics_sample_date AS "Date",
-              '{metric_name}' AS "Metric",
-              amount AS "Amount"
-            FROM {metric}_to_artifact_monthly
-            WHERE
-              to_artifact_id IN ({stringify(repo_artifact_ids)})
-              AND metrics_sample_date >= DATE('{start_date}')
-            """
-
     _repo_metrics = [
         'closed_issues',
         'comments',
@@ -1336,8 +1356,32 @@ def _(
         'releases',
         'burstiness'
     ]
+
+    # Build query with CTE to define artifact IDs once
+    _start_date = '2022-01-01'
+    _artifact_ids_str = stringify(_artifact_ids)
+
+    def _metric_subquery(metric):
+        metric_name = metric.replace('_', ' ').title()
+        return f"""
+            SELECT
+              metrics_sample_date AS "Date",
+              '{metric_name}' AS "Metric",
+              amount AS "Amount"
+            FROM {metric}_to_artifact_monthly
+            WHERE to_artifact_id IN (SELECT artifact_id FROM target_artifacts)
+              AND metrics_sample_date >= DATE('{_start_date}')
+        """
+
+    _query = f"""
+        WITH target_artifacts AS (
+            SELECT artifact_id FROM (VALUES {','.join([f"('{aid}')" for aid in _artifact_ids])}) AS t(artifact_id)
+        )
+        {' UNION ALL '.join([_metric_subquery(m) for m in _repo_metrics])}
+    """
+
     _df_repo_timeseries_metrics = mo.sql(
-        "UNION ALL".join([_metric_query(m, _artifact_ids) for m in _repo_metrics]),
+        _query,
         engine=pyoso_db_conn,
         output=False
     )
@@ -1361,7 +1405,6 @@ def _(df_repo_metrics, mo):
 @app.cell(hide_code=True)
 def _(
     LAYOUT_SETTINGS,
-    df_opendevdata_repos,
     df_repo_lineage,
     df_repo_metrics,
     df_repo_snapshot,
@@ -1370,7 +1413,6 @@ def _(
     px,
     repo_metric_select,
     repository_input,
-    show_insight,
     show_plotly,
     show_table,
 ):
@@ -1405,80 +1447,153 @@ def _(
     _fig = _chart(repo_metric_select.value)
 
     _lineage = [x for x in df_repo_lineage['repo_url'].unique() if x != repository_input.value]
-    _lineage_md = f"Also known as {';'.join(_lineage)}" if _lineage else ""
+    _lineage_md = f"*Also known as: {'; '.join(_lineage)}*" if _lineage else ""
 
-    _num_repos = len(df_opendevdata_repos)
-    _included_repos = len(df_opendevdata_repos[df_opendevdata_repos['Included in Electric Capital']])
-    show_insight(
-        headline=f"Showing GitHub related metrics for: {_name}",
-        level=2,
-        elements=[
-            mo.md(_lineage_md),
-            show_table(df_repo_snapshot),
-            _chart_title,
-            show_plotly(_fig)        
-        ]
-    )
+    mo.vstack([
+        mo.md(f"## Repository: {_name}"),
+        mo.md(_lineage_md) if _lineage_md else None,
+        show_table(df_repo_snapshot),
+        _chart_title,
+        show_plotly(_fig)        
+    ])
     return
 
 
-@app.cell(hide_code=True)
-def summary_section(ACTIVE_LABELS, df_lifecycle, mo):
-    # Calculate summary statistics
-    if not df_lifecycle.empty:
-        _total_contributors = df_lifecycle['git_user'].nunique()
-        _total_projects = df_lifecycle['project_display_name'].nunique()
-        _latest_month = df_lifecycle['bucket_month'].max()
-        _latest_month_str = _latest_month.strftime('%B %Y')
-        _latest_data = df_lifecycle[df_lifecycle['bucket_month'] == _latest_month]
-        _current_active = _latest_data[_latest_data['label'].isin(ACTIVE_LABELS)]['git_user'].nunique()
+@app.cell
+def dependency_analysis(
+    df_repo_snapshot,
+    mo,
+    package_owners_v0,
+    pd,
+    pyoso_db_conn,
+    sboms_v0,
+    show_table,
+):
+    """Show GitHub metrics for repository dependencies."""
 
-        # Calculate earliest and latest dates
-        _earliest = df_lifecycle['first_contribution_month'].min()
-        _latest = df_lifecycle['last_contribution_month'].max()
-    else:
-        _total_contributors = 0
-        _total_projects = 0
-        _current_active = 0
-        _earliest = "N/A"
-        _latest = "N/A"
-        _latest_month_str = "N/A"
+    # ========== CHANGE THIS TO VIEW A DIFFERENT MONTH ==========
+    METRICS_MONTH = '2025-01-01'  # Format: YYYY-MM-01
+    # ============================================================
+
+    _artifact_id = df_repo_snapshot['artifact_id'].iloc[0]
+    _month_display = pd.Timestamp(METRICS_MONTH).strftime('%B %Y')
+
+    # Step 1: Get all package owner repos from the SBOM
+    df_dependencies = mo.sql(
+        f"""
+        SELECT DISTINCT
+          po.package_owner_artifact_id AS artifact_id,
+          po.package_artifact_source AS "Source",
+          CONCAT(po.package_owner_artifact_namespace, '/', po.package_owner_artifact_name) AS "Repository"
+        FROM sboms_v0 AS sbom
+        JOIN package_owners_v0 AS po
+          ON sbom.package_artifact_id = po.package_artifact_id
+        WHERE sbom.dependent_artifact_id = '{_artifact_id}'
+          AND po.package_owner_artifact_id IS NOT NULL
+        """,
+        engine=pyoso_db_conn,
+        output=False
+    )
+
+    _dep_artifact_ids = df_dependencies['artifact_id'].unique().tolist()
+    _num_deps = len(_dep_artifact_ids)
+
+    # Step 2: Query metrics for the selected month
+    _metrics_list = [
+        'closed_issues',
+        'comments',
+        'contributors',
+        'merged_pull_requests',
+        'opened_issues',
+        'opened_pull_requests',
+        'stars',
+        'bot_activity',
+        'project_velocity',
+        'contributor_absence_factor',
+        'releases',
+    ]
+
+    # Build efficient query for single month
+    _metrics_union = " UNION ALL ".join([
+        f"""
+        SELECT
+          to_artifact_id AS artifact_id,
+          '{m.replace('_', ' ').title()}' AS metric,
+          amount
+        FROM {m}_to_artifact_monthly
+        WHERE metrics_sample_date = DATE('{METRICS_MONTH}')
+        """
+        for m in _metrics_list
+    ])
+
+    _metrics_query = f"""
+      WITH unioned_metrics AS (
+        {_metrics_union}
+      )
+      SELECT *
+      FROM unioned_metrics
+      WHERE artifact_id IN ({stringify(_dep_artifact_ids)})
+    """
+
+    df_dep_metrics = mo.sql(
+        _metrics_query,
+        engine=pyoso_db_conn,
+        output=False
+    )
+
+    # Step 3: Pivot to wide format
+    df_pivot = df_dep_metrics.pivot_table(
+        index='artifact_id', 
+        columns='metric', 
+        values='amount', 
+        aggfunc='sum'
+    ).fillna(0)
+
+    # Join with repo names
+    df_pivot = df_pivot.reset_index()
+    df_pivot = df_pivot.merge(
+        df_dependencies[['artifact_id', 'Repository', 'Source']].drop_duplicates(),
+        on='artifact_id',
+        how='left'
+    )
+
+    # Reorder columns
+    _all_metrics = sorted([c for c in df_pivot.columns if c not in ['artifact_id', 'Repository', 'Source']])
+    _display_cols = ['Repository', 'Source'] + _all_metrics
+    df_display = df_pivot[_display_cols].copy()
+    df_display[_all_metrics] = df_display[_all_metrics].astype(int)
+
+    # Sort by total activity
+    df_display['_sort'] = df_display[_all_metrics].sum(axis=1)
+    df_display = df_display.sort_values('_sort', ascending=False).drop(columns=['_sort'])
+
+    # Calculate summary stats
+    _active_deps = len(df_display[df_display[_all_metrics].sum(axis=1) > 0])
+    _total_contributors = int(df_display['Contributors'].sum()) if 'Contributors' in df_display.columns else 0
+    _total_commits = int(df_display['Comments'].sum()) if 'Comments' in df_display.columns else 0
+    _top_dep = df_display.iloc[0]['Repository'] if not df_display.empty else "N/A"
+    _top_dep_contributors = int(df_display.iloc[0]['Contributors']) if not df_display.empty and 'Contributors' in df_display.columns else 0
+
+    # Get package ecosystem breakdown
+    _source_counts = df_dependencies['Source'].value_counts()
+    _top_sources = ', '.join([f"{src} ({cnt})" for src, cnt in _source_counts.head(3).items()])
 
     mo.vstack([
-        mo.md("---"),
-        mo.md("## Executive Summary"),
+        mo.md("## Dependency Metrics"),
         mo.callout(
             mo.md(f"""
-            ### Protocol Labs Network at a Glance
-
-            | Metric | Value |
-            |--------|-------|
-            | **Total Historical Contributors** | {_total_contributors:,} |
-            | **Active Projects Tracked** | {_total_projects:,} |
-            | **Active Contributors ({_latest_month_str})** | {_current_active:,} |
-            | **Data Range** | {_earliest} to {_latest} |
-
-            This report is generated from OSO's public data warehouse, which aggregates GitHub activity 
-            across all Protocol Labs Network projects. Data is refreshed monthly and only includes complete months.
+            This repository depends on **{_num_deps:,} upstream packages** with known GitHub owners. Top package sources: {_top_sources}.
+        
+            Of these, **{_active_deps:,}** had recorded activity during this period in **{_month_display}**.
             """),
-            kind="neutral"
+            kind="info"
         ),
-        mo.md("""
-        ### Key Takeaways
-
-        1. **Ecosystem Health**: Monitor the ratio of full-time to part-time contributors as a leading indicator of project sustainability
-        2. **Retention Focus**: Projects with strong 3-month retention (>30%) tend to develop stable maintainer communities
-        3. **New Contributor Pipeline**: Consistent first-time contributor inflow is critical for long-term ecosystem growth
-
-        ### Next Steps
-
-        - **Drill down** into specific projects using the Project Deep Dive section
-        - **Compare projects** to identify best practices from high-retention projects
-        - **Track trends** over time to spot emerging issues early
-
-        ---
-        *This report was generated using [Open Source Observer](https://opensource.observer) and [Marimo](https://marimo.io).*
+        mo.md(f"**Summary of Dependency Metrics ({_month_display})**"),
+        mo.md(f"""
+        _Metrics show monthly GitHub activity for each upstream dependency.
+        Use the search box to find specific packages._
         """),
+        show_table(df_display)
     ])
     return
 
@@ -1486,8 +1601,50 @@ def summary_section(ACTIVE_LABELS, df_lifecycle, mo):
 @app.cell
 def _(mo):
     mo.md(r"""
-    # Code
+    ---
+    # Appendix
     """)
+    return
+
+
+@app.cell(hide_code=True)
+def methodology_section(mo):
+    mo.vstack([
+        mo.md("---"),
+        mo.accordion({
+            "Methodology & Definitions": mo.vstack([
+                mo.md("""
+                **How we measure developer activity:**
+
+                | Lifecycle State | Definition |
+                |-----------------|------------|
+                | **First Time** | Making their first contribution to any project in the ecosystem |
+                | **Full Time** | 10+ days of activity per month |
+                | **Part Time** | 1-9 days of activity per month |
+                | **Dormant** | Previously active but no recent contributions |
+                | **Churned** | Permanently left the ecosystem |
+
+                **Data sources:** GitHub events (commits, issues, PRs, reviews) aggregated monthly via OSO's data warehouse.
+
+                **Limitations:** Private repo activity and pre-organization contributions are not included.
+                """),
+                mo.accordion({
+                    "Data Sources & Technical Details": """
+                    - **Collections**: `collections_v1` - Collection definitions from OSS Directory
+                    - **Projects**: `projects_v1` - Project metadata and definitions  
+                    - **Lifecycle Metrics**: `int_pln_developer_lifecycle_monthly_enriched` - Developer lifecycle states
+                    - **Time-Series Metrics**: `timeseries_metrics_by_collection_v0`, `timeseries_metrics_by_project_v0`
+                    """,
+                    "Further Resources": """
+                    - [Getting Started with Pyoso](https://docs.oso.xyz/get-started/python)
+                    - [OSO Data Warehouse Documentation](https://docs.oso.xyz/)
+                    - [OSS Directory Collections](https://github.com/opensource-observer/oss-directory/tree/main/data/collections)
+                    """
+                })
+            ])
+        }),
+        mo.md("*This report was generated using [Open Source Observer](https://www.oso.xyz) and [Marimo](https://marimo.io).*"),
+    ])
     return
 
 
@@ -1584,7 +1741,7 @@ def ui_helpers(mo):
         level = max(1, min(level, 6))
         header_md = mo.md(f"{'#' * level} {headline}")
         return mo.vstack([header_md, *elements])
-    return show_insight, show_plotly, show_stat, show_table
+    return show_plotly, show_stat, show_table
 
 
 @app.function(hide_code=True)
@@ -1600,7 +1757,7 @@ def import_libraries():
     return go, pd, px
 
 
-@app.cell
+@app.cell(hide_code=True)
 def setup_pyoso():
     # This code sets up pyoso to be used as a database provider for this notebook
     # This code is autogenerated. Modification could lead to unexpected results :)
