@@ -1,0 +1,779 @@
+# Converting Hex Notebooks to marimo Notebooks
+
+## Overview
+This guide covers converting Hex notebooks (exported as `.ipynb` files from Hex.tech) to marimo Python notebooks, maintaining functionality while adhering to marimo's reactive programming model.
+
+Both Hex and marimo support a mix of SQL, markdown, Python, and interactive UI elements. The key difference lies in their execution model:
+
+**Hex (Traditional Notebook Model):**
+- Cells execute top-to-bottom in order
+- Can have hidden state (like Jupyter notebooks)
+- Variables can be reassigned/shadowed across cells
+- Manual cell execution control
+
+**marimo (Reactive Notebook Model):**
+- Automatic reactivity: cells re-run when dependencies change
+- No hidden state: all dependencies must be explicit
+- Each cell must return unique variable names (no shadowing)
+- Data flows through explicit dependency declarations
+
+**Charting:**
+Both Hex and marimo support Altair and Plotly. Since Hex uses Altair by default, it's easiest to continue using Altair when converting to marimo.
+
+## Core Principles
+
+### 1. Notebook Structure Pattern
+A typical marimo notebook follows this organization:
+1. **Title cell**: Heading and metadata using `mo.md()`
+2. **Context/Introduction**: Overview, key findings, data sources
+3. **Configuration**: UI controls and constants
+4. **Data loading**: Database queries, file reads
+5. **Data processing**: Transformations and aggregations
+6. **Analysis & Visualizations**: Insights with charts/tables
+7. **Helper functions**: Reusable utilities
+8. **Setup cell**: Environment and database initialization (always last)
+
+### 2. Cell Organization Pattern
+```python
+# Standard cell structure
+@app.cell(hide_code=True)  # Use hide_code for presentation/output cells
+def _(dependency1, dependency2, mo, pd):
+    # Cell logic here
+    result = process_data(dependency1, dependency2)
+    return (result,)  # ALWAYS return tuple, even for single values
+```
+
+### 3. Key Differences from Hex
+- **Reactive execution**: Cells automatically re-run when dependencies change
+- **No hidden state**: All dependencies must be explicitly declared in function signatures
+- **No variable shadowing**: Each cell must return unique variable names (can't reassign variables across cells)
+- **No circular references**: Data must flow in one direction
+- **Pure Python files**: marimo notebooks are `.py` files, not `.ipynb` (better for version control)
+
+## Data Loading Conversion
+
+### SQL Queries
+**Hex pattern:**
+```python
+# Hex uses direct SQL with automatic variable interpolation
+df = sql("SELECT * FROM table WHERE date > '{start_date}'")
+```
+
+**marimo pattern:**
+```python
+@app.cell(hide_code=True)
+def _(mo, pyoso_db_conn, START_DATE, END_DATE):
+    _query = f"""
+    SELECT 
+        column1,
+        column2,
+        column3
+    FROM table_name
+    WHERE date BETWEEN '{START_DATE}' AND '{END_DATE}'
+    ORDER BY date
+    """
+    df_result = mo.sql(_query, engine=pyoso_db_conn, output=False)
+    return (df_result,)
+```
+
+**Notes:**
+- Use `mo.sql()` with `output=False` to prevent automatic display
+- Reference configuration variables (like `START_DATE`) in function signature
+- Use f-strings for variable interpolation
+- `pyoso_db_conn` is provided by the `setup_pyoso()` cell (always last)
+
+### File-Based Data
+**Hex pattern:**
+```python
+# Hex Google Sheets integration
+df = sql("SELECT * FROM hex.gsheets.sheet_name")
+```
+
+**marimo pattern:**
+```python
+@app.cell(hide_code=True)
+def _(pd):
+    from pathlib import Path
+    
+    # CSV files
+    df = pd.read_csv('path/to/data.csv')
+    
+    # Or Parquet for larger datasets
+    # df = pd.read_parquet('path/to/data.parquet')
+    
+    # Or Excel
+    # df = pd.read_excel('path/to/data.xlsx', sheet_name='Sheet1')
+    
+    return (df,)
+```
+
+## UI Controls Conversion
+
+### Dropdowns
+**Hex pattern:**
+```python
+use_feature = dropdown("Yes", "No", default="Yes")
+```
+
+**marimo pattern:**
+```python
+@app.cell(hide_code=True)
+def _(mo):
+    use_feature_input = mo.ui.dropdown(
+        options=["Yes", "No"],
+        value="Yes",
+        label="Use Feature:"
+    )
+    mo.vstack([
+        mo.md("### Settings"),
+        use_feature_input
+    ])
+    return (use_feature_input,)
+
+# Access value in other cells
+@app.cell(hide_code=True)
+def _(use_feature_input):
+    USE_FEATURE = use_feature_input.value == "Yes"
+    return (USE_FEATURE,)
+```
+
+### Sliders
+**marimo pattern:**
+```python
+@app.cell(hide_code=True)
+def _(mo):
+    threshold_input = mo.ui.slider(
+        start=0,
+        stop=100,
+        value=50,
+        label="Threshold:"
+    )
+    threshold_input
+    return (threshold_input,)
+```
+
+## Chart Conversion: Hex to marimo Altair
+
+### About Altair
+Hex uses Altair by default for charting, so most Hex charts can be translated directly to marimo with minimal changes. The main difference is using `mo.ui.altair_chart()` instead of displaying the chart object directly.
+
+### Basic Chart Pattern
+**Hex (Altair):**
+```python
+import altair as alt
+chart = alt.Chart(df).mark_bar().encode(
+    x='category:N',
+    y='value:Q',
+    color='group:N'
+)
+chart
+```
+
+**marimo (Altair):**
+```python
+@app.cell(hide_code=True)
+def _(alt, df, mo):
+    _chart = alt.Chart(df).mark_bar().encode(
+        x=alt.X('category:N', title='Category'),
+        y=alt.Y('value:Q', title='Value'),
+        color=alt.Color('group:N', legend=alt.Legend(title='Group')),
+        tooltip=['category:N', 'group:N', alt.Tooltip('value:Q', format=',.0f')]
+    ).properties(
+        width='container',  # Responsive width
+        height=400,
+        title='Chart Title'
+    )
+    
+    mo.ui.altair_chart(_chart)  # Use mo.ui.altair_chart for interactivity
+    return
+```
+
+### Common Chart Types
+
+**Line Chart:**
+```python
+_chart = alt.Chart(df).mark_line().encode(
+    x='date:T',
+    y='value:Q',
+    color='category:N'
+).properties(width='container', height=300)
+```
+
+**Area Chart (Stacked):**
+```python
+_chart = alt.Chart(df).mark_area().encode(
+    x='date:T',
+    y=alt.Y('value:Q', stack='zero'),  # or 'normalize' for percentage
+    color='category:N'
+).properties(width='container', height=300)
+```
+
+**Scatter Plot:**
+```python
+_chart = alt.Chart(df).mark_circle(size=60).encode(
+    x='x_value:Q',
+    y='y_value:Q',
+    color='category:N',
+    tooltip=['category:N', 'x_value:Q', 'y_value:Q']
+).properties(width='container', height=400)
+```
+
+### Chart Styling Tips
+```python
+# Responsive width, fixed height
+.properties(width='container', height=400)
+
+# Consistent grid styling
+.configure_axis(gridColor='#f0f0f0')
+
+# Remove border
+.configure_view(strokeWidth=0)
+
+# Format tooltips
+alt.Tooltip('value:Q', format='$,.0f')  # Currency
+alt.Tooltip('percentage:Q', format='.1%')  # Percentage
+```
+
+### Fixed Axis Scales (for comparison)
+```python
+# Useful when comparing across multiple charts
+x=alt.X('date:T', scale=alt.Scale(domain=[START_DATE, END_DATE]))
+```
+
+## marimo Anti-Patterns (CRITICAL)
+
+### ❌ DO NOT: Create Circular Dependencies
+```python
+# BAD - Creates a cycle
+@app.cell
+def _(df):
+    df_processed = process(df)
+    return (df_processed,)
+
+@app.cell
+def _(df_processed):
+    df = df_processed.copy()  # ❌ Reassigning df creates cycle!
+    return (df,)
+```
+
+### ✅ DO: Use Different Variable Names
+```python
+# GOOD - Linear flow
+@app.cell
+def _(df_raw):
+    df_processed = process(df_raw)
+    return (df_processed,)
+
+@app.cell
+def _(df_processed):
+    df_final = additional_processing(df_processed)
+    return (df_final,)
+```
+
+### ❌ DO NOT: Reassign Variables Between Cells
+```python
+# BAD
+@app.cell
+def _(df):
+    df_temp = df.copy()
+    return (df_temp,)
+
+@app.cell
+def _(df_temp):
+    df = df_temp  # ❌ Don't reassign!
+    return (df,)
+```
+
+### ❌ DO NOT: Use Multiple Cells for One Logical Operation
+```python
+# BAD - Split operation across cells can cause dependency issues
+@app.cell
+def _(df):
+    df_step1 = df[df['value'] > 0]
+    return (df_step1,)
+
+@app.cell
+def _(df_step1):
+    df_step2 = df_step1.groupby('category').sum()
+    return (df_step2,)
+```
+
+### ✅ DO: Combine Related Operations in One Cell
+```python
+# GOOD - Complete transformation in one cell
+@app.cell
+def _(df):
+    df_filtered = df[df['value'] > 0]
+    df_aggregated = df_filtered.groupby('category').sum()
+    return (df_aggregated,)
+```
+
+### ❌ DO NOT: Use Premature Return Statements or Complex Error Handling
+```python
+# BAD - Early returns and try/except create hidden control flow
+@app.cell
+def _(df, mo):
+    if len(df) == 0:
+        mo.stop(True, "No data")  # ❌ Premature return
+        
+    try:
+        result = complex_operation(df)
+    except Exception as e:
+        result = pd.DataFrame()  # ❌ Hiding errors
+    
+    return (result,)
+```
+
+### ✅ DO: Let Things Fail Naturally or Return Empty Values
+```python
+# GOOD - Simple, predictable flow
+@app.cell
+def _(df):
+    # Let pandas operations fail naturally if there's an issue
+    # Or return empty/None if that's the expected outcome
+    result = df.groupby('category').sum() if len(df) > 0 else pd.DataFrame()
+    return (result,)
+
+# GOOD - Even simpler, let it fail
+@app.cell
+def _(df):
+    # If df is empty or malformed, let the error bubble up
+    result = df.groupby('category').sum()
+    return (result,)
+```
+
+**Why avoid complex error handling:**
+- marimo's reactive model works best with explicit, predictable data flow
+- Errors should surface immediately, not be hidden
+- Early returns create hidden control flow that breaks reactivity
+- Empty DataFrames or None are better than caught exceptions
+- Let the notebook fail fast and clearly rather than masking problems
+
+**Note:** The `setup_pyoso()` cell is intentionally simple and lets connection errors fail naturally - no try/except needed.
+
+## Common Data Processing Patterns
+
+### Aggregations
+```python
+@app.cell(hide_code=True)
+def _(df_raw):
+    # Group and aggregate
+    df_summary = (
+        df_raw
+        .groupby(['category', 'date'])
+        .agg({
+            'value': ['sum', 'mean', 'count'],
+            'amount': 'sum'
+        })
+        .reset_index()
+    )
+    return (df_summary,)
+```
+
+### Filtering and Transformations
+```python
+@app.cell(hide_code=True)
+def _(df_raw, START_DATE, END_DATE):
+    # Filter and transform in one cell
+    df_filtered = (
+        df_raw
+        [df_raw['date'].between(START_DATE, END_DATE)]
+        .copy()
+    )
+    
+    # Add calculated columns
+    df_filtered['percentage'] = df_filtered['value'] / df_filtered['total']
+    df_filtered['rank'] = df_filtered['value'].rank(ascending=False)
+    
+    return (df_filtered,)
+```
+
+### Joining Datasets
+```python
+@app.cell(hide_code=True)
+def _(df_main, df_lookup):
+    # Join with additional data
+    df_enriched = df_main.merge(
+        df_lookup[['id', 'category', 'metadata']],
+        on='id',
+        how='left'
+    )
+    return (df_enriched,)
+```
+
+## Insights and Presentation Patterns
+
+### Insight with Visualization
+```python
+@app.cell(hide_code=True)
+def _(df_summary, alt, mo):
+    # Calculate key metric
+    _total = df_summary['value'].sum()
+    _count = len(df_summary)
+    
+    # Create chart
+    _chart = alt.Chart(df_summary).mark_bar().encode(
+        x='category:N',
+        y='value:Q'
+    ).properties(width='container', height=300)
+    
+    # Display with context
+    mo.vstack([
+        mo.md(f"""
+        ### Key Finding
+        
+        {_count} items generated {_total:,.0f} in total value.
+        The chart below shows the breakdown by category.
+        """),
+        mo.ui.altair_chart(_chart)
+    ])
+    return
+```
+
+### Collapsible Sections
+```python
+@app.cell(hide_code=True)
+def _(mo):
+    mo.accordion({
+        "Overview": "High-level summary of the analysis...",
+        "Key Findings": """
+        1. Finding one
+        2. Finding two
+        3. Finding three
+        """,
+        "Methodology": "Details about how the analysis was conducted..."
+    })
+    return
+```
+
+## Setup and Initialization
+
+### Database Setup Pattern (Always Last Cell)
+```python
+@app.cell(hide_code=True)
+def setup_pyoso():
+    # This code sets up pyoso to be used as a database provider for this notebook
+    # This code is autogenerated. Modification could lead to unexpected results :)
+    import pyoso
+    import marimo as mo
+    pyoso_db_conn = pyoso.Client().dbapi_connection()
+    return mo, pyoso_db_conn
+```
+
+### Why Setup Cell Is Last
+- marimo cells execute in definition order
+- Having `mo` defined first would make it available to all cells
+- BUT: This creates circular dependencies if other cells need it
+- SOLUTION: Put it last; marimo will automatically make it available to all cells that need it
+
+### Environment Variables
+- marimo automatically loads `.env` files from the repository root
+- Configure this in `pyproject.toml`:
+```toml
+[tool.marimo]
+environment_variables = true
+```
+- Place your `.env` file in the repository root with required API keys:
+```
+OSO_API_KEY=your_key_here
+```
+
+## Helper Functions Pattern
+
+### Defining Helper Functions
+```python
+@app.cell(hide_code=True)
+def _():
+    """Define reusable helper functions."""
+    
+    def format_currency(value):
+        """Format number as currency string."""
+        if value >= 1_000_000:
+            return f"${value/1_000_000:.1f}M"
+        elif value >= 1_000:
+            return f"${value/1_000:.1f}K"
+        else:
+            return f"${value:.2f}"
+    
+    def calculate_percentage_change(old, new):
+        """Calculate percentage change between two values."""
+        if old == 0:
+            return None
+        return ((new - old) / old) * 100
+    
+    def safe_divide(numerator, denominator, default=0):
+        """Safely divide, returning default if denominator is zero."""
+        return numerator / denominator if denominator != 0 else default
+    
+    return calculate_percentage_change, format_currency, safe_divide
+```
+
+### SQL Helper Example
+```python
+@app.cell(hide_code=True)
+def _():
+    def list_to_sql_string(items):
+        """Convert Python list to SQL IN clause format."""
+        return ','.join([f"'{str(x)}'" for x in items])
+    
+    return (list_to_sql_string,)
+
+# Usage in query cell:
+# WHERE category IN ({list_to_sql_string(CATEGORIES)})
+```
+
+## Tables Display
+
+### Interactive Tables
+```python
+@app.cell(hide_code=True)
+def _(df, mo):
+    mo.vstack([
+        mo.md("### Detailed Results"),
+        mo.ui.table(
+            df,
+            selection='multi',
+            page_size=10
+        )
+    ])
+    return
+```
+
+## Pandas FutureWarnings Fixes
+
+### Avoid `inplace=True` Deprecation
+```python
+# ❌ BAD
+df['column'].fillna(0, inplace=True)
+
+# ✅ GOOD
+df['column'] = df['column'].fillna(0)
+```
+
+### Avoid `Series.view()` Deprecation
+```python
+# ❌ BAD
+t_ns = dates[m].view('int64')
+
+# ✅ GOOD
+t_ns = dates[m].astype('int64')
+```
+
+### Avoid `fillna` Downcasting Warning
+```python
+# ❌ BAD
+df['value'] = df['value'].fillna(0)
+
+# ✅ GOOD
+df['value'] = df['value'].fillna(0).infer_objects(copy=False)
+```
+
+## Constants and Configuration
+
+### Defining Constants
+```python
+@app.cell(hide_code=True)
+def _():
+    """Define analysis constants."""
+    START_DATE = "2024-01-01"
+    END_DATE = "2024-12-31"
+    THRESHOLD = 1000
+    CATEGORIES = ['A', 'B', 'C']
+    
+    return CATEGORIES, END_DATE, START_DATE, THRESHOLD
+```
+
+### Constants vs UI Inputs
+```python
+# Use constants for fixed values
+@app.cell(hide_code=True)
+def _():
+    FIXED_THRESHOLD = 100
+    return (FIXED_THRESHOLD,)
+
+# Use UI inputs for user-configurable values
+@app.cell(hide_code=True)
+def _(mo):
+    threshold_input = mo.ui.slider(
+        start=0,
+        stop=200,
+        value=100,
+        label="Threshold:"
+    )
+    threshold_input
+    return (threshold_input,)
+
+# Access the UI value in other cells
+@app.cell(hide_code=True)
+def _(threshold_input):
+    DYNAMIC_THRESHOLD = threshold_input.value
+    return (DYNAMIC_THRESHOLD,)
+```
+
+## Import Organization
+
+### Standard Imports Cell
+```python
+@app.cell(hide_code=True)
+def _():
+    import numpy as np
+    import pandas as pd
+    import altair as alt
+    return alt, np, pd
+```
+
+## Conversion Checklist
+
+### Structure & Organization
+- [ ] Organize cells in logical order: title → context → config → data → analysis → helpers → setup_pyoso
+- [ ] Use `hide_code=True` for presentation cells
+- [ ] Place `setup_pyoso()` cell last (provides `mo` and `pyoso_db_conn`)
+- [ ] Add title and context/overview cells at the top
+
+### Data & Dependencies
+- [ ] Convert all SQL queries to `mo.sql(query, engine=pyoso_db_conn, output=False)`
+- [ ] Replace cloud data sources (Google Sheets, etc.) with local files or API calls
+- [ ] Declare all dependencies in cell function signatures
+- [ ] Test that all cells execute without circular dependency errors
+- [ ] Use descriptive, unique variable names across cells
+- [ ] Add `setup_pyoso()` cell as the last cell in the notebook
+
+### UI & Interactivity
+- [ ] Convert Hex UI controls to `mo.ui` components (dropdown, slider, etc.)
+- [ ] Access UI values via `.value` property in dependent cells
+- [ ] Use `mo.vstack()`, `mo.accordion()` for layout
+
+### Visualizations
+- [ ] Wrap Altair charts with `mo.ui.altair_chart()` for interactivity
+- [ ] Convert any Plotly charts to Altair (if present)
+- [ ] Set consistent chart styling (width='container', etc.)
+- [ ] Add tooltips to all charts
+- [ ] Use `mo.ui.table()` for interactive tables
+
+### Code Quality
+- [ ] Return values as tuples: `return (value,)` not `return value`
+- [ ] Use `_` prefix for temporary variables not returned from cells
+- [ ] Fix pandas FutureWarnings (avoid `inplace=True`, use `astype()` not `view()`)
+- [ ] Avoid try/except blocks and premature returns (let things fail naturally)
+- [ ] Return empty values (empty DataFrame, None) instead of catching exceptions
+- [ ] Create helper functions for repeated operations
+
+### Testing
+- [ ] Run notebook from top to bottom without errors
+- [ ] Verify all charts render correctly
+- [ ] Test all UI controls and verify reactivity
+- [ ] Check that data flows correctly through cells
+- [ ] Verify no circular dependency warnings
+
+## Quick Reference
+
+### Most Common Patterns
+
+**Cell with dependencies:**
+```python
+@app.cell(hide_code=True)
+def _(input_var1, input_var2, pd):
+    result = process(input_var1, input_var2)
+    return (result,)
+```
+
+**UI dropdown:**
+```python
+@app.cell
+def _(mo):
+    selector = mo.ui.dropdown(options=["A", "B"], value="A")
+    selector
+    return (selector,)
+```
+
+**Using dropdown value:**
+```python
+@app.cell
+def _(selector):
+    selected_value = selector.value
+    return (selected_value,)
+```
+
+**SQL query:**
+```python
+@app.cell
+def _(mo, pyoso_db_conn):
+    df = mo.sql("SELECT * FROM table", engine=pyoso_db_conn, output=False)
+    return (df,)
+```
+
+**Altair chart:**
+```python
+@app.cell
+def _(alt, df, mo):
+    chart = alt.Chart(df).mark_bar().encode(x='x:N', y='y:Q')
+    mo.ui.altair_chart(chart)
+    return
+```
+
+**Layout:**
+```python
+@app.cell
+def _(mo, chart1, chart2):
+    mo.vstack([
+        mo.md("# Title"),
+        chart1,
+        chart2
+    ])
+    return
+```
+
+### Common Pitfalls
+
+❌ **DON'T reassign variables:**
+```python
+def _(df):
+    df = df.copy()  # This creates a cycle!
+    return (df,)
+```
+
+✅ **DO use new names:**
+```python
+def _(df_raw):
+    df_clean = df_raw.copy()
+    return (df_clean,)
+```
+
+❌ **DON'T return without tuple:**
+```python
+return result  # Wrong!
+```
+
+✅ **DO always return tuple:**
+```python
+return (result,)  # Correct!
+```
+
+❌ **DON'T use inplace:**
+```python
+df['col'].fillna(0, inplace=True)  # Deprecated
+```
+
+✅ **DO reassign:**
+```python
+df['col'] = df['col'].fillna(0)  # Correct
+```
+
+❌ **DON'T use premature returns or try/except:**
+```python
+def _(df, mo):
+    if len(df) == 0:
+        mo.stop(True)  # Breaks reactivity!
+    try:
+        result = process(df)
+    except:
+        result = None  # Hides errors!
+    return (result,)
+```
+
+✅ **DO let things fail naturally:**
+```python
+def _(df):
+    result = process(df) if len(df) > 0 else pd.DataFrame()
+    return (result,)
+```
