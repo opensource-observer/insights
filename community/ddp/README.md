@@ -46,22 +46,29 @@ A dashboard application that serves marimo notebooks through a Next.js interface
    pnpm install  # or npm install
    ```
 
-4. **Start the marimo server:**
+5. **Start the development servers:**
+
+   You can start both the Marimo server and the Next.js app with a single command:
+   ```bash
+   cd app
+   pnpm dev:all  # or npm run dev:all
+   ```
+
+   Alternatively, you can run them separately in two terminals:
+
+   **Terminal 1 (Marimo):**
    ```bash
    # From inside the ddp directory
    uv run python serve_notebooks.py
-   # This will start marimo on port 8000
-   # The notebooks will be accessible at http://localhost:8000/{notebook-name}
-   # For example: http://localhost:8000/home for home.py
    ```
-   
-   **Note:** Make sure marimo is running before starting the Next.js app, otherwise the iframes won't be able to load the notebooks.
 
-5. **Start the Next.js development server:**
+   **Terminal 2 (Next.js):**
    ```bash
    cd app
    pnpm dev  # or npm run dev
    ```
+
+   **Note:** Make sure marimo is running before starting the Next.js app if running separately, otherwise the iframes won't be able to load the notebooks.
 
 6. **Access the dashboard:**
    - Next.js app: http://localhost:3000
