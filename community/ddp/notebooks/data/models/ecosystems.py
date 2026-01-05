@@ -6,12 +6,7 @@ app = marimo.App(width="full")
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""# Ecosystems""")
-    return
-
-
-@app.cell
-def _():
+    mo.md(r"""# Open Dev Data Ecosystems Guide""")
     return
 
 
@@ -23,6 +18,292 @@ def setup_pyoso():
     import marimo as mo
     pyoso_db_conn = pyoso.Client().dbapi_connection()
     return mo, pyoso_db_conn
+
+
+@app.cell(hide_code=True)
+def _(mo, pyoso_db_conn):
+    def get_model_preview(model_name, limit=5):
+        return mo.sql(f"SELECT * FROM {model_name} LIMIT {limit}",
+                      engine=pyoso_db_conn, output=False)
+
+    def get_row_count(model_name):
+        result = mo.sql(f"SHOW STATS FOR {model_name}",
+                        engine=pyoso_db_conn, output=False)
+        return result['row_count'].sum()
+
+    def generate_sql_snippet(model_name, df_results, limit=5):
+        column_names = df_results.columns.tolist()
+        # Format columns with one per line, indented
+        columns_formatted = ',\n  '.join(column_names)
+        sql_snippet = f"""```sql
+SELECT
+  {columns_formatted}
+FROM {model_name}
+LIMIT {limit}
+```
+"""
+        return mo.md(sql_snippet)
+
+    def render_table_preview(model_name):
+        df = get_model_preview(model_name)
+        sql_snippet = generate_sql_snippet(model_name, df, limit=5)
+        fmt = {c: '{:.0f}' for c in df.columns if df[c].dtype == 'int64' and ('_id' in c or c == 'id')}
+        table = mo.ui.table(df, format_mapping=fmt, show_column_summaries=False, show_data_types=False)
+        row_count = get_row_count(model_name)
+        col_count = len(df.columns)
+        title = f"{model_name} | {row_count:,.0f} rows, {col_count} cols"
+        return mo.accordion({title: mo.vstack([sql_snippet, table])})
+
+    import pandas as pd
+
+    def get_format_mapping(df, include_percentage=False):
+        """Generate format mapping for table display"""
+        fmt = {}
+        for c in df.columns:
+            if df[c].dtype in ['int64', 'float64']:
+                if include_percentage and 'percentage' in c.lower():
+                    fmt[c] = '{:.2f}'
+                elif '_id' in c or c == 'id' or 'count' in c.lower():
+                    fmt[c] = '{:.0f}'
+                elif include_percentage:
+                    fmt[c] = '{:.0f}'
+        return fmt
+
+    return (render_table_preview, pd, get_format_mapping)
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        r"""
+        ## Introduction
+
+        The Open Dev Data ecosystem concept allows us to group projects and repositories into logical collections.
+
+        ### What are ecosystems?
+
+        Ecosystems are groupings of repositories representing chains, protocols, projects, foundations organizations, or broader categories. They provide a meaningful unit of analysis by aggregating developer activity beyond the repo level.
+
+        ### What are parent and child ecosystems?
+
+        Ecosystems can be nested. A parent ecosystem is a higher-level project or category (e.g., Ethereum), and a child ecosystem is a project that belongs to it (e.g., Uniswap as a child of Ethereum). This hierarchy allows activity to be aggregated upward or explored downward.
+
+        This guide explores the key data models used to represent these ecosystems and demonstrates how to query them effectively.
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(render_table_preview):
+    render_table_preview("oso.stg_opendevdata__ecosystems")
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        r"""
+        ## Model Structure: Recursive Repositories
+
+        The `oso.stg_opendevdata__ecosystems_repos_recursive` table is the primary tool for mapping repositories to ecosystems. It resolves the hierarchy so you don't have to traverse it yourself.
+
+        ### Key Fields
+        *   **`ecosystem_id`**: The ID of the ecosystem.
+        *   **`repo_id`**: The ID of the repository.
+        *   **`distance`**: The depth of the relationship (1 = direct child, >1 = nested child).
+        *   **`path`**: The lineage path from the repo's immediate ecosystem up to the queried ecosystem.
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(render_table_preview):
+    render_table_preview("oso.stg_opendevdata__ecosystems_repos_recursive")
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo, pyoso_db_conn):
+    import plotly.express as px
+
+    # Top ecosystems by repository count
+    top_ecosystems_query = """
+    SELECT
+        e.name AS ecosystem_name,
+        COUNT(DISTINCT er.repo_id) as repo_count
+    FROM oso.stg_opendevdata__ecosystems_repos_recursive er
+    JOIN oso.stg_opendevdata__ecosystems e ON er.ecosystem_id = e.id
+    GROUP BY e.name
+    ORDER BY repo_count DESC
+    LIMIT 20
+    """
+
+    top_ecosystems_df = mo.sql(top_ecosystems_query, engine=pyoso_db_conn, output=False)
+    return px, top_ecosystems_df
+
+
+@app.cell(hide_code=True)
+def _(mo, px, top_ecosystems_df):
+    # Prepare data for horizontal bar chart
+    fig = px.bar(
+        top_ecosystems_df,
+        x='repo_count',
+        y='ecosystem_name',
+        orientation='h',
+        text='repo_count',
+        labels={'repo_count': 'Repository Count', 'ecosystem_name': 'Ecosystem'},
+        title='Top 20 Ecosystems by Repository Count',
+        template='plotly_white',
+        color_discrete_sequence=['#4a4a4a']
+    )
+
+    fig.update_traces(
+        textposition='outside',
+        marker_color='#4a4a4a'
+    )
+
+    fig.update_layout(
+        showlegend=False,
+        height=600,
+        margin=dict(l=10, r=10, t=60, b=20),
+        xaxis=dict(showgrid=True, gridcolor='#f0f0f0'),
+        yaxis=dict(showgrid=False, categoryorder='total ascending')
+    )
+
+    mo.ui.plotly(fig, config={'displayModeBar': False})
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        r"""
+        ## Recursive Repository Retrieval
+
+        The `oso.stg_opendevdata__ecosystems_repos_recursive` table simplifies finding all repositories within a given ecosystem, regardless of how deep in the hierarchy they are.
+
+        """
+    )
+    return
+
+
+@app.cell
+def _(mo, pyoso_db_conn):
+    # Function to get repos for an ecosystem
+    def get_ecosystem_repos_query(ecosystem_name):
+        return f"""
+        SELECT
+            r.name AS repo_name,
+            r.link AS repo_url,
+            e.name AS ecosystem_name
+        FROM oso.stg_opendevdata__ecosystems_repos_recursive er
+        JOIN oso.stg_opendevdata__repos r ON er.repo_id = r.id
+        JOIN oso.stg_opendevdata__ecosystems e ON er.ecosystem_id = e.id
+        WHERE e.name = '{ecosystem_name}'
+        LIMIT 10
+        """
+    return get_ecosystem_repos_query,
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""## Sample Queries""")
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""### Ethereum Ecosystem""")
+    return
+
+
+@app.cell
+def _(get_ecosystem_repos_query, mo, pyoso_db_conn):
+    _df = mo.sql(
+        get_ecosystem_repos_query("Ethereum"),
+        engine=pyoso_db_conn
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""### Solana Ecosystem""")
+    return
+
+
+@app.cell
+def _(get_ecosystem_repos_query, mo, pyoso_db_conn):
+    _df = mo.sql(
+        get_ecosystem_repos_query("Solana"),
+        engine=pyoso_db_conn
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""### Generic Query Template""")
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        r"""
+        To query any ecosystem, simply replace the ecosystem name in the WHERE clause:
+
+        ```sql
+        SELECT
+            r.name AS repo_name,
+            e.name AS ecosystem_name
+        FROM oso.stg_opendevdata__ecosystems_repos_recursive er
+        JOIN oso.stg_opendevdata__ecosystems e ON er.ecosystem_id = e.id
+        JOIN oso.stg_opendevdata__repos r ON er.repo_id = r.id
+        WHERE e.name = 'YOUR_ECOSYSTEM_NAME'
+        ```
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""## Hierarchy & Relationships""")
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        r"""
+        Ecosystems form a directed graph (usually a tree or forest).
+        The `oso.stg_opendevdata__ecosystems_child_ecosystems` table captures these relationships mapping parent IDs to child IDs.
+
+        Below is an example showing the children of the Ethereum ecosystem.
+        """
+    )
+    return
+
+
+@app.cell
+def _(mo, pyoso_db_conn):
+    _df = mo.sql(
+        f"""
+        SELECT
+            parent.name AS parent_name,
+            child.name AS child_name
+        FROM oso.stg_opendevdata__ecosystems_child_ecosystems rel
+        JOIN oso.stg_opendevdata__ecosystems parent ON rel.parent_id = parent.id
+        JOIN oso.stg_opendevdata__ecosystems child ON rel.child_id = child.id
+        WHERE parent.name = 'Ethereum'
+        ORDER BY child.name
+        """,
+        engine=pyoso_db_conn
+    )
+    return
 
 
 if __name__ == "__main__":
