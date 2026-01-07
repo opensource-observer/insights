@@ -4,17 +4,6 @@ __generated_with = "0.18.4"
 app = marimo.App(width="full")
 
 
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""# Events""")
-    return
-
-
-@app.cell
-def _():
-    return
-
-
 @app.cell
 def setup_pyoso():
     # This code sets up pyoso to be used as a database provider for this notebook
@@ -23,6 +12,780 @@ def setup_pyoso():
     import marimo as mo
     pyoso_db_conn = pyoso.Client().dbapi_connection()
     return mo, pyoso_db_conn
+
+
+@app.cell(hide_code=True)
+def _(mo, pyoso_db_conn):
+    def get_model_preview(model_name, limit=5):
+        return mo.sql(f"SELECT * FROM {model_name} LIMIT {limit}", 
+                      engine=pyoso_db_conn, output=False)
+
+    def get_row_count(model_name):
+        result = mo.sql(f"SHOW STATS FOR {model_name}", 
+                        engine=pyoso_db_conn, output=False)
+        return result['row_count'].sum()    
+    
+    def generate_sql_snippet(model_name, df_results, limit=5):
+        column_names = df_results.columns.tolist()
+        # Format columns with one per line, indented
+        columns_formatted = ',\n  '.join(column_names)
+        sql_snippet = f"""```sql
+SELECT 
+  {columns_formatted}
+FROM {model_name}
+LIMIT {limit}
+```
+"""
+        return mo.md(sql_snippet)
+
+    def render_table_preview(model_name):
+        df = get_model_preview(model_name)
+        if df.empty:
+            return mo.md(f"**{model_name}**\n\nUnable to retrieve preview (table might be empty or inaccessible).")
+
+        sql_snippet = generate_sql_snippet(model_name, df, limit=5)
+        fmt = {c: '{:.0f}' for c in df.columns if df[c].dtype == 'int64' and ('_id' in c or c == 'id')}
+        table = mo.ui.table(df, format_mapping=fmt, show_column_summaries=False, show_data_types=False)
+        row_count = get_row_count(model_name)
+        col_count = len(df.columns)
+        title = f"{model_name} | {row_count:,.0f} rows, {col_count} cols"
+        return mo.accordion({title: mo.vstack([sql_snippet, table])})
+    
+    import pandas as pd
+    
+    def get_format_mapping(df, include_percentage=False):
+        """Generate format mapping for table display"""
+        fmt = {}
+        for c in df.columns:
+            if df[c].dtype in ['int64', 'float64']:
+                if include_percentage and 'percentage' in c.lower():
+                    fmt[c] = '{:.2f}'
+                elif '_id' in c or c == 'id' or 'count' in c.lower():
+                    fmt[c] = '{:.0f}'
+                elif include_percentage:
+                    fmt[c] = '{:.0f}'
+        return fmt
+    
+    return (render_table_preview, pd, get_format_mapping)
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        # GitHub Events Model
+
+        This notebook documents GitHub event data in OSO, explaining where it comes from, how it's 
+        transformed, and how to use it for developer activity analysis.
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ## Overview
+
+        GitHub events capture the full range of developer activities on GitHub repositories: commits, 
+        pull requests, issues, code reviews, stars, forks, and more. OSO ingests this data from 
+        [GitHub Archive](https://www.gharchive.org/), a project that records the public GitHub timeline.
+
+        ### Open Dev Data vs GitHub Archive
+
+        It's important to understand the difference between the two primary data sources for developer activity:
+
+        | Source | Coverage | Strengths |
+        |--------|----------|-----------|
+        | **Open Dev Data** | Commits only | Identity resolution, code churn metrics (additions/deletions), Git history analysis |
+        | **GitHub Archive** | All event types | Broad activity coverage (PRs, issues, reviews, stars, forks), real-time public timeline |
+
+        The **Commits** model (see `commits.py`) documents Open Dev Data's commit-centric view. This 
+        **Events** model focuses on GitHub Archive's broader event coverage.
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ### Data Freshness & Completeness
+
+        - **Freshness**: GitHub Archive data can be up to **3 days behind** real-time. The ingestion 
+          model avoids querying "future" tables in BigQuery, so recent days may not yet be available.
+        - **Completeness**: GitHub Archive captures the public GitHub timeline. Private repositories, 
+          deleted events, and rate-limited API responses are not included. Backfills may occur for 
+          historical corrections.
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ## Data Lineage
+
+        GitHub events flow through a series of transformations from raw ingestion to curated models:
+
+        ```
+        BigQuery: github_archive.day.YYYYMMDD / month.YYYYMM
+                              │
+                              ▼
+                   oso.stg_github__events
+                     (raw, nested fields)
+                              │
+                              ▼
+               oso.int_gharchive__github_events
+                 (standardized, all event types)
+                              │
+                    ┌─────────┴─────────┐
+                    ▼                   ▼
+          oso.int_ddp_github_events    oso.int_gharchive__developer_activities
+            (curated subset)              (daily rollup for MAD metrics)
+                    │
+                    ▼
+          oso.int_ddp_github_events_daily
+            (daily aggregated, normalized types)
+        ```
+
+        ### Model Descriptions
+
+        - **`oso.stg_github__events`**: Raw GitHub Archive events with nested `repo` and `actor` fields, 
+          plus JSON `payload`. This is the source of truth but requires parsing.
+        - **`oso.int_gharchive__github_events`**: Standardized projection with flat columns (`event_time`, 
+          `actor_id`, `actor_login`, `repo_id`, `repo_name`, `event_type`). **This is the recommended 
+          starting point for most queries.**
+        - **`oso.int_ddp_github_events`**: Filtered to a curated subset of event types commonly used 
+          for developer activity analysis.
+        - **`oso.int_ddp_github_events_daily`**: Daily aggregation with normalized event type buckets.
+        - **`oso.int_gharchive__developer_activities`**: Pre-computed daily rollup of developer activity 
+          (currently `PushEvent` and `PullRequestEvent`), used by the Monthly Active Developer (MAD) metric.
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ## Canonical Entry Point: Standardized Events
+
+        **Model**: `oso.int_gharchive__github_events`
+
+        This is the recommended starting point for querying GitHub events. It provides standardized 
+        columns extracted from the raw GitHub Archive data.
+
+        ### Key Fields
+        - **`event_time`**: Timestamp when the event occurred
+        - **`actor_id`**: GitHub user ID who performed the action
+        - **`actor_login`**: GitHub username (lowercase)
+        - **`repo_id`**: GitHub repository ID
+        - **`repo_name`**: Repository name in `owner/repo` format (lowercase)
+        - **`event_type`**: The type of GitHub event (e.g., `PushEvent`, `PullRequestEvent`)
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(render_table_preview):
+    render_table_preview("oso.int_gharchive__github_events")
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ## DDP Curated Events
+
+        **Model**: `oso.int_ddp_github_events`
+
+        For common developer activity analysis, OSO provides a curated subset of event types. This 
+        model filters `oso.int_gharchive__github_events` to the following types:
+
+        | Event Type | Description |
+        |------------|-------------|
+        | `PushEvent` | Commits pushed to a repository |
+        | `PullRequestEvent` | Pull request opened, closed, merged, etc. |
+        | `PullRequestReviewEvent` | Pull request review submitted |
+        | `PullRequestReviewCommentEvent` | Comment on a pull request review |
+        | `IssuesEvent` | Issue opened, closed, labeled, etc. |
+        | `WatchEvent` | Repository starred |
+        | `ForkEvent` | Repository forked |
+
+        **Note**: GitHub Archive contains many more event types (e.g., `CreateEvent`, `DeleteEvent`, 
+        `ReleaseEvent`, `CommitCommentEvent`, `GollumEvent`, etc.). The DDP curated subset focuses 
+        on the most commonly used types for developer activity metrics. For a complete list of GitHub 
+        event types, see the [GitHub Events API documentation](https://docs.github.com/en/rest/using-the-rest-api/github-event-types).
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(render_table_preview):
+    render_table_preview("oso.int_ddp_github_events")
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ## Daily Aggregated Events
+
+        **Model**: `oso.int_ddp_github_events_daily`
+
+        This model aggregates DDP curated events by day, with normalized event type buckets:
+
+        | Normalized Type | Source Event Types |
+        |-----------------|-------------------|
+        | `COMMIT_CODE` | `PushEvent` |
+        | `STARRED` | `WatchEvent` |
+        | `OTHER` | All other curated types |
+
+        This is useful for time-series analysis where you need daily counts rather than individual events.
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(render_table_preview):
+    render_table_preview("oso.int_ddp_github_events_daily")
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ## Developer Activity Rollup
+
+        **Model**: `oso.int_gharchive__developer_activities`
+
+        This pre-computed rollup aggregates developer activity by day, actor, and repository. It is 
+        used as the building block for the Monthly Active Developer (MAD) metric.
+
+        ### Key Fields
+        - **`bucket_day`**: The date of activity
+        - **`actor_id`**: GitHub user ID
+        - **`repo_id`**: GitHub repository ID
+        - **`num_events`**: Count of events for that day/actor/repo combination
+
+        ### Current Scope
+        This rollup currently includes only `PushEvent` and `PullRequestEvent`. This aligns with 
+        common definitions of "developer activity" focused on code contributions.
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(render_table_preview):
+    render_table_preview("oso.int_gharchive__developer_activities")
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ## Reproducing the Developer Activity Rollup
+
+        For transparency, here's how `oso.int_gharchive__developer_activities` is derived from 
+        `oso.int_gharchive__github_events`. You can use this pattern to create custom rollups 
+        with different event types or aggregation logic.
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ```sql
+        -- Reproduce int_gharchive__developer_activities from raw events
+        SELECT
+          DATE_TRUNC('DAY', event_time) AS bucket_day,
+          actor_id,
+          repo_id,
+          COUNT(*) AS num_events
+        FROM oso.int_gharchive__github_events
+        WHERE
+          event_time >= DATE('2025-01-01')
+          AND event_type IN ('PushEvent', 'PullRequestEvent')
+        GROUP BY 1, 2, 3
+        ```
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ## Joining Events to Open Dev Data
+
+        To analyze events for repositories tracked in Open Dev Data (and by extension, ecosystems 
+        like Ethereum or Solana), use the repository bridge model.
+
+        ### Bridge Model: `oso.int_opendevdata__repositories_with_repo_id`
+
+        This model maps Open Dev Data repository IDs to GitHub Archive `repo_id` values, enabling 
+        cross-source joins. See the **Repositories** model documentation for details.
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ## Live Data Exploration
+
+        The following charts show actual data from the event tables, filtered to a recent date range 
+        to demonstrate the data structure and typical patterns.
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _():
+    import plotly.express as px
+    return (px,)
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("### Event Type Distribution (DDP Curated, Last 14 Days)")
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo, pyoso_db_conn):
+    # Query event type distribution from DDP curated events (limited date range)
+    _event_type_query = """
+    SELECT
+      event_type,
+      COUNT(*) AS event_count
+    FROM oso.int_ddp_github_events
+    WHERE event_time >= CURRENT_DATE - INTERVAL '14' DAY
+    GROUP BY event_type
+    ORDER BY event_count DESC
+    """
+    
+    df_event_types = mo.sql(_event_type_query, engine=pyoso_db_conn, output=False)
+    return (df_event_types,)
+
+
+@app.cell(hide_code=True)
+def _(df_event_types, mo, px):
+    _fig = px.bar(
+        df_event_types,
+        x='event_type',
+        y='event_count',
+        text='event_count',
+        labels={'event_type': 'Event Type', 'event_count': 'Event Count'},
+        color_discrete_sequence=['#4C78A8']
+    )
+    
+    _fig.update_traces(
+        texttemplate='%{text:,.0f}',
+        textposition='outside'
+    )
+    
+    _fig.update_layout(
+        template='plotly_white',
+        margin=dict(t=20, l=0, r=0, b=0),
+        height=400,
+        xaxis=dict(
+            title='',
+            tickangle=-45,
+            showgrid=False,
+            linecolor="#000",
+            linewidth=1
+        ),
+        yaxis=dict(
+            title='Event Count',
+            showgrid=True,
+            gridcolor="#E5E5E5",
+            linecolor="#000",
+            linewidth=1
+        )
+    )
+    
+    _total_events = df_event_types['event_count'].sum()
+    _top_event = df_event_types.iloc[0]['event_type'] if len(df_event_types) > 0 else "N/A"
+    _top_count = df_event_types.iloc[0]['event_count'] if len(df_event_types) > 0 else 0
+    _num_types = len(df_event_types)
+    
+    mo.vstack([
+        mo.hstack([
+            mo.stat(label="Total Events", value=f"{_total_events:,.0f}", bordered=True, caption="Last 14 days"),
+            mo.stat(label="Top Event Type", value=_top_event, bordered=True, caption=f"{_top_count:,.0f} events"),
+            mo.stat(label="Event Types", value=f"{_num_types}", bordered=True, caption="Distinct types"),
+        ], widths="equal", gap=1),
+        mo.ui.plotly(_fig, config={'displayModeBar': False}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("### Daily Active Developers (Last 30 Days)")
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo, pd, pyoso_db_conn):
+    # Query daily active developers from the rollup (limited date range)
+    _daily_devs_query = """
+    SELECT
+      bucket_day,
+      COUNT(DISTINCT actor_id) AS daily_active_developers
+    FROM oso.int_gharchive__developer_activities
+    WHERE bucket_day >= CURRENT_DATE - INTERVAL '30' DAY
+    GROUP BY bucket_day
+    ORDER BY bucket_day
+    """
+    
+    df_daily_devs = mo.sql(_daily_devs_query, engine=pyoso_db_conn, output=False)
+    df_daily_devs['bucket_day'] = pd.to_datetime(df_daily_devs['bucket_day'])
+    return (df_daily_devs,)
+
+
+@app.cell(hide_code=True)
+def _(df_daily_devs, mo, px):
+    _fig2 = px.area(
+        df_daily_devs,
+        x='bucket_day',
+        y='daily_active_developers',
+        color_discrete_sequence=['#4C78A8']
+    )
+    
+    _fig2.update_traces(
+        line=dict(width=2),
+        fillcolor='rgba(76, 120, 168, 0.2)',
+        hovertemplate='<b>%{x|%b %d, %Y}</b><br>Active Developers: %{y:,.0f}<extra></extra>'
+    )
+    
+    _fig2.update_layout(
+        template='plotly_white',
+        margin=dict(t=20, l=0, r=0, b=0),
+        height=400,
+        hovermode='x unified',
+        xaxis=dict(
+            title='',
+            showgrid=False,
+            linecolor="#000",
+            linewidth=1,
+            tickformat="%b %d"
+        ),
+        yaxis=dict(
+            title='Daily Active Developers',
+            showgrid=True,
+            gridcolor="#E5E5E5",
+            linecolor="#000",
+            linewidth=1
+        )
+    )
+    
+    _avg_devs = int(df_daily_devs['daily_active_developers'].mean())
+    _max_devs = int(df_daily_devs['daily_active_developers'].max())
+    _min_devs = int(df_daily_devs['daily_active_developers'].min())
+    _latest_devs = int(df_daily_devs['daily_active_developers'].iloc[-1]) if len(df_daily_devs) > 0 else 0
+    
+    mo.vstack([
+        mo.hstack([
+            mo.stat(label="Latest Day", value=f"{_latest_devs:,}", bordered=True, caption="Most recent count"),
+            mo.stat(label="30-Day Average", value=f"{_avg_devs:,}", bordered=True, caption="Mean daily developers"),
+            mo.stat(label="Peak", value=f"{_max_devs:,}", bordered=True, caption="Maximum in period"),
+            mo.stat(label="Minimum", value=f"{_min_devs:,}", bordered=True, caption="Lowest in period"),
+        ], widths="equal", gap=1),
+        mo.ui.plotly(_fig2, config={'displayModeBar': False}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("### Daily Events by Type (Last 14 Days)")
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo, pd, pyoso_db_conn):
+    # Query daily events by normalized type from the daily aggregation
+    _daily_by_type_query = """
+    SELECT
+      bucket_day,
+      event_type,
+      SUM(amount) AS total_events
+    FROM oso.int_ddp_github_events_daily
+    WHERE bucket_day >= CURRENT_DATE - INTERVAL '14' DAY
+    GROUP BY bucket_day, event_type
+    ORDER BY bucket_day, event_type
+    """
+    
+    df_daily_by_type = mo.sql(_daily_by_type_query, engine=pyoso_db_conn, output=False)
+    df_daily_by_type['bucket_day'] = pd.to_datetime(df_daily_by_type['bucket_day'])
+    return (df_daily_by_type,)
+
+
+@app.cell(hide_code=True)
+def _(df_daily_by_type, mo, px):
+    _fig3 = px.area(
+        df_daily_by_type,
+        x='bucket_day',
+        y='total_events',
+        color='event_type',
+        color_discrete_map={
+            'COMMIT_CODE': '#4C78A8',
+            'STARRED': '#F58518',
+            'OTHER': '#72B7B2'
+        }
+    )
+    
+    _fig3.update_traces(
+        line=dict(width=1.5),
+        hovertemplate='%{fullData.name}<br><b>%{x|%b %d}</b><br>Events: %{y:,.0f}<extra></extra>'
+    )
+    
+    _fig3.update_layout(
+        template='plotly_white',
+        margin=dict(t=20, l=0, r=0, b=0),
+        height=400,
+        hovermode='x unified',
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1,
+            title_text=''
+        ),
+        xaxis=dict(
+            title='',
+            showgrid=False,
+            linecolor="#000",
+            linewidth=1,
+            tickformat="%b %d"
+        ),
+        yaxis=dict(
+            title='Total Events',
+            showgrid=True,
+            gridcolor="#E5E5E5",
+            linecolor="#000",
+            linewidth=1
+        )
+    )
+    
+    # Calculate stats per event type
+    _type_totals = df_daily_by_type.groupby('event_type')['total_events'].sum()
+    _commit_total = int(_type_totals.get('COMMIT_CODE', 0))
+    _starred_total = int(_type_totals.get('STARRED', 0))
+    _other_total = int(_type_totals.get('OTHER', 0))
+    _grand_total = _commit_total + _starred_total + _other_total
+    
+    mo.vstack([
+        mo.hstack([
+            mo.stat(label="Commits", value=f"{_commit_total:,}", bordered=True, caption="PushEvent"),
+            mo.stat(label="Stars", value=f"{_starred_total:,}", bordered=True, caption="WatchEvent"),
+            mo.stat(label="Other", value=f"{_other_total:,}", bordered=True, caption="PRs, Issues, Reviews, Forks"),
+            mo.stat(label="Total", value=f"{_grand_total:,}", bordered=True, caption="All events (14 days)"),
+        ], widths="equal", gap=1),
+        mo.ui.plotly(_fig3, config={'displayModeBar': False}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ## Sample Queries
+
+        ### Event Type Distribution (Last 7 Days)
+
+        See what event types are most common in the standardized events table.
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ```sql
+        SELECT
+          event_type,
+          COUNT(*) AS event_count
+        FROM oso.int_gharchive__github_events
+        WHERE event_time >= CURRENT_DATE - INTERVAL '7' DAY
+        GROUP BY event_type
+        ORDER BY event_count DESC
+        LIMIT 20
+        ```
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ### Join Open Dev Data Repos to Events
+
+        Find GitHub events for repositories tracked in Open Dev Data.
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ```sql
+        SELECT
+          r.repo_name,
+          e.event_type,
+          COUNT(*) AS event_count
+        FROM oso.int_opendevdata__repositories_with_repo_id r
+        JOIN oso.int_gharchive__github_events e
+          ON r.repo_id = e.repo_id
+        WHERE
+          r.repo_id IS NOT NULL
+          AND e.event_time >= DATE('2025-01-01')
+        GROUP BY r.repo_name, e.event_type
+        ORDER BY event_count DESC
+        LIMIT 20
+        ```
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ### Filter Events by Ecosystem
+
+        Find developer activity for a specific ecosystem (e.g., Ethereum) by joining through 
+        the ecosystem mapping tables.
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ```sql
+        SELECT
+          e.name AS ecosystem_name,
+          COUNT(DISTINCT da.actor_id) AS unique_developers,
+          SUM(da.num_events) AS total_events
+        FROM oso.int_gharchive__developer_activities da
+        JOIN oso.int_opendevdata__repositories_with_repo_id r
+          ON da.repo_id = r.repo_id
+        JOIN oso.stg_opendevdata__ecosystems_repos_recursive err
+          ON r.opendevdata_id = err.repo_id
+        JOIN oso.stg_opendevdata__ecosystems e
+          ON err.ecosystem_id = e.id
+        WHERE
+          da.bucket_day >= DATE('2025-01-01')
+          AND e.name = 'Ethereum'
+        GROUP BY e.name
+        ```
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ### Daily Active Developers Using the Rollup
+
+        Count unique developers active each day using the pre-computed rollup.
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ```sql
+        SELECT
+          bucket_day,
+          COUNT(DISTINCT actor_id) AS daily_active_developers
+        FROM oso.int_gharchive__developer_activities
+        WHERE bucket_day >= DATE('2025-01-01')
+        GROUP BY bucket_day
+        ORDER BY bucket_day
+        ```
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ### Build Custom Activity Rollup (e.g., Including Issues)
+
+        Create your own activity definition by including additional event types.
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ```sql
+        -- Custom rollup including issues and code reviews
+        SELECT
+          DATE_TRUNC('DAY', event_time) AS bucket_day,
+          actor_id,
+          repo_id,
+          COUNT(*) AS num_events
+        FROM oso.int_gharchive__github_events
+        WHERE
+          event_time >= DATE('2025-01-01')
+          AND event_type IN (
+            'PushEvent',
+            'PullRequestEvent',
+            'PullRequestReviewEvent',
+            'IssuesEvent'
+          )
+        GROUP BY 1, 2, 3
+        ```
+        """
+    )
+    return
 
 
 if __name__ == "__main__":
