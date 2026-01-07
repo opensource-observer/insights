@@ -32,6 +32,7 @@ const navItems: NavItem[] = [
         href: '/data/models',
         children: [
           { label: 'Developers', href: '/data/models/developers' },
+          { label: 'Commits', href: '/data/models/commits' },
           { label: 'Repositories', href: '/data/models/repositories' },
           { label: 'Ecosystems', href: '/data/models/ecosystems' },
           { label: 'Events', href: '/data/models/events' },

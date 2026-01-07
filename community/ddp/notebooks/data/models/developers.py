@@ -4,17 +4,6 @@ __generated_with = "0.18.4"
 app = marimo.App(width="full")
 
 
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""# Developers""")
-    return
-
-
-@app.cell
-def _():
-    return
-
-
 @app.cell
 def setup_pyoso():
     # This code sets up pyoso to be used as a database provider for this notebook
@@ -23,6 +12,302 @@ def setup_pyoso():
     import marimo as mo
     pyoso_db_conn = pyoso.Client().dbapi_connection()
     return mo, pyoso_db_conn
+
+
+@app.cell(hide_code=True)
+def _(mo, pyoso_db_conn):
+    def get_model_preview(model_name, limit=5):
+        return mo.sql(f"SELECT * FROM {model_name} LIMIT {limit}", 
+                      engine=pyoso_db_conn, output=False)
+
+    def get_row_count(model_name):
+        result = mo.sql(f"SHOW STATS FOR {model_name}", 
+                        engine=pyoso_db_conn, output=False)
+        return result['row_count'].sum()    
+    
+    def generate_sql_snippet(model_name, df_results, limit=5):
+        column_names = df_results.columns.tolist()
+        # Format columns with one per line, indented
+        columns_formatted = ',\n  '.join(column_names)
+        sql_snippet = f"""```sql
+SELECT 
+  {columns_formatted}
+FROM {model_name}
+LIMIT {limit}
+```
+"""
+        return mo.md(sql_snippet)
+
+    def render_table_preview(model_name):
+        df = get_model_preview(model_name)
+        sql_snippet = generate_sql_snippet(model_name, df, limit=5)
+        fmt = {c: '{:.0f}' for c in df.columns if df[c].dtype == 'int64' and ('_id' in c or c == 'id')}
+        table = mo.ui.table(df, format_mapping=fmt, show_column_summaries=False, show_data_types=False)
+        row_count = get_row_count(model_name)
+        col_count = len(df.columns)
+        title = f"{model_name} | {row_count:,.0f} rows, {col_count} cols"
+        return mo.accordion({title: mo.vstack([sql_snippet, table])})
+    
+    import pandas as pd
+    
+    def get_format_mapping(df, include_percentage=False):
+        """Generate format mapping for table display"""
+        fmt = {}
+        for c in df.columns:
+            if df[c].dtype in ['int64', 'float64']:
+                if include_percentage and 'percentage' in c.lower():
+                    fmt[c] = '{:.2f}'
+                elif '_id' in c or c == 'id' or 'count' in c.lower():
+                    fmt[c] = '{:.0f}'
+                elif include_percentage:
+                    fmt[c] = '{:.0f}'
+        return fmt
+    
+    return (render_table_preview, pd, get_format_mapping)
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        # Developers Model
+
+        The Developers model unifies developer data from Open Dev Data and GitHub Archive. 
+        It creates an association between GitHub developers and OpenDevData canonical developers 
+        based on name, email, and time validity overlap.
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ## Overview
+
+        The `int_opendevdata__developers_with_dev_id` model unifies developer identities by performing a 
+        full join between GitHub Archive developers (`int_gharchive__developers`) and Open Dev Data developers 
+        (`int_opendevdata__developers`).
+        
+        The matching strategy is based on:
+        1. **Author Name**: Matching names in both datasets.
+        2. **Author Email**: Matching emails in both datasets.
+        3. **Time Overlap**: Ensuring the `valid_from` and `valid_to` periods overlap between the two sources.
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ## Model Structure
+
+        ### Key Fields
+
+        - **`actor_id`**: The GitHub actor ID from GitHub Archive.
+        - **`actor_login`**: The GitHub username from GitHub Archive.
+        - **`canonical_developer_id`**: The unique identifier for a developer from Open Dev Data.
+        - **`author_name`**: The developer's name (coalesced from GitHub Archive and Open Dev Data).
+        - **`author_email`**: The developer's email (coalesced from GitHub Archive and Open Dev Data).
+        - **`valid_from`**: The start timestamp for this mapping's validity.
+        - **`valid_to`**: The end timestamp for this mapping's validity.
+
+        This model allows you to link activity from GitHub Archive (keyed by `actor_id`) with activity 
+        from Open Dev Data (keyed by `canonical_developer_id`).
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(render_table_preview):
+    render_table_preview("oso.int_opendevdata__developers_with_dev_id")
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo, pyoso_db_conn):
+    import plotly.express as px
+
+    # Get coverage statistics
+    coverage_query = """
+    SELECT 
+      CASE 
+        WHEN actor_id IS NOT NULL AND canonical_developer_id IS NOT NULL THEN 'Matched'
+        WHEN actor_id IS NOT NULL THEN 'GitHub Archive Only'
+        WHEN canonical_developer_id IS NOT NULL THEN 'Open Dev Data Only'
+        ELSE 'Unknown'
+      END AS match_status,
+      COUNT(*) AS developer_count,
+      ROUND(100.0 * COUNT(*) / SUM(COUNT(*)) OVER (), 2) AS percentage
+    FROM oso.int_opendevdata__developers_with_dev_id
+    GROUP BY 
+      CASE 
+        WHEN actor_id IS NOT NULL AND canonical_developer_id IS NOT NULL THEN 'Matched'
+        WHEN actor_id IS NOT NULL THEN 'GitHub Archive Only'
+        WHEN canonical_developer_id IS NOT NULL THEN 'Open Dev Data Only'
+        ELSE 'Unknown'
+      END
+    ORDER BY developer_count DESC
+    """
+    
+    coverage_df = mo.sql(coverage_query, engine=pyoso_db_conn, output=False)
+    return coverage_df, px
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ## Coverage
+
+        The chart and table below show how many developers are matched across both sources versus those present in only one.
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(coverage_df, mo, px):
+    # Prepare data for horizontal bar chart
+    fig = px.bar(
+        coverage_df,
+        x='developer_count',
+        y='match_status',
+        orientation='h',
+        text='developer_count',
+        labels={'developer_count': 'Developer Count', 'match_status': 'Match Status'},
+        title='Developer Coverage by Source',
+        template='plotly_white',
+        color='match_status',
+        color_discrete_map={
+            'Matched': '#4a4a4a',
+            'GitHub Archive Only': '#8c8c8c',
+            'Open Dev Data Only': '#d9d9d9',
+            'Unknown': '#f0f0f0'
+        }
+    )
+    
+    fig.update_traces(
+        textposition='outside'
+    )
+    
+    fig.update_layout(
+        showlegend=False,
+        height=300,
+        margin=dict(l=10, r=10, t=60, b=20),
+        xaxis=dict(showgrid=True, gridcolor='#f0f0f0'),
+        yaxis=dict(showgrid=False, categoryorder='total ascending')
+    )
+    
+    mo.ui.plotly(fig, config={'displayModeBar': False})
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo, coverage_df, get_format_mapping):
+    mo.ui.table(coverage_df, format_mapping=get_format_mapping(coverage_df, include_percentage=True), show_column_summaries=False, show_data_types=False)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ## Sample Queries
+
+        ### Basic Usage: Find Matched Developers
+
+        This query returns developers that exist in both GitHub Archive and Open Dev Data.
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ```sql
+        SELECT 
+          actor_login, 
+          author_name, 
+          actor_id, 
+          canonical_developer_id
+        FROM oso.int_opendevdata__developers_with_dev_id
+        WHERE actor_id IS NOT NULL 
+          AND canonical_developer_id IS NOT NULL
+        LIMIT 100
+        ```
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ### Join with GitHub Archive Events
+
+        Example of joining the unified developer model with GitHub Archive events using `actor_id`.
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ```sql
+        SELECT 
+          d.actor_login,
+          d.canonical_developer_id,
+          COUNT(*) as event_count
+        FROM oso.int_opendevdata__developers_with_dev_id d
+        JOIN oso.stg_github__events e ON d.actor_id = e.actor.id
+        WHERE d.canonical_developer_id IS NOT NULL
+        GROUP BY d.actor_login, d.canonical_developer_id
+        ORDER BY event_count DESC
+        LIMIT 20
+        ```
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ### Find Unmatched Developers
+
+        Identifies developers present in GitHub Archive but not linked to a canonical Open Dev Data ID.
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ```sql
+        SELECT 
+          actor_login, 
+          author_name, 
+          actor_id
+        FROM oso.int_opendevdata__developers_with_dev_id
+        WHERE canonical_developer_id IS NULL
+        LIMIT 20
+        ```
+        """
+    )
+    return
 
 
 if __name__ == "__main__":
