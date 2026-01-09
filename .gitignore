@@ -123,3 +123,5 @@ gcp_credentials.json
 oso_gcp_credentials.json
 
 nessie-connector.ipynb
+
+__marimo__/
