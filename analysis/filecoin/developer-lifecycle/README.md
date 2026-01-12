@@ -41,6 +41,7 @@ uv run marimo run notebooks/filecoin-data-tour.py
 | `growth-trends-analysis.py` | Strategic Insights | YoY growth, momentum, outlier filtering, and growth classification |
 | `developer-funnel-dashboard.py` | Dashboard | Developer lifecycle funnel with human-readable labels |
 | `project-metrics-explorer.py` | Dashboard | Project-level metrics explorer with repository details |
+| `pln-downstream-impact.py` | Dashboard | Downstream impact of PLN packages (libp2p, ipfs, etc.) on the ecosystem |
 
 ## Data Sources
 
