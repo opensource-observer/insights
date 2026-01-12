@@ -430,11 +430,8 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo, transitions):
     _entry = transitions.get(('Entry', 'First Time'), 0)
-    _to_churned = (transitions.get(('First Time', 'Churned'), 0) +
-                   transitions.get(('Part Time', 'Churned'), 0) +
-                   transitions.get(('Full Time', 'Churned'), 0))
-    _reactivated = (transitions.get(('Churned', 'Part Time'), 0) +
-                    transitions.get(('Churned', 'Full Time'), 0))
+    _to_churned = transitions.get(('First Time', 'Churned'), 0) + transitions.get(('Part Time', 'Churned'), 0) + transitions.get(('Full Time', 'Churned'), 0)
+    _reactivated = transitions.get(('Churned', 'Part Time'), 0) + transitions.get(('Churned', 'Full Time'), 0)
     _upgraded = transitions.get(('Part Time', 'Full Time'), 0)
     _downgraded = transitions.get(('Full Time', 'Part Time'), 0)
     _net_change = _entry + _reactivated - _to_churned
@@ -451,10 +448,10 @@ def _(mo, transitions):
 
     if _net_change >= 0:
         _callout_kind = "success"
-        _callout_text = f"**Net contributor change: +{_net_change:,.0f}** ({_entry:,.0f} new + {_reactivated:,.0f} reactivated − {_to_churned:,.0f} churned)"
+        _callout_text = f"**Net contributor change: +{_net_change:,.0f}** ({_entry:,.0f} new + {_reactivated:,.0f} reactivated - {_to_churned:,.0f} churned)"
     else:
         _callout_kind = "warn"
-        _callout_text = f"**Net contributor change: {_net_change:,.0f}** ({_entry:,.0f} new + {_reactivated:,.0f} reactivated − {_to_churned:,.0f} churned)"
+        _callout_text = f"**Net contributor change: {_net_change:,.0f}** ({_entry:,.0f} new + {_reactivated:,.0f} reactivated - {_to_churned:,.0f} churned)"
 
     mo.vstack([
         mo.callout(mo.md(_callout_text), kind=_callout_kind),
