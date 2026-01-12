@@ -1,0 +1,19 @@
+[project]
+name = "filecoin-developer-lifecycle"
+version = "0.1.0"
+description = "Marimo notebooks for exploring Filecoin and PLN developer data"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "marimo>=0.17.0",
+    "numpy>=2.0.0",
+    "pandas>=2.0.0",
+    "plotly>=5.0.0",
+    "pyoso>=0.6.0",
+]
+
+[tool.marimo.runtime]
+dotenv = [".env", "../../../.env"]
+
+[tool.uv]
+dev-dependencies = []
