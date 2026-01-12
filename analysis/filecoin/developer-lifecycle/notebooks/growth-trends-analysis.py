@@ -53,7 +53,7 @@ def _(
         "Context": _context,
         "Key Insights": _insights,
         "Data Sources": """
-        - [OSO API](https://docs.opensource.observer/) - GitHub metrics and developer activity data
+        - [OSO API](https://docs.oso.xyz/) - GitHub metrics and developer activity data
         - [OSS Directory](https://github.com/opensource-observer/oss-directory) - Project registry
         - [GitHub Archive](https://www.gharchive.org/) - Historical GitHub events
         """

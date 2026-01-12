@@ -491,9 +491,9 @@ def _(mo):
     mo.md(r"""
     ## Related Resources
 
-    - **[OSO Documentation](https://docs.opensource.observer/)** - Full API and data documentation
+    - **[OSO Documentation](https://docs.oso.xyz/)** - Full API and data documentation
     - **[OSS Directory](https://github.com/opensource-observer/oss-directory)** - Project registry source
-    - **[Getting Started with Pyoso](https://docs.opensource.observer/docs/get-started/python)** - Python client guide
+    - **[Getting Started with Pyoso](https://docs.oso.xyz/docs/get-started/python)** - Python client guide
     - **[Marimo Documentation](https://docs.marimo.io/)** - Notebook framework docs
     """)
     return

@@ -20,7 +20,7 @@ cp .env.example .env
 # Edit .env and replace 'your-api-key-here' with your actual key
 ```
 
-Get your API key from [opensource.observer](https://www.opensource.observer/).
+Get your API key from [oso.xyz](https://www.oso.xyz/).
 
 ### 3. Run a notebook
 
@@ -44,7 +44,7 @@ uv run marimo run notebooks/filecoin-data-tour.py
 
 ## Data Sources
 
-These notebooks query the [OSO](https://opensource.observer/) data warehouse via `pyoso`. Key tables include:
+These notebooks query the [OSO](https://oso.xyz/) data warehouse via `pyoso`. Key tables include:
 
 - `collections_v1` - Collection definitions (PLN, Filecoin Core, Filecoin Builders)
 - `projects_v1` - Project metadata
@@ -68,8 +68,8 @@ Contributors are classified by monthly activity level:
 
 ## Resources
 
-- [OSO Documentation](https://docs.opensource.observer/)
-- [Pyoso Getting Started](https://docs.opensource.observer/docs/get-started/python)
+- [OSO Documentation](https://docs.oso.xyz/)
+- [Pyoso Getting Started](https://docs.oso.xyz/docs/get-started/python)
 - [Marimo Documentation](https://docs.marimo.io/)
 
 ## Additional Documentation
