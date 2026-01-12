@@ -1,44 +1,25 @@
 import marimo
 
-__generated_with = "0.18.4"
+__generated_with = "0.19.2"
 app = marimo.App(width="full")
-
-
-# =============================================================================
-# HEADER
-# =============================================================================
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     # PLN Growth Trends Analysis
-    <small>Owner: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">Protocol Labs</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">2026-01-11</span></small>
-    """
-    )
+    <small>Owner: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">Protocol Labs</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">2026-01-12</span></small>
+    """)
     return
 
 
-# =============================================================================
-# EXECUTIVE SUMMARY
-# =============================================================================
-
-
 @app.cell(hide_code=True)
-def _(
-    headline_1,
-    headline_2,
-    headline_3,
-    headline_4,
-    headline_5,
-    mo,
-):
+def _(headline_1, headline_2, headline_3, headline_4, headline_5, mo):
     _context = f"""
     - This analysis examines year-over-year growth patterns and momentum indicators for PLN
-    - Data covers monthly contributor activity from 2020 to present
-    - Metrics include active contributors, commits, and project velocity
-    - Growth trends help identify ecosystem momentum and forecast future activity
+    - Data covers monthly full-time and part-time contributor activity from 2020 to present
+    - Metrics exclude the most recent 2 months to ensure data completeness
+    - Growth classifications help identify ecosystem momentum and forecast future activity
     """
 
     _insights = f"""
@@ -61,17 +42,12 @@ def _(
     return
 
 
-# =============================================================================
-# INSIGHT 1: YEAR-OVER-YEAR GROWTH
-# =============================================================================
-
-
 @app.cell(hide_code=True)
 def _(PLOTLY_LAYOUT, df_yoy_growth, mo, pd, px):
     _df = df_yoy_growth.copy()
     _df['sample_date'] = pd.to_datetime(_df['sample_date'])
     _df['year'] = _df['sample_date'].dt.year
-    
+
     # Calculate YoY comparison
     _yearly = _df.groupby('year')['total_contributors'].sum().reset_index()
     if len(_yearly) >= 2:
@@ -82,26 +58,21 @@ def _(PLOTLY_LAYOUT, df_yoy_growth, mo, pd, px):
     else:
         _yoy_change = 0
         _direction = "stable"
-    
-    headline_1 = f"PLN shows {abs(_yoy_change):.0f}% year-over-year {_direction} in total contributor activity"
-    
+
+    headline_1 = f"PLN shows {abs(_yoy_change):.0f}% year-over-year {_direction} in full-time and part-time contributor activity"
+
     # Bar chart by year
     _fig = px.bar(data_frame=_yearly, x='year', y='total_contributors', text='total_contributors')
     _fig.update_traces(textposition='outside', texttemplate='%{text:,.0f}')
     _fig.update_layout(**PLOTLY_LAYOUT)
     _fig.update_xaxes(tickformat='d')
-    
+
     mo.vstack([
         mo.md(f"### **{headline_1}**"),
-        mo.md("Total contributor months aggregated by year. Each contributor-month counts as one unit."),
+        mo.md("Total full-time and part-time contributor months aggregated by year."),
         mo.ui.plotly(_fig, config={'displayModeBar': False})
     ])
     return (headline_1,)
-
-
-# =============================================================================
-# INSIGHT 2: MOMENTUM INDICATOR
-# =============================================================================
 
 
 @app.cell(hide_code=True)
@@ -109,38 +80,33 @@ def _(PLOTLY_LAYOUT, df_momentum, mo, pd, px):
     _df = df_momentum.copy()
     _df['sample_date'] = pd.to_datetime(_df['sample_date'])
     _df = _df.sort_values('sample_date')
-    
+
     # Calculate 3-month rolling average
     _df['rolling_avg'] = _df['total_active'].rolling(window=3, min_periods=1).mean()
-    
+
     # Calculate momentum (current vs 3-month-ago)
     _df['momentum'] = _df['rolling_avg'].pct_change(periods=3) * 100
-    
+
     _latest_momentum = _df['momentum'].iloc[-1] if len(_df) > 0 else 0
     _momentum_direction = "accelerating" if _latest_momentum > 5 else ("decelerating" if _latest_momentum < -5 else "stable")
-    
+
     headline_2 = f"Ecosystem momentum is {_momentum_direction} with a {abs(_latest_momentum):.0f}% change in 3-month rolling average"
-    
+
     # Dual axis: rolling avg + momentum
     _fig = px.line(data_frame=_df, x='sample_date', y='rolling_avg')
     _fig.update_layout(**PLOTLY_LAYOUT)
     _fig.update_traces(line=dict(color='#1f77b4', width=2.5))
-    
+
     mo.vstack([
         mo.md(f"""
         ---
         ### **{headline_2}**
-        
-        3-month rolling average of active contributors. Positive momentum indicates growing engagement.
+
+        3-month rolling average of full-time and part-time contributors. Positive momentum indicates growing engagement.
         """),
         mo.ui.plotly(_fig, config={'displayModeBar': False})
     ])
     return (headline_2,)
-
-
-# =============================================================================
-# INSIGHT 3: SEASONAL PATTERNS
-# =============================================================================
 
 
 @app.cell(hide_code=True)
@@ -149,19 +115,19 @@ def _(PLOTLY_LAYOUT, df_seasonal, mo, pd, px):
     _df['sample_date'] = pd.to_datetime(_df['sample_date'])
     _df['month'] = _df['sample_date'].dt.month
     _df['year'] = _df['sample_date'].dt.year
-    
+
     # Average by month across years
     _monthly_avg = _df.groupby('month')['total_active'].mean().reset_index()
     _monthly_avg['month_name'] = pd.to_datetime(_monthly_avg['month'], format='%m').dt.strftime('%B')
-    
+
     _peak_month = _monthly_avg.loc[_monthly_avg['total_active'].idxmax(), 'month_name']
     _low_month = _monthly_avg.loc[_monthly_avg['total_active'].idxmin(), 'month_name']
-    
+
     headline_3 = f"Activity peaks in {_peak_month} and dips in {_low_month}, showing consistent seasonal patterns"
-    
+
     # Heatmap by year/month
     _pivot = _df.pivot_table(index='year', columns='month', values='total_active', aggfunc='sum')
-    
+
     _fig = px.imshow(
         _pivot,
         labels=dict(x="Month", y="Year", color="Contributors"),
@@ -171,74 +137,117 @@ def _(PLOTLY_LAYOUT, df_seasonal, mo, pd, px):
     )
     _fig.update_layout(**PLOTLY_LAYOUT)
     _fig.update_layout(margin=dict(t=20))
-    
+
     mo.vstack([
         mo.md(f"""
         ---
         ### **{headline_3}**
-        
-        Heatmap showing contributor activity patterns across months and years.
+
+        Heatmap showing full-time and part-time contributor activity patterns across months and years.
         """),
         mo.ui.plotly(_fig, config={'displayModeBar': False})
     ])
     return (headline_3,)
 
 
-# =============================================================================
-# INSIGHT 4: PROJECT VELOCITY TRENDS
-# =============================================================================
-
-
 @app.cell(hide_code=True)
-def _(PLOTLY_LAYOUT, df_velocity, mo, pd, px):
+def _(GROWTH_COLORS, PLOTLY_LAYOUT, df_velocity, mo, pd, px):
     _df = df_velocity.copy()
     _df['sample_date'] = pd.to_datetime(_df['sample_date'])
+
+    # Calculate velocity change for projects with enough data
+    _project_data = _df.groupby('project').agg({
+        'sample_date': 'count',
+        'velocity': ['mean', 'std']
+    }).reset_index()
+    _project_data.columns = ['project', 'data_points', 'mean_velocity', 'std_velocity']
     
-    # Calculate velocity change for top projects
+    # Only include projects with at least 6 data points
+    _valid_projects = _project_data[_project_data['data_points'] >= 6]['project'].tolist()
+    _df = _df[_df['project'].isin(_valid_projects)]
+
+    # Calculate velocity change for valid projects
     _latest = _df.groupby('project').apply(
         lambda x: x.nlargest(3, 'sample_date')['velocity'].mean()
     ).reset_index(name='recent_velocity')
-    
+
     _historical = _df.groupby('project').apply(
         lambda x: x.nsmallest(3, 'sample_date')['velocity'].mean()
     ).reset_index(name='historical_velocity')
-    
+
     _comparison = _latest.merge(_historical, on='project')
-    _comparison['velocity_change'] = ((_comparison['recent_velocity'] - _comparison['historical_velocity']) / _comparison['historical_velocity'] * 100).fillna(0)
+    
+    # Calculate percentage change, handling zeros
+    _comparison['velocity_change'] = _comparison.apply(
+        lambda row: ((row['recent_velocity'] - row['historical_velocity']) / row['historical_velocity'] * 100) 
+        if row['historical_velocity'] > 0 else 0,
+        axis=1
+    )
+    
+    # Remove extreme outliers (> 500% or < -90% change)
+    _comparison = _comparison[
+        (_comparison['velocity_change'] <= 500) & 
+        (_comparison['velocity_change'] >= -90)
+    ]
+    
+    # Add growth classification
+    def classify_growth(pct):
+        if pct >= 100:
+            return 'High Growth'
+        elif pct >= 25:
+            return 'Moderate Growth'
+        elif pct >= -25:
+            return 'Stable'
+        else:
+            return 'Declining'
+    
+    _comparison['growth_class'] = _comparison['velocity_change'].apply(classify_growth)
     _comparison = _comparison.sort_values('velocity_change', ascending=False)
-    
-    _top_gainer = _comparison.iloc[0]['project'] if len(_comparison) > 0 else 'N/A'
-    _top_gain = _comparison.iloc[0]['velocity_change'] if len(_comparison) > 0 else 0
-    
-    headline_4 = f"{_top_gainer} shows the highest velocity growth at {_top_gain:.0f}% increase over the analysis period"
-    
-    # Bar chart of velocity changes
-    _top_10 = _comparison.head(10)
+
+    # Summary stats
+    _growth_summary = _comparison['growth_class'].value_counts()
+    _high_growth_count = _growth_summary.get('High Growth', 0)
+    _declining_count = _growth_summary.get('Declining', 0)
+
+    headline_4 = f"{_high_growth_count} projects show high growth (>100% velocity increase), while {_declining_count} are declining"
+
+    # Bar chart of velocity changes with color by classification
+    _top_15 = _comparison.head(15)
     _fig = px.bar(
-        data_frame=_top_10, 
+        data_frame=_top_15, 
         x='project', 
         y='velocity_change',
-        color='velocity_change',
-        color_continuous_scale=['#e74c3c', '#f39c12', '#2ecc71']
+        color='growth_class',
+        color_discrete_map=GROWTH_COLORS
     )
     _fig.update_layout(**PLOTLY_LAYOUT)
-    _fig.update_layout(showlegend=False)
-    
+    _fig.update_layout(xaxis_tickangle=-45)
+
+    # Growth classification table
+    _class_table = _comparison.groupby('growth_class').agg({
+        'project': 'count',
+        'velocity_change': 'mean'
+    }).reset_index()
+    _class_table.columns = ['Classification', 'Project Count', 'Avg Growth %']
+    _class_table = _class_table.sort_values('Avg Growth %', ascending=False)
+
     mo.vstack([
         mo.md(f"""
         ---
         ### **{headline_4}**
-        
-        Project velocity change comparing recent 3 months to historical average. Positive indicates acceleration.
+
+        Project velocity change comparing recent 3 months to historical average. Extreme outliers (>500% or <-90%) are excluded.
         """),
-        mo.ui.plotly(_fig, config={'displayModeBar': False})
+        mo.ui.plotly(_fig, config={'displayModeBar': False}),
+        mo.md("### Growth Classification Summary"),
+        mo.ui.table(
+            _class_table,
+            format_mapping={'Avg Growth %': '{:,.1f}%'},
+            show_column_summaries=False,
+            show_data_types=False
+        )
     ])
     return (headline_4,)
-
-
-# =============================================================================
-# INSIGHT 5: FORECAST OUTLOOK
-# =============================================================================
 
 
 @app.cell(hide_code=True)
@@ -246,10 +255,10 @@ def _(df_forecast, mo, np, pd, px):
     _df = df_forecast.copy()
     _df['sample_date'] = pd.to_datetime(_df['sample_date'])
     _df = _df.sort_values('sample_date')
-    
+
     # Simple linear trend forecast
     _df['month_num'] = range(len(_df))
-    
+
     if len(_df) >= 12:
         # Fit linear trend on last 12 months
         _recent = _df.tail(12)
@@ -262,13 +271,13 @@ def _(df_forecast, mo, np, pd, px):
         _forecast_3m = _df['total_active'].mean()
         _forecast_6m = _df['total_active'].mean()
         _trend = "flat"
-    
-    headline_5 = f"Based on current trends, PLN is projected to have {_forecast_3m:.0f} active contributors in 3 months ({_trend} trajectory)"
-    
+
+    headline_5 = f"Based on current trends, PLN is projected to have {_forecast_3m:.0f} full-time/part-time contributors in 3 months ({_trend} trajectory)"
+
     # Line chart with trend
     _fig = px.line(data_frame=_df, x='sample_date', y='total_active')
     _fig.update_traces(line=dict(color='#1f77b4', width=2))
-    
+
     # Add trend line
     if len(_df) >= 12:
         _trend_line = np.poly1d(np.polyfit(_df['month_num'], _df['total_active'], 1))
@@ -279,7 +288,7 @@ def _(df_forecast, mo, np, pd, px):
             line=dict(dash='dash', color='#e74c3c', width=1.5),
             name='Trend'
         )
-    
+
     _fig.update_layout(
         title="",
         plot_bgcolor="white",
@@ -290,13 +299,13 @@ def _(df_forecast, mo, np, pd, px):
         xaxis=dict(title="", showgrid=False, linecolor="#000", linewidth=1),
         yaxis=dict(title="", showgrid=True, gridcolor="#DDD", linecolor="#000", linewidth=1)
     )
-    
+
     mo.vstack([
         mo.md(f"""
         ---
         ### **{headline_5}**
-        
-        Linear trend projection based on historical data. Dashed line shows the trend direction.
+
+        Linear trend projection based on full-time and part-time contributor data. Dashed line shows the trend direction.
         """),
         mo.ui.plotly(_fig, config={'displayModeBar': False}),
         mo.md(f"""
@@ -309,15 +318,9 @@ def _(df_forecast, mo, np, pd, px):
     return (headline_5,)
 
 
-# =============================================================================
-# METHODOLOGY
-# =============================================================================
-
-
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ---
 
     # Methodology Details
@@ -338,7 +341,20 @@ def _(mo):
     \texttt{Momentum}_t = \frac{\texttt{Rolling Avg}_t - \texttt{Rolling Avg}_{t-3}}{\texttt{Rolling Avg}_{t-3}} \times 100
     \]
 
-    ## Part 3. Forecast Model
+    ## Part 3. Growth Classification
+
+    Projects are classified based on their velocity change percentage:
+
+    | Classification | Velocity Change |
+    |----------------|-----------------|
+    | High Growth | ≥ 100% |
+    | Moderate Growth | 25% to 99% |
+    | Stable | -25% to 24% |
+    | Declining | < -25% |
+
+    Extreme outliers (>500% or <-90%) are excluded from the analysis.
+
+    ## Part 4. Forecast Model
 
     The forecast uses a simple linear regression on the last 12 months of data:
 
@@ -350,24 +366,22 @@ def _(mo):
 
     ## Assumptions and Limitations
 
+    - Only full-time (10+ days/month) and part-time (1-9 days/month) contributors are included
+    - The most recent 2 months are excluded to ensure data completeness
     - Forecasts assume continuation of current trends
     - Seasonal patterns may affect short-term accuracy
     - External factors (funding changes, market conditions) are not modeled
-    - Historical data quality affects forecast reliability
-    """
-    )
+    """)
     return
-
-
-# =============================================================================
-# DATA QUERIES
-# =============================================================================
 
 
 @app.cell
 def _(mo, pd, pyoso_db_conn):
+    # Reference month: 2 months before current date
+    ref_month = (pd.Timestamp.now() - pd.DateOffset(months=2)).strftime('%Y-%m-01')
+
     df_yoy_growth = mo.sql(
-        """
+        f"""
         SELECT 
           ts.sample_date,
           SUM(ts.amount) AS total_contributors
@@ -378,6 +392,7 @@ def _(mo, pd, pyoso_db_conn):
         AND m.metric_event_source = 'GITHUB'
         AND m.metric_model IN ('active_full_time_contributor', 'active_part_time_contributor')
         AND m.metric_time_aggregation = 'monthly'
+        AND ts.sample_date <= DATE('{ref_month}')
         GROUP BY ts.sample_date
         ORDER BY ts.sample_date
         """,
@@ -385,13 +400,13 @@ def _(mo, pd, pyoso_db_conn):
         output=False
     )
     df_yoy_growth['sample_date'] = pd.to_datetime(df_yoy_growth['sample_date'])
-    return (df_yoy_growth,)
+    return df_yoy_growth, ref_month
 
 
 @app.cell
-def _(mo, pd, pyoso_db_conn):
+def _(mo, pd, pyoso_db_conn, ref_month):
     df_momentum = mo.sql(
-        """
+        f"""
         SELECT 
           ts.sample_date,
           SUM(ts.amount) AS total_active
@@ -402,6 +417,7 @@ def _(mo, pd, pyoso_db_conn):
         AND m.metric_event_source = 'GITHUB'
         AND m.metric_model IN ('active_full_time_contributor', 'active_part_time_contributor')
         AND m.metric_time_aggregation = 'monthly'
+        AND ts.sample_date <= DATE('{ref_month}')
         GROUP BY ts.sample_date
         ORDER BY ts.sample_date
         """,
@@ -413,9 +429,9 @@ def _(mo, pd, pyoso_db_conn):
 
 
 @app.cell
-def _(mo, pd, pyoso_db_conn):
+def _(mo, pd, pyoso_db_conn, ref_month):
     df_seasonal = mo.sql(
-        """
+        f"""
         SELECT 
           ts.sample_date,
           SUM(ts.amount) AS total_active
@@ -426,6 +442,7 @@ def _(mo, pd, pyoso_db_conn):
         AND m.metric_event_source = 'GITHUB'
         AND m.metric_model IN ('active_full_time_contributor', 'active_part_time_contributor')
         AND m.metric_time_aggregation = 'monthly'
+        AND ts.sample_date <= DATE('{ref_month}')
         GROUP BY ts.sample_date
         ORDER BY ts.sample_date
         """,
@@ -437,9 +454,9 @@ def _(mo, pd, pyoso_db_conn):
 
 
 @app.cell
-def _(mo, pd, pyoso_db_conn):
+def _(mo, pd, pyoso_db_conn, ref_month):
     df_velocity = mo.sql(
-        """
+        f"""
         SELECT 
           p.display_name AS project,
           ts.sample_date,
@@ -451,6 +468,7 @@ def _(mo, pd, pyoso_db_conn):
         WHERE pbc.collection_name = 'protocol-labs-network'
         AND m.metric_model = 'commits'
         AND m.metric_time_aggregation = 'monthly'
+        AND ts.sample_date <= DATE('{ref_month}')
         GROUP BY p.display_name, ts.sample_date
         ORDER BY ts.sample_date
         """,
@@ -462,9 +480,9 @@ def _(mo, pd, pyoso_db_conn):
 
 
 @app.cell
-def _(mo, pd, pyoso_db_conn):
+def _(mo, pd, pyoso_db_conn, ref_month):
     df_forecast = mo.sql(
-        """
+        f"""
         SELECT 
           ts.sample_date,
           SUM(ts.amount) AS total_active
@@ -475,6 +493,7 @@ def _(mo, pd, pyoso_db_conn):
         AND m.metric_event_source = 'GITHUB'
         AND m.metric_model IN ('active_full_time_contributor', 'active_part_time_contributor')
         AND m.metric_time_aggregation = 'monthly'
+        AND ts.sample_date <= DATE('{ref_month}')
         GROUP BY ts.sample_date
         ORDER BY ts.sample_date
         """,
@@ -485,9 +504,15 @@ def _(mo, pd, pyoso_db_conn):
     return (df_forecast,)
 
 
-# =============================================================================
-# CONFIGURATION
-# =============================================================================
+@app.cell(hide_code=True)
+def _():
+    GROWTH_COLORS = {
+        'High Growth': '#2ecc71',
+        'Moderate Growth': '#3498db',
+        'Stable': '#95a5a6',
+        'Declining': '#e74c3c'
+    }
+    return (GROWTH_COLORS,)
 
 
 @app.cell(hide_code=True)
@@ -524,18 +549,13 @@ def _():
     return (PLOTLY_LAYOUT,)
 
 
-# =============================================================================
-# BOILERPLATE
-# =============================================================================
-
-
 @app.cell(hide_code=True)
 def _():
     import numpy as np
     import pandas as pd
     import plotly.express as px
     import plotly.graph_objects as go
-    return go, np, pd, px
+    return np, pd, px
 
 
 @app.cell(hide_code=True)

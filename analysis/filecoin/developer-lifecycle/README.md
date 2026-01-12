@@ -36,11 +36,11 @@ uv run marimo run notebooks/filecoin-data-tour.py
 
 | Notebook | Type | Description |
 |----------|------|-------------|
-| `filecoin-data-tour.py` | Interactive Docs | Tour of Filecoin-relevant datasets and tables |
-| `pln-ecosystem-health.py` | Strategic Insights | PLN ecosystem health with 5 quantified insights |
-| `growth-trends-analysis.py` | Strategic Insights | YoY growth, momentum, and forecasting |
-| `developer-funnel-dashboard.py` | Dashboard | Developer lifecycle funnel tracking |
-| `repository-explorer-dashboard.py` | Dashboard | Repository-level metrics explorer |
+| `filecoin-data-tour.py` | Interactive Docs | Tour of Filecoin-relevant datasets with keyword-based collection search |
+| `pln-ecosystem-health.py` | Strategic Insights | PLN ecosystem health with cohort retention analysis and project comparison |
+| `growth-trends-analysis.py` | Strategic Insights | YoY growth, momentum, outlier filtering, and growth classification |
+| `developer-funnel-dashboard.py` | Dashboard | Developer lifecycle funnel with human-readable labels |
+| `project-metrics-explorer.py` | Dashboard | Project-level metrics explorer with repository details |
 
 ## Data Sources
 
@@ -50,9 +50,12 @@ These notebooks query the [OSO](https://oso.xyz/) data warehouse via `pyoso`. Ke
 - `projects_v1` - Project metadata
 - `projects_by_collection_v1` - Project-to-collection mappings
 - `artifacts_by_project_v1` - Repository-to-project mappings
+- `repositories_v0` - Repository metadata (stars, forks, language, license)
 - `timeseries_metrics_by_collection_v0` - Time-series metrics by collection
 - `timeseries_metrics_by_project_v0` - Time-series metrics by project
 - `metrics_v0` - Metric definitions and metadata
+
+**Note:** Metrics data is lagged by 2 months to ensure completeness (e.g., if today is January 11, the latest complete data is from November).
 
 ## Lifecycle Metrics
 

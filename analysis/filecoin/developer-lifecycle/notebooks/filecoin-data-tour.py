@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.17.5"
+__generated_with = "0.19.2"
 app = marimo.App(width="full")
 
 
@@ -8,7 +8,7 @@ app = marimo.App(width="full")
 def _(mo):
     mo.md("""
     # Filecoin Developer Data Tour
-    <small>Owner: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">Protocol Labs</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">2026-01-11</span></small>
+    <small>Owner: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">Protocol Labs</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">2026-01-12</span></small>
     """)
     return
 
@@ -19,101 +19,33 @@ def _(mo):
     ## Overview
 
     This notebook provides an interactive tour of the Filecoin and Protocol Labs Network (PLN) developer data available through OSO.
-    The data covers GitHub activity metrics, contributor lifecycle states, and project-level analytics for the PLN ecosystem.
+    It walks through the key data models, shows how to query them, and demonstrates practical examples.
 
-    **Collections in scope:**
-    - **Protocol Labs Network (PLN)** - The umbrella collection covering all PLN projects
-    - **Filecoin Core** - Core Filecoin protocol projects
-    - **Filecoin Builders** - Projects building on Filecoin
+    **What you'll learn:**
+    1. How to find Filecoin-related collections using keyword search
+    2. The hierarchy: Collections → Projects → Artifacts (repositories)
+    3. How to query developer lifecycle metrics over time
+    4. How to analyze contributor engagement across the ecosystem
 
-    **Primary use cases:**
-    - Tracking developer engagement and retention across the ecosystem
-    - Analyzing contributor lifecycle states (first-time, part-time, full-time, churned)
-    - Comparing activity across projects and collections
-    - Monitoring ecosystem health via GitHub metrics
+    > **Note:** The companion dashboards and analysis notebooks focus on three main collections:
+    > `protocol-labs-network`, `filecoin-core`, and `filecoin-builders`.
     """)
     return
-
-
-@app.cell(hide_code=True)
-def _(mo, pyoso_db_conn):
-    def get_model_preview(model_name, limit=5):
-        return mo.sql(f"SELECT * FROM {model_name} LIMIT {limit}", 
-                      engine=pyoso_db_conn, output=False)
-
-    def get_row_count(model_name):
-        result = mo.sql(f"SHOW STATS FOR {model_name}", 
-                        engine=pyoso_db_conn, output=False)
-        return result['row_count'].sum()    
-
-    def generate_sql_snippet(model_name, df_results, limit=5):
-        column_names = df_results.columns.tolist()
-        columns_formatted = ',\n  '.join(column_names)
-        sql_snippet = f"""```sql
-    SELECT 
-      {columns_formatted}
-    FROM {model_name}
-    LIMIT {limit}
-    ```
-    """
-        return mo.md(sql_snippet)
-
-    def render_table_preview(model_name, description=""):
-        df = get_model_preview(model_name)
-        sql_snippet = generate_sql_snippet(model_name, df, limit=5)
-        fmt = {c: '{:.0f}' for c in df.columns if df[c].dtype == 'int64' and ('_id' in c or c == 'id')}
-        table = mo.ui.table(df, format_mapping=fmt, show_column_summaries=False, show_data_types=False)
-        row_count = get_row_count(model_name)
-        col_count = len(df.columns)
-        title = f"{model_name} | {row_count:,.0f} rows, {col_count} cols"
-        content = mo.vstack([mo.md(description) if description else None, sql_snippet, table])
-        return mo.accordion({title: content})
-
-    def render_table_accordion(model_configs):
-        """Render multiple tables in a single accordion.
-        model_configs: list of (model_name, description) tuples
-        """
-        accordion = {}
-        for model_name, description in model_configs:
-            df = get_model_preview(model_name)
-            sql_snippet = generate_sql_snippet(model_name, df, limit=5)
-            fmt = {c: '{:.0f}' for c in df.columns if df[c].dtype == 'int64' and ('_id' in c or c == 'id')}
-            table = mo.ui.table(df, format_mapping=fmt, show_column_summaries=False, show_data_types=False)
-            row_count = get_row_count(model_name)
-            col_count = len(df.columns)
-            title = f"{model_name} | {row_count:,.0f} rows, {col_count} cols"
-            content = mo.vstack([mo.md(description) if description else None, sql_snippet, table])
-            accordion[title] = content
-        return mo.accordion(accordion)
-    return (render_table_preview,)
 
 
 @app.cell(hide_code=True)
 def _(mo):
     mo.md("""
-    ## Primary Tables
+    ---
+    ## Step 1: Finding Filecoin Collections
 
-    ### Collections
-
-    Collections group related projects together. The Filecoin ecosystem has three main collections:
-    - `protocol-labs-network` - All PLN projects
-    - `filecoin-core` - Core protocol projects
-    - `filecoin-builders` - Builder ecosystem projects
+    Collections group related projects together. We can find Filecoin-related collections by searching for keywords like "Protocol Labs", "PLN", or "Filecoin" in the display name.
     """)
     return
 
 
-@app.cell(hide_code=True)
-def _(render_table_preview):
-    render_table_preview(
-        "collections_v1",
-        "The `collection_id` is used to join with other tables. Filter by `collection_source = 'OSS_DIRECTORY'` for curated collections."
-    )
-    return
-
-
 @app.cell
-def _(collections_v1, mo, pyoso_db_conn):
+def _(mo, pyoso_db_conn):
     df_filecoin_collections = mo.sql(
         f"""
         SELECT 
@@ -122,35 +54,45 @@ def _(collections_v1, mo, pyoso_db_conn):
           description
         FROM collections_v1
         WHERE collection_source = 'OSS_DIRECTORY'
-        AND collection_name IN ('protocol-labs-network', 'filecoin-core', 'filecoin-builders')
+        AND (
+          LOWER(display_name) LIKE '%protocol labs%'
+          OR LOWER(display_name) LIKE '%pln%'
+          OR LOWER(display_name) LIKE '%filecoin%'
+          OR LOWER(collection_name) LIKE '%filecoin%'
+          OR LOWER(collection_name) LIKE '%protocol-labs%'
+        )
+        ORDER BY display_name
         """,
         engine=pyoso_db_conn
     )
+    return (df_filecoin_collections,)
+
+
+@app.cell(hide_code=True)
+def _(df_filecoin_collections, mo):
+    _count = len(df_filecoin_collections) if not df_filecoin_collections.empty else 0
+    mo.md(f"""
+    Found **{_count}** collections matching our keywords. The main ones we'll focus on are:
+    - `protocol-labs-network` - The umbrella collection covering all PLN projects
+    - `filecoin-core` - Core Filecoin protocol projects  
+    - `filecoin-builders` - Projects building on Filecoin
+    """)
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
     mo.md("""
-    ### Projects
+    ---
+    ## Step 2: Exploring Projects
 
-    Projects represent individual open source projects (e.g., IPFS, libp2p, Filecoin).
-    Use `projects_by_collection_v1` to find projects in a specific collection.
+    Each collection contains multiple projects. Let's see what projects are in the Protocol Labs Network:
     """)
     return
 
 
-@app.cell(hide_code=True)
-def _(render_table_preview):
-    render_table_preview(
-        "projects_v1",
-        "Each project has a unique `project_id`. The `project_source` indicates where the project is registered (e.g., `OSS_DIRECTORY`)."
-    )
-    return
-
-
 @app.cell
-def _(mo, projects_by_collection_v1, projects_v1, pyoso_db_conn):
+def _(mo, pyoso_db_conn):
     df_pln_projects = mo.sql(
         f"""
         SELECT 
@@ -161,7 +103,7 @@ def _(mo, projects_by_collection_v1, projects_v1, pyoso_db_conn):
         JOIN projects_v1 p USING (project_id)
         WHERE pbc.collection_name = 'protocol-labs-network'
         ORDER BY p.display_name
-        LIMIT 20
+        LIMIT 25
         """,
         engine=pyoso_db_conn
     )
@@ -171,37 +113,21 @@ def _(mo, projects_by_collection_v1, projects_v1, pyoso_db_conn):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md("""
-    ### Artifacts (Repositories)
+    ---
+    ## Step 3: Understanding Repositories (Artifacts)
 
-    Artifacts are the lowest-level entities - typically GitHub repositories.
-    Each artifact is linked to a project via `artifacts_by_project_v1`.
+    Projects contain artifacts - typically GitHub repositories. Here's how to find repositories for PLN projects:
     """)
     return
 
 
-@app.cell(hide_code=True)
-def _(render_table_preview):
-    render_table_preview(
-        "artifacts_by_project_v1",
-        "Filter by `artifact_source = 'GITHUB'` for GitHub repositories. The `artifact_namespace` is the GitHub org/user, and `artifact_name` is the repo name."
-    )
-    return
-
-
 @app.cell
-def _(
-    artifacts_by_project_v1,
-    mo,
-    projects_by_collection_v1,
-    projects_v1,
-    pyoso_db_conn,
-):
+def _(mo, pyoso_db_conn):
     df_sample_artifacts = mo.sql(
         f"""
         SELECT 
-          a.artifact_namespace,
-          a.artifact_name,
-          p.display_name AS project_display_name,
+          a.artifact_namespace || '/' || a.artifact_name AS repository,
+          p.display_name AS project,
           pbc.collection_name
         FROM artifacts_by_project_v1 a
         JOIN projects_v1 p USING (project_id)
@@ -219,39 +145,49 @@ def _(
 @app.cell(hide_code=True)
 def _(mo):
     mo.md("""
-    ### Metrics
+    ---
+    ## Step 4: Developer Lifecycle Metrics
 
-    The `metrics_v0` table contains metadata about all available metrics. Key fields:
-    - `metric_name` - Full metric identifier (e.g., `GITHUB_active_full_time_contributor_monthly`)
-    - `metric_model` - The metric type (e.g., `active_full_time_contributor`)
-    - `metric_event_source` - The data source (e.g., `GITHUB`)
-    - `metric_time_aggregation` - Time granularity (e.g., `monthly`, `weekly`, `daily`)
+    OSO tracks how developers move through different engagement states. Before querying these metrics, let's understand what they mean:
+
+    | Lifecycle State | Description |
+    |-----------------|-------------|
+    | `first_time_contributor` | Making their first contribution |
+    | `new_full_time_contributor` | Just became full-time (10+ days/month) |
+    | `new_part_time_contributor` | Just became part-time (1-9 days/month) |
+    | `active_full_time_contributor` | Continuing full-time engagement |
+    | `active_part_time_contributor` | Continuing part-time engagement |
+    | `reactivated_full_time_contributor` | Returned after gap, now full-time |
+    | `reactivated_part_time_contributor` | Returned after gap, now part-time |
+    | `churned_after_*` | No longer active after reaching that state |
+
+    These metrics are stored in `timeseries_metrics_by_collection_v0` and can be filtered using the `metrics_v0` table.
     """)
     return
 
 
 @app.cell(hide_code=True)
-def _(render_table_preview):
-    render_table_preview(
-        "metrics_v0",
-        "Use `metric_id` to join with timeseries metrics tables. Search by `metric_model` to find specific metric types."
-    )
+def _(mo):
+    mo.md("""
+    ### Available Lifecycle Metrics
+
+    Let's query the `metrics_v0` table to see all available contributor lifecycle metrics:
+    """)
     return
 
 
 @app.cell
-def _(metrics_v0, mo, pyoso_db_conn):
+def _(mo, pyoso_db_conn):
     df_lifecycle_metrics = mo.sql(
         f"""
         SELECT 
-          metric_name,
           metric_model,
-          metric_event_source,
-          metric_time_aggregation,
-          display_name
+          display_name,
+          metric_time_aggregation
         FROM metrics_v0
         WHERE metric_event_source = 'GITHUB'
         AND metric_model LIKE '%contributor%'
+        AND metric_model NOT LIKE 'change_in%'
         AND metric_time_aggregation = 'monthly'
         ORDER BY metric_model
         """,
@@ -263,97 +199,16 @@ def _(metrics_v0, mo, pyoso_db_conn):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md("""
-    ### Time-Series Metrics
+    ### Querying Lifecycle Metrics Over Time
 
-    Time-series metrics are available at three levels:
-    - **Collection level** - `timeseries_metrics_by_collection_v0`
-    - **Project level** - `timeseries_metrics_by_project_v0`
-    - **Artifact level** - `timeseries_metrics_by_artifact_v0` (less common)
-
-    Always join with `metrics_v0` to get metric metadata.
-    """)
-    return
-
-
-@app.cell(hide_code=True)
-def _(render_table_preview):
-    render_table_preview(
-        "timeseries_metrics_by_collection_v0",
-        "Join on `metric_id` with `metrics_v0` and on `collection_id` with `collections_v1`."
-    )
-    return
-
-
-@app.cell
-def _(
-    collections_v1,
-    metrics_v0,
-    mo,
-    pyoso_db_conn,
-    timeseries_metrics_by_collection_v0,
-):
-    df_collection_metrics_sample = mo.sql(
-        f"""
-        SELECT 
-          c.collection_name,
-          m.metric_model,
-          ts.sample_date,
-          ts.amount
-        FROM timeseries_metrics_by_collection_v0 ts
-        JOIN metrics_v0 m USING (metric_id)
-        JOIN collections_v1 c USING (collection_id)
-        WHERE c.collection_name = 'protocol-labs-network'
-        AND m.metric_model = 'active_full_time_contributor'
-        AND m.metric_time_aggregation = 'monthly'
-        ORDER BY ts.sample_date DESC
-        LIMIT 12
-        """,
-        engine=pyoso_db_conn
-    )
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md("""
-    ### Key Metrics (Snapshots)
-
-    For current-state metrics (like total stars, forks), use the `key_metrics_by_*` tables:
-    - `key_metrics_by_artifact_v0` - Per-repository snapshots
-    - `key_metrics_by_project_v0` - Per-project snapshots
-    - `key_metrics_by_collection_v0` - Per-collection snapshots
-    """)
-    return
-
-
-@app.cell(hide_code=True)
-def _(render_table_preview):
-    render_table_preview(
-        "key_metrics_by_artifact_v0",
-        "Contains the most recent snapshot of key metrics for each artifact. Useful for stars, forks, and contributor counts."
-    )
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    ## Example Queries
-
-    ### Get lifecycle metrics for PLN collections
+    Now let's see how these metrics change over time for the Protocol Labs Network. We join `timeseries_metrics_by_collection_v0` with `metrics_v0` and `collections_v1`:
     """)
     return
 
 
 @app.cell
-def _(
-    collections_v1,
-    metrics_v0,
-    mo,
-    pyoso_db_conn,
-    timeseries_metrics_by_collection_v0,
-):
-    df_lifecycle_by_collection = mo.sql(
+def _(mo, pyoso_db_conn):
+    df_lifecycle_timeseries = mo.sql(
         f"""
         SELECT 
           c.display_name AS collection,
@@ -363,14 +218,17 @@ def _(
         FROM timeseries_metrics_by_collection_v0 ts
         JOIN metrics_v0 m USING (metric_id)
         JOIN collections_v1 c USING (collection_id)
-        WHERE c.collection_name IN ('protocol-labs-network', 'filecoin-core', 'filecoin-builders')
+        WHERE c.collection_name = 'protocol-labs-network'
         AND m.metric_event_source = 'GITHUB'
-        AND m.metric_model LIKE '%contributor%'
-        AND m.metric_model NOT LIKE 'change_in%'
+        AND m.metric_model IN (
+          'active_full_time_contributor',
+          'active_part_time_contributor', 
+          'first_time_contributor'
+        )
         AND m.metric_time_aggregation = 'monthly'
-        AND ts.sample_date >= DATE('2024-01-01')
-        ORDER BY ts.sample_date DESC, c.collection_name, m.metric_model
-        LIMIT 50
+        AND ts.sample_date >= DATE('2023-01-01')
+        ORDER BY ts.sample_date DESC, m.metric_model
+        LIMIT 36
         """,
         engine=pyoso_db_conn
     )
@@ -379,27 +237,21 @@ def _(
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""
-    ### Get top projects by active contributors
+    mo.md("""
+    ---
+    ## Step 5: Project-Level Analysis
+
+    You can also get metrics at the project level using `timeseries_metrics_by_project_v0`. Here are the top projects by average monthly full-time contributors:
     """)
     return
 
 
 @app.cell
-def _(
-    metrics_v0,
-    mo,
-    projects_by_collection_v1,
-    projects_v1,
-    pyoso_db_conn,
-    timeseries_metrics_by_project_v0,
-):
+def _(mo, pyoso_db_conn):
     df_top_projects = mo.sql(
         f"""
         SELECT 
           p.display_name AS project,
-          pbc.collection_name,
-          m.metric_model,
           AVG(ts.amount) AS avg_monthly_contributors
         FROM timeseries_metrics_by_project_v0 ts
         JOIN metrics_v0 m USING (metric_id)
@@ -409,7 +261,9 @@ def _(
         AND m.metric_model = 'active_full_time_contributor'
         AND m.metric_time_aggregation = 'monthly'
         AND ts.sample_date >= DATE('2024-01-01')
-        GROUP BY 1, 2, 3
+        AND ts.sample_date < DATE_TRUNC('month', CURRENT_DATE) - INTERVAL '1' MONTH
+        GROUP BY p.display_name
+        HAVING AVG(ts.amount) > 0
         ORDER BY avg_monthly_contributors DESC
         LIMIT 15
         """,
@@ -420,81 +274,27 @@ def _(
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""
-    ### Get repository metrics for a specific project
-    """)
-    return
+    mo.md("""
+    ---
+    ## Key Tables Reference
 
+    | Table | Description | Key Columns |
+    |-------|-------------|-------------|
+    | `collections_v1` | Collection definitions | `collection_id`, `collection_name`, `display_name` |
+    | `projects_v1` | Project metadata | `project_id`, `project_name`, `display_name` |
+    | `projects_by_collection_v1` | Links projects to collections | `project_id`, `collection_id` |
+    | `artifacts_by_project_v1` | Links artifacts to projects | `artifact_id`, `project_id`, `artifact_source` |
+    | `metrics_v0` | Metric definitions | `metric_id`, `metric_model`, `metric_event_source` |
+    | `timeseries_metrics_by_collection_v0` | Time-series metrics by collection | `metric_id`, `collection_id`, `sample_date`, `amount` |
+    | `timeseries_metrics_by_project_v0` | Time-series metrics by project | `metric_id`, `project_id`, `sample_date`, `amount` |
+    | `repositories_v0` | Repository metadata | `artifact_id`, `star_count`, `fork_count`, `language` |
 
-@app.cell
-def _(
-    artifacts_by_project_v1,
-    key_metrics_by_artifact_v0,
-    metrics_v0,
-    mo,
-    projects_v1,
-    pyoso_db_conn,
-):
-    df_repo_metrics = mo.sql(
-        f"""
-        SELECT 
-          a.artifact_namespace || '/' || a.artifact_name AS repository,
-          m.display_name AS metric,
-          km.amount,
-          km.sample_date
-        FROM key_metrics_by_artifact_v0 km
-        JOIN artifacts_by_project_v1 a USING (artifact_id)
-        JOIN metrics_v0 m USING (metric_id)
-        JOIN projects_v1 p USING (project_id)
-        WHERE p.project_name = 'ipfs'
-        AND a.artifact_source = 'GITHUB'
-        AND m.metric_model IN ('stars', 'forks', 'contributors')
-        ORDER BY km.amount DESC
-        LIMIT 20
-        """,
-        engine=pyoso_db_conn
-    )
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    ## Lifecycle Metrics Reference
-
-    The contributor lifecycle metrics track how developers move through different engagement states:
-
-    | Metric Model | Description |
-    |-------------|-------------|
-    | `first_time_contributor` | First contribution in this period |
-    | `new_part_time_contributor` | Was first-time last period, now part-time |
-    | `new_full_time_contributor` | Was first-time last period, now full-time |
-    | `active_part_time_contributor` | Continued part-time engagement |
-    | `active_full_time_contributor` | Continued full-time engagement |
-    | `part_time_to_full_time_contributor` | Increased from part-time to full-time |
-    | `full_time_to_part_time_contributor` | Decreased from full-time to part-time |
-    | `reactivated_part_time_contributor` | Returned after gap, now part-time |
-    | `reactivated_full_time_contributor` | Returned after gap, now full-time |
-    | `churned_after_first_time_contributor` | Left after first contribution |
-    | `churned_after_part_time_contributor` | Left after part-time engagement |
-    | `churned_after_full_time_contributor` | Left after full-time engagement |
-
-    **Activity Classification:**
-    - **Full-time**: 10+ days of activity per month
-    - **Part-time**: 1-9 days of activity per month
-    """)
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
+    ---
     ## Related Resources
 
     - **[OSO Documentation](https://docs.oso.xyz/)** - Full API and data documentation
     - **[OSS Directory](https://github.com/opensource-observer/oss-directory)** - Project registry source
     - **[Getting Started with Pyoso](https://docs.oso.xyz/docs/get-started/python)** - Python client guide
-    - **[Marimo Documentation](https://docs.marimo.io/)** - Notebook framework docs
     """)
     return
 

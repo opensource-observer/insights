@@ -1,28 +1,16 @@
 import marimo
 
-__generated_with = "0.18.4"
+__generated_with = "0.19.2"
 app = marimo.App(width="full")
-
-
-# =============================================================================
-# HEADER
-# =============================================================================
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     # PLN Developer Funnel Dashboard
-    <small>Owner: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">Protocol Labs</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">2026-01-11</span></small>
-    """
-    )
+    <small>Owner: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">Protocol Labs</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">2026-01-12</span></small>
+    """)
     return
-
-
-# =============================================================================
-# KPI SUMMARY CARDS
-# =============================================================================
 
 
 @app.cell(hide_code=True)
@@ -32,24 +20,26 @@ def _(df_kpis, mo):
         _first_time = df_kpis['first_time'].iloc[0] if 'first_time' in df_kpis.columns else 0
         _full_time = df_kpis['full_time'].iloc[0] if 'full_time' in df_kpis.columns else 0
         _churned = df_kpis['churned'].iloc[0] if 'churned' in df_kpis.columns else 0
+        _ref_month = df_kpis['ref_month'].iloc[0] if 'ref_month' in df_kpis.columns else 'N/A'
     else:
         _total_active = 0
         _first_time = 0
         _full_time = 0
         _churned = 0
+        _ref_month = 'N/A'
 
     mo.hstack(
         [
             mo.stat(
                 label="Total Active Contributors",
                 value=f"{_total_active:,.0f}",
-                caption="Current month",
+                caption=f"As of {_ref_month}",
                 bordered=True
             ),
             mo.stat(
                 label="First-Time Contributors",
                 value=f"{_first_time:,.0f}",
-                caption="New this month",
+                caption="New that month",
                 bordered=True
             ),
             mo.stat(
@@ -61,7 +51,7 @@ def _(df_kpis, mo):
             mo.stat(
                 label="Churned Contributors",
                 value=f"{_churned:,.0f}",
-                caption="Left this month",
+                caption="Left that month",
                 bordered=True
             ),
         ],
@@ -71,11 +61,6 @@ def _(df_kpis, mo):
     return
 
 
-# =============================================================================
-# GLOBAL FILTERS
-# =============================================================================
-
-
 @app.cell(hide_code=True)
 def _(df_collections, mo):
     collection_filter = mo.ui.multiselect(
@@ -83,7 +68,7 @@ def _(df_collections, mo):
         value=['protocol-labs-network'],
         label='Collections:'
     )
-    
+
     show_inactive = mo.ui.switch(
         label='Show churned/dormant states',
         value=False
@@ -98,13 +83,8 @@ def _(df_collections, mo):
     return collection_filter, show_inactive
 
 
-# =============================================================================
-# MAIN TABS
-# =============================================================================
-
-
 @app.cell(hide_code=True)
-def _(funnel_overview_tab, by_collection_tab, by_project_tab, mo):
+def _(by_collection_tab, by_project_tab, funnel_overview_tab, mo):
     mo.ui.tabs({
         "Funnel Overview": funnel_overview_tab,
         "By Collection": by_collection_tab,
@@ -113,14 +93,10 @@ def _(funnel_overview_tab, by_collection_tab, by_project_tab, mo):
     return
 
 
-# =============================================================================
-# TAB 1: FUNNEL OVERVIEW
-# =============================================================================
-
-
 @app.cell(hide_code=True)
 def _(
     LIFECYCLE_COLORS,
+    LIFECYCLE_LABELS,
     LIFECYCLE_ORDER,
     PLOTLY_LAYOUT,
     collection_filter,
@@ -129,60 +105,61 @@ def _(
     pd,
     px,
     show_inactive,
-    stringify,
 ):
     # Filter by selected collections
     if collection_filter.value:
         _df = df_lifecycle[df_lifecycle['collection_name'].isin(collection_filter.value)].copy()
     else:
         _df = df_lifecycle.copy()
-    
+
     _df['sample_date'] = pd.to_datetime(_df['sample_date'])
-    
+
     # Filter inactive states if toggle is off
     _inactive_states = [
         'churned_after_first_time_contributor',
         'churned_after_part_time_contributor',
         'churned_after_full_time_contributor',
     ]
-    
+
     if not show_inactive.value:
         _df = _df[~_df['lifecycle_state'].isin(_inactive_states)]
-    
+
+    # Map to human-readable labels
+    _df['lifecycle_label'] = _df['lifecycle_state'].map(LIFECYCLE_LABELS)
+
     # Aggregate across collections
-    _df_agg = _df.groupby(['sample_date', 'lifecycle_state'], as_index=False)['developer_count'].sum()
-    
-    # Order lifecycle states
-    _df_agg['lifecycle_state'] = pd.Categorical(
-        _df_agg['lifecycle_state'],
-        categories=[s for s in LIFECYCLE_ORDER if s in _df_agg['lifecycle_state'].unique()],
+    _df_agg = _df.groupby(['sample_date', 'lifecycle_label'], as_index=False)['developer_count'].sum()
+
+    # Order lifecycle states logically
+    _df_agg['lifecycle_label'] = pd.Categorical(
+        _df_agg['lifecycle_label'],
+        categories=[s for s in LIFECYCLE_ORDER if s in _df_agg['lifecycle_label'].unique()],
         ordered=True
     )
-    _df_agg = _df_agg.sort_values(['sample_date', 'lifecycle_state'])
-    
-    # Create stacked bar chart
+    _df_agg = _df_agg.sort_values(['sample_date', 'lifecycle_label'])
+
+    # Create stacked bar chart with explicit category ordering
     _fig = px.bar(
         data_frame=_df_agg,
         x='sample_date',
         y='developer_count',
-        color='lifecycle_state',
-        color_discrete_map=LIFECYCLE_COLORS
+        color='lifecycle_label',
+        color_discrete_map=LIFECYCLE_COLORS,
+        category_orders={'lifecycle_label': LIFECYCLE_ORDER},
+        labels={'lifecycle_label': 'Lifecycle State', 'developer_count': 'Contributors', 'sample_date': ''}
     )
     _fig.update_layout(**PLOTLY_LAYOUT)
-    _fig.update_layout(
-        barmode='stack',
-        legend=dict(orientation="h", y=-0.2, x=0.5, xanchor="center")
-    )
-    
+    _fig.update_layout(barmode='stack')
+
     funnel_overview_tab = mo.vstack([
         mo.md("### Developer Lifecycle Over Time"),
         mo.md(f"Showing data for: {', '.join(collection_filter.value) if collection_filter.value else 'All collections'}"),
         mo.ui.plotly(_fig, config={'displayModeBar': False}),
         mo.md("""
         **Lifecycle States:**
-        - **First-time**: First contribution in this period
-        - **New full/part-time**: Just transitioned from first-time
-        - **Active full/part-time**: Continued engagement
+        - **First Time**: First contribution in this period
+        - **Full/Part Time**: Engagement level (10+ days vs 1-9 days/month)
+        - **New**: Just transitioned from first-time
         - **Reactivated**: Returned after gap
         - **Churned**: No longer active (hidden by default)
         """)
@@ -190,28 +167,16 @@ def _(
     return (funnel_overview_tab,)
 
 
-# =============================================================================
-# TAB 2: BY COLLECTION
-# =============================================================================
-
-
 @app.cell(hide_code=True)
-def _(
-    PLOTLY_LAYOUT,
-    collection_filter,
-    df_lifecycle,
-    mo,
-    pd,
-    px,
-):
+def _(PLOTLY_LAYOUT, collection_filter, df_lifecycle, mo, pd, px):
     # Filter by selected collections
     if collection_filter.value:
         _df = df_lifecycle[df_lifecycle['collection_name'].isin(collection_filter.value)].copy()
     else:
         _df = df_lifecycle.copy()
-    
+
     _df['sample_date'] = pd.to_datetime(_df['sample_date'])
-    
+
     # Aggregate active contributors by collection
     _active_states = [
         'first_time_contributor',
@@ -222,10 +187,10 @@ def _(
         'reactivated_full_time_contributor',
         'reactivated_part_time_contributor',
     ]
-    
+
     _df_active = _df[_df['lifecycle_state'].isin(_active_states)]
     _df_by_collection = _df_active.groupby(['sample_date', 'collection_name'], as_index=False)['developer_count'].sum()
-    
+
     # Line chart comparison
     _fig = px.line(
         data_frame=_df_by_collection,
@@ -235,7 +200,7 @@ def _(
     )
     _fig.update_layout(**PLOTLY_LAYOUT)
     _fig.update_traces(line=dict(width=2.5))
-    
+
     # Summary table
     _latest = _df_by_collection.groupby('collection_name').apply(
         lambda x: x.nlargest(1, 'sample_date')
@@ -245,7 +210,7 @@ def _(
         'developer_count': 'Active Contributors',
         'sample_date': 'As Of'
     })
-    
+
     by_collection_tab = mo.vstack([
         mo.md("### Active Contributors by Collection"),
         mo.ui.plotly(_fig, config={'displayModeBar': False}),
@@ -260,53 +225,60 @@ def _(
     return (by_collection_tab,)
 
 
-# =============================================================================
-# TAB 3: BY PROJECT
-# =============================================================================
-
-
 @app.cell(hide_code=True)
 def _(
     LIFECYCLE_COLORS,
+    LIFECYCLE_LABELS,
+    LIFECYCLE_ORDER,
     PLOTLY_LAYOUT,
     df_project_lifecycle,
     mo,
     pd,
-    px,
     project_selector,
+    px,
     show_inactive,
 ):
     if project_selector.value and not df_project_lifecycle.empty:
         _df = df_project_lifecycle[df_project_lifecycle['project'] == project_selector.value].copy()
         _df['sample_date'] = pd.to_datetime(_df['sample_date'])
-        
+
         # Filter inactive states if toggle is off
         _inactive_states = [
             'churned_after_first_time_contributor',
             'churned_after_part_time_contributor',
             'churned_after_full_time_contributor',
         ]
-        
+
         if not show_inactive.value:
             _df = _df[~_df['lifecycle_state'].isin(_inactive_states)]
-        
+
+        # Map to human-readable labels
+        _df['lifecycle_label'] = _df['lifecycle_state'].map(LIFECYCLE_LABELS)
+
+        # Order lifecycle states logically
+        _df['lifecycle_label'] = pd.Categorical(
+            _df['lifecycle_label'],
+            categories=[s for s in LIFECYCLE_ORDER if s in _df['lifecycle_label'].unique()],
+            ordered=True
+        )
+        _df = _df.sort_values(['sample_date', 'lifecycle_label'])
+
         _fig = px.bar(
             data_frame=_df,
             x='sample_date',
             y='developer_count',
-            color='lifecycle_state',
-            color_discrete_map=LIFECYCLE_COLORS
+            color='lifecycle_label',
+            color_discrete_map=LIFECYCLE_COLORS,
+            category_orders={'lifecycle_label': LIFECYCLE_ORDER},
+            labels={'lifecycle_label': 'Lifecycle State', 'developer_count': 'Contributors', 'sample_date': ''}
         )
         _fig.update_layout(**PLOTLY_LAYOUT)
-        _fig.update_layout(
-            barmode='stack',
-            legend=dict(orientation="h", y=-0.2, x=0.5, xanchor="center")
-        )
-        
+        _fig.update_layout(barmode='stack')
+
         _chart = mo.ui.plotly(_fig, config={'displayModeBar': False})
     else:
         _chart = mo.md("*Select a project to view its lifecycle data*")
-    
+
     by_project_tab = mo.vstack([
         mo.md("### Project-Level Lifecycle Analysis"),
         project_selector,
@@ -318,7 +290,7 @@ def _(
 @app.cell(hide_code=True)
 def _(df_project_lifecycle, mo):
     _projects = df_project_lifecycle['project'].unique().tolist() if not df_project_lifecycle.empty else []
-    
+
     project_selector = mo.ui.dropdown(
         options=sorted(_projects),
         value=_projects[0] if _projects else None,
@@ -328,15 +300,10 @@ def _(df_project_lifecycle, mo):
     return (project_selector,)
 
 
-# =============================================================================
-# DATA QUERIES
-# =============================================================================
-
-
 @app.cell
 def _(mo, pyoso_db_conn):
     df_collections = mo.sql(
-        """
+        f"""
         SELECT DISTINCT
           collection_name,
           display_name
@@ -345,19 +312,19 @@ def _(mo, pyoso_db_conn):
         AND collection_name IN ('protocol-labs-network', 'filecoin-core', 'filecoin-builders')
         ORDER BY collection_name
         """,
-        engine=pyoso_db_conn,
-        output=False
+        output=False,
+        engine=pyoso_db_conn
     )
     return (df_collections,)
 
 
 @app.cell
 def _(mo, pyoso_db_conn):
+    # Use 2-month lag to avoid incomplete current-month data
     df_kpis = mo.sql(
-        """
-        WITH latest_month AS (
-          SELECT MAX(sample_date) AS max_date
-          FROM timeseries_metrics_by_collection_v0
+        f"""
+        WITH ref_month AS (
+          SELECT DATE_TRUNC('month', CURRENT_DATE) - INTERVAL '2' MONTH AS ref_date
         ),
         metrics AS (
           SELECT 
@@ -366,23 +333,24 @@ def _(mo, pyoso_db_conn):
           FROM timeseries_metrics_by_collection_v0 ts
           JOIN metrics_v0 m USING (metric_id)
           JOIN collections_v1 c USING (collection_id)
-          CROSS JOIN latest_month lm
+          CROSS JOIN ref_month rm
           WHERE c.collection_name = 'protocol-labs-network'
           AND m.metric_event_source = 'GITHUB'
           AND m.metric_model LIKE '%contributor%'
           AND m.metric_time_aggregation = 'monthly'
-          AND ts.sample_date = lm.max_date
+          AND ts.sample_date = rm.ref_date
           GROUP BY m.metric_model
         )
         SELECT
+          (SELECT CAST(ref_date AS VARCHAR) FROM ref_month) AS ref_month,
           COALESCE(SUM(CASE WHEN metric_model IN ('active_full_time_contributor', 'active_part_time_contributor', 'first_time_contributor') THEN amount END), 0) AS total_active,
           COALESCE(SUM(CASE WHEN metric_model = 'first_time_contributor' THEN amount END), 0) AS first_time,
-          COALESCE(SUM(CASE WHEN metric_model LIKE '%full_time%' THEN amount END), 0) AS full_time,
-          COALESCE(SUM(CASE WHEN metric_model LIKE 'churned%' THEN amount END), 0) AS churned
+          COALESCE(SUM(CASE WHEN metric_model IN ('active_full_time_contributor', 'new_full_time_contributor', 'part_time_to_full_time_contributor', 'reactivated_full_time_contributor') THEN amount END), 0) AS full_time,
+          COALESCE(SUM(CASE WHEN metric_model LIKE 'churned_after%' THEN amount END), 0) AS churned
         FROM metrics
         """,
-        engine=pyoso_db_conn,
-        output=False
+        output=False,
+        engine=pyoso_db_conn
     )
     return (df_kpis,)
 
@@ -442,43 +410,65 @@ def _(mo, pd, pyoso_db_conn):
     return (df_project_lifecycle,)
 
 
-# =============================================================================
-# CONFIGURATION
-# =============================================================================
-
-
 @app.cell(hide_code=True)
 def _():
-    LIFECYCLE_COLORS = {
-        'first_time_contributor': '#4C78A8',
-        'active_full_time_contributor': '#7A4D9B',
-        'new_full_time_contributor': '#9C6BD3',
-        'part_time_to_full_time_contributor': '#B48AEC',
-        'reactivated_full_time_contributor': '#C7A7F2',
-        'active_part_time_contributor': '#41AB5D',
-        'new_part_time_contributor': '#74C476',
-        'full_time_to_part_time_contributor': '#A1D99B',
-        'reactivated_part_time_contributor': '#C7E9C0',
-        'churned_after_first_time_contributor': '#D62728',
-        'churned_after_part_time_contributor': '#E57373',
-        'churned_after_full_time_contributor': '#F1948A',
+    # Human-readable labels for lifecycle states (matching draft notebook)
+    LIFECYCLE_LABELS = {
+        'first_time_contributor': 'first time',
+        'active_full_time_contributor': 'full time',
+        'new_full_time_contributor': 'new full time',
+        'part_time_to_full_time_contributor': 'part time to full time',
+        'reactivated_full_time_contributor': 'dormant to full time',
+        'active_part_time_contributor': 'part time',
+        'new_part_time_contributor': 'new part time',
+        'full_time_to_part_time_contributor': 'full time to part time',
+        'reactivated_part_time_contributor': 'dormant to part time',
+        'churned_contributors': 'dormant',
+        'churned_after_first_time_contributor': 'churned (after first time)',
+        'churned_after_part_time_contributor': 'churned (after reaching part time)',
+        'churned_after_full_time_contributor': 'churned (after reaching full time)',
     }
-    
+
+    # Colors keyed by human-readable labels
+    LIFECYCLE_COLORS = {
+        'first time': '#4C78A8',
+        'full time': '#7A4D9B',
+        'new full time': '#9C6BD3',
+        'part time to full time': '#B48AEC',
+        'dormant to full time': '#C7A7F2',
+        'part time': '#41AB5D',
+        'new part time': '#74C476',
+        'full time to part time': '#A1D99B',
+        'dormant to part time': '#C7E9C0',
+        'dormant': '#F39C12',
+        'first time to dormant': '#F5B041',
+        'part time to dormant': '#F8C471',
+        'full time to dormant': '#FAD7A0',
+        'churned (after first time)': '#D62728',
+        'churned (after reaching part time)': '#E57373',
+        'churned (after reaching full time)': '#F1948A',
+    }
+
+    # Logical ordering for stacking (bottom to top)
     LIFECYCLE_ORDER = [
-        'first_time_contributor',
-        'new_full_time_contributor',
-        'active_full_time_contributor',
-        'part_time_to_full_time_contributor',
-        'reactivated_full_time_contributor',
-        'new_part_time_contributor',
-        'active_part_time_contributor',
-        'full_time_to_part_time_contributor',
-        'reactivated_part_time_contributor',
-        'churned_after_first_time_contributor',
-        'churned_after_part_time_contributor',
-        'churned_after_full_time_contributor',
+        'first time',
+        'full time',
+        'new full time',
+        'part time to full time',
+        'dormant to full time',
+        'part time',
+        'new part time',
+        'full time to part time',
+        'dormant to part time',
+        'dormant',
+        'first time to dormant',
+        'part time to dormant',
+        'full time to dormant',
+        'churned (after first time)',
+        'churned (after reaching part time)',
+        'churned (after reaching full time)',
     ]
-    return LIFECYCLE_COLORS, LIFECYCLE_ORDER
+    return LIFECYCLE_COLORS, LIFECYCLE_LABELS, LIFECYCLE_ORDER
 
 
 @app.cell(hide_code=True)
@@ -518,12 +508,7 @@ def _():
 @app.cell(hide_code=True)
 def _():
     stringify = lambda arr: "'" + "','".join(arr) + "'"
-    return (stringify,)
-
-
-# =============================================================================
-# BOILERPLATE
-# =============================================================================
+    return
 
 
 @app.cell(hide_code=True)
@@ -531,7 +516,7 @@ def _():
     import pandas as pd
     import plotly.express as px
     import plotly.graph_objects as go
-    return go, pd, px
+    return pd, px
 
 
 @app.cell(hide_code=True)
