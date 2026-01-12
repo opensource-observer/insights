@@ -42,6 +42,7 @@ uv run marimo run notebooks/filecoin-data-tour.py
 | `developer-funnel-dashboard.py` | Dashboard | Developer lifecycle funnel with human-readable labels |
 | `project-metrics-explorer.py` | Dashboard | Project-level metrics explorer with repository details |
 | `pln-downstream-impact.py` | Dashboard | Downstream impact of PLN packages (libp2p, ipfs, etc.) on the ecosystem |
+| `libin-diagram.py` | Dashboard | State transition diagram (Libin) showing contributor flows between lifecycle states |
 
 ## Data Sources
 
@@ -75,10 +76,3 @@ Contributors are classified by monthly activity level:
 - [OSO Documentation](https://docs.oso.xyz/)
 - [Pyoso Getting Started](https://docs.oso.xyz/docs/get-started/python)
 - [Marimo Documentation](https://docs.marimo.io/)
-
-## Additional Documentation
-
-See the `docs/` folder for:
-- **Guides/** - Best practices for creating notebooks
-- **Templates/** - Starter templates for different notebook types
-- **Notebook Examples/** - Reference implementations
