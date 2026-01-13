@@ -1,0 +1,18 @@
+# Environment
+.env
+.venv/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# OS
+.DS_Store
+
+# uv
+.uv/
+
+# SOW
+agent-docs/
+SOW.md
+DELIVERABLES.md
