@@ -6,7 +6,7 @@ requires-python = ">=3.13"
 dependencies = [
     "marimo>=0.15.3",
     "uvicorn>=0.30.0",
-    "pyoso>=0.6.5",
+    "pyoso>=0.8.0",
     "plotly>=6.5.0",
 ]
 
