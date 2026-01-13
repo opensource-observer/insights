@@ -16,7 +16,6 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(
     headline_1,
-    headline_10,
     headline_2,
     headline_3,
     headline_4,
@@ -24,7 +23,6 @@ def _(
     headline_6,
     headline_7,
     headline_8,
-    headline_9,
     headline_treemap,
     mo,
 ):
@@ -34,29 +32,13 @@ def _(
     This analysis examines the health and impact of Octant's grant portfolio across all funding epochs.
     All amounts are displayed in **ETH**. Developer metrics are based on GitHub activity data.
 
-    **Project Tiers** (based on OSS activity):
-    - **Active Development** - Steady or growing recent activity
-    - **Mature/Stable** - High historical activity, declining recently  
-    - **Minimal OSS Presence** - Has repos but very low activity
-    - **No OSS Footprint** - No GitHub repos matched
+    > **Open Data**: Every metric in this analysis is derived from publicly accessible sources and can be independently verified. See [Methodology](#methodology-details) for details.
 
-    ## Key Questions Answered
+    ## Sources
 
-    1. {headline_1}
-    2. {headline_2}
-    3. {headline_3}
-    4. {headline_4}
-    5. {headline_treemap}
-    6. {headline_5}
-    7. {headline_6}
-    8. {headline_7}
-    9. {headline_8}
-    10. {headline_9}
-    11. {headline_10}
-
-    ## Data Sources
-
-    [OSO](https://docs.opensource.observer/) · [OSS Directory](https://github.com/opensource-observer/oss-directory) · [OpenDevData](https://opendevdata.org/)
+    - [OSO](https://docs.oso.xyz/) 
+    - [OSS Funding](https://github.com/opensource-observer/oss-funding)
+    - [OpenDevData](https://opendevdata.org/)
     """)
     return
 
@@ -236,7 +218,7 @@ def _(
     _df_epoch_tier['octant_epoch'] = pd.Categorical(_df_epoch_tier['octant_epoch'], categories=_epochs_sorted, ordered=True)
     _df_epoch_tier = _df_epoch_tier.sort_values('octant_epoch')
 
-    headline_3 = f"{_total_projects} unique projects funded since {_first_epoch}"
+    headline_3 = f"How many projects has Octant funded? {_total_projects} since {_first_epoch}"
 
     _fig = px.bar(
         _df_epoch_tier,
@@ -304,7 +286,7 @@ def _(df_with_growth, mo):
     _roi['Devs/ETH'] = _roi['devs_per_eth'].round(2)
     _roi = _roi.drop(columns=['devs_per_eth'])
 
-    headline_4 = "Portfolio breakdown: where funding went and what grew"
+    headline_4 = "Which projects received the most funding and growth?"
 
     mo.vstack([
         mo.md(f"""
@@ -343,7 +325,7 @@ def _(df_with_growth, mo, px):
     # Clip growth for better color scale
     _df['growth_clipped'] = _df['growth_pct'].clip(-100, 200)
 
-    headline_treemap = "Portfolio at a glance: funding size vs developer growth"
+    headline_treemap = "How does funding size relate to developer growth?"
 
     _fig = px.treemap(
         _df,
@@ -368,7 +350,7 @@ def _(df_with_growth, mo, px):
     ### **{headline_treemap}**
 
     Box size = total ETH received. Color = YoY developer growth (red = declining, green = growing).
-    Click to zoom into a tier.
+    Hover over boxes to see project details.
     """),
         _fig
     ])
@@ -390,7 +372,7 @@ def _(TIER_COLORS, df_project_tiers, df_repos, mo, np, px):
     _total_forks = int(_software_repos['fork_count'].sum())
     _project_count = len(_software_projects)
 
-    headline_5 = f"The software portfolio spans {_total_repos:,} repos with {_total_stars:,} stars"
+    headline_5 = f"How large is the software portfolio? {_total_repos:,} repos, {_total_stars:,} stars"
 
     # Aggregate per project for scatter plot
     _project_stats = (
@@ -490,60 +472,6 @@ def _(TIER_COLORS, df_project_tiers, df_repos, mo, np, px):
     return (headline_5,)
 
 
-@app.cell(hide_code=True)
-def _(PLOTLY_LAYOUT, df_contributors_filtered, mo, pd, px):
-    _df = df_contributors_filtered.copy()
-
-    if _df.empty:
-        headline_6 = "No developer activity data available yet"
-        mo.vstack([mo.md(f"---\n### **{headline_6}**\n\n*Waiting for data...*")])
-    else:
-        _df['day'] = pd.to_datetime(_df['day'])
-        _df['total_devs'] = _df['full_time_devs'] + _df['part_time_devs']
-
-        # Create month column for grouping (use string to avoid timestamp issues)
-        _df['month_str'] = _df['day'].dt.strftime('%Y-%m')
-
-        # Get top 10 projects by average developer activity (data is 28d rolling avg, so use mean)
-        _project_avgs = _df.groupby('project_name')['total_devs'].mean().nlargest(10)
-        _top_projects = _project_avgs.index.tolist()
-        _top_avg = _project_avgs.mean()
-        _overall_avg = _df.groupby('project_name')['total_devs'].mean().mean()
-        _top_pct = (_top_avg / _overall_avg * 100) if _overall_avg > 0 else 0
-
-        # Filter to top projects and aggregate monthly (use mean since data is 28d rolling avg)
-        _df_top = _df[_df['project_name'].isin(_top_projects)].copy()
-        _df_monthly = (
-            _df_top
-            .groupby(['month_str', 'project_name'], as_index=False)
-            ['total_devs'].mean()
-        )
-        # Convert back to datetime for plotting
-        _df_monthly['month'] = _df_monthly['month_str'].apply(lambda x: pd.to_datetime(str(x) + '-01'))
-
-        headline_6 = f"These top 10 projects drive the majority of developer activity in the portfolio"
-
-        _fig = px.area(
-            _df_monthly,
-            x='month',
-            y='total_devs',
-            color='project_name',
-            color_discrete_sequence=px.colors.qualitative.Set2,
-            labels={'month': '', 'total_devs': 'Active Developers', 'project_name': 'Project'}
-        )
-        _fig.update_layout(**PLOTLY_LAYOUT)
-
-        mo.vstack([
-            mo.md(f"""
-    ---
-    ### **{headline_6}**
-
-    This stacked area chart shows developer activity over time for the most active projects in the portfolio.
-    Each layer represents one project's contribution to total developer activity.
-    """),
-            _fig
-        ])
-    return (headline_6,)
 
 
 @app.cell(hide_code=True)
@@ -582,7 +510,7 @@ def _(PLOTLY_LAYOUT, df_contributors_by_project, df_funding, go, mo, pd):
     else:
         _growth_pct = 0
 
-    headline_7 = f"Is developer activity growing? {'Yes' if _growth_pct > 0 else 'No'}: {'+' if _growth_pct > 0 else ''}{_growth_pct:.0f}% YoY"
+    headline_6 = f"Is developer activity growing? {'+' if _growth_pct > 0 else ''}{_growth_pct:.0f}% year-over-year"
 
     # Create figure with both raw and rolling avg
     _fig = go.Figure()
@@ -614,7 +542,7 @@ def _(PLOTLY_LAYOUT, df_contributors_by_project, df_funding, go, mo, pd):
                 type="line",
                 x0=_epoch_date, x1=_epoch_date,
                 y0=0, y1=_y_max,
-                line=dict(color="green", width=2, dash="dot"),
+                line=dict(color="#2D9B87", width=2, dash="dot"),
                 yref="y"
             )
             # Add annotation separately
@@ -622,7 +550,7 @@ def _(PLOTLY_LAYOUT, df_contributors_by_project, df_funding, go, mo, pd):
                 x=_epoch_date, y=_y_max,
                 text=_row['octant_epoch'],
                 showarrow=False,
-                font=dict(size=8, color="green"),
+                font=dict(size=8, color="#2D9B87"),
                 textangle=-45,
                 yanchor="bottom"
             )
@@ -645,18 +573,18 @@ def _(PLOTLY_LAYOUT, df_contributors_by_project, df_funding, go, mo, pd):
     mo.vstack([
         mo.md(f"""
     ---
-    ### **{headline_7}**
+    ### **{headline_6}**
 
     Comparing 2025 average ({_2025_avg:.0f} devs/mo) to 2024 average ({_2024_avg:.0f} devs/mo).
-    Green vertical lines mark funding epochs.
+    Vertical lines mark funding epochs.
     """),
         _fig
     ])
-    return (headline_7,)
+    return (headline_6,)
 
 
 @app.cell(hide_code=True)
-def _(PLOTLY_LAYOUT, df_contributors_by_project, df_funding, go, mo, pd):
+def _(OCTANT_PALETTE, PLOTLY_LAYOUT, df_contributors_by_project, df_funding, go, mo, pd):
     # Stacked area chart: active developers by project over time
     # Top 10 projects + "Other"
 
@@ -709,12 +637,6 @@ def _(PLOTLY_LAYOUT, df_contributors_by_project, df_funding, go, mo, pd):
     # Create stacked area chart
     _fig = go.Figure()
 
-    # Color palette (distinct colors for top projects)
-    _colors = [
-        '#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd',
-        '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf', '#aaa'
-    ]
-
     for _i, _col in enumerate(_ordered_cols):
         _fig.add_trace(go.Scatter(
             x=_pivot['day'],
@@ -723,7 +645,7 @@ def _(PLOTLY_LAYOUT, df_contributors_by_project, df_funding, go, mo, pd):
             mode='lines',
             stackgroup='one',
             line=dict(width=0.5),
-            fillcolor=_colors[_i % len(_colors)],
+            fillcolor=OCTANT_PALETTE[_i % len(OCTANT_PALETTE)],
             hovertemplate=f'{_col}: %{{y:.1f}} devs<extra></extra>'
         ))
 
@@ -744,7 +666,7 @@ def _(PLOTLY_LAYOUT, df_contributors_by_project, df_funding, go, mo, pd):
                 type="line",
                 x0=_epoch_date, x1=_epoch_date,
                 y0=0, y1=_y_max,
-                line=dict(color="green", width=2, dash="dot"),
+                line=dict(color="#2D9B87", width=2, dash="dot"),
                 yref="y"
             )
             # Add epoch label annotation
@@ -753,14 +675,14 @@ def _(PLOTLY_LAYOUT, df_contributors_by_project, df_funding, go, mo, pd):
                 y=_y_max,
                 text=_row['octant_epoch'],
                 showarrow=False,
-                font=dict(size=8, color="green"),
+                font=dict(size=8, color="#2D9B87"),
                 textangle=-45,
                 yanchor="bottom"
             )
         except:
             pass
 
-    headline_8 = "Which projects contribute most to the developer community?"
+    headline_7 = "Which projects contribute most to the developer community?"
 
     _fig.update_layout(**PLOTLY_LAYOUT)
     _fig.update_layout(
@@ -784,14 +706,14 @@ def _(PLOTLY_LAYOUT, df_contributors_by_project, df_funding, go, mo, pd):
     mo.vstack([
         mo.md(f"""
     ---
-    ### **{headline_8}**
+    ### **{headline_7}**
 
-    Stacked area showing developer activity by project since Octant funding began. 
-    **Top 10 projects** shown individually, all others grouped as "Other".
+    Stacked area showing developer activity by project since 2020. 
+    **Top 10 projects** (by 2025 activity) shown individually, all others grouped as "Other".
     """),
         _fig
     ])
-    return (headline_8,)
+    return (headline_7,)
 
 
 @app.cell(hide_code=True)
@@ -823,7 +745,7 @@ def _(PLOTLY_LAYOUT, df_contributors_by_project, df_funding, mo, pd, px):
     _avg_all = _avg_ft + _avg_pt
     _ft_pct = (_avg_ft / _avg_all * 100) if _avg_all > 0 else 0
 
-    headline_9 = f"{_ft_pct:.0f}% of developer activity comes from full-time contributors"
+    headline_8 = f"What's the full-time vs part-time mix? {_ft_pct:.0f}% full-time"
 
     # Melt for stacked area
     _monthly_melted = _monthly.melt(
@@ -843,8 +765,8 @@ def _(PLOTLY_LAYOUT, df_contributors_by_project, df_funding, mo, pd, px):
         y='count',
         color='developer_type',
         color_discrete_map={
-            'Full-Time (10+ commits/28d)': '#1f77b4',
-            'Part-Time (<10 commits/28d)': '#aec7e8'
+            'Full-Time (10+ commits/28d)': '#2D9B87',  # Teal (primary)
+            'Part-Time (<10 commits/28d)': '#78B0A0'   # Lighter teal
         },
         labels={'day': '', 'count': 'Developer Count', 'developer_type': 'Type'}
     )
@@ -866,14 +788,14 @@ def _(PLOTLY_LAYOUT, df_contributors_by_project, df_funding, mo, pd, px):
                 type="line",
                 x0=_epoch_date, x1=_epoch_date,
                 y0=0, y1=_y_max * 1.1,
-                line=dict(color="green", width=2, dash="dot"),
+                line=dict(color="#2D9B87", width=2, dash="dot"),
                 yref="y"
             )
             _fig.add_annotation(
                 x=_epoch_date, y=_y_max * 1.1,
                 text=_row['octant_epoch'],
                 showarrow=False,
-                font=dict(size=8, color="green"),
+                font=dict(size=8, color="#2D9B87"),
                 textangle=-45,
                 yanchor="bottom"
             )
@@ -886,44 +808,17 @@ def _(PLOTLY_LAYOUT, df_contributors_by_project, df_funding, mo, pd, px):
     mo.vstack([
         mo.md(f"""
     ---
-    ### **{headline_9}**
+    ### **{headline_8}**
 
     Full-time contributors are defined as developers with 10+ commits in a 28-day window.
     A healthy mix of full-time and part-time contributors indicates sustainable project development.
-    Green vertical lines mark funding epochs.
+    Vertical lines mark funding epochs.
     """),
         _fig
     ])
-    return (headline_9,)
+    return (headline_8,)
 
 
-@app.cell(hide_code=True)
-def _(mo):
-    headline_10 = "This analysis was built entirely on open, auditable data"
-
-    mo.vstack([
-        mo.md(f"""
-    ---
-    ### **{headline_10}**
-
-    Every data point in this analysis comes from publicly accessible sources:
-
-    - **Funding data** is sourced from the [OSS Directory](https://github.com/opensource-observer/oss-directory), 
-      a community-maintained registry of open source projects and their funding history.
-
-    - **Developer metrics** come from [OpenDevData](https://opendevdata.org/), which provides 
-      anonymized, aggregated statistics about GitHub activity.
-
-    - **All queries are reproducible** using the [OSO API](https://docs.opensource.observer/), 
-      enabling anyone to verify findings or extend this analysis.
-
-    This transparency is fundamental to building trust in impact measurement. Open data enables:
-    - **Accountability** - Stakeholders can verify claims independently
-    - **Reproducibility** - Researchers can replicate and extend analyses
-    - **Community contribution** - Anyone can improve the methodology
-    """)
-    ])
-    return (headline_10,)
 
 
 @app.cell(hide_code=True)
@@ -1034,14 +929,14 @@ def _(
                 type="line",
                 x0=_epoch_date, x1=_epoch_date,
                 y0=0, y1=_y_max,
-                line=dict(color="green", width=2, dash="dash"),
+                line=dict(color="#2D9B87", width=2, dash="dash"),
                 yref="y"
             )
             _fig.add_annotation(
                 x=_epoch_date, y=_y_max,
                 text=f"{_epoch} ({_amount:.1f} ETH)",
                 showarrow=False,
-                font=dict(size=8, color="green"),
+                font=dict(size=8, color="#2D9B87"),
                 textangle=-45,
                 yanchor="bottom"
             )
@@ -1094,20 +989,33 @@ def _(ACTIVITY_DECLINE_PCT, MIN_DEVS_FOR_ACTIVE, RECENT_WINDOW_MONTHS, mo):
 
     # Methodology Details
 
-    ## Part 1. Data Collection
+    ## Open, Auditable Data
+
+    Every data point in this analysis comes from publicly accessible sources:
+
+    - **Funding data** is sourced from the [OSS Funding](https://github.com/opensource-observer/oss-funding) repo, 
+      a community-maintained registry of open source projects and their funding history.
+    - **Developer metrics** come from [OpenDevData](https://opendevdata.org/), which provides 
+      anonymized, aggregated statistics about GitHub activity.
+    - **All queries are reproducible** using the [OSO API](https://docs.oso.xyz/), 
+      enabling anyone to verify findings or extend this analysis.
+
+    This transparency enables **accountability** (stakeholders can verify claims), **reproducibility** (researchers can replicate analyses), and **community contribution** (anyone can improve the methodology).
+
+    ## Data Sources
 
     This analysis uses three primary data sources, all accessible via the OSO API:
 
-    1. **Funding Data** (`stg_ossd__current_funding`) - Grant allocations from Octant epochs, 
+    1. **Funding Data** (`stg_ossd__current_funding`) — Grant allocations from Octant epochs, 
        including project names and amounts in ETH.
 
-    2. **Repository Data** (`int_opendevdata__repositories_with_repo_id`) - GitHub repository 
+    2. **Repository Data** (`int_opendevdata__repositories_with_repo_id`) — GitHub repository 
        metadata including stars, forks, and creation dates.
 
-    3. **Developer Activity** (`stg_opendevdata__repo_developer_28d_activities`) - Rolling 28-day 
-       developer activity counts per repository.
+    3. **Developer Activity** (`stg_opendevdata__repo_developer_28d_activities`) — Rolling 28-day 
+       developer activity counts per repository. Developers working on multiple repos within the same project are counted once using their max activity level (`MAX(l28_days)`).
 
-    ## Part 2. Project Classification
+    ## Project Classification
 
     Projects are classified into 4 tiers based on their GitHub activity:
 
@@ -1118,7 +1026,7 @@ def _(ACTIVITY_DECLINE_PCT, MIN_DEVS_FOR_ACTIVE, RECENT_WINDOW_MONTHS, mo):
     | 3 | Mature/Stable | Activity declined > {ACTIVITY_DECLINE_PCT*100:.0f}% in last {RECENT_WINDOW_MONTHS} months |
     | 4 | Active Development | Steady or growing activity in last {RECENT_WINDOW_MONTHS} months |
 
-    ## Part 3. Assumptions and Limitations
+    ## Assumptions and Limitations
 
     - **Currency**: All amounts are displayed in ETH (not USD) to avoid exchange rate fluctuations.
     - **Full-time threshold**: A developer is considered "full-time" if they have 10+ commits in a 28-day window.
@@ -1617,46 +1525,68 @@ def _():
 @app.cell(hide_code=True)
 def _():
     # Colors and ordering for tier visualizations
+    # Octant brand palette (from brand kit)
     TIER_COLORS = {
-        'No OSS Footprint': '#d62728',      # Red
-        'Minimal OSS Presence': '#ff7f0e',   # Orange
-        'Mature/Stable': '#2ca02c',          # Green
-        'Active Development': '#1f77b4'      # Blue
+        'No OSS Footprint': '#9BA19A',       # Gray (neutral)
+        'Minimal OSS Presence': '#FF9601',   # Orange (primary)
+        'Mature/Stable': '#1C4557',          # Navy (neutral dark)
+        'Active Development': '#2D9B87'      # Teal (primary)
     }
 
     TIER_ORDER = ['No OSS Footprint', 'Minimal OSS Presence', 'Mature/Stable', 'Active Development']
-    return TIER_COLORS, TIER_ORDER
+
+    # Qualitative palette for multi-project charts (top 10 + Other)
+    OCTANT_PALETTE = [
+        '#2D9B87',  # Teal (primary)
+        '#FF9601',  # Orange (primary)
+        '#1C4557',  # Navy
+        '#78B0A0',  # Lighter teal
+        '#D97A00',  # Darker orange
+        '#2A5F7A',  # Blue-gray
+        '#4DB8A4',  # Mid teal
+        '#E8A940',  # Golden
+        '#3D7A9E',  # Steel blue
+        '#6BC4B0',  # Light teal
+        '#CDD1CE',  # Gray (for "Other")
+    ]
+    return OCTANT_PALETTE, TIER_COLORS, TIER_ORDER
 
 
 @app.cell(hide_code=True)
 def _():
+    # Octant brand-aligned Plotly layout
     PLOTLY_LAYOUT = dict(
         title="",
         barmode="relative",
         hovermode="x unified",
+        dragmode=False,  # Disable zoom/pan for static output
         plot_bgcolor="white",
         paper_bgcolor="white",
-        font=dict(size=12, color="#111"),
-        margin=dict(t=40, l=60, r=20, b=50),
+        font=dict(size=12, family="system-ui, sans-serif", color="#181818"),
+        margin=dict(t=60, l=60, r=80, b=60),  # Extra padding for annotations
         legend=dict(
             orientation="v",
             yanchor="top", y=0.98,
             xanchor="left", x=0.02,
-            bordercolor="black", borderwidth=1,
-            bgcolor="white"
+            bordercolor="#CDD1CE", borderwidth=1,
+            bgcolor="rgba(255,255,255,0.9)"
         ),
         xaxis=dict(
             title="",
             showgrid=False,
-            linecolor="#000", linewidth=1,
+            linecolor="#181818", linewidth=1,
             ticks="outside"
         ),
         yaxis=dict(
             title="",
-            showgrid=True, gridcolor="#DDD",
-            zeroline=True, zerolinecolor="black", zerolinewidth=1,
-            linecolor="#000", linewidth=1,
+            showgrid=True, gridcolor="#D9DDDA",
+            zeroline=True, zerolinecolor="#181818", zerolinewidth=1,
+            linecolor="#181818", linewidth=1,
             ticks="outside", range=[0, None]
+        ),
+        # Minimal modebar for static output (keep hover, hide zoom controls)
+        modebar=dict(
+            remove=["zoom", "pan", "select", "lasso", "zoomIn", "zoomOut", "autoScale", "resetScale"]
         )
     )
     return (PLOTLY_LAYOUT,)
@@ -1675,6 +1605,53 @@ def _():
                 return 999
         return sorted(epochs, key=epoch_key)
     return sort_epochs, stringify
+
+
+@app.cell(hide_code=True)
+def _(pd):
+    def add_epoch_markers(fig, df_funding, y_max, *, color="#2D9B87", dash="dot", width=2, with_labels=True):
+        """Add vertical lines and labels for each funding epoch to a Plotly figure."""
+        _epoch_dates = (
+            df_funding
+            .groupby('octant_epoch', as_index=False)['funding_date']
+            .min()
+            .sort_values('funding_date')
+        )
+        for _i, _row in _epoch_dates.iterrows():
+            try:
+                _epoch_date = pd.to_datetime(_row['funding_date'])
+                # Add vertical line as shape
+                fig.add_shape(
+                    type="line",
+                    x0=_epoch_date, x1=_epoch_date,
+                    y0=0, y1=y_max,
+                    line=dict(color=color, width=width, dash=dash),
+                    yref="y"
+                )
+                # Add annotation separately
+                if with_labels:
+                    fig.add_annotation(
+                        x=_epoch_date, y=y_max,
+                        text=_row['octant_epoch'],
+                        showarrow=False,
+                        font=dict(size=8, color=color),
+                        textangle=-45,
+                        yanchor="bottom"
+                    )
+            except Exception:
+                pass
+        return fig
+    return (add_epoch_markers,)
+
+
+@app.cell(hide_code=True)
+def _():
+    def stat_card(title, value, *, subtitle=None):
+        """Return HTML for a styled stat card matching Octant brand."""
+        _style = "background-color: #F8F8F8; padding: 16px; border-radius: 8px; text-align: center; border: 1px solid #CDD1CE;"
+        _subtitle_html = f'<br/><small style="color: #9BA19A;">{subtitle}</small>' if subtitle else ''
+        return f'<div style="{_style}"><strong>{title}</strong><br/><span style="font-size: 24px; font-weight: bold;">{value}</span>{_subtitle_html}</div>'
+    return (stat_card,)
 
 
 @app.cell(hide_code=True)
