@@ -141,30 +141,6 @@ wheels = [
 ]
 
 [[package]]
-name = "filecoin-developer-lifecycle"
-version = "0.1.0"
-source = { virtual = "." }
-dependencies = [
-    { name = "marimo" },
-    { name = "numpy" },
-    { name = "pandas" },
-    { name = "plotly" },
-    { name = "pyoso" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "marimo", specifier = ">=0.17.0" },
-    { name = "numpy", specifier = ">=2.0.0" },
-    { name = "pandas", specifier = ">=2.0.0" },
-    { name = "plotly", specifier = ">=5.0.0" },
-    { name = "pyoso", specifier = ">=0.8.0" },
-]
-
-[package.metadata.requires-dev]
-dev = []
-
-[[package]]
 name = "h11"
 version = "0.16.0"
 source = { registry = "https://pypi.org/simple" }
@@ -465,6 +441,30 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/53/87/d5bd995b0f798a37105b876350d346eea5838bd8f77ea3d7a48392f3812b/numpy-2.4.1-pp311-pypy311_pp73-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:8361ea4220d763e54cff2fbe7d8c93526b744f7cd9ddab47afeff7e14e8503be", size = 16479830 },
     { url = "https://files.pythonhosted.org/packages/5b/c7/b801bf98514b6ae6475e941ac05c58e6411dd863ea92916bfd6d510b08c1/numpy-2.4.1-pp311-pypy311_pp73-win_amd64.whl", hash = "sha256:4f1b68ff47680c2925f8063402a693ede215f0257f02596b1318ecdfb1d79e33", size = 12492579 },
 ]
+
+[[package]]
+name = "octant-longitudinal-tracking"
+version = "0.1.0"
+source = { virtual = "." }
+dependencies = [
+    { name = "marimo" },
+    { name = "numpy" },
+    { name = "pandas" },
+    { name = "plotly" },
+    { name = "pyoso" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "marimo", specifier = ">=0.17.0" },
+    { name = "numpy", specifier = ">=2.0.0" },
+    { name = "pandas", specifier = ">=2.0.0" },
+    { name = "plotly", specifier = ">=5.0.0" },
+    { name = "pyoso", specifier = ">=0.8.0" },
+]
+
+[package.metadata.requires-dev]
+dev = []
 
 [[package]]
 name = "packaging"

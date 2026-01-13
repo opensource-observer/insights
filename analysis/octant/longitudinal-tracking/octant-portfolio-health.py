@@ -779,12 +779,6 @@ def _(mo, pd, pyoso_db_conn):
 
 
 @app.cell
-def _(project_names):
-    project_names
-    return
-
-
-@app.cell
 def _(mo, project_names, pyoso_db_conn, stringify):
     df_repos = mo.sql(
         f"""
@@ -799,10 +793,19 @@ def _(mo, project_names, pyoso_db_conn, stringify):
         ),
         repo_ids AS (
           SELECT DISTINCT
-            project_name,
+            CASE
+              WHEN project_name = 'argotorg' THEN 'solidity-ethereum'
+              ELSE project_name
+            END AS project_name,
             repo_id
           FROM int_gharchive__repositories
           JOIN repos USING (repo_name)
+          WHERE repo_name NOT IN (
+            'argotorg/fe',
+            'argotorg/sourcify',
+            'argotorg/hevm',
+            'argotorg/act'
+          )
         )
         SELECT DISTINCT
           project_name,
@@ -824,37 +827,35 @@ def _(mo, project_names, pyoso_db_conn, stringify):
 
 
 @app.cell
-def _(df_repos):
-    df_repos[df_repos['project_name'] == 'argotorg']
-    return
-
-
-@app.cell
-def _(mo, pyoso_db_conn):
+def _(mo, project_names, pyoso_db_conn, stringify):
     # Query developer activity at the PROJECT level (not repo level)
     # This ensures each developer is counted once per project even if they work on multiple repos
     df_contributors_by_project = mo.sql(
         f"""
-        WITH projects AS (
-          SELECT DISTINCT to_project_name AS project_name
-          FROM stg_ossd__current_funding
-          WHERE from_funder_name = 'octant-golemfoundation'
-            AND to_project_name IS NOT NULL
-        ),
-        repos AS (
+        WITH repos AS (
           SELECT DISTINCT
             project_name,
             CONCAT(artifact_namespace, '/', artifact_name) AS repo_name
           FROM artifacts_by_project_v1
-          JOIN projects USING (project_name)
-          WHERE artifact_source = 'GITHUB'
+          WHERE
+            artifact_source = 'GITHUB'
+            AND project_name IN ({stringify(project_names)})
         ),
         repo_ids AS (
           SELECT DISTINCT
-            project_name,
+            CASE
+              WHEN project_name = 'argotorg' THEN 'solidity-ethereum'
+              ELSE project_name
+            END AS project_name,
             repo_id
           FROM int_gharchive__repositories
           JOIN repos USING (repo_name)
+          WHERE repo_name NOT IN (
+            'argotorg/fe',
+            'argotorg/sourcify',
+            'argotorg/hevm',
+            'argotorg/act'
+          )
         ),
         repo_to_opendevdata AS (
           SELECT DISTINCT

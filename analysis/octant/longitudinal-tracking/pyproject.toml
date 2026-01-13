@@ -1,7 +1,7 @@
 [project]
-name = "filecoin-developer-lifecycle"
+name = "octant-longitudinal-tracking"
 version = "0.1.0"
-description = "Marimo notebooks for exploring Filecoin and PLN developer data"
+description = "Marimo notebooks for exploring Octant longitudinal tracking data"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
