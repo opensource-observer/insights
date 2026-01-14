@@ -55,8 +55,6 @@ def _(
 ):
     # Calculate totals
     _total_eth = df_funding_with_tiers['amount_eth'].sum()
-    _total_projects = df_funding_with_tiers['oso_project_name'].nunique()
-    _total_epochs = df_funding_with_tiers['octant_epoch'].nunique()
 
     # Aggregate by epoch for chart
     _df_by_epoch = (
@@ -679,7 +677,8 @@ def _(OCTANT_PALETTE, PLOTLY_LAYOUT, df_contributors_by_project, df_funding, go,
                 textangle=-45,
                 yanchor="bottom"
             )
-        except:
+        except Exception:
+            # Silently skip if date parsing or annotation fails
             pass
 
     headline_7 = "Which projects contribute most to the developer community?"
@@ -800,6 +799,7 @@ def _(PLOTLY_LAYOUT, df_contributors_by_project, df_funding, mo, pd, px):
                 yanchor="bottom"
             )
         except Exception:
+            # Silently skip if date parsing or annotation fails
             pass
 
     # Set x-axis range to start at 2020
@@ -876,7 +876,6 @@ def _(
     _df_all['day'] = pd.to_datetime(_df_all['day'])
     _df_all['total_devs'] = _df_all['full_time_devs'] + _df_all['part_time_devs']
     _df_all['month_str'] = _df_all['day'].dt.strftime('%Y-%m')
-    _n_projects = max(_df_all['project_name'].nunique(), 1)
 
     _df_proj_monthly = (
         _df_proj
@@ -941,6 +940,7 @@ def _(
                 yanchor="bottom"
             )
         except Exception:
+            # Silently skip if date parsing or funding annotation fails
             pass
 
     _fig.update_layout(**PLOTLY_LAYOUT)
@@ -1420,99 +1420,6 @@ def _(df_funding, df_project_tiers):
     return (df_funding_with_tiers,)
 
 
-@app.cell
-def _(
-    df_contributors_filtered,
-    df_funding,
-    df_project_tiers,
-    df_with_growth,
-    pd,
-):
-    # Build data for project trajectory line chart
-    # Each project gets a line showing dev activity over months since first funding
-
-    # Handle empty input data
-    if df_funding.empty or df_contributors_filtered.empty:
-        df_project_trajectories = pd.DataFrame(columns=['project_name', 'months_since_funding', 'total_devs', 'growth_pct'])
-    else:
-        _df_funding = df_funding.copy()
-        _df_funding['funding_date'] = pd.to_datetime(_df_funding['funding_date'])
-
-        # Get first funding date and total ETH per project
-        _first_funding = (
-            _df_funding
-            .groupby('oso_project_name', as_index=False)
-            .agg({'funding_date': 'min', 'amount_eth': 'sum'})
-            .rename(columns={'oso_project_name': 'project_name', 'amount_eth': 'total_eth'})
-        )
-        _first_funding['first_funding_str'] = _first_funding['funding_date'].dt.strftime('%Y-%m')
-
-        # Calculate months since first funding (up to now)
-        _now = pd.Timestamp.now()
-        _first_funding['months_since_first'] = _first_funding['funding_date'].apply(
-            lambda x: ((_now.year - x.year) * 12 + (_now.month - x.month)) if pd.notna(x) else 0
-        )
-
-        # Filter: must have 12+ months since first funded AND at least 5 ETH
-        _qualified = _first_funding[
-            (_first_funding['months_since_first'] >= 12) &
-            (_first_funding['total_eth'] >= 5)
-        ].copy()
-
-        # Also filter to Active Development + Mature/Stable tiers
-        _software_tiers = df_project_tiers[
-            df_project_tiers['tier_label'].isin(['Active Development', 'Mature/Stable'])
-        ]['project_name'].unique()
-        _qualified = _qualified[_qualified['project_name'].isin(_software_tiers)]
-
-        if _qualified.empty:
-            df_project_trajectories = pd.DataFrame(columns=['project_name', 'months_since_funding', 'total_devs', 'growth_pct'])
-        else:
-            # Get monthly activity per project
-            _df_activity = df_contributors_filtered.copy()
-            _df_activity['day'] = pd.to_datetime(_df_activity['day'])
-            _df_activity['activity_str'] = _df_activity['day'].dt.strftime('%Y-%m')
-            _df_activity['total_devs'] = _df_activity['full_time_devs'] + _df_activity['part_time_devs']
-
-            _monthly_activity = (
-                _df_activity
-                .groupby(['project_name', 'activity_str'], as_index=False)['total_devs']
-                .mean()
-            )
-
-            # Join with qualified projects
-            _trajectory_data = _qualified[['project_name', 'first_funding_str']].merge(
-                _monthly_activity,
-                on='project_name',
-                how='inner'
-            )
-
-            if _trajectory_data.empty:
-                df_project_trajectories = pd.DataFrame(columns=['project_name', 'months_since_funding', 'total_devs', 'growth_pct'])
-            else:
-                # Calculate months since funding for each activity month
-                _trajectory_data['funding_year'] = _trajectory_data['first_funding_str'].str[:4].astype(int)
-                _trajectory_data['funding_month_num'] = _trajectory_data['first_funding_str'].str[5:7].astype(int)
-                _trajectory_data['activity_year'] = _trajectory_data['activity_str'].str[:4].astype(int)
-                _trajectory_data['activity_month_num'] = _trajectory_data['activity_str'].str[5:7].astype(int)
-
-                _trajectory_data['months_since_funding'] = (
-                    (_trajectory_data['activity_year'] - _trajectory_data['funding_year']) * 12 +
-                    (_trajectory_data['activity_month_num'] - _trajectory_data['funding_month_num'])
-                )
-
-                # Filter to 0+ months since funding only
-                _trajectory_data = _trajectory_data[_trajectory_data['months_since_funding'] >= 0]
-
-                # Add growth data for coloring
-                _growth_data = df_with_growth[['Project', 'growth_pct']].rename(columns={'Project': 'project_name'})
-                _trajectory_data = _trajectory_data.merge(_growth_data, on='project_name', how='left')
-                _trajectory_data['growth_pct'] = _trajectory_data['growth_pct'].fillna(0)
-
-                df_project_trajectories = _trajectory_data[['project_name', 'months_since_funding', 'total_devs', 'growth_pct']]
-    return
-
-
 @app.cell(hide_code=True)
 def _():
     # Tier classification thresholds - easy to tune
@@ -1639,6 +1546,7 @@ def _(pd):
                         yanchor="bottom"
                     )
             except Exception:
+                # Silently skip if date parsing or annotation fails
                 pass
         return fig
     return (add_epoch_markers,)
