@@ -6,67 +6,30 @@ app = marimo.App(width="full")
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""
-    # S8 Grants Council: Program Impact Report
+    mo.md(
+        r"""
+    # S8 Grants Council - TVL Intent - Observational Impact Analysis
     <small>Owner: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">OSO</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">2026-01-16</span></small>
 
     This report provides transparency into the S8 Grants Council program performance, measuring TVL and (soon) revenue impact for grant recipients.
-    """)
-    return
-
-
-@app.cell(hide_code=True)
-def _(
-    PROGRAM_END_DATE,
-    PROGRAM_START_DATE,
-    headline_1,
-    headline_5,
-    mo,
-    overview_headline,
-    total_projects,
-):
-    _context = f"""
-    - This analysis covers S8 Grants Council grants from {PROGRAM_START_DATE} through {PROGRAM_END_DATE}
-    - Part 1 shows all {total_projects} approved projects
-    - Part 2 (Project Deep Dives) focuses on projects with TVL >= $100K
-    - Impact is measured from each project's individual OP delivery date
     """
-
-    _insights = f"""
-    1. {overview_headline}.
-    2. {headline_1}.
-    3. {headline_5}.
-    """
-
-    mo.accordion({
-        "Context": _context,
-        "Key Insights": _insights,
-        "Data Sources": """
-        - [OSO Community Space](https://docs.oso.xyz/) - Metrics and project data
-        - [Optimism Grants Tracker](https://www.opgrants.io/) - Grant delivery information
-        - [Karma GAP](https://gap.karmahq.xyz/) - Project profiles
-        """
-    })
+    )
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""
-    ## Part 1: Program Overview
-    """)
+    mo.md(r"""## Part 1: Program Overview""")
     return
 
 
 @app.cell(hide_code=True)
-def _(df_grants, df_project_metrics_all, mo, pd):
+def _(df_grants, df_project_metrics, mo, pd):
     # Calculate program overview stats from ALL grants (not just those with TVL)
     _total_count = len(df_grants)
     _total_op_approved = df_grants['op_total_amount'].sum()
     _projects_with_deliveries = (df_grants['op_delivered'] > 0).sum()
     _total_op_delivered = df_grants['op_delivered'].sum()
-
-    # Format OP amounts
     if _total_op_approved >= 1_000_000:
         _op_approved_str = f"{_total_op_approved/1e6:.1f}M"
     else:
@@ -79,58 +42,52 @@ def _(df_grants, df_project_metrics_all, mo, pd):
 
     overview_headline = f"{_total_count} projects approved for a total of {_op_approved_str} OP, of which {_projects_with_deliveries} have received first deliveries totaling {_op_delivered_str} OP"
 
-    # Create KPI cards
     _card_total_projects = mo.md(f"""
-<div style="padding: 16px; border: 1px solid #ddd; border-radius: 4px; background: #fafafa;">
-<div style="font-size: 11px; color: #666; text-transform: uppercase; margin-bottom: 4px;">Total Projects</div>
-<div style="font-size: 24px; font-weight: 700; margin-bottom: 4px;">{_total_count}</div>
-<div style="font-size: 11px; color: #888;">Approved for funding</div>
-</div>
-""")
+    <div style="padding: 16px; border: 1px solid #ddd; border-radius: 4px; background: #fafafa;">
+    <div style="font-size: 11px; color: #666; text-transform: uppercase; margin-bottom: 4px;">Total Projects</div>
+    <div style="font-size: 24px; font-weight: 700; margin-bottom: 4px;">{_total_count}</div>
+    <div style="font-size: 11px; color: #888;">Approved for funding</div>
+    </div>
+    """)
 
     _card_total_approved = mo.md(f"""
-<div style="padding: 16px; border: 1px solid #ddd; border-radius: 4px; background: #fafafa;">
-<div style="font-size: 11px; color: #666; text-transform: uppercase; margin-bottom: 4px;">Total OP Approved</div>
-<div style="font-size: 24px; font-weight: 700; margin-bottom: 4px;">{_op_approved_str}</div>
-<div style="font-size: 11px; color: #888;">Across all projects</div>
-</div>
-""")
+    <div style="padding: 16px; border: 1px solid #ddd; border-radius: 4px; background: #fafafa;">
+    <div style="font-size: 11px; color: #666; text-transform: uppercase; margin-bottom: 4px;">Total OP Approved</div>
+    <div style="font-size: 24px; font-weight: 700; margin-bottom: 4px;">{_op_approved_str}</div>
+    <div style="font-size: 11px; color: #888;">Across all projects</div>
+    </div>
+    """)
 
     _card_delivered_projects = mo.md(f"""
-<div style="padding: 16px; border: 1px solid #ddd; border-radius: 4px; background: #fafafa;">
-<div style="font-size: 11px; color: #666; text-transform: uppercase; margin-bottom: 4px;">Projects with Deliveries</div>
-<div style="font-size: 24px; font-weight: 700; margin-bottom: 4px;">{_projects_with_deliveries}</div>
-<div style="font-size: 11px; color: #888;">Received first payment</div>
-</div>
-""")
+    <div style="padding: 16px; border: 1px solid #ddd; border-radius: 4px; background: #fafafa;">
+    <div style="font-size: 11px; color: #666; text-transform: uppercase; margin-bottom: 4px;">Projects with Deliveries</div>
+    <div style="font-size: 24px; font-weight: 700; margin-bottom: 4px;">{_projects_with_deliveries}</div>
+    <div style="font-size: 11px; color: #888;">Received first payment</div>
+    </div>
+    """)
 
     _card_total_delivered = mo.md(f"""
-<div style="padding: 16px; border: 1px solid #ddd; border-radius: 4px; background: #fafafa;">
-<div style="font-size: 11px; color: #666; text-transform: uppercase; margin-bottom: 4px;">Total OP Delivered</div>
-<div style="font-size: 24px; font-weight: 700; margin-bottom: 4px;">{_op_delivered_str}</div>
-<div style="font-size: 11px; color: #888;">Paid to date</div>
-</div>
-""")
+    <div style="padding: 16px; border: 1px solid #ddd; border-radius: 4px; background: #fafafa;">
+    <div style="font-size: 11px; color: #666; text-transform: uppercase; margin-bottom: 4px;">Total OP Delivered</div>
+    <div style="font-size: 24px; font-weight: 700; margin-bottom: 4px;">{_op_delivered_str}</div>
+    <div style="font-size: 11px; color: #888;">Paid to date</div>
+    </div>
+    """)
 
-    # Create project table from df_grants (all projects) and left join with metrics for TVL
     _df_table = df_grants[['title', 'karma_page', 'oso_project_artifacts', 'op_total_amount', 'op_delivered', 'status', 'chains']].copy()
 
-    # Create lookup for current TVL from df_project_metrics_all
-    if not df_project_metrics_all.empty:
-        _tvl_lookup = df_project_metrics_all.set_index('title')['current_tvl'].to_dict()
+    # Left join with TVL data where available
+    if not df_project_metrics.empty:
+        _tvl_lookup = df_project_metrics.set_index('title')['current_tvl'].to_dict()
     else:
         _tvl_lookup = {}
 
-    # Add Current TVL column
     _df_table['current_tvl'] = _df_table['title'].map(_tvl_lookup)
 
-    # Format for table display
     _df_table['Grant Size (OP)'] = _df_table['op_total_amount'].apply(lambda x: f"{x:,.0f}" if pd.notna(x) else "0")
     _df_table['OP Delivered'] = _df_table['op_delivered'].apply(lambda x: f"{x:,.0f}" if pd.notna(x) and x > 0 else "0")
     _df_table['Current TVL'] = _df_table['current_tvl'].apply(lambda x: f"${x/1e6:,.1f}M" if pd.notna(x) and x > 0 else "—")
     _df_table['Chains'] = _df_table['chains'].apply(lambda x: ", ".join(x) if isinstance(x, list) else (x if pd.notna(x) else "—"))
-
-    # Create display dataframe with renamed columns
     _display_df = _df_table[[
         'title', 'karma_page', 'oso_project_artifacts', 'Grant Size (OP)', 'OP Delivered', 'status', 'Chains', 'Current TVL'
     ]].copy()
@@ -155,36 +112,32 @@ def _(df_grants, df_project_metrics_all, mo, pd):
         mo.md("#### Project Details"),
         _table
     ], gap=1.5)
-    return (overview_headline,)
+    return
 
 
 @app.cell(hide_code=True)
-def _(df_project_metrics_all, mo):
-    # Calculate aggregate TVL and ROI stats for headline
-    _total_tvl_delta = df_project_metrics_all['tvl_delta'].sum()
-    _total_op_delivered = df_project_metrics_all['op_delivered'].sum()
+def _(df_project_metrics, mo):
+    _total_tvl_delta = df_project_metrics['tvl_delta'].sum()
+    _total_op_delivered = df_project_metrics['op_delivered'].sum()
     _avg_roi = _total_tvl_delta / _total_op_delivered if _total_op_delivered > 0 else 0
-    _positive_count = (df_project_metrics_all['tvl_delta'] > 0).sum()
-    _total_count = len(df_project_metrics_all)
-
-    # Format for display
+    _positive_count = (df_project_metrics['tvl_delta'] > 0).sum()
+    _total_count = len(df_project_metrics)
     if abs(_total_tvl_delta) >= 1_000_000:
         _tvl_str = f"${_total_tvl_delta/1e6:,.1f}M"
     else:
         _tvl_str = f"${_total_tvl_delta/1e3:,.0f}K"
 
-    headline_1 = f"S8 grants generated {_tvl_str} in net TVL change with ${_avg_roi:,.0f} TVL per OP delivered"
+    headline_1 = f"S8 grants have {_tvl_str} in overall TVL change (before applying any adjustments)"
 
     mo.vstack([
         mo.md(f"""
         ---
         ### **{headline_1}**
 
-        The program deployed **{_total_op_delivered:,.0f} OP** across **{_total_count} projects** with TVL data.
-        Of these, **{_positive_count}** showed positive TVL growth since their grant delivery date.
+        The program has deployed **{_total_op_delivered:,.0f} OP** across **{_total_count} projects** with TVL available on Defillama.
         """),
     ])
-    return (headline_1,)
+    return
 
 
 @app.cell(hide_code=True)
@@ -281,22 +234,22 @@ def _(
 
 
 @app.cell(hide_code=True)
-def _(PLOTLY_LAYOUT, df_project_metrics_all, go, mo):
+def _(PLOTLY_LAYOUT, df_project_metrics, go, mo):
     # Calculate positive/negative split and ROI distribution
-    _positive = df_project_metrics_all[df_project_metrics_all['tvl_delta'] > 0]
-    _negative = df_project_metrics_all[df_project_metrics_all['tvl_delta'] <= 0]
+    _positive = df_project_metrics[df_project_metrics['tvl_delta'] > 0]
+    _negative = df_project_metrics[df_project_metrics['tvl_delta'] <= 0]
     _positive_count = len(_positive)
     _negative_count = len(_negative)
-    _total = len(df_project_metrics_all)
+    _total = len(df_project_metrics)
 
     # Best and worst ROI
-    _best_roi_proj = df_project_metrics_all.loc[df_project_metrics_all['roi'].idxmax()] if not df_project_metrics_all.empty else None
-    _worst_roi_proj = df_project_metrics_all.loc[df_project_metrics_all['roi'].idxmin()] if not df_project_metrics_all.empty else None
+    _best_roi_proj = df_project_metrics.loc[df_project_metrics['roi'].idxmax()] if not df_project_metrics.empty else None
+    _worst_roi_proj = df_project_metrics.loc[df_project_metrics['roi'].idxmin()] if not df_project_metrics.empty else None
 
     headline_5 = f"{_positive_count} of {_total} projects show positive TVL growth since receiving grants"
 
     # Create ROI bar chart with positive/negative coloring
-    _df_roi = df_project_metrics_all[['title', 'roi']].copy()
+    _df_roi = df_project_metrics[['title', 'roi']].copy()
     _df_roi = _df_roi.sort_values('roi', ascending=True)
     _df_roi['color'] = _df_roi['roi'].apply(lambda x: '#00D395' if x > 0 else '#FF0420')
 
@@ -319,17 +272,19 @@ def _(PLOTLY_LAYOUT, df_project_metrics_all, go, mo):
         """),
         mo.ui.plotly(_fig, config={'displayModeBar': False})
     ])
-    return (headline_5,)
+    return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""
+    mo.md(
+        r"""
     ---
     ## Part 2: Project Deep Dives
 
     Each section below shows individual project performance, measured from their OP delivery date.
-    """)
+    """
+    )
     return
 
 
@@ -338,20 +293,15 @@ def _(
     PROGRAM_END_DATE,
     PROGRAM_START_DATE,
     df_metrics,
-    df_project_metrics_part2,
+    df_project_metrics_with_tvl,
     get_chain_color,
     get_stacked_area_layout,
     go,
     mo,
     pd,
 ):
-    # Generate project deep dive sections
     _sections = []
-
-    # Sort by ROI descending
-    _df_sorted = df_project_metrics_part2.sort_values('roi', ascending=False)
-
-    # Format program end date for display
+    _df_sorted = df_project_metrics_with_tvl.sort_values('roi', ascending=False)
     _end_date_str = PROGRAM_END_DATE
 
     for _, _row in _df_sorted.iterrows():
@@ -387,7 +337,6 @@ def _(
         else:
             _op_delivered_str = f"{_op_delivered:,.0f}"
 
-        # Format chains list
         if isinstance(_chains, list):
             _chains_str = ", ".join(_chains)
         elif isinstance(_chains, str) and _chains:
@@ -407,7 +356,6 @@ def _(
         _attribution_pct = 100
         _attribution_desc = f"**Attribution: {_attribution_pct}%** · Assumes all TVL change is due to the grant (no co-incentive adjustment)"
 
-        # Create metric cards
         _baseline_card = mo.md(f"""
     <div style="padding: 12px; border: 1px solid #ddd; border-radius: 4px; background: #fafafa;">
     <div style="font-size: 11px; color: #666; text-transform: uppercase; margin-bottom: 4px;">Baseline TVL</div>
@@ -424,7 +372,6 @@ def _(
     </div>
     """)
 
-        # Color code the change
         _change_color = "#00D395" if _tvl_delta > 0 else "#FF0420"
         _change_symbol = "+" if _tvl_delta >= 0 else ""
         _change_card = mo.md(f"""
@@ -435,7 +382,6 @@ def _(
     </div>
     """)
 
-        # Highlight ROI
         _roi_color = "#00D395" if _roi > 0 else "#FF0420"
         _roi_symbol = "+" if _roi >= 0 else ""
         _roi_card = mo.md(f"""
@@ -446,20 +392,17 @@ def _(
     </div>
     """)
 
-        # Get TVL time series for this project
         _proj_tvl = df_metrics[
             (df_metrics['project_title'] == _project) &
             (df_metrics['metric_display_name'] == 'Defillama TVL')
         ].copy()
 
-        # Create TVL chart if data exists
         if not _proj_tvl.empty:
             _proj_tvl = _proj_tvl.sort_values(['sample_date', 'chain'])
             _chart_chains = _proj_tvl['chain'].unique()
 
             _fig = go.Figure()
 
-            # Add stacked area for each chain
             for _i, _chain in enumerate(_chart_chains):
                 _chain_data = _proj_tvl[_proj_tvl['chain'] == _chain].sort_values('sample_date')
                 _color = get_chain_color(_chain, _i)
@@ -537,14 +480,16 @@ def _(
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""
+    mo.md(
+        r"""
     ---
     ## Methodology
 
     ### Data Collection
-    - Metrics sourced from OSO Community space (`oso_community.karma.timeseries_metrics_by_project`)
-    - Grant delivery dates from Optimism grants tracker (`optimism.grants.s8_artifacts_by_project`)
-    - Part 2 deep dives filtered to projects with TVL > $1
+    - Key assumptions tracked in this [Google Sheet](https://docs.google.com/spreadsheets/d/1E8Cz_3SFhxrrMEiNMI4yChgM6DfwtSRKVCXPGf7xf_U/edit?usp=sharing)
+    - Project data comes from Karma
+    - OSO project files include Defillama adapters and Superchain addresses linked to projects
+    - Defillama data is currently fetched on a weekly basis
 
     ### Baseline Calculation
     - Each project's baseline is calculated using the 7-day average TVL centered around their OP delivery date
@@ -562,7 +507,7 @@ def _(mo):
 
     ### Metrics
     - **TVL**: Total Value Locked from DefiLlama via OSO pipeline
-    - **User Operations**: Transaction count on Superchain networks
+    - **Transaction Fees**: Transaction fees on Superchain networks (ETH)
     - **ROI**: TVL change per OP token delivered ($/OP)
 
     ### Limitations
@@ -570,11 +515,12 @@ def _(mo):
     - Some projects may have incomplete data coverage
     - Market conditions not isolated
     - OP token price fluctuations not accounted for
-    """)
+    """
+    )
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _():
     # Configuration constants
     ANALYSIS_START_DATE = "2025-09-01"
@@ -609,29 +555,19 @@ def _():
         'rgba(129, 140, 248, 0.7)',  # Indigo-light
     ]
 
-    # Chain color mapping with transparency (official brand colors, muted)
+    # Superchain network colors (official brand colors with transparency)
     CHAIN_COLORS = {
         'OP Mainnet': 'rgba(255, 4, 32, 0.7)',
         'Base': 'rgba(0, 82, 255, 0.7)',
-        'Unichain': 'rgba(255, 0, 122, 0.7)',
         'Mode': 'rgba(223, 254, 0, 0.7)',
         'Ink': 'rgba(123, 63, 228, 0.7)',
+        'Lisk': 'rgba(0, 51, 204, 0.7)',
         'Soneium': 'rgba(80, 80, 80, 0.7)',
         'Swell': 'rgba(21, 180, 193, 0.7)',
         'Swellchain': 'rgba(21, 180, 193, 0.7)',
-        'Ethereum': 'rgba(98, 126, 234, 0.7)',
-        'Lisk': 'rgba(0, 51, 204, 0.7)',
-        'Superseed': 'rgba(0, 211, 149, 0.7)',
+        'Unichain': 'rgba(255, 0, 122, 0.7)',
         'Worldchain': 'rgba(80, 80, 80, 0.7)',
-        'Arbitrum': 'rgba(40, 160, 240, 0.7)',
-        'Polygon': 'rgba(130, 71, 229, 0.7)',
-        'Avalanche': 'rgba(232, 65, 66, 0.7)',
-        'BNB Chain': 'rgba(240, 185, 11, 0.7)',
-        'Fantom': 'rgba(25, 105, 255, 0.7)',
-        'Gnosis': 'rgba(4, 121, 91, 0.7)',
-        'Zora': 'rgba(91, 91, 214, 0.7)',
-        'Redstone': 'rgba(249, 65, 68, 0.7)',
-        'Cyber': 'rgba(0, 200, 0, 0.7)',
+        'Bob': 'rgba(255, 165, 0, 0.7)',
     }
     return (
         ANALYSIS_END_DATE,
@@ -703,7 +639,7 @@ def _(CHAIN_COLORS, PLOTLY_LAYOUT, PROJECT_COLORS):
     return get_chain_color, get_stacked_area_layout
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(mo, pyoso_db_conn):
     # Load grant metadata from optimism.grants
     df_grants_raw = mo.sql(
@@ -727,12 +663,13 @@ def _(mo, pyoso_db_conn):
           AND p.title NOT LIKE '%TEST%'
         ORDER BY UPPER(p.title)
         """,
+        output=False,
         engine=pyoso_db_conn
     )
     return (df_grants_raw,)
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(ANALYSIS_END_DATE, ANALYSIS_START_DATE, mo, pyoso_db_conn):
     # Load metrics from oso_community.karma
     df_metrics_raw = mo.sql(
@@ -747,12 +684,13 @@ def _(ANALYSIS_END_DATE, ANALYSIS_START_DATE, mo, pyoso_db_conn):
         WHERE sample_date BETWEEN DATE('{ANALYSIS_START_DATE}') AND DATE('{ANALYSIS_END_DATE}')
         ORDER BY sample_date, project_title
         """,
+        output=False,
         engine=pyoso_db_conn
     )
     return (df_metrics_raw,)
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(df_grants_raw, df_metrics_raw, pd):
     # Process grants data
     df_grants = df_grants_raw.copy()
@@ -826,48 +764,10 @@ def _(df_grants_raw, df_metrics_raw, pd):
     df_metrics = df_metrics_unfiltered[
         df_metrics_unfiltered.apply(is_valid_project_chain, axis=1)
     ].copy()
-    return df_grants, df_metrics, df_metrics_unfiltered, project_chain_map
+    return df_grants, df_metrics
 
 
 @app.cell(hide_code=True)
-def _(df_grants, df_metrics, df_metrics_unfiltered, mo, project_chain_map):
-    # Diagnostic: Show chain filtering summary
-    _total_unfiltered = len(df_metrics_unfiltered)
-    _total_filtered = len(df_metrics)
-    _pct_kept = (_total_filtered / _total_unfiltered * 100) if _total_unfiltered > 0 else 0
-
-    # Show per-project chain matching
-    _diagnostics = []
-    for _project, _allowed in sorted(project_chain_map.items()):
-        _grant_row = df_grants[df_grants['title'] == _project]
-        _grant_chains = _grant_row['chains'].iloc[0] if not _grant_row.empty else []
-        _metric_chains = df_metrics[df_metrics['project_title'] == _project]['chain'].unique().tolist()
-        _unfiltered_chains = df_metrics_unfiltered[df_metrics_unfiltered['project_title'] == _project]['chain'].unique().tolist()
-        _filtered_out = set(_unfiltered_chains) - set(_metric_chains)
-
-        if _metric_chains or _filtered_out:
-            _diagnostics.append({
-                'project': _project,
-                'grant_chains': _grant_chains if isinstance(_grant_chains, list) else str(_grant_chains),
-                'matched_chains': _metric_chains,
-                'filtered_out': list(_filtered_out)
-            })
-
-    mo.accordion({
-        "Chain Filtering Diagnostics": mo.md(f"""
-    **Summary**: Kept {_total_filtered:,} of {_total_unfiltered:,} metric rows ({_pct_kept:.1f}%)
-
-    **Per-Project Chain Matching** (showing projects with metric data):
-    """ + "\n".join([
-            f"- **{d['project']}**: grant={d['grant_chains']} → matched={d['matched_chains']}" +
-            (f" ⚠️ filtered out={d['filtered_out']}" if d['filtered_out'] else "")
-            for d in _diagnostics[:20]
-        ]))
-    })
-    return
-
-
-@app.cell
 def _(MIN_TVL_THRESHOLD, df_metrics):
     # Build project lists from latest TVL snapshots
     df_tvl = df_metrics[df_metrics['metric_display_name'] == 'Defillama TVL'].copy()
@@ -886,7 +786,7 @@ def _(MIN_TVL_THRESHOLD, df_metrics):
     return (all_projects,)
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(df_grants, df_metrics):
     # Calculate program dates from data
     _delivery_dates = df_grants['initial_delivery_date'].dropna()
@@ -894,10 +794,10 @@ def _(df_grants, df_metrics):
     PROGRAM_START_DATE = _delivery_dates.min().strftime('%Y-%m-%d') if len(_delivery_dates) > 0 else "2025-06-01"
     PROGRAM_END_DATE = df_metrics['sample_date'].max().strftime('%Y-%m-%d')
     total_projects = len(df_grants)
-    return PROGRAM_END_DATE, PROGRAM_START_DATE, total_projects
+    return PROGRAM_END_DATE, PROGRAM_START_DATE
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(
     MIN_TVL_THRESHOLD,
     PROGRAM_START_DATE,
@@ -979,12 +879,12 @@ def _(
             'defillama_adapters': _grant_row.get('defillama_adapters', '')
         })
 
-    df_project_metrics_all = pd.DataFrame(_project_metrics)
-    if df_project_metrics_all.empty:
-        df_project_metrics_part2 = df_project_metrics_all.copy()
+    df_project_metrics = pd.DataFrame(_project_metrics)
+    if df_project_metrics.empty:
+        df_project_metrics_with_tvl = df_project_metrics.copy()
     else:
-        df_project_metrics_part2 = df_project_metrics_all[df_project_metrics_all['current_tvl'] > MIN_TVL_THRESHOLD].copy()
-    return df_project_metrics_all, df_project_metrics_part2
+        df_project_metrics_with_tvl = df_project_metrics[df_project_metrics['current_tvl'] > MIN_TVL_THRESHOLD].copy()
+    return df_project_metrics, df_project_metrics_with_tvl
 
 
 @app.cell(hide_code=True)
