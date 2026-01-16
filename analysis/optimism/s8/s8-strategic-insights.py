@@ -314,6 +314,7 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(
     PROGRAM_END_DATE,
+    PROGRAM_START_DATE,
     df_metrics,
     df_project_metrics,
     get_chain_color,
@@ -345,7 +346,6 @@ def _(
         _chains = _row['chains']
         _karma_page = _row['karma_page']
         _oso_artifacts = _row['oso_project_artifacts']
-        _defillama_adapters = _row['defillama_adapters']
 
         # Format OP total for display (e.g., 500K, 1.2M)
         if _op_total >= 1_000_000:
@@ -355,6 +355,16 @@ def _(
         else:
             _op_total_str = f"{_op_total:,.0f}"
 
+        # Format OP delivered for display
+        if _op_delivered >= 1_000_000:
+            _op_delivered_str = f"{_op_delivered/1e6:.1f}M"
+        elif _op_delivered >= 1_000:
+            _op_delivered_str = f"{_op_delivered/1e3:.0f}K"
+        elif pd.isna(_op_delivered):
+            _op_delivered_str = "0"
+        else:
+            _op_delivered_str = f"{_op_delivered:,.0f}"
+
         # Format chains list
         if isinstance(_chains, list):
             _chains_str = ", ".join(_chains)
@@ -363,31 +373,56 @@ def _(
         else:
             _chains_str = "—"
 
-        # Format delivery date
-        _delivery_str = _delivery_date.strftime('%Y-%m-%d') if pd.notna(_delivery_date) else "—"
+        # Use delivery date for baseline, or default to program start
+        _baseline_date = _delivery_date if pd.notna(_delivery_date) else pd.to_datetime(PROGRAM_START_DATE)
+        _baseline_str = _baseline_date.strftime('%Y-%m-%d')
+
+        # Calculate days between baseline and current
+        _current_date = pd.to_datetime(PROGRAM_END_DATE)
+        _days_elapsed = (_current_date - _baseline_date).days
 
         # Attribution (currently 100% for all projects)
         _attribution_pct = 100
-        _attribution_desc = f"**{_attribution_pct}%** · Assumes all TVL change is due to the grant (no co-incentive adjustment)"
+        _attribution_desc = f"**Attribution: {_attribution_pct}%** · Assumes all TVL change is due to the grant (no co-incentive adjustment)"
 
-        # Create KPI markdown table with dates
-        _kpi_table = f"""
-| Metric | Date | Value |
-|--------|------|------:|
-| Baseline TVL | {_delivery_str} | ${_baseline_tvl:,.0f} |
-| Current TVL | {_end_date_str} | ${_current_tvl:,.0f} |
-| TVL Change | — | ${_tvl_delta:+,.0f} |
-| **ROI ($/OP)** | — | **${_roi:,.0f}** |
-"""
+        # Create metric cards
+        _baseline_card = mo.md(f"""
+<div style="padding: 12px; border: 1px solid #ddd; border-radius: 4px; background: #fafafa;">
+<div style="font-size: 11px; color: #666; text-transform: uppercase; margin-bottom: 4px;">Baseline TVL</div>
+<div style="font-size: 18px; font-weight: 600; margin-bottom: 4px;">${_baseline_tvl/1e6:,.1f}M</div>
+<div style="font-size: 11px; color: #888;">{_baseline_str}</div>
+</div>
+""")
 
-        # Build DefiLlama adapters links
-        _defillama_links = []
-        if _defillama_adapters:
-            for _adapter in str(_defillama_adapters).split(','):
-                _adapter = _adapter.strip()
-                if _adapter:
-                    _defillama_links.append(f"[{_adapter}](https://defillama.com/protocol/{_adapter})")
-        _defillama_md = ", ".join(_defillama_links) if _defillama_links else "—"
+        _current_card = mo.md(f"""
+<div style="padding: 12px; border: 1px solid #ddd; border-radius: 4px; background: #fafafa;">
+<div style="font-size: 11px; color: #666; text-transform: uppercase; margin-bottom: 4px;">Current TVL</div>
+<div style="font-size: 18px; font-weight: 600; margin-bottom: 4px;">${_current_tvl/1e6:,.1f}M</div>
+<div style="font-size: 11px; color: #888;">{_end_date_str}</div>
+</div>
+""")
+
+        # Color code the change
+        _change_color = "#00D395" if _tvl_delta > 0 else "#FF0420"
+        _change_symbol = "+" if _tvl_delta >= 0 else ""
+        _change_card = mo.md(f"""
+<div style="padding: 12px; border: 1px solid #ddd; border-radius: 4px; background: #fafafa;">
+<div style="font-size: 11px; color: #666; text-transform: uppercase; margin-bottom: 4px;">TVL Change</div>
+<div style="font-size: 18px; font-weight: 600; color: {_change_color}; margin-bottom: 4px;">{_change_symbol}${_tvl_delta/1e6:,.1f}M</div>
+<div style="font-size: 11px; color: #888;">over {_days_elapsed} days</div>
+</div>
+""")
+
+        # Highlight ROI
+        _roi_color = "#00D395" if _roi > 0 else "#FF0420"
+        _roi_symbol = "+" if _roi >= 0 else ""
+        _roi_card = mo.md(f"""
+<div style="padding: 12px; border: 2px solid {_roi_color}; border-radius: 4px; background: #fafafa;">
+<div style="font-size: 11px; color: #666; text-transform: uppercase; margin-bottom: 4px;">ROI ($/OP)</div>
+<div style="font-size: 20px; font-weight: 700; color: {_roi_color}; margin-bottom: 4px;">{_roi_symbol}${_roi:,.0f}</div>
+<div style="font-size: 11px; color: #888;">TVL per OP delivered</div>
+</div>
+""")
 
         # Get TVL time series for this project
         _proj_tvl = df_metrics[
@@ -415,10 +450,10 @@ def _(
                     stackgroup='tvl',
                     line=dict(width=0.5, color=_color),
                     fillcolor=_color,
-                    showlegend=True  # Always show legend
+                    showlegend=True
                 ))
 
-            # Add vertical line at delivery date
+            # Add vertical line at delivery date with annotation
             if pd.notna(_delivery_date):
                 _fig.add_shape(
                     type="line",
@@ -427,48 +462,50 @@ def _(
                     y0=0,
                     y1=1,
                     yref="paper",
-                    line=dict(color="gray", dash="dash", width=1)
+                    line=dict(color="#666", dash="dash", width=2)
+                )
+
+                # Add annotation label for delivery date
+                _fig.add_annotation(
+                    x=_delivery_date.to_pydatetime(),
+                    y=1,
+                    yref="paper",
+                    text="Grant Delivery",
+                    showarrow=False,
+                    yshift=10,
+                    font=dict(size=10, color="#666"),
+                    bgcolor="white",
+                    bordercolor="#666",
+                    borderwidth=1,
+                    borderpad=4
                 )
 
             _layout = get_stacked_area_layout(y_title='TVL ($)', right_margin=100)
-            _layout['height'] = 250
-            _layout['showlegend'] = True  # Always show legend
+            _layout['height'] = 280
+            _layout['showlegend'] = True
             _fig.update_layout(**_layout)
 
             _chart_element = mo.ui.plotly(_fig, config={'displayModeBar': False})
         else:
             _chart_element = mo.md("*No TVL data available*")
 
-        # Build left column content
-        _left_content = mo.md(f"""
-[View on Karma]({_karma_page})
-
-**Grant Size:** {_op_total_str} OP · **Status:** {_status}
-
-**Targeted Chains:** {_chains_str}
-
-{_kpi_table}
-
-**Attribution:** {_attribution_desc}
-
----
-
-**OSO Project:** [View artifacts]({_oso_artifacts})
-
-**DefiLlama Adapters:** {_defillama_md}
-""")
-
-        # Build section
+        # Build section with vertical flow
         _section = mo.vstack([
             mo.md(f"""
 ---
 ### {_title}
+[View Karma Application]({_karma_page}) | [View OSO Project Definition]({_oso_artifacts})<br>
+**Grant Size:** {_op_total_str} OP · **OP Delivered:** {_op_delivered_str} OP · **Status:** {_status} · **Targeted Chains:** {_chains_str}
 """),
             mo.hstack([
-                _left_content,
-                _chart_element
-            ], widths=[1, 3], gap=2)
-        ])
+                _baseline_card,
+                _current_card,
+                _change_card,
+                _roi_card
+            ], widths="equal", gap=1),
+            _chart_element,
+            mo.md(f"<small style='color: #666;'>{_attribution_desc}</small>")
+        ], gap=0.8)
 
         _sections.append(_section)
 
@@ -830,7 +867,7 @@ def _(MIN_TVL_THRESHOLD, df_metrics):
 @app.cell
 def _(df_grants, df_metrics, qualified_projects):
     # Calculate program dates from data
-    _delivery_dates = df_grants[df_grants['oso_project_slug'].isin(qualified_projects)]['initial_delivery_date'].dropna()
+    _delivery_dates = df_grants[df_grants['title'].isin(qualified_projects)]['initial_delivery_date'].dropna()
 
     PROGRAM_START_DATE = _delivery_dates.min().strftime('%Y-%m-%d') if len(_delivery_dates) > 0 else "2025-06-01"
     PROGRAM_END_DATE = df_metrics['sample_date'].max().strftime('%Y-%m-%d')
@@ -839,7 +876,7 @@ def _(df_grants, df_metrics, qualified_projects):
 
 
 @app.cell
-def _(df_grants, df_metrics, pd, qualified_projects):
+def _(PROGRAM_START_DATE, df_grants, df_metrics, pd, qualified_projects):
     # Calculate ROI metrics for each qualified project
     # Baseline = TVL at delivery date, Current = latest TVL, ROI = Delta / OP delivered
 
@@ -868,15 +905,17 @@ def _(df_grants, df_metrics, pd, qualified_projects):
         if _proj_tvl.empty:
             continue
 
-        # Calculate baseline TVL (7-day avg around delivery date)
+        # Calculate baseline TVL (7-day avg around delivery date, or program start if no delivery date)
         if pd.notna(_delivery_date):
-            _baseline_window = _proj_tvl[
-                (_proj_tvl['sample_date'] >= _delivery_date - pd.Timedelta(days=3)) &
-                (_proj_tvl['sample_date'] <= _delivery_date + pd.Timedelta(days=3))
-            ]
-            _baseline_tvl = _baseline_window['amount'].mean() if not _baseline_window.empty else 0
+            _baseline_date = _delivery_date
         else:
-            _baseline_tvl = _proj_tvl['amount'].iloc[0] if not _proj_tvl.empty else 0
+            _baseline_date = pd.to_datetime(PROGRAM_START_DATE)
+
+        _baseline_window = _proj_tvl[
+            (_proj_tvl['sample_date'] >= _baseline_date - pd.Timedelta(days=3)) &
+            (_proj_tvl['sample_date'] <= _baseline_date + pd.Timedelta(days=3))
+        ]
+        _baseline_tvl = _baseline_window['amount'].mean() if not _baseline_window.empty else 0
 
         # Calculate current TVL (latest 7-day avg)
         _latest_date = _proj_tvl['sample_date'].max()
