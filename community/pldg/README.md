@@ -13,7 +13,7 @@ Each notebook audits a different part of the OSO data warehouse, documenting dat
 ### Prerequisites
 
 - Python 3.10+ with `uv` installed ([install uv](https://docs.astral.sh/uv/))
-- OSO API key from [oso.xyz](https://www.oso.xyz/app/settings)
+- OSO API key from [oso.xyz](https://www.oso.xyz/app/settings/api)
 - Knowledge of SQL and Python for data science
 
 ### Setup
@@ -39,7 +39,7 @@ echo "OSO_API_KEY=your_api_key_here" > .env
 uv run marimo edit health_check_template.py
 ```
 
-**Get your API key:** Visit [oso.xyz/app/settings](https://www.oso.xyz/app/settings) → API Keys → "+ New"
+**Get your API key:** Visit [oso.xyz/app/settings/api](https://www.oso.xyz/app/settings/api) → API Keys → "+ New"
 
 ---
 

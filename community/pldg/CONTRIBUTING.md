@@ -309,7 +309,7 @@ Before creating your gist, verify:
 
 1. **Create a public GitHub gist** with your notebook file
 
-2. **Comment on the [PLDG Tracking Issue](TBD)** with:
+2. **[Create a new submission issue](https://github.com/opensource-observer/insights/issues/new?template=pldg-data-submission.md)** with:
    - Link to your gist
    - Data source audited
    - 2-3 sentence summary of key findings
@@ -370,7 +370,7 @@ Once a maintainer approves your gist:
 
 5. **Create PR:**
    - Use GitHub UI or `gh pr create`
-   - Reference the tracking issue in the description
+   - Reference your submission issue in the description
    - Link to your approved gist
    - Wait for final review and merge
 
@@ -597,7 +597,7 @@ See the [marimo error documentation](https://docs.marimo.io/guides/understanding
 ## Questions?
 
 - **Discord**: Ask in #pldg-onboarding
-- **GitHub**: Comment on the tracking issue
+- **GitHub**: Create a [submission issue](https://github.com/opensource-observer/insights/issues/new?template=pldg-data-submission.md)
 - **Marimo Docs**: https://docs.marimo.io
 - **OSO Docs**: https://docs.oso.xyz
 
