@@ -1,6 +1,8 @@
 # Developer Data Portal
 
-A dashboard application that serves marimo notebooks through a Next.js interface with sidebar navigation.
+A lightweight data app that serves marimo notebooks through a Next.js interface.
+
+<img width="2548" height="1207" alt="image" src="https://github.com/user-attachments/assets/12cc33ed-6952-4aba-971b-8cb77323f483" />
 
 ## Structure
 
