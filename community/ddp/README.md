@@ -22,7 +22,7 @@ A lightweight data app that serves marimo notebooks through a Next.js interface.
 
 - Node.js 20+ and pnpm (or npm)
 - uv (Python package manager)
-- OSO API key (get it from https://opensource.observer)
+- OSO API key (get it from [OSO](https://www.oso.xyz))
 
 ### Setup
 
