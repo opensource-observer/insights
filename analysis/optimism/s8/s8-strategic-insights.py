@@ -6,20 +6,20 @@ app = marimo.App(width="full")
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     # S8 Grants Council - TVL Intent - Observational Impact Analysis
-    <small>Owner: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">OSO</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">2026-01-16</span></small>
+    <small>Owner: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">OSO</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">2026-01-21</span></small>
 
     This report provides transparency into the S8 Grants Council program performance, measuring TVL and (soon) revenue impact for grant recipients.
-    """
-    )
+    """)
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""## Part 1: Program Overview""")
+    mo.md(r"""
+    ## Part 1: Program Overview
+    """)
     return
 
 
@@ -277,14 +277,12 @@ def _(PLOTLY_LAYOUT, df_project_metrics, go, mo):
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ---
     ## Part 2: Project Deep Dives
 
     Each section below shows individual project performance, measured from their OP delivery date.
-    """
-    )
+    """)
     return
 
 
@@ -293,6 +291,7 @@ def _(
     PROGRAM_END_DATE,
     PROGRAM_START_DATE,
     df_metrics,
+    df_op_balance_daily,
     df_project_metrics_with_tvl,
     get_chain_color,
     get_stacked_area_layout,
@@ -318,6 +317,8 @@ def _(
         _chains = _row['chains']
         _karma_page = _row['karma_page']
         _oso_artifacts = _row['oso_project_artifacts']
+        _l2_address = _row.get('l2_address', None)
+        _est_op_balance = _row.get('est_op_balance', None)
 
         # Format OP total for display (e.g., 500K, 1.2M)
         if _op_total >= 1_000_000:
@@ -336,6 +337,19 @@ def _(
             _op_delivered_str = "0"
         else:
             _op_delivered_str = f"{_op_delivered:,.0f}"
+
+        # Format Est OP Balance for display (show 0 if balance is zero)
+        if pd.notna(_est_op_balance):
+            if _est_op_balance >= 1_000_000:
+                _est_op_balance_str = f"{_est_op_balance/1e6:.1f}M"
+            elif _est_op_balance >= 1_000:
+                _est_op_balance_str = f"{_est_op_balance/1e3:.0f}K"
+            elif _est_op_balance > 0:
+                _est_op_balance_str = f"{_est_op_balance:,.0f}"
+            else:
+                _est_op_balance_str = "0"
+        else:
+            _est_op_balance_str = None
 
         if isinstance(_chains, list):
             _chains_str = ", ".join(_chains)
@@ -397,6 +411,11 @@ def _(
             (df_metrics['metric_display_name'] == 'Defillama TVL')
         ].copy()
 
+        # Get OP balance data for this project (keyed by title)
+        _proj_balance = df_op_balance_daily[
+            df_op_balance_daily['project_name'] == _title
+        ].copy() if not df_op_balance_daily.empty else pd.DataFrame()
+
         if not _proj_tvl.empty:
             _proj_tvl = _proj_tvl.sort_values(['sample_date', 'chain'])
             _chart_chains = _proj_tvl['chain'].unique()
@@ -415,7 +434,21 @@ def _(
                     stackgroup='tvl',
                     line=dict(width=0.5, color=_color),
                     fillcolor=_color,
-                    showlegend=True
+                    showlegend=True,
+                    yaxis='y'
+                ))
+
+            # Add OP balance line on secondary Y axis (if data exists)
+            if not _proj_balance.empty:
+                _proj_balance = _proj_balance.sort_values('date')
+                _fig.add_trace(go.Scatter(
+                    x=_proj_balance['date'],
+                    y=_proj_balance['op_balance'],
+                    mode='lines',
+                    name='OP Balance',
+                    line=dict(width=3, color='black', shape='hvh'),
+                    showlegend=True,
+                    yaxis='y2'
                 ))
 
             # Add vertical line at delivery date with annotation
@@ -445,22 +478,63 @@ def _(
                     borderpad=4
                 )
 
-            _layout = get_stacked_area_layout(y_title='TVL ($)', right_margin=100)
+            _layout = get_stacked_area_layout(y_title='TVL ($)', right_margin=40)
             _layout['height'] = 280
             _layout['showlegend'] = True
+            # Move legend to top horizontal
+            _layout['legend'] = dict(
+                orientation='h',
+                yanchor='bottom',
+                y=1.02,
+                xanchor='left',
+                x=0,
+                bgcolor='rgba(255,255,255,0.9)'
+            )
+            # Add secondary Y axis for OP balance (no ticks/labels, range starts at 0)
+            _layout['yaxis2'] = dict(
+                overlaying='y',
+                side='right',
+                showgrid=False,
+                showticklabels=False,
+                showline=False,
+                zeroline=False,
+                rangemode='tozero'
+            )
             _fig.update_layout(**_layout)
 
             _chart_element = mo.ui.plotly(_fig, config={'displayModeBar': False})
         else:
             _chart_element = mo.md("*No TVL data available*")
 
-        # Build section with vertical flow
+        # Build links line with optional L2 address
+        _links_parts = [
+            f"[View Karma Application]({_karma_page})",
+            f"[View OSO Project Definition]({_oso_artifacts})"
+        ]
+        if pd.notna(_l2_address) and _l2_address:
+            _etherscan_url = f"https://optimistic.etherscan.io/address/{_l2_address}"
+            _links_parts.append(f"[View L2 Address Activity]({_etherscan_url})")
+        _links_str = " | ".join(_links_parts)
+
+        # Build stats line with Status first (default to "Not Sent")
+        _status_display = _status if _status else "Not Sent"
+        _stats_parts = [
+            f"**Status:** {_status_display}",
+            f"**Grant Size:** {_op_total_str} OP",
+            f"**OP Delivered:** {_op_delivered_str} OP"
+        ]
+        if _est_op_balance_str is not None:
+            _stats_parts.append(f"**Est Balance:** {_est_op_balance_str} OP")
+        _stats_str = " · ".join(_stats_parts)
+
+        # Build section with vertical flow (Targeted Chains on separate line)
         _section = mo.vstack([
             mo.md(f"""
     ---
     ### {_title}
-    [View Karma Application]({_karma_page}) | [View OSO Project Definition]({_oso_artifacts})<br>
-    **Grant Size:** {_op_total_str} OP · **OP Delivered:** {_op_delivered_str} OP · **Status:** {_status} · **Targeted Chains:** {_chains_str}
+    {_links_str}<br>
+    {_stats_str}<br>
+    **Targeted Chains:** {_chains_str}
     """),
             mo.hstack([
                 _baseline_card,
@@ -480,8 +554,7 @@ def _(
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(
-        r"""
+    mo.md(r"""
     ---
     ## Methodology
 
@@ -490,6 +563,7 @@ def _(mo):
     - Project data comes from Karma
     - OSO project files include Defillama adapters and Superchain addresses linked to projects
     - Defillama data is currently fetched on a weekly basis
+    - OP token transfers are tracked via on-chain event logs from project L2 addresses
 
     ### Baseline Calculation
     - Each project's baseline is calculated using the 7-day average TVL centered around their OP delivery date
@@ -505,18 +579,25 @@ def _(mo):
 
     This measures the dollar value of TVL change attributable to each unit of OP distributed.
 
+    ### OP Balance Tracking
+    - **Est Balance**: Tracks OP token inflows and outflows for each project's L2 address
+    - Inflows are detected from the Optimism Grants Council address
+    - Outflows are any OP transfers out of the project's L2 address after receiving grants
+    - The chart displays the **daily peak balance** (maximum balance reached each day before outflows)
+    - Balance values are clamped to zero (negative balances not shown)
+
     ### Metrics
     - **TVL**: Total Value Locked from DefiLlama via OSO pipeline
-    - **Transaction Fees**: Transaction fees on Superchain networks (ETH)
+    - **OP Balance**: Estimated OP token balance in project's L2 address (daily peak)
     - **ROI**: TVL change per OP token delivered ($/OP)
 
     ### Limitations
     - Attribution assumes 100% of TVL change is due to the grant (no co-incentive adjustment in this view)
+    - OP Balance tracking only covers the designated L2 address; tokens moved to other wallets are counted as outflows
     - Some projects may have incomplete data coverage
     - Market conditions not isolated
     - OP token price fluctuations not accounted for
-    """
-    )
+    """)
     return
 
 
@@ -640,28 +721,29 @@ def _(CHAIN_COLORS, PLOTLY_LAYOUT, PROJECT_COLORS):
 
 
 @app.cell(hide_code=True)
-def _(mo, pyoso_db_conn):
+def fetch_project_data(mo, pyoso_db_conn):
     # Load grant metadata from optimism.grants
     df_grants_raw = mo.sql(
         f"""
         SELECT
-          p.title,
-          abp.status,
-          abp.op_total_amount,
-          abp.op_delivered,
-          abp.initial_delivery_date,
-          abp.chains,
-          ARRAY_JOIN(ARRAY_SORT(abp.defillama_adapters), ',') AS defillama_adapters,
-          p.oso_project_name AS oso_project_slug,
-          'https://gap.karmahq.xyz/project/' || p.slug AS karma_page,
-          'https://github.com/opensource-observer/oss-directory/tree/main/data/projects/' || SUBSTR(p.oso_project_name, 1, 1) || '/' || p.oso_project_name || '.yaml' AS oso_project_artifacts
-        FROM optimism.grants.s8_artifacts_by_project AS abp
-        JOIN oso_community.karma.projects AS p
-          ON abp.project_name = p.title
+          kp.title,
+          s8.status,
+          s8.op_total_amount,
+          s8.op_delivered,
+          s8.l2_address,
+          s8.initial_delivery_date,
+          s8.chains,
+          s8.defillama_slugs AS defillama_adapters,
+          kp.oso_project_name AS oso_project_slug,
+          'https://gap.karmahq.xyz/project/' || kp.slug AS karma_page,
+          'https://github.com/opensource-observer/oss-directory/tree/main/data/projects/' || SUBSTR(kp.oso_project_name, 1, 1) || '/' || kp.oso_project_name || '.yaml' AS oso_project_artifacts
+        FROM optimism.grants.s8_tvl__projects AS s8
+        JOIN oso_community.karma.projects AS kp
+          ON s8.project_name = kp.title
         WHERE
-          abp.op_total_amount > 0
-          AND p.title NOT LIKE '%TEST%'
-        ORDER BY UPPER(p.title)
+          s8.op_total_amount > 0
+          AND kp.title NOT LIKE '%TEST%'
+        ORDER BY UPPER(kp.title)
         """,
         output=False,
         engine=pyoso_db_conn
@@ -670,7 +752,12 @@ def _(mo, pyoso_db_conn):
 
 
 @app.cell(hide_code=True)
-def _(ANALYSIS_END_DATE, ANALYSIS_START_DATE, mo, pyoso_db_conn):
+def fetch_project_metrics(
+    ANALYSIS_END_DATE,
+    ANALYSIS_START_DATE,
+    mo,
+    pyoso_db_conn,
+):
     # Load metrics from oso_community.karma
     df_metrics_raw = mo.sql(
         f"""
@@ -688,6 +775,226 @@ def _(ANALYSIS_END_DATE, ANALYSIS_START_DATE, mo, pyoso_db_conn):
         engine=pyoso_db_conn
     )
     return (df_metrics_raw,)
+
+
+@app.cell(hide_code=True)
+def fetch_token_events(mo, pyoso_db_conn):
+    df_token_events = mo.sql(
+        f"""
+        WITH token_events AS (
+            WITH const AS (
+              SELECT CAST('18446744073709551616' AS DECIMAL(38,0)) AS two64
+            ),
+            events AS (
+              SELECT
+                l.block_timestamp,
+                l.transaction_hash,
+                l.log_index,
+                l.from_address AS tx_from_address,
+                l.to_address AS called_contract,
+                l.function_selector,
+                CASE
+                  WHEN CARDINALITY(l.indexed_args_list) >= 1
+                    AND l.indexed_args_list[1].element IS NOT NULL
+                    AND LENGTH(l.indexed_args_list[1].element) >= 66
+                  THEN LOWER(CONCAT('0x', SUBSTRING(l.indexed_args_list[1].element, 27)))
+                END AS op_from_address,
+                CASE
+                  WHEN CARDINALITY(l.indexed_args_list) >= 2
+                    AND l.indexed_args_list[2].element IS NOT NULL
+                    AND LENGTH(l.indexed_args_list[2].element) >= 66
+                  THEN LOWER(CONCAT('0x', SUBSTRING(l.indexed_args_list[2].element, 27)))
+                END AS op_to_address,
+                CASE
+                  WHEN l.data_hex IS NOT NULL
+                    AND l.data_hex <> '0x'
+                    AND LENGTH(l.data_hex) >= 66
+                  THEN
+                    CAST((
+                      (
+                        CASE
+                          WHEN from_big_endian_64(from_hex(SUBSTRING(LOWER(SUBSTRING(l.data_hex, 3)), 33, 16))) < 0
+                          THEN CAST(from_big_endian_64(from_hex(SUBSTRING(LOWER(SUBSTRING(l.data_hex, 3)), 33, 16))) AS DECIMAL(38,0)) + c.two64
+                          ELSE CAST(from_big_endian_64(from_hex(SUBSTRING(LOWER(SUBSTRING(l.data_hex, 3)), 33, 16))) AS DECIMAL(38,0))
+                        END
+                      ) * c.two64
+                      +
+                      (
+                        CASE
+                          WHEN from_big_endian_64(from_hex(SUBSTRING(LOWER(SUBSTRING(l.data_hex, 3)), 49, 16))) < 0
+                          THEN CAST(from_big_endian_64(from_hex(SUBSTRING(LOWER(SUBSTRING(l.data_hex, 3)), 49, 16))) AS DECIMAL(38,0)) + c.two64
+                          ELSE CAST(from_big_endian_64(from_hex(SUBSTRING(LOWER(SUBSTRING(l.data_hex, 3)), 49, 16))) AS DECIMAL(38,0))
+                        END
+                      )
+                    ) AS DOUBLE) / 1e18
+                  ELSE 0.0
+                END AS value_op
+              FROM oso.stg_optimism__enriched_logs AS l
+              CROSS JOIN const AS c
+              WHERE
+                l.contract_address = '0x4200000000000000000000000000000000000042'
+                AND l.topic0 = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef'
+                AND CARDINALITY(l.indexed_args_list) >= 2    
+            )
+            SELECT 
+              block_timestamp,
+              transaction_hash,
+              log_index,
+              tx_from_address,
+              called_contract,
+              function_selector,
+              op_from_address,
+              op_to_address,
+              value_op
+            FROM events    
+            WHERE block_timestamp >= DATE('2025-09-01')
+        ),
+
+        inflows AS (
+        	SELECT
+              op.block_timestamp,  
+              s8.project_name,
+              op.op_to_address AS project_address,
+              op.value_op,
+              'inflow' AS event_type,
+              op.transaction_hash,
+              op.function_selector
+            FROM token_events AS op
+            JOIN optimism.grants.s8_tvl__projects AS s8
+              ON op.op_to_address = LOWER(s8.l2_address)
+            WHERE op.op_from_address = LOWER('0x8A2725a6f04816A5274dDD9FEaDd3bd0C253C1A6')  
+        ),
+        first_inflow AS (
+            SELECT
+              project_address,
+              MIN(block_timestamp) AS block_timestamp 
+            FROM inflows
+            GROUP BY 1
+        ),
+        outflows AS (
+        	SELECT
+              op.block_timestamp,  
+              s8.project_name,
+              op.op_from_address AS project_address,
+              (-op.value_op) AS value_op,
+              'outflow' AS event_type,
+              op.transaction_hash,
+              op.function_selector    
+            FROM token_events AS op
+            JOIN optimism.grants.s8_tvl__projects AS s8
+              ON op.op_from_address = LOWER(s8.l2_address)
+            JOIN first_inflow
+              ON op.op_from_address = first_inflow.project_address
+            WHERE op.block_timestamp > first_inflow.block_timestamp 
+        ),
+        unioned AS (
+            SELECT * FROM inflows
+            UNION ALL
+            SELECT * FROM outflows
+        )
+        SELECT
+          project_name,
+          block_timestamp,    
+          value_op,
+          event_type,
+          project_address,    
+          transaction_hash,
+          function_selector
+        FROM unioned
+        ORDER BY project_name, block_timestamp
+        """,
+        output=False,
+        engine=pyoso_db_conn
+    )
+    return (df_token_events,)
+
+
+@app.cell(hide_code=True)
+def _(df_metrics, df_token_events, pd):
+    # Calculate daily OP balance time series with forward-fill
+    # Shows peak balance per day (max balance reached before any outflows)
+
+    if df_token_events.empty:
+        df_op_balance_daily = pd.DataFrame(columns=['project_name', 'date', 'op_balance'])
+        project_current_balance = {}
+    else:
+        # Get date range from metrics for consistent x-axis
+        _min_date = df_metrics['sample_date'].min()
+        _max_date = df_metrics['sample_date'].max()
+        _date_range = pd.date_range(start=_min_date, end=_max_date, freq='D')
+
+        # Calculate running balance per project with peak tracking
+        _df_events = df_token_events.copy()
+        _df_events['datetime'] = pd.to_datetime(_df_events['block_timestamp'])
+        _df_events['date'] = _df_events['datetime'].dt.date
+
+        _balance_records = []
+        _current_balances = {}
+        _projects = _df_events['project_name'].unique()
+
+        for _proj in _projects:
+            # Get all events for this project, sorted by timestamp
+            _proj_events = _df_events[_df_events['project_name'] == _proj].copy()
+            _proj_events = _proj_events.sort_values('datetime')
+
+            # Calculate running balance at each event
+            _proj_events['running_balance'] = _proj_events['value_op'].cumsum()
+
+            # Group by date: get peak (max) and ending (last) balance
+            _daily_stats = (
+                _proj_events
+                .groupby('date')
+                .agg(
+                    peak_balance=('running_balance', 'max'),
+                    end_balance=('running_balance', 'last')
+                )
+                .reset_index()
+            )
+            _daily_stats['date'] = pd.to_datetime(_daily_stats['date'])
+            _daily_stats = _daily_stats.set_index('date').sort_index()
+
+            # Get first date with positive balance
+            _first_positive = _daily_stats[_daily_stats['peak_balance'] > 0].index.min()
+            if pd.isna(_first_positive):
+                continue
+
+            # Include day before first inflow to show hvh step from 0
+            _day_before = _first_positive - pd.Timedelta(days=1)
+            _start_date = _day_before if _day_before >= _min_date else _first_positive
+
+            # Build daily series from day before first positive date
+            _proj_date_range = _date_range[_date_range >= _start_date]
+            if len(_proj_date_range) == 0:
+                continue
+
+            _proj_daily = pd.DataFrame({'date': _proj_date_range}).set_index('date')
+
+            # Merge with daily stats
+            _proj_daily = _proj_daily.join(_daily_stats)
+
+            # Forward-fill ending balance for days with no events
+            _proj_daily['end_balance'] = _proj_daily['end_balance'].ffill()
+
+            # For display: use peak if available, otherwise use forward-filled end balance
+            # Days before first inflow get 0, then clamp to 0 (no negative balances)
+            _proj_daily['op_balance'] = _proj_daily['peak_balance'].fillna(_proj_daily['end_balance']).fillna(0).clip(lower=0)
+
+            # Store current (actual) balance as the last ending balance (clamped to 0)
+            _last_end_balance = _proj_daily['end_balance'].dropna()
+            if not _last_end_balance.empty:
+                _current_balances[_proj] = max(0, _last_end_balance.iloc[-1])
+
+            for _date, _row in _proj_daily.iterrows():
+                if pd.notna(_row['op_balance']):
+                    _balance_records.append({
+                        'project_name': _proj,
+                        'date': _date,
+                        'op_balance': _row['op_balance']
+                    })
+
+        df_op_balance_daily = pd.DataFrame(_balance_records)
+        project_current_balance = _current_balances
+    return df_op_balance_daily, project_current_balance
 
 
 @app.cell(hide_code=True)
@@ -805,6 +1112,7 @@ def _(
     df_grants,
     df_metrics,
     pd,
+    project_current_balance,
 ):
     # Calculate ROI metrics for each project
     # Baseline = TVL at delivery date, Current = latest TVL, ROI = Delta / OP delivered
@@ -828,6 +1136,8 @@ def _(
         _delivery_date = _grant_row.get('initial_delivery_date')
         _op_delivered = _grant_row.get('op_delivered', 0) or 0
         _op_total = _grant_row.get('op_total_amount', 0) or 0
+        _l2_address = _grant_row.get('l2_address', None)
+        _title = _grant_row.get('title', _project)
 
         # Get TVL data for this project
         _proj_tvl = _df_tvl_all[_df_tvl_all['project_title'] == _project].copy()
@@ -861,9 +1171,12 @@ def _(
         _proj_userops = _df_userops_all[_df_userops_all['project_title'] == _project]
         _total_userops = _proj_userops['amount'].sum() if not _proj_userops.empty else 0
 
+        # Get estimated OP balance from token events (keyed by title/project_name)
+        _est_op_balance = project_current_balance.get(_title, None)
+
         _project_metrics.append({
             'project': _project,
-            'title': _grant_row.get('title', _project),
+            'title': _title,
             'delivery_date': _delivery_date,
             'op_delivered': _op_delivered,
             'op_total': _op_total,
@@ -876,7 +1189,9 @@ def _(
             'chains': _grant_row.get('chains', ''),
             'karma_page': _grant_row.get('karma_page', ''),
             'oso_project_artifacts': _grant_row.get('oso_project_artifacts', ''),
-            'defillama_adapters': _grant_row.get('defillama_adapters', '')
+            'defillama_adapters': _grant_row.get('defillama_adapters', ''),
+            'l2_address': _l2_address,
+            'est_op_balance': _est_op_balance
         })
 
     df_project_metrics = pd.DataFrame(_project_metrics)
