@@ -596,7 +596,7 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(OP_PRICE_USD, df_project_metrics_with_tvl, mo, pd):
+def _(OP_PRICE_USD, df_project_metrics_with_tvl, mo):
     # Part 3: Summary Stats
     # Program-level metrics with attribution
 
@@ -828,6 +828,7 @@ def _(mo):
 
     ### ROI Calculation
     **Unadjusted ROI** measures the total TVL change per OP delivered:
+
     $$
     \text{Unadjusted ROI} = \frac{\text{TVL Delta}}{\text{OP Delivered}}
     $$
@@ -1211,6 +1212,11 @@ def _(ATTRIBUTION_BUCKETS):
         """
         Calculate attribution percentage for a project's TVL change.
 
+        Attribution = MIN(Scope × Incentive Share, Cap)
+        where:
+        - Incentive Share = OP USD / (OP USD + Co-incentives USD)
+        - Cap = OP USD / Baseline TVL (only if attribution_cap_applied=True)
+
         Args:
             scope_pct: Fraction of TVL in scope (0.0 to 1.0)
             op_total_usd: USD value of OP grant
@@ -1226,7 +1232,7 @@ def _(ATTRIBUTION_BUCKETS):
         import math
 
         # Handle edge cases
-        if scope_pct is None or math.isnan(scope_pct) if isinstance(scope_pct, float) else False:
+        if scope_pct is None or (isinstance(scope_pct, float) and math.isnan(scope_pct)):
             scope_pct = 1.0  # Default to 100% scope if not specified
 
         if coincentives_usd is None or (isinstance(coincentives_usd, float) and math.isnan(coincentives_usd)):
@@ -1235,28 +1241,34 @@ def _(ATTRIBUTION_BUCKETS):
         if op_total_usd is None or op_total_usd <= 0:
             return (0.0, "No OP grant value")
 
-        # Calculate incentive share: OP / (OP + coincentives)
+        # Step 1: Calculate incentive share: OP / (OP + coincentives)
         total_incentives = op_total_usd + coincentives_usd
         incentive_share = op_total_usd / total_incentives
 
-        # Calculate raw attribution: scope * incentive_share
+        # Step 2: Calculate raw attribution: scope * incentive_share
         raw_attribution = scope_pct * incentive_share
 
-        # Apply cap if specified
+        # Step 3: Apply cap if specified
         if attribution_cap_applied and tvl and tvl > 0:
             # Cap based on grant size relative to TVL
             cap = min(1.0, op_total_usd / tvl)
             capped_attribution = min(raw_attribution, cap)
+            cap_was_applied = capped_attribution < raw_attribution
         else:
+            cap = None
             capped_attribution = raw_attribution
+            cap_was_applied = False
 
-        # Round to nearest bucket
+        # Step 4: Round to nearest bucket
         def round_to_bucket(value, buckets):
             """Round value to the nearest bucket."""
             if value <= 0:
                 return buckets[0]
             if value >= buckets[-1]:
                 return buckets[-1]
+            # Handle values smaller than smallest bucket
+            if value < buckets[0]:
+                return buckets[0]
 
             # Find the two buckets that value falls between
             for i in range(len(buckets) - 1):
@@ -1270,20 +1282,40 @@ def _(ATTRIBUTION_BUCKETS):
 
         final_pct = round_to_bucket(capped_attribution, ATTRIBUTION_BUCKETS)
 
-        # Build formula text
-        formula_parts = [f"scope={scope_pct:.0%}"]
-        formula_parts.append(f"incentive_share={incentive_share:.0%}")
-        formula_parts.append(f"raw={raw_attribution:.0%}")
-        if attribution_cap_applied:
-            formula_parts.append("cap_applied")
-        formula_parts.append(f"final={final_pct:.0%}")
-        formula_text = " × ".join(formula_parts[:2]) + f" = {raw_attribution:.0%}"
-        if attribution_cap_applied:
-            formula_text += f" (capped)"
-        formula_text += f" → {final_pct:.0%}"
+        # Build detailed formula text showing all intermediate values
+        # Format: "Cap = $X / $Y = Z% → W% | Incentive Share = $X / $Y = Z% | Scope = X% | Raw = X% × Y% = Z% | Final = MIN(X%, Y%) = Z% → W%"
+        formula_parts = []
+
+        # Cap calculation (if applicable)
+        if attribution_cap_applied and tvl and tvl > 0:
+            cap_raw_pct = op_total_usd / tvl
+            cap_bucket = round_to_bucket(min(1.0, cap_raw_pct), ATTRIBUTION_BUCKETS)
+            formula_parts.append(f"Cap = ${op_total_usd:,.0f} / ${tvl:,.0f} = {cap_raw_pct:.2%} → {cap_bucket:.0%}")
+        else:
+            formula_parts.append("Cap = N/A (not applied)")
+
+        # Incentive share
+        formula_parts.append(f"Incentive Share = ${op_total_usd:,.0f} / (${op_total_usd:,.0f} + ${coincentives_usd:,.0f}) = {incentive_share:.2%}")
+
+        # Scope
+        formula_parts.append(f"Scope = {scope_pct:.0%}")
+
+        # Raw attribution
+        formula_parts.append(f"Raw = {scope_pct:.0%} × {incentive_share:.2%} = {raw_attribution:.2%}")
+
+        # Final (with cap if applied)
+        if cap is not None and cap_was_applied:
+            formula_parts.append(f"Final = MIN({raw_attribution:.2%}, {cap:.2%}) = {capped_attribution:.2%} → {final_pct:.0%}")
+        else:
+            formula_parts.append(f"Final = {capped_attribution:.2%} → {final_pct:.0%}")
+
+        formula_text = " | ".join(formula_parts)
+
+        # Debug logging for verification
+        print(f"[Attribution Debug] scope={scope_pct:.2%}, op_usd=${op_total_usd:,.0f}, coincentives=${coincentives_usd:,.0f}, tvl=${tvl:,.0f if tvl else 0}, cap_applied={attribution_cap_applied}")
+        print(f"  -> incentive_share={incentive_share:.4f}, raw={raw_attribution:.4f}, capped={capped_attribution:.4f}, final={final_pct:.4f}")
 
         return (final_pct, formula_text)
-
     return (calculate_attribution,)
 
 
@@ -1413,8 +1445,7 @@ def _(EXPECTED_FIRST_INFLOWS, df_token_events, pd):
         _status = "✓ PASS" if _is_valid else "✗ FAIL"
         print(f"{_test_proj}: {_status} (expected {_expected_amt:,} OP, got {_actual:,.0f} OP, {_disc:.1%} discrepancy)")
     print("=" * 44)
-
-    return df_token_transfers_verified, get_first_inflow_date, verify_first_inflow
+    return (get_first_inflow_date,)
 
 
 @app.cell(hide_code=True)
@@ -1602,7 +1633,7 @@ def _(MIN_TVL_THRESHOLD, df_metrics):
 
 
 @app.cell(hide_code=True)
-def _(df_grants, df_metrics):
+def _(df_grants, df_metrics, pd):
     # Calculate program dates from data
     _delivery_dates = df_grants['initial_delivery_date'].dropna()
 
