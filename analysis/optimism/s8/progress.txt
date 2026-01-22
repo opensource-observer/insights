@@ -48,3 +48,16 @@ Started: Thu Jan 22 08:23:13 EST 2026
   - Undelivered grant detection uses `_op_delivered == 0` as primary check - more reliable than just checking dates
   - `baseline_date_source` values: 'undelivered', 'first_inflow', 'delivery_date', 'program_start'
 ---
+
+## 2026-01-22 - US-029
+- **What was implemented**: Updated deep dive chart annotation to show Baseline Date instead of Grant Delivery
+- **Changes made**:
+  - Replaced "Grant Delivery" annotation with "Baseline Date (source)" in chart
+  - Changed annotation position from `_delivery_date` to `_baseline_date` (the actual date used for calculations)
+  - Added `_source_labels` mapping for user-friendly display of baseline_date_source
+  - Added handling for 'undelivered' case in baseline footnote text
+- **Files changed**: s8-strategic-insights.py
+- **Learnings for future iterations:**
+  - The chart annotation uses `_baseline_date` (derived from `_project_baseline_date`) which is set earlier in the loop at line 365
+  - Source label mapping: 'first_inflow' → 'first inflow', 'delivery_date' → 'delivery', 'undelivered' → 'not yet delivered', 'program_start' → 'program start'
+---
