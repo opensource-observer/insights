@@ -48,7 +48,7 @@
         "Notebook runs without errors: marimo check s8-strategic-insights.py passes"
       ],
       "priority": 3,
-      "passes": false,
+      "passes": true,
       "notes": "Uses scope_pct, coincentives_usd, attribution_cap_applied from the joined df_grants data"
     },
     {

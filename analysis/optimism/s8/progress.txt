@@ -34,3 +34,18 @@ Started: Thu Jan 22 07:20:02 EST 2026
   - When adding new columns to df_project_metrics, also update the deep dives loop to extract them
   - Footnotes are added via the last mo.md element in the section vstack
 ---
+
+## 2026-01-22 - US-020
+- Added attribution calculation function to compute attribution percentages in the notebook
+- Added OP_PRICE_USD = 0.35 constant and ATTRIBUTION_BUCKETS = [0.01, 0.02, 0.05, 0.10, 0.20, 0.50, 1.0] constant
+- Created calculate_attribution(scope_pct, op_total_usd, coincentives_usd, tvl, attribution_cap_applied) function
+- Attribution logic: raw = scope_pct * (op_total_usd / (op_total_usd + coincentives_usd)), apply cap if specified, round to nearest bucket
+- Added 'calculated_attribution_pct' and 'calculated_formula' columns to df_project_metrics
+- Also added 'scope_pct', 'coincentives_usd', 'attribution_cap_applied' columns to df_project_metrics for transparency
+- Files changed: s8-strategic-insights.py, prd.json
+- **Learnings for future iterations:**
+  - Attribution data (scope_pct, coincentives_usd, attribution_cap_applied) comes from df_grants which joins with optimism.govfund.s8_attribution
+  - The calculate_attribution function needs ATTRIBUTION_BUCKETS as a dependency
+  - OP_PRICE_USD is multiplied by op_total_amount to get op_total_usd for the formula
+  - The function returns a tuple (final_pct, formula_text) for both the value and human-readable explanation
+---
