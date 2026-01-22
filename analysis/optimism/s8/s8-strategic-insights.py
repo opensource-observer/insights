@@ -432,11 +432,24 @@ def _(
     </div>
     """)
 
-        # Build attribution description with scope, co-incentives context, and cap status
-        _scope_pct_display = _scope_pct if pd.notna(_scope_pct) else 1.0
-        _coincentives_display = f"${_coincentives_usd:,.0f}" if pd.notna(_coincentives_usd) and _coincentives_usd > 0 else "None"
-        _cap_status = "Cap applied" if _attribution_cap_applied else "No cap"
-        _attribution_desc = f"**Attribution: {_attribution_pct:.0%}** · Scope: {_scope_pct_display:.0%} of TVL in scope · Co-incentives: {_coincentives_display} · {_cap_status}"
+        # Build attribution description with full formula breakdown
+        # Format formula as multi-line HTML for the footnote
+        if _calculated_formula:
+            # Convert newlines to HTML breaks for display
+            _formula_html = _calculated_formula.replace('\n', '<br>')
+            _attribution_desc = f"""**Attribution: {_attribution_pct:.0%}**
+<details style="margin-top: 4px;">
+<summary style="cursor: pointer; color: #888; font-size: 11px;">Show calculation details</summary>
+<div style="margin-top: 6px; padding: 8px; background: #f5f5f5; border-radius: 4px; font-family: monospace; font-size: 10px; line-height: 1.6;">
+{_formula_html}
+</div>
+</details>"""
+        else:
+            # Fallback if no formula available
+            _scope_pct_display = _scope_pct if pd.notna(_scope_pct) else 1.0
+            _coincentives_display = f"${_coincentives_usd:,.0f}" if pd.notna(_coincentives_usd) and _coincentives_usd > 0 else "None"
+            _cap_status = "Cap applied" if _attribution_cap_applied else "No cap"
+            _attribution_desc = f"**Attribution: {_attribution_pct:.0%}** · Scope: {_scope_pct_display:.0%} of TVL in scope · Co-incentives: {_coincentives_display} · {_cap_status}"
 
         _proj_tvl = df_metrics[
             (df_metrics['project_title'] == _project) &
@@ -575,7 +588,10 @@ def _(
                 _roi_card
             ], widths="equal", gap=1),
             _chart_element,
-            mo.md(f"<small style='color: #666;'>{_baseline_footnote}<br>{_attribution_desc}</small>")
+            mo.md(f"""<div style='color: #666; font-size: 12px;'>
+{_baseline_footnote}
+<div style='margin-top: 4px;'>{_attribution_desc}</div>
+</div>""")
         ], gap=0.8)
 
         _sections.append(_section)
@@ -1283,33 +1299,33 @@ def _(ATTRIBUTION_BUCKETS):
         final_pct = round_to_bucket(capped_attribution, ATTRIBUTION_BUCKETS)
 
         # Build detailed formula text showing all intermediate values
-        # Format: "Cap = $X / $Y = Z% → W% | Incentive Share = $X / $Y = Z% | Scope = X% | Raw = X% × Y% = Z% | Final = MIN(X%, Y%) = Z% → W%"
-        formula_parts = []
+        # Multi-line format for readability in footnotes
+        formula_lines = []
 
         # Cap calculation (if applicable)
         if attribution_cap_applied and tvl and tvl > 0:
             cap_raw_pct = op_total_usd / tvl
             cap_bucket = round_to_bucket(min(1.0, cap_raw_pct), ATTRIBUTION_BUCKETS)
-            formula_parts.append(f"Cap = ${op_total_usd:,.0f} / ${tvl:,.0f} = {cap_raw_pct:.2%} → {cap_bucket:.0%}")
+            formula_lines.append(f"Cap = (OP Value / Baseline TVL) = ${op_total_usd:,.0f} / ${tvl:,.0f} = {cap_raw_pct:.2%} → Lookup: {cap_bucket:.0%}")
         else:
-            formula_parts.append("Cap = N/A (not applied)")
+            formula_lines.append("Cap = N/A (cap not applied)")
 
         # Incentive share
-        formula_parts.append(f"Incentive Share = ${op_total_usd:,.0f} / (${op_total_usd:,.0f} + ${coincentives_usd:,.0f}) = {incentive_share:.2%}")
+        formula_lines.append(f"Incentive Share = OP Value / (OP Value + Co-incentives) = ${op_total_usd:,.0f} / (${op_total_usd:,.0f} + ${coincentives_usd:,.0f}) = {incentive_share:.2%}")
 
         # Scope
-        formula_parts.append(f"Scope = {scope_pct:.0%}")
+        formula_lines.append(f"Scope = {scope_pct:.0%} of TVL in scope")
 
         # Raw attribution
-        formula_parts.append(f"Raw = {scope_pct:.0%} × {incentive_share:.2%} = {raw_attribution:.2%}")
+        formula_lines.append(f"Raw = Scope × Incentive Share = {scope_pct:.0%} × {incentive_share:.2%} = {raw_attribution:.2%}")
 
         # Final (with cap if applied)
         if cap is not None and cap_was_applied:
-            formula_parts.append(f"Final = MIN({raw_attribution:.2%}, {cap:.2%}) = {capped_attribution:.2%} → {final_pct:.0%}")
+            formula_lines.append(f"Final = MIN(Raw, Cap) = MIN({raw_attribution:.2%}, {cap:.2%}) = {capped_attribution:.2%} → Rounded to {final_pct:.0%}")
         else:
-            formula_parts.append(f"Final = {capped_attribution:.2%} → {final_pct:.0%}")
+            formula_lines.append(f"Final = {capped_attribution:.2%} → Rounded to {final_pct:.0%}")
 
-        formula_text = " | ".join(formula_parts)
+        formula_text = "\n".join(formula_lines)
 
         # Debug logging for verification
         print(f"[Attribution Debug] scope={scope_pct:.2%}, op_usd=${op_total_usd:,.0f}, coincentives=${coincentives_usd:,.0f}, tvl=${tvl:,.0f if tvl else 0}, cap_applied={attribution_cap_applied}")
