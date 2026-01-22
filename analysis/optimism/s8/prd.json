@@ -80,7 +80,7 @@
         "Notebook runs without errors: marimo check s8-strategic-insights.py passes"
       ],
       "priority": 5,
-      "passes": false,
+      "passes": true,
       "notes": "Reuses Part 1 table structure but adds attribution columns"
     },
     {

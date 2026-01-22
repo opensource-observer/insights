@@ -63,3 +63,17 @@ Started: Thu Jan 22 07:20:02 EST 2026
   - ROI color logic should use adjusted_roi (not unadjusted) for consistent positive/negative coloring
   - Attribution description uses pd.notna() to handle potentially missing scope_pct values
 ---
+
+## 2026-01-22 - US-022
+- Added Part 3 Summary Section with two tables after the deep dives
+- Created Part 3 header: "## Part 3: Summary"
+- Extended project details table with columns: Project, Baseline Date, Baseline TVL, TVL Delta, Attribution %, Adjusted ROI
+- Leaderboard table sorted descending by Attributable ROI with columns: Project, OP Delivered, TVL Delta, Attribution %, Attributable ROI
+- Both tables use mo.ui.table with consistent formatting
+- Fixed marimo branch-expression error by assigning output to _summary_output variable before final expression
+- Files changed: s8-strategic-insights.py, prd.json
+- **Learnings for future iterations:**
+  - marimo cells with if-else branches must assign to a variable and return that variable as the final unnested expression
+  - The leaderboard uses 'adjusted_roi' for sorting (roi * attribution_pct)
+  - Tables reuse df_project_metrics_with_tvl which already has all the necessary fields from earlier calculations
+---
