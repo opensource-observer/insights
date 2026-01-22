@@ -49,3 +49,17 @@ Started: Thu Jan 22 07:20:02 EST 2026
   - OP_PRICE_USD is multiplied by op_total_amount to get op_total_usd for the formula
   - The function returns a tuple (final_pct, formula_text) for both the value and human-readable explanation
 ---
+
+## 2026-01-22 - US-021
+- Updated project deep dives with adjusted ROI calculation and attribution footnotes
+- Changed ROI stat card title from "ROI ($/OP)" to "ROI (TVL change per OP)"
+- Calculate adjusted_roi = roi * attribution_pct (attribution-adjusted TVL change)
+- Display adjusted_roi as main value, with unadjusted ROI shown in a small footnote below
+- Updated attribution description to show: scope percentage, co-incentives amount, and cap status
+- ROI card now shows "Adjusted for X% attribution" with "Unadjusted: $X/OP" footnote
+- Files changed: s8-strategic-insights.py, prd.json
+- **Learnings for future iterations:**
+  - The deep dives loop extracts attribution fields from _row via .get() with defaults
+  - ROI color logic should use adjusted_roi (not unadjusted) for consistent positive/negative coloring
+  - Attribution description uses pd.notna() to handle potentially missing scope_pct values
+---

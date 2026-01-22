@@ -64,7 +64,7 @@
         "Notebook runs without errors: marimo check s8-strategic-insights.py passes"
       ],
       "priority": 4,
-      "passes": false,
+      "passes": true,
       "notes": "Main ROI is now the attributed portion; unadjusted is in footnote"
     },
     {

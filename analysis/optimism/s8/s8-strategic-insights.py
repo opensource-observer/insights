@@ -383,9 +383,6 @@ def _(
         else:
             _baseline_footnote = f"Baseline date: {_baseline_str} (program start, no delivery or inflow data available)"
 
-        # Attribution (currently 100% for all projects)
-        _attribution_pct = 100
-        _attribution_desc = f"**Attribution: {_attribution_pct}%** · Assumes all TVL change is due to the grant (no co-incentive adjustment)"
 
         _baseline_card = mo.md(f"""
     <div style="padding: 12px; border: 1px solid #ddd; border-radius: 4px; background: #fafafa;">
@@ -413,15 +410,33 @@ def _(
     </div>
     """)
 
-        _roi_color = "#00D395" if _roi > 0 else "#FF0420"
-        _roi_symbol = "+" if _roi >= 0 else ""
+        # Get attribution percentage for adjusted ROI calculation
+        _attribution_pct = _row.get('calculated_attribution_pct', 1.0)
+        _calculated_formula = _row.get('calculated_formula', '')
+        _scope_pct = _row.get('scope_pct', 1.0)
+        _coincentives_usd = _row.get('coincentives_usd', 0.0)
+        _attribution_cap_applied = _row.get('attribution_cap_applied', False)
+
+        # Calculate adjusted ROI = unadjusted ROI * attribution percentage
+        _adjusted_roi = _roi * _attribution_pct
+
+        _roi_color = "#00D395" if _adjusted_roi > 0 else "#FF0420"
+        _roi_symbol = "+" if _adjusted_roi >= 0 else ""
+        _unadjusted_symbol = "+" if _roi >= 0 else ""
         _roi_card = mo.md(f"""
     <div style="padding: 12px; border: 2px solid {_roi_color}; border-radius: 4px; background: #fafafa;">
-    <div style="font-size: 11px; color: #666; text-transform: uppercase; margin-bottom: 4px;">ROI ($/OP)</div>
-    <div style="font-size: 20px; font-weight: 700; color: {_roi_color}; margin-bottom: 4px;">{_roi_symbol}${_roi:,.0f}</div>
-    <div style="font-size: 11px; color: #888;">TVL per OP delivered</div>
+    <div style="font-size: 11px; color: #666; text-transform: uppercase; margin-bottom: 4px;">ROI (TVL change per OP)</div>
+    <div style="font-size: 20px; font-weight: 700; color: {_roi_color}; margin-bottom: 4px;">{_roi_symbol}${_adjusted_roi:,.0f}</div>
+    <div style="font-size: 11px; color: #888;">Adjusted for {_attribution_pct:.0%} attribution</div>
+    <div style="font-size: 10px; color: #aaa; margin-top: 4px;">Unadjusted: {_unadjusted_symbol}${_roi:,.0f}/OP</div>
     </div>
     """)
+
+        # Build attribution description with scope, co-incentives context, and cap status
+        _scope_pct_display = _scope_pct if pd.notna(_scope_pct) else 1.0
+        _coincentives_display = f"${_coincentives_usd:,.0f}" if pd.notna(_coincentives_usd) and _coincentives_usd > 0 else "None"
+        _cap_status = "Cap applied" if _attribution_cap_applied else "No cap"
+        _attribution_desc = f"**Attribution: {_attribution_pct:.0%}** · Scope: {_scope_pct_display:.0%} of TVL in scope · Co-incentives: {_coincentives_display} · {_cap_status}"
 
         _proj_tvl = df_metrics[
             (df_metrics['project_title'] == _project) &
