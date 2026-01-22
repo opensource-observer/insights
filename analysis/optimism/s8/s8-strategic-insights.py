@@ -372,11 +372,11 @@ def _(
         # Build baseline date footnote showing how it was derived
         if _baseline_date_source == 'first_inflow':
             _delivery_str = _delivery_date.strftime('%Y-%m-%d') if pd.notna(_delivery_date) else 'N/A'
-            _inflow_str = _first_inflow_date.strftime('%Y-%m-%d') if _first_inflow_date is not None else 'N/A'
+            _inflow_str = _first_inflow_date.strftime('%Y-%m-%d') if pd.notna(_first_inflow_date) else 'N/A'
             _baseline_footnote = f"Baseline date: {_baseline_str} (first token inflow, earlier than delivery date {_delivery_str})"
         elif _baseline_date_source == 'delivery_date':
-            _inflow_str = _first_inflow_date.strftime('%Y-%m-%d') if _first_inflow_date is not None else 'N/A'
-            if _first_inflow_date is not None:
+            _inflow_str = _first_inflow_date.strftime('%Y-%m-%d') if pd.notna(_first_inflow_date) else 'N/A'
+            if pd.notna(_first_inflow_date):
                 _baseline_footnote = f"Baseline date: {_baseline_str} (delivery date, earlier than first inflow {_inflow_str})"
             else:
                 _baseline_footnote = f"Baseline date: {_baseline_str} (delivery date, no token inflow data available)"
@@ -1188,11 +1188,11 @@ def fetch_token_events(mo, pyoso_db_conn):
 @app.cell(hide_code=True)
 def _():
     # Expected first inflow amounts for verification (test cases)
-    # These are known amounts from the S8 TVL grants
+    # These are known amounts from the S8 TVL grants - first milestone payments (40% of total)
     EXPECTED_FIRST_INFLOWS = {
-        'Truemarkets': 70000,
-        'Super DCA': 30000,
-        '40acres.finance': 200000,
+        'Truemarkets': 28000,  # 40% of 70,000 total
+        'Super DCA': 12000,    # 40% of 30,000 total
+        '40acres.finance': 80000,  # 40% of 200,000 total
     }
     return (EXPECTED_FIRST_INFLOWS,)
 
@@ -1606,8 +1606,10 @@ def _(df_grants, df_metrics):
     # Calculate program dates from data
     _delivery_dates = df_grants['initial_delivery_date'].dropna()
 
-    PROGRAM_START_DATE = _delivery_dates.min().strftime('%Y-%m-%d') if len(_delivery_dates) > 0 else "2025-06-01"
-    PROGRAM_END_DATE = df_metrics['sample_date'].max().strftime('%Y-%m-%d')
+    _min_delivery = _delivery_dates.min() if len(_delivery_dates) > 0 else None
+    PROGRAM_START_DATE = _min_delivery.strftime('%Y-%m-%d') if pd.notna(_min_delivery) else "2025-06-01"
+    _max_sample = df_metrics['sample_date'].max() if len(df_metrics) > 0 else None
+    PROGRAM_END_DATE = _max_sample.strftime('%Y-%m-%d') if pd.notna(_max_sample) else "2025-12-31"
     total_projects = len(df_grants)
     return PROGRAM_END_DATE, PROGRAM_START_DATE
 
