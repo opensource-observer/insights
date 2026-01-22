@@ -93,7 +93,7 @@
         "Notebook runs without errors: marimo check s8-strategic-insights.py passes"
       ],
       "priority": 6,
-      "passes": false,
+      "passes": true,
       "notes": "Focus on financial inputs and TVL metrics, not derived attribution metrics"
     },
     {

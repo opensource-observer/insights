@@ -72,3 +72,22 @@ Started: Thu Jan 22 08:23:13 EST 2026
   - The Part 3 summary tables are created in a single cell around line 710
   - Table ordering is controlled by the `mo.vstack()` call at line 783 - simply reorder the list items
 ---
+
+## 2026-01-22 - US-031
+- **What was implemented**: Updated extended project details table with new column structure
+- **Changes made**:
+  - Added `OP_PRICE_USD` to cell dependencies for grant USD calculation
+  - Added `grant_usd` calculation: `op_total * OP_PRICE_USD`
+  - Added `leverage` calculation: `coincentives_usd / grant_usd`
+  - Created `_format_currency()` helper for consistent formatting ($1.2M, $45K patterns)
+  - Added Current TVL column
+  - Added Co-incentives (USD), Grant (USD), and Leverage columns
+  - Removed Attribution % and Adjusted ROI columns (those remain in leaderboard only)
+  - Dates formatted as YYYY-MM-DD
+- **Files changed**: s8-strategic-insights.py
+- **Learnings for future iterations:**
+  - The extended details table is separate from the leaderboard - leaderboard has attribution metrics, extended details has financial inputs
+  - Currency formatting helper `_format_currency` uses M/K suffixes based on magnitude
+  - Leverage is formatted as `X.Xx` (e.g., "2.5x") to clearly indicate it's a ratio
+  - Cell dependencies must include any constants used (e.g., `OP_PRICE_USD`)
+---
