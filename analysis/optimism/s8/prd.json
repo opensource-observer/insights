@@ -128,7 +128,7 @@
         "Address any deprecation warnings or runtime warnings"
       ],
       "priority": 8,
-      "passes": false,
+      "passes": true,
       "notes": "Final verification - notebook must work end-to-end"
     }
   ]
