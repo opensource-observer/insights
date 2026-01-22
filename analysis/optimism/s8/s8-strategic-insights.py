@@ -781,10 +781,10 @@ def _(df_project_metrics_with_tvl, mo, pd):
         )
 
         _summary_output = mo.vstack([
-            mo.md("#### Extended Project Details"),
-            _details_table,
             mo.md("#### Leaderboard by Attributable ROI"),
-            _leaderboard_table
+            _leaderboard_table,
+            mo.md("#### Extended Project Details"),
+            _details_table
         ], gap=1.5)
 
     _summary_output
