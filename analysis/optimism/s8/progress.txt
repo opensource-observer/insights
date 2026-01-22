@@ -1,3 +1,22 @@
 # Ralph Progress Log
 Started: Thu Jan 22 07:20:02 EST 2026
+
+## Codebase Patterns
+- Use `uv run marimo check <file>` to verify notebook syntax
+- Token events data uses columns: project_name, block_timestamp, value_op, event_type
+- event_type is 'inflow' or 'outflow'
+- Projects keyed by 'title' (display name) not 'oso_project_slug'
+---
+
+## 2026-01-22 - US-018
+- Implemented token transfer verification logic for detecting discrepancies in grant inflows
+- Added EXPECTED_FIRST_INFLOWS dict with test cases: Truemarkets (70K), Super DCA (30K), 40acres.finance (200K)
+- Created verify_first_inflow() function that returns (is_valid, actual_amount, discrepancy_pct)
+- Added df_token_transfers_verified DataFrame with columns: project_name, first_inflow_amount, first_inflow_date, expected_amount, is_valid, discrepancy_pct, inflow_warning
+- Console output logs verification status for all test cases
+- Files changed: s8-strategic-insights.py
+- **Learnings for future iterations:**
+  - marimo must be run via `uv run marimo` in this project
+  - Token events DataFrame is keyed by project_name which matches 'title' from df_grants
+  - The verification cell needs to be placed after fetch_token_events but exports df_token_transfers_verified and verify_first_inflow for downstream use
 ---

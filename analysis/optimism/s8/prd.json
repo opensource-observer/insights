@@ -16,7 +16,7 @@
         "Notebook runs without errors: marimo check s8-strategic-insights.py passes"
       ],
       "priority": 1,
-      "passes": false,
+      "passes": true,
       "notes": "Edge case: some projects received audit grants around same time as TVL grants"
     },
     {
