@@ -776,19 +776,74 @@ def _(mo):
     - Defillama data is currently fetched on a weekly basis
     - OP token transfers are tracked via on-chain event logs from project L2 addresses
 
+    ### Token Transfer Verification
+    To ensure data accuracy, token inflows are verified against expected grant amounts:
+    - **Expected vs Actual**: The first inflow amount is compared to the expected grant delivery amount
+    - **Tolerance**: Discrepancies within 2% are considered valid
+    - **Warning Flags**: Projects with inflow discrepancies > 2% receive a warning flag for manual review
+    - **Edge Cases**: Some projects may receive other grants (e.g., audit grants) around the same time as TVL grants, which can cause discrepancies
+    - **Test Cases**: Verification is validated against known amounts for Truemarkets (70K OP), Super DCA (30K OP), and 40acres.finance (200K OP)
+
+    ### True Baseline Date Calculation
+    The baseline date for TVL measurement is calculated as the **minimum** of:
+    1. **Initial Delivery Date**: The reported delivery date from the Grants Council
+    2. **First Token Inflow Date**: The on-chain timestamp of the first OP token transfer to the project
+
+    This ensures the baseline captures TVL at the earliest point when the project received grant funds, accounting for cases where:
+    - Tokens were transferred before the official delivery date was recorded
+    - On-chain data provides more accurate timing than reported dates
+
+    The `baseline_date_source` field tracks which date was used ('delivery_date', 'first_inflow', or 'program_start' if neither is available).
+
     ### Baseline Calculation
-    - Each project's baseline is calculated using the 7-day average TVL centered around their OP delivery date
+    - Each project's baseline is calculated using the 7-day average TVL centered around their **true baseline date** (±3 days)
     - Current values use the most recent 7-day average
     - TVL Delta = Current TVL - Baseline TVL
 
+    ### Attribution Calculation
+    Attribution determines what percentage of TVL change can be attributed to the OP grant (vs. other factors like co-incentives):
+
+    **Step 1: Calculate Incentive Share**
+    $$
+    \text{Incentive Share} = \frac{\text{OP Grant Value (USD)}}{\text{OP Grant Value (USD)} + \text{Co-incentives (USD)}}
+    $$
+
+    **Step 2: Apply Scope**
+    $$
+    \text{Raw Attribution} = \text{Scope \%} \times \text{Incentive Share}
+    $$
+
+    Where **Scope %** represents the fraction of TVL that is within the scope of the grant (e.g., if the grant only covers certain chains or products).
+
+    **Step 3: Apply Cap (if applicable)**
+    For some projects, an attribution cap is applied based on grant size relative to TVL.
+
+    **Step 4: Round to Bucket**
+    The final attribution is rounded to the nearest standard bucket: **1%, 2%, 5%, 10%, 20%, 50%, 100%**
+
+    **Example**: A project with 80% scope, $100K OP grant, and $50K co-incentives:
+    - Incentive Share = $100K / ($100K + $50K) = 67%
+    - Raw Attribution = 80% × 67% = 53%
+    - Final (rounded) = 50%
+
     ### ROI Calculation
-    The primary metric for evaluating grant effectiveness is **ROI (Return on Investment)**:
-
+    **Unadjusted ROI** measures the total TVL change per OP delivered:
     $$
-    \text{ROI} = \frac{\text{TVL Delta}}{\text{OP Delivered}}
+    \text{Unadjusted ROI} = \frac{\text{TVL Delta}}{\text{OP Delivered}}
     $$
 
-    This measures the dollar value of TVL change attributable to each unit of OP distributed.
+    **Adjusted ROI** accounts for attribution:
+    $$
+    \text{Adjusted ROI} = \text{Unadjusted ROI} \times \text{Attribution \%}
+    $$
+
+    This represents the TVL change **attributable to the grant** per OP delivered.
+
+    ### OP Price Assumption
+    - **Current OP Price**: $0.35 per OP token (fixed)
+    - This price is used to convert OP grant amounts to USD for attribution calculations
+    - To adjust: Modify the `OP_PRICE_USD` constant in the notebook configuration cell
+    - Note: This is a simplifying assumption; actual OP prices vary over time
 
     ### OP Balance Tracking
     - **Est Balance**: Tracks OP token inflows and outflows for each project's L2 address
@@ -797,17 +852,21 @@ def _(mo):
     - The chart displays the **daily peak balance** (maximum balance reached each day before outflows)
     - Balance values are clamped to zero (negative balances not shown)
 
-    ### Metrics
-    - **TVL**: Total Value Locked from DefiLlama via OSO pipeline
-    - **OP Balance**: Estimated OP token balance in project's L2 address (daily peak)
-    - **ROI**: TVL change per OP token delivered ($/OP)
+    ### Metrics Summary
+    | Metric | Description |
+    |--------|-------------|
+    | **TVL** | Total Value Locked from DefiLlama via OSO pipeline |
+    | **OP Balance** | Estimated OP token balance in project's L2 address (daily peak) |
+    | **Unadjusted ROI** | TVL change per OP token delivered ($/OP) |
+    | **Adjusted ROI** | TVL change × Attribution % per OP delivered |
+    | **Attribution %** | Percentage of TVL change attributable to the OP grant |
 
     ### Limitations
-    - Attribution assumes 100% of TVL change is due to the grant (no co-incentive adjustment in this view)
+    - Attribution is estimated based on available data about co-incentives and scope; actual attribution may differ
     - OP Balance tracking only covers the designated L2 address; tokens moved to other wallets are counted as outflows
     - Some projects may have incomplete data coverage
     - Market conditions not isolated
-    - OP token price fluctuations not accounted for
+    - OP token price is fixed at $0.35; actual prices fluctuate
     """)
     return
 

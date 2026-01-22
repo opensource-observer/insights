@@ -91,3 +91,20 @@ Started: Thu Jan 22 07:20:02 EST 2026
   - Attributable TVL only includes positive tvl_delta projects (TVL gains, not losses)
   - The stats cell uses same if-else variable pattern as tables cell to avoid branch expression errors
 ---
+
+## 2026-01-22 - US-024
+- Updated Methodology section with comprehensive attribution documentation
+- Added "Token Transfer Verification" section explaining expected vs actual inflows, tolerance, warning flags
+- Added "True Baseline Date Calculation" section explaining MIN(delivery_date, first_inflow_date) logic
+- Added "Attribution Calculation" section with 4-step process: incentive share, scope, cap, bucket rounding
+- Added LaTeX formulas for Incentive Share, Raw Attribution, Unadjusted ROI, and Adjusted ROI
+- Added concrete example showing attribution calculation for a hypothetical project
+- Added "OP Price Assumption" section documenting $0.35 fixed price and how to adjust OP_PRICE_USD
+- Converted Metrics section to a table format for better readability
+- Updated Limitations section to reflect attribution-adjusted methodology
+- Files changed: s8-strategic-insights.py, prd.json
+- **Learnings for future iterations:**
+  - marimo supports LaTeX formulas using $$ delimiters for block equations
+  - Methodology sections benefit from worked examples to clarify abstract formulas
+  - Markdown tables (|...|...|) render correctly in marimo notebooks
+---
