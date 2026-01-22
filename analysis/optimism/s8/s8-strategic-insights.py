@@ -307,6 +307,9 @@ def _(
         _project = _row['project']
         _title = _row['title']
         _delivery_date = _row['delivery_date']
+        _first_inflow_date = _row.get('first_inflow_date', None)
+        _project_baseline_date = _row.get('project_baseline_date', _delivery_date)
+        _baseline_date_source = _row.get('baseline_date_source', 'delivery_date')
         _op_delivered = _row['op_delivered']
         _op_total = _row['op_total']
         _status = _row['status']
@@ -358,13 +361,27 @@ def _(
         else:
             _chains_str = "—"
 
-        # Use delivery date for baseline, or default to program start
-        _baseline_date = _delivery_date if pd.notna(_delivery_date) else pd.to_datetime(PROGRAM_START_DATE)
+        # Use project_baseline_date (already calculated as MIN of delivery/inflow dates)
+        _baseline_date = _project_baseline_date if pd.notna(_project_baseline_date) else pd.to_datetime(PROGRAM_START_DATE)
         _baseline_str = _baseline_date.strftime('%Y-%m-%d')
 
         # Calculate days between baseline and current
         _current_date = pd.to_datetime(PROGRAM_END_DATE)
         _days_elapsed = (_current_date - _baseline_date).days
+
+        # Build baseline date footnote showing how it was derived
+        if _baseline_date_source == 'first_inflow':
+            _delivery_str = _delivery_date.strftime('%Y-%m-%d') if pd.notna(_delivery_date) else 'N/A'
+            _inflow_str = _first_inflow_date.strftime('%Y-%m-%d') if _first_inflow_date is not None else 'N/A'
+            _baseline_footnote = f"Baseline date: {_baseline_str} (first token inflow, earlier than delivery date {_delivery_str})"
+        elif _baseline_date_source == 'delivery_date':
+            _inflow_str = _first_inflow_date.strftime('%Y-%m-%d') if _first_inflow_date is not None else 'N/A'
+            if _first_inflow_date is not None:
+                _baseline_footnote = f"Baseline date: {_baseline_str} (delivery date, earlier than first inflow {_inflow_str})"
+            else:
+                _baseline_footnote = f"Baseline date: {_baseline_str} (delivery date, no token inflow data available)"
+        else:
+            _baseline_footnote = f"Baseline date: {_baseline_str} (program start, no delivery or inflow data available)"
 
         # Attribution (currently 100% for all projects)
         _attribution_pct = 100
@@ -543,7 +560,7 @@ def _(
                 _roi_card
             ], widths="equal", gap=1),
             _chart_element,
-            mo.md(f"<small style='color: #666;'>{_attribution_desc}</small>")
+            mo.md(f"<small style='color: #666;'>{_baseline_footnote}<br>{_attribution_desc}</small>")
         ], gap=0.8)
 
         _sections.append(_section)
@@ -971,6 +988,33 @@ def _(EXPECTED_FIRST_INFLOWS, df_token_events, pd):
 
         return (_is_valid, _first_inflow, _discrepancy_pct)
 
+    def get_first_inflow_date(df_events, project_name):
+        """
+        Get the timestamp of the first inflow for a project.
+
+        Args:
+            df_events: DataFrame with token events (project_name, block_timestamp, event_type)
+            project_name: Name of the project
+
+        Returns:
+            pd.Timestamp or None: The timestamp of the first inflow, or None if no inflows found
+        """
+        if df_events.empty:
+            return None
+
+        # Get inflows for this project
+        _proj_inflows = df_events[
+            (df_events['project_name'] == project_name) &
+            (df_events['event_type'] == 'inflow')
+        ].copy()
+
+        if _proj_inflows.empty:
+            return None
+
+        # Sort by timestamp and return the first date
+        _proj_inflows = _proj_inflows.sort_values('block_timestamp')
+        return pd.to_datetime(_proj_inflows.iloc[0]['block_timestamp'])
+
     # Build verification DataFrame for all projects with inflows
     _verification_records = []
 
@@ -1027,7 +1071,7 @@ def _(EXPECTED_FIRST_INFLOWS, df_token_events, pd):
         print(f"{_test_proj}: {_status} (expected {_expected_amt:,} OP, got {_actual:,.0f} OP, {_disc:.1%} discrepancy)")
     print("=" * 44)
 
-    return df_token_transfers_verified, verify_first_inflow
+    return df_token_transfers_verified, get_first_inflow_date, verify_first_inflow
 
 
 @app.cell(hide_code=True)
@@ -1232,11 +1276,14 @@ def _(
     all_projects,
     df_grants,
     df_metrics,
+    df_token_events,
+    get_first_inflow_date,
     pd,
     project_current_balance,
 ):
     # Calculate ROI metrics for each project
-    # Baseline = TVL at delivery date, Current = latest TVL, ROI = Delta / OP delivered
+    # Baseline = TVL at project_baseline_date (min of delivery date and first inflow)
+    # Current = latest TVL, ROI = Delta / OP delivered
 
     _df_tvl_all = df_metrics[df_metrics['metric_display_name'] == 'Defillama TVL'].copy()
     _df_userops_all = df_metrics[df_metrics['metric_display_name'] == 'User Operations'].copy()
@@ -1265,15 +1312,35 @@ def _(
         if _proj_tvl.empty:
             continue
 
-        # Calculate baseline TVL (7-day avg around delivery date, or program start if no delivery date)
-        if pd.notna(_delivery_date):
-            _baseline_date = _delivery_date
+        # Get first inflow date from token events (keyed by title/project_name)
+        _first_inflow_date = get_first_inflow_date(df_token_events, _title)
+
+        # Calculate project_baseline_date = MIN(initial_delivery_date, first_inflow_date)
+        # and track which source was used
+        if pd.notna(_delivery_date) and _first_inflow_date is not None:
+            # Both dates available - use the minimum
+            if _first_inflow_date < _delivery_date:
+                _project_baseline_date = _first_inflow_date
+                _baseline_date_source = 'first_inflow'
+            else:
+                _project_baseline_date = _delivery_date
+                _baseline_date_source = 'delivery_date'
+        elif pd.notna(_delivery_date):
+            # Only delivery date available
+            _project_baseline_date = _delivery_date
+            _baseline_date_source = 'delivery_date'
+        elif _first_inflow_date is not None:
+            # Only first inflow date available
+            _project_baseline_date = _first_inflow_date
+            _baseline_date_source = 'first_inflow'
         else:
-            _baseline_date = pd.to_datetime(PROGRAM_START_DATE)
+            # Neither available - fall back to program start
+            _project_baseline_date = pd.to_datetime(PROGRAM_START_DATE)
+            _baseline_date_source = 'program_start'
 
         _baseline_window = _proj_tvl[
-            (_proj_tvl['sample_date'] >= _baseline_date - pd.Timedelta(days=3)) &
-            (_proj_tvl['sample_date'] <= _baseline_date + pd.Timedelta(days=3))
+            (_proj_tvl['sample_date'] >= _project_baseline_date - pd.Timedelta(days=3)) &
+            (_proj_tvl['sample_date'] <= _project_baseline_date + pd.Timedelta(days=3))
         ]
         _baseline_tvl = _baseline_window['amount'].mean() if not _baseline_window.empty else 0
 
@@ -1299,6 +1366,9 @@ def _(
             'project': _project,
             'title': _title,
             'delivery_date': _delivery_date,
+            'first_inflow_date': _first_inflow_date,
+            'project_baseline_date': _project_baseline_date,
+            'baseline_date_source': _baseline_date_source,
             'op_delivered': _op_delivered,
             'op_total': _op_total,
             'status': _grant_row.get('status', ''),

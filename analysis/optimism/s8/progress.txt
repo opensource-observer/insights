@@ -20,3 +20,17 @@ Started: Thu Jan 22 07:20:02 EST 2026
   - Token events DataFrame is keyed by project_name which matches 'title' from df_grants
   - The verification cell needs to be placed after fetch_token_events but exports df_token_transfers_verified and verify_first_inflow for downstream use
 ---
+
+## 2026-01-22 - US-019
+- Implemented project_baseline_date calculation using MIN(initial_delivery_date, first_inflow_date)
+- Added get_first_inflow_date(df_events, project_name) function that returns timestamp of first inflow
+- Added 'project_baseline_date', 'first_inflow_date', and 'baseline_date_source' columns to df_project_metrics
+- baseline_date_source tracks which date was used: 'delivery_date', 'first_inflow', or 'program_start'
+- Updated TVL baseline calculations to use project_baseline_date instead of delivery_date
+- Added footnote to deep dives showing baseline date derivation with comparison to other dates
+- Files changed: s8-strategic-insights.py, prd.json
+- **Learnings for future iterations:**
+  - The project metrics calculation cell needs df_token_events and get_first_inflow_date as dependencies
+  - When adding new columns to df_project_metrics, also update the deep dives loop to extract them
+  - Footnotes are added via the last mo.md element in the section vstack
+---

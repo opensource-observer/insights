@@ -32,7 +32,7 @@
         "Notebook runs without errors: marimo check s8-strategic-insights.py passes"
       ],
       "priority": 2,
-      "passes": false,
+      "passes": true,
       "notes": "The true baseline should be when tokens actually arrived, not just the reported delivery date"
     },
     {
