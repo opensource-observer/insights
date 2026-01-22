@@ -596,6 +596,88 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
+def _(OP_PRICE_USD, df_project_metrics_with_tvl, mo, pd):
+    # Part 3: Summary Stats
+    # Program-level metrics with attribution
+
+    if df_project_metrics_with_tvl.empty:
+        _stats_output = mo.md("*No project data available for summary stats.*")
+    else:
+        # Calculate summary statistics
+        _df = df_project_metrics_with_tvl.copy()
+
+        # 1. Total OP Delivered
+        _total_op_delivered = _df['op_delivered'].sum()
+        if _total_op_delivered >= 1_000_000:
+            _op_delivered_str = f"{_total_op_delivered/1e6:.1f}M"
+        else:
+            _op_delivered_str = f"{_total_op_delivered/1e3:.0f}K"
+
+        # 2. Est. Coincentive Leverage = total coincentives / (total OP delivered * OP price)
+        _total_coincentives = _df['coincentives_usd'].fillna(0).sum()
+        _total_op_usd = _total_op_delivered * OP_PRICE_USD
+        _coincentive_leverage = _total_coincentives / _total_op_usd if _total_op_usd > 0 else 0
+        _leverage_str = f"{_coincentive_leverage:.1f}x"
+
+        # 3. Attributable TVL Inflows = sum of (tvl_delta * attribution_pct) for positive deltas only
+        _df['attributable_tvl'] = _df['tvl_delta'] * _df['calculated_attribution_pct']
+        _positive_attributable = _df[_df['tvl_delta'] > 0]['attributable_tvl'].sum()
+        if abs(_positive_attributable) >= 1_000_000:
+            _attributable_tvl_str = f"${_positive_attributable/1e6:,.1f}M"
+        else:
+            _attributable_tvl_str = f"${_positive_attributable/1e3:,.0f}K"
+
+        # 4. Attributable ROI = attributable_tvl_inflows / op_delivered
+        _attributable_roi = _positive_attributable / _total_op_delivered if _total_op_delivered > 0 else 0
+        _roi_color = "#00D395" if _attributable_roi > 0 else "#FF0420"
+        _roi_symbol = "+" if _attributable_roi >= 0 else ""
+        _attributable_roi_str = f"{_roi_symbol}${_attributable_roi:,.0f}/OP"
+
+        # Build stat cards (consistent with Part 1 styling)
+        _card_op_delivered = mo.md(f"""
+    <div style="padding: 16px; border: 1px solid #ddd; border-radius: 4px; background: #fafafa;">
+    <div style="font-size: 11px; color: #666; text-transform: uppercase; margin-bottom: 4px;">OP Delivered</div>
+    <div style="font-size: 24px; font-weight: 700; margin-bottom: 4px;">{_op_delivered_str}</div>
+    <div style="font-size: 11px; color: #888;">Total across all projects</div>
+    </div>
+    """)
+
+        _card_leverage = mo.md(f"""
+    <div style="padding: 16px; border: 1px solid #ddd; border-radius: 4px; background: #fafafa;">
+    <div style="font-size: 11px; color: #666; text-transform: uppercase; margin-bottom: 4px;">Est. Coincentive Leverage</div>
+    <div style="font-size: 24px; font-weight: 700; margin-bottom: 4px;">{_leverage_str}</div>
+    <div style="font-size: 11px; color: #888;">Co-incentives / OP grant value</div>
+    </div>
+    """)
+
+        _card_attributable_tvl = mo.md(f"""
+    <div style="padding: 16px; border: 1px solid #ddd; border-radius: 4px; background: #fafafa;">
+    <div style="font-size: 11px; color: #666; text-transform: uppercase; margin-bottom: 4px;">Attributable TVL Inflows</div>
+    <div style="font-size: 24px; font-weight: 700; margin-bottom: 4px;">{_attributable_tvl_str}</div>
+    <div style="font-size: 11px; color: #888;">TVL gains × attribution %</div>
+    </div>
+    """)
+
+        _card_attributable_roi = mo.md(f"""
+    <div style="padding: 16px; border: 2px solid {_roi_color}; border-radius: 4px; background: #fafafa;">
+    <div style="font-size: 11px; color: #666; text-transform: uppercase; margin-bottom: 4px;">Attributable ROI</div>
+    <div style="font-size: 24px; font-weight: 700; color: {_roi_color}; margin-bottom: 4px;">{_attributable_roi_str}</div>
+    <div style="font-size: 11px; color: #888;">TVL inflows per OP delivered</div>
+    </div>
+    """)
+
+        _stats_output = mo.hstack([
+            _card_op_delivered,
+            _card_leverage,
+            _card_attributable_tvl,
+            _card_attributable_roi
+        ], widths="equal", gap=1)
+
+    _stats_output
+    return
+
+
+@app.cell(hide_code=True)
 def _(df_project_metrics_with_tvl, mo, pd):
     # Part 3: Summary Tables
     # Extended project details table and leaderboard
