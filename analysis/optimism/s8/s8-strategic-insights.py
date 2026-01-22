@@ -720,7 +720,7 @@ def _(CHAIN_COLORS, PLOTLY_LAYOUT, PROJECT_COLORS):
     return get_chain_color, get_stacked_area_layout
 
 
-@app.cell(hide_code=True)
+@app.cell
 def fetch_project_data(mo, pyoso_db_conn):
     # Load grant metadata from optimism.grants
     df_grants_raw = mo.sql(
@@ -736,16 +736,22 @@ def fetch_project_data(mo, pyoso_db_conn):
           s8.defillama_slugs AS defillama_adapters,
           kp.oso_project_name AS oso_project_slug,
           'https://gap.karmahq.xyz/project/' || kp.slug AS karma_page,
-          'https://github.com/opensource-observer/oss-directory/tree/main/data/projects/' || SUBSTR(kp.oso_project_name, 1, 1) || '/' || kp.oso_project_name || '.yaml' AS oso_project_artifacts
+          'https://github.com/opensource-observer/oss-directory/tree/main/data/projects/' || SUBSTR(kp.oso_project_name, 1, 1) || '/' || kp.oso_project_name || '.yaml' AS oso_project_artifacts,
+          CAST(REPLACE(a.scope_pct, '%', '') AS DOUBLE) / 100.0 AS scope_pct,
+          a.scope_notes,
+          a.coincentives_usd,
+          a.coincentives_notes,
+          a.attribution_cap_applied::BOOLEAN AS attribution_cap_applied
         FROM optimism.grants.s8_tvl__projects AS s8
         JOIN oso_community.karma.projects AS kp
           ON s8.project_name = kp.title
+        JOIN optimism.govfund.s8_attribution AS a
+          ON s8.project_name = a.project_name
         WHERE
           s8.op_total_amount > 0
           AND kp.title NOT LIKE '%TEST%'
         ORDER BY UPPER(kp.title)
         """,
-        output=False,
         engine=pyoso_db_conn
     )
     return (df_grants_raw,)
@@ -907,6 +913,121 @@ def fetch_token_events(mo, pyoso_db_conn):
         engine=pyoso_db_conn
     )
     return (df_token_events,)
+
+
+@app.cell(hide_code=True)
+def _():
+    # Expected first inflow amounts for verification (test cases)
+    # These are known amounts from the S8 TVL grants
+    EXPECTED_FIRST_INFLOWS = {
+        'Truemarkets': 70000,
+        'Super DCA': 30000,
+        '40acres.finance': 200000,
+    }
+    return (EXPECTED_FIRST_INFLOWS,)
+
+
+@app.cell(hide_code=True)
+def _(EXPECTED_FIRST_INFLOWS, df_token_events, pd):
+    # Token transfer verification logic
+    # Verifies that token inflows match expected grant amounts
+
+    def verify_first_inflow(df_events, project_name, expected_amount, tolerance=0.02):
+        """
+        Verify that the first inflow for a project matches the expected amount.
+
+        Args:
+            df_events: DataFrame with token events (project_name, value_op, event_type)
+            project_name: Name of the project to verify
+            expected_amount: Expected OP amount for first inflow
+            tolerance: Allowed discrepancy as a fraction (default 2%)
+
+        Returns:
+            tuple: (is_valid, actual_amount, discrepancy_pct)
+        """
+        if df_events.empty:
+            return (False, 0, 1.0)
+
+        # Get first inflow for this project
+        _proj_inflows = df_events[
+            (df_events['project_name'] == project_name) &
+            (df_events['event_type'] == 'inflow')
+        ].copy()
+
+        if _proj_inflows.empty:
+            return (False, 0, 1.0)
+
+        # Sort by timestamp to get the first inflow
+        _proj_inflows = _proj_inflows.sort_values('block_timestamp')
+        _first_inflow = _proj_inflows.iloc[0]['value_op']
+
+        # Calculate discrepancy
+        if expected_amount == 0:
+            _discrepancy_pct = 1.0 if _first_inflow != 0 else 0.0
+        else:
+            _discrepancy_pct = abs(_first_inflow - expected_amount) / expected_amount
+
+        _is_valid = _discrepancy_pct <= tolerance
+
+        return (_is_valid, _first_inflow, _discrepancy_pct)
+
+    # Build verification DataFrame for all projects with inflows
+    _verification_records = []
+
+    if not df_token_events.empty:
+        _projects = df_token_events['project_name'].unique()
+
+        for _proj in _projects:
+            # Get first inflow for this project
+            _proj_inflows = df_token_events[
+                (df_token_events['project_name'] == _proj) &
+                (df_token_events['event_type'] == 'inflow')
+            ].copy()
+
+            if _proj_inflows.empty:
+                continue
+
+            _proj_inflows = _proj_inflows.sort_values('block_timestamp')
+            _first_inflow_amount = _proj_inflows.iloc[0]['value_op']
+            _first_inflow_date = pd.to_datetime(_proj_inflows.iloc[0]['block_timestamp'])
+
+            # Check if we have an expected amount for this project
+            _expected = EXPECTED_FIRST_INFLOWS.get(_proj, None)
+
+            if _expected is not None:
+                _is_valid, _, _discrepancy_pct = verify_first_inflow(
+                    df_token_events, _proj, _expected
+                )
+                _inflow_warning = None if _is_valid else (
+                    f"Expected {_expected:,.0f} OP, got {_first_inflow_amount:,.0f} OP "
+                    f"({_discrepancy_pct:.1%} discrepancy)"
+                )
+            else:
+                _is_valid = True  # No expected amount, assume valid
+                _discrepancy_pct = None
+                _inflow_warning = None
+
+            _verification_records.append({
+                'project_name': _proj,
+                'first_inflow_amount': _first_inflow_amount,
+                'first_inflow_date': _first_inflow_date,
+                'expected_amount': _expected,
+                'is_valid': _is_valid,
+                'discrepancy_pct': _discrepancy_pct,
+                'inflow_warning': _inflow_warning
+            })
+
+    df_token_transfers_verified = pd.DataFrame(_verification_records)
+
+    # Log verification results for test cases
+    print("=== Token Transfer Verification Results ===")
+    for _test_proj, _expected_amt in EXPECTED_FIRST_INFLOWS.items():
+        _is_valid, _actual, _disc = verify_first_inflow(df_token_events, _test_proj, _expected_amt)
+        _status = "✓ PASS" if _is_valid else "✗ FAIL"
+        print(f"{_test_proj}: {_status} (expected {_expected_amt:,} OP, got {_actual:,.0f} OP, {_disc:.1%} discrepancy)")
+    print("=" * 44)
+
+    return df_token_transfers_verified, verify_first_inflow
 
 
 @app.cell(hide_code=True)
