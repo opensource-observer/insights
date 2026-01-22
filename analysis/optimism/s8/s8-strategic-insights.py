@@ -380,6 +380,8 @@ def _(
                 _baseline_footnote = f"Baseline date: {_baseline_str} (delivery date, earlier than first inflow {_inflow_str})"
             else:
                 _baseline_footnote = f"Baseline date: {_baseline_str} (delivery date, no token inflow data available)"
+        elif _baseline_date_source == 'undelivered':
+            _baseline_footnote = f"Baseline date: {_baseline_str} (not yet delivered)"
         else:
             _baseline_footnote = f"Baseline date: {_baseline_str} (program start, no delivery or inflow data available)"
 
@@ -496,24 +498,34 @@ def _(
                     yaxis='y2'
                 ))
 
-            # Add vertical line at delivery date with annotation
-            if pd.notna(_delivery_date):
+            # Add vertical line at baseline date with annotation
+            # Map baseline_date_source to display label
+            _source_labels = {
+                'first_inflow': 'first inflow',
+                'delivery_date': 'delivery',
+                'undelivered': 'not yet delivered',
+                'program_start': 'program start'
+            }
+            _source_label = _source_labels.get(_baseline_date_source, _baseline_date_source)
+            _baseline_annotation_text = f"Baseline Date ({_source_label})"
+
+            if pd.notna(_baseline_date):
                 _fig.add_shape(
                     type="line",
-                    x0=_delivery_date.to_pydatetime(),
-                    x1=_delivery_date.to_pydatetime(),
+                    x0=_baseline_date.to_pydatetime(),
+                    x1=_baseline_date.to_pydatetime(),
                     y0=0,
                     y1=1,
                     yref="paper",
                     line=dict(color="#666", dash="dash", width=2)
                 )
 
-                # Add annotation label for delivery date
+                # Add annotation label for baseline date
                 _fig.add_annotation(
-                    x=_delivery_date.to_pydatetime(),
+                    x=_baseline_date.to_pydatetime(),
                     y=1,
                     yref="paper",
-                    text="Grant Delivery",
+                    text=_baseline_annotation_text,
                     showarrow=False,
                     yshift=10,
                     font=dict(size=10, color="#666"),
