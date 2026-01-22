@@ -96,7 +96,7 @@
         "Notebook runs without errors: marimo check s8-strategic-insights.py passes"
       ],
       "priority": 6,
-      "passes": false,
+      "passes": true,
       "notes": "Four stats in horizontal row matching Part 1 layout"
     },
     {

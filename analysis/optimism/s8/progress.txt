@@ -77,3 +77,17 @@ Started: Thu Jan 22 07:20:02 EST 2026
   - The leaderboard uses 'adjusted_roi' for sorting (roi * attribution_pct)
   - Tables reuse df_project_metrics_with_tvl which already has all the necessary fields from earlier calculations
 ---
+
+## 2026-01-22 - US-023
+- Added Part 3 Summary Section - Stats widgets with four program-level metrics
+- OP Delivered: Total OP delivered across all projects (formatted as K/M)
+- Est. Coincentive Leverage: Ratio of total co-incentives to total OP grant value (in USD)
+- Attributable TVL Inflows: Sum of (tvl_delta * attribution_pct) for positive deltas only
+- Attributable ROI: TVL inflows per OP delivered, with color coding (green positive, red negative)
+- Used mo.hstack with widths="equal" and gap=1 for horizontal layout matching Part 1
+- Files changed: s8-strategic-insights.py, prd.json
+- **Learnings for future iterations:**
+  - OP_PRICE_USD constant is needed for converting OP amounts to USD for leverage calculation
+  - Attributable TVL only includes positive tvl_delta projects (TVL gains, not losses)
+  - The stats cell uses same if-else variable pattern as tables cell to avoid branch expression errors
+---
