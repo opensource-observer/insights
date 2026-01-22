@@ -588,6 +588,103 @@ def _(
 def _(mo):
     mo.md(r"""
     ---
+    ## Part 3: Summary
+
+    This section provides a consolidated view of all projects with attribution-adjusted metrics.
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(df_project_metrics_with_tvl, mo, pd):
+    # Part 3: Summary Tables
+    # Extended project details table and leaderboard
+
+    if df_project_metrics_with_tvl.empty:
+        _summary_output = mo.md("*No project data available for summary tables.*")
+    else:
+        # Calculate adjusted ROI for all projects
+        _df_summary = df_project_metrics_with_tvl.copy()
+        _df_summary['adjusted_roi'] = _df_summary['roi'] * _df_summary['calculated_attribution_pct']
+
+        # Format columns for display
+        _df_summary['Baseline Date'] = _df_summary['project_baseline_date'].apply(
+            lambda x: x.strftime('%Y-%m-%d') if pd.notna(x) else '—'
+        )
+        _df_summary['Baseline TVL'] = _df_summary['baseline_tvl'].apply(
+            lambda x: f"${x/1e6:,.2f}M" if pd.notna(x) and x > 0 else '—'
+        )
+        _df_summary['TVL Delta'] = _df_summary['tvl_delta'].apply(
+            lambda x: f"+${x/1e6:,.2f}M" if x > 0 else f"-${abs(x)/1e6:,.2f}M" if x < 0 else "$0"
+        )
+        _df_summary['Attribution %'] = _df_summary['calculated_attribution_pct'].apply(
+            lambda x: f"{x:.0%}" if pd.notna(x) else '—'
+        )
+        _df_summary['Adjusted ROI'] = _df_summary['adjusted_roi'].apply(
+            lambda x: f"+${x:,.0f}/OP" if x > 0 else f"-${abs(x):,.0f}/OP" if x < 0 else "$0/OP"
+        )
+
+        # Extended project details table
+        _extended_details = _df_summary[[
+            'title', 'Baseline Date', 'Baseline TVL', 'TVL Delta', 'Attribution %', 'Adjusted ROI'
+        ]].copy()
+        _extended_details.columns = ['Project', 'Baseline Date', 'Baseline TVL', 'TVL Delta', 'Attribution %', 'Adjusted ROI']
+        _extended_details = _extended_details.sort_values('Project')
+
+        _details_table = mo.ui.table(
+            data=_extended_details.reset_index(drop=True),
+            show_column_summaries=False,
+            show_data_types=False,
+            page_size=50
+        )
+
+        # Leaderboard table sorted by adjusted ROI descending
+        _leaderboard = _df_summary[[
+            'title', 'op_delivered', 'tvl_delta', 'calculated_attribution_pct', 'adjusted_roi'
+        ]].copy()
+        _leaderboard = _leaderboard.sort_values('adjusted_roi', ascending=False)
+
+        # Format leaderboard columns
+        _leaderboard['OP Delivered'] = _leaderboard['op_delivered'].apply(
+            lambda x: f"{x/1e3:,.0f}K" if x >= 1000 else f"{x:,.0f}"
+        )
+        _leaderboard['TVL Delta'] = _leaderboard['tvl_delta'].apply(
+            lambda x: f"+${x/1e6:,.2f}M" if x > 0 else f"-${abs(x)/1e6:,.2f}M" if x < 0 else "$0"
+        )
+        _leaderboard['Attribution %'] = _leaderboard['calculated_attribution_pct'].apply(
+            lambda x: f"{x:.0%}" if pd.notna(x) else '—'
+        )
+        _leaderboard['Attributable ROI'] = _leaderboard['adjusted_roi'].apply(
+            lambda x: f"+${x:,.0f}/OP" if x > 0 else f"-${abs(x):,.0f}/OP" if x < 0 else "$0/OP"
+        )
+
+        _leaderboard_display = _leaderboard[[
+            'title', 'OP Delivered', 'TVL Delta', 'Attribution %', 'Attributable ROI'
+        ]].copy()
+        _leaderboard_display.columns = ['Project', 'OP Delivered', 'TVL Delta', 'Attribution %', 'Attributable ROI']
+
+        _leaderboard_table = mo.ui.table(
+            data=_leaderboard_display.reset_index(drop=True),
+            show_column_summaries=False,
+            show_data_types=False,
+            page_size=50
+        )
+
+        _summary_output = mo.vstack([
+            mo.md("#### Extended Project Details"),
+            _details_table,
+            mo.md("#### Leaderboard by Attributable ROI"),
+            _leaderboard_table
+        ], gap=1.5)
+
+    _summary_output
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ---
     ## Methodology
 
     ### Data Collection
