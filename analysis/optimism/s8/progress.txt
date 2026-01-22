@@ -91,3 +91,19 @@ Started: Thu Jan 22 08:23:13 EST 2026
   - Leverage is formatted as `X.Xx` (e.g., "2.5x") to clearly indicate it's a ratio
   - Cell dependencies must include any constants used (e.g., `OP_PRICE_USD`)
 ---
+
+## 2026-01-22 - US-032
+- **What was implemented**: End-to-end verification of all Phase 3 fixes
+- **Verification results**:
+  1. `marimo check s8-strategic-insights.py` passes with no errors
+  2. PancakeSwap attribution: Fixed - `round_to_bucket()` now handles values < minimum bucket correctly (line 1324-1325)
+  3. Attribution footnote: Full formula breakdown in expandable details section (lines 1340-1366)
+  4. Undelivered grants: Baseline date set to current date when `_is_undelivered=True` (lines 1761-1773)
+  5. Deep dives: "Baseline Date (source)" annotation replaces "Grant Delivery" (lines 503-510)
+  6. Part 3 tables: Leaderboard appears before extended details (lines 809-814)
+  7. Extended details columns: Project, Baseline Date, Baseline TVL, Current TVL, TVL Delta, Co-incentives (USD), Grant (USD), Leverage (lines 762-767)
+- **Files changed**: prd.json (marked US-032 as passing)
+- **Learnings for future iterations:**
+  - All fixes from US-026 through US-031 work together correctly
+  - Phase 3 complete - all 7 user stories now pass
+---
