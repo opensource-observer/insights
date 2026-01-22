@@ -20,3 +20,31 @@ Started: Thu Jan 22 08:23:13 EST 2026
   - Debug logging is helpful - keep the `[Attribution Debug]` print statements for verification
   - Python operator precedence: `x if condition else y` has lower precedence than `or`, so `A or B if C else D` parses as `A or (B if C else D)`
 ---
+
+## 2026-01-22 - US-027
+- **What was implemented**: Added full attribution formula breakdown in project deep dives
+- **Changes made**:
+  - Updated `calculate_attribution()` to generate multi-line formula text (newline-separated instead of pipe-separated)
+  - Formula now shows explicit labels matching acceptance criteria (e.g., "OP Value / Baseline TVL", "Scope × Incentive Share")
+  - Added expandable `<details>` section in deep dive footnotes with "Show calculation details" toggle
+  - Formula displayed in monospace font with proper formatting inside expandable section
+- **Files changed**: s8-strategic-insights.py
+- **Learnings for future iterations:**
+  - The `calculate_attribution` returns a tuple of (final_pct, formula_text) - formula is stored in `calculated_formula` column
+  - Marimo supports HTML including `<details>` for expandable sections
+  - When building multi-line formula text, use `\n` joins and convert to `<br>` for HTML display
+---
+
+## 2026-01-22 - US-028
+- **What was implemented**: Fixed baseline date logic for undelivered grants
+- **Changes made**:
+  - Added `_is_undelivered` check: grant is undelivered if `_op_delivered == 0` or `_delivery_date > _latest_date`
+  - For undelivered grants, set `_project_baseline_date = _latest_date` (current TVL date)
+  - Set `_baseline_date_source = 'undelivered'` to track the source
+  - This ensures `baseline_tvl = current_tvl` and `tvl_delta = 0` for projects that haven't received their grant yet
+- **Files changed**: s8-strategic-insights.py
+- **Learnings for future iterations:**
+  - The `_latest_date` (current TVL date) is now calculated earlier in the loop for the undelivered check
+  - Undelivered grant detection uses `_op_delivered == 0` as primary check - more reliable than just checking dates
+  - `baseline_date_source` values: 'undelivered', 'first_inflow', 'delivery_date', 'program_start'
+---

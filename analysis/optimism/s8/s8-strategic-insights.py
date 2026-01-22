@@ -1714,9 +1714,26 @@ def _(
         # Get first inflow date from token events (keyed by title/project_name)
         _first_inflow_date = get_first_inflow_date(df_token_events, _title)
 
+        # Get current TVL date (latest available TVL data)
+        _latest_date = _proj_tvl['sample_date'].max()
+
+        # Determine if grant is undelivered:
+        # - No OP delivered yet, OR
+        # - Delivery date is in the future
+        _is_undelivered = (
+            _op_delivered == 0 or
+            (pd.notna(_delivery_date) and _delivery_date > _latest_date)
+        )
+
         # Calculate project_baseline_date = MIN(initial_delivery_date, first_inflow_date)
         # and track which source was used
-        if pd.notna(_delivery_date) and _first_inflow_date is not None:
+        # For undelivered grants, use current date so TVL delta = 0
+        if _is_undelivered:
+            # Grant not yet delivered - use current date as baseline
+            # This ensures baseline_tvl = current_tvl and tvl_delta = 0
+            _project_baseline_date = _latest_date
+            _baseline_date_source = 'undelivered'
+        elif pd.notna(_delivery_date) and _first_inflow_date is not None:
             # Both dates available - use the minimum
             if _first_inflow_date < _delivery_date:
                 _project_baseline_date = _first_inflow_date
@@ -1744,7 +1761,7 @@ def _(
         _baseline_tvl = _baseline_window['amount'].mean() if not _baseline_window.empty else 0
 
         # Calculate current TVL (latest 7-day avg)
-        _latest_date = _proj_tvl['sample_date'].max()
+        # Note: _latest_date already calculated above for undelivered check
         _current_window = _proj_tvl[
             _proj_tvl['sample_date'] >= _latest_date - pd.Timedelta(days=7)
         ]
