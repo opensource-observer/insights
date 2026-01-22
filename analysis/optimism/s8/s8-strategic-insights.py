@@ -945,6 +945,96 @@ def _():
 
 
 @app.cell(hide_code=True)
+def _():
+    # Attribution calculation constants
+    OP_PRICE_USD = 0.35  # Fixed OP price for calculations (can be adjusted per project)
+    ATTRIBUTION_BUCKETS = [0.01, 0.02, 0.05, 0.10, 0.20, 0.50, 1.0]  # Available attribution percentages
+    return ATTRIBUTION_BUCKETS, OP_PRICE_USD
+
+
+@app.cell(hide_code=True)
+def _(ATTRIBUTION_BUCKETS):
+    def calculate_attribution(scope_pct, op_total_usd, coincentives_usd, tvl, attribution_cap_applied):
+        """
+        Calculate attribution percentage for a project's TVL change.
+
+        Args:
+            scope_pct: Fraction of TVL in scope (0.0 to 1.0)
+            op_total_usd: USD value of OP grant
+            coincentives_usd: USD value of co-incentives from other sources
+            tvl: Current TVL (used for cap calculation if attribution_cap_applied)
+            attribution_cap_applied: Boolean indicating if attribution should be capped
+
+        Returns:
+            tuple: (final_pct, formula_text) where:
+                - final_pct: Attribution percentage rounded to nearest bucket (0.0 to 1.0)
+                - formula_text: Human-readable explanation of the calculation
+        """
+        import math
+
+        # Handle edge cases
+        if scope_pct is None or math.isnan(scope_pct) if isinstance(scope_pct, float) else False:
+            scope_pct = 1.0  # Default to 100% scope if not specified
+
+        if coincentives_usd is None or (isinstance(coincentives_usd, float) and math.isnan(coincentives_usd)):
+            coincentives_usd = 0.0
+
+        if op_total_usd is None or op_total_usd <= 0:
+            return (0.0, "No OP grant value")
+
+        # Calculate incentive share: OP / (OP + coincentives)
+        total_incentives = op_total_usd + coincentives_usd
+        incentive_share = op_total_usd / total_incentives
+
+        # Calculate raw attribution: scope * incentive_share
+        raw_attribution = scope_pct * incentive_share
+
+        # Apply cap if specified
+        if attribution_cap_applied and tvl and tvl > 0:
+            # Cap based on grant size relative to TVL
+            cap = min(1.0, op_total_usd / tvl)
+            capped_attribution = min(raw_attribution, cap)
+        else:
+            capped_attribution = raw_attribution
+
+        # Round to nearest bucket
+        def round_to_bucket(value, buckets):
+            """Round value to the nearest bucket."""
+            if value <= 0:
+                return buckets[0]
+            if value >= buckets[-1]:
+                return buckets[-1]
+
+            # Find the two buckets that value falls between
+            for i in range(len(buckets) - 1):
+                if buckets[i] <= value <= buckets[i + 1]:
+                    # Return the closer bucket
+                    if value - buckets[i] <= buckets[i + 1] - value:
+                        return buckets[i]
+                    else:
+                        return buckets[i + 1]
+            return buckets[-1]
+
+        final_pct = round_to_bucket(capped_attribution, ATTRIBUTION_BUCKETS)
+
+        # Build formula text
+        formula_parts = [f"scope={scope_pct:.0%}"]
+        formula_parts.append(f"incentive_share={incentive_share:.0%}")
+        formula_parts.append(f"raw={raw_attribution:.0%}")
+        if attribution_cap_applied:
+            formula_parts.append("cap_applied")
+        formula_parts.append(f"final={final_pct:.0%}")
+        formula_text = " × ".join(formula_parts[:2]) + f" = {raw_attribution:.0%}"
+        if attribution_cap_applied:
+            formula_text += f" (capped)"
+        formula_text += f" → {final_pct:.0%}"
+
+        return (final_pct, formula_text)
+
+    return (calculate_attribution,)
+
+
+@app.cell(hide_code=True)
 def _(EXPECTED_FIRST_INFLOWS, df_token_events, pd):
     # Token transfer verification logic
     # Verifies that token inflows match expected grant amounts
@@ -1272,8 +1362,10 @@ def _(df_grants, df_metrics):
 @app.cell(hide_code=True)
 def _(
     MIN_TVL_THRESHOLD,
+    OP_PRICE_USD,
     PROGRAM_START_DATE,
     all_projects,
+    calculate_attribution,
     df_grants,
     df_metrics,
     df_token_events,
@@ -1306,6 +1398,11 @@ def _(
         _op_total = _grant_row.get('op_total_amount', 0) or 0
         _l2_address = _grant_row.get('l2_address', None)
         _title = _grant_row.get('title', _project)
+
+        # Get attribution parameters from grant data
+        _scope_pct = _grant_row.get('scope_pct', 1.0)
+        _coincentives_usd = _grant_row.get('coincentives_usd', 0.0)
+        _attribution_cap_applied = _grant_row.get('attribution_cap_applied', False)
 
         # Get TVL data for this project
         _proj_tvl = _df_tvl_all[_df_tvl_all['project_title'] == _project].copy()
@@ -1362,6 +1459,17 @@ def _(
         # Get estimated OP balance from token events (keyed by title/project_name)
         _est_op_balance = project_current_balance.get(_title, None)
 
+        # Calculate attribution percentage
+        # OP grant value in USD for attribution calculation
+        _op_total_usd = _op_total * OP_PRICE_USD
+        _calculated_attribution_pct, _calculated_formula = calculate_attribution(
+            scope_pct=_scope_pct,
+            op_total_usd=_op_total_usd,
+            coincentives_usd=_coincentives_usd,
+            tvl=_current_tvl,
+            attribution_cap_applied=_attribution_cap_applied
+        )
+
         _project_metrics.append({
             'project': _project,
             'title': _title,
@@ -1382,7 +1490,12 @@ def _(
             'oso_project_artifacts': _grant_row.get('oso_project_artifacts', ''),
             'defillama_adapters': _grant_row.get('defillama_adapters', ''),
             'l2_address': _l2_address,
-            'est_op_balance': _est_op_balance
+            'est_op_balance': _est_op_balance,
+            'scope_pct': _scope_pct,
+            'coincentives_usd': _coincentives_usd,
+            'attribution_cap_applied': _attribution_cap_applied,
+            'calculated_attribution_pct': _calculated_attribution_pct,
+            'calculated_formula': _calculated_formula
         })
 
     df_project_metrics = pd.DataFrame(_project_metrics)
