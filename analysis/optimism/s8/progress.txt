@@ -61,3 +61,14 @@ Started: Thu Jan 22 08:23:13 EST 2026
   - The chart annotation uses `_baseline_date` (derived from `_project_baseline_date`) which is set earlier in the loop at line 365
   - Source label mapping: 'first_inflow' → 'first inflow', 'delivery_date' → 'delivery', 'undelivered' → 'not yet delivered', 'program_start' → 'program start'
 ---
+
+## 2026-01-22 - US-030
+- **What was implemented**: Reordered Part 3 summary tables - leaderboard now appears first
+- **Changes made**:
+  - Modified `_summary_output = mo.vstack([...])` to put leaderboard section before extended details
+  - Order is now: "Leaderboard by Attributable ROI" → `_leaderboard_table` → "Extended Project Details" → `_details_table`
+- **Files changed**: s8-strategic-insights.py
+- **Learnings for future iterations:**
+  - The Part 3 summary tables are created in a single cell around line 710
+  - Table ordering is controlled by the `mo.vstack()` call at line 783 - simply reorder the list items
+---
