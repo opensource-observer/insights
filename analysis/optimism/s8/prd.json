@@ -1,135 +1,117 @@
 {
-  "project": "S8 Strategic Insights Notebook - Phase 2",
-  "branchName": "ralph/s8-notebook-phase2",
-  "description": "Enhancements to the S8 strategic insights notebook: token transfer verification, true baseline dates, in-notebook attribution calculation, adjusted ROI, and Part 3 summary section.",
+  "project": "S8 Strategic Insights Notebook - Phase 3 Fixes",
+  "branchName": "ralph/s8-notebook-phase3",
+  "description": "Bug fixes and improvements to the S8 strategic insights notebook: fix attribution math, improve footnotes with full formula display, correct baseline date logic for undelivered grants, and reorder/restructure Part 3 summary tables.",
   "userStories": [
     {
-      "id": "US-018",
-      "title": "Add token transfer verification logic",
-      "description": "As an analyst, I need to verify that token inflows match expected grant amounts to catch edge cases where projects received other grants.",
+      "id": "US-026",
+      "title": "Fix attribution calculation math",
+      "description": "As an analyst, I need the attribution calculation to correctly apply scope, co-incentive share, AND cap so that the final attribution percentage is logically consistent.",
       "acceptanceCriteria": [
-        "Add EXPECTED_FIRST_INFLOWS dict with test cases: {'Truemarkets': 70000, 'Super DCA': 30000, '40acres.finance': 200000}",
-        "Create function verify_first_inflow(df_token_events, project_name, expected_amount, tolerance=0.02) that returns (is_valid, actual_amount, discrepancy_pct)",
-        "Add df_token_transfers_verified DataFrame that flags projects with inflow discrepancies > 2%",
-        "For projects with discrepancies, add a 'inflow_warning' column explaining the issue",
-        "Log verification results for the three test cases to console output",
+        "Review calculate_attribution() function logic - attribution should be: MIN(scope_pct * incentive_share, cap)",
+        "For PancakeSwap test case: scope=50%, co-incentives=$1,125,000 should result in attribution well below 50%, not 100%",
+        "Verify incentive_share = op_usd / (op_usd + co_incentive_usd) is calculated correctly",
+        "Verify cap is applied AFTER multiplying scope * incentive_share, not before",
+        "Add console logging to show intermediate values: scope_pct, incentive_share, raw_attribution, cap, final_attribution",
         "Notebook runs without errors: marimo check s8-strategic-insights.py passes"
       ],
       "priority": 1,
       "passes": true,
-      "notes": "Edge case: some projects received audit grants around same time as TVL grants"
+      "notes": "The current output shows 100% attribution for PancakeSwap which is mathematically impossible given 50% scope, large co-incentives, and cap applied"
     },
     {
-      "id": "US-019",
-      "title": "Create project_baseline_date with verified inflow logic",
-      "description": "As an analyst, I need a 'true' baseline date that uses the minimum of initial_delivery_date and first verified inflow date.",
+      "id": "US-027",
+      "title": "Show full attribution formula in footnote",
+      "description": "As an analyst, I want the attribution footnote to show the complete math breakdown so users can verify the calculation.",
       "acceptanceCriteria": [
-        "Add function get_first_inflow_date(df_token_events, project_name) that returns the timestamp of first inflow",
-        "Create 'project_baseline_date' column = MIN(initial_delivery_date, first_inflow_date)",
-        "Add 'baseline_date_source' column indicating which date was used ('delivery_date', 'first_inflow', or 'program_start')",
-        "Use project_baseline_date for all TVL baseline calculations in df_project_metrics",
-        "Add footnote logic for deep dives showing how baseline date was derived",
+        "Show cap calculation: 'Cap = (OP Value / Baseline TVL) = $X / $Y = Z% → Lookup: W%'",
+        "Show incentive share: 'Incentive Share = OP Value / (OP Value + Co-incentives) = $X / $Y = Z%'",
+        "Show scope: 'Scope = X% of TVL in scope'",
+        "Show raw attribution: 'Raw = Scope × Incentive Share = X% × Y% = Z%'",
+        "Show final: 'Final = MIN(Raw, Cap) = MIN(X%, Y%) = Z% → Rounded to W%'",
+        "Format as readable multi-line footnote or expandable section in the deep dive",
         "Notebook runs without errors: marimo check s8-strategic-insights.py passes"
       ],
       "priority": 2,
-      "passes": true,
-      "notes": "The true baseline should be when tokens actually arrived, not just the reported delivery date"
+      "passes": false,
+      "notes": "Users need to understand how each component contributes to the final attribution percentage"
     },
     {
-      "id": "US-020",
-      "title": "Add attribution calculation function to notebook",
-      "description": "As an analyst, I need attribution logic computed in the notebook using assumptions from the joined data.",
+      "id": "US-028",
+      "title": "Fix baseline date for undelivered grants",
+      "description": "As an analyst, I need projects without grant delivery to use the current TVL date as baseline so their TVL delta is always zero.",
       "acceptanceCriteria": [
-        "Add OP_PRICE_USD = 0.35 constant (easy to adjust per project later)",
-        "Add ATTRIBUTION_BUCKETS = [0.01, 0.02, 0.05, 0.10, 0.20, 0.50, 1.0] constant",
-        "Create function calculate_attribution(scope_pct, op_total_usd, coincentives_usd, tvl, attribution_cap_applied) that returns (final_pct, formula_text)",
-        "Attribution logic: raw = scope_pct * (op_total_usd / (op_total_usd + coincentives_usd)), apply cap if attribution_cap_applied, round to nearest bucket",
-        "Add 'calculated_attribution_pct' and 'calculated_formula' columns to df_project_metrics",
+        "For projects where grant has NOT been delivered (no delivery_date or delivery_date > current_date), set baseline_date = current_tvl_date",
+        "This ensures baseline_tvl = current_tvl and tvl_delta = 0 for undelivered grants",
+        "Update baseline_date_source to 'undelivered' or 'current_date' for these projects",
+        "Verify stats (ROI, TVL delta) reflect zero change for undelivered projects",
         "Notebook runs without errors: marimo check s8-strategic-insights.py passes"
       ],
       "priority": 3,
-      "passes": true,
-      "notes": "Uses scope_pct, coincentives_usd, attribution_cap_applied from the joined df_grants data"
+      "passes": false,
+      "notes": "Better than using program start date - shows accurate 'no change yet' state"
     },
     {
-      "id": "US-021",
-      "title": "Update project deep dives with attribution footnote and adjusted ROI",
-      "description": "As an analyst, I want the deep dives to show attributed ROI and explain the attribution methodology.",
+      "id": "US-029",
+      "title": "Show Baseline Date in deep dive annotation",
+      "description": "As an analyst, I want the deep dive to show the Baseline Date used for calculations, not just the Grant Delivery date.",
       "acceptanceCriteria": [
-        "Change ROI stat title to 'ROI (TVL change per OP delivered)'",
-        "Calculate adjusted_roi = roi * attribution_pct (TVL change attributed to grant)",
-        "Display adjusted_roi as the main ROI value in the stat card",
-        "Add footnote showing unadjusted ROI: 'Unadjusted: $X/OP'",
-        "Update attribution description to show scope, co-incentives context, and cap status",
+        "Replace 'Grant Delivery: [date]' with 'Baseline Date: [date]' in project deep dive header/annotation",
+        "Include baseline_date_source in parentheses, e.g., 'Baseline Date: 2024-06-15 (first inflow)'",
+        "For undelivered grants, show 'Baseline Date: [date] (not yet delivered)'",
+        "Ensure the date displayed matches the date used for baseline_tvl calculation",
         "Notebook runs without errors: marimo check s8-strategic-insights.py passes"
       ],
       "priority": 4,
-      "passes": true,
-      "notes": "Main ROI is now the attributed portion; unadjusted is in footnote"
+      "passes": false,
+      "notes": "Baseline Date is the operationally relevant date, not necessarily the grant delivery date"
     },
     {
-      "id": "US-022",
-      "title": "Add Part 3 Summary Section - Tables",
-      "description": "As an analyst, I want a summary section with extended project details table and leaderboard.",
+      "id": "US-030",
+      "title": "Reorder Part 3 tables - leaderboard first",
+      "description": "As an analyst, I want the leaderboard table to appear before the extended project details table.",
       "acceptanceCriteria": [
-        "Add Part 3 header: '## Part 3: Summary'",
-        "Create extended project details table with columns: Project, Baseline Date, Baseline TVL, TVL Delta, Attribution %, Adjusted ROI",
-        "Create leaderboard table sorted descending by Attributable ROI",
-        "Use mo.ui.table for both tables with appropriate formatting",
-        "Tables display after Part 2 deep dives",
+        "Move leaderboard table to appear immediately after Part 3 header",
+        "Extended project details table follows after leaderboard",
+        "Leaderboard remains sorted by Attributable ROI descending",
         "Notebook runs without errors: marimo check s8-strategic-insights.py passes"
       ],
       "priority": 5,
-      "passes": true,
-      "notes": "Reuses Part 1 table structure but adds attribution columns"
+      "passes": false,
+      "notes": "Leaderboard is the key summary - should come first"
     },
     {
-      "id": "US-023",
-      "title": "Add Part 3 Summary Section - Stats widgets",
-      "description": "As an analyst, I want summary stats showing program-level metrics with attribution.",
+      "id": "US-031",
+      "title": "Update extended project details table columns",
+      "description": "As an analyst, I want the extended project details table to show specific financial metrics for full transparency.",
       "acceptanceCriteria": [
-        "Add stat widget: 'OP Delivered' showing total OP delivered across all projects",
-        "Add stat widget: 'Est. Coincentive Leverage' showing (total coincentives / total OP delivered)",
-        "Add stat widget: 'Attributable TVL Inflows' showing sum of (tvl_delta * attribution_pct) for positive deltas",
-        "Add stat widget: 'Attributable ROI' showing attributable_tvl_inflows / op_delivered",
-        "Use consistent styling with Part 1 stat cards",
+        "Extended project details table includes exactly these columns in order: Project Name, Baseline Date, Baseline TVL, Current TVL, TVL Delta, USD Value of Co-incentives, USD Value of Total Grant (OP), Leverage",
+        "Leverage = Co-incentives USD / Grant OP USD (or inverse, clarify in header)",
+        "Format currency columns with $ and appropriate precision (e.g., $1.2M, $45K)",
+        "Format dates as YYYY-MM-DD",
+        "Remove any columns not in the specified list (e.g., Attribution %, Adjusted ROI - those are in leaderboard)",
         "Notebook runs without errors: marimo check s8-strategic-insights.py passes"
       ],
       "priority": 6,
-      "passes": true,
-      "notes": "Four stats in horizontal row matching Part 1 layout"
+      "passes": false,
+      "notes": "Focus on financial inputs and TVL metrics, not derived attribution metrics"
     },
     {
-      "id": "US-024",
-      "title": "Update methodology section with attribution details",
-      "description": "As an analyst, I want the methodology to explain the attribution calculation and baseline date logic.",
-      "acceptanceCriteria": [
-        "Add section explaining 'True Baseline Date' calculation (min of delivery date and first verified inflow)",
-        "Add section explaining token transfer verification (expected vs actual inflow amounts)",
-        "Add section explaining attribution calculation: scope * incentive_share, with cap tiers",
-        "Add section explaining Adjusted ROI = Unadjusted ROI * Attribution %",
-        "Document the OP price assumption ($0.35) and how to adjust it",
-        "Notebook runs without errors: marimo check s8-strategic-insights.py passes"
-      ],
-      "priority": 7,
-      "passes": true,
-      "notes": "Comprehensive methodology update"
-    },
-    {
-      "id": "US-025",
-      "title": "Test and verify notebook end-to-end",
-      "description": "As an analyst, I need the notebook to run without warnings or errors.",
+      "id": "US-032",
+      "title": "Test and verify all fixes end-to-end",
+      "description": "As an analyst, I need to verify all Phase 3 fixes work correctly together.",
       "acceptanceCriteria": [
         "Run marimo check on the notebook - must pass with no errors",
-        "Run the notebook with marimo run - must execute without Python errors",
-        "Verify all three test cases (Truemarkets, Super DCA, 40acres.finance) show expected inflow amounts",
-        "Verify Part 3 tables display correctly with all expected columns",
-        "Verify Part 3 stats show reasonable values (not NaN or 0)",
-        "Address any deprecation warnings or runtime warnings"
+        "Verify PancakeSwap attribution is now < 50% (not 100%)",
+        "Verify attribution footnote shows full formula breakdown",
+        "Verify undelivered grants show baseline_date = current_date and tvl_delta = 0",
+        "Verify deep dives show 'Baseline Date' not 'Grant Delivery'",
+        "Verify Part 3 leaderboard appears before extended details",
+        "Verify extended details table has correct columns: Project Name, Baseline Date, Baseline TVL, Current TVL, TVL Delta, Co-incentives USD, Grant OP USD, Leverage"
       ],
-      "priority": 8,
-      "passes": true,
-      "notes": "Final verification - notebook must work end-to-end"
+      "priority": 7,
+      "passes": false,
+      "notes": "Final verification - all fixes must work together"
     }
   ]
 }
