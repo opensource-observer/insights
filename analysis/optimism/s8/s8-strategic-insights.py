@@ -706,7 +706,7 @@ def _(OP_PRICE_USD, df_project_metrics_with_tvl, mo):
 
 
 @app.cell(hide_code=True)
-def _(df_project_metrics_with_tvl, mo, pd):
+def _(OP_PRICE_USD, df_project_metrics_with_tvl, mo, pd):
     # Part 3: Summary Tables
     # Extended project details table and leaderboard
 
@@ -717,15 +717,39 @@ def _(df_project_metrics_with_tvl, mo, pd):
         _df_summary = df_project_metrics_with_tvl.copy()
         _df_summary['adjusted_roi'] = _df_summary['roi'] * _df_summary['calculated_attribution_pct']
 
+        # Calculate USD value of grant
+        _df_summary['grant_usd'] = _df_summary['op_total'] * OP_PRICE_USD
+
+        # Calculate leverage (Co-incentives / Grant USD)
+        _df_summary['leverage'] = _df_summary.apply(
+            lambda row: row['coincentives_usd'] / row['grant_usd'] if row['grant_usd'] > 0 else 0,
+            axis=1
+        )
+
+        # Helper function to format currency values
+        def _format_currency(x):
+            if pd.isna(x) or x == 0:
+                return '—'
+            elif abs(x) >= 1e6:
+                return f"${x/1e6:,.2f}M"
+            elif abs(x) >= 1e3:
+                return f"${x/1e3:,.0f}K"
+            else:
+                return f"${x:,.0f}"
+
         # Format columns for display
         _df_summary['Baseline Date'] = _df_summary['project_baseline_date'].apply(
             lambda x: x.strftime('%Y-%m-%d') if pd.notna(x) else '—'
         )
-        _df_summary['Baseline TVL'] = _df_summary['baseline_tvl'].apply(
-            lambda x: f"${x/1e6:,.2f}M" if pd.notna(x) and x > 0 else '—'
-        )
+        _df_summary['Baseline TVL'] = _df_summary['baseline_tvl'].apply(_format_currency)
+        _df_summary['Current TVL'] = _df_summary['current_tvl'].apply(_format_currency)
         _df_summary['TVL Delta'] = _df_summary['tvl_delta'].apply(
             lambda x: f"+${x/1e6:,.2f}M" if x > 0 else f"-${abs(x)/1e6:,.2f}M" if x < 0 else "$0"
+        )
+        _df_summary['Co-incentives (USD)'] = _df_summary['coincentives_usd'].apply(_format_currency)
+        _df_summary['Grant (USD)'] = _df_summary['grant_usd'].apply(_format_currency)
+        _df_summary['Leverage'] = _df_summary['leverage'].apply(
+            lambda x: f"{x:.1f}x" if x > 0 else '—'
         )
         _df_summary['Attribution %'] = _df_summary['calculated_attribution_pct'].apply(
             lambda x: f"{x:.0%}" if pd.notna(x) else '—'
@@ -734,11 +758,13 @@ def _(df_project_metrics_with_tvl, mo, pd):
             lambda x: f"+${x:,.0f}/OP" if x > 0 else f"-${abs(x):,.0f}/OP" if x < 0 else "$0/OP"
         )
 
-        # Extended project details table
+        # Extended project details table - financial metrics and TVL data
         _extended_details = _df_summary[[
-            'title', 'Baseline Date', 'Baseline TVL', 'TVL Delta', 'Attribution %', 'Adjusted ROI'
+            'title', 'Baseline Date', 'Baseline TVL', 'Current TVL', 'TVL Delta',
+            'Co-incentives (USD)', 'Grant (USD)', 'Leverage'
         ]].copy()
-        _extended_details.columns = ['Project', 'Baseline Date', 'Baseline TVL', 'TVL Delta', 'Attribution %', 'Adjusted ROI']
+        _extended_details.columns = ['Project', 'Baseline Date', 'Baseline TVL', 'Current TVL', 'TVL Delta',
+                                     'Co-incentives (USD)', 'Grant (USD)', 'Leverage']
         _extended_details = _extended_details.sort_values('Project')
 
         _details_table = mo.ui.table(
