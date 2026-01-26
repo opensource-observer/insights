@@ -98,9 +98,16 @@ def _(mo, pyoso_db_conn):
         GROUP BY 1
         ORDER BY 2 DESC
         """,
-        output=False,
         engine=pyoso_db_conn
     )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Age Distribution
+    """)
     return
 
 
