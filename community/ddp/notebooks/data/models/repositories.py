@@ -68,23 +68,13 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(render_table_preview):
-    render_table_preview("oso.int_opendevdata__repositories_with_repo_id")
-    return
-
-
-@app.cell(hide_code=True)
 def _(mo):
-    mo.md("""
-    ## Coverage Analysis
-    """)
+    mo.md("## Age Distribution")
     return
 
 
 @app.cell(hide_code=True)
-def _(mo, pyoso_db_conn):
-    import plotly.express as px
-
+def _(mo, px, pyoso_db_conn):
     _PLOTLY_LAYOUT = {
         'margin': dict(l=10, r=10, t=60, b=20),
         'xaxis': dict(showgrid=True, gridcolor='#f0f0f0'),
