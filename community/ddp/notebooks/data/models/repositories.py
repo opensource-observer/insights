@@ -175,7 +175,7 @@ def _(mo):
 
 @app.cell
 def _(mo, pyoso_db_conn):
-    _df_join = mo.sql(
+    return mo.sql(
         """
         -- Bridge curated ODD data with GitHub Archive events using repo_id
         SELECT 
@@ -191,12 +191,11 @@ def _(mo, pyoso_db_conn):
         """,
         engine=pyoso_db_conn
     )
-    return (_df_join,)
 
 
 @app.cell
 def _(mo, pyoso_db_conn):
-    _df_find_by_id = mo.sql(
+    return mo.sql(
         """
         -- Find a specific repository across multiple identifier types
         SELECT 
@@ -210,12 +209,11 @@ def _(mo, pyoso_db_conn):
         """,
         engine=pyoso_db_conn
     )
-    return (_df_find_by_id,)
 
 
 @app.cell
 def _(mo, pyoso_db_conn):
-    _df_unmatched = mo.sql(
+    return mo.sql(
         """
         -- Identify popular repositories missing a REST ID bridge
         SELECT 
@@ -229,7 +227,6 @@ def _(mo, pyoso_db_conn):
         """,
         engine=pyoso_db_conn
     )
-    return (_df_unmatched,)
 
 
 @app.cell
