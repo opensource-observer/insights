@@ -47,6 +47,28 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md("""
+    ### Node ID Decoding: The Technical Challenge
+
+    A key challenge in unifying repository data is bridging the gap between GitHub's two API systems:
+    *   **GraphQL API**: Uses opaque, global "Node IDs" (e.g., `MDEwOlJlcG9zaXRvcnkyNDI0Nzg0`).
+    *   **REST API / Archives**: Uses simple integer IDs (e.g., `2424784`).
+
+    The model solves this using a robust decoding strategy (implemented in `int_github__node_id_map`) that handles two distinct formats:
+
+    1.  **Legacy IDs**: Simple Base64-encoded strings (e.g., `010:Repository12345`). These are decoded by stripping the prefix to reveal the integer.
+    2.  **Next-Gen IDs**: Complex binary identifiers using **MessagePack** serialization wrapped in URL-safe Base64. Decoding these requires:
+        *   Normalizing URL-safe characters (`-` -> `+`, `_` -> `/`).
+        *   Calculating and restoring missing padding (`=`).
+        *   Parsing binary MessagePack markers to extract variable-width integers (`fixint`, `uint8` to `uint64`).
+
+    This pre-computed mapping ensures that even legacy OpenDevData records (which only stored Node IDs) can be joined with modern event data (keyed by integer REST IDs).
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
     ## Related Models
     - `projects_v1`: The primary source of truth for project-level metadata.
     - `events.py`: Downstream model consuming repository IDs for event attribution.
