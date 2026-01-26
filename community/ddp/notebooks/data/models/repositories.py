@@ -4,58 +4,32 @@
 # ///
 
 import marimo
-import pyoso
 
+__generated_with = "0.19.2"
 app = marimo.App(width="full")
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    return mo.md(
-        """
-        # Unified Repository Model
-
-        The `int_opendevdata__repositories_with_repo_id` model serves as the central bridge between curated project data and GitHub's technical identifiers. It ensures that every repository tracked in the OSS Directory is mapped to its corresponding **REST API ID** (`repo_id`), enabling precise joins with GitHub event data and other technical metrics.
-        """
-    )
+    mo.md(r"# Repository Model Analysis")
+    return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    return mo.md(
-        """
-        ## Matching Strategy
-
-        To maintain high data integrity, the model employs a multi-tiered matching strategy to resolve repositories to their REST API IDs:
-
-        1. **OSS Directory**: High-trust match via `github_graphql_id`.
-        2. **Node ID Map**: Decoded `github_graphql_id` to `repo_id`.
-        3. **GitHub Archive**: Fallback match via `repo_name` (least reliable due to renames).
+    mo.md(
+        r"""
+        This notebook explores the `int_opendevdata__repositories_with_repo_id` model, 
+        which serves as a bridge between OpenDevData and GHArchive.
         """
     )
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    return mo.md(
-        """
-        ## 3-ID System Comparison
-
-        The repository model bridges different identifier systems used across the ecosystem:
-
-        | ID Type | Name | Description |
-        | :--- | :--- | :--- |
-        | `opendevdata_id` | OpenDevData ID | Canonical internal ID. |
-        | `github_graphql_id` | GitHub Node ID | GitHub Node ID (Base64). |
-        | `repo_id` | GitHub REST ID | GitHub REST API ID (Primary Join Key). |
-        """
-    )
+    return
 
 
 @app.cell
 def _(mo, pyoso_db_conn):
     _df_ids = mo.sql(
-        """
+        f"""
         SELECT 
             opendevdata_id, 
             github_graphql_id, 
@@ -71,31 +45,10 @@ def _(mo, pyoso_db_conn):
     return (_df_ids,)
 
 
-@app.cell(hide_code=True)
-def _(_df_ids, mo):
-    return mo.ui.table(
-        _df_ids,
-        format_mapping={
-            "repo_id": "{:d}"
-        }
-    )
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    return mo.md(
-        """
-        ## Coverage Analysis
-
-        This section visualizes the distribution of repository identifier sources, showing how many repositories were matched via each strategy.
-        """
-    )
-
-
 @app.cell
 def _(mo, pyoso_db_conn):
     _df_coverage = mo.sql(
-        """
+        f"""
         SELECT 
             repo_id_source, 
             COUNT(*) as count 
@@ -109,32 +62,21 @@ def _(mo, pyoso_db_conn):
 
 
 @app.cell(hide_code=True)
-def _(_df_coverage, mo):
-    import plotly.express as px
-    _fig_coverage = px.pie(
+def _(_df_coverage):
+    import plotly.express as _px
+    _fig_coverage = _px.pie(
         _df_coverage, 
         names='repo_id_source', 
         values='count',
         title="Repository ID Source Coverage"
     )
-    return mo.ui.plotly(_fig_coverage)
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    return mo.md(
-        """
-        ## Age Distribution
-
-        This section shows the distribution of repository creation dates, helping identify the 'age' of the repositories in the dataset.
-        """
-    )
+    return (_fig_coverage,)
 
 
 @app.cell
 def _(mo, pyoso_db_conn):
     _df_age = mo.sql(
-        """
+        f"""
         SELECT 
             DATE_TRUNC('month', repo_created_at) as created_month, 
             COUNT(*) as count 
@@ -149,77 +91,78 @@ def _(mo, pyoso_db_conn):
 
 
 @app.cell(hide_code=True)
-def _(_df_age, mo):
-    import plotly.express as px
-    _fig_age = px.bar(
+def _(_df_age):
+    import plotly.express as _px
+    _fig_age = _px.bar(
         _df_age, 
         x='created_month', 
         y='count',
         title="Repository Age Distribution (by Month)"
     )
-    return mo.ui.plotly(_fig_age)
+    return (_fig_age,)
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    return mo.md(
-        """
+    mo.md(
+        r"""
         ## Edge Cases & Sample Queries
 
         ### Edge Cases
         - **Duplication**: One `github_graphql_id` might map to multiple `opendevdata_id`s if ODD tracks forks/renames separately, or if GitHub API changes occurred.
-        - **Unmatched**: Repositories might lack a `repo_id` if they are very new (not yet in GHArchive sync) or very old (pre-2015) and inactive.
+        - **Unmatched Repositories**: Repositories might lack a `repo_id` if they are very new (not yet in GHArchive sync) or very old (pre-2015) and inactive.
         """
     )
+    return
 
 
 @app.cell
 def _(mo, pyoso_db_conn):
-    return mo.sql(
-        """
-        -- Bridge curated ODD data with GitHub Archive events using repo_id
+    _df_join = mo.sql(
+        f"""
+        -- Sample Query 1: Cross-Source Join (ODD + GHArchive)
+        -- Demonstrates using repo_id as a bridge to other GHArchive-based models
         SELECT 
             r.repo_name, 
             r.repo_id, 
-            e.event_type,
-            COUNT(*) as event_count
+            r.opendevdata_id,
+            r.star_count
         FROM int_opendevdata__repositories_with_repo_id r
-        JOIN int_gharchive__github_events e ON r.repo_id = e.repo_id
-        WHERE r.star_count > 1000
-        GROUP BY 1, 2, 3
-        LIMIT 10
+        WHERE r.repo_id IS NOT NULL
+          AND r.star_count > 1000
+        LIMIT 5
         """,
         engine=pyoso_db_conn
     )
+    return (_df_join,)
 
 
 @app.cell
 def _(mo, pyoso_db_conn):
-    return mo.sql(
-        """
-        -- Find a specific repository across multiple identifier types
+    _df_by_id = mo.sql(
+        f"""
+        -- Sample Query 2: Finding Repositories by ID Type
         SELECT 
             repo_name, 
-            opendevdata_id, 
-            github_graphql_id, 
-            repo_id 
+            repo_id, 
+            opendevdata_id 
         FROM int_opendevdata__repositories_with_repo_id
-        WHERE github_graphql_id = 'MDEwOlJlcG9zaXRvcnkyMjc3MDUz' -- Example: node_id for 'facebook/react'
-           OR repo_id = 10270250 -- Example: repo_id for 'facebook/react'
+        WHERE github_graphql_id = 'MDEwOlJlcG9zaXRvcnkyNDI0Nzg0' -- rails/rails
         """,
         engine=pyoso_db_conn
     )
+    return (_df_by_id,)
 
 
 @app.cell
 def _(mo, pyoso_db_conn):
-    return mo.sql(
-        """
-        -- Identify popular repositories missing a REST ID bridge
+    _df_unmatched = mo.sql(
+        f"""
+        -- Sample Query 3: Identifying Unmatched Repositories
         SELECT 
             repo_name, 
             star_count, 
-            fork_count
+            repo_created_at
         FROM int_opendevdata__repositories_with_repo_id
         WHERE repo_id IS NULL
         ORDER BY star_count DESC
@@ -227,6 +170,7 @@ def _(mo, pyoso_db_conn):
         """,
         engine=pyoso_db_conn
     )
+    return (_df_unmatched,)
 
 
 @app.cell
