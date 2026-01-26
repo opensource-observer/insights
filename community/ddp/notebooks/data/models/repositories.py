@@ -69,7 +69,9 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md("## Age Distribution")
+    mo.md("""
+    ## Age Distribution
+    """)
     return
 
 
@@ -147,7 +149,7 @@ def _(mo, pyoso_db_conn):
         title='Repository Creation Trend'
     )
     _fig_age.update_layout(_PLOTLY_LAYOUT)
-    return
+    return (px,)
 
 
 @app.cell(hide_code=True)
@@ -283,8 +285,7 @@ def _(mo, pyoso_db_conn):
                 elif include_percentage:
                     fmt[c] = '{:.0f}'
         return fmt
-
-    return (render_table_preview, px)
+    return (px,)
 
 
 @app.cell
