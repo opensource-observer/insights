@@ -12,7 +12,7 @@ app = marimo.App(width="full")
 @app.cell(hide_code=True)
 def _(mo):
     mo.md("""
-    # Unified Repository Model
+    ## Repository Creation Trend
     """)
     return
 
