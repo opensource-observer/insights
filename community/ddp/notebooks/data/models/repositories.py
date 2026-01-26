@@ -13,8 +13,6 @@ app = marimo.App(width="full")
 def _(mo):
     mo.md("""
     # Unified Repository Model
-    <small style="background-color: #f0f0f0; padding: 4px; border-radius: 4px;">Owner: OSO</small>
-    <small style="background-color: #f0f0f0; padding: 4px; border-radius: 4px;">Last Updated: Jan 2026</small>
     """)
     return
 
