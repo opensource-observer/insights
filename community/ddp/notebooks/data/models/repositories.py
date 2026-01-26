@@ -81,6 +81,85 @@ def _(_df_ids, mo):
     )
 
 
+@app.cell(hide_code=True)
+def _(mo):
+    return mo.md(
+        """
+        ## Coverage Analysis
+
+        This section visualizes the distribution of repository identifier sources, showing how many repositories were matched via each strategy.
+        """
+    )
+
+
+@app.cell
+def _(mo, pyoso_db_conn):
+    _df_coverage = mo.sql(
+        """
+        SELECT 
+            repo_id_source, 
+            COUNT(*) as count 
+        FROM int_opendevdata__repositories_with_repo_id 
+        GROUP BY 1 
+        ORDER BY 2 DESC
+        """,
+        engine=pyoso_db_conn
+    )
+    return (_df_coverage,)
+
+
+@app.cell(hide_code=True)
+def _(_df_coverage, mo):
+    import plotly.express as px
+    _fig_coverage = px.pie(
+        _df_coverage, 
+        names='repo_id_source', 
+        values='count',
+        title="Repository ID Source Coverage"
+    )
+    return mo.ui.plotly(_fig_coverage)
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    return mo.md(
+        """
+        ## Age Distribution
+
+        This section shows the distribution of repository creation dates, helping identify the 'age' of the repositories in the dataset.
+        """
+    )
+
+
+@app.cell
+def _(mo, pyoso_db_conn):
+    _df_age = mo.sql(
+        """
+        SELECT 
+            DATE_TRUNC('month', repo_created_at) as created_month, 
+            COUNT(*) as count 
+        FROM int_opendevdata__repositories_with_repo_id 
+        WHERE repo_created_at IS NOT NULL 
+        GROUP BY 1 
+        ORDER BY 1
+        """,
+        engine=pyoso_db_conn
+    )
+    return (_df_age,)
+
+
+@app.cell(hide_code=True)
+def _(_df_age, mo):
+    import plotly.express as px
+    _fig_age = px.bar(
+        _df_age, 
+        x='created_month', 
+        y='count',
+        title="Repository Age Distribution (by Month)"
+    )
+    return mo.ui.plotly(_fig_age)
+
+
 @app.cell
 def setup_pyoso():
     import pyoso
