@@ -86,15 +86,10 @@ def _(mo, pyoso_db_conn):
         GROUP BY 1
         ORDER BY 2 DESC
         """,
-        engine=pyoso_db_conn,
-        output=False
+        output=False,
+        engine=pyoso_db_conn
     )
-
-    return mo.ui.table(
-        _df_coverage,
-        format_mapping={"count": "{:,}"},
-        selection=None
-    )
+    return
 
 
 @app.cell(hide_code=True)
@@ -272,8 +267,7 @@ def _(mo, pyoso_db_conn):
                 elif include_percentage:
                     fmt[c] = '{:.0f}'
         return fmt
-
-    return (render_table_preview, px)
+    return (px,)
 
 
 @app.cell
