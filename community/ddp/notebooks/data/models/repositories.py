@@ -160,6 +160,78 @@ def _(_df_age, mo):
     return mo.ui.plotly(_fig_age)
 
 
+@app.cell(hide_code=True)
+def _(mo):
+    return mo.md(
+        """
+        ## Edge Cases & Sample Queries
+
+        ### Edge Cases
+        - **Duplication**: One `github_graphql_id` might map to multiple `opendevdata_id`s if ODD tracks forks/renames separately, or if GitHub API changes occurred.
+        - **Unmatched**: Repositories might lack a `repo_id` if they are very new (not yet in GHArchive sync) or very old (pre-2015) and inactive.
+        """
+    )
+
+
+@app.cell
+def _(mo, pyoso_db_conn):
+    _df_join = mo.sql(
+        """
+        -- Bridge curated ODD data with GitHub Archive events using repo_id
+        SELECT 
+            r.repo_name, 
+            r.repo_id, 
+            e.event_type,
+            COUNT(*) as event_count
+        FROM int_opendevdata__repositories_with_repo_id r
+        JOIN int_gharchive__github_events e ON r.repo_id = e.repo_id
+        WHERE r.star_count > 1000
+        GROUP BY 1, 2, 3
+        LIMIT 10
+        """,
+        engine=pyoso_db_conn
+    )
+    return (_df_join,)
+
+
+@app.cell
+def _(mo, pyoso_db_conn):
+    _df_find_by_id = mo.sql(
+        """
+        -- Find a specific repository across multiple identifier types
+        SELECT 
+            repo_name, 
+            opendevdata_id, 
+            github_graphql_id, 
+            repo_id 
+        FROM int_opendevdata__repositories_with_repo_id
+        WHERE github_graphql_id = 'MDEwOlJlcG9zaXRvcnkyMjc3MDUz' -- Example: node_id for 'facebook/react'
+           OR repo_id = 10270250 -- Example: repo_id for 'facebook/react'
+        """,
+        engine=pyoso_db_conn
+    )
+    return (_df_find_by_id,)
+
+
+@app.cell
+def _(mo, pyoso_db_conn):
+    _df_unmatched = mo.sql(
+        """
+        -- Identify popular repositories missing a REST ID bridge
+        SELECT 
+            repo_name, 
+            star_count, 
+            fork_count
+        FROM int_opendevdata__repositories_with_repo_id
+        WHERE repo_id IS NULL
+        ORDER BY star_count DESC
+        LIMIT 10
+        """,
+        engine=pyoso_db_conn
+    )
+    return (_df_unmatched,)
+
+
 @app.cell
 def setup_pyoso():
     import pyoso
