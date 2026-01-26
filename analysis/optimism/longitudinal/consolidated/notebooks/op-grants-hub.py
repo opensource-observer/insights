@@ -407,6 +407,7 @@ def _(
     get_revenue_unit,
     fmt_int,
     fmt_usd,
+    fmt_delta_usd,
     mo,
     pd,
     rate_mode_selector,
@@ -459,9 +460,16 @@ def _(
             _total_revenue, _season_start, _currency_mode, _rate_mode, _fixed_date, df_prices
         )
 
-        # TVL: use rolling window methodology (TVL stays in USD regardless of currency mode)
+        # TVL: use funding month methodology (TVL stays in USD regardless of currency mode)
+        # For monthly data, look at funding month (not 7-day window)
         _tvl_df = _season_df[_season_df['metric_name'] == 'TVL']
-        _baseline_tvl = calculate_baseline_value(_tvl_df, _season_start)
+        _month_start = _season_start.replace(day=1)
+        _month_end = (_month_start + pd.DateOffset(months=1)) - pd.Timedelta(days=1)
+        _baseline_tvl_df = _tvl_df[
+            (_tvl_df['sample_date'] >= _month_start) &
+            (_tvl_df['sample_date'] <= _month_end)
+        ]
+        _baseline_tvl = _baseline_tvl_df['amount'].sum() if not _baseline_tvl_df.empty else 0
         _current_tvl = calculate_current_value(_tvl_df)
         _tvl_delta = _current_tvl - _baseline_tvl
 
@@ -513,7 +521,7 @@ def _(
         if x is None or pd.isna(x):
             return "—"
         if _revenue_unit == "ETH":
-            return f"+Ξ{x:.4f}" if x >= 0 else f"-Ξ{abs(x):.4f}"
+            return f"+{x:.4f}" if x >= 0 else f"-{abs(x):.4f}"
         elif _revenue_unit == "OP":
             return f"+{x:.2f} OP" if x >= 0 else f"-{abs(x):.2f} OP"
         elif _revenue_unit == "USD":
@@ -537,7 +545,7 @@ def _(
             'Projects': fmt_int,
             'Total Grants': fmt_int,
             _revenue_col: _fmt_revenue,
-            'TVL Delta': fmt_usd,
+            'TVL Delta': fmt_delta_usd,
             _revenue_roi_col: _fmt_roi_revenue,
             _tvl_roi_col: _fmt_roi_tvl,
         }
@@ -561,8 +569,8 @@ def _(
 
         # Format best ROI
         if _revenue_unit == "ETH":
-            _best_roi_fmt = f"+Ξ{_best_roi:.4f}/{_grant_unit}" if _best_roi >= 0 else f"-Ξ{abs(_best_roi):.4f}/{_grant_unit}"
-            _avg_roi_fmt = f"Ξ{_weighted_avg_roi:.4f}/{_grant_unit}"
+            _best_roi_fmt = f"+{_best_roi:.4f}/{_grant_unit}" if _best_roi >= 0 else f"-{abs(_best_roi):.4f}/{_grant_unit}"
+            _avg_roi_fmt = f"{_weighted_avg_roi:.4f}/{_grant_unit}"
         elif _revenue_unit == "OP":
             _best_roi_fmt = f"+{_best_roi:.2f} OP/{_grant_unit}" if _best_roi >= 0 else f"-{abs(_best_roi):.2f} OP/{_grant_unit}"
             _avg_roi_fmt = f"{_weighted_avg_roi:.2f} OP/{_grant_unit}"
@@ -635,6 +643,9 @@ def _(
     fmt_date,
     fmt_int,
     fmt_usd,
+    fmt_delta_usd,
+    fmt_delta_eth,
+    fmt_delta_int,
     go,
     metric_selector,
     mo,
@@ -750,14 +761,14 @@ def _(
 
         _perf_df = pd.DataFrame(_grant_performance)
 
-        # Filter to grants with data and sort by 6M ROI (rate of change) for chart
+        # Filter to grants with data and sort by 6M Delta (rate of change) for chart
         _chart_df = _perf_df[_perf_df['6M Avg'] != 0].copy()
-        _chart_df = _chart_df.nlargest(15, '6M ROI')  # Sort by ROI for the chart
-        _chart_df = _chart_df.sort_values('6M ROI', ascending=True)  # Ascending for horizontal bar (top at top)
+        _chart_df = _chart_df.nlargest(15, '6M Delta')  # Sort by Delta value for the chart
+        _chart_df = _chart_df.sort_values('6M Delta', ascending=True)  # Ascending for horizontal bar (top at top)
         _total_with_data = len(_perf_df[_perf_df['6M Avg'] != 0])
 
         # Create horizontal bar chart showing 6M delta (rate of change)
-        _colors = ['#00D395' if x >= 0 else '#FF0420' for x in _chart_df['6M ROI']]
+        _colors = ['#00D395' if x >= 0 else '#FF0420' for x in _chart_df['6M Delta']]
 
         _fig = go.Figure()
         _fig.add_trace(go.Bar(
@@ -814,16 +825,21 @@ def _(
         def _fmt_grant(x):
             return format_amount_by_unit(x, _grant_unit)
 
-        # Choose metric formatter based on metric type
-        # Updated to use proper sign format: -$X or +$X (sign before currency symbol)
+        # Choose metric formatter and delta formatter based on metric type
         if metric_selector.value == "Superchain Revenue":
             def _metric_fmt(x):
                 return format_amount_by_unit(x, _revenue_unit)
+            if _revenue_unit == "ETH":
+                _delta_fmt = fmt_delta_eth
+            elif _revenue_unit == "USD":
+                _delta_fmt = fmt_delta_usd
+            else:
+                _delta_fmt = _metric_fmt  # For OP, use same format
             def _roi_fmt(x):
                 if x is None or pd.isna(x):
                     return "—"
                 if _revenue_unit == "ETH":
-                    return f"+Ξ{x:.4f}" if x >= 0 else f"-Ξ{abs(x):.4f}"
+                    return f"+{x:.4f}" if x >= 0 else f"-{abs(x):.4f}"
                 elif _revenue_unit == "OP":
                     return f"+{x:.2f} OP" if x >= 0 else f"-{abs(x):.2f} OP"
                 elif _revenue_unit == "USD":
@@ -831,12 +847,14 @@ def _(
                 return f"+{x:.4f}" if x >= 0 else f"{x:.4f}"
         elif metric_selector.value == "TVL":
             _metric_fmt = fmt_usd
+            _delta_fmt = fmt_delta_usd
             def _roi_fmt(x):
                 if x is None or pd.isna(x):
                     return "—"
                 return f"+${x:.2f}" if x >= 0 else f"-${abs(x):.2f}"
         else:
             _metric_fmt = fmt_int
+            _delta_fmt = fmt_delta_int
             def _roi_fmt(x):
                 if x is None or pd.isna(x):
                     return "—"
@@ -865,13 +883,13 @@ def _(
                         'Baseline': _metric_fmt,
                         '6M Avg': _metric_fmt,
                         '12M Avg': _metric_fmt,
-                        '6M Delta': _metric_fmt,
+                        '6M Delta': _delta_fmt,
                         _roi_col: _roi_fmt,
                     }
                 ),
                 mo.md(f"#### 6-Month Rate of Change: {'TVL' if metric_selector.value == 'TVL' else metric_selector.value}"),
                 mo.ui.plotly(_fig, config={'displayModeBar': False}),
-                mo.md(f"*Showing top {min(len(_chart_df), 15)} of {_total_with_data} grants by 6M ROI (rate of change)*")
+                mo.md(f"*Showing top {min(len(_chart_df), 15)} of {_total_with_data} grants by 6M Delta*")
             ])
     else:
         _output = mo.md("Please select a season to view grant comparison.")
@@ -935,11 +953,13 @@ def _(
     get_revenue_unit,
     fmt_int,
     fmt_usd,
+    fmt_delta_usd,
+    fmt_delta_eth,
+    fmt_delta_int,
     go,
     log_scale_checkbox,
     min_op_slider,
     mo,
-    np,
     pd,
     rate_mode_selector,
     winners_metric_selector,
@@ -1057,17 +1077,25 @@ def _(
     if _is_revenue:
         def _metric_fmt(x):
             return format_amount_by_unit(x, _revenue_unit)
+        if _revenue_unit == "ETH":
+            _delta_fmt = fmt_delta_eth
+        elif _revenue_unit == "USD":
+            _delta_fmt = fmt_delta_usd
+        else:
+            _delta_fmt = _metric_fmt
     elif winners_metric_selector.value == "TVL":
         _metric_fmt = fmt_usd
+        _delta_fmt = fmt_delta_usd
     else:
         _metric_fmt = fmt_int
+        _delta_fmt = fmt_delta_int
 
     # ROI formatter with proper sign format: -$X or +$X
     def _roi_fmt(x):
         if x is None or pd.isna(x):
             return "—"
         if _metric_unit == "ETH":
-            return f"+Ξ{x:.4f}" if x >= 0 else f"-Ξ{abs(x):.4f}"
+            return f"+{x:.4f}" if x >= 0 else f"-{abs(x):.4f}"
         elif _metric_unit == "OP":
             return f"+{x:.2f} OP" if x >= 0 else f"-{abs(x):.2f} OP"
         elif _metric_unit == "USD" or _metric_unit == "$":
@@ -1171,14 +1199,14 @@ def _(
         'Grants': fmt_int,
         _baseline_col: _metric_fmt,
         _avg_col: _metric_fmt,
-        _delta_col: _metric_fmt,
+        _delta_col: _delta_fmt,
         _roi_col: _roi_fmt,
     }
 
     # Create top performer callout
     if not _winners.empty:
         _top = _winners.iloc[0]
-        _top_delta_fmt = _metric_fmt(_top[_delta_col])
+        _top_delta_fmt = _delta_fmt(_top[_delta_col])
         _top_roi_fmt = _roi_fmt(_top[_roi_col])
         _top_funding_fmt = _fmt_funding(_top[_funding_col])
         _top_callout = mo.callout(
@@ -1354,8 +1382,15 @@ def _(
             # Calculate baseline, current, delta, and ROI based on metric type
             if project_metric_selector.value == "TVL":
                 # TVL uses point-in-time values (baseline vs current snapshot)
+                # For monthly data, look at funding month (not 7-day window)
                 _tvl_snapshot_df = _project_metrics[_project_metrics['metric_name'] == 'TVL']
-                _baseline_val = calculate_baseline_value(_tvl_snapshot_df, _first_funding_date)
+                _funding_month_start = _first_funding_date.replace(day=1)
+                _funding_month_end = (_funding_month_start + pd.DateOffset(months=1)) - pd.Timedelta(days=1)
+                _baseline_metrics = _tvl_snapshot_df[
+                    (_tvl_snapshot_df['sample_date'] >= _funding_month_start) &
+                    (_tvl_snapshot_df['sample_date'] <= _funding_month_end)
+                ]
+                _baseline_val = _baseline_metrics['amount'].sum() if not _baseline_metrics.empty else 0
                 _current_val = calculate_current_value(_tvl_snapshot_df)
                 _metric_delta = _current_val - _baseline_val
                 _metric_label = "TVL"
@@ -1421,10 +1456,10 @@ def _(
                     return f"${abs(x):.0f}"
                 elif unit == "ETH":
                     if abs(x) >= 1_000_000:
-                        return f"Ξ {abs(x)/1e6:.1f}M"
+                        return f"{abs(x)/1e6:.1f}M"
                     elif abs(x) >= 1_000:
-                        return f"Ξ {abs(x)/1e3:.0f}K"
-                    return f"Ξ {abs(x):.0f}"
+                        return f"{abs(x)/1e3:.1f}K"
+                    return f"{abs(x):.4f}"
                 elif unit == "OP":
                     if abs(x) >= 1_000_000:
                         return f"{abs(x)/1e6:.1f}M OP"
@@ -1488,7 +1523,7 @@ def _(
 
             # Format ROI with proper units
             if _roi_unit == "ETH":
-                _roi_str = f"{_roi_sign}Ξ {abs(_metric_roi):.4f}/{_grant_unit}"
+                _roi_str = f"{_roi_sign}{abs(_metric_roi):.4f} ETH/{_grant_unit}"
             elif _roi_unit == "OP":
                 _roi_str = f"{_roi_sign}{abs(_metric_roi):.2f} OP/{_grant_unit}"
             elif _roi_unit == "$" or _roi_unit == "USD":
@@ -1503,11 +1538,14 @@ def _(
                 bordered=True
             )
 
-            # Get selected metric names for chart (handle TVL Inflows separately)
-            if project_metric_selector.value == "TVL Inflows":
-                _chart_metric_names = ['TVL Inflows']
+            # Get selected metric names for chart
+            # TVL shows point-in-time snapshots, TVL Inflows shows monthly changes
+            if project_metric_selector.value == "TVL":
+                _chart_metric_names = ['TVL']  # Actual TVL snapshots
+            elif project_metric_selector.value == "TVL Inflows":
+                _chart_metric_names = ['TVL Inflows']  # Monthly changes
             else:
-                _chart_metric_names = METRIC_GROUPS.get(project_metric_selector.value, ['TVL'])
+                _chart_metric_names = METRIC_GROUPS.get(project_metric_selector.value, [])
             _chart_metrics = _project_metrics[_project_metrics['metric_name'].isin(_chart_metric_names)]
 
             # Aggregate by date if multiple metrics in group
@@ -1562,6 +1600,10 @@ def _(
                 _y_title = f'Revenue ({_revenue_unit})'
                 _chart_title = 'Superchain Revenue Over Time'
             elif project_metric_selector.value == "TVL":
+                _y_fmt = '$,.0s'
+                _y_title = 'TVL ($)'
+                _chart_title = 'TVL Over Time'
+            elif project_metric_selector.value == "TVL Inflows":
                 _y_fmt = '$,.0s'
                 _y_title = 'TVL Inflows ($)'
                 _chart_title = 'TVL Inflows Over Time'
@@ -1775,14 +1817,7 @@ def _(
         # Create stacked area chart with hvh line shape
         _fig = go.Figure()
 
-        # Add Top 5 projects - using grayscale colors that work well on all backgrounds
-        _grayscale_colors = [
-            'rgba(0, 0, 0, 0.8)',       # Black
-            'rgba(51, 51, 51, 0.8)',    # Dark gray
-            'rgba(102, 102, 102, 0.7)', # Medium gray
-            'rgba(153, 153, 153, 0.6)', # Light gray
-            'rgba(204, 204, 204, 0.5)', # Very light gray
-        ]
+        # Add Top 5 projects using PROJECT_COLORS palette
         for _idx, _project_name in enumerate(_top_project_names):
             _project_ts = _ts_data[_ts_data['project_name'] == _project_name].sort_values('sample_date')
             if not _project_ts.empty:
@@ -1792,8 +1827,8 @@ def _(
                     name=_project_name[:20] + '...' if len(_project_name) > 20 else _project_name,
                     mode='lines',
                     stackgroup='one',
-                    fillcolor=_grayscale_colors[_idx % len(_grayscale_colors)],
-                    line=dict(width=0.5, color='#333', shape='hvh')  # Black line
+                    fillcolor=PROJECT_COLORS[_idx % len(PROJECT_COLORS)],
+                    line=dict(width=0.5, color='#333', shape='hvh')
                 ))
 
         # Add "Other" category for remaining projects
@@ -1812,8 +1847,7 @@ def _(
                     line=dict(width=0.5, color='#999', shape='hvh')
                 ))
 
-        # Get chain color for title
-        _chain_color = CHAIN_COLORS.get(chain_selector.value, '#333')
+        # Chain name for section title (using black text for consistency)
 
         # Apply layout
         _layout = PLOTLY_LAYOUT.copy()
@@ -1848,6 +1882,11 @@ def _(
         # Rename columns for display
         _display_df = _summary_df.copy()
         _display_df.columns = ['Project', _funding_col, 'Total Metric Value']
+
+        # Truncate long project names for display
+        _display_df['Project'] = _display_df['Project'].apply(
+            lambda x: x[:37] + '...' if len(str(x)) > 40 else x
+        )
 
         # Create formatters
         def _fmt_funding(x):
@@ -1909,7 +1948,7 @@ def _(
         _display_df = _display_df.reset_index(drop=True)
 
         _output = mo.vstack([
-            mo.md(f"### <span style='color: {_chain_color};'>{_chain_name}</span>"),
+            mo.md(f"### {_chain_name}"),
             mo.hstack([_card_funding, _card_metric], widths="equal"),
             mo.md(f"#### {chain_metric_selector.value} Over Time (Top 5 + Other)"),
             mo.ui.plotly(_fig, config={'displayModeBar': False}),
@@ -1965,40 +2004,40 @@ def _(mo):
         "📐 Baseline Calculation": mo.md("""
     ### Baseline Calculation Methodology
 
-    We use a **7-day centered window** to calculate baseline values at the time of grant funding:
+    We use the **funding month value** as the baseline:
 
     ```
-    baseline = average(metric_values[funding_date - 3 days : funding_date + 3 days])
+    baseline = metric_value_at_funding_month
     ```
 
-    **Why 7 days?**
-    - Reduces noise from daily volatility
-    - Captures the true state at funding time
-    - Consistent with DeFi TVL measurement standards
+    For projects with multiple grants, we use the **earliest funding date** as the baseline reference.
 
-    **Chain Aggregation**: For multi-chain projects, we sum across all chains per day before averaging.
+    **Chain Aggregation**: For multi-chain projects, we sum across all chains before calculating the baseline.
         """),
 
         "📈 ROI Calculation": mo.md("""
-    ### ROI Calculation Formula
+    ### ROI Calculation Formula (Rate-of-Change Method)
 
-    ROI measures the metric change per OP token spent:
+    ROI measures the **average monthly change** in metric per OP token spent:
 
     ```
-    ROI = (Current Value - Baseline Value) / OP Amount
+    ROI = (Average Monthly Value - Baseline) / OP Amount
     ```
 
     **Components**:
-    - **Baseline Value**: 7-day centered average at funding date
-    - **Current Value**: 7-day trailing average at most recent date
+    - **Baseline**: Metric value at funding date
+    - **Average Monthly Value**: Average of monthly values over the analysis period (6M, 12M, or 18M)
     - **OP Amount**: Total OP tokens received in grant
 
+    **Why Rate-of-Change?**
+    This methodology shows **sustainable growth** rather than one-time spikes. A project must maintain elevated metric levels across months to achieve a high ROI.
+
     **Interpretation**:
-    - **Positive ROI**: Project grew after receiving funding
-    - **Negative ROI**: Project declined after receiving funding
+    - **Positive ROI**: Project's average monthly value exceeds baseline
+    - **Negative ROI**: Project's average monthly value is below baseline
     - **Note**: ROI does not imply causation; market conditions affect all projects
 
-    **Example**: If a project received 100,000 OP and TVL grew by $5M, ROI = $50/OP
+    **Example**: If a project received 100,000 OP, had baseline TVL of $1M, and averaged $6M TVL over 6 months, Delta = $5M and ROI = $50/OP
         """),
 
         "⏱️ Time Windows": mo.md("""
@@ -2613,10 +2652,10 @@ def _(
             return f"{amount:,.0f} OP"
         elif unit == "ETH":
             if abs(amount) >= 1_000_000:
-                return f"Ξ {amount/1e6:,.1f}M"
+                return f"{amount/1e6:,.1f}M"
             elif abs(amount) >= 1_000:
-                return f"Ξ {amount/1e3:,.0f}K"
-            return f"Ξ {amount:,.0f}"
+                return f"{amount/1e3:,.1f}K"
+            return f"{amount:,.4f}"
         elif unit == "USD":
             if abs(amount) >= 1_000_000_000:
                 return f"${amount/1e9:,.1f}B"
@@ -2663,14 +2702,14 @@ def _():
         return f"${x:,.0f}"
 
     def fmt_eth(x):
-        """Format ETH amounts with Ξ symbol (e.g., Ξ 1.2M)"""
+        """Format ETH amounts (e.g., 1.2M, 0.0012)"""
         if x is None or x != x:
             return "—"
         if abs(x) >= 1_000_000:
-            return f"Ξ {x/1e6:,.1f}M"
+            return f"{x/1e6:,.1f}M"
         elif abs(x) >= 1_000:
-            return f"Ξ {x/1e3:,.0f}K"
-        return f"Ξ {x:,.0f}"
+            return f"{x/1e3:,.1f}K"
+        return f"{x:,.4f}"
 
     def fmt_pct(x):
         """Format as percentage (e.g., 42.5%)"""
@@ -2679,25 +2718,66 @@ def _():
         return f"{x:.1f}%"
 
     def fmt_roi_eth(x):
-        """Format Revenue ROI in ETH per OP (e.g., +Ξ 0.0012/OP)"""
+        """Format Revenue ROI in ETH per OP (e.g., +0.0012/OP, -0.0012/OP)"""
         if x is None or x != x:
             return "—"
-        sign = "+" if x >= 0 else ""
-        return f"{sign}Ξ {abs(x):.4f}/OP"
+        if x >= 0:
+            return f"+{abs(x):.4f}/OP"
+        return f"-{abs(x):.4f}/OP"
 
     def fmt_roi_usd(x):
-        """Format TVL ROI in USD per OP (e.g., +$1.23/OP)"""
+        """Format TVL ROI in USD per OP (e.g., +$1.23/OP, -$1.23/OP)"""
         if x is None or x != x:
             return "—"
-        sign = "+" if x >= 0 else ""
-        return f"{sign}${abs(x):.2f}/OP"
+        if x >= 0:
+            return f"+${abs(x):.2f}/OP"
+        return f"-${abs(x):.2f}/OP"
 
     def fmt_roi(x):
         """Format generic ROI (e.g., +1.23, -0.45)"""
         if x is None or x != x:
             return "—"
-        sign = "+" if x >= 0 else ""
-        return f"{sign}{x:.2f}"
+        if x >= 0:
+            return f"+{x:.2f}"
+        return f"{x:.2f}"
+
+    def fmt_delta_usd(x):
+        """Format USD delta with sign (e.g., +$50K, -$1.2M)"""
+        if x is None or x != x:
+            return "—"
+        sign = "+" if x >= 0 else "-"
+        ax = abs(x)
+        if ax >= 1_000_000_000:
+            return f"{sign}${ax/1e9:.1f}B"
+        elif ax >= 1_000_000:
+            return f"{sign}${ax/1e6:.1f}M"
+        elif ax >= 1_000:
+            return f"{sign}${ax/1e3:.0f}K"
+        return f"{sign}${ax:.0f}"
+
+    def fmt_delta_eth(x):
+        """Format ETH delta with sign (e.g., +0.0012, -1.2K)"""
+        if x is None or x != x:
+            return "—"
+        sign = "+" if x >= 0 else "-"
+        ax = abs(x)
+        if ax >= 1_000_000:
+            return f"{sign}{ax/1e6:.1f}M"
+        elif ax >= 1_000:
+            return f"{sign}{ax/1e3:.1f}K"
+        return f"{sign}{ax:.4f}"
+
+    def fmt_delta_int(x):
+        """Format integer delta with sign (e.g., +1,234, -567)"""
+        if x is None or x != x:
+            return "—"
+        sign = "+" if x >= 0 else "-"
+        ax = abs(x)
+        if ax >= 1_000_000:
+            return f"{sign}{ax/1e6:.1f}M"
+        elif ax >= 1_000:
+            return f"{sign}{ax/1e3:.0f}K"
+        return f"{sign}{int(ax):,}"
 
     def fmt_int(x):
         """Format integer with commas (e.g., 1,234,567)"""
@@ -2714,7 +2794,7 @@ def _():
         except:
             return str(x)
 
-    return fmt_op, fmt_usd, fmt_eth, fmt_pct, fmt_roi_eth, fmt_roi_usd, fmt_roi, fmt_int, fmt_date
+    return fmt_op, fmt_usd, fmt_eth, fmt_pct, fmt_roi_eth, fmt_roi_usd, fmt_roi, fmt_int, fmt_date, fmt_delta_usd, fmt_delta_eth, fmt_delta_int
 
 
 @app.cell(hide_code=True)
@@ -2825,7 +2905,6 @@ def _(CHAIN_COLORS, PLOTLY_LAYOUT, PROJECT_COLORS):
 @app.cell(hide_code=True)
 def _():
     import pandas as pd
-    import plotly.express as px
     import plotly.graph_objects as go
     return go, pd
 
