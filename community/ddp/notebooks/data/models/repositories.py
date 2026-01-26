@@ -2,6 +2,7 @@
 # [tool.marimo.runtime]
 # auto_instantiate = false
 # ///
+
 import marimo
 
 __generated_with = "0.19.2"
@@ -10,83 +11,75 @@ app = marimo.App(width="full")
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(
-        """
-        # Unified Repository Model
-        <small style="background-color: #f0f0f0; padding: 4px; border-radius: 4px;">Owner: OSO</small>
-        <small style="background-color: #f0f0f0; padding: 4px; border-radius: 4px;">Last Updated: Jan 2026</small>
-        """
-    )
+    mo.md("""
+    # Unified Repository Model
+    <small style="background-color: #f0f0f0; padding: 4px; border-radius: 4px;">Owner: OSO</small>
+    <small style="background-color: #f0f0f0; padding: 4px; border-radius: 4px;">Last Updated: Jan 2026</small>
+    """)
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(
-        """
-        ## Overview
-        The `int_opendevdata__repositories_with_repo_id` model serves as a bridge between multiple data sources within the Open Source Observer (OSO) ecosystem. It provides a unified view of software repositories by mapping external identifiers to internal OSO project IDs.
+    mo.md("""
+    ## Overview
+    The `int_opendevdata__repositories_with_repo_id` model serves as a bridge between multiple data sources within the Open Source Observer (OSO) ecosystem. It provides a unified view of software repositories by mapping external identifiers to internal OSO project IDs.
 
-        This model is critical for:
-        - **Normalization**: Standardizing repository names and URLs across different schemas.
-        - **Stability**: Providing a stable `repo_id` that can be used to join events, contributions, and project-level metrics.
-        - **Cross-Platform Analysis**: Enabling analysis by linking GitHub, GitLab, and other repository hosts.
-        """
-    )
+    This model is critical for:
+    - **Normalization**: Standardizing repository names and URLs across different schemas.
+    - **Stability**: Providing a stable `repo_id` that can be used to join events, contributions, and project-level metrics.
+    - **Cross-Platform Analysis**: Enabling analysis by linking GitHub, GitLab, and other repository hosts.
+    """)
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(
-        """
-        ## ID Mapping Strategy
-        The model employs a 3-tier priority logic to assign a `repo_id` to each record, ensuring the highest possible match rate with the OSO project directory.
+    mo.md("""
+    ## ID Mapping Strategy
+    The model employs a 3-tier priority logic to assign a `repo_id` to each record, ensuring the highest possible match rate with the OSO project directory.
 
-        1. **Primary Match (OSS Directory)**: Records are first matched using the `github_graphql_id`. This is the most reliable method as it relies on persistent, immutable IDs provided by GitHub.
-        2. **Fallback Match (GitHub Archive)**: If a GraphQL ID is unavailable or fails to match, the system falls back to matching by `repo_name` (e.g., `owner/repo`). This accounts for repositories discovered through event logs or historical data.
-        3. **Unmatched**: If neither method yields a match, the `repo_id` is set to `NULL`. These repositories are still tracked but are not currently associated with a verified OSO project.
-        """
-    )
+    1. **Primary Match (OSS Directory)**: Records are first matched using the `github_graphql_id`. This is the most reliable method as it relies on persistent, immutable IDs provided by GitHub.
+    2. **Fallback Match (GitHub Archive)**: If a GraphQL ID is unavailable or fails to match, the system falls back to matching by `repo_name` (e.g., `owner/repo`). This accounts for repositories discovered through event logs or historical data.
+    3. **Unmatched**: If neither method yields a match, the `repo_id` is set to `NULL`. These repositories are still tracked but are not currently associated with a verified OSO project.
+    """)
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(
-        """
-        ## Related Models
-        - `projects_v1`: The primary source of truth for project-level metadata.
-        - `events.py`: Downstream model consuming repository IDs for event attribution.
-        """
-    )
+    mo.md("""
+    ## Related Models
+    - `projects_v1`: The primary source of truth for project-level metadata.
+    - `events.py`: Downstream model consuming repository IDs for event attribution.
+    """)
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(
-        """
-        ## 3-ID System Comparison
-        | ID Type | Column Name | Description |
-        |---|---|---|
-        | OpenDevData ID | `opendevdata_id` | Primary ODD source ID. |
-        | GraphQL Node ID | `github_graphql_id` | Global node ID (Base64). |
-        | REST ID | `repo_id` | Numeric DB ID. Primary join key. |
-        """
-    )
+    mo.md("""
+    ## 3-ID System Comparison
+    | ID Type | Column Name | Description |
+    |---|---|---|
+    | OpenDevData ID | `opendevdata_id` | Primary ODD source ID. |
+    | GraphQL Node ID | `github_graphql_id` | Global node ID (Base64). |
+    | REST ID | `repo_id` | Numeric DB ID. Primary join key. |
+    """)
     return
 
 
 @app.cell(hide_code=True)
-def _(mo, render_table_preview):
+def _(render_table_preview):
     render_table_preview("oso.int_opendevdata__repositories_with_repo_id")
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md("## Coverage Analysis")
+    mo.md("""
+    ## Coverage Analysis
+    """)
     return
 
 
@@ -122,13 +115,14 @@ def _(mo, pyoso_db_conn):
         color_discrete_sequence=px.colors.qualitative.Pastel
     )
     _fig_coverage.update_layout(_PLOTLY_LAYOUT)
-
-    return mo.ui.plotly(_fig_coverage, config={'displayModeBar': False})
+    return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md("## Age Distribution")
+    mo.md("""
+    ## Age Distribution
+    """)
     return
 
 
@@ -165,38 +159,39 @@ def _(mo, pyoso_db_conn):
         title='Repository Creation Trend'
     )
     _fig_age.update_layout(_PLOTLY_LAYOUT)
-
-    return mo.ui.plotly(_fig_age, config={'displayModeBar': False})
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(
-        """
-        ## Edge Cases
-        - **Duplication**: Occurs when multiple OpenDevData records point to the same OSO `repo_id`. This often happens due to repository renames or forks that are tracked as distinct entries in the source data.
-        - **Unmatched**: Records where `repo_id` is `NULL` indicate repositories that are present in the source dataset but haven't been successfully mapped to a project in the OSO directory.
-        """
-    )
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md("## Sample Queries")
+    mo.md("""
+    ## Edge Cases
+    - **Duplication**: Occurs when multiple OpenDevData records point to the same OSO `repo_id`. This often happens due to repository renames or forks that are tracked as distinct entries in the source data.
+    - **Unmatched**: Records where `repo_id` is `NULL` indicate repositories that are present in the source dataset but haven't been successfully mapped to a project in the OSO directory.
+    """)
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md("### 1. Cross-Source Join (bridge ODD and GHArchive)")
+    mo.md("""
+    ## Sample Queries
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ### 1. Cross-Source Join (bridge ODD and GHArchive)
+    """)
     return
 
 
 @app.cell
 def _(mo, pyoso_db_conn):
     _df_join = mo.sql(
-        """
+        f"""
         SELECT r.repo_name, r.repo_id, r.opendevdata_id, r.star_count
         FROM oso.int_opendevdata__repositories_with_repo_id r
         WHERE r.repo_id IS NOT NULL AND r.star_count > 1000
@@ -204,38 +199,42 @@ def _(mo, pyoso_db_conn):
         """,
         engine=pyoso_db_conn
     )
-    return (_df_join,)
+    return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md("### 2. Finding by ID")
+    mo.md("""
+    ### 2. Finding by ID
+    """)
     return
 
 
 @app.cell
 def _(mo, pyoso_db_conn):
     _df_by_id = mo.sql(
-        """
+        f"""
         SELECT repo_name, repo_id, opendevdata_id 
         FROM oso.int_opendevdata__repositories_with_repo_id
         WHERE github_graphql_id = 'MDEwOlJlcG9zaXRvcnkyNDI0Nzg0' -- rails/rails
         """,
         engine=pyoso_db_conn
     )
-    return (_df_by_id,)
+    return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md("### 3. Identifying Unmatched")
+    mo.md("""
+    ### 3. Identifying Unmatched
+    """)
     return
 
 
 @app.cell
 def _(mo, pyoso_db_conn):
     _df_unmatched = mo.sql(
-        """
+        f"""
         SELECT repo_name, star_count, repo_created_at
         FROM oso.int_opendevdata__repositories_with_repo_id
         WHERE repo_id IS NULL
@@ -244,7 +243,7 @@ def _(mo, pyoso_db_conn):
         """,
         engine=pyoso_db_conn
     )
-    return (_df_unmatched,)
+    return
 
 
 @app.cell(hide_code=True)
@@ -257,7 +256,7 @@ def _(mo, pyoso_db_conn):
         result = mo.sql(f"SHOW STATS FOR {model_name}", 
                         engine=pyoso_db_conn, output=False)
         return result['row_count'].sum()    
-    
+
     def generate_sql_snippet(model_name, df_results, limit=5):
         column_names = df_results.columns.tolist()
         # Format columns with one per line, indented
@@ -280,10 +279,10 @@ def _(mo, pyoso_db_conn):
         col_count = len(df.columns)
         title = f"{model_name} | {row_count:,.0f} rows, {col_count} cols"
         return mo.accordion({title: mo.vstack([sql_snippet, table])})
-    
+
     import pandas as pd
     import plotly.express as px
-    
+
     def get_format_mapping(df, include_percentage=False):
         """Generate format mapping for table display"""
         fmt = {}
@@ -296,8 +295,8 @@ def _(mo, pyoso_db_conn):
                 elif include_percentage:
                     fmt[c] = '{:.0f}'
         return fmt
-    
-    return (render_table_preview, pd, px, get_format_mapping)
+
+    return (render_table_preview,)
 
 
 @app.cell
