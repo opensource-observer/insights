@@ -1,0 +1,334 @@
+# Ralph Progress Log - S8 TVL Attribution
+
+## Project Context
+- Working directory: /Users/cerv1/GitHub/insights/analysis/optimism/s8
+- Existing notebook: s8-strategic-insights.py (marimo)
+- Data sources: pyoso (grants, TVL metrics), local CSVs (coincentives/)
+- Output: s8-tvl-attribution.csv with full audit trail
+
+## Key Files
+- s8-strategic-insights.py - Existing marimo notebook with TVL analysis
+- coincentives/S8 - Co-incentives Desk Research.csv - Human research on co-incentives
+- coincentives/S8 - Co-incentives GC Analysis.csv - GC analysis with scope details
+
+## Technical Notes
+- pyoso connection: `pyoso.Client().dbapi_connection()`
+- OP price fixed at $0.35
+- Attribution buckets: 1%, 2%, 5%, 10%, 20%, 50%, 100%
+- Conservative defaults for missing data
+
+## Codebase Patterns
+- Use `/Users/cerv1/GitHub/insights/.venv/bin/python` for running Python scripts
+- CSV column names: Desk Research uses 'Project', GC Analysis uses 'Project Name'
+- pyoso connection requires `OSO_API_KEY` env var or parameter
+- Run scripts with: `export OSO_API_KEY="n+a9yS8-9-~GkBBcKSga-1vS2HBwNTyO" && /Users/cerv1/GitHub/insights/.venv/bin/python <script>`
+- TVL timeseries filtering: use lowercase chain comparison and project_title for project matching
+
+## Learnings
+(Ralph will append learnings here after each iteration)
+
+---
+## 2026-01-21 - US-001
+- **What was implemented**: Created s8_attribution.py module with data loading functions
+- **Files changed**: s8_attribution.py (new file)
+- **Functions added**:
+  - `load_grant_data(conn)` - queries pyoso for grant metadata
+  - `load_tvl_metrics(conn)` - queries pyoso for TVL timeseries
+  - `load_coincentive_csvs()` - loads both CSV files from coincentives/
+  - `merge_data_sources()` - joins all data sources on project name
+- **Learnings for future iterations**:
+  - Desk Research CSV has 24 projects, GC Analysis has 13 projects with Scope details
+  - Need left joins to keep all grants even if not in co-incentive data
+  - Column names differ between CSVs ('Project' vs 'Project Name')
+  - pyoso API has credit limits - code structure needs to handle this
+---
+## 2026-01-21 - US-002
+- **What was implemented**: Added baseline and current TVL calculation functions
+- **Files changed**: s8_attribution.py (modified)
+- **Functions added**:
+  - `calculate_baseline_tvl(df_metrics, delivery_date, chains, project_name)` - 7-day average centered on delivery date
+  - `calculate_current_tvl(df_metrics, chains, project_name)` - 7-day average at most recent data point
+  - `calculate_tvl_metrics(df_grants, df_metrics)` - orchestrates TVL calculation for all grants
+- **Columns added**: `baseline_tvl`, `current_tvl`, `tvl_delta`, `has_tvl_data`
+- **Learnings for future iterations**:
+  - TVL data uses `project_title` column (matching project name), `chain` column (lowercase), `sample_date`, and `amount`
+  - Only 11 of 23 projects have TVL data in the Karma timeseries (has_tvl_data=True for ~48%)
+  - Chain names need lowercase comparison (e.g., "optimism", "base")
+  - Use different API key from /Users/cerv1/GitHub/insights/.env vs local .env - main one has more credits
+---
+## 2026-01-21 - US-003
+- **What was implemented**: Added scope percentage determination functions
+- **Files changed**: s8_attribution.py (modified)
+- **Functions added**:
+  - `determine_scope_percentage(scope_text)` - parses Scope field and returns (percentage, notes)
+  - `calculate_scope_percentages(df)` - applies scope determination to all rows
+- **Columns added**: `scope_percentage` (float 0.0-1.0), `scope_notes` (string)
+- **Scope percentage tiers**:
+  - 1.0 (100%): Protocol-wide scope (e.g., "protocol-wide efforts")
+  - 0.5 (50%): Subset of pools/markets, or no scope data (conservative default)
+  - 0.2 (20%): Single asset targeting (e.g., "only targeting ezETH")
+- **Learnings for future iterations**:
+  - GC Analysis Scope field has varied formats: bullet points, URLs, mixed content
+  - Typos exist in data (e.g., "taregting" instead of "targeting")
+  - Only 13 of 23 projects have Scope data in GC Analysis
+  - Keyword matching approach works well for categorizing scope
+---
+## 2026-01-21 - US-004
+- **What was implemented**: Added OP to USD conversion functionality
+- **Files changed**: s8_attribution.py (modified)
+- **Functions added**:
+  - `calculate_op_usd(op_delivered)` - converts OP tokens to USD at fixed $0.35 rate
+  - `add_op_usd_column(df)` - adds op_usd column to dataframe, preserving op_delivered
+- **Columns added**: `op_usd` (float)
+- **Constants used**: `OP_PRICE_USD = 0.35` (already defined at module level)
+- **Learnings for future iterations**:
+  - NaN handling is important for op_delivered - some grants have NaN values
+  - Simple conversion: op_usd = op_delivered * 0.35
+  - 10 of 23 projects have non-NaN op_delivered values from the pyoso query
+---
+## 2026-01-21 - US-005
+- **What was implemented**: Added co-incentive USD extraction functionality
+- **Files changed**: s8_attribution.py (modified)
+- **Functions added**:
+  - `extract_coincentive_usd(coincentive_text, project_name, op_usd)` - parses co-incentive descriptions and returns (usd, source, notes)
+  - `calculate_coincentive_usd(df)` - applies extraction to all rows
+- **Columns added**: `co_incentive_usd`, `co_incentive_source`, `co_incentive_notes`
+- **Constants added**: `TOKEN_PRICES` dict with CAKE=$2.50, EXTRA=$0.01, TRUE=$0.11, REZ=$0.05
+- **Co-incentive source categories**:
+  - `explicit_usd`: Direct dollar amounts extracted ($1.125M, $24,000, etc.)
+  - `token_conversion`: Token amounts converted using TOKEN_PRICES
+  - `points_program`: Points/rewards programs estimated at 10% of op_usd
+  - `vague_mention`: Unclear co-incentive mentions estimated at 50% of op_usd
+  - `no_mention`: "no mention" text defaults to op_usd (50% share)
+  - `no_data`: Missing data defaults to op_usd
+- **Learnings for future iterations**:
+  - Regex parsing needs careful handling of edge cases (e.g., ">$5m" is a target, not co-incentive)
+  - Use negative lookbehind `(?<![>])` to exclude comparison operators before dollar amounts
+  - Take max() not sum() of extracted values to avoid double-counting
+  - Token patterns like "2.5M EXTRA" require separate regex from "129,425 TRUE tokens"
+  - PancakeSwap correctly extracts $1.125M co-incentive from 5000 CAKE/day * 90 days
+---
+## 2026-01-21 - US-006
+- **What was implemented**: Added incentive share calculation functionality
+- **Files changed**: s8_attribution.py (modified)
+- **Functions added**:
+  - `calculate_incentive_share(op_usd, co_incentive_usd)` - returns op_usd / (op_usd + co_incentive_usd)
+  - `add_incentive_share_columns(df)` - adds total_incentives_usd and incentive_share columns
+- **Columns added**: `total_incentives_usd`, `incentive_share`
+- **Edge case handling**: When both op_usd and co_incentive_usd are 0, returns 0.5 (conservative default)
+- **Learnings for future iterations**:
+  - Incentive share is a key attribution formula component: how much of total incentives came from OP grant
+  - Projects with no OP data (NaN op_delivered → 0.0 op_usd) get 50% share if co-incentives also 0
+  - PancakeSwap has lowest incentive share (15.7%) due to large $1.125M co-incentive from CAKE
+  - YieldFi has highest share (90.9%) due to small points program co-incentive estimate
+---
+## 2026-01-21 - US-007
+- **What was implemented**: Added attribution cap calculation based on grant/TVL ratio tiers
+- **Files changed**: s8_attribution.py (modified)
+- **Functions added**:
+  - `calculate_attribution_cap(op_usd, baseline_tvl)` - calculates grant/TVL ratio and returns tiered cap
+  - `add_attribution_cap_columns(df)` - adds grant_tvl_ratio and attribution_cap columns
+- **Columns added**: `grant_tvl_ratio`, `attribution_cap`
+- **Cap tier logic**:
+  - >=50% ratio → 1.0 cap (100%)
+  - >=20% ratio → 0.5 cap (50%)
+  - >=10% ratio → 0.2 cap (20%)
+  - >=5% ratio → 0.1 cap (10%)
+  - >=2% ratio → 0.05 cap (5%)
+  - >=1% ratio → 0.02 cap (2%)
+  - <1% ratio → 0.01 cap (1%)
+- **Special cases**:
+  - baseline_tvl = 0 → 1.0 cap (new protocols)
+  - baseline_tvl < $10k → 1.0 cap (near-zero TVL)
+- **Learnings for future iterations**:
+  - Most projects have very low grant/TVL ratios (<1%) so get 0.01 cap
+  - 12 of 23 projects have zero baseline_tvl (no TVL data) so get 1.0 cap
+  - The main block had to merge TVL data separately because current flow calculates TVL on df_grants before merge
+  - Need to reorganize pipeline in US-009 to flow data correctly: load → merge → add TVL → calculate all columns
+---
+## 2026-01-21 - US-008
+- **What was implemented**: Added final attribution computation with bucket rounding
+- **Files changed**: s8_attribution.py (modified)
+- **Functions added**:
+  - `round_to_bucket(value)` - rounds value to nearest allowed bucket (1%, 2%, 5%, 10%, 20%, 50%, 100%)
+  - `compute_final_attribution(scope_pct, incentive_share, cap)` - computes raw, capped, and final attribution
+  - `add_final_attribution_columns(df)` - adds raw_attribution, capped_attribution, final_attribution_pct columns
+- **Constants added**: `ATTRIBUTION_BUCKETS = [0.01, 0.02, 0.05, 0.10, 0.20, 0.50, 1.0]`
+- **Formula**:
+  - raw_attribution = scope_percentage * incentive_share
+  - capped_attribution = min(raw_attribution, attribution_cap)
+  - final_attribution_pct = round_to_bucket(capped_attribution)
+- **Learnings for future iterations**:
+  - Floating-point precision issues with bucket rounding: use `round(abs(b - value), 10)` to avoid 0.05 vs 0.050000002 mismatches
+  - Bucket rounding on ties: use negative bucket value as tiebreaker so higher bucket wins (e.g., 0.15 → 0.20, not 0.10)
+  - Most projects end up capped by the grant/TVL ratio cap, not the scope*share calculation
+---
+## 2026-01-21 - US-009
+- **What was implemented**: Added main calculation pipeline and CSV output
+- **Files changed**: s8_attribution.py (modified), s8-tvl-attribution.csv (new file)
+- **Functions added**:
+  - `generate_formula_text(row)` - creates human-readable formula string for each project
+  - `run_attribution_pipeline()` - orchestrates all calculation steps and saves CSV
+- **Columns added**: `formula_applied` (string)
+- **Output**: 23 projects saved to s8-tvl-attribution.csv with all 21 required columns
+- **Attribution distribution**:
+  - 20%: 12 projects (most common)
+  - 1%: 6 projects (capped due to low grant/TVL ratio)
+  - 2%: 2 projects (capped)
+  - 50%: 2 projects (protocol-wide scope)
+  - 10%: 1 project
+- **Learnings for future iterations**:
+  - Pipeline order matters: calculate TVL before merge, then apply all transformations in sequence
+  - The pyoso query returns 23 projects (not 24) because it filters out TEST projects
+  - Formula text uses Unicode multiply symbol (×) for better readability
+  - Most projects with existing TVL get capped at 1-2% due to low grant/TVL ratio
+  - Projects without TVL data get 100% cap, allowing their scope×share to determine attribution
+---
+## 2026-01-21 - US-010
+- **What was implemented**: Integrated attribution data into notebook's project deep dives
+- **Files changed**: s8-strategic-insights.py (modified)
+- **Changes made**:
+  - Added `load_attribution_data(pd)` cell that loads `s8-tvl-attribution.csv`
+  - Updated deep dives cell to accept `df_attribution` parameter
+  - Replaced hardcoded `Attribution: 100%` with dynamic lookup from CSV
+  - Display format now shows `Attribution: X% · [formula explanation]`
+  - Projects not in CSV show `Attribution: N/A`
+- **Learnings for future iterations**:
+  - Marimo notebooks use function parameters for cell dependencies (add `df_attribution` to function signature)
+  - CSV lookup by project_name matches the `_title` variable (not `_project` which is the slug)
+  - The `final_attribution_pct` column is a decimal (0.01-1.0), multiply by 100 for display
+  - Use `pathlib.Path(__file__).parent` for relative paths in marimo cells
+  - `marimo check` is the correct way to validate notebook syntax, not `exec()`
+---
+## 2026-01-22 - US-011
+- **What was implemented**: Added op_total_amount and op_total_usd columns from GC Analysis CSV
+- **Files changed**: s8_attribution.py (modified), s8-tvl-attribution.csv (regenerated)
+- **Functions added**:
+  - `add_op_total_usd_column(df)` - calculates op_total_usd from op_total_amount with fallback to op_delivered
+- **Changes to existing functions**:
+  - `merge_data_sources()` - now includes 'OP Total Amount' column from GC Analysis and renames to 'op_total_amount'
+  - `run_attribution_pipeline()` - calls add_op_total_usd_column and includes both columns in output
+- **Key findings**:
+  - Total OP grant USD: $1,127,000 vs delivered USD: $654,500 (only ~58% delivered so far)
+  - Morpho has largest difference: 1.5M total vs 600K delivered
+- **Learnings for future iterations**:
+  - GC Analysis CSV column name is 'OP Total Amount' (with spaces) - needs renaming to snake_case
+  - Fallback logic in add_op_total_usd_column handles projects not in GC Analysis (uses op_delivered)
+  - Some projects (Lido, NEUS Network) have no op_delivered data - their op_total_usd is 0.0
+---
+## 2026-01-22 - US-012
+- **What was implemented**: Updated incentive share calculation to use op_total_usd instead of op_usd
+- **Files changed**: s8_attribution.py (modified), s8-tvl-attribution.csv (regenerated)
+- **Changes to existing functions**:
+  - `calculate_incentive_share()` - renamed parameter from op_usd to op_total_usd with updated docstring
+  - `add_incentive_share_columns()` - now uses op_total_usd with fallback to op_usd via helper function
+- **Key formula changes**:
+  - total_incentives_usd = op_total_usd + co_incentive_usd (was op_usd + co_incentive_usd)
+  - incentive_share = op_total_usd / total_incentives_usd (was op_usd / total_incentives_usd)
+- **Impact on results**:
+  - Average incentive share now 58.3% (previously would have been higher with just delivered amounts)
+  - Using total OP grant gives more accurate picture of OP's share of total incentives
+- **Learnings for future iterations**:
+  - Fallback logic should check pd.notna() AND > 0 to handle both NaN and zero values
+  - Using temporary column (_op_for_share) then dropping it keeps the DataFrame clean
+  - The incentive share impacts final attribution via scope_percentage * incentive_share formula
+---
+## 2026-01-22 - US-013
+- **What was implemented**: Added Hydrex baseline TVL override of $18M
+- **Files changed**: s8_attribution.py (modified), s8-tvl-attribution.csv (regenerated)
+- **Constants added**:
+  - `TVL_OVERRIDES = {'Hydrex': 18_000_000}` - dict at module level for manual TVL overrides
+- **Changes to existing functions**:
+  - `calculate_tvl_metrics()` - now applies TVL_OVERRIDES to baseline_tvl before returning
+  - Override also sets has_tvl_data=True for overridden projects
+- **Key findings**:
+  - Hydrex now has baseline_tvl = $18M (was 0.0 previously)
+  - Grant/TVL ratio is ~0.04% ($7,000 / $18M), resulting in 1% attribution cap
+  - Projects with TVL data: increased from 11 to 12 due to Hydrex override
+- **Learnings for future iterations**:
+  - Override dict pattern allows easy addition of future manual TVL data
+  - Override is applied after normal TVL calculation loop, so it safely replaces computed values
+  - Be careful to also set has_tvl_data=True when overriding, for consistency
+---
+## 2026-01-22 - US-014
+- **What was implemented**: Consolidated TVL columns with delivery-based logic
+- **Files changed**: s8_attribution.py (modified), s8-tvl-attribution.csv (regenerated)
+- **Changes to existing functions**:
+  - `calculate_tvl_metrics()` - now adds grant_delivered and tvl columns; removed tvl_delta
+  - `calculate_attribution_cap()` - renamed baseline_tvl parameter to tvl
+  - `add_attribution_cap_columns()` - now uses tvl column instead of baseline_tvl
+  - `run_attribution_pipeline()` - updated output columns
+- **Columns added**:
+  - `grant_delivered`: boolean, True if delivery_date <= today
+  - `tvl`: consolidated column, uses baseline_tvl if delivered, current_tvl if not
+- **Columns removed**:
+  - `tvl_delta`: no longer needed with consolidated tvl approach
+- **Key findings**:
+  - Most grants (those with delivery dates in the past) use baseline_tvl
+  - Grants without delivery dates or with future dates use current_tvl
+  - Limitless example: not delivered, uses current_tvl = $489,544
+  - Hydrex example: delivered, uses baseline_tvl = $18M
+- **Learnings for future iterations**:
+  - `pd.Timestamp.today().normalize()` is useful for date-only comparisons
+  - Keep baseline_tvl and current_tvl columns for audit even though tvl is the main column
+  - Also fixed typo in docstring: 10% ratio cap was listed as 0.1 instead of 0.2
+---
+## 2026-01-22 - US-015
+- **What was implemented**: Updated grant_tvl_ratio to use total_incentives_usd instead of op_usd
+- **Files changed**: s8_attribution.py (modified), s8-tvl-attribution.csv (regenerated)
+- **Changes to existing functions**:
+  - `calculate_attribution_cap()` - renamed parameter from op_usd to total_incentives_usd, updated docstring
+  - `add_attribution_cap_columns()` - now uses total_incentives_usd column instead of op_usd
+- **Key formula changes**:
+  - grant_tvl_ratio = total_incentives_usd / tvl (was op_usd / tvl)
+  - Cap tiers remain unchanged (>=50% -> 100%, >=20% -> 50%, etc.)
+- **Impact on results**:
+  - Cap distribution now: 1.0 (11 projects), 0.01 (7), 0.02 (3), 0.05 (2)
+  - More accurate caps that reflect total incentive pressure on TVL
+- **Learnings for future iterations**:
+  - The grant_tvl_ratio now reflects total incentives (OP + co-incentives) pressure on TVL
+  - This change affects projects with significant co-incentives (e.g., PancakeSwap with $1.125M CAKE)
+  - The cap calculation must happen after add_incentive_share_columns() since it needs total_incentives_usd
+---
+## 2026-01-22 - US-016
+- **What was implemented**: Enhanced generate_formula_text() with descriptive commentary
+- **Files changed**: s8_attribution.py (modified), s8-tvl-attribution.csv (regenerated)
+- **Changes to generate_formula_text()**:
+  - Rewrote function to produce concise, readable commentary
+  - New format: "1% - Capped ($34.6M TVL) - Scope: subset - OP: 74% of $94K"
+  - Includes scope_notes context (protocol-wide, single asset, subset, no scope data)
+  - Includes co_incentive_source category in OP share display
+  - Added fmt_usd() helper for compact USD formatting ($34.6M, $94K, etc.)
+- **Key formula output changes**:
+  - Max formula length: 81 chars (well under 150 char target)
+  - Format: [pct]% - [reason] - Scope: [context] - OP: [share]% of [total]
+  - Reason variations: "Capped (TVL)", "Rounded from X%", "Protocol-wide", "Narrow scope"
+- **Impact on results**:
+  - All 23 projects now have concise, informative formula text
+  - Format suitable for display in marimo notebook next to attribution percentage
+- **Learnings for future iterations**:
+  - Use fmt_usd() pattern for consistent USD display across the codebase
+  - "was_capped" check: capped_attribution < raw_attribution
+  - "was_rounded" check: final_attribution_pct != capped_attribution
+  - Keep formula parts separated with " - " for readability
+---
+## 2026-01-22 - US-017
+- **What was implemented**: Final verification of all CSV output columns and calculations
+- **Files changed**: prd.json (updated passes: true)
+- **Verification completed**:
+  - CSV column order matches specification exactly (24 columns in correct order)
+  - Hydrex baseline_tvl = 18000000 (confirmed in output)
+  - incentive_share uses op_total_usd (verified with Morpho: 525000/735000 = 0.714, not 210000/420000)
+  - grant_tvl_ratio uses total_incentives_usd / tvl (verified with Hydrex: 56500/18000000 = 0.00314)
+  - Script runs successfully and produces s8-tvl-attribution.csv with 23 projects
+- **Final output statistics**:
+  - 23 projects with full attribution data
+  - Attribution distribution: 20% (8), 1% (7), 2% (3), 50% (3), 5% (2)
+  - 12 projects with TVL data, 11 without
+  - Average incentive share: 58.3%
+  - Total OP grant USD: $1,127,000 (vs $654,500 delivered)
+- **Learnings for future iterations**:
+  - Verification stories are useful for confirming all components work together
+  - Test formulas with examples that show difference between approaches (e.g., Morpho total vs delivered)
+  - The pandas UserWarning about DBAPI2 connections is benign and doesn't affect results
+---

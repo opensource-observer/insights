@@ -1,0 +1,30 @@
+Project Name,OSO Project Slug,Received Funding,Grants Season or Mission,Status,OP Total Amount,OP Delivered,Initial Delivery Date,Intent,L2 Address,Chains,Proposal Link,Scope
+Morpho,morpho-org,TRUE,Grants Season 8,Sent,1500000,600000,2026-01-06 0:00:00,TVL,0xF057afeEc22E220f47AD4220871364e9E828b2e9,OP Mainnet,https://app.opgrants.io/browse-applications/APP-OC0PQ0BP-0PQURZ,"- Morpho to match first 40% of the grant; scope not specified, but presumably only a subset of existing vaults/markets"
+PancakeSwap,pancakeswap,TRUE,Grants Season 8,Sent,600000,600000,2025-11-12 0:00:00,TVL,0x735C0C6007307beFEC8Cb44112706d95759F6852,Base,https://app.opgrants.io/browse-applications/APP-61MKC5AZ-TFCR6F,"- Pancakeswap to allocate a minimum of 5000 CAKE per day, totalling $1.125M assuming this lasts for 90 days
+- Only a subset of liquidity pairs, with core pair assets like ETH/USDC and cbBTC/ETH as the main focus, although some incentives could be allocated to long-tail assets too"
+Curve Lending,curve,TRUE,Grants Season 8,Sent,250000,100000,2025-12-02 0:00:00,TVL,0x28c4A1Fa47EEE9226F8dE7D6AF0a41C62Ca98267,OP Mainnet,https://app.opgrants.io/browse-applications/APP-VZLIY6MC-SQDRNT,"- First 40% of incentives will be distributed to lenders/borrowers in order to bootstrap Llamalend v2 markets
+- Remaining 60% of incentives, with start/end dates defined and tied to contract addresses, to be allocated toward steady growth of TVL and lending & borrowing activity following Llamalend v2 launch
+- Public reporting of TVL growth for impact evaluation"
+40acres.finance,40-acres,TRUE,Grants Season 8,Sent,200000,200000,2025-09-30 0:00:00,TVL,0xff16fd3d147220e6cc002a8e4a1f942ac41dbd23,"OP Mainnet, Base",https://app.opgrants.io/browse-applications/APP-CS0S7GDN-MR3JI7,"- $24,000 in USDC incentives provided by 40acres
+- Exact set of pools specified here: https://docs.google.com/spreadsheets/d/19tMBtD1suqgOGsFcd6HKT87LUX9TtnwQ4FXG3ueFsS4/edit?gid=0#gid=0"
+Oku (Optimism User Acquisition),oku-trade,TRUE,Grants Season 8,Sent,150000,60000,2025-12-09 0:00:00,TVL,0xa6e8772af29b29B9202a073f8E36f447689BEef6,OP Mainnet,https://app.opgrants.io/browse-applications/APP-SJI1PDNL-Z0UTM9,- Need data on how much has been deposited into Morpho via Oku's UI
+Extrafi,extra-finance,TRUE,Grants Season 8,Sent,100000,100000,2025-11-12 0:00:00,TVL,0xc5a364bbae7807c97814927812ef10b60ee09fb7,"OP Mainnet, Base, Unichain",https://app.opgrants.io/browse-applications/APP-PZ9Y02P7-UXJ2W4,"- ExtraFi will put up 2.5M EXTRA in co-incentives
+- Extrafi LYF: Only targeting USDC and WETH lending pools to lower borrowing costs for high-demand farming pairs, such as VELO/USDC, AERO/USDC, WETH/VVV
+- Extrafi XLend: Only targeting USDC, ETH, and cbBTC supply
+- Distribution Plan: (1) USDC and WETH lending pools on Extrafi LYF: 33.3K OP (33.3%), 10/1/2025 - 1/30/2026 (2) USDC, ETH, and cbBTC pools on Extrafi XLend: 66.7K OP (66.7%), 10/1/2025 - 1/30/2026"
+YieldFi,yieldfi,TRUE,Grants Season 8,Sent,100000,40000,2025-12-02 0:00:00,TVL,0x32f46E07931213F20FBD02dE49c3603B7E38a701,"OP Mainnet, Base",https://app.opgrants.io/browse-applications/APP-26Y3A1CE-ORWVH6,"- Co-incentives in the form of their points program
+- Only taregting yUSD"
+Renzo Protocol,renzo-protocol,TRUE,Grants Season 8,Sent,100000,40000,2025-12-02 0:00:00,TVL,0xdBdfd5b04fc3a19C40f2B12F6Ca29Bd772CCB822,"OP Mainnet, Unichain, Mode, Swell, Base, Worldchain, Ink",https://app.opgrants.io/browse-applications/APP-ODZDTQFJ-QTLS4P,"- Only targeting ezETH
+- Co-incentives available from multiple partners"
+Truemarkets,truemarketsorg,TRUE,Grants Season 8,Sent,70000,70000,2025-12-16 0:00:00,TVL,0xa9d19Dd30540fB39C8e058E81DaA21FfCcfB4a57,Base,https://app.opgrants.io/browse-applications/APP-45IYMH9L-PJU5AX,"- Primarily targeting TYD
+- Co-incentives in the form of TRUE and OP tokens available"
+Strands,strands-finance,TRUE,Grants Season 8,Sent,70000,28000,2025-11-19 0:00:00,TVL,0x3960b0Eac90Aae9FeE27D0AeDBb81d951B72862A,"OP Mainnet, Base",https://app.opgrants.io/browse-applications/APP-23YE2TW4-HVI82T,"- No details on scope, but sounds like focus is on protocol-wide efforts"
+Hydrex,hydrex-fi,TRUE,Grants Season 8,Sent,50000,20000,2025-11-05 0:00:00,TVL,0x74266f2b206D1359B83fc74949EF07176FB3AE03,Base,https://app.opgrants.io/browse-applications/APP-HX8QVFXW-RXYI7I,"- Predefined list of liquidity pairs:
+USDC/DAI
+USDC/USDT0
+cbDOGE/WETH
+cbADA/WETH
+cbXRP/WETH
+cbLTC/WETH"
+Super DCA,super-dca-tech,TRUE,Grants Season 8,Sent,30000,30000,2025-11-05 0:00:00,TVL,0xC07E21c78d6Ad0917cfCBDe8931325C392958892,"Base, OP Mainnet, Unichain, Ink",https://app.opgrants.io/browse-applications/APP-0A6ZP40D-82XHOP,"- Taregting USDC, ETH, WBTC, and OP."
+openOracle,openoraclebase-j0i0m0b0o,TRUE,Grants Season 8,Sent,30000,12000,2026-01-13 0:00:00,TVL,0x36Fa9b810d30F3404a6c6F07124aED424c6D9031,"Base, OP Mainnet, Unichain",https://app.opgrants.io/browse-applications/APP-JKZMI45A-QYZ3NG,"- No details on scope, but sounds like focus is on protocol-wide efforts"

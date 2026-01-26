@@ -1,0 +1,117 @@
+{
+  "project": "S8 Strategic Insights Notebook - Phase 3 Fixes",
+  "branchName": "ralph/s8-notebook-phase3",
+  "description": "Bug fixes and improvements to the S8 strategic insights notebook: fix attribution math, improve footnotes with full formula display, correct baseline date logic for undelivered grants, and reorder/restructure Part 3 summary tables.",
+  "userStories": [
+    {
+      "id": "US-026",
+      "title": "Fix attribution calculation math",
+      "description": "As an analyst, I need the attribution calculation to correctly apply scope, co-incentive share, AND cap so that the final attribution percentage is logically consistent.",
+      "acceptanceCriteria": [
+        "Review calculate_attribution() function logic - attribution should be: MIN(scope_pct * incentive_share, cap)",
+        "For PancakeSwap test case: scope=50%, co-incentives=$1,125,000 should result in attribution well below 50%, not 100%",
+        "Verify incentive_share = op_usd / (op_usd + co_incentive_usd) is calculated correctly",
+        "Verify cap is applied AFTER multiplying scope * incentive_share, not before",
+        "Add console logging to show intermediate values: scope_pct, incentive_share, raw_attribution, cap, final_attribution",
+        "Notebook runs without errors: marimo check s8-strategic-insights.py passes"
+      ],
+      "priority": 1,
+      "passes": false,
+      "notes": "The current output shows 100% attribution for PancakeSwap which is mathematically impossible given 50% scope, large co-incentives, and cap applied"
+    },
+    {
+      "id": "US-027",
+      "title": "Show full attribution formula in footnote",
+      "description": "As an analyst, I want the attribution footnote to show the complete math breakdown so users can verify the calculation.",
+      "acceptanceCriteria": [
+        "Show cap calculation: 'Cap = (OP Value / Baseline TVL) = $X / $Y = Z% → Lookup: W%'",
+        "Show incentive share: 'Incentive Share = OP Value / (OP Value + Co-incentives) = $X / $Y = Z%'",
+        "Show scope: 'Scope = X% of TVL in scope'",
+        "Show raw attribution: 'Raw = Scope × Incentive Share = X% × Y% = Z%'",
+        "Show final: 'Final = MIN(Raw, Cap) = MIN(X%, Y%) = Z% → Rounded to W%'",
+        "Format as readable multi-line footnote or expandable section in the deep dive",
+        "Notebook runs without errors: marimo check s8-strategic-insights.py passes"
+      ],
+      "priority": 2,
+      "passes": false,
+      "notes": "Users need to understand how each component contributes to the final attribution percentage"
+    },
+    {
+      "id": "US-028",
+      "title": "Fix baseline date for undelivered grants",
+      "description": "As an analyst, I need projects without grant delivery to use the current TVL date as baseline so their TVL delta is always zero.",
+      "acceptanceCriteria": [
+        "For projects where grant has NOT been delivered (no delivery_date or delivery_date > current_date), set baseline_date = current_tvl_date",
+        "This ensures baseline_tvl = current_tvl and tvl_delta = 0 for undelivered grants",
+        "Update baseline_date_source to 'undelivered' or 'current_date' for these projects",
+        "Verify stats (ROI, TVL delta) reflect zero change for undelivered projects",
+        "Notebook runs without errors: marimo check s8-strategic-insights.py passes"
+      ],
+      "priority": 3,
+      "passes": false,
+      "notes": "Better than using program start date - shows accurate 'no change yet' state"
+    },
+    {
+      "id": "US-029",
+      "title": "Show Baseline Date in deep dive annotation",
+      "description": "As an analyst, I want the deep dive to show the Baseline Date used for calculations, not just the Grant Delivery date.",
+      "acceptanceCriteria": [
+        "Replace 'Grant Delivery: [date]' with 'Baseline Date: [date]' in project deep dive header/annotation",
+        "Include baseline_date_source in parentheses, e.g., 'Baseline Date: 2024-06-15 (first inflow)'",
+        "For undelivered grants, show 'Baseline Date: [date] (not yet delivered)'",
+        "Ensure the date displayed matches the date used for baseline_tvl calculation",
+        "Notebook runs without errors: marimo check s8-strategic-insights.py passes"
+      ],
+      "priority": 4,
+      "passes": false,
+      "notes": "Baseline Date is the operationally relevant date, not necessarily the grant delivery date"
+    },
+    {
+      "id": "US-030",
+      "title": "Reorder Part 3 tables - leaderboard first",
+      "description": "As an analyst, I want the leaderboard table to appear before the extended project details table.",
+      "acceptanceCriteria": [
+        "Move leaderboard table to appear immediately after Part 3 header",
+        "Extended project details table follows after leaderboard",
+        "Leaderboard remains sorted by Attributable ROI descending",
+        "Notebook runs without errors: marimo check s8-strategic-insights.py passes"
+      ],
+      "priority": 5,
+      "passes": false,
+      "notes": "Leaderboard is the key summary - should come first"
+    },
+    {
+      "id": "US-031",
+      "title": "Update extended project details table columns",
+      "description": "As an analyst, I want the extended project details table to show specific financial metrics for full transparency.",
+      "acceptanceCriteria": [
+        "Extended project details table includes exactly these columns in order: Project Name, Baseline Date, Baseline TVL, Current TVL, TVL Delta, USD Value of Co-incentives, USD Value of Total Grant (OP), Leverage",
+        "Leverage = Co-incentives USD / Grant OP USD (or inverse, clarify in header)",
+        "Format currency columns with $ and appropriate precision (e.g., $1.2M, $45K)",
+        "Format dates as YYYY-MM-DD",
+        "Remove any columns not in the specified list (e.g., Attribution %, Adjusted ROI - those are in leaderboard)",
+        "Notebook runs without errors: marimo check s8-strategic-insights.py passes"
+      ],
+      "priority": 6,
+      "passes": false,
+      "notes": "Focus on financial inputs and TVL metrics, not derived attribution metrics"
+    },
+    {
+      "id": "US-032",
+      "title": "Test and verify all fixes end-to-end",
+      "description": "As an analyst, I need to verify all Phase 3 fixes work correctly together.",
+      "acceptanceCriteria": [
+        "Run marimo check on the notebook - must pass with no errors",
+        "Verify PancakeSwap attribution is now < 50% (not 100%)",
+        "Verify attribution footnote shows full formula breakdown",
+        "Verify undelivered grants show baseline_date = current_date and tvl_delta = 0",
+        "Verify deep dives show 'Baseline Date' not 'Grant Delivery'",
+        "Verify Part 3 leaderboard appears before extended details",
+        "Verify extended details table has correct columns: Project Name, Baseline Date, Baseline TVL, Current TVL, TVL Delta, Co-incentives USD, Grant OP USD, Leverage"
+      ],
+      "priority": 7,
+      "passes": false,
+      "notes": "Final verification - all fixes must work together"
+    }
+  ]
+}
