@@ -257,6 +257,9 @@ def _(mo, pyoso_db_conn):
         title = f"{model_name} | {row_count:,.0f} rows, {col_count} cols"
         return mo.accordion({title: mo.vstack([sql_snippet, table])})
 
+    import pandas as pd
+    import plotly.express as px
+
     def get_format_mapping(df, include_percentage=False):
         """Generate format mapping for table display"""
         fmt = {}
@@ -269,14 +272,8 @@ def _(mo, pyoso_db_conn):
                 elif include_percentage:
                     fmt[c] = '{:.0f}'
         return fmt
-    return
 
-
-@app.cell
-def imports():
-    import pandas as pd
-    import plotly.express as px
-    return (px,)
+    return (render_table_preview, px)
 
 
 @app.cell
