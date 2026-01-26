@@ -69,16 +69,6 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md("""
-    ## Related Models
-    - `projects_v1`: The primary source of truth for project-level metadata.
-    - `events.py`: Downstream model consuming repository IDs for event attribution.
-    """)
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md("""
     ## 3-ID System Comparison
     | ID Type | Column Name | Description |
     |---|---|---|
@@ -289,7 +279,7 @@ def _(mo, pyoso_db_conn):
                 elif include_percentage:
                     fmt[c] = '{:.0f}'
         return fmt
-    return (render_table_preview, px)
+    return (px,)
 
 
 @app.cell
