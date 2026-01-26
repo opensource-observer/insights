@@ -76,15 +76,7 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(mo, px, pyoso_db_conn):
-    _PLOTLY_LAYOUT = {
-        'margin': dict(l=10, r=10, t=60, b=20),
-        'xaxis': dict(showgrid=True, gridcolor='#f0f0f0'),
-        'yaxis': dict(showgrid=False, categoryorder='total ascending'),
-        'template': 'plotly_white',
-        'height': 300
-    }
-
+def _(mo, pyoso_db_conn):
     _df_coverage = mo.sql(
         f"""
         SELECT 
@@ -92,20 +84,17 @@ def _(mo, px, pyoso_db_conn):
             COUNT(*) as count 
         FROM oso.int_opendevdata__repositories_with_repo_id 
         GROUP BY 1
+        ORDER BY 2 DESC
         """,
         engine=pyoso_db_conn,
         output=False
     )
 
-    _fig_coverage = px.pie(
+    return mo.ui.table(
         _df_coverage,
-        values='count',
-        names='repo_id_source',
-        title='Repository ID Mapping Coverage',
-        color_discrete_sequence=px.colors.qualitative.Pastel
+        format_mapping={"count": "{:,}"},
+        selection=None
     )
-    _fig_coverage.update_layout(_PLOTLY_LAYOUT)
-    return
 
 
 @app.cell(hide_code=True)
@@ -147,7 +136,7 @@ def _(mo, px, pyoso_db_conn):
         title='Repository Creation Trend'
     )
     _fig_age.update_layout(_PLOTLY_LAYOUT)
-    return mo.ui.plotly(_fig_age, config={'displayModeBar': False})
+    return
 
 
 @app.cell(hide_code=True)
@@ -268,9 +257,6 @@ def _(mo, pyoso_db_conn):
         title = f"{model_name} | {row_count:,.0f} rows, {col_count} cols"
         return mo.accordion({title: mo.vstack([sql_snippet, table])})
 
-    import pandas as pd
-    import plotly.express as px
-
     def get_format_mapping(df, include_percentage=False):
         """Generate format mapping for table display"""
         fmt = {}
@@ -283,7 +269,14 @@ def _(mo, pyoso_db_conn):
                 elif include_percentage:
                     fmt[c] = '{:.0f}'
         return fmt
-    return (render_table_preview, px)
+    return
+
+
+@app.cell
+def imports():
+    import pandas as pd
+    import plotly.express as px
+    return (px,)
 
 
 @app.cell
