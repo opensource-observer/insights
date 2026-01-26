@@ -285,7 +285,7 @@ def _(mo, pyoso_db_conn):
                 elif include_percentage:
                     fmt[c] = '{:.0f}'
         return fmt
-    return (px,)
+    return (render_table_preview, px)
 
 
 @app.cell
