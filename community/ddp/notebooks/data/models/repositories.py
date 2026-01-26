@@ -117,9 +117,7 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(mo, pyoso_db_conn):
-    import plotly.express as px
-
+def _(mo, px, pyoso_db_conn):
     _PLOTLY_LAYOUT = {
         'margin': dict(l=10, r=10, t=60, b=20),
         'xaxis': dict(showgrid=True, gridcolor='#f0f0f0'),
@@ -149,7 +147,7 @@ def _(mo, pyoso_db_conn):
         title='Repository Creation Trend'
     )
     _fig_age.update_layout(_PLOTLY_LAYOUT)
-    return (px,)
+    return mo.ui.plotly(_fig_age, config={'displayModeBar': False})
 
 
 @app.cell(hide_code=True)
