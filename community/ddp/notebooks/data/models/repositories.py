@@ -296,7 +296,7 @@ def _(mo, pyoso_db_conn):
                     fmt[c] = '{:.0f}'
         return fmt
 
-    return (render_table_preview,)
+    return (render_table_preview, px)
 
 
 @app.cell
