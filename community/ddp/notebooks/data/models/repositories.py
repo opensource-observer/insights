@@ -1,8 +1,3 @@
-# /// script
-# [tool.marimo.runtime]
-# auto_instantiate = false
-# ///
-
 import marimo
 
 __generated_with = "0.19.2"
@@ -99,13 +94,13 @@ def _(mo, pyoso_db_conn):
     _df_coverage = mo.sql(
         f"""
         WITH source_counts AS (
-            SELECT 
-                repo_id_source, 
-                COUNT(*) as count 
-            FROM oso.int_opendevdata__repositories_with_repo_id 
+            SELECT
+                repo_id_source,
+                COUNT(*) as count
+            FROM oso.int_opendevdata__repositories_with_repo_id
             GROUP BY 1
         )
-        SELECT 
+        SELECT
             repo_id_source,
             count,
             count * 100.0 / SUM(count) OVER () as percentage
@@ -137,7 +132,7 @@ def _(mo):
 def _(mo, pyoso_db_conn):
     _df_with_id = mo.sql(
         f"""
-        SELECT 
+        SELECT
             COUNT(*) as total_with_id,
             COUNT(map.node_id) as decoded_count,
             COUNT(map.node_id) * 100.0 / COUNT(*) as decoding_rate_pct
@@ -163,7 +158,7 @@ def _(mo):
 def _(mo, pyoso_db_conn):
     _df_without_id = mo.sql(
         f"""
-        SELECT 
+        SELECT
             COUNT(*) as total_with_id,
             COUNT(map.node_id) as decoded_count,
             COUNT(map.node_id) * 100.0 / COUNT(*) as decoding_rate_pct
@@ -197,10 +192,10 @@ def _(mo, px, pyoso_db_conn):
 
     _df_age = mo.sql(
         f"""
-        SELECT 
-            DATE_TRUNC('month', repo_created_at) as month, 
-            COUNT(*) as count 
-        FROM oso.int_opendevdata__repositories_with_repo_id 
+        SELECT
+            DATE_TRUNC('month', repo_created_at) as month,
+            COUNT(*) as count
+        FROM oso.int_opendevdata__repositories_with_repo_id
         WHERE repo_created_at IS NOT NULL
         GROUP BY 1
         ORDER BY 1
@@ -271,7 +266,7 @@ def _(mo):
 def _(mo, pyoso_db_conn):
     _df = mo.sql(
         f"""
-        -- tried a few way to query based on name/repo_id but all cannot finish within a reasonable time. 
+        -- tried a few way to query based on name/repo_id but all cannot finish within a reasonable time.
         -- i want to include this section but if too slow, better not to include or else i afraid it will crash the system.
         -- so leave it empty as a TODO at the moment.
         """,
@@ -305,20 +300,20 @@ def _(mo, pyoso_db_conn):
 @app.cell(hide_code=True)
 def _(mo, pyoso_db_conn):
     def get_model_preview(model_name, limit=5):
-        return mo.sql(f"SELECT * FROM {model_name} LIMIT {limit}", 
+        return mo.sql(f"SELECT * FROM {model_name} LIMIT {limit}",
                       engine=pyoso_db_conn, output=False)
 
     def get_row_count(model_name):
-        result = mo.sql(f"SHOW STATS FOR {model_name}", 
+        result = mo.sql(f"SHOW STATS FOR {model_name}",
                         engine=pyoso_db_conn, output=False)
-        return result['row_count'].sum()    
+        return result['row_count'].sum()
 
     def generate_sql_snippet(model_name, df_results, limit=5):
         column_names = df_results.columns.tolist()
         # Format columns with one per line, indented
         columns_formatted = ',\n  '.join(column_names)
         sql_snippet = f"""```sql
-    SELECT 
+    SELECT
       {columns_formatted}
     FROM {model_name}
     LIMIT {limit}
