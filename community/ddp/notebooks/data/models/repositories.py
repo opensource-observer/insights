@@ -27,6 +27,13 @@ def _(mo):
     - **Normalization**: Standardizing repository names and URLs across different schemas.
     - **Stability**: Providing a stable `repo_id` that can be used to join events, contributions, and project-level metrics.
     - **Cross-Platform Analysis**: Enabling analysis by linking GitHub, GitLab, and other repository hosts.
+
+    ### ID Source Definitions
+    The `repo_id_source` column indicates how the internal `repo_id` was resolved:
+    - **ossd**: Verified match. The repository exists in the curated OSS Directory (matched via `github_graphql_id`).
+    - **node_id**: Valid decoded match. The `github_graphql_id` was successfully decoded to an integer ID using our map, but the repository is not currently in the curated OSS Directory.
+    - **gharchive**: Fallback match by name. Matched via `repo_name` in GH Archive data (less reliable).
+    - **opendevdata**: No match found.
     """)
     return
 
@@ -82,7 +89,7 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md("""
-    ## Age Distribution
+    ## Repositories Model
     """)
     return
 
@@ -91,12 +98,19 @@ def _(mo):
 def _(mo, pyoso_db_conn):
     _df_coverage = mo.sql(
         f"""
+        WITH source_counts AS (
+            SELECT 
+                repo_id_source, 
+                COUNT(*) as count 
+            FROM oso.int_opendevdata__repositories_with_repo_id 
+            GROUP BY 1
+        )
         SELECT 
-            repo_id_source, 
-            COUNT(*) as count 
-        FROM oso.int_opendevdata__repositories_with_repo_id 
-        GROUP BY 1
-        ORDER BY 2 DESC
+            repo_id_source,
+            count,
+            count * 100.0 / SUM(count) OVER () as percentage
+        FROM source_counts
+        ORDER BY percentage DESC
         """,
         engine=pyoso_db_conn
     )
@@ -106,7 +120,7 @@ def _(mo, pyoso_db_conn):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md("""
-    ## Age Distribution
+    ## Node ID Decoding Coverage
     """)
     return
 
@@ -114,7 +128,59 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md("""
-    ## Age Distribution
+    ### 1. Repositories with GraphQL ID
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo, pyoso_db_conn):
+    _df_with_id = mo.sql(
+        f"""
+        SELECT 
+            COUNT(*) as total_with_id,
+            COUNT(map.node_id) as decoded_count,
+            COUNT(map.node_id) * 100.0 / COUNT(*) as decoding_rate_pct
+        FROM oso.stg_opendevdata__repos repos
+        LEFT JOIN oso.int_github__node_id_map map
+        ON repos.github_graphql_id = map.node_id
+        WHERE repos.github_graphql_id IS NOT NULL AND repos.github_graphql_id != ''
+        """,
+        engine=pyoso_db_conn
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ### 2. Repositories without GraphQL ID (cannot be decoded)
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo, pyoso_db_conn):
+    _df_without_id = mo.sql(
+        f"""
+        SELECT 
+            COUNT(*) as total_with_id,
+            COUNT(map.node_id) as decoded_count,
+            COUNT(map.node_id) * 100.0 / COUNT(*) as decoding_rate_pct
+        FROM oso.stg_opendevdata__repos repos
+        LEFT JOIN oso.int_github__node_id_map map
+        ON repos.github_graphql_id = map.node_id
+        WHERE repos.github_graphql_id IS NULL OR repos.github_graphql_id = ''
+        """,
+        engine=pyoso_db_conn
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Repository Creation Trend
     """)
     return
 
@@ -181,7 +247,7 @@ def _(mo):
 
 @app.cell
 def _(mo, pyoso_db_conn):
-    _df_join = mo.sql(
+    _df = mo.sql(
         f"""
         SELECT r.repo_name, r.repo_id, r.opendevdata_id, r.star_count
         FROM oso.int_opendevdata__repositories_with_repo_id r
@@ -196,18 +262,18 @@ def _(mo, pyoso_db_conn):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md("""
-    ### 2. Finding by ID
+    ### 2. Finding by Name/ID
     """)
     return
 
 
 @app.cell
 def _(mo, pyoso_db_conn):
-    _df_by_id = mo.sql(
+    _df = mo.sql(
         f"""
-        SELECT repo_name, repo_id, opendevdata_id 
-        FROM oso.int_opendevdata__repositories_with_repo_id
-        WHERE github_graphql_id = 'MDEwOlJlcG9zaXRvcnkyNDI0Nzg0' -- rails/rails
+        -- tried a few way to query based on name/repo_id but all cannot finish within a reasonable time. 
+        -- i want to include this section but if too slow, better not to include or else i afraid it will crash the system.
+        -- so leave it empty as a TODO at the moment.
         """,
         engine=pyoso_db_conn
     )
@@ -226,10 +292,9 @@ def _(mo):
 def _(mo, pyoso_db_conn):
     _df_unmatched = mo.sql(
         f"""
-        SELECT repo_name, star_count, repo_created_at
+        SELECT *
         FROM oso.int_opendevdata__repositories_with_repo_id
         WHERE repo_id IS NULL
-        ORDER BY star_count DESC
         LIMIT 10
         """,
         engine=pyoso_db_conn
@@ -271,9 +336,6 @@ def _(mo, pyoso_db_conn):
         title = f"{model_name} | {row_count:,.0f} rows, {col_count} cols"
         return mo.accordion({title: mo.vstack([sql_snippet, table])})
 
-    import pandas as pd
-    import plotly.express as px
-
     def get_format_mapping(df, include_percentage=False):
         """Generate format mapping for table display"""
         fmt = {}
@@ -286,6 +348,14 @@ def _(mo, pyoso_db_conn):
                 elif include_percentage:
                     fmt[c] = '{:.0f}'
         return fmt
+    return
+
+
+@app.cell
+def imports():
+
+    import pandas as pd
+    import plotly.express as px
     return (px,)
 
 
