@@ -83,28 +83,23 @@ def _(mo):
 
     ### Data Lineage
 
-    ```
-    stg_github__commits (GHA push events)
-                |
-                v
-    int_github__commits_all (consolidated GHA commits)
-                |
-                |     stg_opendevdata__commits (ODD commits)
-                |                |
-                v                v
-         LEFT JOIN on SHA
-                |
-                v
-    int_ddp__commits_unified (unified, not deduped)
-                |
-                v
-    int_ddp__commits_deduped (deduplicated)
-    ```
-
     **Source Models:**
     - `stg_github__commits`: Extracts commits from GitHub Archive push events (pre-Oct 2025)
     - `stg_opendevdata__commits`: Raw commits from Open Dev Data with identity resolution
     - `int_github__commits_all`: Consolidated GHA commits (includes both pre and post-Oct 2025)
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.mermaid("""
+    graph TD
+        A[stg_github__commits<br/>GHA push events] --> B[int_github__commits_all<br/>Consolidated GHA]
+        C[stg_opendevdata__commits<br/>ODD commits] --> D
+        B --> D{LEFT JOIN on SHA}
+        D --> E[int_ddp__commits_unified<br/>Unified, not deduped]
+        E --> F[int_ddp__commits_deduped<br/>Deduplicated]
     """)
     return
 
