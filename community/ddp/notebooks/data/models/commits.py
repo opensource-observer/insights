@@ -75,11 +75,36 @@ def _(mo):
 
     ### How the Unification Works
 
-    1. **Start with GHA commits**: All commits from GitHub Archive push events
+    1. **Start with GHA commits**: All commits from GitHub Archive push events (`stg_github__commits`)
     2. **Enrich with ODD data**: LEFT JOIN ODD commits on SHA to add rich metadata (additions, deletions, `canonical_developer_id`)
     3. **Resolve author IDs**: Use `node_id_map` to decode ODD's GraphQL IDs to GitHub Database IDs
 
     The result is GHA commits enriched with ODD metadata where available, providing both `actor_id` (who pushed) and `author_id` (commit author) when possible.
+
+    ### Data Lineage
+
+    ```
+    stg_github__commits (GHA push events)
+                |
+                v
+    int_github__commits_all (consolidated GHA commits)
+                |
+                |     stg_opendevdata__commits (ODD commits)
+                |                |
+                v                v
+         LEFT JOIN on SHA
+                |
+                v
+    int_ddp__commits_unified (unified, not deduped)
+                |
+                v
+    int_ddp__commits_deduped (deduplicated)
+    ```
+
+    **Source Models:**
+    - `stg_github__commits`: Extracts commits from GitHub Archive push events (pre-Oct 2025)
+    - `stg_opendevdata__commits`: Raw commits from Open Dev Data with identity resolution
+    - `int_github__commits_all`: Consolidated GHA commits (includes both pre and post-Oct 2025)
     """)
     return
 
