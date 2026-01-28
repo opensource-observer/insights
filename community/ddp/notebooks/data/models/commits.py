@@ -57,12 +57,13 @@ def _(mo):
 
     ### `int_ddp__commits_unified`
 
-    Combines commits from both Open Dev Data and GitHub Archive by **joining on commit SHA**. This model LEFT JOINs ODD data to GHA commits, enriching GHA commits with ODD metadata where available.
+    Combines commits from both Open Dev Data and GitHub Archive by **joining on commit SHA and repository_id**. This model LEFT JOINs ODD data to GHA commits, enriching GHA commits with ODD metadata where available.
 
     **Key characteristics:**
     - Grain is `(sha, repository_id)` - the same commit can appear in multiple repositories (forks)
     - May contain duplicates if the same commit appears multiple times in the source data
     - Best for: Analysis where you want all commit occurrences, including across forks
+    - Only includes commits from repositories that can be mapped to a canonical GitHub repository_id
 
     ### `int_ddp__commits_deduped`
 
@@ -76,10 +77,11 @@ def _(mo):
     ### How the Unification Works
 
     1. **Start with GHA commits**: All commits from GitHub Archive push events (`stg_github__commits`)
-    2. **Enrich with ODD data**: LEFT JOIN ODD commits on SHA to add rich metadata (additions, deletions, `canonical_developer_id`)
-    3. **Resolve author IDs**: Use `node_id_map` to decode ODD's GraphQL IDs to GitHub Database IDs
+    2. **Map ODD repositories**: Join ODD commits to `int_opendevdata__repositories_with_repo_id` to get canonical GitHub `repository_id`
+    3. **Enrich with ODD data**: LEFT JOIN ODD commits to GHA on SHA + repository_id to add rich metadata (additions, deletions, `canonical_developer_id`)
+    4. **Resolve author IDs**: Use `node_id_map` to decode ODD's GraphQL IDs to GitHub Database IDs
 
-    The result is GHA commits enriched with ODD metadata where available, providing both `actor_id` (who pushed) and `author_id` (commit author) when possible.
+    The result is GHA commits enriched with ODD metadata where available, providing both `actor_id` (who pushed) and `author_id` (commit author) when possible. ODD-only commits (not in GHA) are included with `source = 'opendevdata'`.
 
     ### Data Lineage
 
@@ -87,6 +89,7 @@ def _(mo):
     - `stg_github__commits`: Extracts commits from GitHub Archive push events (pre-Oct 2025)
     - `stg_github__commits_since_20251007`: Extracts commits from GitHub Archive push events (post-Oct 2025)
     - `stg_opendevdata__commits`: Raw commits from Open Dev Data with identity resolution
+    - `int_opendevdata__repositories_with_repo_id`: Repository mapping from ODD to canonical GitHub IDs
     - `int_github__commits_all`: Consolidated GHA commits (UNION of both pre and post-Oct 2025)
     """)
     return
@@ -98,10 +101,11 @@ def _(mo):
     graph TD
         A[stg_github__commits<br/>Pre-Oct 2025] --> B[int_github__commits_all<br/>Consolidated GHA]
         A2[stg_github__commits_since_20251007<br/>Post-Oct 2025] --> B
-        C[stg_opendevdata__commits<br/>ODD commits] --> D
-        B --> D{LEFT JOIN on SHA}
-        D --> E[int_ddp__commits_unified<br/>Unified, not deduped]
-        E --> F[int_ddp__commits_deduped<br/>Deduplicated]
+        C[stg_opendevdata__commits<br/>ODD commits] --> D[int_opendevdata__repositories_with_repo_id<br/>Repository mapping]
+        D --> E
+        B --> E{LEFT JOIN on SHA + repository_id}
+        E --> F[int_ddp__commits_unified<br/>Unified, not deduped]
+        F --> G[int_ddp__commits_deduped<br/>Deduplicated]
     """)
     return
 
