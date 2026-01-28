@@ -31,9 +31,9 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md("""
-    ## The Commit Identity Challenge
+    ## Data Quality and Coverage Challenges
 
-    Working with commit data presents several identity and attribution challenges:
+    Working with commit data presents several quality and coverage challenges:
 
     - **Actor vs. Author**: GHA `actor_id` represents the *pusher* (e.g., a maintainer merging a PR), not necessarily the original author of the code. In squash merges, original authors are buried within the event payload rather than being the primary actor.
     
