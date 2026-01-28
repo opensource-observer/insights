@@ -146,7 +146,7 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo, px, pyoso_db_conn):
-    query = """
+    _query = """
     WITH odd_commits AS (
       SELECT DISTINCT sha
       FROM oso.int_ddp__commits_unified
@@ -175,20 +175,20 @@ def _(mo, px, pyoso_db_conn):
     WHERE commit_source IS NOT NULL
     GROUP BY commit_source
     """
-    df = mo.sql(query, engine=pyoso_db_conn)
+    _df = mo.sql(_query, engine=pyoso_db_conn)
 
-    fig = px.pie(
-        df,
+    _fig = px.pie(
+        _df,
         names='commit_source',
         values='commit_count',
         title='Commit Source Distribution',
         hole=0.4
     )
-    fig.update_traces(
+    _fig.update_traces(
         textinfo='label+value+percent',
         texttemplate='%{label}<br>%{value}<br>%{percent:.2%}'
     )
-    mo.ui.plotly(fig)
+    mo.ui.plotly(_fig)
     return
 
 
