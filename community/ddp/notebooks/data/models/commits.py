@@ -53,22 +53,33 @@ def _(mo):
     mo.md("""
     ## The Unified Solution
 
-    The `int_ddp__commits_unified` model combines commits from both Open Dev Data and GitHub Archive into a single table, using **commit SHA** as the primary key for deduplication.
+    We provide two models for working with unified commits:
 
-    ### How It Works
+    ### `int_ddp__commits_unified`
 
-    1. **Collect from ODD**: All commits from Open Dev Data with rich metadata including additions, deletions, author info, and `canonical_developer_id`.
-    
-    2. **Collect from GHA**: Commits extracted from GitHub Archive push events, including the `actor_id` (who pushed) and event metadata.
-    
-    3. **Union and Deduplicate**: Combine both sets and remove duplicates based on commit SHA. When the same SHA appears in both sources, the record includes fields from both ODD and GHA.
+    Combines commits from both Open Dev Data and GitHub Archive by **joining on commit SHA**. This model LEFT JOINs ODD data to GHA commits, enriching GHA commits with ODD metadata where available.
 
-    ### Result
+    **Key characteristics:**
+    - Grain is `(sha, repository_id)` - the same commit can appear in multiple repositories (forks)
+    - May contain duplicates if the same commit appears multiple times in the source data
+    - Best for: Analysis where you want all commit occurrences, including across forks
 
-    A single table where each commit appears once, with:
-    - Rich metadata from ODD (when available): additions, deletions, `canonical_developer_id`
-    - Event context from GHA (when available): `actor_id`, push event metadata
-    - Source indicator showing whether the commit came from ODD, GHA, or both
+    ### `int_ddp__commits_deduped`
+
+    A deduplicated version of the unified commits, keeping only the first occurrence of each `(sha, repository_id)` pair by `created_at`.
+
+    **Key characteristics:**
+    - Grain is `(sha, repository_id)` with deduplication applied
+    - Each commit appears only once per repository
+    - Best for: Analysis requiring unique commits per repository (e.g., counting commits per repo)
+
+    ### How the Unification Works
+
+    1. **Start with GHA commits**: All commits from GitHub Archive push events
+    2. **Enrich with ODD data**: LEFT JOIN ODD commits on SHA to add rich metadata (additions, deletions, `canonical_developer_id`)
+    3. **Resolve author IDs**: Use `node_id_map` to decode ODD's GraphQL IDs to GitHub Database IDs
+
+    The result is GHA commits enriched with ODD metadata where available, providing both `actor_id` (who pushed) and `author_id` (commit author) when possible.
     """)
     return
 
@@ -80,15 +91,22 @@ def _(render_table_preview):
 
 
 @app.cell(hide_code=True)
+def _(render_table_preview):
+    render_table_preview("oso.int_ddp__commits_deduped")
+    return
+
+
+@app.cell(hide_code=True)
 def _(mo):
     mo.md("""
     ## Best Practices
 
-    | Goal | Recommended Source | Why? |
+    | Goal | Recommended Model | Why? |
     |------|-------------------|------|
-    | **Code Churn Analysis** | ODD commits | Includes additions/deletions metrics for measuring code change volume |
-    | **Real-time Activity** | GHA commits | More current for recent events, especially post-Oct 2025 when GHA payloads stopped |
-    | **Cross-Source Validation** | Unified model | Complete view with deduplication, ensures no commits are missed |
+    | **Count commits per repository** | `int_ddp__commits_deduped` | Ensures each commit counted only once per repo |
+    | **Code churn analysis** | `int_ddp__commits_unified` | Includes additions/deletions from ODD enrichment |
+    | **Cross-fork analysis** | `int_ddp__commits_unified` | See all occurrences of a commit across forks |
+    | **Real-time activity** | `int_github__commits_all` | Most current GHA data (underlying source) |
     """)
     return
 
