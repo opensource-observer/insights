@@ -57,11 +57,13 @@ def _(mo):
 
     ### `int_ddp__commits_unified`
 
-    Combines commits from both Open Dev Data and GitHub Archive by **joining on commit SHA and repository_id**. This model LEFT JOINs ODD data to GHA commits, enriching GHA commits with ODD metadata where available.
+    Combines commits from both Open Dev Data and GitHub Archive. The model uses a UNION ALL approach:
+    1. All GHA commits enriched with ODD metadata where available (matched on SHA + repository_id)
+    2. ODD-only commits that don't exist in GHA
 
     **Key characteristics:**
     - Grain is `(sha, repository_id)` - the same commit can appear in multiple repositories (forks)
-    - May contain duplicates if the same commit appears multiple times in the source data
+    - The `source` column indicates origin: 'gharchive' (with or without ODD enrichment) or 'opendevdata' (ODD-only)
     - Best for: Analysis where you want all commit occurrences, including across forks
     - Only includes commits from repositories that can be mapped to a canonical GitHub repository_id
 
