@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.18.4"
+__generated_with = "0.19.2"
 app = marimo.App(width="full")
 
 
@@ -20,7 +20,7 @@ def _(mo):
     The Unified Commits Model brings together commit data from two complementary sources:
 
     - **Open Dev Data (ODD)**: A proprietary deduplication system that tracks commits with high fidelity, including detailed metrics like additions/deletions and resolved author identities via `canonical_developer_id`.
-    
+
     - **GitHub Archive (GHA)**: A public event stream capturing all GitHub activity, including push events with commit payloads, identified by `actor_id` (the GitHub Database ID of the event actor).
 
     This unified model provides a complete view of code contributions, enabling accurate analysis across both curated high-fidelity data and universal event coverage.
@@ -36,13 +36,13 @@ def _(mo):
     Working with commit data presents several quality and coverage challenges:
 
     - **Actor vs. Author**: GHA `actor_id` represents the *pusher* (e.g., a maintainer merging a PR), not necessarily the original author of the code. In squash merges, original authors are buried within the event payload rather than being the primary actor.
-    
+
     - **Payload Caps**: GitHub Archive `PushEvent` payloads are capped at 20 commits per event. Any commits beyond this limit in a single push are entirely missing from the GHA dataset.
-    
+
     - **Historical Limitations (Pre-Oct 2025)**: Prior to 2025-10-07, commit payloads in GHA only contained `author_email` and `author_name`, but lacked the unique GitHub `user_id`, making reliable cross-event attribution difficult.
-    
+
     - **Data Loss (Post-Oct 2025)**: Since 2025-10-07, GitHub Archive has stopped providing commit payload data entirely. This makes author attribution via GHA impossible for all new data, reinforcing the need for Open Dev Data's direct commit tracking.
-    
+
     - **Coverage Limitations**: Open Dev Data tracks a curated set of repositories (high fidelity but selective), whereas GitHub Archive captures all public activity (universal but lower fidelity). This means commits may be missing from ODD if they occur in repositories outside the tracked set.
     """)
     return
@@ -151,11 +151,13 @@ def _(mo, px, pyoso_db_conn):
       SELECT DISTINCT sha
       FROM oso.int_ddp__commits_unified
       WHERE source = 'opendevdata'
+        AND created_at >= DATE '2025-01-01'
     ),
     gha_commits AS (
       SELECT DISTINCT sha
       FROM oso.int_ddp__commits_unified
       WHERE source = 'gharchive'
+        AND created_at >= DATE '2025-01-01'
     ),
     categories AS (
       SELECT
@@ -303,18 +305,18 @@ def _(mo, pyoso_db_conn):
         result = mo.sql(f"SHOW STATS FOR {model_name}", 
                         engine=pyoso_db_conn, output=False)
         return result['row_count'].sum()    
-    
+
     def generate_sql_snippet(model_name, df_results, limit=5):
         column_names = df_results.columns.tolist()
         # Format columns with one per line, indented
         columns_formatted = ',\n  '.join(column_names)
         sql_snippet = f"""```sql
-SELECT 
-  {columns_formatted}
-FROM {model_name}
-LIMIT {limit}
-```
-"""
+    SELECT 
+      {columns_formatted}
+    FROM {model_name}
+    LIMIT {limit}
+    ```
+    """
         return mo.md(sql_snippet)
 
     def render_table_preview(model_name):
@@ -329,9 +331,9 @@ LIMIT {limit}
         col_count = len(df.columns)
         title = f"{model_name} | {row_count:,.0f} rows, {col_count} cols"
         return mo.accordion({title: mo.vstack([sql_snippet, table])})
-    
+
     import pandas as pd
-    
+
     def get_format_mapping(df, include_percentage=False):
         """Generate format mapping for table display"""
         fmt = {}
@@ -344,15 +346,15 @@ LIMIT {limit}
                 elif include_percentage:
                     fmt[c] = '{:.0f}'
         return fmt
-    
-    return (render_table_preview, pd, get_format_mapping)
+
+    return (render_table_preview,)
 
 
 @app.cell(hide_code=True)
 def imports():
     import plotly.express as px
     import pandas as pd
-    return pd, px
+    return (px,)
 
 
 @app.cell(hide_code=True)
