@@ -85,8 +85,9 @@ def _(mo):
 
     **Source Models:**
     - `stg_github__commits`: Extracts commits from GitHub Archive push events (pre-Oct 2025)
+    - `stg_github__commits_since_20251007`: Extracts commits from GitHub Archive push events (post-Oct 2025)
     - `stg_opendevdata__commits`: Raw commits from Open Dev Data with identity resolution
-    - `int_github__commits_all`: Consolidated GHA commits (includes both pre and post-Oct 2025)
+    - `int_github__commits_all`: Consolidated GHA commits (UNION of both pre and post-Oct 2025)
     """)
     return
 
@@ -95,7 +96,8 @@ def _(mo):
 def _(mo):
     mo.mermaid("""
     graph TD
-        A[stg_github__commits<br/>GHA push events] --> B[int_github__commits_all<br/>Consolidated GHA]
+        A[stg_github__commits<br/>Pre-Oct 2025] --> B[int_github__commits_all<br/>Consolidated GHA]
+        A2[stg_github__commits_since_20251007<br/>Post-Oct 2025] --> B
         C[stg_opendevdata__commits<br/>ODD commits] --> D
         B --> D{LEFT JOIN on SHA}
         D --> E[int_ddp__commits_unified<br/>Unified, not deduped]
