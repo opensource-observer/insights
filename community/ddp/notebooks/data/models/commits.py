@@ -353,7 +353,6 @@ def _(mo, pyoso_db_conn):
 @app.cell(hide_code=True)
 def imports():
     import plotly.express as px
-    import pandas as pd
     return (px,)
 
 
