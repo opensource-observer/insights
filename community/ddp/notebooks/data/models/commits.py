@@ -8,7 +8,6 @@ app = marimo.App(width="full")
 def _(mo):
     mo.md("""
     # Unified Commits Model
-    <small>Owner: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">OSO</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">2025-01-28</span></small>
     """)
     return
 
