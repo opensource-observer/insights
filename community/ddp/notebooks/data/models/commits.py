@@ -79,11 +79,12 @@ def _(mo):
     ### How the Unification Works
 
     1. **Start with GHA commits**: All commits from GitHub Archive push events (`stg_github__commits`)
-    2. **Map ODD repositories**: Join ODD commits to `int_opendevdata__repositories_with_repo_id` to get canonical GitHub `repository_id`
-    3. **Enrich with ODD data**: LEFT JOIN ODD commits to GHA on SHA + repository_id to add rich metadata (additions, deletions, `canonical_developer_id`)
-    4. **Resolve author IDs**: Use `node_id_map` to decode ODD's GraphQL IDs to GitHub Database IDs
+    2. **Map ODD repositories**: Join ODD commits to `int_opendevdata__repositories_with_repo_id` to get canonical GitHub `repository_id`. ODD commits without a valid repository mapping are excluded.
+    3. **Enrich GHA commits**: LEFT JOIN ODD data to GHA commits on SHA + repository_id to add rich metadata (additions, deletions, `canonical_developer_id`)
+    4. **Add ODD-only commits**: UNION ALL commits that exist in ODD but not in GHA (identified by SHA + repository_id)
+    5. **Resolve author IDs**: Use `node_id_map` to decode ODD's GraphQL IDs to GitHub Database IDs
 
-    The result is GHA commits enriched with ODD metadata where available, providing both `actor_id` (who pushed) and `author_id` (commit author) when possible. ODD-only commits (not in GHA) are included with `source = 'opendevdata'`.
+    The result combines GHA commits (enriched with ODD metadata where available) with ODD-only commits, providing both `actor_id` (who pushed) and `author_id` (commit author) when possible.
 
     ### Data Lineage
 
@@ -105,8 +106,9 @@ def _(mo):
         A2[stg_github__commits_since_20251007<br/>Post-Oct 2025] --> B
         C[stg_opendevdata__commits<br/>ODD commits] --> D[int_opendevdata__repositories_with_repo_id<br/>Repository mapping]
         D --> E
-        B --> E{LEFT JOIN on SHA + repository_id}
-        E --> F[int_ddp__commits_unified<br/>Unified, not deduped]
+        B --> E{Enrich: LEFT JOIN on SHA + repository_id}
+        E --> E2{Add ODD-only: UNION ALL}
+        E2 --> F[int_ddp__commits_unified<br/>Unified, not deduped]
         F --> G[int_ddp__commits_deduped<br/>Deduplicated]
     """)
     return
@@ -330,8 +332,6 @@ def _(mo, pyoso_db_conn):
         col_count = len(df.columns)
         title = f"{model_name} | {row_count:,.0f} rows, {col_count} cols"
         return mo.accordion({title: mo.vstack([sql_snippet, table])})
-
-    import pandas as pd
 
     def get_format_mapping(df, include_percentage=False):
         """Generate format mapping for table display"""
