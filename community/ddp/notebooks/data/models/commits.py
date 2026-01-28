@@ -139,7 +139,12 @@ def _(mo):
     mo.md("""
     ## Overlap Analysis
 
-    How many commits are tracked in both systems vs. unique to one?
+    The `source` column in `int_ddp__commits_unified` tells us where each commit originated:
+
+    - **gharchive**: Commits from GitHub Archive (may also exist in ODD if enriched)
+    - **opendevdata**: Commits that exist ONLY in Open Dev Data (not in GHA)
+
+    Commits with `source = 'gharchive'` that have non-null `canonical_developer_id` exist in both systems.
     """)
     return
 
@@ -147,33 +152,21 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo, px, pyoso_db_conn):
     _query = """
-    WITH odd_commits AS (
-      SELECT DISTINCT sha
-      FROM oso.int_ddp__commits_unified
-      WHERE source = 'opendevdata'
-        AND created_at >= DATE '2025-01-01'
-    ),
-    gha_commits AS (
-      SELECT DISTINCT sha
-      FROM oso.int_ddp__commits_unified
-      WHERE source = 'gharchive'
-        AND created_at >= DATE '2025-01-01'
-    ),
-    categories AS (
-      SELECT
-        CASE
-          WHEN o.sha IS NOT NULL AND g.sha IS NOT NULL THEN 'Both ODD + GHA'
-          WHEN o.sha IS NOT NULL AND g.sha IS NULL THEN 'ODD Only'
-          WHEN o.sha IS NULL AND g.sha IS NOT NULL THEN 'GHA Only'
-        END AS commit_source,
-        COALESCE(o.sha, g.sha) AS sha
-      FROM odd_commits o
-      FULL OUTER JOIN gha_commits g ON o.sha = g.sha
-    )
-    SELECT commit_source, COUNT(*) AS commit_count
-    FROM categories
-    WHERE commit_source IS NOT NULL
-    GROUP BY commit_source
+    SELECT
+      CASE
+        WHEN source = 'opendevdata' THEN 'ODD Only'
+        WHEN source = 'gharchive' AND canonical_developer_id IS NOT NULL THEN 'Both ODD + GHA'
+        WHEN source = 'gharchive' AND canonical_developer_id IS NULL THEN 'GHA Only'
+      END AS commit_source,
+      COUNT(*) AS commit_count
+    FROM oso.int_ddp__commits_unified
+    WHERE created_at >= DATE '2025-01-01'
+    GROUP BY
+      CASE
+        WHEN source = 'opendevdata' THEN 'ODD Only'
+        WHEN source = 'gharchive' AND canonical_developer_id IS NOT NULL THEN 'Both ODD + GHA'
+        WHEN source = 'gharchive' AND canonical_developer_id IS NULL THEN 'GHA Only'
+      END
     """
     _df = mo.sql(_query, engine=pyoso_db_conn)
 
@@ -181,7 +174,7 @@ def _(mo, px, pyoso_db_conn):
         _df,
         names='commit_source',
         values='commit_count',
-        title='Commit Source Distribution',
+        title='Commit Source Distribution (2025+)',
         hole=0.4
     )
     _fig.update_traces(
