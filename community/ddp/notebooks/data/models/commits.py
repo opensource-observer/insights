@@ -129,6 +129,7 @@ def _(mo):
     | **Code churn analysis** | `int_ddp__commits_unified` | Includes additions/deletions from ODD enrichment |
     | **Cross-fork analysis** | `int_ddp__commits_unified` | See all occurrences of a commit across forks |
     | **Real-time activity** | `int_github__commits_all` | Most current GHA data (underlying source) |
+    | **ODD-only analysis** | `stg_opendevdata__commits` | Query ODD data directly without GHA enrichment |
     """)
     return
 
