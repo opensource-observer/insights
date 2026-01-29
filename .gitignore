@@ -117,7 +117,7 @@ cython_debug/
 # Local files
 .DS_Store
 .pickle
-sandbox/
+local/
 .pkgx.yaml
 gcp_credentials.json
 oso_gcp_credentials.json
