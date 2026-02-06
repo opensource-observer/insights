@@ -19,6 +19,7 @@ dependencies = [
     "pyoso>=0.6.5",
     "pysyncon>=1.5.2",
     "pyyaml>=6.0.2",
+    "scikit-learn>=1.5.0",
     "scipy>=1.16.2",
     "sqlalchemy>=2.0.43",
     "trino>=0.336.0",
