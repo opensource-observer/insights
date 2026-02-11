@@ -78,7 +78,7 @@ def _(mo):
     ### Underlying Tables
 
     | Table | Purpose |
-    |-------|---------|
+    |:-------|:---------|
     | `stg_opendevdata__repo_developer_28d_activities` | Developer activity per repository (28-day rolling) |
     | `stg_opendevdata__ecosystems` | Ecosystem definitions |
     | `stg_opendevdata__ecosystems_repos_recursive` | Repository-to-ecosystem mapping |
@@ -134,7 +134,7 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(client, ecosystem_selector, mo):
+def _(mo, pyoso_db_conn, ecosystem_selector):
     sql_cohort_retention = f"""
     WITH first_activity AS (
         SELECT
@@ -175,8 +175,7 @@ def _(client, ecosystem_selector, mo):
         SELECT
             fa.cohort_month,
             ma.activity_month,
-            EXTRACT(YEAR FROM AGE(ma.activity_month, fa.cohort_month)) * 12 +
-            EXTRACT(MONTH FROM AGE(ma.activity_month, fa.cohort_month)) AS months_since_cohort,
+            DATE_DIFF('month', fa.cohort_month, ma.activity_month) AS months_since_cohort,
             COUNT(DISTINCT fa.canonical_developer_id) AS active_count
         FROM first_activity fa
         JOIN monthly_activity ma
@@ -200,7 +199,7 @@ def _(client, ecosystem_selector, mo):
     ORDER BY ca.cohort_month, ca.months_since_cohort
     """
 
-    df_retention = client.to_pandas(sql_cohort_retention)
+    df_retention = mo.sql(sql_cohort_retention, engine=pyoso_db_conn, output=False)
 
     mo.vstack([
         mo.md(f"""
@@ -213,7 +212,7 @@ def _(client, ecosystem_selector, mo):
         """),
         mo.ui.table(df_retention, selection=None, pagination=True)
     ])
-    return df_retention, sql_cohort_retention
+    return (df_retention,)
 
 
 @app.cell(hide_code=True)
@@ -282,7 +281,7 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(client, mo, px):
+def _(mo, pyoso_db_conn, px):
     sql_cross_ecosystem = """
     WITH first_activity AS (
         SELECT
@@ -325,8 +324,7 @@ def _(client, mo, px):
         SELECT
             fa.ecosystem,
             fa.cohort_month,
-            EXTRACT(YEAR FROM AGE(ma.activity_month, fa.cohort_month)) * 12 +
-            EXTRACT(MONTH FROM AGE(ma.activity_month, fa.cohort_month)) AS months_since_cohort,
+            DATE_DIFF('month', fa.cohort_month, ma.activity_month) AS months_since_cohort,
             COUNT(DISTINCT fa.canonical_developer_id) AS active_count
         FROM first_activity fa
         JOIN monthly_activity ma
@@ -351,7 +349,7 @@ def _(client, mo, px):
     ORDER BY ca.ecosystem, ca.months_since_cohort
     """
 
-    df_cross = client.to_pandas(sql_cross_ecosystem)
+    df_cross = mo.sql(sql_cross_ecosystem, engine=pyoso_db_conn, output=False)
 
     _fig = px.line(
         df_cross,
@@ -383,7 +381,7 @@ def _(client, mo, px):
         """),
         mo.ui.plotly(_fig, config={'displayModeBar': False})
     ])
-    return df_cross, sql_cross_ecosystem
+    return (df_cross,)
 
 
 @app.cell(hide_code=True)
@@ -393,7 +391,7 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(client, ecosystem_selector, mo):
+def _(mo, pyoso_db_conn, ecosystem_selector):
     sql_yearly_summary = f"""
     WITH first_activity AS (
         SELECT
@@ -420,8 +418,8 @@ def _(client, ecosystem_selector, mo):
         JOIN stg_opendevdata__ecosystems e
             ON err.ecosystem_id = e.id
         WHERE e.name = '{ecosystem_selector.value}'
-            AND rda.day >= fa.cohort_year + INTERVAL '6 months'
-            AND rda.day < fa.cohort_year + INTERVAL '7 months'
+            AND rda.day >= fa.cohort_year + INTERVAL '6' MONTH
+            AND rda.day < fa.cohort_year + INTERVAL '7' MONTH
     ),
 
     activity_after_12_months AS (
@@ -436,8 +434,8 @@ def _(client, ecosystem_selector, mo):
         JOIN stg_opendevdata__ecosystems e
             ON err.ecosystem_id = e.id
         WHERE e.name = '{ecosystem_selector.value}'
-            AND rda.day >= fa.cohort_year + INTERVAL '12 months'
-            AND rda.day < fa.cohort_year + INTERVAL '13 months'
+            AND rda.day >= fa.cohort_year + INTERVAL '12' MONTH
+            AND rda.day < fa.cohort_year + INTERVAL '13' MONTH
     ),
 
     cohort_sizes AS (
@@ -449,7 +447,7 @@ def _(client, ecosystem_selector, mo):
     )
 
     SELECT
-        EXTRACT(YEAR FROM cs.cohort_year)::INT AS cohort_year,
+        YEAR(cs.cohort_year) AS cohort_year,
         cs.cohort_size,
         COUNT(DISTINCT a6.canonical_developer_id) AS active_at_6mo,
         ROUND(100.0 * COUNT(DISTINCT a6.canonical_developer_id) / cs.cohort_size, 1) AS retention_6mo_pct,
@@ -464,7 +462,7 @@ def _(client, ecosystem_selector, mo):
     ORDER BY 1
     """
 
-    df_yearly = client.to_pandas(sql_yearly_summary)
+    df_yearly = mo.sql(sql_yearly_summary, engine=pyoso_db_conn, output=False)
 
     mo.vstack([
         mo.md(f"""
@@ -474,7 +472,7 @@ def _(client, ecosystem_selector, mo):
         """),
         mo.ui.table(df_yearly, selection=None)
     ])
-    return df_yearly, sql_yearly_summary
+    return (df_yearly,)
 
 
 @app.cell(hide_code=True)
@@ -522,7 +520,7 @@ def _(mo):
     Compare ecosystem retention to industry benchmarks:
 
     | Timeframe | Typical SaaS | Gaming | Open Source | Strong OSS |
-    |-----------|--------------|--------|-------------|------------|
+    |:-----------|:--------------|:--------|:-------------|:------------|
     | 1 month | 80% | 40% | 50% | 70% |
     | 6 months | 40% | 15% | 25% | 45% |
     | 12 months | 25% | 8% | 15% | 30% |
@@ -542,7 +540,7 @@ def _(mo):
     ### Retention Calculation Considerations
 
     | Factor | Current Approach | Alternative |
-    |--------|------------------|-------------|
+    |:--------|:------------------|:-------------|
     | **Cohort Definition** | Month of first contribution | Could use quarter or week |
     | **Activity Threshold** | Any activity = retained | Could require minimum commits |
     | **Ecosystem Scope** | Per-ecosystem | Could be cross-ecosystem |
@@ -575,12 +573,12 @@ def _():
 
 @app.cell(hide_code=True)
 def setup_pyoso():
+    # This code sets up pyoso to be used as a database provider for this notebook
+    # This code is autogenerated. Modification could lead to unexpected results :)
     import pyoso
     import marimo as mo
-    import os
     pyoso_db_conn = pyoso.Client().dbapi_connection()
-    client = pyoso.Client(os.getenv("OSO_API_KEY"))
-    return client, mo, os, pyoso_db_conn
+    return mo, pyoso_db_conn
 
 
 if __name__ == "__main__":

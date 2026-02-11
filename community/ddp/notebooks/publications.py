@@ -112,7 +112,7 @@ def _(mo):
         ### 2025 Publications
 
         | Title | Type | Ecosystems | Status | Links |
-        |-------|------|------------|--------|-------|
+        |:-------|:------|:------------|:--------|:-------|
         | **Speedrun Ethereum Case Study** | Developer Education | Ethereum | In Progress | [OSO-1591](https://linear.app/kariba/issue/OSO-1591) |
         | **Origins of Success** | Developer Lifecycle | Multi-chain | Draft | [Report](../../../Research/OSO/) |
         | **Optimism Season 8 Grants Impact** | Funding Effectiveness | Optimism | Active | [OSO-1124](https://linear.app/kariba/issue/OSO-1124) |
@@ -121,7 +121,7 @@ def _(mo):
         ### Upcoming Research
 
         | Title | Focus Area | Target Date |
-        |-------|------------|-------------|
+        |:-------|:------------|:-------------|
         | Developer Retention Patterns Across Top 40 Ecosystems | Retention | Q1 2025 |
         | Impact of Deep Funding on Ethereum Infrastructure | Funding | Q1 2025 |
         | Traditional Finance vs DeFi Developer Comparison | Cross-sector | Q2 2025 |
@@ -172,10 +172,10 @@ def _(mo):
 
         All publications build on standardized metric definitions. Explore how we calculate key metrics:
 
-        - [**Activity Metrics**](data/metric-definitions/activity.py) - How we measure developer activity and define "active"
-        - [**Lifecycle Metrics**](data/metric-definitions/lifecycle.py) - Developer stages from new to churned
-        - [**Retention Metrics**](data/metric-definitions/retention.py) - Cohort-based retention calculations
-        - [**Alignment Metrics**](data/metric-definitions/alignment.py) - Measuring ecosystem-specific engagement
+        - **Activity Metrics** - How we measure developer activity and define "active"
+        - **Lifecycle Metrics** - Developer stages from new to churned
+        - **Retention Metrics** - Cohort-based retention calculations
+        - **Alignment Metrics** - Measuring ecosystem-specific engagement
 
         """
     )
@@ -190,11 +190,11 @@ def _(mo):
 
         Our research leverages three primary data sources:
 
-        1. **[OSS Directory](data/sources/oss-directory.py)** - Curated registry of 8,000+ open source projects
-        2. **[Open Dev Data](data/sources/open-dev-data.py)** - Developer activity from Electric Capital (2M+ developers)
-        3. **[GitHub Archive](data/sources/github-archive.py)** - Historical GitHub events (2015-present)
+        1. **OSS Directory** - Curated registry of 8,000+ open source projects
+        2. **Open Dev Data** - Developer activity from Electric Capital (2M+ developers)
+        3. **GitHub Archive** - Historical GitHub events (2015-present)
 
-        Learn more about [how we unify these sources](data/models/repositories.py) into coherent data models.
+        Learn more about how we unify these sources into coherent data models.
 
         """
     )
@@ -216,10 +216,10 @@ def _(mo):
 
         ### Getting Started with DDP Data
 
-        1. **Explore the [Quick Start Guide](quick-start.py)** to understand data structure
-        2. **Review [Data Models](data/models/repositories.py)** to see available tables
-        3. **Check [Metric Definitions](data/metric-definitions/activity.py)** for calculation logic
-        4. **Browse [Insights Dashboards](insights/developer-activity.py)** for pre-built analyses
+        1. **Explore the Quick Start Guide** to understand data structure
+        2. **Review Data Models** to see available tables
+        3. **Check Metric Definitions** for calculation logic
+        4. **Browse Insights Dashboards** for pre-built analyses
 
         ### Collaborate with OSO
 
@@ -227,7 +227,7 @@ def _(mo):
 
         - **Ethereum Foundation:** Contact via [EF Data Portal project](https://linear.app/kariba/project/ethereum-42d1c8b1-77ae-4b33-b178-9ab7463eac27)
         - **General inquiries:** Open an issue in [opensource-observer/oso](https://github.com/opensource-observer/oso)
-        - **Research partnerships:** Reach out via [OSO Discord](https://www.opensource.observer/discord)
+        - **Research partnerships:** Reach out via [OSO Discord](https://www.oso.xyz/discord)
 
         """
     )
@@ -248,7 +248,7 @@ def _(mo):
         - **Open** - Public datasets, open source tooling
         - **Peer-reviewed** - Research reviewed by ecosystem experts
 
-        See our [Developer Lifecycle Methodology](data/metric-definitions/lifecycle.py) as an example
+        See our Developer Lifecycle Methodology as an example
         of how we document analytical approaches.
 
         """

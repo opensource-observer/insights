@@ -31,7 +31,7 @@ def _(mo):
     ### Stage Definitions
 
     | Stage | Definition | Activity Threshold (28-day window) |
-    |-------|------------|-----------------------------------|
+    |:-------|:------------|:-----------------------------------|
     | **New** | First observed contribution to ecosystem | First activity month |
     | **Full-Time Active** | High sustained activity | ≥10 active days |
     | **Part-Time Active** | Moderate sustained activity | 1-9 active days |
@@ -116,7 +116,7 @@ def _(mo):
     ### Transition Rules
 
     | From State | To State | Trigger |
-    |------------|----------|---------|
+    |:------------|:----------|:---------|
     | New | Full-Time Active | ≥10 active days in next period |
     | New | Part-Time Active | 1-9 active days in next period |
     | New | Dormant | 0 active days in next period |
@@ -142,7 +142,7 @@ def _(mo):
     ### Underlying Tables
 
     | Table | Purpose |
-    |-------|---------|
+    |:-------|:---------|
     | `stg_opendevdata__repo_developer_28d_activities` | Developer activity per repository (28-day rolling) |
     | `stg_opendevdata__ecosystems` | Ecosystem definitions |
     | `stg_opendevdata__ecosystems_repos_recursive` | Repository-to-ecosystem mapping |
@@ -175,7 +175,7 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(client, mo, ecosystem_filter):
+def _(mo, pyoso_db_conn, ecosystem_filter):
     sql_lifecycle_distribution = f"""
     WITH developer_activity AS (
         SELECT
@@ -219,7 +219,7 @@ def _(client, mo, ecosystem_filter):
         END
     """
 
-    df_lifecycle_dist = client.to_pandas(sql_lifecycle_distribution)
+    df_lifecycle_dist = mo.sql(sql_lifecycle_distribution, engine=pyoso_db_conn, output=False)
 
     mo.vstack([
         mo.md(f"""
@@ -227,7 +227,7 @@ def _(client, mo, ecosystem_filter):
         """),
         mo.ui.table(df_lifecycle_dist, selection=None)
     ])
-    return df_lifecycle_dist, sql_lifecycle_distribution
+    return (df_lifecycle_dist,)
 
 
 @app.cell(hide_code=True)
@@ -248,7 +248,7 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(client, ecosystem_filter, mo, px):
+def _(mo, pyoso_db_conn, ecosystem_filter, px):
     sql_lifecycle_trend = f"""
     WITH monthly_activity AS (
         SELECT
@@ -285,7 +285,7 @@ def _(client, ecosystem_filter, mo, px):
     ORDER BY month, lifecycle_stage
     """
 
-    df_lifecycle_trend = client.to_pandas(sql_lifecycle_trend)
+    df_lifecycle_trend = mo.sql(sql_lifecycle_trend, engine=pyoso_db_conn, output=False)
 
     _fig = px.area(
         df_lifecycle_trend,
@@ -312,7 +312,7 @@ def _(client, ecosystem_filter, mo, px):
         """),
         mo.ui.plotly(_fig, config={'displayModeBar': False})
     ])
-    return df_lifecycle_trend, sql_lifecycle_trend
+    return (df_lifecycle_trend,)
 
 
 @app.cell(hide_code=True)
@@ -322,7 +322,7 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(client, ecosystem_filter, mo, px):
+def _(mo, pyoso_db_conn, ecosystem_filter, px):
     sql_new_developers = f"""
     WITH first_activity AS (
         SELECT
@@ -346,7 +346,7 @@ def _(client, ecosystem_filter, mo, px):
     ORDER BY 1
     """
 
-    df_new_devs = client.to_pandas(sql_new_developers)
+    df_new_devs = mo.sql(sql_new_developers, engine=pyoso_db_conn, output=False)
 
     _fig = px.bar(
         df_new_devs,
@@ -369,7 +369,7 @@ def _(client, ecosystem_filter, mo, px):
         mo.ui.plotly(_fig, config={'displayModeBar': False}),
         mo.ui.table(df_new_devs.tail(12), selection=None)
     ])
-    return df_new_devs, sql_new_developers
+    return (df_new_devs,)
 
 
 @app.cell(hide_code=True)
@@ -379,7 +379,7 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(client, mo):
+def _(mo, pyoso_db_conn):
     sql_transitions = """
     WITH monthly_activity AS (
         SELECT
@@ -422,7 +422,7 @@ def _(client, mo):
     ORDER BY transition_count DESC
     """
 
-    df_transitions = client.to_pandas(sql_transitions)
+    df_transitions = mo.sql(sql_transitions, engine=pyoso_db_conn, output=False)
 
     mo.vstack([
         mo.md("""
@@ -432,7 +432,7 @@ def _(client, mo):
         """),
         mo.ui.table(df_transitions, selection=None)
     ])
-    return df_transitions, sql_transitions
+    return (df_transitions,)
 
 
 @app.cell(hide_code=True)
@@ -510,7 +510,7 @@ def _(mo):
     ### Threshold Justification
 
     | Threshold | Value | Rationale |
-    |-----------|-------|-----------|
+    |:-----------|:-------|:-----------|
     | Full-Time threshold | 10 days | Aligns with Electric Capital methodology; ~2+ days/week |
     | Dormant period | 1-6 months | Balances false positives with early detection |
     | Churned period | >6 months | Industry standard for "lost" users |
@@ -525,7 +525,7 @@ def _(mo):
     ### Comparison to Electric Capital
 
     | Aspect | OSO Lifecycle | Electric Capital |
-    |--------|---------------|------------------|
+    |:--------|:---------------|:------------------|
     | Full-Time threshold | 10 days/28-day window | 10 days/28-day window |
     | Part-Time threshold | 1-9 days/28-day window | <10 days/28-day window |
     | One-Time tracking | Via dormant/churned | 84-day rolling window |
@@ -543,12 +543,12 @@ def _():
 
 @app.cell(hide_code=True)
 def setup_pyoso():
+    # This code sets up pyoso to be used as a database provider for this notebook
+    # This code is autogenerated. Modification could lead to unexpected results :)
     import pyoso
     import marimo as mo
-    import os
     pyoso_db_conn = pyoso.Client().dbapi_connection()
-    client = pyoso.Client(os.getenv("OSO_API_KEY"))
-    return client, mo, os, pyoso_db_conn
+    return mo, pyoso_db_conn
 
 
 if __name__ == "__main__":

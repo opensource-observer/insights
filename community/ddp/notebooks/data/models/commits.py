@@ -132,7 +132,7 @@ def _(mo):
     ## Best Practices
 
     | Goal | Recommended Model | Why? |
-    |------|-------------------|------|
+    |:------|:-------------------|:------|
     | **Count commits per repository** | `int_ddp__commits_deduped` | Ensures each commit counted only once per repo |
     | **Code churn analysis** | `int_ddp__commits_unified` | Includes additions/deletions from ODD enrichment |
     | **Cross-fork analysis** | `int_ddp__commits_unified` | See all occurrences of a commit across forks |
@@ -290,8 +290,8 @@ def _(mo):
     mo.md("""
     ## Related Models
 
-    - **Developers**: [developers.py](./developers.py) — Unified developer identities across ODD and GHA
-    - **Repositories**: [repositories.py](./repositories.py) — Repository metadata with canonical IDs
+    - **Developers**: developers — Unified developer identities across ODD and GHA
+    - **Repositories**: repositories — Repository metadata with canonical IDs
     """)
     return
 

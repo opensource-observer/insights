@@ -22,9 +22,9 @@ const navItems: NavItem[] = [
         label: 'Sources',
         href: '/data/sources',
         children: [
-          { label: 'OSS Directory', href: '/data/sources/oss-directory' },
           { label: 'Open Dev Data', href: '/data/sources/open-dev-data' },
           { label: 'GitHub Archive', href: '/data/sources/github-archive' },
+          { label: 'OSS Directory', href: '/data/sources/oss-directory' },
         ],
       },
       {

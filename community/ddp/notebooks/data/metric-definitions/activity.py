@@ -29,7 +29,7 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(client, mo):
+def _(mo, pyoso_db_conn):
     sql_opendevdata = """
     SELECT
         mads.day,
@@ -43,7 +43,7 @@ def _(client, mo):
     ORDER BY 1
     """
 
-    df_opendevdata = client.to_pandas(sql_opendevdata)
+    df_opendevdata = mo.sql(sql_opendevdata, engine=pyoso_db_conn, output=False)
 
     mo.vstack([
         mo.md(f"""
@@ -54,7 +54,7 @@ def _(client, mo):
         """),
         mo.ui.table(df_opendevdata, selection=None, pagination=True)
     ])
-    return df_opendevdata, sql_opendevdata
+    return (df_opendevdata,)
 
 
 @app.cell(hide_code=True)
@@ -64,7 +64,7 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(client, mo):
+def _(mo, pyoso_db_conn):
     sql_gharchive = """
     WITH base AS (
         SELECT DISTINCT
@@ -102,7 +102,7 @@ def _(client, mo):
     ORDER BY bucket_day
     """
 
-    df_gharchive = client.to_pandas(sql_gharchive)
+    df_gharchive = mo.sql(sql_gharchive, engine=pyoso_db_conn, output=False)
 
     mo.vstack([
         mo.md(f"""
@@ -113,7 +113,7 @@ def _(client, mo):
         """),
         mo.ui.table(df_gharchive, selection=None, pagination=True)
     ])
-    return df_gharchive, sql_gharchive
+    return (df_gharchive,)
 
 
 @app.cell(hide_code=True)
@@ -123,7 +123,7 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(client, mo):
+def _(mo, pyoso_db_conn):
     sql_opendevdata_mapped = """
     WITH mapped_ethereum_repos AS (
         SELECT DISTINCT
@@ -148,7 +148,7 @@ def _(client, mo):
     ORDER BY 1
     """
 
-    df_opendevdata_mapped = client.to_pandas(sql_opendevdata_mapped)
+    df_opendevdata_mapped = mo.sql(sql_opendevdata_mapped, engine=pyoso_db_conn, output=False)
 
     mo.vstack([
         mo.md(f"""
@@ -160,7 +160,7 @@ def _(client, mo):
         """),
         mo.ui.table(df_opendevdata_mapped, selection=None, pagination=True)
     ])
-    return df_opendevdata_mapped, sql_opendevdata_mapped
+    return (df_opendevdata_mapped,)
 
 
 @app.cell(hide_code=True)
@@ -170,7 +170,7 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(client, mo):
+def _(mo, pyoso_db_conn):
     sql_gharchive_mapped = """
     WITH mapped_ethereum_repos AS (
         SELECT DISTINCT
@@ -212,7 +212,7 @@ def _(client, mo):
     ORDER BY bucket_day
     """
 
-    df_gharchive_mapped = client.to_pandas(sql_gharchive_mapped)
+    df_gharchive_mapped = mo.sql(sql_gharchive_mapped, engine=pyoso_db_conn, output=False)
 
     mo.vstack([
         mo.md(f"""
@@ -224,7 +224,7 @@ def _(client, mo):
         """),
         mo.ui.table(df_gharchive_mapped, selection=None, pagination=True)
     ])
-    return df_gharchive_mapped, sql_gharchive_mapped
+    return (df_gharchive_mapped,)
 
 
 @app.cell(hide_code=True)
@@ -323,7 +323,7 @@ def _(df_gharchive, df_gharchive_mapped, df_opendevdata, df_opendevdata_mapped, 
         mo.md("### Statistical Summary"),
         mo.md(f"""
 | Data Source | Average MAD | Min MAD | Max MAD |
-|-------------|-------------|---------|---------|
+|:-------------|:-------------|:---------|:---------|
 | Open Dev Data | {_avg_opendev:,.0f} | {_merged['all_devs_opendev'].min():,.0f} | {_merged['all_devs_opendev'].max():,.0f} |
 | GitHub Archive | {_avg_gharchive:,.0f} | {_merged['all_devs_gharchive'].min():,.0f} | {_merged['all_devs_gharchive'].max():,.0f} |
 | Mapped Open Dev Data | {_avg_opendev_mapped:,.0f} | {_merged['all_devs_opendev_mapped'].min():,.0f} | {_merged['all_devs_opendev_mapped'].max():,.0f} |
@@ -332,7 +332,7 @@ def _(df_gharchive, df_gharchive_mapped, df_opendevdata, df_opendevdata_mapped, 
         mo.md("**Pairwise Differences:**"),
         mo.md(f"""
 | Comparison | Avg Difference |
-|------------|----------------|
+|:------------|:----------------|
 | GitHub Archive vs Open Dev Data | {(_avg_gharchive - _avg_opendev):+,.0f} ({((_avg_gharchive - _avg_opendev) / _avg_opendev * 100):+.2f}%) |
 | Mapped GH Archive vs Mapped Open Dev Data | {(_avg_gharchive_mapped - _avg_opendev_mapped):+,.0f} ({((_avg_gharchive_mapped - _avg_opendev_mapped) / _avg_opendev_mapped * 100):+.2f}%) |
         """),
@@ -372,7 +372,7 @@ def _(mo):
     ### Key Differences Explaining Variance
 
     | Factor | Open Dev Data | GitHub Archive |
-    |--------|---------------|----------------|
+    |:--------|:---------------|:----------------|
     | **Identity Resolution** | Cross-email fingerprinting | Single GitHub actor_id |
     | **Code Filtering** | Excludes forks/copied code | Includes all commits |
     | **Platform Coverage** | Multi-platform possible | GitHub only |
@@ -412,7 +412,7 @@ def _(mo):
     ### Summary of Data Quality Factors
 
     | Factor | Impact on Developer Count |
-    |--------|---------------------------|
+    |:--------|:---------------------------|
     | Missing events (data gaps) | Direct undercounting of active developers |
     | PushEvent 20-commit cap | May miss activity days for batch committers |
     | Repository mapping gaps | Developers on unmapped repos not counted |
@@ -428,7 +428,7 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(client, mo):
+def _(mo, pyoso_db_conn):
     sql_commit_truncation_impact = """
     WITH push_events_stats AS (
         SELECT
@@ -456,7 +456,7 @@ def _(client, mo):
     ORDER BY month
     """
 
-    df_truncation = client.to_pandas(sql_commit_truncation_impact)
+    df_truncation = mo.sql(sql_commit_truncation_impact, engine=pyoso_db_conn, output=False)
 
     total_events = df_truncation['total_push_events'].sum()
     total_truncated = df_truncation['truncated_events'].sum()
@@ -473,7 +473,7 @@ and `actual_commits_count` (the real `distinct_size` value).
 **Overall Impact (since 2025-01-01):**
 
 | Metric | Value |
-|--------|-------|
+|:--------|:-------|
 | Total Push Events | {total_events:,} |
 | Events with >20 commits (truncated) | {total_truncated:,} ({100.0 * total_truncated / total_events:.2f}%) |
 | Commits in payload | {total_available:,} |
@@ -482,11 +482,11 @@ and `actual_commits_count` (the real `distinct_size` value).
         """),
         mo.ui.table(df_truncation, selection=None, pagination=True)
     ])
-    return df_truncation, sql_commit_truncation_impact
+    return (df_truncation,)
 
 
 @app.cell(hide_code=True)
-def _(client, mo):
+def _(mo, pyoso_db_conn):
     sql_truncation_by_size = """
     SELECT
         CASE
@@ -514,7 +514,7 @@ def _(client, mo):
         END
     """
 
-    df_by_size = client.to_pandas(sql_truncation_by_size)
+    df_by_size = mo.sql(sql_truncation_by_size, engine=pyoso_db_conn, output=False)
 
     mo.vstack([
         mo.md("""
@@ -524,7 +524,7 @@ This shows how many push events fall into each size bucket and the corresponding
         """),
         mo.ui.table(df_by_size, selection=None)
     ])
-    return df_by_size, sql_truncation_by_size
+    return
 
 
 @app.cell(hide_code=True)
@@ -536,12 +536,12 @@ def _():
 
 @app.cell(hide_code=True)
 def setup_pyoso():
+    # This code sets up pyoso to be used as a database provider for this notebook
+    # This code is autogenerated. Modification could lead to unexpected results :)
     import pyoso
     import marimo as mo
-    import os
     pyoso_db_conn = pyoso.Client().dbapi_connection()
-    client = pyoso.Client(os.getenv("OSO_API_KEY"))
-    return client, mo, pyoso_db_conn
+    return mo, pyoso_db_conn
 
 
 if __name__ == "__main__":
