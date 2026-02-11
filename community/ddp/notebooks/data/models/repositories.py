@@ -7,7 +7,14 @@ app = marimo.App(width="full")
 @app.cell(hide_code=True)
 def _(mo):
     mo.md("""
-    ## Repository Creation Trend
+    # Repositories
+
+    The **repository bridge model** maps Open Dev Data repositories to canonical GitHub IDs, enabling cross-source joins between ODD's commit tracking and GitHub Archive's event stream.
+
+    Preview:
+    ```sql
+    SELECT * FROM oso.int_opendevdata__repositories_with_repo_id LIMIT 10
+    ```
     """)
     return
 
@@ -16,19 +23,41 @@ def _(mo):
 def _(mo):
     mo.md("""
     ## Overview
-    The `int_opendevdata__repositories_with_repo_id` model serves as a bridge between multiple data sources within the Open Source Observer (OSO) ecosystem. It provides a unified view of software repositories by mapping external identifiers to internal OSO project IDs.
 
-    This model is critical for:
-    - **Normalization**: Standardizing repository names and URLs across different schemas.
-    - **Stability**: Providing a stable `repo_id` that can be used to join events, contributions, and project-level metrics.
-    - **Cross-Platform Analysis**: Enabling analysis by linking GitHub, GitLab, and other repository hosts.
+    The `int_opendevdata__repositories_with_repo_id` model serves as a bridge between multiple data sources within the OSO ecosystem. It provides a unified view of software repositories by mapping external identifiers to canonical GitHub integer IDs.
+
+    - **Normalization**: Standardizes repository names and URLs across different schemas
+    - **Stability**: Provides a stable `repo_id` that can be used to join events, contributions, and project-level metrics
+    - **Cross-source analysis**: Enables joining Open Dev Data commits with GitHub Archive events via a shared `repo_id`
 
     ### ID Source Definitions
+
     The `repo_id_source` column indicates how the internal `repo_id` was resolved:
-    - **ossd**: Verified match. The repository exists in the curated OSS Directory (matched via `github_graphql_id`).
-    - **node_id**: Valid decoded match. The `github_graphql_id` was successfully decoded to an integer ID using our map, but the repository is not currently in the curated OSS Directory.
-    - **gharchive**: Fallback match by name. Matched via `repo_name` in GH Archive data (less reliable).
-    - **opendevdata**: No match found.
+
+    | Source | Description | Reliability |
+    |:-------|:------------|:------------|
+    | `ossd` | Verified match via `github_graphql_id` in the curated OSS Directory | Highest |
+    | `node_id` | Decoded from `github_graphql_id` via node_id_map, but not in OSS Directory | High |
+    | `gharchive` | Fallback match by `repo_name` in GitHub Archive data | Lower |
+    | `opendevdata` | No match found — `repo_id` is NULL | None |
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## The 3-ID System
+
+    Repositories in the OSO ecosystem have three different identifiers that need bridging:
+
+    | ID Type | Column Name | Description |
+    |:--------|:------------|:------------|
+    | OpenDevData ID | `opendevdata_id` | Primary key in ODD source data |
+    | GraphQL Node ID | `github_graphql_id` | GitHub's global opaque ID (Base64 encoded) |
+    | REST API ID | `repo_id` | Numeric GitHub Database ID — the primary join key |
+
+    The `repo_id` (REST API ID) is the canonical join key used throughout the DDP models to connect repositories across Open Dev Data and GitHub Archive.
     """)
     return
 
@@ -37,11 +66,56 @@ def _(mo):
 def _(mo):
     mo.md("""
     ## ID Mapping Strategy
-    The model employs a 3-tier priority logic to assign a `repo_id` to each record, ensuring the highest possible match rate with the OSO project directory.
 
-    1. **Primary Match (OSS Directory)**: Records are first matched using the `github_graphql_id`. This is the most reliable method as it relies on persistent, immutable IDs provided by GitHub.
-    2. **Fallback Match (GitHub Archive)**: If a GraphQL ID is unavailable or fails to match, the system falls back to matching by `repo_name` (e.g., `owner/repo`). This accounts for repositories discovered through event logs or historical data.
-    3. **Unmatched**: If neither method yields a match, the `repo_id` is set to `NULL`. These repositories are still tracked but are not currently associated with a verified OSO project.
+    The model employs a 3-tier priority logic to assign a `repo_id` to each record:
+
+    1. **Primary Match (OSS Directory)**: Match using `github_graphql_id` against the curated OSS Directory. Most reliable — relies on persistent, immutable IDs from GitHub.
+    2. **Decoded Match (Node ID Map)**: If not in OSS Directory, decode the `github_graphql_id` to an integer ID using `int_github__node_id_map`. Handles both legacy Base64 and next-gen MessagePack formats.
+    3. **Fallback Match (GitHub Archive)**: Match by `repo_name` (e.g., `owner/repo`) against GitHub Archive data. Less reliable due to renames.
+    4. **Unmatched**: `repo_id` is NULL. The repository exists in ODD but couldn't be mapped to a GitHub integer ID.
+
+    ### Node ID Decoding
+
+    A key challenge is bridging GitHub's two API ID systems:
+    - **GraphQL API**: Opaque Node IDs (e.g., `MDEwOlJlcG9zaXRvcnkyNDI0Nzg0`)
+    - **REST API**: Integer Database IDs (e.g., `2424784`)
+
+    The `int_github__node_id_map` model pre-computes this mapping by decoding both legacy (simple Base64) and next-gen (MessagePack binary) ID formats.
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.mermaid("""
+    graph TD
+        A[stg_opendevdata__repos<br/>ODD repositories with GraphQL IDs] --> D
+        B[int_github__node_id_map<br/>Decode GraphQL → Database ID] --> D
+        C[oss-directory artifacts<br/>Curated repo mappings] --> D
+        E[int_gharchive__github_events<br/>GHA repos for name-based fallback] --> D
+        D[int_opendevdata__repositories_with_repo_id<br/>Unified repo bridge with repo_id + source]
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(render_table_preview):
+    render_table_preview("oso.int_opendevdata__repositories_with_repo_id")
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Best Practices
+
+    | Goal | Recommended Approach | Why? |
+    |:------|:---------------------|:------|
+    | **Join ODD commits to GHA events** | Use `repo_id` from the bridge model | Canonical integer ID shared by both systems |
+    | **Filter by match quality** | Filter on `repo_id_source` | Exclude lower-reliability fallback matches |
+    | **Connect repos to ecosystems** | Join to `ecosystems_repos_recursive` via `opendevdata_id` | Maps repos to ecosystem hierarchy |
+    | **Find popular repos** | Filter on `star_count > N` with `repo_id IS NOT NULL` | Only matched repos have reliable star counts |
+    | **Identify coverage gaps** | Query `WHERE repo_id IS NULL` | Find ODD repos not yet mapped to GitHub IDs |
     """)
     return
 
@@ -49,178 +123,148 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md("""
-    ### Node ID Decoding: The Technical Challenge
+    ## Live Data Exploration
 
-    A key challenge in unifying repository data is bridging the gap between GitHub's two API systems:
-    *   **GraphQL API**: Uses opaque, global "Node IDs" (e.g., `MDEwOlJlcG9zaXRvcnkyNDI0Nzg0`).
-    *   **REST API / Archives**: Uses simple integer IDs (e.g., `2424784`).
-
-    The model solves this using a robust decoding strategy (implemented in `int_github__node_id_map`) that handles two distinct formats:
-
-    1.  **Legacy IDs**: Simple Base64-encoded strings (e.g., `010:Repository12345`). These are decoded by stripping the prefix to reveal the integer.
-    2.  **Next-Gen IDs**: Complex binary identifiers using **MessagePack** serialization wrapped in URL-safe Base64. Decoding these requires:
-        *   Normalizing URL-safe characters (`-` -> `+`, `_` -> `/`).
-        *   Calculating and restoring missing padding (`=`).
-        *   Parsing binary MessagePack markers to extract variable-width integers (`fixint`, `uint8` to `uint64`).
-
-    This pre-computed mapping ensures that even legacy OpenDevData records (which only stored Node IDs) can be joined with modern event data (keyed by integer REST IDs).
-    """)
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md("""
-    ## 3-ID System Comparison
-    | ID Type | Column Name | Description |
-    |:---|:---|:---|
-    | OpenDevData ID | `opendevdata_id` | Primary ODD source ID. |
-    | GraphQL Node ID | `github_graphql_id` | Global node ID (Base64). |
-    | REST ID | `repo_id` | Numeric DB ID. Primary join key. |
-    """)
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md("""
-    ## Repositories Model
+    The following charts show actual data from the repository bridge model to demonstrate coverage and trends.
     """)
     return
 
 
 @app.cell(hide_code=True)
 def _(mo, pyoso_db_conn):
-    _df_coverage = mo.sql(
-        f"""
-        WITH source_counts AS (
-            SELECT
-                repo_id_source,
-                COUNT(*) as count
-            FROM oso.int_opendevdata__repositories_with_repo_id
-            GROUP BY 1
+    _query = """
+    SELECT
+      repo_id_source,
+      COUNT(*) AS count,
+      COUNT(*) * 100.0 / SUM(COUNT(*)) OVER () AS percentage
+    FROM oso.int_opendevdata__repositories_with_repo_id
+    GROUP BY repo_id_source
+    ORDER BY count DESC
+    """
+
+    df_coverage = mo.sql(_query, engine=pyoso_db_conn, output=False)
+    return (df_coverage,)
+
+
+@app.cell(hide_code=True)
+def _(df_coverage, mo, px):
+    _total_repos = int(df_coverage['count'].sum())
+    _matched = int(df_coverage.loc[df_coverage['repo_id_source'] != 'opendevdata', 'count'].sum())
+    _match_rate = _matched / _total_repos * 100 if _total_repos > 0 else 0
+    _top_source = df_coverage.iloc[0]['repo_id_source'] if len(df_coverage) > 0 else "N/A"
+    _top_count = int(df_coverage.iloc[0]['count']) if len(df_coverage) > 0 else 0
+
+    _fig = px.bar(
+        df_coverage,
+        x='repo_id_source',
+        y='count',
+        text='count',
+        labels={'repo_id_source': 'ID Source', 'count': 'Repository Count'},
+        color_discrete_sequence=['#4C78A8']
+    )
+
+    _fig.update_traces(
+        texttemplate='%{text:,.0f}',
+        textposition='outside',
+        marker_color='#4C78A8'
+    )
+
+    _fig.update_layout(
+        template='plotly_white',
+        margin=dict(t=20, l=0, r=0, b=0),
+        height=400,
+        xaxis=dict(
+            title='',
+            showgrid=False,
+            linecolor="#000",
+            linewidth=1
+        ),
+        yaxis=dict(
+            title='Repository Count',
+            showgrid=True,
+            gridcolor="#E5E5E5",
+            linecolor="#000",
+            linewidth=1
         )
-        SELECT
-            repo_id_source,
-            count,
-            count * 100.0 / SUM(count) OVER () as percentage
-        FROM source_counts
-        ORDER BY percentage DESC
-        """,
-        engine=pyoso_db_conn
     )
+
+    mo.vstack([
+        mo.hstack([
+            mo.stat(label="Total Repositories", value=f"{_total_repos:,}", bordered=True, caption="In ODD source data"),
+            mo.stat(label="Matched to repo_id", value=f"{_matched:,}", bordered=True, caption=f"{_match_rate:.1f}% match rate"),
+            mo.stat(label="Top Source", value=_top_source, bordered=True, caption=f"{_top_count:,} repos"),
+        ], widths="equal", gap=1),
+        mo.ui.plotly(_fig, config={'displayModeBar': False}),
+    ])
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md("""
-    ## Node ID Decoding Coverage
-    """)
+    mo.md("### Repository Creation Trend")
     return
 
 
 @app.cell(hide_code=True)
-def _(mo):
-    mo.md("""
-    ### 1. Repositories with GraphQL ID
-    """)
-    return
+def _(mo, pd, px, pyoso_db_conn):
+    _query = """
+    SELECT
+      DATE_TRUNC('month', repo_created_at) AS month,
+      COUNT(*) AS count
+    FROM oso.int_opendevdata__repositories_with_repo_id
+    WHERE repo_created_at IS NOT NULL
+    GROUP BY 1
+    ORDER BY 1
+    """
 
+    _df = mo.sql(_query, engine=pyoso_db_conn, output=False)
+    _df['month'] = pd.to_datetime(_df['month'])
 
-@app.cell(hide_code=True)
-def _(mo, pyoso_db_conn):
-    _df_with_id = mo.sql(
-        f"""
-        SELECT
-            COUNT(*) as total_with_id,
-            COUNT(map.node_id) as decoded_count,
-            COUNT(map.node_id) * 100.0 / COUNT(*) as decoding_rate_pct
-        FROM oso.stg_opendevdata__repos repos
-        LEFT JOIN oso.int_github__node_id_map map
-        ON repos.github_graphql_id = map.node_id
-        WHERE repos.github_graphql_id IS NOT NULL AND repos.github_graphql_id != ''
-        """,
-        engine=pyoso_db_conn
-    )
-    return
+    _total = int(_df['count'].sum())
+    _peak_month = _df.loc[_df['count'].idxmax(), 'month'].strftime('%b %Y') if len(_df) > 0 else "N/A"
+    _peak_count = int(_df['count'].max()) if len(_df) > 0 else 0
 
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md("""
-    ### 2. Repositories without GraphQL ID (cannot be decoded)
-    """)
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo, pyoso_db_conn):
-    _df_without_id = mo.sql(
-        f"""
-        SELECT
-            COUNT(*) as total_with_id,
-            COUNT(map.node_id) as decoded_count,
-            COUNT(map.node_id) * 100.0 / COUNT(*) as decoding_rate_pct
-        FROM oso.stg_opendevdata__repos repos
-        LEFT JOIN oso.int_github__node_id_map map
-        ON repos.github_graphql_id = map.node_id
-        WHERE repos.github_graphql_id IS NULL OR repos.github_graphql_id = ''
-        """,
-        engine=pyoso_db_conn
-    )
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md("""
-    ## Repository Creation Trend
-    """)
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo, px, pyoso_db_conn):
-    _PLOTLY_LAYOUT = {
-        'margin': dict(l=10, r=10, t=60, b=20),
-        'xaxis': dict(showgrid=True, gridcolor='#f0f0f0'),
-        'yaxis': dict(showgrid=False, categoryorder='total ascending'),
-        'template': 'plotly_white',
-        'height': 300
-    }
-
-    _df_age = mo.sql(
-        f"""
-        SELECT
-            DATE_TRUNC('month', repo_created_at) as month,
-            COUNT(*) as count
-        FROM oso.int_opendevdata__repositories_with_repo_id
-        WHERE repo_created_at IS NOT NULL
-        GROUP BY 1
-        ORDER BY 1
-        """,
-        engine=pyoso_db_conn,
-        output=False
-    )
-
-    _fig_age = px.bar(
-        _df_age,
+    _fig = px.area(
+        _df,
         x='month',
         y='count',
-        title='Repository Creation Trend'
+        color_discrete_sequence=['#F58518']
     )
-    _fig_age.update_layout(_PLOTLY_LAYOUT)
-    return
 
+    _fig.update_traces(
+        line=dict(width=2),
+        fillcolor='rgba(245, 133, 24, 0.2)',
+        hovertemplate='<b>%{x|%b %Y}</b><br>Repos Created: %{y:,.0f}<extra></extra>'
+    )
 
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md("""
-    ## Edge Cases
-    - **Duplication**: Occurs when multiple OpenDevData records point to the same OSO `repo_id`. This often happens due to repository renames or forks that are tracked as distinct entries in the source data.
-    - **Unmatched**: Records where `repo_id` is `NULL` indicate repositories that are present in the source dataset but haven't been successfully mapped to a project in the OSO directory.
-    """)
+    _fig.update_layout(
+        template='plotly_white',
+        margin=dict(t=20, l=0, r=0, b=0),
+        height=400,
+        hovermode='x unified',
+        xaxis=dict(
+            title='',
+            showgrid=False,
+            linecolor="#000",
+            linewidth=1,
+            tickformat="%Y"
+        ),
+        yaxis=dict(
+            title='Repos Created per Month',
+            showgrid=True,
+            gridcolor="#E5E5E5",
+            linecolor="#000",
+            linewidth=1
+        )
+    )
+
+    mo.vstack([
+        mo.hstack([
+            mo.stat(label="Total with Created Date", value=f"{_total:,}", bordered=True, caption="Repos with repo_created_at"),
+            mo.stat(label="Peak Month", value=_peak_month, bordered=True, caption=f"{_peak_count:,} repos created"),
+        ], widths="equal", gap=1),
+        mo.ui.plotly(_fig, config={'displayModeBar': False}),
+    ])
     return
 
 
@@ -228,26 +272,43 @@ def _(mo):
 def _(mo):
     mo.md("""
     ## Sample Queries
+
+    ### 1. Cross-Source Join (Popular Repos with GitHub IDs)
+
+    Find popular repositories that have been successfully mapped to a GitHub `repo_id`.
+
+    ```sql
+    SELECT
+      repo_name,
+      repo_id,
+      opendevdata_id,
+      repo_id_source,
+      star_count
+    FROM oso.int_opendevdata__repositories_with_repo_id
+    WHERE repo_id IS NOT NULL
+      AND star_count > 1000
+    ORDER BY star_count DESC
+    LIMIT 20
+    ```
     """)
     return
 
 
 @app.cell(hide_code=True)
-def _(mo):
-    mo.md("""
-    ### 1. Cross-Source Join (bridge ODD and GHArchive)
-    """)
-    return
-
-
-@app.cell
 def _(mo, pyoso_db_conn):
     _df = mo.sql(
         f"""
-        SELECT r.repo_name, r.repo_id, r.opendevdata_id, r.star_count
-        FROM oso.int_opendevdata__repositories_with_repo_id r
-        WHERE r.repo_id IS NOT NULL AND r.star_count > 1000
-        LIMIT 5
+        SELECT
+          repo_name,
+          repo_id,
+          opendevdata_id,
+          repo_id_source,
+          star_count
+        FROM oso.int_opendevdata__repositories_with_repo_id
+        WHERE repo_id IS NOT NULL
+          AND star_count > 1000
+        ORDER BY star_count DESC
+        LIMIT 20
         """,
         engine=pyoso_db_conn
     )
@@ -257,18 +318,34 @@ def _(mo, pyoso_db_conn):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md("""
-    ### 2. Finding by Name/ID
+    ### 2. ID Source Coverage Breakdown
+
+    See how repositories were matched across the 3-tier priority system.
+
+    ```sql
+    SELECT
+      repo_id_source,
+      COUNT(*) AS count,
+      COUNT(*) * 100.0 / SUM(COUNT(*)) OVER () AS percentage
+    FROM oso.int_opendevdata__repositories_with_repo_id
+    GROUP BY repo_id_source
+    ORDER BY count DESC
+    ```
     """)
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(mo, pyoso_db_conn):
     _df = mo.sql(
         f"""
-        -- tried a few way to query based on name/repo_id but all cannot finish within a reasonable time.
-        -- i want to include this section but if too slow, better not to include or else i afraid it will crash the system.
-        -- so leave it empty as a TODO at the moment.
+        SELECT
+          repo_id_source,
+          COUNT(*) AS count,
+          COUNT(*) * 100.0 / SUM(COUNT(*)) OVER () AS percentage
+        FROM oso.int_opendevdata__repositories_with_repo_id
+        GROUP BY repo_id_source
+        ORDER BY count DESC
         """,
         engine=pyoso_db_conn
     )
@@ -278,22 +355,122 @@ def _(mo, pyoso_db_conn):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md("""
-    ### 3. Identifying Unmatched
+    ### 3. Unmatched Repositories
+
+    Find ODD repositories that could not be mapped to a GitHub integer ID.
+
+    ```sql
+    SELECT
+      opendevdata_id,
+      repo_name,
+      github_graphql_id,
+      repo_id_source
+    FROM oso.int_opendevdata__repositories_with_repo_id
+    WHERE repo_id IS NULL
+    LIMIT 10
+    ```
     """)
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(mo, pyoso_db_conn):
-    _df_unmatched = mo.sql(
+    _df = mo.sql(
         f"""
-        SELECT *
+        SELECT
+          opendevdata_id,
+          repo_name,
+          github_graphql_id,
+          repo_id_source
         FROM oso.int_opendevdata__repositories_with_repo_id
         WHERE repo_id IS NULL
         LIMIT 10
         """,
         engine=pyoso_db_conn
     )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ### 4. Bridge to Ecosystem Data
+
+    Join repositories to ecosystems for ecosystem-level analysis.
+
+    ```sql
+    SELECT
+      e.name AS ecosystem_name,
+      COUNT(DISTINCT r.repo_id) AS matched_repos,
+      COUNT(DISTINCT r.opendevdata_id) AS total_odd_repos
+    FROM oso.stg_opendevdata__ecosystems_repos_recursive err
+    JOIN oso.stg_opendevdata__ecosystems e ON err.ecosystem_id = e.id
+    JOIN oso.int_opendevdata__repositories_with_repo_id r
+      ON err.repo_id = r.opendevdata_id
+    GROUP BY e.name
+    ORDER BY matched_repos DESC
+    LIMIT 15
+    ```
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo, pyoso_db_conn):
+    _df = mo.sql(
+        f"""
+        SELECT
+          e.name AS ecosystem_name,
+          COUNT(DISTINCT r.repo_id) AS matched_repos,
+          COUNT(DISTINCT r.opendevdata_id) AS total_odd_repos
+        FROM oso.stg_opendevdata__ecosystems_repos_recursive err
+        JOIN oso.stg_opendevdata__ecosystems e ON err.ecosystem_id = e.id
+        JOIN oso.int_opendevdata__repositories_with_repo_id r
+          ON err.repo_id = r.opendevdata_id
+        GROUP BY e.name
+        ORDER BY matched_repos DESC
+        LIMIT 15
+        """,
+        engine=pyoso_db_conn
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ### Edge Cases & Unmatched Repos
+
+    **Duplication**: Multiple ODD records may point to the same `repo_id` due to repository renames or forks tracked as distinct entries in the source data.
+
+    **Unmatched repos** (`repo_id IS NULL`): ~1,000 out of 2.4M repos (0.04%). All unmatched repos share two traits:
+
+    1. **No `github_graphql_id`** — ODD never captured a GraphQL Node ID, so the node_id decoder couldn't run
+    2. **Deleted on GitHub** — every sampled repo returns HTTP 404, not archived or redirected
+
+    | Category | Count | Description |
+    |:---------|------:|:------------|
+    | Hyphenated names, no metadata | ~430 | ODD-internal naming (e.g., `nomadic-labs-grafazos` instead of `nomadic-labs/grafazos`), never resolved to a GitHub URL |
+    | `owner/repo`, 0 stars | ~270 | Valid GitHub format but deleted repos with zero community activity |
+    | ODD blacklisted | ~210 | Explicitly flagged by ODD as forks, spam, or irrelevant — also all 404 |
+    | `owner/repo`, no metadata | ~55 | Valid format but no stars/dates — deleted before metadata capture |
+    | `owner/repo`, has stars | ~50 | Had some stars (up to ~36) but deleted due to org renames or project shutdowns |
+
+    **Bottom line**: The unmatched set is negligible and entirely composed of dead repos. No action needed — these are expected gaps from historical ODD tracking of repositories that have since been removed from GitHub.
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Related Models
+
+    - **Ecosystems**: [ecosystems.py](./ecosystems.py) — Ecosystem definitions and hierarchy
+    - **Commits**: [commits.py](./commits.py) — Unified commit data across ODD and GHA
+    - **Developers**: [developers.py](./developers.py) — Unified developer identities across ODD and GHA
+    - **Events**: [events.py](./events.py) — GitHub Archive event data and activity metrics
+    """)
     return
 
 
@@ -310,19 +487,20 @@ def _(mo, pyoso_db_conn):
 
     def generate_sql_snippet(model_name, df_results, limit=5):
         column_names = df_results.columns.tolist()
-        # Format columns with one per line, indented
         columns_formatted = ',\n  '.join(column_names)
         sql_snippet = f"""```sql
-    SELECT
-      {columns_formatted}
-    FROM {model_name}
-    LIMIT {limit}
-    ```
-    """
+SELECT
+  {columns_formatted}
+FROM {model_name}
+LIMIT {limit}
+```
+"""
         return mo.md(sql_snippet)
 
     def render_table_preview(model_name):
         df = get_model_preview(model_name)
+        if df.empty:
+            return mo.md(f"**{model_name}**\n\nUnable to retrieve preview (table might be empty or inaccessible).")
         sql_snippet = generate_sql_snippet(model_name, df, limit=5)
         fmt = {c: '{:.0f}' for c in df.columns if df[c].dtype == 'int64' and ('_id' in c or c == 'id')}
         table = mo.ui.table(df, format_mapping=fmt, show_column_summaries=False, show_data_types=False)
@@ -331,30 +509,17 @@ def _(mo, pyoso_db_conn):
         title = f"{model_name} | {row_count:,.0f} rows, {col_count} cols"
         return mo.accordion({title: mo.vstack([sql_snippet, table])})
 
-    def get_format_mapping(df, include_percentage=False):
-        """Generate format mapping for table display"""
-        fmt = {}
-        for c in df.columns:
-            if df[c].dtype in ['int64', 'float64']:
-                if include_percentage and 'percentage' in c.lower():
-                    fmt[c] = '{:.2f}'
-                elif '_id' in c or c == 'id' or 'count' in c.lower():
-                    fmt[c] = '{:.0f}'
-                elif include_percentage:
-                    fmt[c] = '{:.0f}'
-        return fmt
-    return
+    return (render_table_preview,)
 
 
-@app.cell
+@app.cell(hide_code=True)
 def imports():
-
     import pandas as pd
     import plotly.express as px
-    return (px,)
+    return (pd, px)
 
 
-@app.cell
+@app.cell(hide_code=True)
 def setup_pyoso():
     # This code sets up pyoso to be used as a database provider for this notebook
     # This code is autogenerated. Modification could lead to unexpected results :)
