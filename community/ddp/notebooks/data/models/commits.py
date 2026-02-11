@@ -7,7 +7,18 @@ app = marimo.App(width="full")
 @app.cell(hide_code=True)
 def _(mo):
     mo.md("""
-    # Unified Commits Model
+    # Commits
+
+    We've created a **unified commits model** that combines Open Dev Data's high-fidelity commit tracking with GitHub Archive's broad coverage, matched on commit SHA and repository.
+
+    Preview:
+    ```sql
+    SELECT * FROM oso.int_ddp__commits_unified LIMIT 10
+    ```
+    Or:
+    ```sql
+    SELECT * FROM oso.int_ddp__commits_deduped LIMIT 10
+    ```
     """)
     return
 
@@ -178,6 +189,11 @@ def _(mo, px, pyoso_db_conn):
     """
     _df = mo.sql(_query, engine=pyoso_db_conn)
 
+    _total = int(_df['commit_count'].sum())
+    _both = int(_df.loc[_df['commit_source'] == 'Both ODD + GHA', 'commit_count'].sum())
+    _odd_only = int(_df.loc[_df['commit_source'] == 'ODD Only', 'commit_count'].sum())
+    _gha_only = int(_df.loc[_df['commit_source'] == 'GHA Only', 'commit_count'].sum())
+
     _fig = px.pie(
         _df,
         names='commit_source',
@@ -189,7 +205,16 @@ def _(mo, px, pyoso_db_conn):
         textinfo='label+value+percent',
         texttemplate='%{label}<br>%{value}<br>%{percent:.2%}'
     )
-    mo.ui.plotly(_fig)
+
+    mo.vstack([
+        mo.hstack([
+            mo.stat(label="Total Commits", value=f"{_total:,}", bordered=True, caption="Since 2025-01-01"),
+            mo.stat(label="Both ODD + GHA", value=f"{_both:,}", bordered=True, caption="Cross-source overlap"),
+            mo.stat(label="ODD Only", value=f"{_odd_only:,}", bordered=True, caption="Open Dev Data exclusive"),
+            mo.stat(label="GHA Only", value=f"{_gha_only:,}", bordered=True, caption="GitHub Archive exclusive"),
+        ], widths="equal", gap=1),
+        mo.ui.plotly(_fig, config={'displayModeBar': False}),
+    ])
     return
 
 
@@ -201,6 +226,18 @@ def _(mo):
     ### 1. Commits by Repository (Unified Model)
 
     Get commit counts by repository using the unified commits model.
+
+    ```sql
+    SELECT
+        repository_name,
+        source,
+        COUNT(*) AS commit_count
+    FROM oso.int_ddp__commits_unified
+    WHERE created_at >= current_date - interval '30' day
+    GROUP BY repository_name, source
+    ORDER BY commit_count DESC
+    LIMIT 15
+    ```
     """)
     return
 
@@ -230,6 +267,18 @@ def _(mo):
     ### 2. Cross-Source Comparison
 
     Compare commit counts from ODD vs GHA for recent activity.
+
+    ```sql
+    SELECT
+        DATE(created_at) AS commit_date,
+        SUM(CASE WHEN source = 'opendevdata' THEN 1 ELSE 0 END) AS odd_commits,
+        SUM(CASE WHEN source = 'gharchive' THEN 1 ELSE 0 END) AS gha_commits,
+        COUNT(*) AS total_commits
+    FROM oso.int_ddp__commits_unified
+    WHERE created_at >= current_date - interval '14' day
+    GROUP BY DATE(created_at)
+    ORDER BY commit_date DESC
+    ```
     """)
     return
 
@@ -259,6 +308,21 @@ def _(mo):
     ### 3. Recent Commits with Author Info
 
     Get recent commits enriched with author information from both sources.
+
+    ```sql
+    SELECT
+        created_at,
+        repository_name,
+        sha,
+        author_name,
+        canonical_developer_id,
+        actor_id,
+        source
+    FROM oso.int_ddp__commits_unified
+    WHERE created_at >= current_date - interval '7' day
+    ORDER BY created_at DESC
+    LIMIT 10
+    ```
     """)
     return
 
@@ -299,32 +363,30 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo, pyoso_db_conn):
     def get_model_preview(model_name, limit=5):
-        return mo.sql(f"SELECT * FROM {model_name} LIMIT {limit}", 
+        return mo.sql(f"SELECT * FROM {model_name} LIMIT {limit}",
                       engine=pyoso_db_conn, output=False)
 
     def get_row_count(model_name):
-        result = mo.sql(f"SHOW STATS FOR {model_name}", 
+        result = mo.sql(f"SHOW STATS FOR {model_name}",
                         engine=pyoso_db_conn, output=False)
-        return result['row_count'].sum()    
+        return result['row_count'].sum()
 
     def generate_sql_snippet(model_name, df_results, limit=5):
         column_names = df_results.columns.tolist()
-        # Format columns with one per line, indented
         columns_formatted = ',\n  '.join(column_names)
         sql_snippet = f"""```sql
-    SELECT 
-      {columns_formatted}
-    FROM {model_name}
-    LIMIT {limit}
-    ```
-    """
+SELECT
+  {columns_formatted}
+FROM {model_name}
+LIMIT {limit}
+```
+"""
         return mo.md(sql_snippet)
 
     def render_table_preview(model_name):
         df = get_model_preview(model_name)
         if df.empty:
             return mo.md(f"**{model_name}**\n\nUnable to retrieve preview (table might be empty or inaccessible).")
-
         sql_snippet = generate_sql_snippet(model_name, df, limit=5)
         fmt = {c: '{:.0f}' for c in df.columns if df[c].dtype == 'int64' and ('_id' in c or c == 'id')}
         table = mo.ui.table(df, format_mapping=fmt, show_column_summaries=False, show_data_types=False)
@@ -332,19 +394,6 @@ def _(mo, pyoso_db_conn):
         col_count = len(df.columns)
         title = f"{model_name} | {row_count:,.0f} rows, {col_count} cols"
         return mo.accordion({title: mo.vstack([sql_snippet, table])})
-
-    def get_format_mapping(df, include_percentage=False):
-        """Generate format mapping for table display"""
-        fmt = {}
-        for c in df.columns:
-            if df[c].dtype in ['int64', 'float64']:
-                if include_percentage and 'percentage' in c.lower():
-                    fmt[c] = '{:.2f}'
-                elif '_id' in c or c == 'id' or 'count' in c.lower():
-                    fmt[c] = '{:.0f}'
-                elif include_percentage:
-                    fmt[c] = '{:.0f}'
-        return fmt
 
     return (render_table_preview,)
 
