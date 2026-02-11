@@ -17,20 +17,19 @@ def setup_pyoso():
 @app.cell(hide_code=True)
 def _(mo, pyoso_db_conn):
     def get_model_preview(model_name, limit=5):
-        return mo.sql(f"SELECT * FROM {model_name} LIMIT {limit}", 
+        return mo.sql(f"SELECT * FROM {model_name} LIMIT {limit}",
                       engine=pyoso_db_conn, output=False)
 
     def get_row_count(model_name):
-        result = mo.sql(f"SHOW STATS FOR {model_name}", 
+        result = mo.sql(f"SHOW STATS FOR {model_name}",
                         engine=pyoso_db_conn, output=False)
-        return result['row_count'].sum()    
-    
+        return result['row_count'].sum()
+
     def generate_sql_snippet(model_name, df_results, limit=5):
         column_names = df_results.columns.tolist()
-        # Format columns with one per line, indented
         columns_formatted = ',\n  '.join(column_names)
         sql_snippet = f"""```sql
-SELECT 
+SELECT
   {columns_formatted}
 FROM {model_name}
 LIMIT {limit}
@@ -42,7 +41,6 @@ LIMIT {limit}
         df = get_model_preview(model_name)
         if df.empty:
             return mo.md(f"**{model_name}**\n\nUnable to retrieve preview (table might be empty or inaccessible).")
-
         sql_snippet = generate_sql_snippet(model_name, df, limit=5)
         fmt = {c: '{:.0f}' for c in df.columns if df[c].dtype == 'int64' and ('_id' in c or c == 'id')}
         table = mo.ui.table(df, format_mapping=fmt, show_column_summaries=False, show_data_types=False)
@@ -50,33 +48,24 @@ LIMIT {limit}
         col_count = len(df.columns)
         title = f"{model_name} | {row_count:,.0f} rows, {col_count} cols"
         return mo.accordion({title: mo.vstack([sql_snippet, table])})
-    
+
     import pandas as pd
-    
-    def get_format_mapping(df, include_percentage=False):
-        """Generate format mapping for table display"""
-        fmt = {}
-        for c in df.columns:
-            if df[c].dtype in ['int64', 'float64']:
-                if include_percentage and 'percentage' in c.lower():
-                    fmt[c] = '{:.2f}'
-                elif '_id' in c or c == 'id' or 'count' in c.lower():
-                    fmt[c] = '{:.0f}'
-                elif include_percentage:
-                    fmt[c] = '{:.0f}'
-        return fmt
-    
-    return (render_table_preview, pd, get_format_mapping)
+
+    return (render_table_preview, pd)
 
 
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(
         """
-        # GitHub Events Model
+        # Events
 
-        This notebook documents GitHub event data in OSO, explaining where it comes from, how it's 
-        transformed, and how to use it for developer activity analysis.
+        We've standardized **GitHub Archive events** into a curated set of models for developer activity analysis, from raw events to daily aggregations.
+
+        Preview:
+        ```sql
+        SELECT * FROM oso.int_gharchive__github_events LIMIT 10
+        ```
         """
     )
     return
@@ -291,6 +280,24 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(render_table_preview):
     render_table_preview("oso.int_gharchive__developer_activities")
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ## Best Practices
+
+        | Goal | Recommended Model | Why? |
+        |:------|:-------------------|:------|
+        | **All event types** | `int_gharchive__github_events` | Standardized, full coverage of all GitHub event types |
+        | **Developer activity analysis** | `int_ddp_github_events` | Curated subset of 7 event types most relevant to developer metrics |
+        | **Time-series dashboards** | `int_ddp_github_events_daily` | Pre-aggregated daily counts, fast for trend queries |
+        | **Monthly Active Developers** | `int_gharchive__developer_activities` | Pre-computed rollup (PushEvent + PullRequestEvent) |
+        | **Custom activity definitions** | `int_gharchive__github_events` | Query raw events with your own event type filter |
+        """
+    )
     return
 
 
@@ -783,6 +790,20 @@ def _(mo):
           )
         GROUP BY 1, 2, 3
         ```
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ## Related Models
+
+        - **Developers**: developers — Unified developer identities across ODD and GHA
+        - **Commits**: commits — Unified commit data with ODD enrichment
+        - **Repositories**: repositories — Repository metadata with canonical IDs
         """
     )
     return
