@@ -19,16 +19,18 @@ def _(mo, pyoso_db_conn):
         column_names = df_results.columns.tolist()
         columns_formatted = ',\n  '.join(column_names)
         sql_snippet = f"""```sql
-    SELECT
-      {columns_formatted}
-    FROM {model_name}
-    LIMIT {limit}
-    ```
-    """
+SELECT
+  {columns_formatted}
+FROM {model_name}
+LIMIT {limit}
+```
+"""
         return mo.md(sql_snippet)
 
     def render_table_preview(model_name):
         df = get_model_preview(model_name)
+        if df.empty:
+            return mo.md(f"**{model_name}**\n\nUnable to retrieve preview (table might be empty or inaccessible).")
         sql_snippet = generate_sql_snippet(model_name, df, limit=5)
         fmt = {c: '{:.0f}' for c in df.columns if df[c].dtype == 'int64' and ('_id' in c or c == 'id')}
         table = mo.ui.table(df, format_mapping=fmt, show_column_summaries=False, show_data_types=False)
@@ -43,7 +45,22 @@ def _(mo, pyoso_db_conn):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md("""
-    # Unified Developer Model
+    # Developers
+
+    We've created a **unified developer model** that bridges Open Dev Data's identity resolution with GitHub Archive's activity tracking, centered on a shared `user_id`.
+
+    Preview:
+    ```sql
+    SELECT * FROM oso.int_ddp__developers LIMIT 10
+    ```
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Overview
 
     Open Dev Data (ODD) is a proprietary deduplication system that generates its own `canonical_developer_id` by clustering commits and developer profiles. It links these profiles to GitHub accounts via `primary_github_id` (GraphQL Node ID).
 
@@ -64,6 +81,16 @@ def _(mo):
     *   **Historical Limitations (Pre-Oct 2025)**: Prior to 2025-10-07, commit payloads in GHA only contained `author_email` and `author_name`, but lacked the unique GitHub `user_id`, making reliable cross-event attribution difficult.
     *   **Data Loss (Post-Oct 2025)**: Since 2025-10-07, GitHub Archive has stopped providing commit payload data entirely. This makes author attribution via GHA impossible for all new data, reinforcing the need for Open Dev Data's direct commit tracking.
     *   **Coverage Limitations**: Open Dev Data tracks a curated set of repositories (high fidelity but selective), whereas GitHub Archive captures all public activity (universal but lower fidelity). This means a developer may be missing from ODD if they contribute to repositories outside the tracked set.
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## The Unified Solution
+
+    The `int_ddp__developers` model unifies these two worlds by centering on the **GitHub Database ID** (`user_id`).
 
     ### Identity Bridging Architecture
 
@@ -72,16 +99,22 @@ def _(mo):
     2.  **Commit-Level Join (SHA-based)**: Matching ODD commits to GHA events via commit SHAs where possible.
     3.  **Developer Unification (Union + Dedupe)**: Merging the sets and deduplicating by `user_id`.
 
-    ### The Unified Solution
-
-    The `int_ddp__developers` model unifies these two worlds by centering on the **GitHub Database ID** (`user_id`).
-
-    The `int_ddp__developers` model works by decoding the `github_graphql_id` (Global Node ID) from OpenDevData (Authors) to extract the underlying GitHub Database ID (`user_id`).
-
     It works by:
     1.  Taking all **Authors** from OpenDevData who have a known GitHub account (resolved by decoding `github_graphql_id` -> `user_id` via `int_github__node_id_map`).
     2.  Unioning them with all **Actors** from GitHub Archive (where `actor_id` is already the `user_id`).
     3.  Deduplicating to create a master list of users keyed by `user_id`.
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.mermaid("""
+    graph TD
+        A[stg_opendevdata__developers<br/>ODD authors with GraphQL IDs] --> B[int_github__node_id_map<br/>Decode GraphQL → Database ID]
+        B --> D{Union + Deduplicate by user_id}
+        C[int_gharchive__github_events<br/>GHA actors with Database IDs] --> D
+        D --> E[int_ddp__developers<br/>Unified developer list]
     """)
     return
 
@@ -118,7 +151,7 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo, px, pyoso_db_conn):
-    query = """
+    _query = """
     WITH odd_authors AS (
       SELECT DISTINCT author_id AS user_id
       FROM oso.int_ddp__commits_unified
@@ -144,20 +177,34 @@ def _(mo, px, pyoso_db_conn):
     FROM categories
     GROUP BY developer_type
     """
-    df = mo.sql(query, engine=pyoso_db_conn)
+    _df = mo.sql(_query, engine=pyoso_db_conn)
 
-    fig = px.pie(
-        df,
+    _total = int(_df['user_count'].sum())
+    _both = int(_df.loc[_df['developer_type'] == 'Both ODD + GHA', 'user_count'].sum())
+    _odd_only = int(_df.loc[_df['developer_type'] == 'ODD Only', 'user_count'].sum())
+    _gha_only = int(_df.loc[_df['developer_type'] == 'GHA Only', 'user_count'].sum())
+
+    _fig = px.pie(
+        _df,
         names='developer_type',
         values='user_count',
         title='Developer Identity Source Distribution',
         hole=0.4
     )
-    fig.update_traces(
+    _fig.update_traces(
         textinfo='label+value+percent',
         texttemplate='%{label}<br>%{value}<br>%{percent:.2%}'
     )
-    mo.ui.plotly(fig)
+
+    mo.vstack([
+        mo.hstack([
+            mo.stat(label="Total Developers", value=f"{_total:,}", bordered=True, caption="All unique user_ids"),
+            mo.stat(label="Both Sources", value=f"{_both:,}", bordered=True, caption="ODD + GHA overlap"),
+            mo.stat(label="ODD Only", value=f"{_odd_only:,}", bordered=True, caption="Open Dev Data exclusive"),
+            mo.stat(label="GHA Only", value=f"{_gha_only:,}", bordered=True, caption="GitHub Archive exclusive"),
+        ], widths="equal", gap=1),
+        mo.ui.plotly(_fig, config={'displayModeBar': False}),
+    ])
     return
 
 
@@ -169,6 +216,36 @@ def _(mo):
     ### 1. Full Activity Profile
 
     Get a developer's complete history: commits (from ODD) and issues (from GitHub Archive).
+
+    ```sql
+    WITH recent_commits AS (
+        SELECT author_id, COUNT(*) as commits
+        FROM oso.int_ddp__commits_deduped
+        WHERE created_at >= current_date - interval '180' day
+        GROUP BY 1
+    ),
+    recent_activity AS (
+        SELECT
+            actor_id,
+            SUM(amount) FILTER (WHERE event_type = 'ISSUE_ACTIVITY') as issue_events,
+            SUM(amount) FILTER (WHERE event_type = 'STARRED') as star_events
+        FROM oso.int_ddp_github_events_daily
+        WHERE bucket_day >= current_date - interval '180' day
+        GROUP BY 1
+    )
+    SELECT
+        d.user_id,
+        d.canonical_developer_id,
+        COALESCE(c.commits, 0) as total_commits,
+        COALESCE(a.issue_events, 0) as total_issues,
+        COALESCE(a.star_events, 0) as total_starred
+    FROM oso.int_ddp__developers d
+    LEFT JOIN recent_commits c ON d.user_id = c.author_id
+    LEFT JOIN recent_activity a ON d.user_id = a.actor_id
+    WHERE d.canonical_developer_id IS NOT NULL
+    ORDER BY total_commits DESC
+    LIMIT 10
+    ```
     """)
     return
 
@@ -214,13 +291,28 @@ def _(mo, pyoso_db_conn):
 def _(mo):
     mo.md("""
     ### 2. Commits by Canonical Developer (ODD)
+
+    ```sql
+    SELECT
+        created_at,
+        repository_name,
+        sha,
+        author_name
+    FROM oso.int_ddp__commits_deduped
+    WHERE canonical_developer_id IN (
+        SELECT canonical_developer_id
+        FROM oso.int_ddp__developers
+        LIMIT 1
+    )
+    ORDER BY created_at DESC
+    LIMIT 10
+    ```
     """)
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(mo, pyoso_db_conn):
-    # Find all commits by a specific canonical developer (OpenDevData)
     _df = mo.sql(
         f"""
         SELECT
@@ -246,13 +338,31 @@ def _(mo, pyoso_db_conn):
 def _(mo):
     mo.md("""
     ### 3. Events by Actor (GHA)
+
+    ```sql
+    WITH active_actor AS (
+        SELECT e.actor_id
+        FROM oso.int_ddp_github_events_daily e
+        JOIN oso.int_ddp__developers d ON e.actor_id = d.user_id
+        WHERE e.bucket_day >= current_date - interval '30' day
+        LIMIT 1
+    )
+    SELECT
+        event_time as created_at,
+        event_type as type,
+        repo_name
+    FROM oso.int_ddp_github_events
+    WHERE actor_id IN (SELECT actor_id FROM active_actor)
+    AND event_time >= current_date - interval '30' day
+    ORDER BY event_time DESC
+    LIMIT 10
+    ```
     """)
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(mo, pyoso_db_conn):
-    # Find all events by a specific actor (GitHub Archive)
     _df = mo.sql(
         f"""
         WITH active_actor AS (
@@ -278,10 +388,21 @@ def _(mo, pyoso_db_conn):
 
 
 @app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Related Models
+
+    - **Commits**: commits — Unified commit data across ODD and GHA
+    - **Events**: events — GitHub Archive event data and activity metrics
+    - **Repositories**: repositories — Repository metadata with canonical IDs
+    """)
+    return
+
+
+@app.cell(hide_code=True)
 def imports():
     import plotly.express as px
-    import pandas as pd
-    return pd, px
+    return (px,)
 
 
 @app.cell(hide_code=True)
