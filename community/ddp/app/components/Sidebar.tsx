@@ -31,10 +31,10 @@ const navItems: NavItem[] = [
         label: 'Models',
         href: '/data/models',
         children: [
+          { label: 'Ecosystems', href: '/data/models/ecosystems' },
+          { label: 'Repositories', href: '/data/models/repositories' },
           { label: 'Developers', href: '/data/models/developers' },
           { label: 'Commits', href: '/data/models/commits' },
-          { label: 'Repositories', href: '/data/models/repositories' },
-          { label: 'Ecosystems', href: '/data/models/ecosystems' },
           { label: 'Events', href: '/data/models/events' },
           { label: 'Timeseries Metrics', href: '/data/models/timeseries-metrics' },
         ],
