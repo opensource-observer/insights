@@ -53,14 +53,14 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(client, cohort_years, ecosystem_selector, mo, px):
+def _(mo, pyoso_db_conn, cohort_years, ecosystem_selector, px):
     cohort_list = ", ".join([f"'{y}'" for y in cohort_years.value])
 
     sql_retention_curves = f"""
     WITH first_activity AS (
         SELECT
             rda.canonical_developer_id,
-            EXTRACT(YEAR FROM MIN(rda.day))::INT AS cohort_year,
+            YEAR(MIN(rda.day)) AS cohort_year,
             MIN(rda.day) AS first_active_date
         FROM stg_opendevdata__repo_developer_28d_activities AS rda
         JOIN stg_opendevdata__ecosystems_repos_recursive AS err
@@ -76,7 +76,7 @@ def _(client, cohort_years, ecosystem_selector, mo, px):
             cohort_year,
             COUNT(*) AS cohort_size
         FROM first_activity
-        WHERE cohort_year::TEXT IN ({cohort_list})
+        WHERE CAST(cohort_year AS VARCHAR) IN ({cohort_list})
         GROUP BY 1
     ),
 
@@ -84,7 +84,7 @@ def _(client, cohort_years, ecosystem_selector, mo, px):
         SELECT DISTINCT
             fa.canonical_developer_id,
             fa.cohort_year,
-            EXTRACT(YEAR FROM rda.day)::INT AS activity_year
+            YEAR(rda.day) AS activity_year
         FROM first_activity fa
         JOIN stg_opendevdata__repo_developer_28d_activities rda
             ON fa.canonical_developer_id = rda.canonical_developer_id
@@ -93,7 +93,7 @@ def _(client, cohort_years, ecosystem_selector, mo, px):
         JOIN stg_opendevdata__ecosystems e
             ON err.ecosystem_id = e.id
         WHERE e.name = '{ecosystem_selector.value}'
-            AND fa.cohort_year::TEXT IN ({cohort_list})
+            AND CAST(fa.cohort_year AS VARCHAR) IN ({cohort_list})
     ),
 
     retention_data AS (
@@ -119,7 +119,7 @@ def _(client, cohort_years, ecosystem_selector, mo, px):
     ORDER BY rd.cohort_year, rd.years_since_join
     """
 
-    df_curves = client.to_pandas(sql_retention_curves)
+    df_curves = mo.sql(sql_retention_curves, engine=pyoso_db_conn, output=False)
     df_curves['cohort_label'] = df_curves['cohort_year'].astype(str) + ' Cohort'
 
     _fig = px.line(
@@ -161,7 +161,7 @@ def _(client, cohort_years, ecosystem_selector, mo, px):
         """),
         mo.ui.plotly(_fig, config={'displayModeBar': False})
     ])
-    return cohort_list, df_curves, sql_retention_curves
+    return (df_curves,)
 
 
 @app.cell(hide_code=True)
@@ -262,13 +262,13 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(client, mo, px):
+def _(mo, pyoso_db_conn, px):
     sql_cross_ecosystem = """
     WITH first_activity AS (
         SELECT
             rda.canonical_developer_id,
             e.name AS ecosystem,
-            EXTRACT(YEAR FROM MIN(rda.day))::INT AS cohort_year,
+            YEAR(MIN(rda.day)) AS cohort_year,
             MIN(rda.day) AS first_active_date
         FROM stg_opendevdata__repo_developer_28d_activities AS rda
         JOIN stg_opendevdata__ecosystems_repos_recursive AS err
@@ -294,7 +294,7 @@ def _(client, mo, px):
             fa.canonical_developer_id,
             fa.ecosystem,
             fa.cohort_year,
-            EXTRACT(YEAR FROM rda.day)::INT AS activity_year
+            YEAR(rda.day) AS activity_year
         FROM first_activity fa
         JOIN stg_opendevdata__repo_developer_28d_activities rda
             ON fa.canonical_developer_id = rda.canonical_developer_id
@@ -331,7 +331,7 @@ def _(client, mo, px):
     ORDER BY rd.ecosystem, rd.years_since_join
     """
 
-    df_cross = client.to_pandas(sql_cross_ecosystem)
+    df_cross = mo.sql(sql_cross_ecosystem, engine=pyoso_db_conn, output=False)
 
     _fig = px.line(
         df_cross,
@@ -367,7 +367,7 @@ def _(client, mo, px):
         """),
         mo.ui.plotly(_fig, config={'displayModeBar': False})
     ])
-    return df_cross, sql_cross_ecosystem
+    return (df_cross,)
 
 
 @app.cell(hide_code=True)
@@ -377,7 +377,7 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(client, ecosystem_selector, mo, px):
+def _(mo, pyoso_db_conn, ecosystem_selector, px):
     sql_monthly_cohorts = f"""
     WITH first_activity AS (
         SELECT
@@ -422,8 +422,7 @@ def _(client, ecosystem_selector, mo, px):
     retention_data AS (
         SELECT
             ma.cohort_month,
-            EXTRACT(YEAR FROM AGE(ma.activity_month, ma.cohort_month)) * 12 +
-            EXTRACT(MONTH FROM AGE(ma.activity_month, ma.cohort_month)) AS months_since_join,
+            DATE_DIFF('month', ma.cohort_month, ma.activity_month) AS months_since_join,
             COUNT(DISTINCT ma.canonical_developer_id) AS active_count
         FROM monthly_activity ma
         GROUP BY 1, 2
@@ -443,7 +442,7 @@ def _(client, ecosystem_selector, mo, px):
     ORDER BY rd.cohort_month, rd.months_since_join
     """
 
-    df_monthly = client.to_pandas(sql_monthly_cohorts)
+    df_monthly = mo.sql(sql_monthly_cohorts, engine=pyoso_db_conn, output=False)
 
     # Select a few cohorts for visualization
     selected = ['2023-01-01', '2023-07-01', '2024-01-01']
@@ -478,7 +477,7 @@ def _(client, ecosystem_selector, mo, px):
         """),
         mo.ui.plotly(_fig, config={'displayModeBar': False})
     ])
-    return df_monthly, df_monthly_filtered, selected, sql_monthly_cohorts
+    return (df_monthly,)
 
 
 @app.cell(hide_code=True)
@@ -495,7 +494,7 @@ def _(mo):
     How does open source developer retention compare to other contexts?
 
     | Timeframe | Typical SaaS | Mobile Apps | Gaming | Open Source | Strong OSS Ecosystem |
-    |-----------|--------------|-------------|--------|-------------|---------------------|
+    |:-----------|:--------------|:-------------|:--------|:-------------|:---------------------|
     | 1 month | 80% | 25% | 40% | 50% | 65-75% |
     | 3 months | 60% | 12% | 20% | 35% | 50-60% |
     | 6 months | 40% | 6% | 15% | 25% | 40-50% |
@@ -509,7 +508,7 @@ def _(mo):
     ### Factors Affecting Retention
 
     | Factor | Impact |
-    |--------|--------|
+    |:--------|:--------|
     | **Onboarding experience** | High - clear contribution paths improve retention |
     | **Community responsiveness** | High - quick PR reviews and welcoming culture |
     | **Documentation quality** | Medium - reduces friction for new contributors |
@@ -551,9 +550,9 @@ def _(mo):
 
     ### Related Resources
 
-    - [Retention Metric Definition](../data/metric-definitions/retention.py)
-    - [Developer Lifecycle](../data/metric-definitions/lifecycle.py)
-    - [Activity Metric Definition](../data/metric-definitions/activity.py)
+    - Retention Metric Definition
+    - Developer Lifecycle
+    - Activity Metric Definition
     """)
     return
 
@@ -567,12 +566,12 @@ def _():
 
 @app.cell(hide_code=True)
 def setup_pyoso():
+    # This code sets up pyoso to be used as a database provider for this notebook
+    # This code is autogenerated. Modification could lead to unexpected results :)
     import pyoso
     import marimo as mo
-    import os
     pyoso_db_conn = pyoso.Client().dbapi_connection()
-    client = pyoso.Client(os.getenv("OSO_API_KEY"))
-    return client, mo, os, pyoso_db_conn
+    return mo, pyoso_db_conn
 
 
 if __name__ == "__main__":

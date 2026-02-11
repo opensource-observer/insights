@@ -17,20 +17,20 @@ def setup_pyoso():
 @app.cell(hide_code=True)
 def _(mo, pyoso_db_conn):
     def get_model_preview(model_name, limit=5):
-        return mo.sql(f"SELECT * FROM {model_name} LIMIT {limit}", 
+        return mo.sql(f"SELECT * FROM {model_name} LIMIT {limit}",
                       engine=pyoso_db_conn, output=False)
 
     def get_row_count(model_name):
-        result = mo.sql(f"SHOW STATS FOR {model_name}", 
+        result = mo.sql(f"SHOW STATS FOR {model_name}",
                         engine=pyoso_db_conn, output=False)
-        return result['row_count'].sum()    
+        return result['row_count'].sum()
 
     def generate_sql_snippet(model_name, df_results, limit=5):
         column_names = df_results.columns.tolist()
         # Format columns with one per line, indented
         columns_formatted = ',\n  '.join(column_names)
         sql_snippet = f"""```sql
-SELECT 
+SELECT
   {columns_formatted}
 FROM {model_name}
 LIMIT {limit}
@@ -69,7 +69,7 @@ def _(mo):
         """
         # Open Dev Data
 
-        **Maintained by:** [Electric Capital](https://electriccapital.com)
+        **Maintained by:** [Electric Capital](https://opendevdata.org/)
 
         ## Overview
 

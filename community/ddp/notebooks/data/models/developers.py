@@ -98,7 +98,7 @@ def _(mo):
     ## Best Practices
 
     | Goal | Recommended ID | Why? |
-    |------|----------------|------|
+    |:------|:----------------|:------|
     | **Commit Analysis** | `canonical_developer_id` | Handles aliasing (e.g., "Jane Doe" using 3 different emails). Most accurate for code contributions. |
     | **Platform Activity** | `user_id` / `actor_id` | Required for linking Issues, PRs, and Comments from GitHub Archive. |
     | **Cross-Domain** | `user_id` | The only bridge between the two worlds. Use `int_ddp__developers` to map `canonical_developer_id` to `user_id`. |

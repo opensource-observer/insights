@@ -73,7 +73,7 @@ def _(mo):
     mo.md("""
     ## 3-ID System Comparison
     | ID Type | Column Name | Description |
-    |---|---|---|
+    |:---|:---|:---|
     | OpenDevData ID | `opendevdata_id` | Primary ODD source ID. |
     | GraphQL Node ID | `github_graphql_id` | Global node ID (Base64). |
     | REST ID | `repo_id` | Numeric DB ID. Primary join key. |

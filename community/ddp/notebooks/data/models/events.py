@@ -97,7 +97,7 @@ def _(mo):
         It's important to understand the difference between the two primary data sources for developer activity:
 
         | Source | Coverage | Strengths |
-        |--------|----------|-----------|
+        |:--------|:----------|:-----------|
         | **Open Dev Data** | Commits only | Identity resolution, code churn metrics (additions/deletions), Git history analysis |
         | **GitHub Archive** | All event types | Broad activity coverage (PRs, issues, reviews, stars, forks), real-time public timeline |
 
@@ -211,7 +211,7 @@ def _(mo):
         model filters `oso.int_gharchive__github_events` to the following types:
 
         | Event Type | Description |
-        |------------|-------------|
+        |:------------|:-------------|
         | `PushEvent` | Commits pushed to a repository |
         | `PullRequestEvent` | Pull request opened, closed, merged, etc. |
         | `PullRequestReviewEvent` | Pull request review submitted |
@@ -246,7 +246,7 @@ def _(mo):
         This model aggregates DDP curated events by day, with normalized event type buckets:
 
         | Normalized Type | Source Event Types |
-        |-----------------|-------------------|
+        |:-----------------|:-------------------|
         | `COMMIT_CODE` | `PushEvent` |
         | `STARRED` | `WatchEvent` |
         | `OTHER` | All other curated types |

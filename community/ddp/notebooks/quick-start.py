@@ -10,65 +10,86 @@ def _(mo):
         """
         # Quick Start Guide
 
-        Welcome to the Developer Data Portal! This guide will help you get started exploring 
-        OSO's developer and repository data.
+        This guide will help you start querying developer data from the OSO data warehouse.
+        By the end, you'll know how to browse ecosystems, query developer activity, and join
+        data across Open Dev Data, GitHub Archive, and OSS Directory.
 
-        ## Understanding the Portal Structure
+        ## Step 1: Create an Account
 
-        The portal is organized into three main sections:
+        Sign up at [oso.xyz/start](https://www.oso.xyz/start) to get access to the data warehouse.
+        Once you have an account, you can query data from hosted notebooks or run queries locally.
 
-        ### 1. Data Sources
-        Raw data from external providers. Each source notebook shows:
-        - **Table previews**: Interactive accordions with sample data
-        - **SQL snippets**: Copy-able queries showing all available columns
-        - **Row counts**: See the scale of each dataset
+        ## Step 2: Test in a Hosted Notebook
 
-        Start here to understand what raw data is available.
+        The fastest way to explore is right here in this portal. The notebooks are already connected
+        to the data warehouse -- scroll down to see live query examples you can learn from.
 
-        ### 2. Data Models
-        Unified models that combine data across multiple sources. These notebooks explain:
-        - **Data lineage**: How different sources are joined together
-        - **ID mappings**: How different identifier systems work together
-        - **Coverage analysis**: Breadth of data integration
+        You can also create your own notebook by clicking the **+** button next to "Notebooks"
+        in the sidebar.
 
-        Use these to understand how disparate datasets are unified.
+        ## Step 3: Run Locally with an API Key
 
-        ### 3. Insights
-        Pre-built analyses and visualizations for common questions about developer activity, 
-        lifecycle, and retention.
+        To query from your own machine, create an API key:
 
-        ## How to Use This Portal
+        1. Go to **Settings > API Keys** in [your account](https://www.oso.xyz)
+        2. Click **New Key +** and give it a name
+        3. Copy the key immediately -- you won't see it again
 
-        1. **Explore Sources**: Start with the Data > Sources section to see what raw data 
-           is available. Each table includes a SQL snippet you can copy and modify.
+        Set the `OSO_API_KEY` environment variable. The easiest way is a `.env` file:
 
-        2. **Understand Models**: Check out Data > Models to see how we combine data across 
-           sources. The Repositories model is a great example of ID mapping and lineage.
+        ```
+        OSO_API_KEY=your_api_key_here
+        ```
 
-        3. **Run Your Own Queries**: Use the SQL snippets as starting points. Copy them into 
-           your own notebooks or modify them to answer your specific questions.
+        Then choose your preferred workflow:
 
-        4. **Review Insights**: Browse the Insights section for pre-built analyses that might 
-           answer your questions or inspire new ones.
+        **Option A: uv + marimo (recommended for this portal's notebooks)**
 
-        ## Tips
+        ```bash
+        uv add pyoso marimo
+        uv run marimo edit notebook.py
+        ```
 
-        - **SQL Snippets**: All source notebooks include copy-able SQL queries. These are 
-          formatted with one column per line for easy reading and modification.
+        Queries use `mo.sql()` with the pyoso database connection:
 
-        - **Table Formatting**: ID columns are automatically formatted without decimals for 
-          better readability.
+        ```python
+        import pyoso
+        import marimo as mo
+        pyoso_db_conn = pyoso.Client().dbapi_connection()
 
-        - **Interactive Tables**: Click on column headers to sort, and use the search/filter 
-          features in the table interface.
+        df = mo.sql("SELECT * FROM oso.projects_v1 LIMIT 10", engine=pyoso_db_conn)
+        ```
 
-        ## Next Steps
+        **Option B: Your favorite analysis tool**
 
-        - Explore the **OSS Directory** source to see curated project data
-        - Check out the **Repositories** model to understand how we unify repository identifiers
-        - Browse **Insights** for ready-made analyses
+        Use `pyoso` directly from any Python environment:
 
-        Happy exploring!
+        ```bash
+        pip install pyoso
+        ```
+
+        ```python
+        from pyoso import Client
+
+        client = Client()  # reads OSO_API_KEY from environment
+        df = client.to_pandas("SELECT * FROM oso.projects_v1 LIMIT 10")
+        ```
+
+        This works in Jupyter, scripts, or any tool that supports pandas DataFrames.
+
+        ## Understanding the Data Sources
+
+        This portal combines three data sources, each with different strengths:
+
+        | Source | What it provides | ID system |
+        |:-------|:-----------------|:----------|
+        | **Open Dev Data** | Developer identity, ecosystem mappings, commit history | Canonical / GraphQL IDs |
+        | **GitHub Archive** | Full public GitHub timeline (pushes, PRs, issues, stars, forks) | REST API IDs |
+        | **OSS Directory** | Curated project registry, bridges both ID systems | REST + GraphQL IDs |
+
+        The key challenge is that Open Dev Data and GitHub Archive use **different ID systems**.
+        OSS Directory acts as a bridge between them. The Repositories model
+        explains this mapping in detail.
         """
     )
     return
@@ -82,6 +103,207 @@ def setup_pyoso():
     import marimo as mo
     pyoso_db_conn = pyoso.Client().dbapi_connection()
     return mo, pyoso_db_conn
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ## Try It: Browse Ecosystems
+
+        Open Dev Data organizes repositories into ecosystems (Ethereum, Solana, Optimism, etc.).
+        This query shows the largest ecosystems by repository count.
+
+        Copy this SQL to use in your own queries:
+
+        ```sql
+        SELECT
+          e.name AS ecosystem_name,
+          COUNT(DISTINCT er.repo_id) AS repo_count
+        FROM stg_opendevdata__ecosystems e
+        JOIN stg_opendevdata__ecosystems_repos_recursive er
+          ON e.id = er.ecosystem_id
+        GROUP BY e.name
+        ORDER BY repo_count DESC
+        LIMIT 15
+        ```
+        """
+    )
+    return
+
+
+@app.cell
+def _(mo, pyoso_db_conn):
+    _df = mo.sql(
+        """
+        SELECT
+          e.name AS ecosystem_name,
+          COUNT(DISTINCT er.repo_id) AS repo_count
+        FROM stg_opendevdata__ecosystems e
+        JOIN stg_opendevdata__ecosystems_repos_recursive er
+          ON e.id = er.ecosystem_id
+        GROUP BY e.name
+        ORDER BY repo_count DESC
+        LIMIT 15
+        """,
+        engine=pyoso_db_conn
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ## Try It: Cross-Source Join
+
+        The most powerful feature of this data warehouse is combining data across sources.
+        Here's how to join GitHub Archive developer activity to Open Dev Data ecosystems:
+
+        ```
+        Open Dev Data (GraphQL ID)
+            --> int_opendevdata__repositories_with_repo_id (bridge)
+                --> GitHub Archive (REST API ID)
+        ```
+
+        This query counts active developers per ecosystem over the last 30 days by joining
+        GitHub Archive activity through the repository bridge model:
+
+        ```sql
+        SELECT
+          e.name AS ecosystem,
+          COUNT(DISTINCT da.actor_id) AS active_developers,
+          SUM(da.num_events) AS total_events
+        FROM int_gharchive__developer_activities da
+        JOIN int_opendevdata__repositories_with_repo_id r
+          ON da.repo_id = r.repo_id
+        JOIN stg_opendevdata__ecosystems_repos_recursive err
+          ON r.opendevdata_id = err.repo_id
+        JOIN stg_opendevdata__ecosystems e
+          ON err.ecosystem_id = e.id
+        WHERE da.bucket_day >= CURRENT_DATE - INTERVAL '30' DAY
+          AND e.name IN ('Ethereum', 'Solana', 'Optimism', 'Base')
+        GROUP BY e.name
+        ORDER BY active_developers DESC
+        ```
+        """
+    )
+    return
+
+
+@app.cell
+def _(mo, pyoso_db_conn):
+    _df = mo.sql(
+        """
+        SELECT
+          e.name AS ecosystem,
+          COUNT(DISTINCT da.actor_id) AS active_developers,
+          SUM(da.num_events) AS total_events
+        FROM int_gharchive__developer_activities da
+        JOIN int_opendevdata__repositories_with_repo_id r
+          ON da.repo_id = r.repo_id
+        JOIN stg_opendevdata__ecosystems_repos_recursive err
+          ON r.opendevdata_id = err.repo_id
+        JOIN stg_opendevdata__ecosystems e
+          ON err.ecosystem_id = e.id
+        WHERE da.bucket_day >= CURRENT_DATE - INTERVAL '30' DAY
+          AND e.name IN ('Ethereum', 'Solana', 'Optimism', 'Base')
+        GROUP BY e.name
+        ORDER BY active_developers DESC
+        """,
+        engine=pyoso_db_conn
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ## Common Query Templates
+
+        Here are SQL templates for frequent tasks. Copy and modify these for your own analysis.
+
+        **Find all repositories in an ecosystem:**
+        ```sql
+        SELECT
+          r.repo_name,
+          r.owner
+        FROM stg_opendevdata__repositories r
+        JOIN stg_opendevdata__ecosystems_repos_recursive err
+          ON r.id = err.repo_id
+        JOIN stg_opendevdata__ecosystems e
+          ON err.ecosystem_id = e.id
+        WHERE e.name = 'Ethereum'
+        LIMIT 100
+        ```
+
+        **Get monthly active developers for an ecosystem (Open Dev Data):**
+        ```sql
+        SELECT
+          day,
+          all_devs AS monthly_active_developers,
+          full_time_devs
+        FROM stg_opendevdata__eco_mads
+        WHERE ecosystem_id = 'ethereum'
+          AND day >= DATE('2024-01-01')
+        ORDER BY day
+        ```
+
+        **Count GitHub events by type for a specific ecosystem (cross-source join):**
+        ```sql
+        SELECT
+          ge.event_type,
+          COUNT(*) AS event_count
+        FROM int_gharchive__github_events ge
+        JOIN int_opendevdata__repositories_with_repo_id r
+          ON ge.repo_id = r.repo_id
+        JOIN stg_opendevdata__ecosystems_repos_recursive err
+          ON r.opendevdata_id = err.repo_id
+        JOIN stg_opendevdata__ecosystems e
+          ON err.ecosystem_id = e.id
+        WHERE e.name = 'Ethereum'
+          AND ge.event_time >= CURRENT_DATE - INTERVAL '7' DAY
+        GROUP BY ge.event_type
+        ORDER BY event_count DESC
+        ```
+        """
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        """
+        ## What's Next?
+
+        Explore the portal in more depth:
+
+        - **Data Sources** -- Understand what raw data is available
+          - GitHub Archive -- Public GitHub timeline events
+          - Open Dev Data -- Developer identity and ecosystem mappings
+          - OSS Directory -- Curated project registry and ID bridge
+
+        - **Data Models** -- See how sources are combined
+          - Repositories -- Unified repository model bridging all ID systems
+          - Developers -- Developer identity resolution across sources
+          - Events -- Standardized event pipeline from GitHub Archive
+
+        - **Metric Definitions** -- How metrics are calculated
+          - Activity -- Monthly active developers (MAD)
+          - Retention -- Cohort retention analysis
+          - Lifecycle -- Developer lifecycle stages
+
+        - **Insights** -- Pre-built analyses
+          - Developer Activity -- Activity trends by ecosystem
+          - Developer Lifecycle -- Lifecycle stage visualization
+          - Developer Retention -- Retention curves and benchmarks
+
+        For more documentation, visit [docs.oso.xyz](https://docs.oso.xyz).
+        """
+    )
+    return
 
 
 if __name__ == "__main__":

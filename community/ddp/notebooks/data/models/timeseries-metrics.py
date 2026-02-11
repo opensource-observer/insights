@@ -32,7 +32,7 @@ def _(mo):
     ### Available Time Periods
 
     | Period | Duration | Use Case |
-    |--------|----------|----------|
+    |:--------|:----------|:----------|
     | **Daily** | 1 day | Fine-grained analysis, anomaly detection |
     | **7-day (Weekly)** | 7 days | Smooth daily noise, weekly patterns |
     | **28-day** | 28 days | Monthly comparisons (consistent window) |
@@ -96,7 +96,7 @@ def _(mo):
     Time series metrics can be aggregated at different entity levels:
 
     | Entity | Granularity | Example Metrics |
-    |--------|-------------|-----------------|
+    |:--------|:-------------|:-----------------|
     | **Developer** | Individual | Commits/day, Active days/month, Repos contributed |
     | **Repository** | Single repo | Commits/day, Contributors/month, PR velocity |
     | **Project** | Multi-repo group | Total activity, Team size, Growth rate |
@@ -156,7 +156,7 @@ def _(mo):
     ### Source Event Tables
 
     | Table | Description | Key Fields |
-    |-------|-------------|------------|
+    |:-------|:-------------|:------------|
     | `stg_opendevdata__repo_developer_28d_activities` | Pre-aggregated 28-day rolling activity | `day`, `repo_id`, `canonical_developer_id`, `commits` |
     | `stg_opendevdata__eco_mads` | Pre-calculated ecosystem MAD counts | `day`, `ecosystem_id`, `all_devs`, `full_time_devs` |
     | `int_gharchive__developer_activities` | Raw GitHub Archive events | `bucket_day`, `repo_id`, `actor_id`, activity counts |
@@ -212,8 +212,8 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(client, mo, px):
-    sql_28d_commits = """
+def _(mo, px, pyoso_db_conn):
+    _sql_28d_commits = """
     WITH ecosystem_daily_commits AS (
         SELECT
             e.name AS ecosystem,
@@ -243,7 +243,7 @@ def _(client, mo, px):
     ORDER BY ecosystem, day
     """
 
-    df_commits = client.to_pandas(sql_28d_commits)
+    df_commits = mo.sql(_sql_28d_commits, engine=pyoso_db_conn, output=False)
 
     _fig = px.line(
         df_commits,
@@ -267,7 +267,7 @@ def _(client, mo, px):
         """),
         mo.ui.plotly(_fig, config={'displayModeBar': False})
     ])
-    return df_commits, sql_28d_commits
+    return (df_commits,)
 
 
 @app.cell(hide_code=True)
@@ -277,8 +277,8 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(client, mo, pd, px):
-    sql_aggregation_comparison = """
+def _(mo, pd, px, pyoso_db_conn):
+    _sql_aggregation_comparison = """
     WITH daily AS (
         SELECT
             rda.day,
@@ -303,10 +303,10 @@ def _(client, mo, pd, px):
     ORDER BY day
     """
 
-    df_agg = client.to_pandas(sql_aggregation_comparison)
+    df_agg = mo.sql(_sql_aggregation_comparison, engine=pyoso_db_conn, output=False)
 
     # Melt for visualization
-    df_melted = df_agg.melt(
+    _df_melted = df_agg.melt(
         id_vars=['day'],
         value_vars=['daily_devs', 'weekly_avg', 'monthly_avg'],
         var_name='aggregation',
@@ -314,7 +314,7 @@ def _(client, mo, pd, px):
     )
 
     _fig = px.line(
-        df_melted,
+        _df_melted,
         x='day',
         y='developers',
         color='aggregation',
@@ -342,7 +342,7 @@ def _(client, mo, pd, px):
         """),
         mo.ui.plotly(_fig, config={'displayModeBar': False})
     ])
-    return df_agg, df_melted, sql_aggregation_comparison
+    return
 
 
 @app.cell(hide_code=True)
@@ -352,8 +352,8 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(client, mo, px):
-    sql_pr_patterns = """
+def _(mo, px, pyoso_db_conn):
+    _sql_pr_patterns = """
     SELECT
         e.name AS ecosystem,
         DATE_TRUNC('week', da.bucket_day) AS week,
@@ -372,7 +372,7 @@ def _(client, mo, px):
     ORDER BY ecosystem, week
     """
 
-    df_prs = client.to_pandas(sql_pr_patterns)
+    df_prs = mo.sql(_sql_pr_patterns, engine=pyoso_db_conn, output=False)
 
     _fig = px.line(
         df_prs,
@@ -396,7 +396,7 @@ def _(client, mo, px):
         """),
         mo.ui.plotly(_fig, config={'displayModeBar': False})
     ])
-    return df_prs, sql_pr_patterns
+    return
 
 
 @app.cell(hide_code=True)
@@ -422,10 +422,10 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(client, ecosystem_picker, mo, period_picker, px):
+def _(ecosystem_picker, mo, period_picker, px, pyoso_db_conn):
     window_size = {"Daily": 0, "7-day Rolling": 6, "28-day Rolling": 27}[period_picker.value]
 
-    sql_custom = f"""
+    _sql_custom = f"""
     WITH daily AS (
         SELECT
             rda.day,
@@ -452,7 +452,7 @@ def _(client, ecosystem_picker, mo, period_picker, px):
     ORDER BY day
     """
 
-    df_custom = client.to_pandas(sql_custom)
+    df_custom = mo.sql(_sql_custom, engine=pyoso_db_conn, output=False)
 
     _fig = px.line(
         df_custom,
@@ -471,7 +471,7 @@ def _(client, ecosystem_picker, mo, period_picker, px):
         mo.ui.plotly(_fig, config={'displayModeBar': False}),
         mo.ui.table(df_custom.tail(14), selection=None)
     ])
-    return df_custom, sql_custom, window_size
+    return
 
 
 @app.cell(hide_code=True)
@@ -563,7 +563,7 @@ def _(mo):
     ### Aggregation Best Practices
 
     | Scenario | Recommended Aggregation |
-    |----------|------------------------|
+    |:----------|:------------------------|
     | Executive dashboards | 28-day or 30-day |
     | Operational monitoring | Daily with 7-day overlay |
     | Trend analysis | 28-day rolling |
@@ -580,7 +580,7 @@ def _(mo):
     ### Comparison: Rolling vs Calendar Periods
 
     | Aspect | Rolling Window | Calendar Period |
-    |--------|----------------|-----------------|
+    |:--------|:----------------|:-----------------|
     | Consistency | Same length always | Varies (28-31 days) |
     | Comparability | Any day can compare to any day | Month-to-month only |
     | Smoothness | Continuous | Step changes |
@@ -598,12 +598,12 @@ def _():
 
 @app.cell(hide_code=True)
 def setup_pyoso():
+    # This code sets up pyoso to be used as a database provider for this notebook
+    # This code is autogenerated. Modification could lead to unexpected results :)
     import pyoso
     import marimo as mo
-    import os
     pyoso_db_conn = pyoso.Client().dbapi_connection()
-    client = pyoso.Client(os.getenv("OSO_API_KEY"))
-    return client, mo, os, pyoso_db_conn
+    return mo, pyoso_db_conn
 
 
 if __name__ == "__main__":
