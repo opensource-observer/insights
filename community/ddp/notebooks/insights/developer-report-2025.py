@@ -6,7 +6,7 @@ app = marimo.App(width="full")
 
 @app.cell(hide_code=True)
 def header_title(mo):
-    mo.md(r"""
+    mo.md("""
     # 2025 Developer Trends
     <small>Owner: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">OSO Team</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">2026-02-17</span></small>
 
@@ -87,6 +87,23 @@ def setup_constants():
         SUPPORTED_ECOSYSTEMS,
         TENURE_COLORS,
     )
+
+
+@app.cell(hide_code=True)
+def related(mo):
+    mo.md("""
+    ## Related
+
+    **Metric Definitions**
+    - [Activity](../data/metric-definitions/activity.py) — Monthly Active Developer (MAD) methodology
+
+    **Other Insights**
+    - [Lifecycle Analysis](./developer-lifecycle.py)
+    - [Retention Analysis](./developer-retention.py)
+    - [DeFi Developer Journeys](./defi-developer-journeys.py)
+    - [Speedrun Ethereum](./speedrun-ethereum.py)
+    """)
+    return
 
 
 @app.cell(hide_code=True)
@@ -220,8 +237,6 @@ def helper_add_tenure_legend():
 @app.cell(hide_code=True)
 def test_connection(mo, pyoso_db_conn):
     _test_df = mo.sql("""SELECT 1 AS test""", engine=pyoso_db_conn, output=False)
-    _status = "✅ **Database connection successful**" if len(_test_df) > 0 else "❌ **Database connection failed**"
-    mo.md(_status)
     return
 
 
