@@ -46,6 +46,7 @@ const navItems: NavItem[] = [
           { label: 'Activity', href: '/data/metric-definitions/activity' },
           { label: 'Alignment', href: '/data/metric-definitions/alignment' },
           { label: 'Lifecycle', href: '/data/metric-definitions/lifecycle' },
+          { label: 'Retention', href: '/data/metric-definitions/retention' },
         ],
       },
       { label: 'Agent Workflows', href: '/data/agent-workflows' },
