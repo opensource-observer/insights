@@ -16,25 +16,30 @@ def header_title(mo):
 
 
 @app.cell(hide_code=True)
-def header_context_accordion(mo):
+def header_accordion(mo):
     mo.accordion({
-        "Context": """
-        - This analysis covers monthly active developers across all crypto ecosystems
-        - Data source: Open Dev Data (Electric Capital) via OSO data warehouse
-        - Time period: January 2015 to December 2025 (full historical data)
-        - Developers are original code authors (merge/PR integrators are not counted unless they authored commits)
-        - Monthly active developers are measured using a 28-day rolling activity window
-        """,
-        "Data Sources": """
-        - [Open Dev Data](https://github.com/electric-capital/crypto-ecosystems) - Electric Capital
-        - [OSO API](https://docs.oso.xyz/) - Data pipeline and metrics
-        - [2023 Developer Report](https://www.developerreport.com) - Reference methodology
-        """,
-        "Limitations": """
-        - Uses curated Open Dev Data repository set (not comprehensive GitHub coverage)
-        - Developer identity resolution may miss some connections
-        - Data freshness depends on Open Dev Data and OSO pipeline updates
-        """
+        "Overview": mo.md("""
+- As of December 2025, the total number of monthly active developers (MADs) across all crypto ecosystems reached its highest recorded level, driven by growth in newer chains and Layer 2s
+- Ethereum remains the largest single ecosystem by MAD count, though its share of total crypto developers continued to decline as multi-chain activity increases
+- Newcomer developers (those active for less than 1 year) represented a significant portion of 2025 MADs, indicating continued onboarding despite broader market fluctuations
+- Full-time developers (active 10+ months of the year) showed resilience, with retention rates improving year-over-year compared to the 2022-2023 downturn
+        """),
+        "Context": mo.md("""
+- This analysis covers monthly active developers across all crypto ecosystems
+- Data source: Open Dev Data (Electric Capital) via OSO data warehouse
+- Time period: January 2015 to December 2025 (full historical data)
+- Developers are original code authors (merge/PR integrators are not counted unless they authored commits)
+- Monthly active developers are measured using a 28-day rolling activity window
+- Uses curated Open Dev Data repository set (not comprehensive GitHub coverage)
+- Developer identity resolution may miss some connections across accounts or pseudonyms
+- Data freshness depends on Open Dev Data and OSO pipeline update cadence
+        """),
+        "Data Sources": mo.md("""
+- **Open Dev Data** — Electric Capital's developer activity dataset, [github.com/electric-capital/crypto-ecosystems](https://github.com/electric-capital/crypto-ecosystems)
+- **OSO API** — Data pipeline and metrics, [docs.oso.xyz](https://docs.oso.xyz/)
+- **Metric Definitions** — [Activity](/data/metric-definitions/activity)
+- **Key Models** — `oso.stg_opendevdata__eco_mads`, `oso.stg_opendevdata__ecosystems`
+        """),
     })
     return
 
