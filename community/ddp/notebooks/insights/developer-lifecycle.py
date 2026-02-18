@@ -23,16 +23,16 @@ def _(mo):
 
 | Category | Label | Description |
 |:---------|:------|:------------|
-| **First Time** `#4C78A8` | `first time` | First-ever contribution to the ecosystem |
-| **Full Time** `#7A4D9B` | `full time` | 10+ active days, continuing from prior month |
+| **First Time** | `first time` | First-ever contribution to the ecosystem |
+| **Full Time** | `full time` | 10+ active days, continuing from prior month |
 | | `new full time` | First month reaching 10+ active days |
 | | `part time to full time` | Transitioned from part-time level |
 | | `dormant to full time` | Returned from dormancy at full-time level |
-| **Part Time** `#41AB5D` | `part time` | 1-9 active days, continuing from prior month |
+| **Part Time** | `part time` | 1-9 active days, continuing from prior month |
 | | `new part time` | First month at part-time level |
 | | `full time to part time` | Stepped down from full-time level |
 | | `dormant to part time` | Returned from dormancy at part-time level |
-| **Churned / Dormant** `#D62728` | `dormant` | No activity this month (previously active) |
+| **Churned / Dormant** | `dormant` | No activity this month (previously active) |
 | | `first time to dormant` | Dormant after first contribution |
 | | `part time to dormant` | Dormant after part-time activity |
 | | `full time to dormant` | Dormant after full-time activity |
