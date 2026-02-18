@@ -55,8 +55,6 @@ def definitions_accordion(mo):
 @app.cell(hide_code=True)
 def test_connection(mo, pyoso_db_conn):
     _test_df = mo.sql("""SELECT 1 AS test""", engine=pyoso_db_conn, output=False)
-    _status = "✅ **Database connection successful**" if len(_test_df) > 0 else "❌ **Database connection failed**"
-    mo.md(_status)
     return
 
 
@@ -517,6 +515,24 @@ def monthly_cohorts_chart(apply_ec_style, df_monthly, ecosystem_selector, go, mo
 def setup_imports():
     import plotly.graph_objects as go
     return (go,)
+
+
+@app.cell(hide_code=True)
+def related(mo):
+    mo.md("""
+    ## Related
+
+    **Metric Definitions**
+    - [Retention](../data/metric-definitions/retention.py) — Cohort-based retention methodology
+    - [Activity](../data/metric-definitions/activity.py) — Monthly Active Developer (MAD) methodology
+
+    **Other Insights**
+    - [2025 Developer Trends](./developer-report-2025.py)
+    - [Lifecycle Analysis](./developer-lifecycle.py)
+    - [DeFi Developer Journeys](./defi-developer-journeys.py)
+    - [Speedrun Ethereum](./speedrun-ethereum.py)
+    """)
+    return
 
 
 @app.cell(hide_code=True)
