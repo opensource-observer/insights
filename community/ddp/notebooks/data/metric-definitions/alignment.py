@@ -123,7 +123,7 @@ def live_stats(mo, pyoso_db_conn, live_ecosystem):
             SELECT
                 rda.canonical_developer_id,
                 e.name AS ecosystem_name,
-                SUM(rda.commits) AS ecosystem_commits
+                SUM(rda.num_commits) AS ecosystem_commits
             FROM oso.stg_opendevdata__repo_developer_28d_activities AS rda
             JOIN oso.stg_opendevdata__ecosystems_repos_recursive AS err
                 ON rda.repo_id = err.repo_id
@@ -180,7 +180,7 @@ def live_chart(mo, pyoso_db_conn, live_ecosystem, apply_ec_style, EC_COLORS):
             SELECT
                 rda.canonical_developer_id,
                 e.name AS ecosystem_name,
-                SUM(rda.commits) AS ecosystem_commits
+                SUM(rda.num_commits) AS ecosystem_commits
             FROM oso.stg_opendevdata__repo_developer_28d_activities AS rda
             JOIN oso.stg_opendevdata__ecosystems_repos_recursive AS err
                 ON rda.repo_id = err.repo_id
@@ -276,13 +276,13 @@ def _(mo, pyoso_db_conn):
             rda.canonical_developer_id,
             e.name AS ecosystem_name,
             rda.day,
-            SUM(rda.commits) AS ecosystem_commits
+            SUM(rda.num_commits) AS ecosystem_commits
         FROM oso.stg_opendevdata__repo_developer_28d_activities AS rda
         JOIN oso.stg_opendevdata__ecosystems_repos_recursive AS err
             ON rda.repo_id = err.repo_id
         JOIN oso.stg_opendevdata__ecosystems AS e
             ON err.ecosystem_id = e.id
-        WHERE rda.day = CURRENT_DATE - INTERVAL '1' DAY
+        WHERE rda.day = (SELECT MAX(day) FROM oso.stg_opendevdata__repo_developer_28d_activities)
             AND e.name IN ('Ethereum', 'Solana', 'Optimism', 'Arbitrum', 'Base', 'AI')
         GROUP BY 1, 2, 3
     ),
@@ -348,13 +348,13 @@ def _(mo, pyoso_db_conn, ecosystem_selector):
             rda.canonical_developer_id,
             e.name AS ecosystem_name,
             rda.day,
-            SUM(rda.commits) AS ecosystem_commits
+            SUM(rda.num_commits) AS ecosystem_commits
         FROM oso.stg_opendevdata__repo_developer_28d_activities AS rda
         JOIN oso.stg_opendevdata__ecosystems_repos_recursive AS err
             ON rda.repo_id = err.repo_id
         JOIN oso.stg_opendevdata__ecosystems AS e
             ON err.ecosystem_id = e.id
-        WHERE rda.day = CURRENT_DATE - INTERVAL '1' DAY
+        WHERE rda.day = (SELECT MAX(day) FROM oso.stg_opendevdata__repo_developer_28d_activities)
         GROUP BY 1, 2, 3
     ),
 
@@ -430,13 +430,13 @@ def _(mo, pyoso_db_conn, ecosystem_selector, px):
             rda.canonical_developer_id,
             e.name AS ecosystem_name,
             rda.day,
-            SUM(rda.commits) AS ecosystem_commits
+            SUM(rda.num_commits) AS ecosystem_commits
         FROM oso.stg_opendevdata__repo_developer_28d_activities AS rda
         JOIN oso.stg_opendevdata__ecosystems_repos_recursive AS err
             ON rda.repo_id = err.repo_id
         JOIN oso.stg_opendevdata__ecosystems AS e
             ON err.ecosystem_id = e.id
-        WHERE rda.day = CURRENT_DATE - INTERVAL '1' DAY
+        WHERE rda.day = (SELECT MAX(day) FROM oso.stg_opendevdata__repo_developer_28d_activities)
         GROUP BY 1, 2, 3
     ),
 
