@@ -101,6 +101,12 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
+    mo.md("""## Live Data Exploration""")
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
     live_ecosystem = mo.ui.dropdown(
         options=["Ethereum", "Solana", "Optimism", "Arbitrum", "Base", "Polygon", "AI"],
         value="Ethereum",
