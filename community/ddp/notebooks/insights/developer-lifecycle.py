@@ -16,10 +16,15 @@ def title_cell(mo):
 
 
 @app.cell(hide_code=True)
-def definitions_accordion(mo):
+def header_accordion(mo):
     mo.accordion({
-        "Definitions & Methodology": mo.md("""
-**Lifecycle labels** classify each developer's monthly activity into one of 16 states. These roll up into 4 categories used in the summary chart:
+        "Overview": mo.md("""
+- This notebook tracks developer lifecycle states — the month-by-month progression of developers joining, contributing, and eventually churning from an ecosystem
+- It reveals how the balance between newcomers, established contributors, and churned developers shifts over time and across ecosystems
+- Key metrics: monthly active developers by lifecycle state, churn ratio, dormant developer count
+        """),
+        "Context": mo.md("""
+**Lifecycle labels** classify each developer's monthly activity into one of 16 granular states. These roll up into 4 categories used in the summary chart:
 
 | Category | Label | Description |
 |:---------|:------|:------------|
@@ -42,12 +47,14 @@ def definitions_accordion(mo):
 
 **Active** = First Time + Full Time + Part Time (all 9 labels above the Churned/Dormant group)
 
-**Derived metrics:**
-- **Churn Ratio** = sum(churned + dormant) / sum(active) over the trailing window (12mo or all-time)
-- **Dormant (Current)** = dormant-label developers in the latest month
-- **Dormant (6mo Avg)** = mean monthly dormant count over the last 6 months
+**Churn Ratio** = sum(churned + dormant) / sum(active) over the trailing window (12mo or all-time)
 
-**Data source:** `int_crypto_ecosystems_developer_lifecycle_monthly_aggregated` with ecosystem definitions from Electric Capital's taxonomy. Contributions include commits, issues, pull requests, and code reviews. Monthly bucketed; private repos excluded.
+Data is bucketed monthly; private repos excluded; contributions include commits, issues, pull requests, and code reviews.
+        """),
+        "Data Sources": mo.md("""
+- **Open Dev Data (Electric Capital)** — Ecosystem and developer taxonomy, [github.com/electric-capital/crypto-ecosystems](https://github.com/electric-capital/crypto-ecosystems)
+- **Metric Definitions** — [Lifecycle](/data/metric-definitions/lifecycle)
+- **Key Models** — `oso.int_crypto_ecosystems_developer_lifecycle_monthly_aggregated`
         """),
     })
     return
