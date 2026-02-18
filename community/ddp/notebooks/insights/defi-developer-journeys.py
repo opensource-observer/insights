@@ -2838,6 +2838,25 @@ def helper_stringify_in_clause():
 
 
 @app.cell(hide_code=True)
+def related(mo):
+    mo.md("""
+    ## Related
+
+    **Metric Definitions**
+    - [Activity](../data/metric-definitions/activity.py) — Monthly Active Developer (MAD) methodology
+    - [Lifecycle](../data/metric-definitions/lifecycle.py) — Developer stage definitions
+    - [Retention](../data/metric-definitions/retention.py) — Cohort-based retention methodology
+
+    **Other Insights**
+    - [2025 Developer Trends](./developer-report-2025.py)
+    - [Lifecycle Analysis](./developer-lifecycle.py)
+    - [Retention Analysis](./developer-retention.py)
+    - [Speedrun Ethereum](./speedrun-ethereum.py)
+    """)
+    return
+
+
+@app.cell(hide_code=True)
 def import_libraries():
     import numpy as np
     import pandas as pd
