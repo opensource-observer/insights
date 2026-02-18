@@ -42,6 +42,8 @@ def _(mo):
 
     - **New** → **Active** (full-time or part-time) → **Dormant** → **Churned**
 
+    The framework uses 16 granular state transitions, which roll up into 4 summary categories: First Time, Full Time, Part Time, and Churned/Dormant.
+
     Tracking these stages over time reveals whether an ecosystem is growing (more new developers than churned), healthy (strong full-time core), or at risk (rising dormancy).
 
     The underlying data comes from `oso.stg_opendevdata__eco_mads`, which provides pre-calculated daily snapshots per ecosystem including activity-level and tenure breakdowns.
@@ -52,17 +54,32 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md("""
-    ## Stage Definitions
+    ## Definition & Formula
 
-    | Stage | Definition | Threshold |
-    |:------|:-----------|:----------|
-    | **New** | First observed contribution to crypto | First activity in any ecosystem |
-    | **Full-Time Active** | High sustained activity | ≥10 active days per rolling 28-day window |
-    | **Part-Time Active** | Moderate or intermittent activity | 1-9 active days per rolling 28-day window |
-    | **Dormant** | Previously active, now inactive | 0 active days for 1-6 months |
-    | **Churned** | Long-term inactive | 0 active days for >6 months |
+    The lifecycle model assigns each developer a state each month based on their activity level and prior state. The 16 granular states roll up into 4 summary categories:
 
-    Activity levels (full-time, part-time, one-time) are assessed over an 84-day rolling window per Electric Capital's methodology. The "new" designation uses the tenure dimension — developers with <1 year in crypto (`devs_0_1y`) are newcomers.
+    | Category | Label | Description |
+    |:---------|:------|:------------|
+    | **First Time** | `first time` | First-ever contribution to the ecosystem |
+    | **Full Time** | `full time` | 10+ active days, continuing from prior month |
+    | | `new full time` | First month reaching 10+ active days |
+    | | `part time to full time` | Transitioned from part-time level |
+    | | `dormant to full time` | Returned from dormancy at full-time level |
+    | **Part Time** | `part time` | 1-9 active days, continuing from prior month |
+    | | `new part time` | First month at part-time level |
+    | | `full time to part time` | Stepped down from full-time level |
+    | | `dormant to part time` | Returned from dormancy at part-time level |
+    | **Churned / Dormant** | `dormant` | No activity this month (previously active) |
+    | | `first time to dormant` | Dormant after first contribution |
+    | | `part time to dormant` | Dormant after part-time activity |
+    | | `full time to dormant` | Dormant after full-time activity |
+    | | `churned (after first time)` | Extended inactivity after first contribution |
+    | | `churned (after reaching part time)` | Extended inactivity after reaching part time |
+    | | `churned (after reaching full time)` | Extended inactivity after reaching full time |
+
+    **Active** = First Time + Full Time + Part Time (all 9 labels above the Churned/Dormant group)
+
+    Activity levels (full-time, part-time) are assessed over a 28-day rolling window per Electric Capital's methodology. Dormancy transitions to churn after approximately 6 months of continuous inactivity.
     """)
     return
 
