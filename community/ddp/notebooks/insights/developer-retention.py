@@ -16,37 +16,41 @@ def title_cell(mo):
 
 
 @app.cell(hide_code=True)
-def definitions_accordion(mo):
+def header_accordion(mo):
     mo.accordion({
-        "Definitions": mo.md("""
+        "Overview": mo.md("""
+- This notebook analyzes developer retention by cohort year: what share of developers who joined ecosystem X in year Y are still active after N years?
+- Retention is measured as the percentage of the original cohort active in subsequent years (Year 0 = always 100%)
+- Industry benchmarks for context:
+
+| Timeframe | Open Source | Strong OSS Ecosystem |
+|:-----------|:------------|:---------------------|
+| 1 year | ~15% | 25-35% |
+| 2 years | ~8% | 15-20% |
+        """),
+        "Context": mo.md("""
+**Definitions**
+
 - **Cohort**: Developers grouped by the year (or month) of their first contribution to the ecosystem
 - **Retention Rate**: Percentage of the original cohort that remains active in subsequent periods
 - **Years Since Join**: Time elapsed since first contribution (Year 0 = joined year, always 100%)
-        """),
-        "Data Sources": mo.md("""
-- **Primary**: `stg_opendevdata__repo_developer_28d_activities` (Electric Capital data)
-- **Ecosystem mapping**: `stg_opendevdata__ecosystems_repos_recursive`
-- **Activity definition**: Any commit to a mapped repository
-        """),
-        "Methodology": mo.md("""
+
+**Methodology**
+
 1. **Cohort Assignment**: Each developer is assigned to a cohort based on their first contribution date
 2. **Activity Tracking**: We track whether the developer had any activity in subsequent time periods
 3. **Retention Rate**: Percentage of the original cohort that remains active
 
-**Limitations:**
+**Limitations**
+
 - Multi-ecosystem developers may churn from one ecosystem but remain active in another
 - Identity resolution is based on Electric Capital's developer fingerprinting
 - Newer cohorts have less retention history to analyze
         """),
-        "Retention Benchmarks": mo.md("""
-| Timeframe | Typical SaaS | Mobile Apps | Gaming | Open Source | Strong OSS Ecosystem |
-|:-----------|:-------------|:------------|:-------|:------------|:---------------------|
-| 1 month | 80% | 25% | 40% | 50% | 65-75% |
-| 3 months | 60% | 12% | 20% | 35% | 50-60% |
-| 6 months | 40% | 6% | 15% | 25% | 40-50% |
-| 12 months | 25% | 3% | 8% | 15% | 25-35% |
-
-**Key factors**: Onboarding experience, community responsiveness, documentation quality, funding/incentives, project momentum.
+        "Data Sources": mo.md("""
+- **Open Dev Data (Electric Capital)** — Developer activity data, [github.com/electric-capital/crypto-ecosystems](https://github.com/electric-capital/crypto-ecosystems)
+- **Metric Definitions** — [Retention](/data/metric-definitions/retention)
+- **Key Models** — `oso.stg_opendevdata__repo_developer_28d_activities`, `oso.stg_opendevdata__ecosystems_repos_recursive`
         """),
     })
     return
