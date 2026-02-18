@@ -6,7 +6,7 @@ app = marimo.App(width="full")
 
 @app.cell(hide_code=True)
 def header_title(mo):
-    mo.md(r"""
+    mo.md("""
     # DeFi Developer Journeys
     <small>Owner: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">OSO Team</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">2026-02-17</span></small>
 
@@ -16,9 +16,45 @@ def header_title(mo):
 
 
 @app.cell(hide_code=True)
-def executive_framing(mo):
+def header_accordion(
+    headline_1,
+    headline_2,
+    headline_3,
+    headline_4,
+    mo,
+):
+    mo.accordion({
+        "Overview": mo.md(f"""
+1. {headline_1}.
+2. {headline_2}.
+3. {headline_3}.
+4. {headline_4}.
+        """),
+        "Context": mo.md("""
+**Thesis.** Ethereum DeFi is net accretive for developer talent. Most developer movement is either Ethereum → other Ethereum projects or within non-Ethereum ecosystems. Successful non-Ethereum DeFi projects are not primarily poaching from Ethereum.
+
+**Scope.** Top DeFi protocols by TVL with observable open-source activity — the economically meaningful layer of DeFi. High-TVL but low-OSS projects (custodial, TradFi-linked) are excluded or downweighted.
+
+**Methodology.** "Qualified" developer = 12+ months sustained contribution to a top project. Onboarding = first month of home project activity; offboarding = 6+ months inactive. Activity data: 2018 through early 2026, via OpenDevData ecosystem mappings and GitHub Archive.
+        """),
+        "Data Sources": mo.md("""
+- **DefiLlama** — Top 50 DeFi protocols by TVL, [defillama.com](https://defillama.com/)
+- **OSS Directory** — Protocol to GitHub mapping, [github.com/opensource-observer/oss-directory](https://github.com/opensource-observer/oss-directory)
+- **Open Dev Data (Electric Capital)** — Ecosystem classifications, [github.com/electric-capital/crypto-ecosystems](https://github.com/electric-capital/crypto-ecosystems)
+- **GitHub Archive** — Developer activity events, [gharchive.org](https://www.gharchive.org/)
+- **Metric Definitions** — [Alignment](/data/metric-definitions/alignment)
+- **Key Models** — `oso.mart_developer_alignment_monthly`, `stg_opendevdata__*`
+        """),
+    })
+    return
+
+
+@app.cell(hide_code=True)
+def section_framing(mo):
     mo.md("""
-    **Framing.** This analysis covers 2020–2025 and focuses on *active DeFi developers*—operationalized here as developers with sustained (12+ months) observable open-source contribution to top TVL protocols. Structurally, inflow composition has shifted away from newcomers and non-crypto-native developers; the replacement rate for departing talent has declined. That shift matters now because it threatens long-run ecosystem vitality.
+    ## Framing
+
+    **Scope.** This analysis covers 2020–2025 and focuses on *active DeFi developers* — operationalized as developers with sustained (12+ months) observable open-source contribution to top TVL protocols. Structurally, inflow composition has shifted away from newcomers and non-crypto-native developers; the replacement rate for departing talent has declined.
 
     **Core thesis.** Ethereum's biggest threat is not competition from other crypto ecosystems, but its declining ability to attract large numbers of newcomers and non-crypto-native developers.
 
@@ -29,46 +65,7 @@ def executive_framing(mo):
     - **Developer Imports & Exports** — What is the net talent balance across ecosystems?
     - **Cohort Retention** — How well does DeFi retain its developers over time?
     - **New Developer Inflow** — Where are new entrants coming from, and is that changing?
-    - **Assumptions & Limitations** — What are the caveats and scope?
-    - **Appendix** — Project-level application of the framework.
     """)
-    return
-
-
-@app.cell(hide_code=True)
-def header_context_accordion(
-    headline_1,
-    headline_2,
-    headline_3,
-    headline_4,
-    mo,
-):
-    _context = """
-    **Thesis.** Ethereum DeFi is net accretive for developer talent. Most developer movement is either Ethereum → other Ethereum projects or within non-Ethereum ecosystems. Successful non-Ethereum DeFi projects are not primarily poaching from Ethereum.
-
-    **Scope.** Top DeFi protocols by TVL with observable open-source activity — the economically meaningful layer of DeFi. High-TVL but low-OSS projects (custodial, TradFi-linked) are excluded or downweighted. This is not a census of all crypto developers; it is a structured analysis of visible OSS flows across the projects that matter most by locked capital.
-
-    **Methodology.** "Qualified" developer = 12+ months sustained contribution to a top project. Onboarding = first month of home project activity; offboarding = 6+ months inactive. Activity data: 2018 through early 2026, via OpenDevData ecosystem mappings and GitHub Archive.
-    """
-
-    _insights = f"""
-    1. {headline_1}.
-    2. {headline_2}.
-    3. {headline_3}.
-    4. {headline_4}.
-    """
-
-    mo.accordion({
-        "Context": _context,
-        "Key Insights": _insights,
-        "Data Sources": """
-        - [DefiLlama](https://defillama.com/) - Top 50 DeFi protocols by TVL
-        - [OSS Directory](https://github.com/opensource-observer/oss-directory) - Protocol to GitHub mapping
-        - [OpenDevData (Electric Capital)](https://github.com/electric-capital/crypto-ecosystems) - Ecosystem classifications
-        - [GitHub Archive](https://www.gharchive.org/) - Developer activity events
-        - [OSO API](https://docs.opensource.observer/) - Data pipeline and metrics
-        """
-    })
     return
 
 
