@@ -8,7 +8,6 @@ app = marimo.App(width="full")
 def _(mo):
     mo.md("""
     # Lifecycle
-    <small>Owner: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">OSO Team</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">2026-02-17</span></small>
 
     The **lifecycle metric** classifies developers into stages based on their activity patterns, enabling analysis of developer journeys, churn prediction, and ecosystem health monitoring.
 

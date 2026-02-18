@@ -8,7 +8,6 @@ app = marimo.App(width="full")
 def _(mo):
     mo.md("""
     # Retention
-    <small>Owner: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">OSO Team</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">2026-02-17</span></small>
 
     The **retention metric** measures what percentage of developers who joined an ecosystem in a given
     cohort remain active over time. It answers: "Of developers who first contributed in Month X, how many

@@ -8,7 +8,6 @@ app = marimo.App(width="full")
 def _(mo):
     mo.md("""
     # Alignment
-    <small>Owner: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">OSO Team</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">2026-02-17</span></small>
 
     The **alignment metric** measures how a developer's activity is distributed across ecosystems.
     It answers: "What percentage of this developer's work goes to each ecosystem?"
@@ -130,7 +129,7 @@ def live_stats(mo, pyoso_db_conn, live_ecosystem):
                 ON rda.repo_id = err.repo_id
             JOIN oso.stg_opendevdata__ecosystems AS e
                 ON err.ecosystem_id = e.id
-            WHERE rda.day = CURRENT_DATE - INTERVAL '1' DAY
+            WHERE rda.day = (SELECT MAX(day) FROM oso.stg_opendevdata__repo_developer_28d_activities)
             GROUP BY 1, 2
         ),
         developer_totals AS (
@@ -187,7 +186,7 @@ def live_chart(mo, pyoso_db_conn, live_ecosystem, apply_ec_style, EC_COLORS):
                 ON rda.repo_id = err.repo_id
             JOIN oso.stg_opendevdata__ecosystems AS e
                 ON err.ecosystem_id = e.id
-            WHERE rda.day = CURRENT_DATE - INTERVAL '1' DAY
+            WHERE rda.day = (SELECT MAX(day) FROM oso.stg_opendevdata__repo_developer_28d_activities)
             GROUP BY 1, 2
         ),
         developer_totals AS (

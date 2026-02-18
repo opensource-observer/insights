@@ -8,7 +8,6 @@ app = marimo.App(width="full")
 def _(mo):
     mo.md("""
     # Activity
-    <small>Owner: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">OSO Team</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">2026-02-17</span></small>
 
     The **Monthly Active Developer (MAD)** metric measures unique developers contributing code within a rolling 28-day window — the standard metric from the [Electric Capital Developer Report](https://www.developerreport.com).
 
