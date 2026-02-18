@@ -527,7 +527,7 @@ def _(mo):
     - **Developers**: [developers.py](../models/developers.py) — Unified developer identities
 
     **Insights**
-    - [DeFi Developer Journeys](../../insights/defi-developer-journeys.py) — Developer flows across ecosystems
+    - [DeFi Developer Journeys](/insights/defi-developer-journeys) — Developer flows across ecosystems
     """)
     return
 

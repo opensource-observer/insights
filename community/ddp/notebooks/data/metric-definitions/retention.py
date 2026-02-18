@@ -590,8 +590,8 @@ def _(mo):
     - **Developers**: [developers.py](../models/developers.py) — Unified developer identities
 
     **Insights**
-    - [Retention Analysis](../../insights/developer-retention.py) — Cohort retention rates by ecosystem
-    - [DeFi Developer Journeys](../../insights/defi-developer-journeys.py) — Developer flows in DeFi
+    - [Retention Analysis](/insights/developer-retention) — Cohort retention rates by ecosystem
+    - [DeFi Developer Journeys](/insights/defi-developer-journeys) — Developer flows in DeFi
     """)
     return
 

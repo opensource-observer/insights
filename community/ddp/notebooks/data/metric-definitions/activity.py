@@ -692,11 +692,11 @@ def _(mo):
     - **Retention**: [retention.py](./retention.py) — Cohort-based developer retention
 
     **Insights**
-    - [2025 Developer Trends](../../insights/developer-report-2025.py)
-    - [Lifecycle Analysis](../../insights/developer-lifecycle.py)
-    - [Retention Analysis](../../insights/developer-retention.py)
-    - [DeFi Developer Journeys](../../insights/defi-developer-journeys.py)
-    - [Speedrun Ethereum](../../insights/speedrun-ethereum.py)
+    - [2025 Developer Trends](/insights/developer-report-2025)
+    - [Lifecycle Analysis](/insights/developer-lifecycle)
+    - [Retention Analysis](/insights/developer-retention)
+    - [DeFi Developer Journeys](/insights/defi-developer-journeys)
+    - [Speedrun Ethereum](/insights/speedrun-ethereum)
     """)
     return
 

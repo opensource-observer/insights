@@ -544,8 +544,8 @@ def _(mo):
     - **Timeseries Metrics**: [timeseries-metrics.py](../models/timeseries-metrics.py) — Aggregated time series
 
     **Insights**
-    - [Lifecycle Analysis](../../insights/developer-lifecycle.py) — Stage transitions and ecosystem health over time
-    - [Retention Analysis](../../insights/developer-retention.py) — Cohort retention rates by ecosystem
+    - [Lifecycle Analysis](/insights/developer-lifecycle) — Stage transitions and ecosystem health over time
+    - [Retention Analysis](/insights/developer-retention) — Cohort retention rates by ecosystem
     """)
     return
 
