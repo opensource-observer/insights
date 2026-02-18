@@ -392,7 +392,7 @@ def query_all_data(mo, pd, pyoso_db_conn):
           bucket_month,
           label,
           developers_count
-        FROM int_crypto_ecosystems_developer_lifecycle_monthly_aggregated
+        FROM oso.int_crypto_ecosystems_developer_lifecycle_monthly_aggregated
         ORDER BY 1,2,3
         """,
         output=False,
@@ -419,6 +419,24 @@ def setup_constants():
         'Churned / Dormant': '#D62728',
     }
     return (LIFECYCLE_COLORS,)
+
+
+@app.cell(hide_code=True)
+def related(mo):
+    mo.md("""
+    ## Related
+
+    **Metric Definitions**
+    - [Lifecycle](../data/metric-definitions/lifecycle.py) — Developer stage definitions
+    - [Activity](../data/metric-definitions/activity.py) — Monthly Active Developer (MAD) methodology
+
+    **Other Insights**
+    - [2025 Developer Trends](./developer-report-2025.py)
+    - [Retention Analysis](./developer-retention.py)
+    - [DeFi Developer Journeys](./defi-developer-journeys.py)
+    - [Speedrun Ethereum](./speedrun-ethereum.py)
+    """)
+    return
 
 
 @app.cell(hide_code=True)
@@ -486,8 +504,6 @@ def helper_apply_ec_style():
 @app.cell(hide_code=True)
 def test_connection(mo, pyoso_db_conn):
     _test_df = mo.sql("""SELECT 1 AS test""", engine=pyoso_db_conn, output=False)
-    _status = "✅ **Database connection successful**" if len(_test_df) > 0 else "❌ **Database connection failed**"
-    mo.md(_status)
     return
 
 
