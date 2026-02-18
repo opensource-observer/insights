@@ -1,38 +1,43 @@
 import marimo
 
-__generated_with = "0.18.4"
+__generated_with = "unknown"
 app = marimo.App(width="full")
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.vstack([
-        mo.md(r"""# Developer Retention Metric Definition"""),
-        mo.md(r"""
-        This notebook documents how developer retention is measured within ecosystems.
+    mo.md("""
+    # Retention
+    <small>Owner: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">OSO Team</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">2026-02-17</span></small>
 
-        **Retention** measures what percentage of developers who joined in a given cohort remain
-        active over time. It answers the question: "Of the developers who started contributing in
-        Month X, how many are still active N months later?"
+    The **retention metric** measures what percentage of developers who joined an ecosystem in a given
+    cohort remain active over time. It answers: "Of developers who first contributed in Month X, how many
+    are still active N months later?"
 
-        Key properties:
-        - Cohort-based analysis (group developers by first contribution month)
-        - Tracks activity presence over time using OSO activity definitions
-        - Enables comparison across ecosystems and time periods
-        """),
-    ])
+    **Preview:**
+    ```sql
+    SELECT
+      cohort_month,
+      months_since_cohort,
+      active_count,
+      cohort_size,
+      retention_rate
+    FROM oso.stg_opendevdata__repo_developer_28d_activities
+    LIMIT 5
+    ```
+    """)
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""## Definition & Formula""")
+    mo.md("""## Definition & Formula""")
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""
+    mo.md("""
     ### Retention Calculation
 
     For each (developer, ecosystem) pair:
@@ -68,13 +73,13 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""## Data Models""")
+    mo.md("""## Data Models""")
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""
+    mo.md("""
     ### Underlying Tables
 
     | Table | Purpose |
@@ -123,13 +128,200 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""## Sample Queries""")
+    mo.md("""## Live Data Exploration""")
+    return
+
+
+@app.cell(hide_code=True)
+def live_selector(mo):
+    live_ecosystem = mo.ui.dropdown(
+        options=["Ethereum", "Solana", "Optimism", "Arbitrum", "Base", "Polygon"],
+        value="Ethereum",
+        label="Select Ecosystem"
+    )
+    mo.hstack([live_ecosystem], justify="start")
+    return (live_ecosystem,)
+
+
+@app.cell(hide_code=True)
+def live_stats(mo, pyoso_db_conn, live_ecosystem):
+    _df_stats = mo.sql(
+        f"""
+        WITH first_activity AS (
+            SELECT
+                rda.canonical_developer_id,
+                DATE_TRUNC('month', MIN(rda.day)) AS cohort_month
+            FROM oso.stg_opendevdata__repo_developer_28d_activities AS rda
+            JOIN oso.stg_opendevdata__ecosystems_repos_recursive AS err
+                ON rda.repo_id = err.repo_id
+            JOIN oso.stg_opendevdata__ecosystems AS e
+                ON err.ecosystem_id = e.id
+            WHERE e.name = '{live_ecosystem.value}'
+            GROUP BY 1
+        ),
+        monthly_activity AS (
+            SELECT DISTINCT
+                rda.canonical_developer_id,
+                DATE_TRUNC('month', rda.day) AS activity_month
+            FROM oso.stg_opendevdata__repo_developer_28d_activities AS rda
+            JOIN oso.stg_opendevdata__ecosystems_repos_recursive AS err
+                ON rda.repo_id = err.repo_id
+            JOIN oso.stg_opendevdata__ecosystems AS e
+                ON err.ecosystem_id = e.id
+            WHERE e.name = '{live_ecosystem.value}'
+        ),
+        cohort_sizes AS (
+            SELECT cohort_month, COUNT(*) AS cohort_size
+            FROM first_activity
+            WHERE cohort_month = DATE_TRUNC('month', DATE_ADD('month', -13, CURRENT_DATE))
+            GROUP BY 1
+        ),
+        cohort_activity AS (
+            SELECT
+                fa.cohort_month,
+                DATE_DIFF('month', fa.cohort_month, ma.activity_month) AS months_since_cohort,
+                COUNT(DISTINCT fa.canonical_developer_id) AS active_count
+            FROM first_activity fa
+            JOIN monthly_activity ma
+                ON fa.canonical_developer_id = ma.canonical_developer_id
+                AND ma.activity_month >= fa.cohort_month
+            WHERE fa.cohort_month = DATE_TRUNC('month', DATE_ADD('month', -13, CURRENT_DATE))
+            GROUP BY 1, 2
+        )
+        SELECT
+            ca.months_since_cohort,
+            ca.active_count,
+            cs.cohort_size,
+            ROUND(100.0 * ca.active_count / cs.cohort_size, 2) AS retention_rate
+        FROM cohort_activity ca
+        JOIN cohort_sizes cs ON ca.cohort_month = cs.cohort_month
+        WHERE ca.months_since_cohort <= 12
+        ORDER BY ca.months_since_cohort
+        """,
+        engine=pyoso_db_conn,
+        output=False
+    )
+
+    if len(_df_stats) == 0:
+        _ = mo.md("*No data available for this ecosystem.*")
+    else:
+        _cohort_size = int(_df_stats.iloc[0]['cohort_size']) if len(_df_stats) > 0 else 0
+        _ret_1mo = float(_df_stats[_df_stats['months_since_cohort'] == 1]['retention_rate'].iloc[0]) if len(_df_stats[_df_stats['months_since_cohort'] == 1]) > 0 else 0
+        _ret_6mo = float(_df_stats[_df_stats['months_since_cohort'] == 6]['retention_rate'].iloc[0]) if len(_df_stats[_df_stats['months_since_cohort'] == 6]) > 0 else 0
+        _ret_12mo = float(_df_stats[_df_stats['months_since_cohort'] == 12]['retention_rate'].iloc[0]) if len(_df_stats[_df_stats['months_since_cohort'] == 12]) > 0 else 0
+
+        _ = mo.hstack([
+            mo.stat(label="Cohort Size", value=f"{_cohort_size:,}", bordered=True, caption="Developers in 13-month-ago cohort"),
+            mo.stat(label="1-Month Retention", value=f"{_ret_1mo:.1f}%", bordered=True, caption="Active 1 month after joining"),
+            mo.stat(label="6-Month Retention", value=f"{_ret_6mo:.1f}%", bordered=True, caption="Active 6 months after joining"),
+            mo.stat(label="12-Month Retention", value=f"{_ret_12mo:.1f}%", bordered=True, caption="Active 12 months after joining"),
+        ], widths="equal", gap=1)
+    return
+
+
+@app.cell(hide_code=True)
+def live_chart(mo, pyoso_db_conn, live_ecosystem, apply_ec_style, EC_COLORS, pd, go):
+    _df_curves = mo.sql(
+        f"""
+        WITH first_activity AS (
+            SELECT
+                rda.canonical_developer_id,
+                DATE_TRUNC('month', MIN(rda.day)) AS cohort_month
+            FROM oso.stg_opendevdata__repo_developer_28d_activities AS rda
+            JOIN oso.stg_opendevdata__ecosystems_repos_recursive AS err
+                ON rda.repo_id = err.repo_id
+            JOIN oso.stg_opendevdata__ecosystems AS e
+                ON err.ecosystem_id = e.id
+            WHERE e.name = '{live_ecosystem.value}'
+            GROUP BY 1
+        ),
+        monthly_activity AS (
+            SELECT DISTINCT
+                rda.canonical_developer_id,
+                DATE_TRUNC('month', rda.day) AS activity_month
+            FROM oso.stg_opendevdata__repo_developer_28d_activities AS rda
+            JOIN oso.stg_opendevdata__ecosystems_repos_recursive AS err
+                ON rda.repo_id = err.repo_id
+            JOIN oso.stg_opendevdata__ecosystems AS e
+                ON err.ecosystem_id = e.id
+            WHERE e.name = '{live_ecosystem.value}'
+        ),
+        cohort_sizes AS (
+            SELECT cohort_month, COUNT(*) AS cohort_size
+            FROM first_activity
+            WHERE cohort_month >= DATE_TRUNC('month', DATE_ADD('month', -25, CURRENT_DATE))
+              AND cohort_month <= DATE_TRUNC('month', DATE_ADD('month', -13, CURRENT_DATE))
+            GROUP BY 1
+        ),
+        cohort_activity AS (
+            SELECT
+                fa.cohort_month,
+                DATE_DIFF('month', fa.cohort_month, ma.activity_month) AS months_since_cohort,
+                COUNT(DISTINCT fa.canonical_developer_id) AS active_count
+            FROM first_activity fa
+            JOIN monthly_activity ma
+                ON fa.canonical_developer_id = ma.canonical_developer_id
+                AND ma.activity_month >= fa.cohort_month
+            WHERE fa.cohort_month >= DATE_TRUNC('month', DATE_ADD('month', -25, CURRENT_DATE))
+              AND fa.cohort_month <= DATE_TRUNC('month', DATE_ADD('month', -13, CURRENT_DATE))
+            GROUP BY 1, 2
+        )
+        SELECT
+            ca.cohort_month,
+            ca.months_since_cohort,
+            ca.active_count,
+            cs.cohort_size,
+            ROUND(100.0 * ca.active_count / cs.cohort_size, 2) AS retention_rate
+        FROM cohort_activity ca
+        JOIN cohort_sizes cs ON ca.cohort_month = cs.cohort_month
+        WHERE ca.months_since_cohort <= 12
+        ORDER BY ca.cohort_month, ca.months_since_cohort
+        """,
+        engine=pyoso_db_conn,
+        output=False
+    )
+
+    if len(_df_curves) == 0:
+        _ = mo.md("*No data available for this ecosystem.*")
+    else:
+        _df_curves['cohort_label'] = pd.to_datetime(_df_curves['cohort_month']).dt.strftime('%b %Y')
+        _palette = [EC_COLORS['light_blue'], EC_COLORS['medium_blue'], EC_COLORS['dark_blue'],
+                    EC_COLORS['orange'], '#7FB3D3']
+
+        _fig = go.Figure()
+        for _i, _cohort in enumerate(_df_curves['cohort_label'].unique()):
+            _subset = _df_curves[_df_curves['cohort_label'] == _cohort]
+            _fig.add_trace(go.Scatter(
+                x=_subset['months_since_cohort'],
+                y=_subset['retention_rate'],
+                mode='lines+markers',
+                name=_cohort,
+                line=dict(color=_palette[_i % len(_palette)], width=2),
+                marker=dict(size=6)
+            ))
+
+        apply_ec_style(
+            _fig,
+            title=f"Developer Retention Curves: {live_ecosystem.value}",
+            subtitle="Percentage of cohort still active each month",
+            y_title="Retention Rate (%)"
+        )
+        _fig.update_xaxes(tickformat="d", title="Months Since First Contribution")
+        _fig.update_yaxes(range=[0, 105], tickformat=".0f")
+
+        _ = mo.ui.plotly(_fig, config={'displayModeBar': False})
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""### Query 1: Build Cohort Retention Table""")
+    mo.md("""## Sample Queries""")
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""### Query 1: Build Cohort Retention Table""")
     return
 
 
@@ -140,10 +332,10 @@ def _(mo, pyoso_db_conn, ecosystem_selector):
         SELECT
             rda.canonical_developer_id,
             DATE_TRUNC('month', MIN(rda.day)) AS cohort_month
-        FROM stg_opendevdata__repo_developer_28d_activities AS rda
-        JOIN stg_opendevdata__ecosystems_repos_recursive AS err
+        FROM oso.stg_opendevdata__repo_developer_28d_activities AS rda
+        JOIN oso.stg_opendevdata__ecosystems_repos_recursive AS err
             ON rda.repo_id = err.repo_id
-        JOIN stg_opendevdata__ecosystems AS e
+        JOIN oso.stg_opendevdata__ecosystems AS e
             ON err.ecosystem_id = e.id
         WHERE e.name = '{ecosystem_selector.value}'
         GROUP BY 1
@@ -153,10 +345,10 @@ def _(mo, pyoso_db_conn, ecosystem_selector):
         SELECT DISTINCT
             rda.canonical_developer_id,
             DATE_TRUNC('month', rda.day) AS activity_month
-        FROM stg_opendevdata__repo_developer_28d_activities AS rda
-        JOIN stg_opendevdata__ecosystems_repos_recursive AS err
+        FROM oso.stg_opendevdata__repo_developer_28d_activities AS rda
+        JOIN oso.stg_opendevdata__ecosystems_repos_recursive AS err
             ON rda.repo_id = err.repo_id
-        JOIN stg_opendevdata__ecosystems AS e
+        JOIN oso.stg_opendevdata__ecosystems AS e
             ON err.ecosystem_id = e.id
         WHERE e.name = '{ecosystem_selector.value}'
     ),
@@ -228,7 +420,7 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""### Query 2: Retention Curves Visualization""")
+    mo.md("""### Query 2: Retention Curves Visualization""")
     return
 
 
@@ -276,7 +468,7 @@ def _(df_retention, ecosystem_selector, mo, px):
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""### Query 3: Cross-Ecosystem Retention Comparison""")
+    mo.md("""### Query 3: Cross-Ecosystem Retention Comparison""")
     return
 
 
@@ -288,10 +480,10 @@ def _(mo, pyoso_db_conn, px):
             rda.canonical_developer_id,
             e.name AS ecosystem,
             DATE_TRUNC('month', MIN(rda.day)) AS cohort_month
-        FROM stg_opendevdata__repo_developer_28d_activities AS rda
-        JOIN stg_opendevdata__ecosystems_repos_recursive AS err
+        FROM oso.stg_opendevdata__repo_developer_28d_activities AS rda
+        JOIN oso.stg_opendevdata__ecosystems_repos_recursive AS err
             ON rda.repo_id = err.repo_id
-        JOIN stg_opendevdata__ecosystems AS e
+        JOIN oso.stg_opendevdata__ecosystems AS e
             ON err.ecosystem_id = e.id
         WHERE e.name IN ('Ethereum', 'Solana')
         GROUP BY 1, 2
@@ -302,10 +494,10 @@ def _(mo, pyoso_db_conn, px):
             rda.canonical_developer_id,
             e.name AS ecosystem,
             DATE_TRUNC('month', rda.day) AS activity_month
-        FROM stg_opendevdata__repo_developer_28d_activities AS rda
-        JOIN stg_opendevdata__ecosystems_repos_recursive AS err
+        FROM oso.stg_opendevdata__repo_developer_28d_activities AS rda
+        JOIN oso.stg_opendevdata__ecosystems_repos_recursive AS err
             ON rda.repo_id = err.repo_id
-        JOIN stg_opendevdata__ecosystems AS e
+        JOIN oso.stg_opendevdata__ecosystems AS e
             ON err.ecosystem_id = e.id
         WHERE e.name IN ('Ethereum', 'Solana')
     ),
@@ -386,7 +578,7 @@ def _(mo, pyoso_db_conn, px):
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""### Query 4: Retention by Cohort Year Summary""")
+    mo.md("""### Query 4: Retention by Cohort Year Summary""")
     return
 
 
@@ -397,10 +589,10 @@ def _(mo, pyoso_db_conn, ecosystem_selector):
         SELECT
             rda.canonical_developer_id,
             DATE_TRUNC('year', MIN(rda.day)) AS cohort_year
-        FROM stg_opendevdata__repo_developer_28d_activities AS rda
-        JOIN stg_opendevdata__ecosystems_repos_recursive AS err
+        FROM oso.stg_opendevdata__repo_developer_28d_activities AS rda
+        JOIN oso.stg_opendevdata__ecosystems_repos_recursive AS err
             ON rda.repo_id = err.repo_id
-        JOIN stg_opendevdata__ecosystems AS e
+        JOIN oso.stg_opendevdata__ecosystems AS e
             ON err.ecosystem_id = e.id
         WHERE e.name = '{ecosystem_selector.value}'
         GROUP BY 1
@@ -411,11 +603,11 @@ def _(mo, pyoso_db_conn, ecosystem_selector):
             fa.canonical_developer_id,
             fa.cohort_year
         FROM first_activity fa
-        JOIN stg_opendevdata__repo_developer_28d_activities rda
+        JOIN oso.stg_opendevdata__repo_developer_28d_activities rda
             ON fa.canonical_developer_id = rda.canonical_developer_id
-        JOIN stg_opendevdata__ecosystems_repos_recursive err
+        JOIN oso.stg_opendevdata__ecosystems_repos_recursive err
             ON rda.repo_id = err.repo_id
-        JOIN stg_opendevdata__ecosystems e
+        JOIN oso.stg_opendevdata__ecosystems e
             ON err.ecosystem_id = e.id
         WHERE e.name = '{ecosystem_selector.value}'
             AND rda.day >= fa.cohort_year + INTERVAL '6' MONTH
@@ -427,11 +619,11 @@ def _(mo, pyoso_db_conn, ecosystem_selector):
             fa.canonical_developer_id,
             fa.cohort_year
         FROM first_activity fa
-        JOIN stg_opendevdata__repo_developer_28d_activities rda
+        JOIN oso.stg_opendevdata__repo_developer_28d_activities rda
             ON fa.canonical_developer_id = rda.canonical_developer_id
-        JOIN stg_opendevdata__ecosystems_repos_recursive err
+        JOIN oso.stg_opendevdata__ecosystems_repos_recursive err
             ON rda.repo_id = err.repo_id
-        JOIN stg_opendevdata__ecosystems e
+        JOIN oso.stg_opendevdata__ecosystems e
             ON err.ecosystem_id = e.id
         WHERE e.name = '{ecosystem_selector.value}'
             AND rda.day >= fa.cohort_year + INTERVAL '12' MONTH
@@ -477,13 +669,13 @@ def _(mo, pyoso_db_conn, ecosystem_selector):
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""## Example Use Cases""")
+    mo.md("""## Example Use Cases""")
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""
+    mo.md("""
     ### Use Case 1: Measure Program Effectiveness
 
     Compare retention of developers who participated in an educational program vs. control group:
@@ -530,13 +722,13 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""## Methodology Notes""")
+    mo.md("""## Methodology Notes""")
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""
+    mo.md("""
     ### Retention Calculation Considerations
 
     | Factor | Current Approach | Alternative |
@@ -565,10 +757,94 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Related Models
+
+    **Metric Definitions**
+    - **Activity**: [activity.py](./activity.py) — MAD metric methodology
+    - **Lifecycle**: [lifecycle.py](./lifecycle.py) — Developer stage definitions
+    - **Alignment**: [alignment.py](./alignment.py) — Developer ecosystem alignment
+
+    **Data Models**
+    - **Ecosystems**: [ecosystems.py](../models/ecosystems.py) — Ecosystem definitions and hierarchy
+    - **Developers**: [developers.py](../models/developers.py) — Unified developer identities
+
+    **Insights**
+    - [Retention Analysis](../../insights/developer-retention.py) — Cohort retention rates by ecosystem
+    - [DeFi Developer Journeys](../../insights/defi-developer-journeys.py) — Developer flows in DeFi
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _():
+    def apply_ec_style(fig, title=None, subtitle=None, y_title=None, show_legend=True):
+        """Apply Electric Capital chart styling to a plotly figure."""
+        title_text = ""
+        if title:
+            title_text = f"<b>{title}</b>"
+            if subtitle:
+                title_text += f"<br><span style='font-size:14px;color:#666666'>{subtitle}</span>"
+        fig.update_layout(
+            title=dict(
+                text=title_text,
+                font=dict(size=20, color="#1B4F72", family="Arial, sans-serif"),
+                x=0, xanchor="left", y=0.95, yanchor="top"
+            ) if title else None,
+            template='plotly_white',
+            font=dict(family="Arial, sans-serif", size=12, color="#333"),
+            plot_bgcolor='white',
+            paper_bgcolor='white',
+            margin=dict(t=100 if title else 40, l=70, r=40, b=60),
+            hovermode='x unified',
+            showlegend=show_legend,
+            legend=dict(
+                orientation="h", yanchor="bottom", y=1.02,
+                xanchor="right", x=1, bgcolor="rgba(255,255,255,0.8)"
+            )
+        )
+        fig.update_xaxes(
+            showgrid=False, showline=True,
+            linecolor="#CCCCCC", linewidth=1,
+            tickfont=dict(size=11, color="#666"),
+            title=""
+        )
+        fig.update_yaxes(
+            showgrid=True, gridcolor="#E8E8E8", gridwidth=1,
+            showline=True, linecolor="#CCCCCC", linewidth=1,
+            tickfont=dict(size=11, color="#666"),
+            title=y_title or "",
+            title_font=dict(size=12, color="#666"),
+            tickformat=",d"
+        )
+        return fig
+    return (apply_ec_style,)
+
+
+@app.cell(hide_code=True)
+def _():
+    EC_COLORS = {
+        'light_blue': '#7EB8DA',
+        'light_blue_fill': 'rgba(126, 184, 218, 0.4)',
+        'dark_blue': '#1B4F72',
+        'medium_blue': '#5499C7',
+        'orange': '#F5B041',
+    }
+    return (EC_COLORS,)
+
+
+@app.cell(hide_code=True)
 def _():
     import pandas as pd
+    import plotly.graph_objects as go
+    return pd, go
+
+
+@app.cell(hide_code=True)
+def _():
     import plotly.express as px
-    return pd, px
+    return (px,)
 
 
 @app.cell(hide_code=True)
