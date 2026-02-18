@@ -12,3 +12,8 @@ dependencies = [
 
 [tool.marimo.runtime]
 dotenv = [".env", ".env.testing"]
+
+[dependency-groups]
+dev = [
+    "playwright",
+]

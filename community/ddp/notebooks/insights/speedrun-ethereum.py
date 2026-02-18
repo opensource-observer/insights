@@ -1,18 +1,20 @@
 import marimo
 
 __generated_with = "unknown"
-app = marimo.App()
+app = marimo.App(width="full")
 
 
 @app.cell(hide_code=True)
 def _(df_sre_users_all, mo):
     _team = "OSO Team"
-    _date = "18 December 2025"
+    _date = "17 February 2026"
 
     mo.vstack([
         mo.md(f"""
-        # **Case Study: Speedrun Ethereum**
-        <small>Author: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">{_team}</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">{_date}</span></small>
+        # Case Study: Speedrun Ethereum
+        <small>Owner: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">{_team}</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">{_date}</span></small>
+
+        Read an in-depth case study on the role Speedrun Ethereum has played to onboard new developers.
         """),
         mo.md("""
 
@@ -459,20 +461,22 @@ def process_dev_velocity(SRE_BASE, SRE_GREEN, np, pd, px):
         )
         fig.update_xaxes(
             showline=True,
-            linewidth=1.5,
-            linecolor="black",
+            linewidth=1,
+            linecolor="#1F2937",
             ticks="outside",
-            tickwidth=1.5,
-            tickcolor="black",
+            tickwidth=1,
+            tickcolor="#1F2937",
             ticklen=6,
         )
         fig.update_yaxes(
             showline=True,
-            linewidth=1.5,
-            linecolor="black",
+            linewidth=1,
+            linecolor="#1F2937",
+            showgrid=True,
+            gridcolor="#E5E7EB",
             ticks="outside",
-            tickwidth=1.5,
-            tickcolor="black",
+            tickwidth=1,
+            tickcolor="#1F2937",
             ticklen=6,
             rangemode="tozero"
         )
@@ -636,20 +640,22 @@ def _(
     )
     _fig.update_xaxes(
         showline=True,
-        linewidth=1.5,
-        linecolor="black",
+        linewidth=1,
+        linecolor="#1F2937",
         ticks="outside",
-        tickwidth=1.5,
-        tickcolor="black",
+        tickwidth=1,
+        tickcolor="#1F2937",
         ticklen=6,
     )
     _fig.update_yaxes(
         showline=True,
-        linewidth=1.5,
-        linecolor="black",
+        linewidth=1,
+        linecolor="#1F2937",
+        showgrid=True,
+        gridcolor="#E5E7EB",
         ticks="outside",
-        tickwidth=1.5,
-        tickcolor="black",
+        tickwidth=1,
+        tickcolor="#1F2937",
         ticklen=6,
         rangemode="tozero"
     )
@@ -869,13 +875,13 @@ def _(
             horizontal_spacing=0.02,
         )
         fig.update_xaxes(
-            showline=True, linewidth=1.5, linecolor="black",
-            ticks="outside", tickwidth=1.5, tickcolor="black", ticklen=6,
+            showline=True, linewidth=1, linecolor="#1F2937",
+            ticks="outside", tickwidth=1, tickcolor="#1F2937", ticklen=6,
             range=[0, x_max],
         )
         fig.update_yaxes(
-            showline=True, linewidth=1.5, linecolor="black",
-            ticks="outside", tickwidth=1.5, tickcolor="black", ticklen=6,
+            showline=True, linewidth=1, linecolor="#1F2937",
+            ticks="outside", tickwidth=1, tickcolor="#1F2937", ticklen=6,
             autorange="reversed",
         )
 
@@ -1020,21 +1026,23 @@ def _(SRE_GREEN, SRE_PINK, SRE_YELLOW, ecosystem_options, px):
         )
         fig.update_xaxes(
             showline=True,
-            linewidth=1.5,
-            linecolor="black",
+            linewidth=1,
+            linecolor="#1F2937",
             ticks="outside",
-            tickwidth=1.5,
-            tickcolor="black",
+            tickwidth=1,
+            tickcolor="#1F2937",
             ticklen=6,
             dtick=1
         )
         fig.update_yaxes(
             showline=True,
-            linewidth=1.5,
-            linecolor="black",
+            linewidth=1,
+            linecolor="#1F2937",
+            showgrid=True,
+            gridcolor="#E5E7EB",
             ticks="outside",
-            tickwidth=1.5,
-            tickcolor="black",
+            tickwidth=1,
+            tickcolor="#1F2937",
             ticklen=6,
             rangemode="tozero"
         )
@@ -1107,21 +1115,23 @@ def _(SRE_GREEN, SRE_PINK, SRE_YELLOW, ecosystem_options, px):
         )
         fig.update_xaxes(
             showline=True,
-            linewidth=1.5,
-            linecolor="black",
+            linewidth=1,
+            linecolor="#1F2937",
             ticks="outside",
-            tickwidth=1.5,
-            tickcolor="black",
+            tickwidth=1,
+            tickcolor="#1F2937",
             ticklen=6,
             dtick=1
         )
         fig.update_yaxes(
             showline=True,
-            linewidth=1.5,
-            linecolor="black",
+            linewidth=1,
+            linecolor="#1F2937",
+            showgrid=True,
+            gridcolor="#E5E7EB",
             ticks="outside",
-            tickwidth=1.5,
-            tickcolor="black",
+            tickwidth=1,
+            tickcolor="#1F2937",
             ticklen=6,
             rangemode="tozero"
         )
@@ -1344,20 +1354,22 @@ def _(
     )
     _fig.update_xaxes(
         showline=True,
-        linewidth=1.5,
-        linecolor="black",
+        linewidth=1,
+        linecolor="#1F2937",
         ticks="outside",
-        tickwidth=1.5,
-        tickcolor="black",
+        tickwidth=1,
+        tickcolor="#1F2937",
         ticklen=6,
     )
     _fig.update_yaxes(
         showline=True,
-        linewidth=1.5,
-        linecolor="black",
+        linewidth=1,
+        linecolor="#1F2937",
+        showgrid=True,
+        gridcolor="#E5E7EB",
         ticks="outside",
-        tickwidth=1.5,
-        tickcolor="black",
+        tickwidth=1,
+        tickcolor="#1F2937",
         ticklen=6,
         rangemode="tozero"
     )

@@ -1,16 +1,16 @@
 import marimo
 
-__generated_with = "0.19.8"
+__generated_with = "unknown"
 app = marimo.App(width="full")
 
 
 @app.cell(hide_code=True)
 def header_title(mo):
     mo.md(r"""
-    # Ethereum's DeFi Developer Journeys
-    *Ethereum isn't losing developers — it's gaining them. But the pipeline that feeds its growth is narrowing.*
+    # DeFi Developer Journeys
+    <small>Owner: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">OSO Team</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">2026-02-17</span></small>
 
-    <small>Owner: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">Ethereum</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">2026-02-12</span></small>
+    Analyze the health of the DeFi developer pipeline, working backwards from the top 50 projects on Ethereum and other L1s.
     """)
     return
 

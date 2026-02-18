@@ -7,11 +7,10 @@ app = marimo.App(width="full")
 @app.cell(hide_code=True)
 def header_title(mo):
     mo.md(r"""
-    # Crypto Developer Report 2025
-    <small>Owner: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">OSO</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">2026-02-02</span></small>
+    # 2025 Developer Trends
+    <small>Owner: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">OSO Team</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">2026-02-17</span></small>
 
-    An interactive analysis of crypto developer activity trends, faithfully reproducing highlights from the
-    [Electric Capital Developer Report](https://www.developerreport.com) with 2025 data.
+    Explore an interactive reproduction of the [Electric Capital Developer Report](https://www.developerreport.com), updated with 2025 data.
     """)
     return
 
@@ -131,7 +130,7 @@ def helper_apply_ec_style():
         fig.update_xaxes(
             showgrid=False,
             showline=True,
-            linecolor="#CCCCCC",
+            linecolor="#1F2937",
             linewidth=1,
             tickfont=dict(size=11, color="#666"),
             title="",
@@ -141,10 +140,10 @@ def helper_apply_ec_style():
         # Style y-axis (light gridlines, clean labels)
         fig.update_yaxes(
             showgrid=True,
-            gridcolor="#E8E8E8",
+            gridcolor="#E5E7EB",
             gridwidth=1,
             showline=True,
-            linecolor="#CCCCCC",
+            linecolor="#1F2937",
             linewidth=1,
             tickfont=dict(size=11, color="#666"),
             title=y_title if y_title else "",
