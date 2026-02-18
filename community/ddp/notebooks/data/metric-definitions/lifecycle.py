@@ -8,6 +8,7 @@ app = marimo.App(width="full")
 def _(mo):
     mo.md("""
     # Lifecycle
+    <small>Owner: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">OSO Team</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">2026-02-17</span></small>
 
     The **lifecycle metric** classifies developers into stages based on their activity patterns, enabling analysis of developer journeys, churn prediction, and ecosystem health monitoring.
 
@@ -525,6 +526,10 @@ def _(mo):
     - **Ecosystems**: [ecosystems.py](../models/ecosystems.py) — Ecosystem definitions and hierarchy
     - **Developers**: [developers.py](../models/developers.py) — Unified developer identities
     - **Timeseries Metrics**: [timeseries-metrics.py](../models/timeseries-metrics.py) — Aggregated time series
+
+    **Insights**
+    - [Lifecycle Analysis](../../insights/developer-lifecycle.py) — Stage transitions and ecosystem health over time
+    - [Retention Analysis](../../insights/developer-retention.py) — Cohort retention rates by ecosystem
     """)
     return
 
