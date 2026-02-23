@@ -83,7 +83,7 @@ Each notebook follows a standardized template structure:
 ```python
 import marimo
 
-__generated_with = "0.18.4"
+__generated_with = "unknown"
 app = marimo.App(width="full")
 
 @app.cell

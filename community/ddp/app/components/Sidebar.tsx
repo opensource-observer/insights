@@ -13,6 +13,7 @@ interface NavItem {
 const navItems: NavItem[] = [
   { label: 'Home', href: '/' },
   { label: 'Quick Start', href: '/quick-start' },
+  { label: 'Agent Guide', href: '/agent-guide' },
   { label: 'Publications', href: '/publications' },
   {
     label: 'Data',
@@ -49,7 +50,6 @@ const navItems: NavItem[] = [
           { label: 'Retention', href: '/data/metric-definitions/retention' },
         ],
       },
-      { label: 'Agent Workflows', href: '/data/agent-workflows' },
     ],
   },
   {
@@ -88,10 +88,12 @@ function ChevronIcon({ className }: { className?: string }) {
 
 function NavSection({ item, pathname, level = 0 }: { item: NavItem; pathname: string; level?: number }) {
   const [isOpen, setIsOpen] = useState(
-    item.children?.some((child) =>
-      child.href === pathname ||
-      child.children?.some((grandchild) => grandchild.href === pathname)
-    ) || false
+    level === 0
+      ? true
+      : (item.children?.some((child) =>
+          child.href === pathname ||
+          child.children?.some((grandchild) => grandchild.href === pathname)
+        ) || false)
   );
   const isActive = pathname === item.href || (pathname.startsWith(item.href + '/') && item.href !== '/');
   const isExactActive = pathname === item.href;
