@@ -6,36 +6,50 @@ app = marimo.App(width="full")
 
 @app.cell(hide_code=True)
 def header_title(mo):
-    mo.md(r"""
-    # Crypto Developer Report 2025
-    <small>Owner: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">OSO</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">2026-02-02</span></small>
+    mo.md("""
+    # 2025 Developer Trends
+    <small>Owner: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">OSO Team</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">2026-02-17</span></small>
 
-    An interactive analysis of crypto developer activity trends, faithfully reproducing highlights from the
-    [Electric Capital Developer Report](https://www.developerreport.com) with 2025 data.
+    Explore an interactive reproduction of the [Electric Capital Developer Report](https://www.developerreport.com), updated with 2025 data.
     """)
     return
 
 
 @app.cell(hide_code=True)
-def header_context_accordion(mo):
+def header_accordion(mo):
     mo.accordion({
-        "Context": """
-        - This analysis covers monthly active developers across all crypto ecosystems
-        - Data source: Open Dev Data (Electric Capital) via OSO data warehouse
-        - Time period: January 2015 to December 2025 (full historical data)
-        - Developers are original code authors (merge/PR integrators are not counted unless they authored commits)
-        - Monthly active developers are measured using a 28-day rolling activity window
-        """,
-        "Data Sources": """
-        - [Open Dev Data](https://github.com/electric-capital/crypto-ecosystems) - Electric Capital
-        - [OSO API](https://docs.oso.xyz/) - Data pipeline and metrics
-        - [2023 Developer Report](https://www.developerreport.com) - Reference methodology
-        """,
-        "Limitations": """
-        - Uses curated Open Dev Data repository set (not comprehensive GitHub coverage)
-        - Developer identity resolution may miss some connections
-        - Data freshness depends on Open Dev Data and OSO pipeline updates
-        """
+        "Overview": mo.md("""
+- As of December 2025, the total number of monthly active developers (MADs) across all crypto ecosystems reached its highest recorded level, driven by growth in newer chains and Layer 2s
+- Ethereum remains the largest single ecosystem by MAD count, though its share of total crypto developers continued to decline as multi-chain activity increases
+- Newcomer developers (those active for less than 1 year) represented a significant portion of 2025 MADs, indicating continued onboarding despite broader market fluctuations
+- Full-time developers (active 10+ months of the year) showed resilience, with retention rates improving year-over-year compared to the 2022-2023 downturn
+        """),
+        "Context": mo.md("""
+- This analysis covers monthly active developers across all crypto ecosystems
+- Data source: Open Dev Data (Electric Capital) via OSO data warehouse
+- Time period: January 2015 to December 2025 (full historical data)
+- Developers are original code authors (merge/PR integrators are not counted unless they authored commits)
+- Monthly active developers are measured using a 28-day rolling activity window
+- Uses curated Open Dev Data repository set (not comprehensive GitHub coverage)
+- Developer identity resolution may miss some connections across accounts or pseudonyms
+- Data freshness depends on Open Dev Data and OSO pipeline update cadence
+
+**Metric Definitions**
+- [Activity](/data/metric-definitions/activity) — Monthly Active Developer (MAD) methodology
+
+**Methodology**
+- **Developers**: Original code authors only (merge/PR integrators excluded unless they authored commits)
+- **Monthly Active Developers**: 28-day rolling activity window
+- **Tenure Categories**: Newcomers (< 1 year), Emerging (1–2 years), Established (2+ years)
+- **Activity Levels**: Full-time (sustained activity over 84-day window), Part-time (intermittent), One-time (sporadic)
+
+> This analysis is inspired by the [Electric Capital Developer Report](https://www.developerreport.com). Data sourced from Open Dev Data via the OSO data warehouse.
+        """),
+        "Data Sources": mo.md("""
+- **Open Dev Data** — Electric Capital's developer activity dataset, [github.com/electric-capital/crypto-ecosystems](https://github.com/electric-capital/crypto-ecosystems)
+- **OSO API** — Data pipeline and metrics, [docs.oso.xyz](https://docs.oso.xyz/)
+- **Key Models** — `oso.stg_opendevdata__eco_mads`, `oso.stg_opendevdata__ecosystems`
+        """),
     })
     return
 
@@ -131,7 +145,7 @@ def helper_apply_ec_style():
         fig.update_xaxes(
             showgrid=False,
             showline=True,
-            linecolor="#CCCCCC",
+            linecolor="#1F2937",
             linewidth=1,
             tickfont=dict(size=11, color="#666"),
             title="",
@@ -141,10 +155,10 @@ def helper_apply_ec_style():
         # Style y-axis (light gridlines, clean labels)
         fig.update_yaxes(
             showgrid=True,
-            gridcolor="#E8E8E8",
+            gridcolor="#E5E7EB",
             gridwidth=1,
             showline=True,
-            linecolor="#CCCCCC",
+            linecolor="#1F2937",
             linewidth=1,
             tickfont=dict(size=11, color="#666"),
             title=y_title if y_title else "",
@@ -221,8 +235,6 @@ def helper_add_tenure_legend():
 @app.cell(hide_code=True)
 def test_connection(mo, pyoso_db_conn):
     _test_df = mo.sql("""SELECT 1 AS test""", engine=pyoso_db_conn, output=False)
-    _status = "✅ **Database connection successful**" if len(_test_df) > 0 else "❌ **Database connection failed**"
-    mo.md(_status)
     return
 
 
@@ -1536,31 +1548,6 @@ def comparison_chart(
         _output = mo.ui.plotly(_fig, config={"displayModeBar": False})
 
     _output
-    return
-
-
-@app.cell(hide_code=True)
-def footer(mo):
-    mo.md("""
-    ---
-
-    ## Methodology
-
-    - **Developers**: We count original code authors as developers. A developer who merges a pull request is not an active developer on the project unless they authored commits.
-    - **Monthly Active Developers**: Measured using a 28-day rolling window to provide more stable metrics over time.
-    - **Tenure Categories**:
-      - Newcomers: < 1 year active in crypto
-      - Emerging: 1-2 years active
-      - Established: 2+ years active
-    - **Activity Levels**:
-      - Full-Time Contributors: consistently active across multiple weeks based on sustained activity patterns over an 84-day rolling window
-      - Part-Time Contributors: intermittently active with regular contributions over an 84-day rolling window
-      - One-Time Contributors: minimal or sporadic activity over an 84-day rolling window
-      - *Note*: In the report methodology, “full-time” behavior is commonly operationalized as contributing code on 10+ days in a rolling 28-day period (and analyzed for persistence over longer windows).
-          
-    > This analysis is inspired by and seeks to reproduce highlights from the [Electric Capital Developer Report](https://www.developerreport.com).
-    Data sourced from Open Dev Data via the OSO data warehouse.
-    """)
     return
 
 

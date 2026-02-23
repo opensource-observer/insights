@@ -1,37 +1,83 @@
 import marimo
 
-__generated_with = "0.18.4"
+__generated_with = "unknown"
 app = marimo.App(width="full")
 
 
 @app.cell(hide_code=True)
-def _(mo):
-    mo.vstack([
-        mo.md(r"""# Developer Retention Dashboard"""),
-        mo.md(r"""
-        Comprehensive retention analysis by ecosystem and cohort year. This dashboard helps answer:
+def header_title(mo):
+    mo.md("""
+    # Retention Analysis
+    <small>Owner: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">OSO Team</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">2026-02-17</span></small>
 
-        - What percentage of developers who joined in Year X are still active after N years?
-        - Is retention improving or declining over time?
-        - How does our ecosystem compare to others?
+    Analyze developer retention by ecosystem and cohort year — what percentage of developers who joined in Year X are still active after N years?
+    """)
+    return
 
-        **Methodology**: Retention is calculated as the percentage of developers from a cohort
-        (defined by first contribution date) who remain active in subsequent periods.
+
+@app.cell(hide_code=True)
+def header_accordion(mo):
+    mo.accordion({
+        "Overview": mo.md("""
+- This notebook analyzes developer retention by cohort year: what share of developers who joined ecosystem X in year Y are still active after N years?
+- Retention is measured as the percentage of the original cohort active in subsequent years (Year 0 = always 100%)
+- Industry benchmarks for context:
+
+| Timeframe | Open Source | Strong OSS Ecosystem |
+|:-----------|:------------|:---------------------|
+| 1 year | ~15% | 25-35% |
+| 2 years | ~8% | 15-20% |
         """),
-    ])
+        "Context": mo.md("""
+**Definitions**
+
+- **Cohort**: Developers grouped by the year (or month) of their first contribution to the ecosystem
+- **Retention Rate**: Percentage of the original cohort that remains active in subsequent periods
+- **Years Since Join**: Time elapsed since first contribution (Year 0 = joined year, always 100%)
+
+**Methodology**
+
+1. **Cohort Assignment**: Each developer is assigned to a cohort based on their first contribution date
+2. **Activity Tracking**: We track whether the developer had any activity in subsequent time periods
+3. **Retention Rate**: Percentage of the original cohort that remains active
+
+**Limitations**
+
+- Multi-ecosystem developers may churn from one ecosystem but remain active in another
+- Identity resolution is based on Electric Capital's developer fingerprinting
+- Newer cohorts have less retention history to analyze
+
+**Metric Definitions**
+- [Retention](/data/metric-definitions/retention) — Cohort-based retention methodology
+- [Activity](/data/metric-definitions/activity) — Monthly Active Developer (MAD) methodology
+        """),
+        "Data Sources": mo.md("""
+- **Open Dev Data (Electric Capital)** — Developer activity data, [github.com/electric-capital/crypto-ecosystems](https://github.com/electric-capital/crypto-ecosystems)
+- **Key Models** — `oso.stg_opendevdata__repo_developer_28d_activities`, `oso.stg_opendevdata__ecosystems_repos_recursive`
+        """),
+    })
     return
 
 
 @app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""## Ecosystem & Cohort Selection""")
+def test_connection(mo, pyoso_db_conn):
+    _test_df = mo.sql("""SELECT 1 AS test""", engine=pyoso_db_conn, output=False)
     return
 
 
 @app.cell(hide_code=True)
-def _(mo):
+def section_cohort_retention(mo):
+    mo.md("""
+    ## Cohort Retention
+    *What percentage of developers who joined in Year X are still active after N years?*
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def ecosystem_controls(mo):
     ecosystem_selector = mo.ui.dropdown(
-        options=["Ethereum", "Solana", "Optimism", "Arbitrum", "Base", "Polygon", "AI"],
+        options=["Ethereum", "Solana", "Bitcoin", "Arbitrum", "Base", "Polygon", "AI"],
         value="Ethereum",
         label="Select Ecosystem"
     )
@@ -47,13 +93,7 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""## Retention Curves by Cohort Year""")
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo, pyoso_db_conn, cohort_years, ecosystem_selector, px):
+def query_retention_curves(cohort_years, ecosystem_selector, mo, pyoso_db_conn):
     cohort_list = ", ".join([f"'{y}'" for y in cohort_years.value])
 
     sql_retention_curves = f"""
@@ -120,59 +160,14 @@ def _(mo, pyoso_db_conn, cohort_years, ecosystem_selector, px):
     """
 
     df_curves = mo.sql(sql_retention_curves, engine=pyoso_db_conn, output=False)
+    df_curves['retention_rate'] = df_curves['retention_rate'].astype(float)
+    df_curves['years_since_join'] = df_curves['years_since_join'].astype(int)
     df_curves['cohort_label'] = df_curves['cohort_year'].astype(str) + ' Cohort'
-
-    _fig = px.line(
-        df_curves,
-        x='years_since_join',
-        y='retention_rate',
-        color='cohort_label',
-        title=f'{ecosystem_selector.value} Developer Retention by Cohort Year',
-        labels={
-            'years_since_join': 'Years After First Contribution',
-            'retention_rate': 'Retention Rate (%)',
-            'cohort_label': 'Cohort'
-        },
-        markers=True
-    )
-    _fig.update_layout(
-        template='plotly_white',
-        legend=dict(
-            orientation="h",
-            yanchor="bottom",
-            y=1.02,
-            xanchor="right",
-            x=1,
-            title_text=''
-        ),
-        xaxis=dict(dtick=1, range=[-0.2, 5.2]),
-        yaxis=dict(range=[0, 105])
-    )
-    _fig.update_traces(line=dict(width=3))
-
-    mo.vstack([
-        mo.md(f"""
-        **Retention curves for {ecosystem_selector.value}**
-
-        Each line represents a cohort of developers grouped by the year they first contributed.
-        - **Year 0** is always 100% (by definition, all developers were active when they joined)
-        - Steeper drop-off indicates lower retention
-        - Compare lines to see if retention is improving over time
-        """),
-        mo.ui.plotly(_fig, config={'displayModeBar': False})
-    ])
     return (df_curves,)
 
 
 @app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""## Key Retention Metrics""")
-    return
-
-
-@app.cell(hide_code=True)
-def _(df_curves, ecosystem_selector, mo):
-    # Calculate key metrics for display
+def retention_stats(df_curves, ecosystem_selector, mo):
     metrics_1yr = df_curves[df_curves['years_since_join'] == 1].copy()
     metrics_2yr = df_curves[df_curves['years_since_join'] == 2].copy()
 
@@ -185,48 +180,75 @@ def _(df_curves, ecosystem_selector, mo):
         best_1yr = {'cohort_year': 'N/A', 'retention_rate': 0}
         worst_1yr = {'cohort_year': 'N/A', 'retention_rate': 0}
 
-    if len(metrics_2yr) > 0:
-        avg_2yr = metrics_2yr['retention_rate'].mean()
-    else:
-        avg_2yr = 0
+    avg_2yr = metrics_2yr['retention_rate'].mean() if len(metrics_2yr) > 0 else 0
 
-    mo.vstack([
-        mo.md(f"### {ecosystem_selector.value} Retention Summary"),
-        mo.hstack([
-            mo.stat(
-                value=f"{avg_1yr:.1f}%",
-                label="Avg 1-Year Retention",
-                bordered=True
-            ),
-            mo.stat(
-                value=f"{avg_2yr:.1f}%",
-                label="Avg 2-Year Retention",
-                bordered=True
-            ),
-            mo.stat(
-                value=f"{best_1yr['cohort_year']}",
-                label=f"Best Cohort ({best_1yr['retention_rate']:.1f}% @ 1yr)",
-                bordered=True
-            ),
-            mo.stat(
-                value=f"{worst_1yr['cohort_year']}",
-                label=f"Lowest Cohort ({worst_1yr['retention_rate']:.1f}% @ 1yr)",
-                bordered=True
-            ),
-        ], justify="start", gap=2)
-    ])
-    return avg_1yr, avg_2yr, best_1yr, metrics_1yr, metrics_2yr, worst_1yr
+    mo.hstack([
+        mo.stat(
+            value=f"{avg_1yr:.1f}%",
+            label="Avg 1-Year Retention",
+            bordered=True,
+            caption=f"{ecosystem_selector.value} across selected cohorts"
+        ),
+        mo.stat(
+            value=f"{avg_2yr:.1f}%",
+            label="Avg 2-Year Retention",
+            bordered=True,
+            caption=f"{ecosystem_selector.value} across selected cohorts"
+        ),
+        mo.stat(
+            value=f"{best_1yr['cohort_year']}",
+            label="Best Cohort",
+            bordered=True,
+            caption=f"{best_1yr['retention_rate']:.1f}% retention at 1 year"
+        ),
+        mo.stat(
+            value=f"{worst_1yr['cohort_year']}",
+            label="Lowest Cohort",
+            bordered=True,
+            caption=f"{worst_1yr['retention_rate']:.1f}% retention at 1 year"
+        ),
+    ], widths="equal", gap=1)
+    return (avg_1yr,)
 
 
 @app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""## Cohort Details Table""")
+def retention_curves_chart(apply_ec_style, avg_1yr, df_curves, ecosystem_selector, go, mo):
+    _fig = go.Figure()
+
+    _cohort_colors = ['#1B4F72', '#7EB8DA', '#5DADE2', '#A9CCE3', '#2E86C1', '#85C1E9']
+
+    for _i, _cohort in enumerate(sorted(df_curves['cohort_label'].unique())):
+        _cdf = df_curves[df_curves['cohort_label'] == _cohort]
+        _fig.add_trace(go.Scatter(
+            x=_cdf['years_since_join'],
+            y=_cdf['retention_rate'],
+            mode='lines+markers',
+            name=_cohort,
+            line=dict(color=_cohort_colors[_i % len(_cohort_colors)], width=2.5),
+            marker=dict(size=7),
+            hovertemplate=f'<b>{_cohort}</b><br>Year %{{x}}<br>Retention: %{{y:.1f}}%<extra></extra>',
+        ))
+
+    _title_rate = f"{avg_1yr:.1f}%" if avg_1yr > 0 else "N/A"
+    apply_ec_style(
+        _fig,
+        title=f"On average, {_title_rate} of {ecosystem_selector.value} developers are still active after 1 year",
+        subtitle="Annual retention rate by cohort year",
+        y_title="Retention Rate (%)",
+        show_legend=True,
+        right_margin=60,
+    )
+
+    _fig.update_layout(height=450)
+    _fig.update_xaxes(dtick=1, range=[-0.2, 5.2])
+    _fig.update_yaxes(range=[0, 105], tickformat='.0f', ticksuffix='%')
+
+    mo.ui.plotly(_fig, config={'displayModeBar': False})
     return
 
 
 @app.cell(hide_code=True)
-def _(df_curves, mo, pd):
-    # Pivot to create retention matrix
+def cohort_matrix(df_curves, mo):
     retention_matrix = df_curves.pivot(
         index='cohort_year',
         columns='years_since_join',
@@ -235,7 +257,6 @@ def _(df_curves, mo, pd):
 
     retention_matrix.columns = ['Cohort Year'] + [f'Year {int(c)}' for c in retention_matrix.columns[1:]]
 
-    # Add cohort size
     cohort_sizes_df = df_curves[df_curves['years_since_join'] == 0][['cohort_year', 'cohort_size']].drop_duplicates()
     retention_matrix = retention_matrix.merge(
         cohort_sizes_df,
@@ -243,26 +264,26 @@ def _(df_curves, mo, pd):
         right_on='cohort_year'
     )[['Cohort Year', 'cohort_size'] + [c for c in retention_matrix.columns if c.startswith('Year')]]
     retention_matrix = retention_matrix.rename(columns={'cohort_size': 'Cohort Size'})
+    retention_matrix['Cohort Year'] = retention_matrix['Cohort Year'].astype(str)
 
     mo.vstack([
-        mo.md("""
-        **Retention matrix by cohort**
-
-        Shows retention rates (%) at each year mark for each cohort.
-        """),
+        mo.md("### Cohort Details"),
         mo.ui.table(retention_matrix, selection=None)
     ])
-    return cohort_sizes_df, retention_matrix
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""## Cross-Ecosystem Comparison""")
     return
 
 
 @app.cell(hide_code=True)
-def _(mo, pyoso_db_conn, px):
+def section_cross_ecosystem(mo):
+    mo.md("""
+    ## Cross-Ecosystem Comparison
+    *How do Ethereum, Solana, and Bitcoin retain their 2023 developer cohort?*
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def query_cross_ecosystem(mo, pyoso_db_conn):
     sql_cross_ecosystem = """
     WITH first_activity AS (
         SELECT
@@ -275,7 +296,7 @@ def _(mo, pyoso_db_conn, px):
             ON rda.repo_id = err.repo_id
         JOIN stg_opendevdata__ecosystems AS e
             ON err.ecosystem_id = e.id
-        WHERE e.name IN ('Ethereum', 'Solana', 'Optimism')
+        WHERE e.name IN ('Ethereum', 'Solana', 'Bitcoin')
         GROUP BY 1, 2
     ),
 
@@ -332,52 +353,63 @@ def _(mo, pyoso_db_conn, px):
     """
 
     df_cross = mo.sql(sql_cross_ecosystem, engine=pyoso_db_conn, output=False)
-
-    _fig = px.line(
-        df_cross,
-        x='years_since_join',
-        y='retention_rate',
-        color='ecosystem',
-        title='2023 Cohort Retention: Cross-Ecosystem Comparison',
-        labels={
-            'years_since_join': 'Years After First Contribution',
-            'retention_rate': 'Retention Rate (%)',
-            'ecosystem': 'Ecosystem'
-        },
-        markers=True,
-        color_discrete_map={
-            'Ethereum': '#627EEA',
-            'Solana': '#9945FF',
-            'Optimism': '#FF0420'
-        }
-    )
-    _fig.update_layout(
-        template='plotly_white',
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
-        xaxis=dict(dtick=1),
-        yaxis=dict(range=[0, 105])
-    )
-    _fig.update_traces(line=dict(width=3))
-
-    mo.vstack([
-        mo.md("""
-        **Cross-ecosystem retention comparison (2023 cohort)**
-
-        Comparing how well different ecosystems retain developers who joined in 2023.
-        """),
-        mo.ui.plotly(_fig, config={'displayModeBar': False})
-    ])
+    df_cross['retention_rate'] = df_cross['retention_rate'].astype(float)
+    df_cross['years_since_join'] = df_cross['years_since_join'].astype(int)
     return (df_cross,)
 
 
 @app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""## Monthly Cohort Analysis""")
+def cross_ecosystem_chart(apply_ec_style, df_cross, go, mo):
+    _eco_colors = {
+        'Ethereum': '#1B4F72',
+        'Solana': '#5DADE2',
+        'Bitcoin': '#E59866',
+    }
+
+    _fig = go.Figure()
+    for _eco in df_cross['ecosystem'].unique():
+        _edf = df_cross[df_cross['ecosystem'] == _eco]
+        _fig.add_trace(go.Scatter(
+            x=_edf['years_since_join'],
+            y=_edf['retention_rate'],
+            mode='lines+markers',
+            name=_eco,
+            line=dict(color=_eco_colors.get(_eco, '#888'), width=2.5),
+            marker=dict(size=7),
+            hovertemplate=f'<b>{_eco}</b><br>Year %{{x}}<br>Retention: %{{y:.1f}}%<extra></extra>',
+        ))
+
+    _eth_1yr = df_cross[(df_cross['ecosystem'] == 'Ethereum') & (df_cross['years_since_join'] == 1)]['retention_rate'].values
+    _eth_rate = f"{_eth_1yr[0]:.0f}%" if len(_eth_1yr) > 0 else "N/A"
+
+    apply_ec_style(
+        _fig,
+        title=f"Ethereum retains {_eth_rate} of 2023 developers after 1 year",
+        subtitle="Cross-ecosystem retention comparison — 2023 cohort",
+        y_title="Retention Rate (%)",
+        show_legend=True,
+        right_margin=60,
+    )
+
+    _fig.update_layout(height=400)
+    _fig.update_xaxes(dtick=1)
+    _fig.update_yaxes(range=[0, 105], tickformat='.0f', ticksuffix='%')
+
+    mo.ui.plotly(_fig, config={'displayModeBar': False})
     return
 
 
 @app.cell(hide_code=True)
-def _(mo, pyoso_db_conn, ecosystem_selector, px):
+def section_monthly_cohorts(mo):
+    mo.md("""
+    ## Monthly Cohort Detail
+    *Month-by-month retention curves for recent cohorts*
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def query_monthly_cohorts(ecosystem_selector, mo, pyoso_db_conn):
     sql_monthly_cohorts = f"""
     WITH first_activity AS (
         SELECT
@@ -443,125 +475,114 @@ def _(mo, pyoso_db_conn, ecosystem_selector, px):
     """
 
     df_monthly = mo.sql(sql_monthly_cohorts, engine=pyoso_db_conn, output=False)
-
-    # Select a few cohorts for visualization
-    selected = ['2023-01-01', '2023-07-01', '2024-01-01']
-    df_monthly_filtered = df_monthly[df_monthly['cohort_month'].astype(str).str[:10].isin(selected)].copy()
-    df_monthly_filtered['cohort_label'] = df_monthly_filtered['cohort_month'].astype(str).str[:7]
-
-    _fig = px.line(
-        df_monthly_filtered,
-        x='months_since_join',
-        y='retention_rate',
-        color='cohort_label',
-        title=f'{ecosystem_selector.value} Monthly Cohort Retention',
-        labels={
-            'months_since_join': 'Months Since First Contribution',
-            'retention_rate': 'Retention Rate (%)',
-            'cohort_label': 'Cohort Month'
-        },
-        markers=True
-    )
-    _fig.update_layout(
-        template='plotly_white',
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
-        xaxis=dict(dtick=1),
-        yaxis=dict(range=[0, 105])
-    )
-
-    mo.vstack([
-        mo.md(f"""
-        **Monthly cohort retention for {ecosystem_selector.value}**
-
-        More granular view showing month-by-month retention curves.
-        """),
-        mo.ui.plotly(_fig, config={'displayModeBar': False})
-    ])
+    df_monthly['retention_rate'] = df_monthly['retention_rate'].astype(float)
+    df_monthly['months_since_join'] = df_monthly['months_since_join'].astype(int)
     return (df_monthly,)
 
 
 @app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""## Retention Benchmarks""")
+def monthly_cohorts_chart(apply_ec_style, df_monthly, ecosystem_selector, go, mo):
+    _selected_months = ['2023-01-01', '2023-07-01', '2024-01-01']
+    _df = df_monthly[df_monthly['cohort_month'].astype(str).str[:10].isin(_selected_months)].copy()
+    _df['cohort_label'] = _df['cohort_month'].astype(str).str[:7]
+
+    _month_colors = ['#1B4F72', '#7EB8DA', '#5DADE2']
+
+    _fig = go.Figure()
+    for _i, _cohort in enumerate(sorted(_df['cohort_label'].unique())):
+        _cdf = _df[_df['cohort_label'] == _cohort]
+        _fig.add_trace(go.Scatter(
+            x=_cdf['months_since_join'],
+            y=_cdf['retention_rate'],
+            mode='lines+markers',
+            name=_cohort,
+            line=dict(color=_month_colors[_i % len(_month_colors)], width=2.5),
+            marker=dict(size=7),
+            hovertemplate=f'<b>{_cohort}</b><br>Month %{{x}}<br>Retention: %{{y:.1f}}%<extra></extra>',
+        ))
+
+    apply_ec_style(
+        _fig,
+        title=f"{ecosystem_selector.value} developer retention month by month",
+        subtitle="Jan 2023, Jul 2023, and Jan 2024 cohorts — first 12 months",
+        y_title="Retention Rate (%)",
+        show_legend=True,
+        right_margin=60,
+    )
+
+    _fig.update_layout(height=400)
+    _fig.update_xaxes(dtick=1, tickformat='d', title='Months Since First Contribution')
+    _fig.update_yaxes(range=[0, 105], tickformat='.0f', ticksuffix='%')
+
+    mo.ui.plotly(_fig, config={'displayModeBar': False})
     return
 
 
 @app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    ### Industry Comparison
-
-    How does open source developer retention compare to other contexts?
-
-    | Timeframe | Typical SaaS | Mobile Apps | Gaming | Open Source | Strong OSS Ecosystem |
-    |:-----------|:--------------|:-------------|:--------|:-------------|:---------------------|
-    | 1 month | 80% | 25% | 40% | 50% | 65-75% |
-    | 3 months | 60% | 12% | 20% | 35% | 50-60% |
-    | 6 months | 40% | 6% | 15% | 25% | 40-50% |
-    | 12 months | 25% | 3% | 8% | 15% | 25-35% |
-
-    **Interpretation:**
-    - Open source has naturally lower retention than SaaS (no payment commitment)
-    - Strong ecosystems with good onboarding show significantly better retention
-    - First 90 days are critical for long-term retention
-
-    ### Factors Affecting Retention
-
-    | Factor | Impact |
-    |:--------|:--------|
-    | **Onboarding experience** | High - clear contribution paths improve retention |
-    | **Community responsiveness** | High - quick PR reviews and welcoming culture |
-    | **Documentation quality** | Medium - reduces friction for new contributors |
-    | **Funding/incentives** | Medium - grants and retrospective funding |
-    | **Project momentum** | Medium - active projects attract ongoing contribution |
-    """)
-    return
+def setup_imports():
+    import plotly.graph_objects as go
+    return (go,)
 
 
 @app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""## Methodology""")
-    return
+def helper_apply_ec_style():
+    def apply_ec_style(fig, title=None, subtitle=None, y_title=None, show_legend=True, right_margin=180):
+        title_text = ""
+        if title:
+            title_text = f"<b>{title}</b>"
+            if subtitle:
+                title_text += f"<br><span style='font-size:14px;color:#666666'>{subtitle}</span>"
 
+        fig.update_layout(
+            title=dict(
+                text=title_text,
+                font=dict(size=22, color="#1B4F72", family="Arial, sans-serif"),
+                x=0,
+                xanchor="left",
+                y=0.95,
+                yanchor="top"
+            ) if title else None,
+            template='plotly_white',
+            font=dict(family="Arial, sans-serif", size=12, color="#333"),
+            plot_bgcolor='white',
+            paper_bgcolor='white',
+            margin=dict(t=100 if title else 40, l=70, r=right_margin, b=60),
+            hovermode='x unified',
+            showlegend=show_legend,
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=1.02,
+                xanchor="right",
+                x=1,
+                bgcolor="rgba(255,255,255,0.8)"
+            )
+        )
 
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    ### How Retention is Calculated
+        fig.update_xaxes(
+            showgrid=False,
+            showline=True,
+            linecolor="#1F2937",
+            linewidth=1,
+            tickfont=dict(size=11, color="#666"),
+            title="",
+            tickformat="%b %Y"
+        )
 
-    1. **Cohort Assignment**: Each developer is assigned to a cohort based on their first
-       contribution date to the ecosystem
-    2. **Activity Tracking**: We track whether the developer had any activity in subsequent
-       time periods (months or years)
-    3. **Retention Rate**: The percentage of the original cohort that remains active
+        fig.update_yaxes(
+            showgrid=True,
+            gridcolor="#E5E7EB",
+            gridwidth=1,
+            showline=True,
+            linecolor="#1F2937",
+            linewidth=1,
+            tickfont=dict(size=11, color="#666"),
+            title=y_title if y_title else "",
+            title_font=dict(size=12, color="#666"),
+        )
 
-    ### Data Sources
-
-    - **Primary**: `stg_opendevdata__repo_developer_28d_activities` (Electric Capital data)
-    - **Ecosystem mapping**: `stg_opendevdata__ecosystems_repos_recursive`
-    - **Activity definition**: Any commit to a mapped repository
-
-    ### Limitations
-
-    1. **Multi-ecosystem developers**: A developer may churn from one ecosystem but remain
-       active in another; we track per-ecosystem retention
-    2. **Identity resolution**: Based on Electric Capital's developer fingerprinting
-    3. **Recent cohorts**: Newer cohorts have less retention history to analyze
-
-    ### Related Resources
-
-    - Retention Metric Definition
-    - Developer Lifecycle
-    - Activity Metric Definition
-    """)
-    return
-
-
-@app.cell(hide_code=True)
-def _():
-    import pandas as pd
-    import plotly.express as px
-    return pd, px
+        return fig
+    return (apply_ec_style,)
 
 
 @app.cell(hide_code=True)

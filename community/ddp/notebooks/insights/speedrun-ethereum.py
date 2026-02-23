@@ -1,66 +1,70 @@
 import marimo
 
-__generated_with = "unknown"
-app = marimo.App()
+__generated_with = "0.18.4"
+app = marimo.App(width="full")
 
 
 @app.cell(hide_code=True)
-def _(df_sre_users_all, mo):
-    _team = "OSO Team"
-    _date = "18 December 2025"
+def header_title(mo):
+    mo.md("""
+    # Case Study: Speedrun Ethereum
+    <small>Owner: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">OSO Team</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">2026-02-17</span></small>
 
-    mo.vstack([
-        mo.md(f"""
-        # **Case Study: Speedrun Ethereum**
-        <small>Author: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">{_team}</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">{_date}</span></small>
-        """),
-        mo.md("""
-
-        ## Introduction
-
-        We conducted this analysis as part of a broader inquiry into the state of the Ethereum developer ecosystem in 2025, grounded in three working hypotheses:
-
-        1. Developer retention is a leading indicator of ecosystem health and, over time, a meaningful predictor of long-term token price, value accrual, network GDP, etc.
-
-        2. Ethereum’s early open-source culture is eroding as the crypto ecosystem matures, becomes more competitive, and partners with tradfi/web2.
-
-        3. Other ecosystems (eg, AI) have emerged as powerful bottom-up attractors for ambitious, mission-driven developers.
-
-        Using Speedrun Ethereum as a focused case study, the data suggests that bottom-up programs still work. Speedrun Ethereum is successfully counteracting these headwinds by onboarding, retaining, and anchoring net-new developers in the Ethereum ecosystem.
-
-        """),
-        mo.accordion({
-            "<b>Expand for additional context</b>": mo.accordion({
-                "Definitions": f"""
-                - **Users**: We only consider the {len(df_sre_users_all):,.0f} developers (out of 17K+ total users) with GitHub profiles saved.
-                - **Cohort Month**: We use the profile `createdAt` field in the SRE profile database, rounded to the near month.
-                - **Batch ID**: Some though not all developers were assigned a learning batch (group) when they went through the program.
-                - **Challenges Completed**: The number of SRE challenges the user successfully completed (according to their profile).
-                - **Location**: Where available, the country code of the user.
-                - **Forked `scaffold-eth`**: Whether the user has one or more of the [scaffold-eth](https://github.com/scaffold-eth/scaffold-eth-2/forks?include=active&page=1&period=2y&sort_by=last_updated) repos forked to their personal GitHub.
-                - **Experience Categories**: *Newb* developers have little to no GitHub activity before joining SRE; *Learning* developers show some prior activity but less than a year; *Experienced* developers have more than 12 months of pre-SRE activity; *Delayed Start* developers first become active only several months after their SRE start date.
-                - **Active Month**: Any month with ≥1 qualifying Push or PullRequest event on a public GitHub repo.
-                - **Ecosystem Classification**: Repos are classified as *Ethereum*, *Other EVM Chain*, *Personal*, or *Other* based on the Electric Capital ecosystem mappings. It's easy to add more classifications.
-                - **Retention**: The share of a cohort that is active at month *t*, normalized at month 0 (the month they created a profile in SRE).
-                - **Full-time month**: Any month with more than 10 days of qualifying activity.
-                - **Velocity**: The sum over active days of (1 + ln(events per day))
-                - **Change Categories**: Average monthly activity changes after SRE compared to before. Categories include *Major Increase* (+100%), *Minor Increase* (+10 to +99%) to *About the Same* (-10% to +10%), *Minor Decrease* (-10% to -50%), and *Major Decrease* (-50%).
-                """,
-                "Data Sources": """
-                - SRE GitHub users (`int_sre_github_users`): SRE user registry, cohorts, batches, challenges
-                - GitHub events by user (`int_sre_github_events_by_user`): public GitHub events joined to SRE users, from [GitHub Archive](https://gharchive.org)
-                - OpenDevData ecosystem mappings (`stg_opendevdata__*`): Electric Capital's repo → ecosystem mappings, from [Open Dev Data](https://opendevdata.org/)
-                """,
-                "Further Resources": """
-                - [Speedrun Ethereum](https://speedrunethereum.com/)
-                - [Getting Started with Pyoso](https://docs.opensource.observer/docs/get-started/python)
-                - [Marimo Documentation](https://docs.marimo.io/)
-                """
-            })
-        }),
-        mo.md("PS!<br>All of this data is live, public, and interactive. You can also download the code that generates this notebook and run it locally.")
-    ])
+    An in-depth case study on the role Speedrun Ethereum has played in onboarding and retaining new Ethereum developers.
+    """)
     return
+
+
+@app.cell(hide_code=True)
+def header_accordion(mo):
+    mo.accordion({
+        "Overview": mo.md("""
+- Speedrun Ethereum (SRE) is a self-paced challenge program that has onboarded 17,000+ developers into the Ethereum ecosystem
+- This analysis examines whether SRE successfully converts newcomers into sustained Ethereum contributors — and the data suggests it does
+- Key questions: What share of SRE graduates remain active in Ethereum after 1–2 years? How does prior experience affect outcomes? Where do graduates go after SRE?
+        """),
+        "Context": mo.md("""
+We conducted this analysis as part of a broader inquiry into the state of the Ethereum developer ecosystem in 2025, grounded in three working hypotheses:
+
+1. Developer retention is a leading indicator of ecosystem health and, over time, a meaningful predictor of long-term token price, value accrual, network GDP, etc.
+2. Ethereum's early open-source culture is eroding as the crypto ecosystem matures, becomes more competitive, and partners with tradfi/web2.
+3. Other ecosystems (eg, AI) have emerged as powerful bottom-up attractors for ambitious, mission-driven developers.
+
+Using Speedrun Ethereum as a focused case study, the data suggests that bottom-up programs still work. Speedrun Ethereum is successfully counteracting these headwinds by onboarding, retaining, and anchoring net-new developers in the Ethereum ecosystem.
+
+**Working hypotheses:**
+1. Developer retention is a leading indicator of ecosystem health
+2. Ethereum's early open-source culture is under pressure from competition and crypto maturation
+3. AI and other ecosystems are attracting ambitious developers who might otherwise go to Ethereum
+
+**Key definitions:**
+- **Users**: Developers with GitHub profiles saved in the SRE registry (not all 17K+ total users)
+- **Cohort Month**: Profile `createdAt` date rounded to the nearest month
+- **Batch ID**: Some though not all developers were assigned a learning batch (group) when they went through the program
+- **Challenges Completed**: The number of SRE challenges the user successfully completed (according to their profile)
+- **Location**: Where available, the country code of the user
+- **Forked `scaffold-eth`**: Whether the user has one or more of the scaffold-eth repos forked to their personal GitHub
+- **Experience Categories**: *Newb* (minimal prior GitHub activity), *Learning* (<1 year prior), *Experienced* (>12 months prior), *Delayed Start* (became active several months after SRE start)
+- **Active Month**: ≥1 qualifying Push or PullRequest event on a public GitHub repo
+- **Ecosystem Classification**: Repos classified as *Ethereum*, *Other EVM Chain*, *Personal*, or *Other* via Electric Capital mappings
+- **Retention**: Share of a cohort active at month *t*, normalized at month 0
+- **Full-time month**: >10 days of qualifying activity
+- **Velocity**: Sum over active days of (1 + ln(events per day))
+- **Change Categories**: Average monthly activity changes after SRE compared to before
+
+**Metric Definitions**
+- [Activity](/data/metric-definitions/activity) — Monthly Active Developer (MAD) methodology
+- [Retention](/data/metric-definitions/retention) — Cohort-based retention methodology
+        """),
+        "Data Sources": mo.md("""
+- **SRE GitHub users** — `int_sre_github_users`: user registry, cohorts, batches, challenges completed
+- **GitHub events** — `int_sre_github_events_by_user`: public GitHub events joined to SRE users, from [GitHub Archive](https://gharchive.org)
+- **Ecosystem mappings** — `stg_opendevdata__*`: Electric Capital's repo → ecosystem mappings, via [Open Dev Data](https://opendevdata.org/)
+- **Further reading**: [Speedrun Ethereum](https://speedrunethereum.com/) · [Pyoso docs](https://docs.opensource.observer/docs/get-started/python) · [Marimo docs](https://docs.marimo.io/)
+        """),
+    })
+    return
+
 
 
 @app.cell(hide_code=True)
@@ -459,20 +463,22 @@ def process_dev_velocity(SRE_BASE, SRE_GREEN, np, pd, px):
         )
         fig.update_xaxes(
             showline=True,
-            linewidth=1.5,
-            linecolor="black",
+            linewidth=1,
+            linecolor="#1F2937",
             ticks="outside",
-            tickwidth=1.5,
-            tickcolor="black",
+            tickwidth=1,
+            tickcolor="#1F2937",
             ticklen=6,
         )
         fig.update_yaxes(
             showline=True,
-            linewidth=1.5,
-            linecolor="black",
+            linewidth=1,
+            linecolor="#1F2937",
+            showgrid=True,
+            gridcolor="#E5E7EB",
             ticks="outside",
-            tickwidth=1.5,
-            tickcolor="black",
+            tickwidth=1,
+            tickcolor="#1F2937",
             ticklen=6,
             rangemode="tozero"
         )
@@ -636,20 +642,22 @@ def _(
     )
     _fig.update_xaxes(
         showline=True,
-        linewidth=1.5,
-        linecolor="black",
+        linewidth=1,
+        linecolor="#1F2937",
         ticks="outside",
-        tickwidth=1.5,
-        tickcolor="black",
+        tickwidth=1,
+        tickcolor="#1F2937",
         ticklen=6,
     )
     _fig.update_yaxes(
         showline=True,
-        linewidth=1.5,
-        linecolor="black",
+        linewidth=1,
+        linecolor="#1F2937",
+        showgrid=True,
+        gridcolor="#E5E7EB",
         ticks="outside",
-        tickwidth=1.5,
-        tickcolor="black",
+        tickwidth=1,
+        tickcolor="#1F2937",
         ticklen=6,
         rangemode="tozero"
     )
@@ -869,13 +877,13 @@ def _(
             horizontal_spacing=0.02,
         )
         fig.update_xaxes(
-            showline=True, linewidth=1.5, linecolor="black",
-            ticks="outside", tickwidth=1.5, tickcolor="black", ticklen=6,
+            showline=True, linewidth=1, linecolor="#1F2937",
+            ticks="outside", tickwidth=1, tickcolor="#1F2937", ticklen=6,
             range=[0, x_max],
         )
         fig.update_yaxes(
-            showline=True, linewidth=1.5, linecolor="black",
-            ticks="outside", tickwidth=1.5, tickcolor="black", ticklen=6,
+            showline=True, linewidth=1, linecolor="#1F2937",
+            ticks="outside", tickwidth=1, tickcolor="#1F2937", ticklen=6,
             autorange="reversed",
         )
 
@@ -1020,21 +1028,23 @@ def _(SRE_GREEN, SRE_PINK, SRE_YELLOW, ecosystem_options, px):
         )
         fig.update_xaxes(
             showline=True,
-            linewidth=1.5,
-            linecolor="black",
+            linewidth=1,
+            linecolor="#1F2937",
             ticks="outside",
-            tickwidth=1.5,
-            tickcolor="black",
+            tickwidth=1,
+            tickcolor="#1F2937",
             ticklen=6,
             dtick=1
         )
         fig.update_yaxes(
             showline=True,
-            linewidth=1.5,
-            linecolor="black",
+            linewidth=1,
+            linecolor="#1F2937",
+            showgrid=True,
+            gridcolor="#E5E7EB",
             ticks="outside",
-            tickwidth=1.5,
-            tickcolor="black",
+            tickwidth=1,
+            tickcolor="#1F2937",
             ticklen=6,
             rangemode="tozero"
         )
@@ -1107,21 +1117,23 @@ def _(SRE_GREEN, SRE_PINK, SRE_YELLOW, ecosystem_options, px):
         )
         fig.update_xaxes(
             showline=True,
-            linewidth=1.5,
-            linecolor="black",
+            linewidth=1,
+            linecolor="#1F2937",
             ticks="outside",
-            tickwidth=1.5,
-            tickcolor="black",
+            tickwidth=1,
+            tickcolor="#1F2937",
             ticklen=6,
             dtick=1
         )
         fig.update_yaxes(
             showline=True,
-            linewidth=1.5,
-            linecolor="black",
+            linewidth=1,
+            linecolor="#1F2937",
+            showgrid=True,
+            gridcolor="#E5E7EB",
             ticks="outside",
-            tickwidth=1.5,
-            tickcolor="black",
+            tickwidth=1,
+            tickcolor="#1F2937",
             ticklen=6,
             rangemode="tozero"
         )
@@ -1344,20 +1356,22 @@ def _(
     )
     _fig.update_xaxes(
         showline=True,
-        linewidth=1.5,
-        linecolor="black",
+        linewidth=1,
+        linecolor="#1F2937",
         ticks="outside",
-        tickwidth=1.5,
-        tickcolor="black",
+        tickwidth=1,
+        tickcolor="#1F2937",
         ticklen=6,
     )
     _fig.update_yaxes(
         showline=True,
-        linewidth=1.5,
-        linecolor="black",
+        linewidth=1,
+        linecolor="#1F2937",
+        showgrid=True,
+        gridcolor="#E5E7EB",
         ticks="outside",
-        tickwidth=1.5,
-        tickcolor="black",
+        tickwidth=1,
+        tickcolor="#1F2937",
         ticklen=6,
         rangemode="tozero"
     )
@@ -1416,7 +1430,6 @@ def _(
         _stats,
         show_plotly(_fig),
     ])
-
     return
 
 
@@ -1647,27 +1660,6 @@ def _(
     return
 
 
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(
-        r"""
-    ---
-
-    ## Suggested recommendations
-
-    - **Maintain broad onboarding as a public good**. Continue serving new developers at scale to expand the Ethereum ecosystem and sustain long-term growth.
-
-    - **Prioritize experienced developers as the highest-leverage cohort**. The marginal return on program investment is likely highest when accelerating experienced developers through the first 3–4 months and supporting their transition into steady Ethereum work.
-
-    - **Introduce structured acceleration during the critical early window**. Focus on targeted interventions for experienced developers—such as office hours, mentorship, and opportunities to demo work—to improve conversion and reduce early churn.
-
-    - **Improve visibility into post-program pathways for experienced developers**. Systematically learn what experienced participants want to do next (e.g., join existing teams, launch new projects, pursue side work) and align support accordingly.
-
-    - **Expand the activation funnel to high-intent participants**. Engage the 10K+ developers who have forked, starred, or otherwise interacted with Speedrun Ethereum as a follow-on activation pool for developers who already demonstrate interest and intent.
-    """
-    )
-    return
-
 
 @app.cell(hide_code=True)
 def _():
@@ -1722,6 +1714,7 @@ def imports():
     return go, make_subplots, math, np, pd, px
 
 
+
 @app.cell(hide_code=True)
 def setup_pyoso():
     # This code sets up pyoso to be used as a database provider for this notebook
@@ -1730,11 +1723,6 @@ def setup_pyoso():
     import marimo as mo
     pyoso_db_conn = pyoso.Client().dbapi_connection()
     return mo, pyoso_db_conn
-
-
-@app.cell
-def _():
-    return
 
 
 if __name__ == "__main__":

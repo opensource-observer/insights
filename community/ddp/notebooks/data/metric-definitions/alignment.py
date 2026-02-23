@@ -1,37 +1,39 @@
 import marimo
 
-__generated_with = "0.18.4"
+__generated_with = "unknown"
 app = marimo.App(width="full")
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.vstack([
-        mo.md(r"""# Ecosystem Alignment Metric Definition"""),
-        mo.md(r"""
-        This notebook documents how developer alignment with ecosystems is calculated and measured.
+    mo.md("""
+    # Alignment
 
-        **Alignment** measures how a developer's activity is distributed across ecosystems within a given
-        time interval. It answers the question: "What percentage of this developer's work goes to each ecosystem?"
+    The **alignment metric** measures how a developer's activity is distributed across ecosystems.
+    It answers: "What percentage of this developer's work goes to each ecosystem?"
 
-        Key properties:
-        - Alignment percentages **must sum to 100%** per developer per time period
-        - Based on commit activity across repositories mapped to ecosystems
-        - Calculated using rolling 28-day windows (consistent with MAD methodology)
-        """),
-    ])
+    **Preview:**
+    ```sql
+    SELECT
+      canonical_developer_id,
+      ecosystem_name,
+      alignment_pct
+    FROM oso.stg_opendevdata__repo_developer_28d_activities
+    LIMIT 5
+    ```
+    """)
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""## Definition & Formula""")
+    mo.md("""## Definition & Formula""")
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""
+    mo.md("""
     ### Alignment Calculation
 
     For a given developer `d` and time period `t`, alignment to ecosystem `e` is calculated as:
@@ -67,13 +69,13 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""## Data Models""")
+    mo.md("""## Data Models""")
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""
+    mo.md("""
     ### Underlying Tables
 
     The alignment calculation relies on these key tables:
@@ -98,13 +100,171 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""## Sample Queries""")
+    mo.md("""## Live Data Exploration""")
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""### Query 1: Calculate Alignment for Top Developers""")
+    live_ecosystem = mo.ui.dropdown(
+        options=["Ethereum", "Solana", "Optimism", "Arbitrum", "Base", "Polygon", "AI"],
+        value="Ethereum",
+        label="Select Ecosystem"
+    )
+    mo.hstack([live_ecosystem], justify="start")
+    return (live_ecosystem,)
+
+
+@app.cell(hide_code=True)
+def live_stats(mo, pyoso_db_conn, live_ecosystem):
+    _df_align = mo.sql(
+        f"""
+        WITH developer_ecosystem_activity AS (
+            SELECT
+                rda.canonical_developer_id,
+                e.name AS ecosystem_name,
+                SUM(rda.num_commits) AS ecosystem_commits
+            FROM oso.stg_opendevdata__repo_developer_28d_activities AS rda
+            JOIN oso.stg_opendevdata__ecosystems_repos_recursive AS err
+                ON rda.repo_id = err.repo_id
+            JOIN oso.stg_opendevdata__ecosystems AS e
+                ON err.ecosystem_id = e.id
+            WHERE rda.day = (SELECT MAX(day) FROM oso.stg_opendevdata__repo_developer_28d_activities)
+            GROUP BY 1, 2
+        ),
+        developer_totals AS (
+            SELECT canonical_developer_id, SUM(ecosystem_commits) AS total_commits
+            FROM developer_ecosystem_activity
+            GROUP BY 1
+        ),
+        alignment AS (
+            SELECT
+                dea.canonical_developer_id,
+                dea.ecosystem_name,
+                ROUND(100.0 * dea.ecosystem_commits / dt.total_commits, 2) AS alignment_pct
+            FROM developer_ecosystem_activity dea
+            JOIN developer_totals dt ON dea.canonical_developer_id = dt.canonical_developer_id
+            WHERE dt.total_commits >= 5
+              AND dea.ecosystem_name = '{live_ecosystem.value}'
+        )
+        SELECT
+            COUNT(*) AS total_developers,
+            COUNT(CASE WHEN alignment_pct = 100 THEN 1 END) AS exclusive_developers,
+            ROUND(AVG(alignment_pct), 1) AS avg_alignment_pct,
+            ROUND(100.0 * COUNT(CASE WHEN alignment_pct >= 50 THEN 1 END) / COUNT(*), 1) AS pct_majority_aligned
+        FROM alignment
+        """,
+        engine=pyoso_db_conn,
+        output=False
+    )
+
+    if len(_df_align) == 0 or _df_align.iloc[0]['total_developers'] == 0:
+        _ = mo.md("*No data available for this ecosystem.*")
+    else:
+        _row = _df_align.iloc[0]
+        _ = mo.hstack([
+            mo.stat(label="Active Developers", value=f"{int(_row['total_developers']):,}", bordered=True, caption=f"Contributing to {live_ecosystem.value}"),
+            mo.stat(label="Exclusive (100%)", value=f"{int(_row['exclusive_developers']):,}", bordered=True, caption="Only work in this ecosystem"),
+            mo.stat(label="Avg Alignment", value=f"{float(_row['avg_alignment_pct']):.1f}%", bordered=True, caption="Mean alignment percentage"),
+            mo.stat(label="Majority Aligned", value=f"{float(_row['pct_majority_aligned']):.1f}%", bordered=True, caption="≥50% aligned developers"),
+        ], widths="equal", gap=1)
+    _
+    return
+
+
+@app.cell(hide_code=True)
+def live_chart(mo, pyoso_db_conn, live_ecosystem, apply_ec_style, EC_COLORS):
+    _df_dist = mo.sql(
+        f"""
+        WITH developer_ecosystem_activity AS (
+            SELECT
+                rda.canonical_developer_id,
+                e.name AS ecosystem_name,
+                SUM(rda.num_commits) AS ecosystem_commits
+            FROM oso.stg_opendevdata__repo_developer_28d_activities AS rda
+            JOIN oso.stg_opendevdata__ecosystems_repos_recursive AS err
+                ON rda.repo_id = err.repo_id
+            JOIN oso.stg_opendevdata__ecosystems AS e
+                ON err.ecosystem_id = e.id
+            WHERE rda.day = (SELECT MAX(day) FROM oso.stg_opendevdata__repo_developer_28d_activities)
+            GROUP BY 1, 2
+        ),
+        developer_totals AS (
+            SELECT canonical_developer_id, SUM(ecosystem_commits) AS total_commits
+            FROM developer_ecosystem_activity
+            GROUP BY 1
+        ),
+        alignment AS (
+            SELECT
+                dea.canonical_developer_id,
+                ROUND(100.0 * dea.ecosystem_commits / dt.total_commits, 2) AS alignment_pct
+            FROM developer_ecosystem_activity dea
+            JOIN developer_totals dt ON dea.canonical_developer_id = dt.canonical_developer_id
+            WHERE dt.total_commits >= 5
+              AND dea.ecosystem_name = '{live_ecosystem.value}'
+        )
+        SELECT
+            CASE
+                WHEN alignment_pct = 100 THEN '100% (exclusive)'
+                WHEN alignment_pct >= 75 THEN '75-99%'
+                WHEN alignment_pct >= 50 THEN '50-74%'
+                WHEN alignment_pct >= 25 THEN '25-49%'
+                ELSE '1-24%'
+            END AS alignment_bucket,
+            COUNT(*) AS developer_count
+        FROM alignment
+        GROUP BY 1
+        ORDER BY
+            CASE alignment_bucket
+                WHEN '100% (exclusive)' THEN 1
+                WHEN '75-99%' THEN 2
+                WHEN '50-74%' THEN 3
+                WHEN '25-49%' THEN 4
+                ELSE 5
+            END
+        """,
+        engine=pyoso_db_conn,
+        output=False
+    )
+
+    if len(_df_dist) == 0:
+        _ = mo.md("*No data available for this ecosystem.*")
+    else:
+        import plotly.graph_objects as _go
+        _colors = [EC_COLORS['dark_blue'], EC_COLORS['medium_blue'], EC_COLORS['light_blue'],
+                   EC_COLORS['orange'], '#B8CCE4']
+
+        _fig = _go.Figure(_go.Bar(
+            x=_df_dist['developer_count'],
+            y=_df_dist['alignment_bucket'],
+            orientation='h',
+            marker_color=_colors[:len(_df_dist)],
+            hovertemplate='%{y}: %{x:,} developers<extra></extra>'
+        ))
+
+        apply_ec_style(
+            _fig,
+            title=f"Developer Alignment Distribution: {live_ecosystem.value}",
+            subtitle="How exclusively developers contribute to this ecosystem",
+            y_title=""
+        )
+        _fig.update_layout(yaxis=dict(categoryorder='array', categoryarray=['1-24%', '25-49%', '50-74%', '75-99%', '100% (exclusive)']))
+        _fig.update_xaxes(title="Number of Developers")
+
+        _ = mo.ui.plotly(_fig, config={'displayModeBar': False})
+    _
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""## Sample Queries""")
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""### Query 1: Calculate Alignment for Top Developers""")
     return
 
 
@@ -116,13 +276,13 @@ def _(mo, pyoso_db_conn):
             rda.canonical_developer_id,
             e.name AS ecosystem_name,
             rda.day,
-            SUM(rda.commits) AS ecosystem_commits
-        FROM stg_opendevdata__repo_developer_28d_activities AS rda
-        JOIN stg_opendevdata__ecosystems_repos_recursive AS err
+            SUM(rda.num_commits) AS ecosystem_commits
+        FROM oso.stg_opendevdata__repo_developer_28d_activities AS rda
+        JOIN oso.stg_opendevdata__ecosystems_repos_recursive AS err
             ON rda.repo_id = err.repo_id
-        JOIN stg_opendevdata__ecosystems AS e
+        JOIN oso.stg_opendevdata__ecosystems AS e
             ON err.ecosystem_id = e.id
-        WHERE rda.day = DATE('2025-01-15')
+        WHERE rda.day = (SELECT MAX(day) FROM oso.stg_opendevdata__repo_developer_28d_activities)
             AND e.name IN ('Ethereum', 'Solana', 'Optimism', 'Arbitrum', 'Base', 'AI')
         GROUP BY 1, 2, 3
     ),
@@ -165,7 +325,7 @@ def _(mo, pyoso_db_conn):
 
     mo.vstack([
         mo.md(f"""
-        **Query**: Calculate ecosystem alignment for active developers (≥10 commits) on 2025-01-15
+        **Query**: Calculate ecosystem alignment for active developers (≥10 commits) on most recent day
 
         **Results**: {len(df_alignment):,} developer-ecosystem pairs
         """),
@@ -176,7 +336,7 @@ def _(mo, pyoso_db_conn):
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""### Query 2: Top Developers by Ecosystem Alignment""")
+    mo.md("""### Query 2: Top Developers by Ecosystem Alignment""")
     return
 
 
@@ -188,13 +348,13 @@ def _(mo, pyoso_db_conn, ecosystem_selector):
             rda.canonical_developer_id,
             e.name AS ecosystem_name,
             rda.day,
-            SUM(rda.commits) AS ecosystem_commits
-        FROM stg_opendevdata__repo_developer_28d_activities AS rda
-        JOIN stg_opendevdata__ecosystems_repos_recursive AS err
+            SUM(rda.num_commits) AS ecosystem_commits
+        FROM oso.stg_opendevdata__repo_developer_28d_activities AS rda
+        JOIN oso.stg_opendevdata__ecosystems_repos_recursive AS err
             ON rda.repo_id = err.repo_id
-        JOIN stg_opendevdata__ecosystems AS e
+        JOIN oso.stg_opendevdata__ecosystems AS e
             ON err.ecosystem_id = e.id
-        WHERE rda.day = DATE('2025-01-15')
+        WHERE rda.day = (SELECT MAX(day) FROM oso.stg_opendevdata__repo_developer_28d_activities)
         GROUP BY 1, 2, 3
     ),
 
@@ -258,7 +418,7 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""### Query 3: Alignment Distribution for an Ecosystem""")
+    mo.md("""### Query 3: Alignment Distribution for an Ecosystem""")
     return
 
 
@@ -270,13 +430,13 @@ def _(mo, pyoso_db_conn, ecosystem_selector, px):
             rda.canonical_developer_id,
             e.name AS ecosystem_name,
             rda.day,
-            SUM(rda.commits) AS ecosystem_commits
-        FROM stg_opendevdata__repo_developer_28d_activities AS rda
-        JOIN stg_opendevdata__ecosystems_repos_recursive AS err
+            SUM(rda.num_commits) AS ecosystem_commits
+        FROM oso.stg_opendevdata__repo_developer_28d_activities AS rda
+        JOIN oso.stg_opendevdata__ecosystems_repos_recursive AS err
             ON rda.repo_id = err.repo_id
-        JOIN stg_opendevdata__ecosystems AS e
+        JOIN oso.stg_opendevdata__ecosystems AS e
             ON err.ecosystem_id = e.id
-        WHERE rda.day = DATE('2025-01-15')
+        WHERE rda.day = (SELECT MAX(day) FROM oso.stg_opendevdata__repo_developer_28d_activities)
         GROUP BY 1, 2, 3
     ),
 
@@ -354,186 +514,93 @@ def _(mo, pyoso_db_conn, ecosystem_selector, px):
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""## Alignment Over Time""")
-    return
+    mo.md("""
+    ## Related Models
 
+    **Metric Definitions**
+    - **Activity**: [activity.py](./activity.py) — MAD metric methodology
+    - **Lifecycle**: [lifecycle.py](./lifecycle.py) — Developer stage definitions
+    - **Retention**: [retention.py](./retention.py) — Cohort-based developer retention
 
-@app.cell(hide_code=True)
-def _(mo, pyoso_db_conn, pd, px):
-    sql_alignment_trend = """
-    WITH developer_ecosystem_activity AS (
-        SELECT
-            rda.canonical_developer_id,
-            e.name AS ecosystem_name,
-            DATE_TRUNC('month', rda.day) AS month,
-            SUM(rda.commits) AS ecosystem_commits
-        FROM stg_opendevdata__repo_developer_28d_activities AS rda
-        JOIN stg_opendevdata__ecosystems_repos_recursive AS err
-            ON rda.repo_id = err.repo_id
-        JOIN stg_opendevdata__ecosystems AS e
-            ON err.ecosystem_id = e.id
-        WHERE rda.day >= DATE('2024-01-01')
-            AND e.name IN ('Ethereum', 'Solana', 'AI')
-        GROUP BY 1, 2, 3
-    ),
+    **Data Models**
+    - **Ecosystems**: [ecosystems.py](../models/ecosystems.py) — Ecosystem definitions and hierarchy
+    - **Developers**: [developers.py](../models/developers.py) — Unified developer identities
 
-    monthly_totals AS (
-        SELECT
-            month,
-            ecosystem_name,
-            SUM(ecosystem_commits) AS total_commits
-        FROM developer_ecosystem_activity
-        GROUP BY 1, 2
-    ),
-
-    all_ecosystems_monthly AS (
-        SELECT
-            month,
-            SUM(total_commits) AS grand_total
-        FROM monthly_totals
-        GROUP BY 1
-    )
-
-    SELECT
-        mt.month,
-        mt.ecosystem_name,
-        mt.total_commits,
-        ROUND(100.0 * mt.total_commits / ae.grand_total, 2) AS share_pct
-    FROM monthly_totals mt
-    JOIN all_ecosystems_monthly ae
-        ON mt.month = ae.month
-    ORDER BY mt.month, mt.ecosystem_name
-    """
-
-    df_trend = mo.sql(sql_alignment_trend, engine=pyoso_db_conn, output=False)
-
-    _fig = px.area(
-        df_trend,
-        x='month',
-        y='share_pct',
-        color='ecosystem_name',
-        title='Ecosystem Activity Share Over Time',
-        labels={'month': 'Month', 'share_pct': 'Share of Activity (%)', 'ecosystem_name': 'Ecosystem'}
-    )
-    _fig.update_layout(
-        template='plotly_white',
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
-    )
-
-    mo.vstack([
-        mo.md("""
-        **Ecosystem activity share trends**
-
-        This shows how the relative share of developer activity shifts across ecosystems over time.
-        Note: This is aggregate activity, not per-developer alignment.
-        """),
-        mo.ui.plotly(_fig, config={'displayModeBar': False})
-    ])
-    return (df_trend,)
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""## Example Use Cases""")
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    ### Use Case 1: Identify Cross-Ecosystem Developers
-
-    Find developers who work across multiple ecosystems (alignment < 100% for any single ecosystem):
-
-    ```sql
-    -- Developers with significant contributions to multiple ecosystems
-    WITH alignment AS (
-        -- ... alignment calculation ...
-    )
-    SELECT canonical_developer_id
-    FROM alignment
-    GROUP BY canonical_developer_id
-    HAVING MAX(alignment_pct) < 80  -- No single ecosystem > 80%
-    AND COUNT(DISTINCT ecosystem_name) >= 2
-    ```
-
-    ### Use Case 2: Track Developer Migration
-
-    Identify developers whose alignment shifted over time:
-
-    ```sql
-    -- Developers who moved from Ethereum to Solana
-    WITH monthly_alignment AS (
-        -- ... calculate monthly alignment ...
-    )
-    SELECT canonical_developer_id
-    FROM monthly_alignment
-    WHERE ecosystem_name = 'Ethereum' AND month = '2024-01' AND alignment_pct > 70
-    INTERSECT
-    SELECT canonical_developer_id
-    FROM monthly_alignment
-    WHERE ecosystem_name = 'Solana' AND month = '2025-01' AND alignment_pct > 70
-    ```
-
-    ### Use Case 3: Ecosystem Talent Concentration
-
-    Measure how concentrated vs distributed an ecosystem's developer base is:
-
-    ```sql
-    -- Average alignment of developers to each ecosystem
-    SELECT
-        ecosystem_name,
-        AVG(alignment_pct) AS avg_alignment,
-        COUNT(*) AS developer_count,
-        COUNT(CASE WHEN alignment_pct = 100 THEN 1 END) AS exclusive_devs
-    FROM alignment
-    GROUP BY ecosystem_name
-    ORDER BY avg_alignment DESC
-    ```
-    """)
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""## Methodology Notes""")
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    ### Alignment Calculation Considerations
-
-    | Factor | Current Approach | Alternative |
-    |:--------|:------------------|:-------------|
-    | **Activity Metric** | Commit count | Could use commit days, lines of code |
-    | **Time Window** | Rolling 28-day | Could use calendar month |
-    | **Minimum Threshold** | 5+ commits shown | Could filter at different levels |
-    | **Multi-ecosystem Repos** | Repo assigned to all applicable ecosystems | Could use primary ecosystem only |
-
-    ### Known Limitations
-
-    1. **Repository Mapping**: Some repositories may not be mapped to ecosystems, leading to incomplete alignment calculations
-    2. **Ecosystem Overlap**: A repository can belong to multiple ecosystems (e.g., Optimism is also Ethereum), which can cause alignment percentages to exceed 100% if not handled carefully
-    3. **Activity Type**: Currently uses commits only; other activity types (issues, PRs) not included
-    4. **Developer Identity**: Relies on Electric Capital's developer fingerprinting for identity resolution
-
-    ### Validation
-
-    To validate alignment calculations:
-    1. Sum of alignments per developer-period should equal 100% (±rounding)
-    2. Spot-check individual developers against known contribution patterns
-    3. Compare aggregate ecosystem activity to Electric Capital reports
+    **Insights**
+    - [DeFi Developer Journeys](/insights/defi-developer-journeys) — Developer flows across ecosystems
     """)
     return
 
 
 @app.cell(hide_code=True)
 def _():
+    def apply_ec_style(fig, title=None, subtitle=None, y_title=None, show_legend=True):
+        """Apply Electric Capital chart styling to a plotly figure."""
+        title_text = ""
+        if title:
+            title_text = f"<b>{title}</b>"
+            if subtitle:
+                title_text += f"<br><span style='font-size:14px;color:#666666'>{subtitle}</span>"
+        fig.update_layout(
+            title=dict(
+                text=title_text,
+                font=dict(size=20, color="#1B4F72", family="Arial, sans-serif"),
+                x=0, xanchor="left", y=0.95, yanchor="top"
+            ) if title else None,
+            template='plotly_white',
+            font=dict(family="Arial, sans-serif", size=12, color="#333"),
+            plot_bgcolor='white',
+            paper_bgcolor='white',
+            margin=dict(t=100 if title else 40, l=70, r=40, b=60),
+            hovermode='x unified',
+            showlegend=show_legend,
+            legend=dict(
+                orientation="h", yanchor="bottom", y=1.02,
+                xanchor="right", x=1, bgcolor="rgba(255,255,255,0.8)"
+            )
+        )
+        fig.update_xaxes(
+            showgrid=False, showline=True,
+            linecolor="#CCCCCC", linewidth=1,
+            tickfont=dict(size=11, color="#666"),
+            title=""
+        )
+        fig.update_yaxes(
+            showgrid=True, gridcolor="#E8E8E8", gridwidth=1,
+            showline=True, linecolor="#CCCCCC", linewidth=1,
+            tickfont=dict(size=11, color="#666"),
+            title=y_title or "",
+            title_font=dict(size=12, color="#666"),
+            tickformat=",d"
+        )
+        return fig
+    return (apply_ec_style,)
+
+
+@app.cell(hide_code=True)
+def _():
+    EC_COLORS = {
+        'light_blue': '#7EB8DA',
+        'light_blue_fill': 'rgba(126, 184, 218, 0.4)',
+        'dark_blue': '#1B4F72',
+        'medium_blue': '#5499C7',
+        'orange': '#F5B041',
+    }
+    return (EC_COLORS,)
+
+
+@app.cell(hide_code=True)
+def _():
     import pandas as pd
+    import plotly.graph_objects as go
+    return pd, go
+
+
+@app.cell(hide_code=True)
+def _():
+    import pandas as _pd
     import plotly.express as px
-    return pd, px
+    return (_pd, px)
 
 
 @app.cell(hide_code=True)

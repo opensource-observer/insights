@@ -689,6 +689,14 @@ def _(mo):
     - **Timeseries Metrics**: [timeseries-metrics.py](../models/timeseries-metrics.py) — Aggregated time series
     - **Alignment**: [alignment.py](./alignment.py) — Developer ecosystem alignment metric
     - **Lifecycle**: [lifecycle.py](./lifecycle.py) — Developer lifecycle stages
+    - **Retention**: [retention.py](./retention.py) — Cohort-based developer retention
+
+    **Insights**
+    - [2025 Developer Trends](/insights/developer-report-2025)
+    - [Lifecycle Analysis](/insights/developer-lifecycle)
+    - [Retention Analysis](/insights/developer-retention)
+    - [DeFi Developer Journeys](/insights/defi-developer-journeys)
+    - [Speedrun Ethereum](/insights/speedrun-ethereum)
     """)
     return
 

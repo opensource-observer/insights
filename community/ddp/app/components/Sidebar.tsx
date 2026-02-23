@@ -46,6 +46,7 @@ const navItems: NavItem[] = [
           { label: 'Activity', href: '/data/metric-definitions/activity' },
           { label: 'Alignment', href: '/data/metric-definitions/alignment' },
           { label: 'Lifecycle', href: '/data/metric-definitions/lifecycle' },
+          { label: 'Retention', href: '/data/metric-definitions/retention' },
         ],
       },
       { label: 'Agent Workflows', href: '/data/agent-workflows' },
@@ -55,9 +56,11 @@ const navItems: NavItem[] = [
     label: 'Insights',
     href: '/insights',
     children: [
-      { label: 'Developer Activity', href: '/insights/developer-activity' },
-      { label: 'Developer Lifecycle', href: '/insights/developer-lifecycle' },
-      { label: 'Developer Retention', href: '/insights/developer-retention' },
+      { label: '2025 Developer Trends', href: '/insights/developer-report-2025' },
+      { label: 'Lifecycle Analysis', href: '/insights/developer-lifecycle' },
+      { label: 'Speedrun Ethereum', href: '/insights/speedrun-ethereum' },
+      { label: 'DeFi Developer Journeys', href: '/insights/defi-developer-journeys' },
+      { label: 'Retention Analysis', href: '/insights/developer-retention' },
     ],
   },
 ];

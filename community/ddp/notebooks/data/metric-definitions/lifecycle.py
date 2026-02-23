@@ -1,544 +1,627 @@
 import marimo
 
-__generated_with = "0.18.4"
+__generated_with = "unknown"
 app = marimo.App(width="full")
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.vstack([
-        mo.md(r"""# Developer Lifecycle Metric Definition"""),
-        mo.md(r"""
-        This notebook documents developer lifecycle stages and state transitions over time.
+    mo.md("""
+    # Lifecycle
 
-        The **lifecycle model** classifies developers into distinct stages based on their activity patterns.
-        Each developer is assigned exactly one lifecycle stage per time period, enabling analysis of
-        developer journeys, churn prediction, and ecosystem health monitoring.
-        """),
-    ])
-    return
+    The **lifecycle metric** classifies developers into stages based on their activity patterns, enabling analysis of developer journeys, churn prediction, and ecosystem health monitoring.
 
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""## Lifecycle Stages""")
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    ### Stage Definitions
-
-    | Stage | Definition | Activity Threshold (28-day window) |
-    |:-------|:------------|:-----------------------------------|
-    | **New** | First observed contribution to ecosystem | First activity month |
-    | **Full-Time Active** | High sustained activity | ≥10 active days |
-    | **Part-Time Active** | Moderate sustained activity | 1-9 active days |
-    | **Dormant** | Previously active, now inactive | 0 active days (1-6 months of inactivity) |
-    | **Churned** | Long-term inactive | 0 active days (>6 months of inactivity) |
-
-    ### Stage Characteristics
-
-    **New Developer**
-    - First month of any contribution to the ecosystem
-    - May transition to Full-Time, Part-Time, or even Dormant based on activity
-    - Important for measuring ecosystem growth and onboarding effectiveness
-
-    **Full-Time Active Developer**
-    - High engagement: ≥10 days with qualifying activity in rolling 28-day window
-    - Core contributors who drive most of the ecosystem's development
-    - Aligns with Electric Capital's "Full-Time Developer" classification
-
-    **Part-Time Active Developer**
-    - Moderate engagement: 1-9 days with qualifying activity in rolling 28-day window
-    - May be hobbyists, consultants, or developers with multiple ecosystem commitments
-    - Important segment for understanding ecosystem breadth
-
-    **Dormant Developer**
-    - No activity in recent period but was active within past 6 months
-    - May return to active status (recovery is possible)
-    - Early warning indicator for potential churn
-
-    **Churned Developer**
-    - No activity for >6 months
-    - Unlikely to return (though some do)
-    - Important for calculating churn rates and ecosystem health
+    **Preview:**
+    ```sql
+    SELECT
+      e.name AS ecosystem,
+      m.day,
+      m.all_devs,
+      m.full_time_devs,
+      m.part_time_devs,
+      m.one_time_devs,
+      m.devs_0_1y AS newcomers,
+      m.devs_2y_plus AS established
+    FROM oso.stg_opendevdata__eco_mads AS m
+    JOIN oso.stg_opendevdata__ecosystems AS e
+      ON m.ecosystem_id = e.id
+    WHERE e.name = 'Ethereum'
+    ORDER BY m.day DESC
+    LIMIT 10
+    ```
     """)
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""## State Transitions""")
+    mo.md("""
+    ## Overview
+
+    Every developer in an ecosystem follows a lifecycle — they arrive, contribute at varying intensity, and eventually slow down or leave. The lifecycle model captures this journey by assigning each developer to one of five stages based on their recent activity:
+
+    - **New** → **Active** (full-time or part-time) → **Dormant** → **Churned**
+
+    The framework uses 16 granular state transitions, which roll up into 4 summary categories: First Time, Full Time, Part Time, and Churned/Dormant.
+
+    Tracking these stages over time reveals whether an ecosystem is growing (more new developers than churned), healthy (strong full-time core), or at risk (rising dormancy).
+
+    The underlying data comes from `oso.stg_opendevdata__eco_mads`, which provides pre-calculated daily snapshots per ecosystem including activity-level and tenure breakdowns.
+    """)
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""
-    ### Valid State Transitions
+    mo.md("""
+    ## Definition & Formula
 
-    ```
-    ┌─────────────┐
-    │     NEW     │
-    └──────┬──────┘
-           │
-           ▼
-    ┌─────────────────────────────────────┐
-    │                                     │
-    │    ┌──────────────┐                 │
-    │    │  FULL-TIME   │◄───────────────┐│
-    │    │   ACTIVE     │                ││
-    │    └──────┬───────┘                ││
-    │           │                        ││
-    │           ▼                        ││
-    │    ┌──────────────┐                ││
-    │    │  PART-TIME   │────────────────┘│
-    │    │   ACTIVE     │                 │
-    │    └──────┬───────┘                 │
-    │           │                         │
-    │           ▼                         │
-    │    ┌──────────────┐                 │
-    │    │   DORMANT    │─────────────────┤
-    │    │ (1-6 months) │                 │
-    │    └──────┬───────┘                 │
-    │           │                         │
-    │           ▼                         │
-    │    ┌──────────────┐                 │
-    │    │   CHURNED    │                 │
-    │    │  (>6 months) │                 │
-    │    └──────────────┘                 │
-    │                                     │
-    └─────────────────────────────────────┘
-    ```
+    The lifecycle model assigns each developer a state each month based on their activity level and prior state. The 16 granular states roll up into 4 summary categories:
 
+    | Category | Label | Description |
+    |:---------|:------|:------------|
+    | **First Time** | `first time` | First-ever contribution to the ecosystem |
+    | **Full Time** | `full time` | 10+ active days, continuing from prior month |
+    | | `new full time` | First month reaching 10+ active days |
+    | | `part time to full time` | Transitioned from part-time level |
+    | | `dormant to full time` | Returned from dormancy at full-time level |
+    | **Part Time** | `part time` | 1-9 active days, continuing from prior month |
+    | | `new part time` | First month at part-time level |
+    | | `full time to part time` | Stepped down from full-time level |
+    | | `dormant to part time` | Returned from dormancy at part-time level |
+    | **Churned / Dormant** | `dormant` | No activity this month (previously active) |
+    | | `first time to dormant` | Dormant after first contribution |
+    | | `part time to dormant` | Dormant after part-time activity |
+    | | `full time to dormant` | Dormant after full-time activity |
+    | | `churned (after first time)` | Extended inactivity after first contribution |
+    | | `churned (after reaching part time)` | Extended inactivity after reaching part time |
+    | | `churned (after reaching full time)` | Extended inactivity after reaching full time |
+
+    **Active** = First Time + Full Time + Part Time (all 9 labels above the Churned/Dormant group)
+
+    Activity levels (full-time, part-time) are assessed over a 28-day rolling window per Electric Capital's methodology. Dormancy transitions to churn after approximately 6 months of continuous inactivity.
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## State Transitions
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.mermaid("""
+    graph LR
+        NEW["🆕 New<br/><small>First contribution</small>"] --> FT["💼 Full-Time<br/><small>≥10 days / 28d</small>"]
+        NEW --> PT["🔧 Part-Time<br/><small>1-9 days / 28d</small>"]
+        FT <-->|"activity changes"| PT
+        FT -->|"stops contributing"| DORMANT["💤 Dormant<br/><small>1-6 months inactive</small>"]
+        PT -->|"stops contributing"| DORMANT
+        DORMANT -->|"resumes activity"| FT
+        DORMANT -->|"resumes activity"| PT
+        DORMANT -->|">6 months"| CHURNED["🚪 Churned<br/><small>>6 months inactive</small>"]
+        CHURNED -.->|"rare return"| FT
+        CHURNED -.->|"rare return"| PT
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
     ### Transition Rules
 
-    | From State | To State | Trigger |
-    |:------------|:----------|:---------|
-    | New | Full-Time Active | ≥10 active days in next period |
-    | New | Part-Time Active | 1-9 active days in next period |
-    | New | Dormant | 0 active days in next period |
-    | Full-Time Active | Part-Time Active | <10 active days |
-    | Part-Time Active | Full-Time Active | ≥10 active days |
-    | Full-Time/Part-Time | Dormant | 0 active days |
-    | Dormant | Full-Time/Part-Time | Any activity resumes |
-    | Dormant | Churned | >6 months of inactivity |
-    | Churned | Full-Time/Part-Time | Activity resumes (rare) |
+    | From | To | Trigger |
+    |:-----|:---|:--------|
+    | New | Full-Time / Part-Time | Continues contributing after first period |
+    | New | Dormant | No activity after initial contribution |
+    | Full-Time | Part-Time | Activity drops below 10 days / 28d |
+    | Part-Time | Full-Time | Activity rises to ≥10 days / 28d |
+    | Full-Time / Part-Time | Dormant | 0 active days |
+    | Dormant | Full-Time / Part-Time | Any activity resumes |
+    | Dormant | Churned | >6 months of continuous inactivity |
+    | Churned | Full-Time / Part-Time | Activity resumes (rare) |
     """)
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""## Data Models""")
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    ### Underlying Tables
-
-    | Table | Purpose |
-    |:-------|:---------|
-    | `stg_opendevdata__repo_developer_28d_activities` | Developer activity per repository (28-day rolling) |
-    | `stg_opendevdata__ecosystems` | Ecosystem definitions |
-    | `stg_opendevdata__ecosystems_repos_recursive` | Repository-to-ecosystem mapping |
-
-    ### Derived Fields for Lifecycle
-
-    ```sql
-    -- Activity days calculation for lifecycle stage
-    CASE
-        WHEN active_days >= 10 THEN 'full_time_active'
-        WHEN active_days >= 1 THEN 'part_time_active'
-        WHEN months_since_last_activity <= 6 THEN 'dormant'
-        ELSE 'churned'
-    END AS lifecycle_stage
-    ```
-    """)
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""## Sample Queries""")
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""### Query 1: Lifecycle Stage Distribution for Ecosystem""")
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo, pyoso_db_conn, ecosystem_filter):
-    sql_lifecycle_distribution = f"""
-    WITH developer_activity AS (
-        SELECT
-            rda.canonical_developer_id,
-            rda.day,
-            COUNT(DISTINCT rda.day) AS active_days
-        FROM stg_opendevdata__repo_developer_28d_activities AS rda
-        JOIN stg_opendevdata__ecosystems_repos_recursive AS err
-            ON rda.repo_id = err.repo_id
-        JOIN stg_opendevdata__ecosystems AS e
-            ON err.ecosystem_id = e.id
-        WHERE e.name = '{ecosystem_filter.value}'
-            AND rda.day >= DATE('2025-01-01')
-            AND rda.day <= DATE('2025-01-15')
-        GROUP BY 1, 2
-    ),
-
-    lifecycle_stages AS (
-        SELECT
-            canonical_developer_id,
-            CASE
-                WHEN active_days >= 10 THEN 'Full-Time Active'
-                WHEN active_days >= 1 THEN 'Part-Time Active'
-                ELSE 'Inactive'
-            END AS lifecycle_stage
-        FROM developer_activity
-        WHERE day = DATE('2025-01-15')
-    )
-
-    SELECT
-        lifecycle_stage,
-        COUNT(*) AS developer_count,
-        ROUND(100.0 * COUNT(*) / SUM(COUNT(*)) OVER (), 2) AS percentage
-    FROM lifecycle_stages
-    GROUP BY lifecycle_stage
-    ORDER BY
-        CASE lifecycle_stage
-            WHEN 'Full-Time Active' THEN 1
-            WHEN 'Part-Time Active' THEN 2
-            ELSE 3
-        END
-    """
-
-    df_lifecycle_dist = mo.sql(sql_lifecycle_distribution, engine=pyoso_db_conn, output=False)
-
-    mo.vstack([
-        mo.md(f"""
-        **Lifecycle stage distribution for {ecosystem_filter.value}** (as of 2025-01-15)
-        """),
-        mo.ui.table(df_lifecycle_dist, selection=None)
-    ])
-    return (df_lifecycle_dist,)
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    ecosystem_filter = mo.ui.dropdown(
-        options=["Ethereum", "Solana", "Optimism", "Arbitrum", "Base", "Polygon"],
-        value="Ethereum",
-        label="Select Ecosystem"
-    )
-    mo.hstack([ecosystem_filter], justify="start")
-    return (ecosystem_filter,)
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""### Query 2: Lifecycle Stage Trends Over Time""")
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo, pyoso_db_conn, ecosystem_filter, px):
-    sql_lifecycle_trend = f"""
-    WITH monthly_activity AS (
-        SELECT
-            rda.canonical_developer_id,
-            DATE_TRUNC('month', rda.day) AS month,
-            COUNT(DISTINCT rda.day) AS active_days
-        FROM stg_opendevdata__repo_developer_28d_activities AS rda
-        JOIN stg_opendevdata__ecosystems_repos_recursive AS err
-            ON rda.repo_id = err.repo_id
-        JOIN stg_opendevdata__ecosystems AS e
-            ON err.ecosystem_id = e.id
-        WHERE e.name = '{ecosystem_filter.value}'
-            AND rda.day >= DATE('2024-01-01')
-        GROUP BY 1, 2
-    ),
-
-    lifecycle_stages AS (
-        SELECT
-            canonical_developer_id,
-            month,
-            CASE
-                WHEN active_days >= 10 THEN 'Full-Time Active'
-                ELSE 'Part-Time Active'
-            END AS lifecycle_stage
-        FROM monthly_activity
-    )
-
-    SELECT
-        month,
-        lifecycle_stage,
-        COUNT(*) AS developer_count
-    FROM lifecycle_stages
-    GROUP BY 1, 2
-    ORDER BY month, lifecycle_stage
-    """
-
-    df_lifecycle_trend = mo.sql(sql_lifecycle_trend, engine=pyoso_db_conn, output=False)
-
-    _fig = px.area(
-        df_lifecycle_trend,
-        x='month',
-        y='developer_count',
-        color='lifecycle_stage',
-        title=f'Lifecycle Stage Distribution Over Time: {ecosystem_filter.value}',
-        labels={'month': 'Month', 'developer_count': 'Developers', 'lifecycle_stage': 'Stage'},
-        color_discrete_map={
-            'Full-Time Active': '#2E86AB',
-            'Part-Time Active': '#A23B72'
-        }
-    )
-    _fig.update_layout(
-        template='plotly_white',
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
-    )
-
-    mo.vstack([
-        mo.md(f"""
-        **Lifecycle stage trends for {ecosystem_filter.value}**
-
-        Shows how the composition of active developers changes over time.
-        """),
-        mo.ui.plotly(_fig, config={'displayModeBar': False})
-    ])
-    return (df_lifecycle_trend,)
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""### Query 3: New Developer Onboarding""")
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo, pyoso_db_conn, ecosystem_filter, px):
-    sql_new_developers = f"""
-    WITH first_activity AS (
-        SELECT
-            rda.canonical_developer_id,
-            MIN(rda.day) AS first_active_day
-        FROM stg_opendevdata__repo_developer_28d_activities AS rda
-        JOIN stg_opendevdata__ecosystems_repos_recursive AS err
-            ON rda.repo_id = err.repo_id
-        JOIN stg_opendevdata__ecosystems AS e
-            ON err.ecosystem_id = e.id
-        WHERE e.name = '{ecosystem_filter.value}'
-        GROUP BY 1
-    )
-
-    SELECT
-        DATE_TRUNC('month', first_active_day) AS cohort_month,
-        COUNT(*) AS new_developers
-    FROM first_activity
-    WHERE first_active_day >= DATE('2023-01-01')
-    GROUP BY 1
-    ORDER BY 1
-    """
-
-    df_new_devs = mo.sql(sql_new_developers, engine=pyoso_db_conn, output=False)
-
-    _fig = px.bar(
-        df_new_devs,
-        x='cohort_month',
-        y='new_developers',
-        title=f'New Developer Onboarding: {ecosystem_filter.value}',
-        labels={'cohort_month': 'Month', 'new_developers': 'New Developers'}
-    )
-    _fig.update_layout(
-        template='plotly_white',
-        showlegend=False
-    )
-
-    mo.vstack([
-        mo.md(f"""
-        **New developers joining {ecosystem_filter.value} by month**
-
-        A "new developer" is one whose first observed contribution to the ecosystem occurred in that month.
-        """),
-        mo.ui.plotly(_fig, config={'displayModeBar': False}),
-        mo.ui.table(df_new_devs.tail(12), selection=None)
-    ])
-    return (df_new_devs,)
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""### Query 4: State Transition Analysis""")
     return
 
 
 @app.cell(hide_code=True)
 def _(mo, pyoso_db_conn):
-    sql_transitions = """
-    WITH monthly_activity AS (
-        SELECT
-            rda.canonical_developer_id,
-            DATE_TRUNC('month', rda.day) AS month,
-            COUNT(DISTINCT rda.day) AS active_days
-        FROM stg_opendevdata__repo_developer_28d_activities AS rda
-        JOIN stg_opendevdata__ecosystems_repos_recursive AS err
-            ON rda.repo_id = err.repo_id
-        JOIN stg_opendevdata__ecosystems AS e
-            ON err.ecosystem_id = e.id
-        WHERE e.name = 'Ethereum'
-            AND rda.day >= DATE('2024-10-01')
-        GROUP BY 1, 2
-    ),
-
-    lifecycle_with_lag AS (
-        SELECT
-            canonical_developer_id,
-            month,
-            CASE
-                WHEN active_days >= 10 THEN 'Full-Time'
-                ELSE 'Part-Time'
-            END AS current_stage,
-            LAG(CASE
-                WHEN active_days >= 10 THEN 'Full-Time'
-                ELSE 'Part-Time'
-            END) OVER (PARTITION BY canonical_developer_id ORDER BY month) AS prev_stage
-        FROM monthly_activity
-    )
-
-    SELECT
-        prev_stage AS from_stage,
-        current_stage AS to_stage,
-        COUNT(*) AS transition_count
-    FROM lifecycle_with_lag
-    WHERE prev_stage IS NOT NULL
-        AND prev_stage != current_stage
-    GROUP BY 1, 2
-    ORDER BY transition_count DESC
-    """
-
-    df_transitions = mo.sql(sql_transitions, engine=pyoso_db_conn, output=False)
-
-    mo.vstack([
-        mo.md("""
-        **State transitions for Ethereum** (Oct 2024 - Present)
-
-        Shows how many developers transitioned between lifecycle stages.
-        """),
-        mo.ui.table(df_transitions, selection=None)
-    ])
-    return (df_transitions,)
+    _eco_df = mo.sql("""
+        SELECT DISTINCT e.name
+        FROM oso.stg_opendevdata__eco_mads AS m
+        JOIN oso.stg_opendevdata__ecosystems AS e
+          ON m.ecosystem_id = e.id
+        WHERE m.day >= CURRENT_DATE - INTERVAL '90' DAY
+        ORDER BY e.name
+    """, engine=pyoso_db_conn, output=False)
+    ecosystem_names = sorted(_eco_df['name'].tolist())
+    return (ecosystem_names,)
 
 
 @app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""## Example Use Cases""")
+def _(mo, ecosystem_names):
+    ecosystem_dropdown = mo.ui.dropdown(
+        options=ecosystem_names,
+        value="Ethereum",
+        label="Ecosystem"
+    )
+    time_range = mo.ui.dropdown(
+        options=["All Time", "Last 5 Years", "Last 3 Years", "Last Year"],
+        value="Last 5 Years",
+        label="Time Range"
+    )
+    mo.hstack([ecosystem_dropdown, time_range], gap=2)
+    return ecosystem_dropdown, time_range
+
+
+@app.cell(hide_code=True)
+def _(mo, pyoso_db_conn, pd, ecosystem_dropdown):
+    _eco = ecosystem_dropdown.value
+    df_lifecycle = mo.sql(
+        f"""
+        SELECT
+          m.day,
+          m.all_devs,
+          m.full_time_devs,
+          m.part_time_devs,
+          m.one_time_devs,
+          m.devs_0_1y AS newcomers,
+          m.devs_1_2y AS emerging,
+          m.devs_2y_plus AS established
+        FROM oso.stg_opendevdata__eco_mads AS m
+        JOIN oso.stg_opendevdata__ecosystems AS e
+          ON m.ecosystem_id = e.id
+        WHERE e.name = '{_eco}'
+          AND m.day >= DATE '2015-01-01'
+        ORDER BY m.day
+        """,
+        engine=pyoso_db_conn,
+        output=False
+    )
+    df_lifecycle['day'] = pd.to_datetime(df_lifecycle['day'])
+    return (df_lifecycle,)
+
+
+@app.cell(hide_code=True)
+def _(mo, df_lifecycle, pd, ecosystem_dropdown):
+    _eco = ecosystem_dropdown.value
+    _current = df_lifecycle.iloc[-1]
+    _current_date = _current['day']
+    _mad = int(_current['all_devs'])
+    _ft = int(_current['full_time_devs'])
+    _pt = int(_current['part_time_devs'])
+    _ot = int(_current['one_time_devs'])
+    _newcomers = int(_current['newcomers'])
+    _ft_pct = (_ft / _mad * 100) if _mad > 0 else 0
+    _newcomer_pct = (_newcomers / _mad * 100) if _mad > 0 else 0
+
+    _year_ago = _current_date - pd.DateOffset(years=1)
+    _year_ago_df = df_lifecycle[df_lifecycle['day'] <= _year_ago]
+    if len(_year_ago_df) > 0:
+        _prev_ft = int(_year_ago_df.iloc[-1]['full_time_devs'])
+        _ft_yoy = ((_ft - _prev_ft) / _prev_ft * 100) if _prev_ft > 0 else 0
+        _ft_caption = f"{_ft_yoy:+.1f}% YoY"
+    else:
+        _ft_caption = "N/A"
+
+    mo.vstack([
+        mo.md(f"## {_eco} Lifecycle Overview"),
+        mo.hstack([
+            mo.stat(label="Full-Time Devs", value=f"{_ft:,}", bordered=True, caption=_ft_caption),
+            mo.stat(label="Part-Time Devs", value=f"{_pt:,}", bordered=True, caption=f"{100 - _ft_pct - (_ot / _mad * 100 if _mad > 0 else 0):.0f}% of active"),
+            mo.stat(label="One-Time Devs", value=f"{_ot:,}", bordered=True, caption="Minimal / sporadic"),
+            mo.stat(label="Newcomers (<1yr)", value=f"{_newcomers:,}", bordered=True, caption=f"{_newcomer_pct:.0f}% of active devs"),
+        ], widths="equal", gap=1),
+    ])
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""
-    ### Use Case 1: Find Developers at Risk of Churning
+    mo.md("""
+    ### Lifecycle Stage Composition
 
-    Identify developers who recently became dormant (early intervention opportunity):
-
-    ```sql
-    WITH current_inactive AS (
-        SELECT canonical_developer_id
-        FROM developer_activity
-        WHERE month = CURRENT_DATE - INTERVAL '1 month'
-            AND active_days = 0
-    ),
-    recently_active AS (
-        SELECT canonical_developer_id
-        FROM developer_activity
-        WHERE month BETWEEN CURRENT_DATE - INTERVAL '4 months'
-                        AND CURRENT_DATE - INTERVAL '2 months'
-            AND active_days > 0
-    )
-    SELECT *
-    FROM current_inactive
-    INTERSECT
-    SELECT * FROM recently_active
-    ```
-
-    ### Use Case 2: Measure Full-Time to Part-Time Transition Rate
-
-    ```sql
-    SELECT
-        month,
-        SUM(CASE WHEN prev_stage = 'Full-Time' AND current_stage = 'Part-Time' THEN 1 ELSE 0 END) AS ft_to_pt,
-        SUM(CASE WHEN prev_stage = 'Part-Time' AND current_stage = 'Full-Time' THEN 1 ELSE 0 END) AS pt_to_ft
-    FROM lifecycle_with_lag
-    GROUP BY month
-    ORDER BY month
-    ```
-
-    ### Use Case 3: Developer Journey Analysis
-
-    Track a specific developer's lifecycle journey:
-
-    ```sql
-    SELECT
-        month,
-        active_days,
-        lifecycle_stage,
-        LAG(lifecycle_stage) OVER (ORDER BY month) AS previous_stage
-    FROM developer_lifecycle
-    WHERE canonical_developer_id = 'developer_123'
-    ORDER BY month
-    ```
+    How the mix of full-time, part-time, and one-time developers changes over time.
+    A healthy ecosystem maintains a strong full-time core while attracting new part-time contributors.
     """)
     return
 
 
 @app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""## Methodology Notes""")
+def _(mo, df_lifecycle, go, apply_ec_style, time_range, pd, ACTIVITY_COLORS, ecosystem_dropdown):
+    _eco = ecosystem_dropdown.value
+    _df = df_lifecycle.copy()
+
+    if time_range.value == "Last 5 Years":
+        _df = _df[_df['day'] >= pd.Timestamp('2020-01-01')]
+    elif time_range.value == "Last 3 Years":
+        _df = _df[_df['day'] >= pd.Timestamp('2022-01-01')]
+    elif time_range.value == "Last Year":
+        _df = _df[_df['day'] >= pd.Timestamp('2024-01-01')]
+
+    # Calculate percentages
+    _df = _df.copy()
+    _df['ft_pct'] = _df['full_time_devs'] / _df['all_devs'] * 100
+    _df['pt_pct'] = _df['part_time_devs'] / _df['all_devs'] * 100
+    _df['ot_pct'] = _df['one_time_devs'] / _df['all_devs'] * 100
+
+    _current = _df.iloc[-1]
+
+    _fig = go.Figure()
+
+    for _label, _col in [("Full-time", "ft_pct"), ("Part-time", "pt_pct"), ("One-time", "ot_pct")]:
+        _fig.add_trace(go.Scatter(
+            x=_df['day'], y=_df[_col],
+            name=f"{_label} ({_current[_col]:.0f}%)",
+            mode='lines', stackgroup='one',
+            fillcolor=ACTIVITY_COLORS[_label],
+            line=dict(width=0.5, color=ACTIVITY_COLORS[_label]),
+            hovertemplate=f'<b>{_label}</b>: %{{y:.1f}}%<extra></extra>'
+        ))
+
+    apply_ec_style(_fig,
+        title=f"{_eco} Developer Mix by Activity Level",
+        subtitle="Percentage of monthly active developers in each lifecycle stage",
+        y_title="% of Active Developers"
+    )
+    _fig.update_yaxes(ticksuffix="%", tickformat=".0f")
+    _fig.update_layout(height=450)
+
+    mo.ui.plotly(_fig, config={'displayModeBar': False})
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""
+    mo.md("""
+    ### New Developer Acquisition
+
+    The flow of newcomers (<1 year in crypto) reflects ecosystem attractiveness and onboarding health.
+    Sustained newcomer flow is critical — without it, the ecosystem ages and eventually shrinks.
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo, df_lifecycle, go, apply_ec_style, time_range, pd, EC_COLORS, ecosystem_dropdown):
+    _eco = ecosystem_dropdown.value
+    _df = df_lifecycle.copy()
+
+    if time_range.value == "Last 5 Years":
+        _df = _df[_df['day'] >= pd.Timestamp('2020-01-01')]
+    elif time_range.value == "Last 3 Years":
+        _df = _df[_df['day'] >= pd.Timestamp('2022-01-01')]
+    elif time_range.value == "Last Year":
+        _df = _df[_df['day'] >= pd.Timestamp('2024-01-01')]
+
+    _current = _df.iloc[-1]
+    _peak_idx = _df['newcomers'].idxmax()
+    _peak_val = int(_df.loc[_peak_idx, 'newcomers'])
+    _peak_date = _df.loc[_peak_idx, 'day']
+
+    _fig = go.Figure()
+
+    _fig.add_trace(go.Scatter(
+        x=_df['day'], y=_df['newcomers'],
+        name="Newcomers (<1yr)",
+        mode='lines', fill='tozeroy',
+        fillcolor=EC_COLORS['light_blue_fill'],
+        line=dict(color=EC_COLORS['light_blue'], width=2),
+        hovertemplate='<b>Newcomers</b>: %{y:,.0f}<extra></extra>'
+    ))
+
+    _fig.add_trace(go.Scatter(
+        x=_df['day'], y=_df['established'],
+        name="Established (2+yr)",
+        mode='lines',
+        line=dict(color=EC_COLORS['dark_blue'], width=2),
+        hovertemplate='<b>Established</b>: %{y:,.0f}<extra></extra>'
+    ))
+
+    apply_ec_style(_fig,
+        title=f"{_eco}: Newcomers vs Established Developers",
+        subtitle="New developer acquisition compared to the established core (2+ years in crypto)",
+        y_title="Developers"
+    )
+    _fig.update_layout(height=450)
+
+    mo.vstack([
+        mo.hstack([
+            mo.stat(label="Current Newcomers", value=f"{int(_current['newcomers']):,}", bordered=True, caption="<1 year in crypto"),
+            mo.stat(label="Current Established", value=f"{int(_current['established']):,}", bordered=True, caption="2+ years in crypto"),
+            mo.stat(label="Peak Newcomers", value=f"{_peak_val:,}", bordered=True, caption=_peak_date.strftime('%b %Y')),
+        ], widths="equal", gap=1),
+        mo.ui.plotly(_fig, config={'displayModeBar': False}),
+    ])
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Methodology
+
     ### Threshold Justification
 
     | Threshold | Value | Rationale |
-    |:-----------|:-------|:-----------|
-    | Full-Time threshold | 10 days | Aligns with Electric Capital methodology; ~2+ days/week |
-    | Dormant period | 1-6 months | Balances false positives with early detection |
-    | Churned period | >6 months | Industry standard for "lost" users |
-
-    ### Limitations
-
-    1. **Activity Types**: Currently uses commits only; PRs, issues, reviews not included
-    2. **Multi-Ecosystem**: Developer may be Full-Time in Ecosystem A but Part-Time in Ecosystem B
-    3. **Seasonal Effects**: Some developers have cyclical patterns (academic schedules, etc.)
-    4. **New vs Returning**: First activity in an ecosystem may not be developer's first open source contribution
+    |:----------|:------|:----------|
+    | Full-Time | ≥10 days / 28d window | Aligns with Electric Capital; ~2+ days/week of sustained contribution |
+    | Part-Time | 1-9 days / 28d window | Regular but not intensive; hobbyists, consultants, multi-ecosystem devs |
+    | One-Time | Sporadic over 84d window | Minimal engagement; may be exploring or making one-off contributions |
+    | Dormant | 1-6 months inactive | Balances early detection with false positives from holidays/breaks |
+    | Churned | >6 months inactive | Industry standard for "lost" users; return is rare but possible |
 
     ### Comparison to Electric Capital
 
-    | Aspect | OSO Lifecycle | Electric Capital |
-    |:--------|:---------------|:------------------|
-    | Full-Time threshold | 10 days/28-day window | 10 days/28-day window |
-    | Part-Time threshold | 1-9 days/28-day window | <10 days/28-day window |
-    | One-Time tracking | Via dormant/churned | 84-day rolling window |
-    | Identity resolution | GitHub actor_id | Cross-email fingerprinting |
+    | Aspect | DDP Lifecycle | Electric Capital |
+    |:-------|:-------------|:-----------------|
+    | Full-Time threshold | 10 days / 28-day window | 10 days / 28-day window |
+    | Part-Time threshold | 1-9 days / 28-day window | <10 days / 28-day window |
+    | One-Time tracking | Via one_time_devs in eco_mads | 84-day rolling window |
+    | Identity resolution | Canonical developer ID (ODD) | Cross-email fingerprinting |
+    | Tenure segmentation | <1yr, 1-2yr, 2+yr | Same |
+
+    ### Limitations
+
+    | Factor | Impact |
+    |:-------|:-------|
+    | **Commits only** | Activity is based on commits; PRs, issues, and reviews are not counted |
+    | **Multi-ecosystem** | A developer may be full-time in one ecosystem but part-time in another |
+    | **Seasonal patterns** | Academic schedules, holidays, and funding cycles create natural fluctuations |
+    | **Dormant/churned not in eco_mads** | The pre-calculated model only tracks currently active developers; dormant and churned developers must be derived from raw activity data |
     """)
     return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Sample Queries
+
+    ### 1. Current Lifecycle Stage Distribution
+
+    Get the latest stage breakdown for an ecosystem from the pre-calculated model.
+
+    ```sql
+    SELECT
+      m.day,
+      m.all_devs AS total_active,
+      m.full_time_devs,
+      m.part_time_devs,
+      m.one_time_devs,
+      ROUND(100.0 * m.full_time_devs / m.all_devs, 1) AS full_time_pct,
+      ROUND(100.0 * m.part_time_devs / m.all_devs, 1) AS part_time_pct,
+      ROUND(100.0 * m.one_time_devs / m.all_devs, 1) AS one_time_pct
+    FROM oso.stg_opendevdata__eco_mads AS m
+    JOIN oso.stg_opendevdata__ecosystems AS e
+      ON m.ecosystem_id = e.id
+    WHERE e.name = 'Ethereum'
+    ORDER BY m.day DESC
+    LIMIT 10
+    ```
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo, pyoso_db_conn):
+    _df = mo.sql(
+        f"""
+        SELECT
+          m.day,
+          m.all_devs AS total_active,
+          m.full_time_devs,
+          m.part_time_devs,
+          m.one_time_devs,
+          ROUND(100.0 * m.full_time_devs / m.all_devs, 1) AS full_time_pct,
+          ROUND(100.0 * m.part_time_devs / m.all_devs, 1) AS part_time_pct,
+          ROUND(100.0 * m.one_time_devs / m.all_devs, 1) AS one_time_pct
+        FROM oso.stg_opendevdata__eco_mads AS m
+        JOIN oso.stg_opendevdata__ecosystems AS e
+          ON m.ecosystem_id = e.id
+        WHERE e.name = 'Ethereum'
+        ORDER BY m.day DESC
+        LIMIT 10
+        """,
+        engine=pyoso_db_conn
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ### 2. Developer-Level Stage Transitions
+
+    Compute actual per-developer transitions between activity levels using raw activity data.
+    This query uses a tight 2-month window for performance.
+
+    ```sql
+    WITH monthly_activity AS (
+        SELECT
+          rda.canonical_developer_id,
+          DATE_TRUNC('month', rda.day) AS month,
+          COUNT(DISTINCT rda.day) AS active_days
+        FROM oso.stg_opendevdata__repo_developer_28d_activities AS rda
+        JOIN oso.stg_opendevdata__ecosystems_repos_recursive AS err
+          ON rda.repo_id = err.repo_id
+        JOIN oso.stg_opendevdata__ecosystems AS e
+          ON err.ecosystem_id = e.id
+        WHERE e.name = 'Ethereum'
+          AND rda.day BETWEEN DATE '2025-01-01' AND DATE '2025-02-28'
+        GROUP BY 1, 2
+    ),
+    with_stages AS (
+        SELECT
+          canonical_developer_id,
+          month,
+          CASE WHEN active_days >= 10 THEN 'Full-Time'
+               ELSE 'Part-Time'
+          END AS stage,
+          LAG(CASE WHEN active_days >= 10 THEN 'Full-Time'
+                   ELSE 'Part-Time'
+              END) OVER (
+            PARTITION BY canonical_developer_id ORDER BY month
+          ) AS prev_stage
+        FROM monthly_activity
+    )
+    SELECT
+      prev_stage AS from_stage,
+      stage AS to_stage,
+      COUNT(*) AS transition_count
+    FROM with_stages
+    WHERE prev_stage IS NOT NULL
+      AND prev_stage != stage
+    GROUP BY 1, 2
+    ORDER BY transition_count DESC
+    ```
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo, pyoso_db_conn):
+    _df = mo.sql(
+        f"""
+        WITH monthly_activity AS (
+            SELECT
+              rda.canonical_developer_id,
+              DATE_TRUNC('month', rda.day) AS month,
+              COUNT(DISTINCT rda.day) AS active_days
+            FROM oso.stg_opendevdata__repo_developer_28d_activities AS rda
+            JOIN oso.stg_opendevdata__ecosystems_repos_recursive AS err
+              ON rda.repo_id = err.repo_id
+            JOIN oso.stg_opendevdata__ecosystems AS e
+              ON err.ecosystem_id = e.id
+            WHERE e.name = 'Ethereum'
+              AND rda.day BETWEEN DATE '2025-01-01' AND DATE '2025-02-28'
+            GROUP BY 1, 2
+        ),
+        with_stages AS (
+            SELECT
+              canonical_developer_id,
+              month,
+              CASE WHEN active_days >= 10 THEN 'Full-Time'
+                   ELSE 'Part-Time'
+              END AS stage,
+              LAG(CASE WHEN active_days >= 10 THEN 'Full-Time'
+                       ELSE 'Part-Time'
+                  END) OVER (
+                PARTITION BY canonical_developer_id ORDER BY month
+              ) AS prev_stage
+            FROM monthly_activity
+        )
+        SELECT
+          prev_stage AS from_stage,
+          stage AS to_stage,
+          COUNT(*) AS transition_count
+        FROM with_stages
+        WHERE prev_stage IS NOT NULL
+          AND prev_stage != stage
+        GROUP BY 1, 2
+        ORDER BY transition_count DESC
+        """,
+        engine=pyoso_db_conn
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## Related Models
+
+    - **Activity**: [activity.py](./activity.py) — MAD metric with EC-style charts and data source validation
+    - **Alignment**: [alignment.py](./alignment.py) — Developer ecosystem alignment metric
+    - **Retention**: [retention.py](./retention.py) — Cohort-based developer retention
+    - **Ecosystems**: [ecosystems.py](../models/ecosystems.py) — Ecosystem definitions and hierarchy
+    - **Developers**: [developers.py](../models/developers.py) — Unified developer identities
+    - **Timeseries Metrics**: [timeseries-metrics.py](../models/timeseries-metrics.py) — Aggregated time series
+
+    **Insights**
+    - [Lifecycle Analysis](/insights/developer-lifecycle) — Stage transitions and ecosystem health over time
+    - [Retention Analysis](/insights/developer-retention) — Cohort retention rates by ecosystem
+    """)
+    return
+
+
+# --- Infrastructure cells ---
+
+
+@app.cell(hide_code=True)
+def _():
+    def apply_ec_style(fig, title=None, subtitle=None, y_title=None, show_legend=True):
+        """Apply Electric Capital chart styling to a plotly figure."""
+        title_text = ""
+        if title:
+            title_text = f"<b>{title}</b>"
+            if subtitle:
+                title_text += f"<br><span style='font-size:14px;color:#666666'>{subtitle}</span>"
+
+        fig.update_layout(
+            title=dict(
+                text=title_text,
+                font=dict(size=20, color="#1B4F72", family="Arial, sans-serif"),
+                x=0, xanchor="left", y=0.95, yanchor="top"
+            ) if title else None,
+            template='plotly_white',
+            font=dict(family="Arial, sans-serif", size=12, color="#333"),
+            plot_bgcolor='white',
+            paper_bgcolor='white',
+            margin=dict(t=100 if title else 40, l=70, r=40, b=60),
+            hovermode='x unified',
+            showlegend=show_legend,
+            legend=dict(
+                orientation="h", yanchor="bottom", y=1.02,
+                xanchor="right", x=1, bgcolor="rgba(255,255,255,0.8)"
+            )
+        )
+        fig.update_xaxes(
+            showgrid=False, showline=True,
+            linecolor="#CCCCCC", linewidth=1,
+            tickfont=dict(size=11, color="#666"),
+            title="", tickformat="%b %Y"
+        )
+        fig.update_yaxes(
+            showgrid=True, gridcolor="#E8E8E8", gridwidth=1,
+            showline=True, linecolor="#CCCCCC", linewidth=1,
+            tickfont=dict(size=11, color="#666"),
+            title=y_title or "",
+            title_font=dict(size=12, color="#666"),
+            tickformat=",d"
+        )
+        return fig
+    return (apply_ec_style,)
+
+
+@app.cell(hide_code=True)
+def _():
+    EC_COLORS = {
+        'light_blue': '#7EB8DA',
+        'light_blue_fill': 'rgba(126, 184, 218, 0.4)',
+        'dark_blue': '#1B4F72',
+        'medium_blue': '#5499C7',
+        'orange': '#F5B041',
+    }
+
+    ACTIVITY_COLORS = {
+        "Full-time": "#5DADE2",
+        "Part-time": "#EC7063",
+        "One-time": "#F5B041",
+    }
+    return EC_COLORS, ACTIVITY_COLORS
 
 
 @app.cell(hide_code=True)
 def _():
     import pandas as pd
-    import plotly.express as px
-    return pd, px
+    import plotly.graph_objects as go
+    return pd, go
 
 
 @app.cell(hide_code=True)
