@@ -33,11 +33,21 @@ def header_accordion(mo):
 - Uses curated Open Dev Data repository set (not comprehensive GitHub coverage)
 - Developer identity resolution may miss some connections across accounts or pseudonyms
 - Data freshness depends on Open Dev Data and OSO pipeline update cadence
+
+**Metric Definitions**
+- [Activity](/data/metric-definitions/activity) — Monthly Active Developer (MAD) methodology
+
+**Methodology**
+- **Developers**: Original code authors only (merge/PR integrators excluded unless they authored commits)
+- **Monthly Active Developers**: 28-day rolling activity window
+- **Tenure Categories**: Newcomers (< 1 year), Emerging (1–2 years), Established (2+ years)
+- **Activity Levels**: Full-time (sustained activity over 84-day window), Part-time (intermittent), One-time (sporadic)
+
+> This analysis is inspired by the [Electric Capital Developer Report](https://www.developerreport.com). Data sourced from Open Dev Data via the OSO data warehouse.
         """),
         "Data Sources": mo.md("""
 - **Open Dev Data** — Electric Capital's developer activity dataset, [github.com/electric-capital/crypto-ecosystems](https://github.com/electric-capital/crypto-ecosystems)
 - **OSO API** — Data pipeline and metrics, [docs.oso.xyz](https://docs.oso.xyz/)
-- **Metric Definitions** — [Activity](/data/metric-definitions/activity)
 - **Key Models** — `oso.stg_opendevdata__eco_mads`, `oso.stg_opendevdata__ecosystems`
         """),
     })
@@ -92,23 +102,6 @@ def setup_constants():
         SUPPORTED_ECOSYSTEMS,
         TENURE_COLORS,
     )
-
-
-@app.cell(hide_code=True)
-def related(mo):
-    mo.md("""
-    ## Related
-
-    **Metric Definitions**
-    - [Activity](../data/metric-definitions/activity.py) — Monthly Active Developer (MAD) methodology
-
-    **Other Insights**
-    - [Lifecycle Analysis](./developer-lifecycle.py)
-    - [Retention Analysis](./developer-retention.py)
-    - [DeFi Developer Journeys](./defi-developer-journeys.py)
-    - [Speedrun Ethereum](./speedrun-ethereum.py)
-    """)
-    return
 
 
 @app.cell(hide_code=True)
@@ -1555,31 +1548,6 @@ def comparison_chart(
         _output = mo.ui.plotly(_fig, config={"displayModeBar": False})
 
     _output
-    return
-
-
-@app.cell(hide_code=True)
-def footer(mo):
-    mo.md("""
-    ---
-
-    ## Methodology
-
-    - **Developers**: We count original code authors as developers. A developer who merges a pull request is not an active developer on the project unless they authored commits.
-    - **Monthly Active Developers**: Measured using a 28-day rolling window to provide more stable metrics over time.
-    - **Tenure Categories**:
-      - Newcomers: < 1 year active in crypto
-      - Emerging: 1-2 years active
-      - Established: 2+ years active
-    - **Activity Levels**:
-      - Full-Time Contributors: consistently active across multiple weeks based on sustained activity patterns over an 84-day rolling window
-      - Part-Time Contributors: intermittently active with regular contributions over an 84-day rolling window
-      - One-Time Contributors: minimal or sporadic activity over an 84-day rolling window
-      - *Note*: In the report methodology, “full-time” behavior is commonly operationalized as contributing code on 10+ days in a rolling 28-day period (and analyzed for persistence over longer windows).
-          
-    > This analysis is inspired by and seeks to reproduce highlights from the [Electric Capital Developer Report](https://www.developerreport.com).
-    Data sourced from Open Dev Data via the OSO data warehouse.
-    """)
     return
 
 

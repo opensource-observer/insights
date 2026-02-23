@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "unknown"
+__generated_with = "0.18.4"
 app = marimo.App(width="full")
 
 
@@ -8,7 +8,7 @@ app = marimo.App(width="full")
 def header_title(mo):
     mo.md("""
     # Case Study: Speedrun Ethereum
-    <small>Owner: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">OSO Team</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">17 February 2026</span></small>
+    <small>Owner: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">OSO Team</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">2026-02-17</span></small>
 
     An in-depth case study on the role Speedrun Ethereum has played in onboarding and retaining new Ethereum developers.
     """)
@@ -24,6 +24,14 @@ def header_accordion(mo):
 - Key questions: What share of SRE graduates remain active in Ethereum after 1–2 years? How does prior experience affect outcomes? Where do graduates go after SRE?
         """),
         "Context": mo.md("""
+We conducted this analysis as part of a broader inquiry into the state of the Ethereum developer ecosystem in 2025, grounded in three working hypotheses:
+
+1. Developer retention is a leading indicator of ecosystem health and, over time, a meaningful predictor of long-term token price, value accrual, network GDP, etc.
+2. Ethereum's early open-source culture is eroding as the crypto ecosystem matures, becomes more competitive, and partners with tradfi/web2.
+3. Other ecosystems (eg, AI) have emerged as powerful bottom-up attractors for ambitious, mission-driven developers.
+
+Using Speedrun Ethereum as a focused case study, the data suggests that bottom-up programs still work. Speedrun Ethereum is successfully counteracting these headwinds by onboarding, retaining, and anchoring net-new developers in the Ethereum ecosystem.
+
 **Working hypotheses:**
 1. Developer retention is a leading indicator of ecosystem health
 2. Ethereum's early open-source culture is under pressure from competition and crypto maturation
@@ -43,36 +51,20 @@ def header_accordion(mo):
 - **Full-time month**: >10 days of qualifying activity
 - **Velocity**: Sum over active days of (1 + ln(events per day))
 - **Change Categories**: Average monthly activity changes after SRE compared to before
+
+**Metric Definitions**
+- [Activity](/data/metric-definitions/activity) — Monthly Active Developer (MAD) methodology
+- [Retention](/data/metric-definitions/retention) — Cohort-based retention methodology
         """),
         "Data Sources": mo.md("""
 - **SRE GitHub users** — `int_sre_github_users`: user registry, cohorts, batches, challenges completed
 - **GitHub events** — `int_sre_github_events_by_user`: public GitHub events joined to SRE users, from [GitHub Archive](https://gharchive.org)
 - **Ecosystem mappings** — `stg_opendevdata__*`: Electric Capital's repo → ecosystem mappings, via [Open Dev Data](https://opendevdata.org/)
-- **Metric Definitions** — [Activity](/data/metric-definitions/activity)
 - **Further reading**: [Speedrun Ethereum](https://speedrunethereum.com/) · [Pyoso docs](https://docs.opensource.observer/docs/get-started/python) · [Marimo docs](https://docs.marimo.io/)
         """),
     })
     return
 
-
-@app.cell(hide_code=True)
-def intro_section(mo):
-    mo.md("""
-    ## Introduction
-
-    We conducted this analysis as part of a broader inquiry into the state of the Ethereum developer ecosystem in 2025, grounded in three working hypotheses:
-
-    1. Developer retention is a leading indicator of ecosystem health and, over time, a meaningful predictor of long-term token price, value accrual, network GDP, etc.
-
-    2. Ethereum's early open-source culture is eroding as the crypto ecosystem matures, becomes more competitive, and partners with tradfi/web2.
-
-    3. Other ecosystems (eg, AI) have emerged as powerful bottom-up attractors for ambitious, mission-driven developers.
-
-    Using Speedrun Ethereum as a focused case study, the data suggests that bottom-up programs still work. Speedrun Ethereum is successfully counteracting these headwinds by onboarding, retaining, and anchoring net-new developers in the Ethereum ecosystem.
-
-    *All of this data is live, public, and interactive. You can also download the code that generates this notebook and run it locally.*
-    """)
-    return
 
 
 @app.cell(hide_code=True)
@@ -1438,7 +1430,6 @@ def _(
         _stats,
         show_plotly(_fig),
     ])
-
     return
 
 
@@ -1669,27 +1660,6 @@ def _(
     return
 
 
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(
-        r"""
-    ---
-
-    ## Suggested recommendations
-
-    - **Maintain broad onboarding as a public good**. Continue serving new developers at scale to expand the Ethereum ecosystem and sustain long-term growth.
-
-    - **Prioritize experienced developers as the highest-leverage cohort**. The marginal return on program investment is likely highest when accelerating experienced developers through the first 3–4 months and supporting their transition into steady Ethereum work.
-
-    - **Introduce structured acceleration during the critical early window**. Focus on targeted interventions for experienced developers—such as office hours, mentorship, and opportunities to demo work—to improve conversion and reduce early churn.
-
-    - **Improve visibility into post-program pathways for experienced developers**. Systematically learn what experienced participants want to do next (e.g., join existing teams, launch new projects, pursue side work) and align support accordingly.
-
-    - **Expand the activation funnel to high-intent participants**. Engage the 10K+ developers who have forked, starred, or otherwise interacted with Speedrun Ethereum as a follow-on activation pool for developers who already demonstrate interest and intent.
-    """
-    )
-    return
-
 
 @app.cell(hide_code=True)
 def _():
@@ -1743,23 +1713,6 @@ def imports():
     from plotly.subplots import make_subplots
     return go, make_subplots, math, np, pd, px
 
-
-@app.cell(hide_code=True)
-def related(mo):
-    mo.md("""
-    ## Related
-
-    **Metric Definitions**
-    - [Activity](../data/metric-definitions/activity.py) — Monthly Active Developer (MAD) methodology
-    - [Retention](../data/metric-definitions/retention.py) — Cohort-based retention methodology
-
-    **Other Insights**
-    - [2025 Developer Trends](./developer-report-2025.py)
-    - [Lifecycle Analysis](./developer-lifecycle.py)
-    - [Retention Analysis](./developer-retention.py)
-    - [DeFi Developer Journeys](./defi-developer-journeys.py)
-    """)
-    return
 
 
 @app.cell(hide_code=True)

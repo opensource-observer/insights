@@ -5,7 +5,7 @@ app = marimo.App(width="full")
 
 
 @app.cell(hide_code=True)
-def title_cell(mo):
+def header_title(mo):
     mo.md("""
     # Lifecycle Analysis
     <small>Owner: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">OSO Team</span> · Last Updated: <span style="background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px;">2026-02-17</span></small>
@@ -50,10 +50,13 @@ def header_accordion(mo):
 **Churn Ratio** = sum(churned + dormant) / sum(active) over the trailing window (12mo or all-time)
 
 Data is bucketed monthly; private repos excluded; contributions include commits, issues, pull requests, and code reviews.
+
+**Metric Definitions**
+- [Lifecycle](/data/metric-definitions/lifecycle) — Developer stage definitions
+- [Activity](/data/metric-definitions/activity) — Monthly Active Developer (MAD) methodology
         """),
         "Data Sources": mo.md("""
 - **Open Dev Data (Electric Capital)** — Ecosystem and developer taxonomy, [github.com/electric-capital/crypto-ecosystems](https://github.com/electric-capital/crypto-ecosystems)
-- **Metric Definitions** — [Lifecycle](/data/metric-definitions/lifecycle)
 - **Key Models** — `oso.int_crypto_ecosystems_developer_lifecycle_monthly_aggregated`
         """),
     })
@@ -429,26 +432,8 @@ def setup_constants():
 
 
 @app.cell(hide_code=True)
-def related(mo):
-    mo.md("""
-    ## Related
-
-    **Metric Definitions**
-    - [Lifecycle](../data/metric-definitions/lifecycle.py) — Developer stage definitions
-    - [Activity](../data/metric-definitions/activity.py) — Monthly Active Developer (MAD) methodology
-
-    **Other Insights**
-    - [2025 Developer Trends](./developer-report-2025.py)
-    - [Retention Analysis](./developer-retention.py)
-    - [DeFi Developer Journeys](./defi-developer-journeys.py)
-    - [Speedrun Ethereum](./speedrun-ethereum.py)
-    """)
-    return
-
-
-@app.cell(hide_code=True)
 def helper_apply_ec_style():
-    def apply_ec_style(fig, title=None, subtitle=None, y_title=None, show_legend=True, right_margin=60):
+    def apply_ec_style(fig, title=None, subtitle=None, y_title=None, show_legend=True, right_margin=180):
         title_text = ""
         if title:
             title_text = f"<b>{title}</b>"
@@ -458,7 +443,7 @@ def helper_apply_ec_style():
         fig.update_layout(
             title=dict(
                 text=title_text,
-                font=dict(size=20, color="#1B4F72", family="Arial, sans-serif"),
+                font=dict(size=22, color="#1B4F72", family="Arial, sans-serif"),
                 x=0,
                 xanchor="left",
                 y=0.95,

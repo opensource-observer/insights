@@ -8,6 +8,10 @@ dependencies = [
     "uvicorn>=0.30.0",
     "pyoso>=0.8.0",
     "plotly>=6.5.0",
+    "pillow>=12.1.1",
+    "matplotlib>=3.10.8",
+    "wordcloud>=1.9.6",
+    "jinja2>=3.1.6",
 ]
 
 [tool.marimo.runtime]
