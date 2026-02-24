@@ -6,80 +6,90 @@ app = marimo.App(width="full")
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(
-        """
-        # Welcome to the Developer Data Portal
+    mo.md("""
+    # Developer Data Portal
 
-        The Developer Data Portal provides interactive access to OSO's comprehensive developer 
-        and repository analytics. Explore data sources, models, metrics, and insights through 
-        interactive notebooks powered by Marimo.
+    Access crypto developer data from [Open Dev Data](https://opendevdata.org/), [GitHub Archive](https://www.gharchive.org/), [OSO](https://www.oso.xyz), and more.
+    Explore raw data sources, unified models, and insights.
+    <br>Or give your AI agent access to the full data lake in one prompt.
+    """)
+    return
 
-        ## What's Available
 
-        ### Data Sources
-        Explore raw data from multiple providers:
-        - **OSS Directory**: Curated registry of open source projects and repositories
-        - **Open Dev Data**: Developer activity metrics and ecosystem mappings from Electric Capital
-        - **GitHub Archive**: Historical GitHub event data from gharchive.org
+@app.cell(hide_code=True)
+def _(mo, pathlib):
+    _assets = pathlib.Path(__file__).parent / "assets"
+    _images = [
+        mo.image(src=_assets / "carousel-1.png", rounded=True),
+        mo.image(src=_assets / "carousel-2.png", rounded=True),
+        mo.image(src=_assets / "carousel-3.png", rounded=True),
+        mo.image(src=_assets / "carousel-4.png", rounded=True),
+        mo.image(src=_assets / "carousel-5.png", rounded=True),
+    ]
+    _left = mo.md("""
+    ## Stop plumbing. Start visualizing.
 
-        ### Data Models
-        Unified models that combine data across sources:
-        - **Repositories**: Unified repository identifiers and metadata
-        - **Developers**: Developer profiles and activity
-        - **Ecosystems**: Ecosystem hierarchies and relationships
-        - **Events**: GitHub events and activity
-        - **Timeseries Metrics**: Time-based analytics and trends
+    Combining data from multiple sources into a unified schema is hard.
+    We built this so you can skip the plumbing and go straight to insights.
 
-        ### Insights
-        Pre-built analyses and visualizations:
-        - Developer Activity patterns
-        - Developer Lifecycle metrics
-        - Developer Retention analysis
+    ## Open. Traceable. Forkable.
 
-        ## Getting Started
-
-        Navigate to **Quick Start** in the sidebar for a guided introduction, or explore 
-        any section to dive into the data.
-        """
+    Replicate, extend, or fork the models we've built so far and run them in your environment.
+    You can also view the Python notebooks - built on [marimo](https://marimo.io/) - and run them locally.
+    """)
+    _right = mo.carousel(_images)
+    mo.Html(
+        '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center;">'
+        f'<div>{_left.text}</div>'
+        f'<div style="min-width: 0; max-height: 300px; overflow: hidden;">{_right.text}</div>'
+        '</div>'
     )
     return
 
 
 @app.cell(hide_code=True)
-def _(mo, pyoso_db_conn):
-    # Show overview of projects
-    with mo.persistent_cache("projects_preview"):
-        df = mo.sql("SELECT * FROM projects_v1 LIMIT 10", engine=pyoso_db_conn, output=False)
-    return df,
+def _():
+    import pathlib
+    return (pathlib,)
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(
-        """
-        ## Sample Projects
+    mo.md("""
+    ## Start Exploring
 
-        Here's a preview of projects available in the OSO data lake:
-        """
+    - **For analysts and researchers** — Explore data interactively through notebooks. See our [Quick Start Guide](/quick-start)
+
+    - **For AI agents** — Copy-paste setup and start querying with `pyoso`. See our [Agent Guide](/agent-guide)
+
+    ---
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    _ef_svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1920" width="28" height="28"><path d="m959.8 730.9-539.8 245.4 539.8 319.1 539.9-319.1z" opacity=".6"/><path d="m420.2 976.3 539.8 319.1v-564.5-650.3z" opacity=".45"/><path d="m960 80.6v650.3 564.5l539.8-319.1z" opacity=".8"/><path d="m420 1078.7 539.8 760.7v-441.8z" opacity=".45"/><path d="m959.8 1397.6v441.8l540.2-760.7z" opacity=".8"/></svg>'
+    mo.Html(
+        '<div style="display: flex; align-items: center; justify-content: center; gap: 12px;'
+        ' padding: 16px 24px; border: 1px solid #e5e7eb; border-radius: 8px; background: #fafafa;">'
+        + _ef_svg
+        + '<span style="font-size: 14px; color: #6b7280;">This work is sponsored by the '
+        '<a href="https://ethereum.foundation" style="color: #6b7280; text-decoration: underline;"'
+        ' target="_blank">Ethereum Foundation</a></span>'
+        '</div>'
     )
     return
 
 
 @app.cell(hide_code=True)
-def _(mo, df):
-    fmt = {c: '{:.0f}' for c in df.columns if df[c].dtype == 'int64' and ('_id' in c or c == 'id')}
-    mo.ui.table(df, format_mapping=fmt, show_column_summaries=False, show_data_types=False)
-    return
-
-
-@app.cell
 def setup_pyoso():
     # This code sets up pyoso to be used as a database provider for this notebook
     # This code is autogenerated. Modification could lead to unexpected results :)
     import pyoso
     import marimo as mo
     pyoso_db_conn = pyoso.Client().dbapi_connection()
-    return mo, pyoso_db_conn
+    return (mo,)
 
 
 if __name__ == "__main__":
