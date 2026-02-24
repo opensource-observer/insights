@@ -390,7 +390,8 @@ def _(mo, pyoso_db_conn, ecosystem_selector):
     ORDER BY ca.cohort_month, ca.months_since_cohort
     """
 
-    df_retention = mo.sql(sql_cohort_retention, engine=pyoso_db_conn, output=False)
+    with mo.persistent_cache("cohort_retention"):
+        df_retention = mo.sql(sql_cohort_retention, engine=pyoso_db_conn, output=False)
 
     mo.vstack([
         mo.md(f"""
@@ -540,7 +541,8 @@ def _(mo, pyoso_db_conn, px):
     ORDER BY ca.ecosystem, ca.months_since_cohort
     """
 
-    df_cross = mo.sql(sql_cross_ecosystem, engine=pyoso_db_conn, output=False)
+    with mo.persistent_cache("cross_ecosystem"):
+        df_cross = mo.sql(sql_cross_ecosystem, engine=pyoso_db_conn, output=False)
 
     _fig = px.line(
         df_cross,

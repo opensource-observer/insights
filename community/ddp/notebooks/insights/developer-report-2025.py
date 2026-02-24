@@ -242,35 +242,36 @@ def test_connection(mo, pyoso_db_conn):
 def query_all_data(ECOSYSTEMS, mo, pd, pyoso_db_conn):
     ecosystems_str = ", ".join(f"'{e}'" for e in ECOSYSTEMS)
 
-    df_all = mo.sql(
-        f"""
-        SELECT
-            e.name AS ecosystem_name,
-            m.day,
-            m.all_devs AS total_devs,
-            m.devs_0_1y AS newcomers,
-            m.devs_1_2y AS emerging,
-            m.devs_2y_plus AS established,
-            m.one_time_devs AS one_time,
-            m.part_time_devs AS part_time,
-            m.full_time_devs AS full_time
-        FROM oso.stg_opendevdata__eco_mads m
-        JOIN oso.stg_opendevdata__ecosystems e ON m.ecosystem_id = e.id
-        WHERE e.name IN ({ecosystems_str})
-          AND m.day >= DATE '2015-01-01'
-          AND m.day < DATE '2026-01-01'
-        ORDER BY e.name, m.day
-        """,
-        engine=pyoso_db_conn,
-        output=False
-    )
+    with mo.persistent_cache("report_data"):
+        df_all = mo.sql(
+            f"""
+            SELECT
+                e.name AS ecosystem_name,
+                m.day,
+                m.all_devs AS total_devs,
+                m.devs_0_1y AS newcomers,
+                m.devs_1_2y AS emerging,
+                m.devs_2y_plus AS established,
+                m.one_time_devs AS one_time,
+                m.part_time_devs AS part_time,
+                m.full_time_devs AS full_time
+            FROM oso.stg_opendevdata__eco_mads m
+            JOIN oso.stg_opendevdata__ecosystems e ON m.ecosystem_id = e.id
+            WHERE e.name IN ({ecosystems_str})
+              AND m.day >= DATE '2015-01-01'
+              AND m.day < DATE '2026-01-01'
+            ORDER BY e.name, m.day
+            """,
+            engine=pyoso_db_conn,
+            output=False
+        )
 
-    df_all['day'] = pd.to_datetime(df_all['day'])
+        df_all['day'] = pd.to_datetime(df_all['day'])
 
-    # Add time period columns for aggregation
-    df_all['year'] = df_all['day'].dt.year
-    df_all['quarter'] = df_all['day'].dt.to_period('Q').dt.to_timestamp()
-    df_all['month'] = df_all['day'].dt.to_period('M').dt.to_timestamp()
+        # Add time period columns for aggregation
+        df_all['year'] = df_all['day'].dt.year
+        df_all['quarter'] = df_all['day'].dt.to_period('Q').dt.to_timestamp()
+        df_all['month'] = df_all['day'].dt.to_period('M').dt.to_timestamp()
     return (df_all,)
 
 

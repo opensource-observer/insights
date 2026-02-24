@@ -321,7 +321,8 @@ def _(mo, pyoso_db_conn):
     LIMIT 100
     """
 
-    df_alignment = mo.sql(sql_top_developer_alignment, engine=pyoso_db_conn, output=False)
+    with mo.persistent_cache("top_developer_alignment"):
+        df_alignment = mo.sql(sql_top_developer_alignment, engine=pyoso_db_conn, output=False)
 
     mo.vstack([
         mo.md(f"""
@@ -392,7 +393,8 @@ def _(mo, pyoso_db_conn, ecosystem_selector):
     LIMIT 50
     """
 
-    df_top_aligned = mo.sql(sql_top_aligned, engine=pyoso_db_conn, output=False)
+    with mo.persistent_cache("top_aligned"):
+        df_top_aligned = mo.sql(sql_top_aligned, engine=pyoso_db_conn, output=False)
 
     mo.vstack([
         mo.md(f"""
@@ -483,7 +485,8 @@ def _(mo, pyoso_db_conn, ecosystem_selector, px):
         END
     """
 
-    df_distribution = mo.sql(sql_alignment_distribution, engine=pyoso_db_conn, output=False)
+    with mo.persistent_cache("alignment_distribution"):
+        df_distribution = mo.sql(sql_alignment_distribution, engine=pyoso_db_conn, output=False)
 
     _fig = px.bar(
         df_distribution,

@@ -146,7 +146,8 @@ def _(mo, pyoso_db_conn):
     LIMIT 20
     """
 
-    df_top_ecosystems = mo.sql(_query, engine=pyoso_db_conn, output=False)
+    with mo.persistent_cache("top_ecosystems"):
+        df_top_ecosystems = mo.sql(_query, engine=pyoso_db_conn, output=False)
     return (df_top_ecosystems,)
 
 
@@ -227,7 +228,7 @@ def _(mo, px, pyoso_db_conn):
     LIMIT 20
     """
 
-    _df = mo.sql(_query, engine=pyoso_db_conn, output=False)
+    _df = mo.sql(_query, engine=pyoso_db_conn)
 
     _num_children = len(_df)
     _total_child_repos = int(_df['repo_count'].sum())

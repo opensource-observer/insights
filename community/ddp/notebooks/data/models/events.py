@@ -7,13 +7,13 @@ app = marimo.App(width="full")
 @app.cell(hide_code=True)
 def _(mo, pyoso_db_conn):
     def get_model_preview(model_name, limit=5):
-        return mo.sql(f"SELECT * FROM {model_name} LIMIT {limit}", 
+        return mo.sql(f"SELECT * FROM {model_name} LIMIT {limit}",
                       engine=pyoso_db_conn, output=False)
 
     def get_row_count(model_name):
-        result = mo.sql(f"SHOW STATS FOR {model_name}", 
+        result = mo.sql(f"SHOW STATS FOR {model_name}",
                         engine=pyoso_db_conn, output=False)
-        return result['row_count'].sum()    
+        return result['row_count'].sum()
 
     def generate_sql_snippet(model_name, df_results, limit=5):
         column_names = df_results.columns.tolist()
@@ -431,7 +431,8 @@ def _(mo, pyoso_db_conn):
     ORDER BY event_count DESC
     """
 
-    df_event_types = mo.sql(_event_type_query, engine=pyoso_db_conn, output=False)
+    with mo.persistent_cache("event_types"):
+        df_event_types = mo.sql(_event_type_query, engine=pyoso_db_conn, output=False)
     return (df_event_types,)
 
 
@@ -510,8 +511,9 @@ def _(mo, pd, pyoso_db_conn):
     ORDER BY bucket_day
     """
 
-    df_daily_devs = mo.sql(_daily_devs_query, engine=pyoso_db_conn, output=False)
-    df_daily_devs['bucket_day'] = pd.to_datetime(df_daily_devs['bucket_day'])
+    with mo.persistent_cache("daily_developers"):
+        df_daily_devs = mo.sql(_daily_devs_query, engine=pyoso_db_conn, output=False)
+        df_daily_devs['bucket_day'] = pd.to_datetime(df_daily_devs['bucket_day'])
     return (df_daily_devs,)
 
 
@@ -590,8 +592,9 @@ def _(mo, pd, pyoso_db_conn):
     ORDER BY bucket_day, event_type
     """
 
-    df_daily_by_type = mo.sql(_daily_by_type_query, engine=pyoso_db_conn, output=False)
-    df_daily_by_type['bucket_day'] = pd.to_datetime(df_daily_by_type['bucket_day'])
+    with mo.persistent_cache("daily_events_by_type"):
+        df_daily_by_type = mo.sql(_daily_by_type_query, engine=pyoso_db_conn, output=False)
+        df_daily_by_type['bucket_day'] = pd.to_datetime(df_daily_by_type['bucket_day'])
     return (df_daily_by_type,)
 
 
@@ -688,10 +691,11 @@ def _(mo, pd, pyoso_db_conn):
     ORDER BY total_commits DESC
     """
 
-    df_source_comparison = mo.sql(_source_comparison_query, engine=pyoso_db_conn, output=False)
-    # Ensure numeric types
-    df_source_comparison['repos_with_data'] = pd.to_numeric(df_source_comparison['repos_with_data'])
-    df_source_comparison['total_commits'] = pd.to_numeric(df_source_comparison['total_commits'])
+    with mo.persistent_cache("source_comparison"):
+        df_source_comparison = mo.sql(_source_comparison_query, engine=pyoso_db_conn, output=False)
+        # Ensure numeric types
+        df_source_comparison['repos_with_data'] = pd.to_numeric(df_source_comparison['repos_with_data'])
+        df_source_comparison['total_commits'] = pd.to_numeric(df_source_comparison['total_commits'])
     return (df_source_comparison,)
 
 
@@ -776,7 +780,7 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo, pyoso_db_conn):
-    mo.sql("""
+    _df = mo.sql("""
     SELECT
       event_type,
       COUNT(*) AS event_count
@@ -813,7 +817,7 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo, pyoso_db_conn):
-    mo.sql("""
+    _df = mo.sql("""
     SELECT
       bucket_day,
       COUNT(DISTINCT from_artifact_id) AS daily_active_developers
@@ -853,7 +857,7 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo, pyoso_db_conn):
-    mo.sql("""
+    _df = mo.sql("""
     SELECT
       DATE_TRUNC('DAY', time) AS event_day,
       event_type,
@@ -899,7 +903,7 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo, pyoso_db_conn):
-    mo.sql("""
+    _df = mo.sql("""
     SELECT
       eco.name AS ecosystem_name,
       COUNT(DISTINCT ev.from_artifact_name) AS unique_developers,
@@ -951,7 +955,7 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo, pyoso_db_conn):
-    mo.sql("""
+    _df = mo.sql("""
     SELECT
       DATE_TRUNC('DAY', time) AS bucket_day,
       from_artifact_name AS developer_login,

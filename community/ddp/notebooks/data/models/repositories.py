@@ -142,7 +142,8 @@ def _(mo, pyoso_db_conn):
     ORDER BY count DESC
     """
 
-    df_coverage = mo.sql(_query, engine=pyoso_db_conn, output=False)
+    with mo.persistent_cache("coverage"):
+        df_coverage = mo.sql(_query, engine=pyoso_db_conn, output=False)
     return (df_coverage,)
 
 

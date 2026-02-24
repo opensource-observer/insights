@@ -48,7 +48,8 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo, pyoso_db_conn):
     # Show overview of projects
-    df = mo.sql("SELECT * FROM projects_v1 LIMIT 10", engine=pyoso_db_conn, output=False)
+    with mo.persistent_cache("projects_preview"):
+        df = mo.sql("SELECT * FROM projects_v1 LIMIT 10", engine=pyoso_db_conn, output=False)
     return df,
 
 
