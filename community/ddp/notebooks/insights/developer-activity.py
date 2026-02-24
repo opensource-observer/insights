@@ -215,24 +215,25 @@ def _(df, ecosystem_selector, mo, pd, px):
 
 @app.cell(hide_code=True)
 def _(mo, pd, pyoso_db_conn):
-    df = mo.sql(
-        f"""
-        SELECT
-            e.name AS ecosystem_name,
-            mads.day,
-            mads.all_devs,
-            mads.full_time_devs,
-            mads.part_time_devs
-        FROM stg_opendevdata__eco_mads AS mads
-        JOIN stg_opendevdata__ecosystems AS e
-            ON mads.ecosystem_id = e.id
-        WHERE mads.day >= DATE('2024-01-01')
-        ORDER BY 1, 2
-        """,
-        output=False,
-        engine=pyoso_db_conn
-    )
-    df['day'] = pd.to_datetime(df['day'])
+    with mo.persistent_cache("eco_mads_data"):
+        df = mo.sql(
+            f"""
+            SELECT
+                e.name AS ecosystem_name,
+                mads.day,
+                mads.all_devs,
+                mads.full_time_devs,
+                mads.part_time_devs
+            FROM stg_opendevdata__eco_mads AS mads
+            JOIN stg_opendevdata__ecosystems AS e
+                ON mads.ecosystem_id = e.id
+            WHERE mads.day >= DATE('2024-01-01')
+            ORDER BY 1, 2
+            """,
+            output=False,
+            engine=pyoso_db_conn
+        )
+        df['day'] = pd.to_datetime(df['day'])
     return (df,)
 
 

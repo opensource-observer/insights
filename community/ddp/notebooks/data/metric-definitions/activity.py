@@ -106,31 +106,32 @@ def _(mo, ecosystem_names):
 @app.cell(hide_code=True)
 def _(mo, pyoso_db_conn, pd, ecosystem_dropdown):
     _eco = ecosystem_dropdown.value
-    df_activity = mo.sql(
-        f"""
-        SELECT
-          m.day,
-          m.all_devs,
-          m.full_time_devs,
-          m.part_time_devs,
-          m.one_time_devs,
-          m.devs_0_1y AS newcomers,
-          m.devs_1_2y AS emerging,
-          m.devs_2y_plus AS established,
-          m.exclusive_devs,
-          m.multichain_devs,
-          m.num_commits
-        FROM oso.stg_opendevdata__eco_mads AS m
-        JOIN oso.stg_opendevdata__ecosystems AS e
-          ON m.ecosystem_id = e.id
-        WHERE e.name = '{_eco}'
-          AND m.day >= DATE '2015-01-01'
-        ORDER BY m.day
-        """,
-        engine=pyoso_db_conn,
-        output=False
-    )
-    df_activity['day'] = pd.to_datetime(df_activity['day'])
+    with mo.persistent_cache("activity_data"):
+        df_activity = mo.sql(
+            f"""
+            SELECT
+              m.day,
+              m.all_devs,
+              m.full_time_devs,
+              m.part_time_devs,
+              m.one_time_devs,
+              m.devs_0_1y AS newcomers,
+              m.devs_1_2y AS emerging,
+              m.devs_2y_plus AS established,
+              m.exclusive_devs,
+              m.multichain_devs,
+              m.num_commits
+            FROM oso.stg_opendevdata__eco_mads AS m
+            JOIN oso.stg_opendevdata__ecosystems AS e
+              ON m.ecosystem_id = e.id
+            WHERE e.name = '{_eco}'
+              AND m.day >= DATE '2015-01-01'
+            ORDER BY m.day
+            """,
+            engine=pyoso_db_conn,
+            output=False
+        )
+        df_activity['day'] = pd.to_datetime(df_activity['day'])
     return (df_activity,)
 
 

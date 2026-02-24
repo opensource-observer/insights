@@ -395,20 +395,21 @@ def comparison_chart(ACTIVE_LABELS, CHURNED_LABELS, DORMANT_LABELS, FT_LABELS, a
 
 @app.cell(hide_code=True)
 def query_all_data(mo, pd, pyoso_db_conn):
-    df = mo.sql(
-        f"""
-        SELECT
-          project_display_name,
-          bucket_month,
-          label,
-          developers_count
-        FROM oso.int_crypto_ecosystems_developer_lifecycle_monthly_aggregated
-        ORDER BY 1,2,3
-        """,
-        output=False,
-        engine=pyoso_db_conn
-    )
-    df['bucket_month'] = pd.to_datetime(df['bucket_month'])
+    with mo.persistent_cache("lifecycle_data"):
+        df = mo.sql(
+            f"""
+            SELECT
+              project_display_name,
+              bucket_month,
+              label,
+              developers_count
+            FROM oso.int_crypto_ecosystems_developer_lifecycle_monthly_aggregated
+            ORDER BY 1,2,3
+            """,
+            output=False,
+            engine=pyoso_db_conn
+        )
+        df['bucket_month'] = pd.to_datetime(df['bucket_month'])
     return (df,)
 
 

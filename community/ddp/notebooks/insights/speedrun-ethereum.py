@@ -69,126 +69,129 @@ Using Speedrun Ethereum as a focused case study, the data suggests that bottom-u
 
 @app.cell(hide_code=True)
 def fetch_data(mo, pyoso_db_conn, stringify):
-    df_sre_users_all = mo.sql(
-        f"""
-        WITH users AS (
-          SELECT
-            github_handle AS user_name,
-            MAX(COALESCE(challenges_completed,0)) AS challenges_completed,
-            MIN(batch_id) AS batch_id,
-            MIN(created_at) AS start_date,
-            MIN_BY(location_code, created_at) AS location_code
-          FROM int_sre_github_users
-          GROUP BY 1
-        )
-        SELECT
-          user_name,
-          challenges_completed,
-          batch_id,
-          CAST(DATE_TRUNC('MONTH', start_date) AS DATE) AS start_month,
-          YEAR(start_date) AS cohort_year,
-          location_code
-        FROM users
-        """,
-        output=False,
-        engine=pyoso_db_conn
-    )
-
-    df_github_events_all = mo.sql(
-        f"""
-        WITH repo_mapping AS (
-          WITH repo_attributes AS (
+    with mo.persistent_cache("sre_users"):
+        df_sre_users_all = mo.sql(
+            f"""
+            WITH users AS (
+              SELECT
+                github_handle AS user_name,
+                MAX(COALESCE(challenges_completed,0)) AS challenges_completed,
+                MIN(batch_id) AS batch_id,
+                MIN(created_at) AS start_date,
+                MIN_BY(location_code, created_at) AS location_code
+              FROM int_sre_github_users
+              GROUP BY 1
+            )
             SELECT
-              r.repo_id,
-              e.name AS ecosystem_name,
-              er.ecosystem_id AS ecosystem_id,     
-              e.is_chain,
-              e.is_crypto,
-            FROM int_opendevdata__repositories_with_repo_id r
-            JOIN stg_opendevdata__ecosystems_repos_recursive er
-              ON r.opendevdata_id = er.repo_id
-            JOIN stg_opendevdata__ecosystems e
-              ON e.id = er.ecosystem_id
-          ),
-          ecosystem_flags AS (
+              user_name,
+              challenges_completed,
+              batch_id,
+              CAST(DATE_TRUNC('MONTH', start_date) AS DATE) AS start_month,
+              YEAR(start_date) AS cohort_year,
+              location_code
+            FROM users
+            """,
+            output=False,
+            engine=pyoso_db_conn
+        )
+
+    with mo.persistent_cache("github_events"):
+        df_github_events_all = mo.sql(
+            f"""
+            WITH repo_mapping AS (
+              WITH repo_attributes AS (
+                SELECT
+                  r.repo_id,
+                  e.name AS ecosystem_name,
+                  er.ecosystem_id AS ecosystem_id,
+                  e.is_chain,
+                  e.is_crypto,
+                FROM int_opendevdata__repositories_with_repo_id r
+                JOIN stg_opendevdata__ecosystems_repos_recursive er
+                  ON r.opendevdata_id = er.repo_id
+                JOIN stg_opendevdata__ecosystems e
+                  ON e.id = er.ecosystem_id
+              ),
+              ecosystem_flags AS (
+                SELECT
+                  repo_id,
+                  bool_or(ecosystem_name = 'Ethereum' OR ecosystem_name = 'Celo') AS is_ethereum,
+                  bool_or(ecosystem_name = 'Ethereum Virtual Machine Stack') AS is_evm,
+                  bool_or(is_chain = 1) AS is_nonevm,
+                  bool_or(is_crypto = 1) AS is_crypto
+                FROM repo_attributes
+                GROUP BY 1
+              )
+              SELECT
+                repo_id AS github_repo_id,
+                CASE
+                  WHEN is_ethereum THEN 'Ethereum'
+                  WHEN is_evm THEN 'Other EVM Chain'
+                  WHEN is_nonevm THEN 'Non-EVM Chain'
+                  WHEN is_crypto THEN 'Other (Crypto-Related)'
+                  ELSE 'Other (Non-Crypto)'
+                END AS best_match_ecosystem
+              FROM ecosystem_flags
+            ),
+            monthly_events AS (
+              SELECT
+                CAST(DATE_TRUNC('MONTH', event_time) AS DATE) AS bucket_month,
+                user_name,
+                repo_name,
+                github_repo_id,
+                COUNT(*) AS event_count
+              FROM int_sre_github_events_by_user
+              WHERE
+                event_type IN ('PushEvent', 'PullRequestEvent')
+                AND user_name IN ({stringify(df_sre_users_all['user_name'])})
+              GROUP BY 1,2,3,4
+            )
             SELECT
-              repo_id,
-              bool_or(ecosystem_name = 'Ethereum' OR ecosystem_name = 'Celo') AS is_ethereum,
-              bool_or(ecosystem_name = 'Ethereum Virtual Machine Stack') AS is_evm,
-              bool_or(is_chain = 1) AS is_nonevm,
-              bool_or(is_crypto = 1) AS is_crypto
-            FROM repo_attributes
-            GROUP BY 1
-          )
-          SELECT
-            repo_id AS github_repo_id,
-            CASE
-              WHEN is_ethereum THEN 'Ethereum'
-              WHEN is_evm THEN 'Other EVM Chain'
-              WHEN is_nonevm THEN 'Non-EVM Chain'
-              WHEN is_crypto THEN 'Other (Crypto-Related)'
-              ELSE 'Other (Non-Crypto)'
-            END AS best_match_ecosystem
-          FROM ecosystem_flags
-        ),
-        monthly_events AS (
-          SELECT
-            CAST(DATE_TRUNC('MONTH', event_time) AS DATE) AS bucket_month,
-            user_name,
-            repo_name,
-            github_repo_id,
-            COUNT(*) AS event_count
-          FROM int_sre_github_events_by_user
-          WHERE
-            event_type IN ('PushEvent', 'PullRequestEvent')
-            AND user_name IN ({stringify(df_sre_users_all['user_name'])})
-          GROUP BY 1,2,3,4
-        )
-        SELECT
-          bucket_month,
-          user_name,
-          github_repo_id,
-          repo_name,
-          CASE
-            WHEN best_match_ecosystem IS NOT NULL
-              THEN best_match_ecosystem
-            WHEN user_name = split_part(repo_name, '/', 1)
-              THEN 'Personal'
-            ELSE 'Unknown'
-          END AS repo_label,
-          event_count
-        FROM monthly_events
-        LEFT JOIN repo_mapping USING (github_repo_id)
-        """,
-        output=False,
-        engine=pyoso_db_conn
-    )
-
-
-    df_github_velocity_all = mo.sql(
-        f"""
-        WITH daily_activity AS(
-          SELECT
-            DATE_TRUNC('DAY', event_time) AS bucket_day,
-            user_name,
-            COUNT(*) AS event_count
-          FROM int_sre_github_events_by_user
-          WHERE
-            event_type IN ('PushEvent', 'PullRequestEvent')
-            AND user_name IN ({stringify(df_sre_users_all['user_name'])})
-          GROUP BY 1,2
+              bucket_month,
+              user_name,
+              github_repo_id,
+              repo_name,
+              CASE
+                WHEN best_match_ecosystem IS NOT NULL
+                  THEN best_match_ecosystem
+                WHEN user_name = split_part(repo_name, '/', 1)
+                  THEN 'Personal'
+                ELSE 'Unknown'
+              END AS repo_label,
+              event_count
+            FROM monthly_events
+            LEFT JOIN repo_mapping USING (github_repo_id)
+            """,
+            output=False,
+            engine=pyoso_db_conn
         )
 
-        SELECT
-          CAST(DATE_TRUNC('MONTH', bucket_day) AS DATE) AS bucket_month,
-          user_name,
-          SUM(1 + ln(event_count)) AS velocity
-        FROM daily_activity
-        GROUP BY 1,2
-        """,
-        output=False,
-        engine=pyoso_db_conn
-    )
+
+    with mo.persistent_cache("github_velocity"):
+        df_github_velocity_all = mo.sql(
+            f"""
+            WITH daily_activity AS(
+              SELECT
+                DATE_TRUNC('DAY', event_time) AS bucket_day,
+                user_name,
+                COUNT(*) AS event_count
+              FROM int_sre_github_events_by_user
+              WHERE
+                event_type IN ('PushEvent', 'PullRequestEvent')
+                AND user_name IN ({stringify(df_sre_users_all['user_name'])})
+              GROUP BY 1,2
+            )
+
+            SELECT
+              CAST(DATE_TRUNC('MONTH', bucket_day) AS DATE) AS bucket_month,
+              user_name,
+              SUM(1 + ln(event_count)) AS velocity
+            FROM daily_activity
+            GROUP BY 1,2
+            """,
+            output=False,
+            engine=pyoso_db_conn
+        )
     return df_github_events_all, df_github_velocity_all, df_sre_users_all
 
 

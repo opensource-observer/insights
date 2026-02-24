@@ -204,8 +204,9 @@ def _(mo, pd, pyoso_db_conn):
     ORDER BY ecosystem, day
     """
 
-    df_commits = mo.sql(_query, engine=pyoso_db_conn, output=False)
-    df_commits['day'] = pd.to_datetime(df_commits['day'])
+    with mo.persistent_cache("commit_trends"):
+        df_commits = mo.sql(_query, engine=pyoso_db_conn, output=False)
+        df_commits['day'] = pd.to_datetime(df_commits['day'])
     return (df_commits,)
 
 

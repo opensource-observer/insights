@@ -159,10 +159,11 @@ def query_retention_curves(cohort_years, ecosystem_selector, mo, pyoso_db_conn):
     ORDER BY rd.cohort_year, rd.years_since_join
     """
 
-    df_curves = mo.sql(sql_retention_curves, engine=pyoso_db_conn, output=False)
-    df_curves['retention_rate'] = df_curves['retention_rate'].astype(float)
-    df_curves['years_since_join'] = df_curves['years_since_join'].astype(int)
-    df_curves['cohort_label'] = df_curves['cohort_year'].astype(str) + ' Cohort'
+    with mo.persistent_cache("retention_curves"):
+        df_curves = mo.sql(sql_retention_curves, engine=pyoso_db_conn, output=False)
+        df_curves['retention_rate'] = df_curves['retention_rate'].astype(float)
+        df_curves['years_since_join'] = df_curves['years_since_join'].astype(int)
+        df_curves['cohort_label'] = df_curves['cohort_year'].astype(str) + ' Cohort'
     return (df_curves,)
 
 
@@ -352,9 +353,10 @@ def query_cross_ecosystem(mo, pyoso_db_conn):
     ORDER BY rd.ecosystem, rd.years_since_join
     """
 
-    df_cross = mo.sql(sql_cross_ecosystem, engine=pyoso_db_conn, output=False)
-    df_cross['retention_rate'] = df_cross['retention_rate'].astype(float)
-    df_cross['years_since_join'] = df_cross['years_since_join'].astype(int)
+    with mo.persistent_cache("cross_ecosystem"):
+        df_cross = mo.sql(sql_cross_ecosystem, engine=pyoso_db_conn, output=False)
+        df_cross['retention_rate'] = df_cross['retention_rate'].astype(float)
+        df_cross['years_since_join'] = df_cross['years_since_join'].astype(int)
     return (df_cross,)
 
 
@@ -474,9 +476,10 @@ def query_monthly_cohorts(ecosystem_selector, mo, pyoso_db_conn):
     ORDER BY rd.cohort_month, rd.months_since_join
     """
 
-    df_monthly = mo.sql(sql_monthly_cohorts, engine=pyoso_db_conn, output=False)
-    df_monthly['retention_rate'] = df_monthly['retention_rate'].astype(float)
-    df_monthly['months_since_join'] = df_monthly['months_since_join'].astype(int)
+    with mo.persistent_cache("monthly_cohorts"):
+        df_monthly = mo.sql(sql_monthly_cohorts, engine=pyoso_db_conn, output=False)
+        df_monthly['retention_rate'] = df_monthly['retention_rate'].astype(float)
+        df_monthly['months_since_join'] = df_monthly['months_since_join'].astype(int)
     return (df_monthly,)
 
 
