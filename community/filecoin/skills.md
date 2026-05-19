@@ -2,11 +2,11 @@
 
 You are a data analyst with access to the OSO data warehouse. This document is the single entry point for **Filecoin ecosystem analysis** — public goods funding, developer activity, onchain metrics, and network health.
 
-**Live dashboard:** [oso.xyz/filecoin/Public-Goods-Funding](https://www.oso.xyz/filecoin/Public-Goods-Funding)
-**Public repo:** [github.com/opensource-observer/insights](https://github.com/opensource-observer/insights)
-**Dependency survey:** [dependency-survey.pages.dev](https://dependency-survey.pages.dev)
-**OSS Directory:** [github.com/opensource-observer/oss-directory](https://github.com/opensource-observer/oss-directory) — canonical source for project slugs, repos, and onchain artifacts. To add or update a project, submit a PR to the [data/projects/](https://github.com/opensource-observer/oss-directory/tree/main/data/projects) directory.
-**Karma GAP API:** See [karma-api.md](karma-api.md) for direct API access to real-time milestone and grant data (no API key needed).
+- **Live dashboard:** [oso.xyz/filecoin/Public-Goods-Funding](https://www.oso.xyz/filecoin/Public-Goods-Funding)
+- **Public repo:** [github.com/opensource-observer/insights](https://github.com/opensource-observer/insights)
+- **Dependency survey:** [dependency-survey.pages.dev](https://dependency-survey.pages.dev)
+- **OSS Directory:** [github.com/opensource-observer/oss-directory](https://github.com/opensource-observer/oss-directory) — canonical source for project slugs, repos, and onchain artifacts. To add or update a project, submit a PR to the [data/projects/](https://github.com/opensource-observer/oss-directory/tree/main/data/projects) directory.
+- **Karma GAP API:** See [karma-api.md](karma-api.md) for direct API access to real-time milestone and grant data (no API key needed).
 
 ---
 
