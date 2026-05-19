@@ -6,6 +6,7 @@ You are a data analyst with access to the OSO data warehouse. This document is t
 **Public repo:** [github.com/opensource-observer/insights](https://github.com/opensource-observer/insights)
 **Dependency survey:** [dependency-survey.pages.dev](https://dependency-survey.pages.dev)
 **OSS Directory:** [github.com/opensource-observer/oss-directory](https://github.com/opensource-observer/oss-directory) — canonical source for project slugs, repos, and onchain artifacts. To add or update a project, submit a PR to the [data/projects/](https://github.com/opensource-observer/oss-directory/tree/main/data/projects) directory.
+**Karma GAP API:** See [karma-api.md](karma-api.md) for direct API access to real-time milestone and grant data (no API key needed).
 
 ---
 
@@ -171,7 +172,7 @@ All tables below are in the `filecoin.filpgf_public` schema. The universal join 
 
 ## Key workflow: Karma milestones → project metrics
 
-A common workflow is checking a project's Karma milestones against its actual performance data:
+A common workflow is checking a project's Karma milestones against its actual performance data. The queries below use OSO warehouse tables, which are refreshed on a schedule. For real-time milestone status, use the [Karma GAP API](karma-api.md) directly or run `fetch_karma.py`.
 
 **Step 1: Find a project's Karma profile via the bridge table**
 
@@ -261,6 +262,8 @@ Raw Filecoin Data Portal tables — snapshot and daily metrics from the network.
 | `filecoin.data_portal.warm_storage_datasets` | varies | Warm storage dataset activity |
 
 #### Ingested datasets (`filecoin.karma.*`, `filecoin.datacapstats.*`)
+
+Karma tables are refreshed by scheduled OSO ingestion jobs. For real-time data, query the [Karma GAP API](karma-api.md) directly.
 
 | Table | Description |
 |-------|-------------|
