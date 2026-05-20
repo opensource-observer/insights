@@ -1,8 +1,9 @@
 """Pull complete timeseries data via pyoso and rebuild the form HTML.
 
-Queries the warehouse for all Pro PGF project metrics, backfills
-downstream entity counts for projects missing survey data, and
-updates the embedded JSON in the metric selection form.
+Discovers Pro PGF projects and grants dynamically from the warehouse,
+queries their metrics, backfills downstream entity counts for projects
+missing survey data, and updates the embedded JSON in the metric
+selection form.
 
 Usage:
     pip install pyoso
@@ -17,19 +18,48 @@ from pyoso import Client
 
 client = Client()
 
-PROJECTS = [
-    "celtd", "chainfee-beck-8", "cidgravity", "curio-filecoin-project",
-    "drand", "evermediavault", "fil-builders", "filnote", "filponto",
-    "forest-chainsafe", "ipni", "lotus-filecoin-project", "lynx-26dos",
-    "oku-trade", "probe-lab", "secured-finance", "titannet-dao",
-    "venus-filecoin-project",
-]
-
 HTML_FILE = Path(__file__).parent.parent / "examples" / "propgf-metric-selection.html"
 
-slugs = ", ".join(f"'{s}'" for s in PROJECTS)
+# --- Step 0: Discover Pro PGF projects and grants from the warehouse ---
 
-# --- Step 1: Pull timeseries metrics ---
+print("Discovering Pro PGF grants...")
+grants_df = client.to_pandas("""
+SELECT
+  recipient_name AS grant_name,
+  oso_project_slug,
+  tag AS batch,
+  SUM(amount) AS total_amount
+FROM filecoin.staging_external.staging__gsheets__public_grants
+WHERE program_id = 'PROPGF'
+GROUP BY recipient_name, oso_project_slug, tag
+ORDER BY MIN(event_date), recipient_name
+""")
+
+grants = grants_df.to_dict("records")
+print(f"Found {len(grants)} grants ({grants_df['oso_project_slug'].nunique()} unique projects)")
+
+projects = sorted(
+    grants_df.loc[grants_df["oso_project_slug"].notna(), "oso_project_slug"].unique()
+)
+print(f"Projects with OSO match: {projects}")
+
+slugs = ", ".join(f"'{s}'" for s in projects)
+
+# --- Step 1: Discover entity types ---
+
+print("\nDiscovering entity types...")
+et_df = client.to_pandas(f"""
+SELECT project_slug, entity_type
+FROM filecoin.entities.dependency_classification
+WHERE project_slug IN ({slugs})
+""")
+entity_types = dict(zip(et_df["project_slug"], et_df["entity_type"]))
+for proj in projects:
+    if proj not in entity_types:
+        entity_types[proj] = "unclassified"
+print(f"Entity types: {entity_types}")
+
+# --- Step 2: Pull timeseries metrics ---
 
 query = f"""
 SELECT
@@ -56,17 +86,13 @@ WHERE time_interval = 'monthly'
 ORDER BY oso_project_slug, metric_name, sample_date
 """
 
-print("Querying timeseries metrics...")
+print("\nQuerying timeseries metrics...")
 df = client.to_pandas(query)
 print(f"Got {len(df)} rows, {df['oso_project_slug'].nunique()} projects")
 
 records = df.to_dict("records")
 
-# --- Step 2: Backfill downstream counts for projects missing them ---
-# The dependency survey produces static counts that may only appear in
-# months after the survey ran. We query the latest values and backfill
-# them across the evaluation period. Projects with no survey data get
-# explicit zeros.
+# --- Step 3: Backfill downstream counts for projects missing them ---
 
 print("\nChecking downstream entity counts...")
 backfill_query = f"""
@@ -79,12 +105,10 @@ GROUP BY oso_project_slug, metric_name
 """
 bf_df = client.to_pandas(backfill_query)
 
-# Build lookup: (project, metric) -> value
 backfill_values = {}
 for _, row in bf_df.iterrows():
     backfill_values[(row["oso_project_slug"], row["metric_name"])] = row["amount"]
 
-# Determine which projects already have these metrics in the evaluation period
 has_metric = set()
 for r in records:
     if r["metric_name"] in ("downstream_entity_count", "downstream_onramp_count"):
@@ -97,7 +121,7 @@ catalog = {
 }
 
 added = 0
-for proj in PROJECTS:
+for proj in projects:
     for mn, (display, units) in catalog.items():
         if (proj, mn) not in has_metric:
             value = backfill_values.get((proj, mn), 0)
@@ -116,9 +140,9 @@ for proj in PROJECTS:
 
 print(f"Added {added} backfilled rows")
 
-# --- Step 3: Summary ---
+# --- Step 4: Summary ---
 
-for proj in PROJECTS:
+for proj in projects:
     n = len([r for r in records if r["oso_project_slug"] == proj])
     has_ds = any(
         "downstream" in r["metric_name"]
@@ -127,7 +151,7 @@ for proj in PROJECTS:
     )
     print(f"  {proj}: {n} rows, downstream={has_ds}")
 
-# --- Step 4: Update the HTML ---
+# --- Step 5: Update the HTML ---
 
 with open(HTML_FILE) as f:
     html = f.read()
@@ -139,6 +163,11 @@ if not match:
 data = json.loads(match.group(1))
 print(f"\nOld timeseries: {len(data['timeseries'])} rows")
 
+# Update dynamic data
+data["grants"] = grants
+data["entity_types"] = entity_types
+data["timeseries"] = records
+
 for r in records:
     mn = r["metric_name"]
     if mn not in data["metric_catalog"]:
@@ -148,8 +177,9 @@ for r in records:
             "metric_event_source": r["metric_event_source"],
         }
 
-data["timeseries"] = records
 print(f"New timeseries: {len(data['timeseries'])} rows")
+print(f"Grants: {len(data['grants'])}")
+print(f"Entity types: {len(data['entity_types'])}")
 
 new_json = json.dumps(data, default=str)
 new_html = html[:match.start()] + f"const DATA = {new_json};\n" + html[match.end():]
