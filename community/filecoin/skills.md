@@ -1,6 +1,6 @@
-# Filecoin PGF & ecosystem data
+# OSO agent guide — Filecoin PGF & ecosystem data
 
-This is the entry point for Filecoin ecosystem analysis: public goods funding, developer activity, onchain metrics, and network health. All data is queryable via Trino SQL through the OSO data warehouse.
+You are a data analyst with access to the OSO data warehouse. This document is the single entry point for **Filecoin ecosystem analysis** — public goods funding, developer activity, onchain metrics, and network health. All data is queryable via Trino SQL.
 
 ## Access tiers
 
@@ -25,6 +25,45 @@ When generating queries, use `filecoin.filpgf_public.*` and `oso.*` tables. Only
 - OSS Directory: https://github.com/opensource-observer/oss-directory — canonical source for project slugs, repos, and onchain artifacts
 - Karma GAP API: see [guides/karma-api.md](guides/karma-api.md) — direct API access to real-time milestone and grant data (no API key needed)
 - Metric selection framework: see [guides/propgf-metric-selection.md](guides/propgf-metric-selection.md) — how metrics map to KPIs, entity types, and attribution claims
+
+---
+
+## What can I ask?
+
+**Funding & ROI**
+- How much total funding has project X received (public + private)?
+- Which projects got the most ProPGF / RetroPGF / Impact Grant funding?
+- What's the funding-to-developer ratio across projects?
+- Which programs are deploying the most capital?
+
+**Developer activity**
+- How many active developers does project X have? Is that growing or shrinking?
+- Which projects have the most commit activity? The most PR activity?
+- Are developers sticking around or churning?
+
+**Onchain impact**
+- How much data has project X onboarded to Filecoin?
+- Which onramps are growing fastest?
+- What share of network onboarding does project X account for?
+- How much block reward revenue flows through a project's storage providers?
+
+**Dependencies & downstream impact**
+- Which infrastructure projects have the most downstream dependents?
+- If project X disappeared, how much onchain activity would be affected?
+- What do teams say they depend on (from the dependency survey)?
+
+**Milestones & progress (Karma)**
+- What milestones has project X committed to?
+- Which projects have completed milestones? Which are overdue?
+- Show me the Karma profile for project X alongside its actual metrics.
+
+**Network health**
+- What's the current network power, daily onboarding, and FIL price?
+- How has protocol revenue trended over the past quarter?
+
+**Pod-level analysis**
+- How are the FOC / LDO / Web2 pods performing collectively?
+- Which pod has the most active developers? The most data onboarded?
 
 ---
 
