@@ -12,10 +12,10 @@ COMMUNITY (any OSO user who has subscribed to the filecoin.filpgf_public.* datas
   oso.*                        — public OSO data (projects, metrics, events)
 
 FILECOIN (any OSO user who is a member of the `filecoin` org space on OSO):
-  filecoin.*                   — all tables: staging, entities, events, metrics, ROI, raw ingested data
+  filecoin.*                   — all tables: staging, entities, events, metrics, and raw ingested data
 ```
 
-When generating queries, use `filecoin.filpgf_public.*` and `oso.*` tables. Only use deeper layers (staging, entities, events, metrics, roi) if the user has FILECOIN access and the mart layer cannot answer the question.
+When generating queries, use `filecoin.filpgf_public.*` and `oso.*` tables. Only use deeper layers (staging, entities, events, metrics) if the user has FILECOIN access and the mart layer cannot answer the question.
 
 ## Resources
 
@@ -80,7 +80,7 @@ filecoin.staging_external.*     filecoin.staging_oso.*
                          |
                   filecoin.metrics.*
                          |
-             filecoin.filpgf_public.*  <-- filecoin.roi.*
+             filecoin.filpgf_public.*
              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
              COMMUNITY layer — default for all queries
 ```
@@ -191,7 +191,7 @@ AND sample_date >= CURRENT_DATE - INTERVAL '30' DAY
 ORDER BY sample_date, metric_name
 ```
 
-Project ROI — funding vs impact:
+Funding vs impact by project:
 
 ```sql
 SELECT
@@ -229,7 +229,7 @@ FROM filecoin.filpgf_public.projects_to_projects
 WHERE oso_project_slug = 'secured-finance'
 ```
 
-2. For real-time milestone data, use the Karma GAP API directly — see [guides/karma-api.md](guides/karma-api.md). No API key required. For warehouse-based milestone queries, see [FILECOIN: Karma milestones](#filecoin-karma-milestones-workflow) below.
+2. Get milestone data from the Karma GAP API — see [guides/karma-api.md](guides/karma-api.md). No API key required, works for all users. FILECOIN tier users can also query milestones from the warehouse — see [FILECOIN: Karma milestones](#filecoin-karma-milestones-workflow) below.
 
 3. Pull snapshot metrics from the mart layer:
 
@@ -434,10 +434,3 @@ Karma tables are refreshed by scheduled OSO ingestion jobs. For real-time data, 
 | `metrics_filecoin_pay` | (date, entity, metric) | Filecoin Pay ARR and warm storage per operator |
 | `metrics_warm_storage` | (project, date) | Warm storage activity per PDP provider |
 | `metrics_datacap` | (entity) | Data Portal snapshot stats: onramp activity, allocator datacap |
-
-#### ROI: filecoin.roi.*
-
-| Table | Description |
-|-------|-------------|
-| `all_funding_events` | Unified funding events, USD-normalized via token_prices |
-| `roi_project_summary` | Per-project: total funding (FIL + USD) + impact metrics snapshot |
