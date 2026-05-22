@@ -4,21 +4,18 @@ This is the entry point for Filecoin ecosystem analysis: public goods funding, d
 
 ## Access tiers
 
-Data access depends on the user's API key scope. Default to COMMUNITY unless the user explicitly requests tables from a deeper layer or states they have org-level access.
+Data access depends on the user's role in the OSO platform. Default to COMMUNITY unless the user explicitly requests tables from a deeper layer or states they have org-level access.
 
 ```
-COMMUNITY (any Filecoin-scoped API key):
+COMMUNITY (any OSO user who has subscribed to the filecoin.filpgf_public.* datasets):
   filecoin.filpgf_public.*    — mart layer, pre-joined analysis views
   oso.*                        — public OSO data (projects, metrics, events)
 
-FILECOIN_ORG (Filecoin Foundation + OSO team):
+FILECOIN (any OSO user who is a member of the `filecoin` org space on OSO):
   filecoin.*                   — all tables: staging, entities, events, metrics, ROI, raw ingested data
-
-OSO_INTERNAL (OSO team only):
-  Model source code, pipeline configuration, private notebooks
 ```
 
-When generating queries, use `filecoin.filpgf_public.*` and `oso.*` tables. Only use deeper layers (staging, entities, events, metrics, roi) if the user has FILECOIN_ORG access and the mart layer cannot answer the question.
+When generating queries, use `filecoin.filpgf_public.*` and `oso.*` tables. Only use deeper layers (staging, entities, events, metrics, roi) if the user has FILECOIN access and the mart layer cannot answer the question.
 
 ## Resources
 
@@ -63,7 +60,7 @@ Use Trino SQL:
 ## Schema overview
 
 ```
-FILECOIN_ORG layer              Public layer
+FILECOIN layer              Public layer
 ───────────────────             ────────────
 filecoin.data_portal.*          oso.projects_v1
 filecoin.gsheets.*              oso.artifacts_by_project_v1
@@ -232,7 +229,7 @@ FROM filecoin.filpgf_public.projects_to_projects
 WHERE oso_project_slug = 'secured-finance'
 ```
 
-2. For real-time milestone data, use the Karma GAP API directly — see [guides/karma-api.md](guides/karma-api.md). No API key required. For warehouse-based milestone queries, see [FILECOIN_ORG: Karma milestones](#filecoin_org-karma-milestones-workflow) below.
+2. For real-time milestone data, use the Karma GAP API directly — see [guides/karma-api.md](guides/karma-api.md). No API key required. For warehouse-based milestone queries, see [FILECOIN: Karma milestones](#filecoin-karma-milestones-workflow) below.
 
 3. Pull snapshot metrics from the mart layer:
 
@@ -280,11 +277,11 @@ INNER JOIN oso.projects_v1 AS op
 
 ---
 
-## FILECOIN_ORG tables
+## FILECOIN tables
 
-Everything below requires FILECOIN_ORG access (full `filecoin.*` namespace). Do not use these tables unless the user has confirmed org-level access or explicitly requested tables from these schemas.
+Everything below requires FILECOIN access (full `filecoin.*` namespace). Do not use these tables unless the user has confirmed org-level access or explicitly requested tables from these schemas.
 
-### FILECOIN_ORG: Karma milestones workflow
+### FILECOIN: Karma milestones workflow
 
 For milestone data via the warehouse (rather than the Karma GAP API):
 
@@ -316,7 +313,7 @@ ORDER BY pod_slug, criticality, member_slug
 
 Pod grants map Karma slugs to pod slugs: `foc-filecoin-onachain-cloud` -> `foc`, `large-data-onboarding-pod-ldo-pod` -> `ldo`, `web2-object-storage-pod` -> `web2`.
 
-### FILECOIN_ORG: Full table inventory
+### FILECOIN: Full table inventory
 
 #### Ingested datasets (filecoin.data_portal.*)
 
