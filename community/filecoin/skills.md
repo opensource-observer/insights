@@ -345,7 +345,7 @@ Karma tables are refreshed by scheduled OSO ingestion jobs. For real-time data, 
 
 | Table | Description |
 |-------|-------------|
-| `filecoin.token_prices.token_prices` | Daily FIL/USD prices (Yahoo Finance + CoinGecko) |
+| `filecoin.token_prices.fil_daily_prices` | Daily FIL/USD prices (Yahoo Finance + CoinGecko) |
 | `filecoin.attribution_registry.artifact_registry` | Onchain artifact->entity mapping for onramp attribution |
 | `filecoin.attribution_registry.client_sp_mapping` | Client->SP mappings from DataCapStats |
 | `filecoin.onramp_dependency_scores.survey_submissions` | Dependency survey responses (0-5 importance scores) |
