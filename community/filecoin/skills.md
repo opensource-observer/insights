@@ -135,7 +135,7 @@ All tables use `oso_project_slug` as the universal join key. Slugs come from OSS
 |-------|-------|-------------|
 | `projects` | project | Tracked projects with display names and metadata |
 | `artifacts_by_project` | (project, artifact) | Repos, onchain client IDs, and grant applications per project |
-| `projects_to_projects` | (project, source, name) | Cross-system identity bridges: OSSD, Karma, Drips, Data Portal |
+| `projects_to_projects` | (project, registry_source, registry_project_name) | Cross-system identity bridges: OSSD, Karma, Drips, Data Portal |
 | `metric_catalog` | metric | Metric definitions, units, categories, and descriptions |
 | `timeseries_metrics_by_project` | (project, date, interval, metric) | Any metric trended over time for a project |
 | `key_metrics_by_project` | (project, metric) | Latest snapshot + lifetime totals per project |
@@ -153,12 +153,12 @@ All tables use `oso_project_slug` as the universal join key. Slugs come from OSS
 Query the catalog rather than hardcoding metric names:
 
 ```sql
-SELECT metric_name, metric_display_name, metric_units, metric_description, metric_category
+SELECT metric_name, metric_display_name, metric_units, description, metric_event_source
 FROM filecoin.filpgf_public.metric_catalog
-ORDER BY metric_category, metric_name
+ORDER BY metric_event_source, metric_name
 ```
 
-Metric categories: `github`, `client_onchain`, `sp_onchain`, `funding`, `downstream`, `network`, `filecoin_pay`, `warm_storage`, `datacap`.
+Metric event sources: `github`, `client_verified`, `sp_attribution`, `funding_events`, `private_funding`, `program`, `survey_dependency`, `filecoin_network`, `filecoin_pay`, `warm_storage`.
 
 Naming conventions:
 - `key_metrics_by_project`: snapshot metrics use `latest_` prefix (eg `latest_commits`, `latest_active_developers_28d`) or `total_` prefix (eg `total_funding_usd`, `total_sp_onboarded_tibs`)
@@ -262,7 +262,7 @@ To check a project's milestones against its metrics:
 1. Find cross-system identities (includes Karma slug) via the mart layer:
 
 ```sql
-SELECT source, source_project_slug, source_project_name
+SELECT oso_project_slug, registry_source, registry_project_name
 FROM filecoin.filpgf_public.projects_to_projects
 WHERE oso_project_slug = 'secured-finance'
 ```
