@@ -63,8 +63,7 @@ Use Trino SQL:
 FILECOIN layer              Public layer
 ───────────────────             ────────────
 filecoin.data_portal.*          oso.projects_v1
-filecoin.gsheets.*              oso.artifacts_by_project_v1
-filecoin.karma.*                oso.timeseries_metrics_by_project_v0
+filecoin.karma.*                oso.artifacts_by_project_v1
 filecoin.datacapstats.*         oso.int_events__github_unified
 filecoin.token_prices.*         (etc.)
 filecoin.karma_milestones.*
@@ -341,14 +340,6 @@ Karma tables are refreshed by scheduled OSO ingestion jobs. For real-time data, 
 | `filecoin.datacapstats.verified_clients` | DataCapStats verified client records |
 | `filecoin.datacapstats.verifiers` | DataCapStats allocator/verifier records |
 | `filecoin.datacapstats.filplus_stats` | Network-level FilPlus statistics |
-
-#### Google Sheets connections (filecoin.gsheets.*)
-
-| Table | Description |
-|-------|-------------|
-| `filecoin.gsheets.onchain_artifacts` | Curated onchain artifact registry (client IDs, SP IDs, allocator IDs, wallets) |
-| `filecoin.gsheets.public_grants_registry` | Public grants: ProPGF, Impact Grants, Hackathons (~132 rows) |
-| `filecoin.gsheets.private_grants_registry_consolidated` | Private grants registry |
 
 #### Static models
 
