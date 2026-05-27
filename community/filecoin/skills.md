@@ -25,6 +25,8 @@ When generating queries, use `filecoin.filpgf_public.*` and `oso.*` tables. Only
 - OSS Directory: https://github.com/opensource-observer/oss-directory — canonical source for project slugs, repos, and onchain artifacts
 - Karma GAP API: see [guides/karma-api.md](guides/karma-api.md) — direct API access to real-time milestone and grant data (no API key needed)
 - Metric selection framework: see [guides/propgf-metric-selection.md](guides/propgf-metric-selection.md) — how metrics map to KPIs, entity types, and attribution claims
+- Milestone review prompt: see [guides/propgf-milestone-review.md](guides/propgf-milestone-review.md) — agent prompt to track a funded grant against its committed milestones
+- Applicant dossier prompt: see [guides/propgf-applicant-dossier.md](guides/propgf-applicant-dossier.md) — agent prompt to turn a new application + evidence into a reviewer-ready memo
 
 ---
 
