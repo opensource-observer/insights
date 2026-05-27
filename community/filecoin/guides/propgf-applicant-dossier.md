@@ -10,7 +10,7 @@ Turn a Batch 3 application packet plus external evidence into a sharp, decision-
 
 ## The contract you're fulfilling
 
-> You are a ProPGF Batch 3 review analyst helping Sejal prepare reviewer-ready materials. Turn application materials plus external evidence into a sharp, decision-useful memo.
+> You are a ProPGF Batch 3 review analyst preparing reviewer-ready materials for the review committee. Turn application materials plus external evidence into a sharp, decision-useful memo.
 > Rules: evidence-based; separate facts / inference / recommendation; don't overclaim from weak evidence; if missing, say "Unknown" or "Not yet verified"; cite sources in every major section; flag missing evidence explicitly. Keep five sections separate: (1) scope/eligibility (2) strategic relevance/impact (3) execution credibility (4) funding fit/sustainability (5) portfolio priority/grant sizing. "Fundable" ≠ "fund at requested amount." Optimize for reviewer speed: concise, scannable, high-signal.
 
 ### Batch 3 rules (the eligibility frame)
@@ -52,6 +52,12 @@ If that errors while the Phase-0 probe succeeded, **you hold a community-tier ke
 2. **Cite the source table in every section.** Every number traces to a query. Name the table.
 3. **Don't overclaim from weak evidence.** A single survey response or a fuzzy name match is a lead, not a fact — label it as such.
 4. **Mark gaps explicitly.** Missing data → **"Unknown / Not yet verified"** + a one-line *what would fix this*. Never guess, never fabricate.
+5. **Render every reference as a clickable URL.** Whenever you cite something the reviewer might want to open and verify, write the full link, not a bare name or slug:
+   - GitHub repos → `https://github.com/{name_with_owner}` (from the repositories query).
+   - Karma project / prior applications → `https://gap.karmahq.xyz/project/{karma_slug}`.
+   - Deliverable proofs and applicant-stated links → the URL verbatim, as the applicant provided it.
+   - oss-directory and RFP references → the full URL.
+   A reviewer should be able to click through to every source without hunting for it.
 
 ---
 
@@ -87,6 +93,8 @@ SELECT karma_slug, karma_title, oso_project_slug, has_oso_match
 FROM filecoin.entities.bridge_karma_to_oso
 WHERE LOWER(karma_title) LIKE '%{applicant_name_fragment}%'
 ```
+
+When you surface a matched repo or Karma profile, write it as a clickable URL (`https://github.com/{name_with_owner}`, `https://gap.karmahq.xyz/project/{karma_slug}`) so the reviewer can open the prior application and verify identity in one click.
 
 Once confirmed, **every section below keys on the slug and is trustworthy. The one exception is §4 private funding**, which has no slug key and joins on free-text name — treat its output as a lead, not a fact.
 
@@ -296,6 +304,6 @@ Optimize for reviewer speed. One page where possible. Lead with a verdict line, 
 
 ---
 
-## Flag to Sejal (follow-up, not a blocker)
+## Follow-up flagged (not a blocker)
 
-**No machine-readable RFP catalog exists.** The eligibility check references "responses to published RFPs," but there's no structured list of published Batch 3 RFPs for the agent to check against. For now this guide treats RFP-alignment as a **manual reviewer step**: the dossier surfaces the applicant's stated RFP + objective/KPI claims, and the reviewer confirms the match. Open question for Sejal: can a published-RFP list be made available to close this loop?
+**No machine-readable RFP catalog exists.** The eligibility check references "responses to published RFPs," but there's no structured list of published Batch 3 RFPs for the agent to check against. For now this guide treats RFP-alignment as a **manual reviewer step**: the dossier surfaces the applicant's stated RFP + objective/KPI claims, and the reviewer confirms the match. Open question for the committee: can a published-RFP list be made available to close this loop?

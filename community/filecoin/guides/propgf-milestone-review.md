@@ -31,6 +31,12 @@ This report will be read by grant reviewers, and the project team will likely se
 2. **Cite the source table in every section.** Every number traces to a query. Name the table — `filecoin.karma_milestones.milestones`, `filecoin.filpgf_public.key_metrics_by_project` — so a reviewer can re-run it.
 3. **Mark gaps explicitly.** When data is missing, write **"Unknown / Not yet verified"** and a one-line *what would fix this* — never guess, never paper over the gap, never fabricate.
 4. **Every claim carries a number, a date, or a source.** No adjective stands alone.
+5. **Render every reference as a clickable URL.** Whenever you cite something the reviewer might want to open and verify, write the full link, not a bare name or slug:
+   - Karma project / milestone page → `https://gap.karmahq.xyz/project/{karma_slug}`.
+   - GitHub repos → `https://github.com/{name_with_owner}`.
+   - Deliverable proofs → the proof URL verbatim from `deliverable_proofs`.
+   - oss-directory references → the full URL.
+   A reviewer should be able to click through to every source without hunting for it.
 
 ---
 
