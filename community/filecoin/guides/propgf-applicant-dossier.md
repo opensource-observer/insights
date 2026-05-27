@@ -48,7 +48,7 @@ If that errors while the Phase-0 probe succeeded, **you hold a community-tier ke
 
 ## Evidence discipline (applies to every section)
 
-1. **Separate facts / inference / recommendation.** A fact is what the data says (entity type is `infrastructure`; total public funding is $225K). An inference is your read ("the team is grant-dependent"). A recommendation is the action ("fund at $150K, not the $300K ask"). Never blur them into one sentence.
+1. **Separate facts / inference / recommendation.** A fact is what the data says (entity type is `infrastructure`; total public funding is some measured amount). An inference is your read ("the team is grant-dependent"). A recommendation is the action ("fund below the ask, milestone-gated"). Never blur them into one sentence.
 2. **Cite the source table in every section.** Every number traces to a query. Name the table.
 3. **Don't overclaim from weak evidence.** A single survey response or a fuzzy name match is a lead, not a fact — label it as such.
 4. **Mark gaps explicitly.** Missing data → **"Unknown / Not yet verified"** + a one-line *what would fix this*. Never guess, never fabricate.
@@ -56,14 +56,15 @@ If that errors while the Phase-0 probe succeeded, **you hold a community-tier ke
    - GitHub repos → `https://github.com/{name_with_owner}` (from the repositories query).
    - Karma project / prior applications → `https://gap.karmahq.xyz/project/{karma_slug}`.
    - Deliverable proofs and applicant-stated links → the URL verbatim, as the applicant provided it.
-   - oss-directory and RFP references → the full URL.
+   - oss-directory → link to **this project's own entry**, not the repo root: `https://github.com/opensource-observer/oss-directory/blob/main/data/projects/{first-letter-of-slug}/{oso_project_slug}.yaml`. That page shows exactly which artifacts are bound to the slug, so a reviewer can confirm attribution at a glance. Use the repo root only when the applicant has no slug yet.
+   - RFP references → the full URL.
    A reviewer should be able to click through to every source without hunting for it.
 
 ---
 
 ## Step 0 — Resolve the applicant to an OSO slug
 
-Most queries key on `oso_project_slug`. A name search is only how you *find* a candidate slug — it is **not** how you confirm identity. One company can own several distinct projects that share a name fragment (e.g. `forest-chainsafe` and `filecoin-community-services-chainsafe` are separate projects, both "ChainSafe"). So: name-search to get a candidate, then **confirm by inspecting the artifacts bound to the slug.**
+Most queries key on `oso_project_slug`. A name search is only how you *find* a candidate slug — it is **not** how you confirm identity. One company can own several distinct projects that share a name fragment (e.g. a node implementation and a separate services project from the same org, both carrying the company name). So: name-search to get a candidate, then **confirm by inspecting the artifacts bound to the slug.**
 
 ```sql
 -- Source: filecoin.filpgf_public.projects — find a CANDIDATE slug
@@ -96,7 +97,7 @@ WHERE LOWER(karma_title) LIKE '%{applicant_name_fragment}%'
 
 When you surface a matched repo or Karma profile, write it as a clickable URL (`https://github.com/{name_with_owner}`, `https://gap.karmahq.xyz/project/{karma_slug}`) so the reviewer can open the prior application and verify identity in one click.
 
-Once confirmed, **every section below keys on the slug and is trustworthy. The one exception is §4 private funding**, which has no slug key and joins on free-text name — treat its output as a lead, not a fact.
+Once confirmed, **every section below keys on the slug and is trustworthy — including §4 funding, which keys on `to_artifact_id` (the OSSD slug), not on recipient name.** This is critical: funding lookups by name conflate sibling projects that share a parent org, and can badly overstate an applicant's support. Always key funding on the slug.
 
 ### Reject / empty path (first-class)
 
@@ -249,24 +250,26 @@ ORDER BY metric_name
 
 ```sql
 -- Source: filecoin.events.events_private_funding (PRIVATE — FILECOIN tier only)
--- ⚠️ This is the ONLY source in the dossier that is NOT keyed on oso_project_slug —
--- it joins on free-text recipient_name. Every other section resolves through the
--- slug (artifacts_by_project / projects_to_projects) and is trustworthy; this one
--- is a name guess. Inspect the `tag` and `recipient_name` of every row by hand.
-SELECT disbursement_id, event_source, recipient_name, recipient_type,
-       amount, currency, amount_usd_equiv, bucket_day, tag
+-- ✅ KEY ON THE OSSD SLUG. This table has a `to_artifact_id` column holding the
+-- oso_project_slug. Funding lookups MUST filter on it — never on recipient_name.
+-- A free-text name match conflates sibling projects that share a parent org —
+-- it pulls in grants belonging to the company's OTHER projects. The slug excludes them.
+SELECT disbursement_id, event_source, to_artifact_id, recipient_name,
+       recipient_type, amount, currency, amount_usd_equiv, bucket_day, tag
 FROM filecoin.events.events_private_funding
-WHERE LOWER(recipient_name) LIKE '%{applicant_name_fragment}%'
+WHERE to_artifact_id = '{oso_project_slug}'
 ORDER BY bucket_day
 ```
+
+> **Slug coverage is partial (~half of rows have `to_artifact_id`).** If the slug-keyed query returns nothing, the project may simply have no mapped private funding — that is the trustworthy answer. You *may* run a `recipient_name LIKE` search as a **lead only**, but never sum name-matched rows into the project's total and never report them as the applicant's funding: confirm each row's `to_artifact_id` first. Rows whose slug is a *different* project (or whose slug is NULL and whose name is an org-level match) do **not** belong to this applicant.
 
 **Writing it:**
 - *Facts:* total public funding by program; private disbursements with USD-equivalent amounts and dates; the stated ask, burn, and grant-dependency % from the form.
 - *Inference:* sustainability. High grant-dependency + no revenue = a recurring-support risk; existing private backing may mean the marginal ProPGF dollar is less critical.
 - *Recommendation:* ask vs the $300K cap and ~$200K average — is the requested amount justified by scope and track record?
 - **Privacy:** private amounts are why the *output* of this dossier is confidential. See the privacy split below.
-- **Multi-product orgs — do not sum.** If the name match returns grants tagged across unrelated product lines (e.g. a `chainsafe` match returns FVM, NFT, IPFS, and ecosystem grants alongside the one project you're scoring), the rows belong to the parent company, not the applicant project. Summing them badly overstates support. Report it as **"Private funding: Not separable — name-match returns org-wide grants across unrelated products; no project-level key exists."** Never attribute a company-wide total to one of its projects. *(Lesson from the Forest/ChainSafe worked example: `forest-chainsafe` is a distinct project from `filecoin-community-services-chainsafe`, but both share the `chainsafe` recipient name.)*
-- *Caveat to state when the match IS clean:* "Private funding matched on recipient name (`{matched_name}`) — confirm this is the same legal entity before relying on the totals." If no name match, write **"No private funding found under matched names — Not yet verified (name-match limitation)."**
+- **Multi-product orgs — the slug protects you.** Keying on `to_artifact_id` already separates sibling projects, so do not sum anything that isn't keyed to *this* slug. A free-text name match on a multi-product org pulls in grants that belong to *other* projects under the same parent — and those rows carry their own distinct slug, so the slug-keyed query correctly excludes them. Trust the slug, not the name.
+- *When the slug returns rows:* report the total plainly — it is trustworthy. *When the slug returns nothing:* write **"No private funding mapped to this project (keyed on OSSD slug)."** Do not fall back to a name-match total to fill the gap.
 
 ### 5. Portfolio priority / grant sizing
 

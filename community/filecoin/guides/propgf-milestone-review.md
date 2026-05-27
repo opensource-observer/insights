@@ -27,7 +27,7 @@ This guide assumes a **FILECOIN-tier** key (it reads `filecoin.karma_milestones.
 
 This report will be read by grant reviewers, and the project team will likely see it too. Hold to these rules throughout:
 
-1. **Separate facts from inference from recommendation.** A fact is something the data says (a milestone is `verified`; commits fell from 157 to 26). An inference is your read of it ("development has slowed since the grant period opened"). A recommendation is what you'd do about it ("request a status update on M2 before the next disbursement"). Never let them blur into one sentence.
+1. **Separate facts from inference from recommendation.** A fact is something the data says (a milestone is `verified`; monthly commits dropped over the grant window). An inference is your read of it ("development has slowed since the grant period opened"). A recommendation is what you'd do about it ("request a status update on M2 before the next disbursement"). Never let them blur into one sentence.
 2. **Cite the source table in every section.** Every number traces to a query. Name the table — `filecoin.karma_milestones.milestones`, `filecoin.filpgf_public.key_metrics_by_project` — so a reviewer can re-run it.
 3. **Mark gaps explicitly.** When data is missing, write **"Unknown / Not yet verified"** and a one-line *what would fix this* — never guess, never paper over the gap, never fabricate.
 4. **Every claim carries a number, a date, or a source.** No adjective stands alone.
@@ -252,25 +252,25 @@ Each item should be specific enough to copy into a follow-up email or Karma comm
 - State what's verified and link to evidence. State what's overdue without editorializing.
 - Every claim includes a number, a date, or a source.
 - Be honest about data gaps — "No quantitative metrics available; FOC does not have mapped repositories in OSO" beats silence.
-- Interpret, don't describe. "USDFC TVL declined 15% since grant start, from $480K to $380K" — not "the chart shows TVL over time."
+- Interpret, don't describe. "On-chain TVL declined 15% since grant start" — not "the chart shows TVL over time."
 - Don't cheerlead and don't alarm. Let the data speak.
 
 ---
 
-## Output exemplar (sanitized excerpt)
+## Output exemplar (illustrative format)
 
-The format below is from the worked example run against `secured-finance` (a real Batch 2 recipient). The full output is kept privately (a Google Doc shared with the review committee); numbers here are real but the section is trimmed for illustration, and it carries no private funding amounts.
+The excerpt below is a **hypothetical** project, shown only to demonstrate the structure and the facts/inference/recommendation discipline. Numbers and names are illustrative. Real review outputs are kept privately (a Google Doc shared with the review committee), never in this public repo.
 
 > **01 / Executive Summary**
 > **Status: Needs Review** (1 overdue, 1 at risk — derived from milestone math).
-> *Facts:* 1 of 3 milestones verified. ProPGF grant of $225K *(Source: `key_metrics_by_project`, `propgf_funding_usd`)*. Next milestone ("FVM Yield Infrastructure") due 2026-05-31.
-> *Inference:* M1 (UI v2) shipped and was verified on 2026-04-20; the two Yield Infrastructure milestones remain `pending` with one already past its 2026-04-30 due date.
-> *Recommendation:* request a status update on the Yield Infrastructure track before the next disbursement.
+> *Facts:* 1 of 3 milestones verified. ProPGF grant of `{amount}` *(Source: `key_metrics_by_project`, `propgf_funding_usd`)*. Next milestone due `{date}`.
+> *Inference:* the first milestone shipped and was verified; the remaining milestones are still `pending`, with one already past its due date.
+> *Recommendation:* request a status update on the open track before the next disbursement.
 >
 > **03 / Metrics Analysis (excerpt)**
-> *Fact:* Monthly commits fell from 157 (Nov 2025) to 26 (May 2026); active developers 28d held between 4 and 13 over the same window *(Source: `timeseries_metrics_by_project`)*.
-> *Inference:* Engineering throughput has cooled since late 2025, consistent with a shift from feature build-out to maintenance.
-> *Gap:* On-chain USDFC TVL is **Unknown / Not yet verified** — no TVL metric is mapped for this project. *What would fix this:* register the USDFC contracts in oss-directory so on-chain metrics attach.
+> *Fact:* Monthly commits fell sharply over the grant window; active developers 28d held in a narrow band over the same period *(Source: `timeseries_metrics_by_project`)*.
+> *Inference:* engineering throughput has cooled, consistent with a shift from feature build-out to maintenance.
+> *Gap:* On-chain TVL is **Unknown / Not yet verified** — no TVL metric is mapped for this project. *What would fix this:* register the contracts in oss-directory so on-chain metrics attach.
 
 ---
 
