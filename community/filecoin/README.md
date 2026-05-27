@@ -20,7 +20,8 @@ python3 -m http.server 8765
 filecoin/
 ├── guides/                              # Framework docs and agent prompts
 │   ├── propgf-metric-selection.md       # Metric attribution framework
-│   ├── propgf-monitoring.md             # Agent prompt for monthly grant reports
+│   ├── propgf-milestone-review.md       # Agent prompt: track funded grants vs milestones
+│   ├── propgf-applicant-dossier.md      # Agent prompt: evaluate new applications
 │   └── karma-api.md                     # Karma GAP API reference
 ├── scripts/                             # Data scripts
 │   ├── select_propgf_metrics.py       # Refresh metric selection form data
