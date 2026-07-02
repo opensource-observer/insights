@@ -6,6 +6,13 @@ Insights and data science for measuring the growth of open source software contr
 
 This directory contains our analysis and data science work, mostly in the form of Jupyter notebooks and scripts to facilitate ad hoc analysis.
 
+### Retro Funding Impact (interactive dashboard)
+
+`retro-funding-impact/` is a self-contained [marimo](https://marimo.io) dashboard that puts funding next to impact for every Optimism Retro Funding recipient, from RetroPGF 2 through Season 8. It ships with Parquet snapshots and runs fully locally, with no OSO API key required.
+
+- `retro-funding-impact/retro-funding-impact.py`: the notebook. Pick a project and one or more impact metrics (onchain, DeFi, GitHub) and read them against cumulative OP awarded. Includes program totals, a by-round breakdown, and a leaderboard of all 1,187 recipients.
+- `retro-funding-impact/data/*.parquet`: the underlying tables (funding by recipient, monthly metrics, per-round and program summaries), exported from the OSO warehouse. See the [subdirectory README](./retro-funding-impact/README.md) for how to run it and refresh the data.
+
 ### Retro Funding 6 (in progress)
 
 This directory includes our work with Metrics Garden Labs on qualitative impact metrics. We've written indexers for various EAS attestation schemas and linked them to governance members (i.e., delegates and badgeholders). We created synthetic data to test the indexers and the data pipeline, and serve dummy metrics to the frontend. We worked with the Foundation and Agora to implement 8 attestation-based impact metrics for the Retro Funding 6 cohort.
