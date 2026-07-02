@@ -58,6 +58,11 @@ counted in the funding totals but have no impact metrics.
 **Not an ROI score.** Funding is shown alongside activity with no causal claim;
 Retro Funding rewards work that has already happened.
 
+The Season 7 and 8 measurement pipelines, eligibility checks, and reward
+algorithms live in the Optimism Retro Funding repo:
+[ethereum-optimism/Retro-Funding](https://github.com/ethereum-optimism/Retro-Funding).
+This dashboard summarizes funding and impact outcomes across all rounds.
+
 ## Refreshing the snapshot
 
 Re-export the four tables from the OSO warehouse (requires an `OSO_API_KEY` with

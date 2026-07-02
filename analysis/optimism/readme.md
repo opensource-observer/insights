@@ -13,6 +13,10 @@ This directory contains our analysis and data science work, mostly in the form o
 - `retro-funding-impact/retro-funding-impact.py`: the notebook. Pick a project and one or more impact metrics (onchain, DeFi, GitHub) and read them against cumulative OP awarded. Includes program totals, a by-round breakdown, and a leaderboard of all 1,187 recipients.
 - `retro-funding-impact/data/*.parquet`: the underlying tables (funding by recipient, monthly metrics, per-round and program summaries), exported from the OSO warehouse. See the [subdirectory README](./retro-funding-impact/README.md) for how to run it and refresh the data.
 
+### Retro Funding, Seasons 7 & 8
+
+Our work on Seasons 7 and 8 (the monthly onchain-builder and dev-tooling missions) lives in the Optimism Retro Funding repo, not here: **[ethereum-optimism/Retro-Funding](https://github.com/ethereum-optimism/Retro-Funding)**. That repo holds the measurement pipelines, eligibility checks, metric definitions, reward algorithms, and per-measurement-period results for those seasons. The dashboard above summarizes the funding and impact outcomes across all rounds, S7 and S8 included.
+
 ### Retro Funding 6 (in progress)
 
 This directory includes our work with Metrics Garden Labs on qualitative impact metrics. We've written indexers for various EAS attestation schemas and linked them to governance members (i.e., delegates and badgeholders). We created synthetic data to test the indexers and the data pipeline, and serve dummy metrics to the frontend. We worked with the Foundation and Agora to implement 8 attestation-based impact metrics for the Retro Funding 6 cohort.
