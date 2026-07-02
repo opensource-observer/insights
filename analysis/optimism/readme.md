@@ -4,7 +4,7 @@
 
 Insights and data science for measuring the growth of open source software contributions to the Optimism ecosystem. The goal of these insights is to improve the ROI and governance of grant programs.
 
-This directory contains our analysis and data science work, mostly in the form of Jupyter notebooks and scripts to facilitate ad hoc analysis.
+This directory contains our analysis and data science work, mostly in the form of notebooks (Jupyter and marimo) and scripts to facilitate ad hoc analysis.
 
 ### Retro Funding Impact (interactive dashboard)
 
@@ -17,7 +17,7 @@ This directory contains our analysis and data science work, mostly in the form o
 
 Our work on Seasons 7 and 8 (the monthly onchain-builder and dev-tooling missions) lives in the Optimism Retro Funding repo, not here: **[ethereum-optimism/Retro-Funding](https://github.com/ethereum-optimism/Retro-Funding)**. That repo holds the measurement pipelines, eligibility checks, metric definitions, reward algorithms, and per-measurement-period results for those seasons. The dashboard above summarizes the funding and impact outcomes across all rounds, S7 and S8 included.
 
-### Retro Funding 6 (in progress)
+### Retro Funding 6
 
 This directory includes our work with Metrics Garden Labs on qualitative impact metrics. We've written indexers for various EAS attestation schemas and linked them to governance members (i.e., delegates and badgeholders). We created synthetic data to test the indexers and the data pipeline, and serve dummy metrics to the frontend. We worked with the Foundation and Agora to implement 8 attestation-based impact metrics for the Retro Funding 6 cohort.
 
